@@ -1,0 +1,10 @@
+// Width and height
+
+@each $prop, $abbrev in (width: w, height: h) ***REMOVED***
+  @each $size, $length in $sizes ***REMOVED***
+    .#***REMOVED***$abbrev***REMOVED***-#***REMOVED***$size***REMOVED*** ***REMOVED*** #***REMOVED***$prop***REMOVED***: $length !important; ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.mw-100 ***REMOVED*** max-width: 100% !important; ***REMOVED***
+.mh-100 ***REMOVED*** max-height: 100% !important; ***REMOVED***

@@ -1,0 +1,32 @@
+.nav-tabs ***REMOVED***
+  .nav-link ***REMOVED***
+    color: $gray;
+    &.active ***REMOVED***
+      color: $gray-dark;
+      background: #fff;
+      border-color: $border-color;
+      border-bottom-color: #fff;
+      &:focus ***REMOVED***
+        background: #fff;
+        border-color: $border-color;
+        border-bottom-color: #fff;
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.tab-content ***REMOVED***
+  margin-top: -1px;
+  background: #fff;
+  border: 1px solid $border-color;
+  .tab-pane ***REMOVED***
+    padding: $spacer;
+  ***REMOVED***
+***REMOVED***
+
+.card-block ***REMOVED***
+  .tab-content ***REMOVED***
+    margin-top: 0;
+    border: 0;
+  ***REMOVED***
+***REMOVED***

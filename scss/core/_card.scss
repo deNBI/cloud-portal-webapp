@@ -1,0 +1,232 @@
+.card ***REMOVED***
+  margin-bottom: 1.5 * $spacer;
+***REMOVED***
+
+.card-header ***REMOVED***
+
+  .icon-bg ***REMOVED***
+    display: inline-block;
+    padding: $card-spacer-y $card-spacer-x !important;
+    margin-top: -$card-spacer-y;
+    margin-right: $card-spacer-x;
+    margin-bottom: -$card-spacer-y;
+    margin-left: -$card-spacer-x;
+    line-height: inherit;
+    color: $card-icon-color;
+    vertical-align: bottom;
+    background: $card-icon-bg;
+    border-right: $card-border-width solid $card-border-color;
+  ***REMOVED***
+
+  .nav.nav-tabs ***REMOVED***
+    margin-top: -$card-spacer-y;
+    margin-bottom: -$card-spacer-y;
+    border-bottom: 0;
+
+    .nav-item ***REMOVED***
+      border-top: 0;
+    ***REMOVED***
+
+    .nav-link ***REMOVED***
+      padding: $card-spacer-y $card-spacer-x / 2;
+      color: $text-muted;
+      border-top: 0;
+
+      &.active ***REMOVED***
+        color: $body-color;
+        background: #fff;
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+  &.card-header-inverse ***REMOVED***
+    color: #fff;
+  ***REMOVED***
+
+  @each $variant, $color in (primary: $brand-primary, secondary: $gray-lighter, success: $brand-success, info: $brand-info, warning: $brand-warning, danger: $brand-danger) ***REMOVED***
+    &.card-header-#***REMOVED***$variant***REMOVED*** ***REMOVED***
+      margin: -1px -1px 0;
+      background: $color;
+      border-bottom: 1px solid $color;
+    ***REMOVED***
+  ***REMOVED***
+
+  .btn ***REMOVED***
+    margin-top: - $input-btn-padding-y;
+  ***REMOVED***
+  .btn-sm ***REMOVED***
+    margin-top: - $input-btn-padding-y-sm;
+  ***REMOVED***
+  .btn-lg ***REMOVED***
+    margin-top: - $input-btn-padding-y-lg;
+  ***REMOVED***
+***REMOVED***
+//
+.card-footer ***REMOVED***
+
+  ul ***REMOVED***
+    display: table;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    table-layout: fixed;
+
+    li ***REMOVED***
+      display: table-cell;
+      padding: 0 $card-spacer-x;
+      text-align: center;
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+
+//
+// Background variations
+//
+
+@mixin card-variant($color) ***REMOVED***
+  background-color: $color;
+
+  .card-header ***REMOVED***
+    border-color: darken($color,5%);
+  ***REMOVED***
+
+  .card-header, .card-footer ***REMOVED***
+    background-color: darken($color,5%);
+    //border: 0;
+  ***REMOVED***
+***REMOVED***
+
+@each $variant, $color in (primary: $brand-primary, secondary: $gray-lighter, success: $brand-success, info: $brand-info, warning: $brand-warning, danger: $brand-danger) ***REMOVED***
+  .card-#***REMOVED***$variant***REMOVED*** ***REMOVED***
+    @include card-variant($color)
+  ***REMOVED***
+***REMOVED***
+
+.card-inverse ***REMOVED***
+  color: #fff;
+
+  .text-muted ***REMOVED***
+    color: rgba(255,255,255,.6) !important;
+  ***REMOVED***
+
+***REMOVED***
+
+[class*="card-outline-"] ***REMOVED***
+  .card-block ***REMOVED***
+    background: #fff !important;
+  ***REMOVED***
+
+  &.card-outline-top ***REMOVED***
+    border-top-width: 2px;
+    border-right-color: $border-color;
+    border-bottom-color: $border-color;
+    border-left-color: $border-color;
+  ***REMOVED***
+***REMOVED***
+
+// Cards with color accent
+.card-accent-primary ***REMOVED***
+  @include card-accent-variant($btn-primary-bg);
+***REMOVED***
+.card-accent-secondary ***REMOVED***
+  @include card-accent-variant($btn-secondary-border);
+***REMOVED***
+.card-accent-info ***REMOVED***
+  @include card-accent-variant($btn-info-bg);
+***REMOVED***
+.card-accent-success ***REMOVED***
+  @include card-accent-variant($btn-success-bg);
+***REMOVED***
+.card-accent-warning ***REMOVED***
+  @include card-accent-variant($btn-warning-bg);
+***REMOVED***
+.card-accent-danger ***REMOVED***
+  @include card-accent-variant($btn-danger-bg);
+***REMOVED***
+
+// Card Actions
+.card-header ***REMOVED***
+  > i ***REMOVED***
+    margin-right: $spacer / 2;
+  ***REMOVED***
+  .card-actions ***REMOVED***
+    position: absolute;
+    top: 0;
+    right: 0;
+    //height: inherit;
+
+    a, button ***REMOVED***
+      display: block;
+      float: left;
+      width: 50px;
+      padding: $card-spacer-y 0;
+      margin: 0 !important;
+      color: $body-color;
+      text-align: center;
+      background: transparent;
+      border: 0;
+      border-left: 1px solid $border-color;
+      box-shadow: 0;
+
+      &:hover ***REMOVED***
+        text-decoration: none;
+      ***REMOVED***
+
+      [class^="icon-"], [class*=" icon-"] ***REMOVED***
+        display: inline-block;
+        vertical-align: middle;
+      ***REMOVED***
+
+      i ***REMOVED***
+        display: inline-block;
+        transition: .4s;
+      ***REMOVED***
+
+      .r180 ***REMOVED***
+        transform: rotate(180deg);
+      ***REMOVED***
+    ***REMOVED***
+
+    .input-group ***REMOVED***
+      width: 230px;
+      margin: 6px;
+
+      .input-group-addon ***REMOVED***
+        background: #fff;
+      ***REMOVED***
+
+      input ***REMOVED***
+        border-left: 0;
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.card-full ***REMOVED***
+  margin-top: - $spacer;
+  margin-right: - $grid-gutter-width-base / 2;
+  margin-left: - $grid-gutter-width-base / 2;
+  border: 0;
+  border-bottom: $card-border-width solid $border-color;
+***REMOVED***
+
+@include media-breakpoint-up(sm) ***REMOVED***
+  .card-columns ***REMOVED***
+
+    &.cols-2 ***REMOVED***
+      column-count: 2;
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.card ***REMOVED***
+  &.drag, .drag ***REMOVED***
+    cursor: move;
+  ***REMOVED***
+***REMOVED***
+
+.card-placeholder ***REMOVED***
+  background: rgba(0,0,0,.025);
+  border: 1px dashed $gray-light;
+***REMOVED***

@@ -1,0 +1,53 @@
+// Card variants
+
+@mixin card-variant($background, $border) ***REMOVED***
+  background-color: $background;
+  border-color: $border;
+
+  .card-header,
+  .card-footer ***REMOVED***
+    background-color: transparent;
+  ***REMOVED***
+***REMOVED***
+
+@mixin card-outline-variant($color) ***REMOVED***
+  background-color: transparent;
+  border-color: $color;
+
+  .card-header,
+  .card-footer ***REMOVED***
+    background-color: transparent;
+    border-color: $color;
+  ***REMOVED***
+***REMOVED***
+
+//
+// Inverse text within a card for use with dark backgrounds
+//
+
+@mixin card-inverse ***REMOVED***
+  color: rgba(255,255,255,.65);
+
+  .card-header,
+  .card-footer ***REMOVED***
+    background-color: transparent;
+    border-color: rgba(255,255,255,.2);
+  ***REMOVED***
+  .card-header,
+  .card-footer,
+  .card-title,
+  .card-blockquote ***REMOVED***
+    color: #fff;
+  ***REMOVED***
+  .card-link,
+  .card-text,
+  .card-subtitle,
+  .card-blockquote .blockquote-footer ***REMOVED***
+    color: rgba(255,255,255,.65);
+  ***REMOVED***
+  .card-link ***REMOVED***
+    @include hover-focus ***REMOVED***
+      color: $card-link-hover-color;
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***

@@ -1,0 +1,282 @@
+//
+// RTL Support
+//
+// scss-lint:disable NestingDepth, SelectorDepth
+*[dir="rtl"] ***REMOVED***
+  direction: rtl;
+  unicode-bidi: embed;
+
+  ul ***REMOVED***
+    -webkit-padding-start: 0;
+  ***REMOVED***
+
+  table tr th ***REMOVED***
+    text-align: right;
+  ***REMOVED***
+
+  // Breadcrumb
+
+  .breadcrumb-item ***REMOVED***
+    float: right;
+  ***REMOVED***
+
+  .breadcrumb-menu ***REMOVED***
+    right: auto;
+    left: $breadcrumb-padding-x;
+  ***REMOVED***
+
+  // Dropdown
+  .dropdown-item ***REMOVED***
+    text-align: right;
+
+    i ***REMOVED***
+      margin-right: -10px;
+      margin-left: 10px;
+    ***REMOVED***
+
+    .badge ***REMOVED***
+      right: auto;
+      left: 10px;
+    ***REMOVED***
+  ***REMOVED***
+
+  //
+  // Sidebar
+  //
+  .sidebar-hidden ***REMOVED***
+
+    .sidebar ***REMOVED***
+      margin-right: - $sidebar-width;
+    ***REMOVED***
+  ***REMOVED***
+
+  .sidebar-fixed ***REMOVED***
+
+    .main, .app-footer ***REMOVED***
+      margin-right: $sidebar-width;
+    ***REMOVED***
+
+    &.sidebar-hidden ***REMOVED***
+
+      .main, .app-footer ***REMOVED***
+        margin-right: 0;
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+  .sidebar-minimized ***REMOVED***
+    .sidebar ***REMOVED***
+      flex: 0 0 $sidebar-minimized-width;
+    ***REMOVED***
+
+    &.sidebar-hidden ***REMOVED***
+
+      .sidebar ***REMOVED***
+        margin-left: - $sidebar-minimized-width;
+      ***REMOVED***
+    ***REMOVED***
+
+    &.sidebar-fixed ***REMOVED***
+
+      .main, .app-footer ***REMOVED***
+        margin-left: $sidebar-minimized-width;
+      ***REMOVED***
+
+      &.sidebar-hidden ***REMOVED***
+
+        .main, .app-footer ***REMOVED***
+          margin-left: 0;
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+  //
+  // Aside Menu
+  //
+  .aside-menu-hidden ***REMOVED***
+
+    .aside-menu ***REMOVED***
+      // margin-right: 0;
+      margin-left: - $aside-menu-width;
+    ***REMOVED***
+  ***REMOVED***
+
+  .aside-menu-fixed ***REMOVED***
+
+    .aside-menu ***REMOVED***
+      right: auto;
+      left: 0;
+    ***REMOVED***
+
+    .main, .app-footer ***REMOVED***
+      //margin-right: 0;
+      margin-left: $aside-menu-width;
+    ***REMOVED***
+
+    &.aside-menu-hidden ***REMOVED***
+
+      .main, .app-footer ***REMOVED***
+        margin-left: 0;
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+  .aside-menu-off-canvas ***REMOVED***
+    .aside-menu ***REMOVED***
+      position: fixed;
+      right: 0;
+      z-index: $zindex-sticky - 1;
+      height: 100%;
+
+      .tab-content ***REMOVED***
+        height: calc(100vh - #***REMOVED***$aside-menu-nav-padding-y * 2 + $font-size-base***REMOVED*** - #***REMOVED***$navbar-height***REMOVED***);
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+  // Sidebar Menu
+  .sidebar ***REMOVED***
+    .sidebar-nav ***REMOVED***
+      direction: ltr;
+      * ***REMOVED***
+        direction: rtl;
+      ***REMOVED***
+      .nav ***REMOVED***
+        .nav-item ***REMOVED***
+          .nav-link ***REMOVED***
+            [class^="icon-"], [class*=" icon-"] ***REMOVED***
+              margin-right: -4px;
+            ***REMOVED***
+            .badge ***REMOVED***
+              float: left;
+              margin-top: 2px;
+              // margin-left: 10px;
+            ***REMOVED***
+            &.nav-dropdown-toggle ***REMOVED***
+              &::before ***REMOVED***
+                position: absolute;
+                right: auto !important;
+                left: $sidebar-nav-link-padding-x;
+              ***REMOVED***
+            ***REMOVED***
+          ***REMOVED***
+          &.nav-dropdown ***REMOVED***
+            &.open ***REMOVED***
+              > .nav-link.nav-dropdown-toggle::before ***REMOVED***
+                transform: rotate(90deg);
+              ***REMOVED***
+            ***REMOVED***
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+  // Horizontal bars
+  .horizontal-bars ***REMOVED***
+
+    li ***REMOVED***
+
+      .bars ***REMOVED***
+        padding-right: 100px;
+        padding-left: 0;
+
+        .progress:first-child ***REMOVED***
+          margin-bottom: 2px;
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+
+    &.type-2 ***REMOVED***
+
+      li ***REMOVED***
+
+        i ***REMOVED***
+          margin-right: 5px;
+          margin-left: $spacer;
+        ***REMOVED***
+
+        .value ***REMOVED***
+          float: left;
+          font-weight: 600;
+        ***REMOVED***
+
+        .bars ***REMOVED***
+          padding: 0;
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+  // Icon list
+  .icons-list ***REMOVED***
+
+    li ***REMOVED***
+      position: relative;
+      height: 40px;
+      vertical-align: middle;
+
+      i ***REMOVED***
+        float: right;
+      ***REMOVED***
+
+      .desc ***REMOVED***
+        margin-right: 50px;
+        margin-left: 0;
+      ***REMOVED***
+
+      .value ***REMOVED***
+        right: auto;
+        left: 45px;
+        text-align: left;
+
+        strong ***REMOVED***
+          display: block;
+          margin-top: -3px;
+        ***REMOVED***
+      ***REMOVED***
+
+      .actions ***REMOVED***
+        right: auto;
+        left: 10px;
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+  // Callouts
+  .callout ***REMOVED***
+    border: 0 solid $border-color;
+    border-right-width: .25rem;
+
+    .chart-wrapper ***REMOVED***
+      left: 0;
+      float: left;
+    ***REMOVED***
+  ***REMOVED***
+
+  .callout-default ***REMOVED***
+    border-right-color: $text-muted;
+  ***REMOVED***
+
+  .callout-primary ***REMOVED***
+    border-right-color: $brand-primary;
+  ***REMOVED***
+
+  .callout-info ***REMOVED***
+    border-right-color: $brand-info;
+  ***REMOVED***
+
+  .callout-warning ***REMOVED***
+    border-right-color: $brand-warning;
+  ***REMOVED***
+
+  .callout-danger ***REMOVED***
+    border-right-color: $brand-danger;
+  ***REMOVED***
+
+  .callout-success ***REMOVED***
+    border-right-color: $brand-success;
+  ***REMOVED***
+
+***REMOVED***

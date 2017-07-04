@@ -1,0 +1,37 @@
+//
+// Border
+//
+
+.border-0        ***REMOVED*** border: 0 !important; ***REMOVED***
+.border-top-0    ***REMOVED*** border-top: 0 !important; ***REMOVED***
+.border-right-0  ***REMOVED*** border-right: 0 !important; ***REMOVED***
+.border-bottom-0 ***REMOVED*** border-bottom: 0 !important; ***REMOVED***
+.border-left-0   ***REMOVED*** border-left: 0 !important; ***REMOVED***
+
+//
+// Border-radius
+//
+
+.rounded ***REMOVED***
+  @include border-radius($border-radius);
+***REMOVED***
+.rounded-top ***REMOVED***
+  @include border-top-radius($border-radius);
+***REMOVED***
+.rounded-right ***REMOVED***
+  @include border-right-radius($border-radius);
+***REMOVED***
+.rounded-bottom ***REMOVED***
+  @include border-bottom-radius($border-radius);
+***REMOVED***
+.rounded-left ***REMOVED***
+  @include border-left-radius($border-radius);
+***REMOVED***
+
+.rounded-circle ***REMOVED***
+  border-radius: 50%;
+***REMOVED***
+
+.rounded-0 ***REMOVED***
+  border-radius: 0;
+***REMOVED***

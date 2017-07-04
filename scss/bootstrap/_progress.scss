@@ -1,0 +1,31 @@
+@keyframes progress-bar-stripes ***REMOVED***
+  from ***REMOVED*** background-position: $progress-height 0; ***REMOVED***
+  to ***REMOVED*** background-position: 0 0; ***REMOVED***
+***REMOVED***
+
+.progress ***REMOVED***
+  display: flex;
+  overflow: hidden; // force rounded corners by cropping it
+  font-size: $progress-font-size;
+  line-height: $progress-height;
+  text-align: center;
+  background-color: $progress-bg;
+  @include border-radius($progress-border-radius);
+***REMOVED***
+
+.progress-bar ***REMOVED***
+  height: $progress-height;
+  line-height: $progress-height;
+  color: $progress-bar-color;
+  background-color: $progress-bar-bg;
+  @include transition($progress-bar-transition);
+***REMOVED***
+
+.progress-bar-striped ***REMOVED***
+  @include gradient-striped();
+  background-size: $progress-height $progress-height;
+***REMOVED***
+
+.progress-bar-animated ***REMOVED***
+  animation: progress-bar-stripes $progress-bar-animation-timing;
+***REMOVED***

@@ -1,0 +1,169 @@
+//
+// Basic Bootstrap table
+//
+
+.table ***REMOVED***
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: $spacer;
+  background-color: $table-bg; // Reset for nesting within parents with `background-color`.
+
+  th,
+  td ***REMOVED***
+    padding: $table-cell-padding;
+    vertical-align: top;
+    border-top: $table-border-width solid $table-border-color;
+  ***REMOVED***
+
+  thead th ***REMOVED***
+    vertical-align: bottom;
+    border-bottom: (2 * $table-border-width) solid $table-border-color;
+  ***REMOVED***
+
+  tbody + tbody ***REMOVED***
+    border-top: (2 * $table-border-width) solid $table-border-color;
+  ***REMOVED***
+
+  .table ***REMOVED***
+    background-color: $body-bg;
+  ***REMOVED***
+***REMOVED***
+
+
+//
+// Condensed table w/ half padding
+//
+
+.table-sm ***REMOVED***
+  th,
+  td ***REMOVED***
+    padding: $table-sm-cell-padding;
+  ***REMOVED***
+***REMOVED***
+
+
+// Bordered version
+//
+// Add borders all around the table and between all the columns.
+
+.table-bordered ***REMOVED***
+  border: $table-border-width solid $table-border-color;
+
+  th,
+  td ***REMOVED***
+    border: $table-border-width solid $table-border-color;
+  ***REMOVED***
+
+  thead ***REMOVED***
+    th,
+    td ***REMOVED***
+      border-bottom-width: (2 * $table-border-width);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+
+// Zebra-striping
+//
+// Default zebra-stripe styles (alternating gray and transparent backgrounds)
+
+.table-striped ***REMOVED***
+  tbody tr:nth-of-type(odd) ***REMOVED***
+    background-color: $table-bg-accent;
+  ***REMOVED***
+***REMOVED***
+
+
+// Hover effect
+//
+// Placed here since it has to come after the potential zebra striping
+
+.table-hover ***REMOVED***
+  tbody tr ***REMOVED***
+    @include hover ***REMOVED***
+      background-color: $table-bg-hover;
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+
+// Table backgrounds
+//
+// Exact selectors below required to override `.table-striped` and prevent
+// inheritance to nested tables.
+
+// Generate the contextual variants
+@include table-row-variant(active, $table-bg-active);
+@include table-row-variant(success, $state-success-bg);
+@include table-row-variant(info, $state-info-bg);
+@include table-row-variant(warning, $state-warning-bg);
+@include table-row-variant(danger, $state-danger-bg);
+
+
+// Inverse styles
+//
+// Same table markup, but inverted color scheme: dark background and light text.
+
+.thead-inverse ***REMOVED***
+  th ***REMOVED***
+    color: $table-inverse-color;
+    background-color: $table-inverse-bg;
+  ***REMOVED***
+***REMOVED***
+
+.thead-default ***REMOVED***
+  th ***REMOVED***
+    color: $table-head-color;
+    background-color: $table-head-bg;
+  ***REMOVED***
+***REMOVED***
+
+.table-inverse ***REMOVED***
+  color: $table-inverse-color;
+  background-color: $table-inverse-bg;
+
+  th,
+  td,
+  thead th ***REMOVED***
+    border-color: $table-inverse-border-color;
+  ***REMOVED***
+
+  &.table-bordered ***REMOVED***
+    border: 0;
+  ***REMOVED***
+
+  &.table-striped ***REMOVED***
+    tbody tr:nth-of-type(odd) ***REMOVED***
+      background-color: $table-inverse-bg-accent;
+    ***REMOVED***
+  ***REMOVED***
+
+  &.table-hover ***REMOVED***
+    tbody tr ***REMOVED***
+      @include hover ***REMOVED***
+        background-color: $table-inverse-bg-hover;
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+
+// Responsive tables
+//
+// Add `.table-responsive` to `.table`s and we'll make them mobile friendly by
+// enabling horizontal scrolling. Only applies <768px. Everything above that
+// will display normally.
+
+.table-responsive ***REMOVED***
+  @include media-breakpoint-down(md) ***REMOVED***
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar; // See https://github.com/twbs/bootstrap/pull/10057
+
+    // Prevent double border on horizontal scroll due to use of `display: block;`
+    &.table-bordered ***REMOVED***
+      border: 0;
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***

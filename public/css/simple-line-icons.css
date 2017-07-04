@@ -1,0 +1,778 @@
+@font-face ***REMOVED***
+  font-family: 'simple-line-icons';
+  src: url('../fonts/Simple-Line-Icons.eot?v=2.4.0');
+  src: url('../fonts/Simple-Line-Icons.eot?v=2.4.0#iefix') format('embedded-opentype'), url('../fonts/Simple-Line-Icons.woff2?v=2.4.0') format('woff2'), url('../fonts/Simple-Line-Icons.ttf?v=2.4.0') format('truetype'), url('../fonts/Simple-Line-Icons.woff?v=2.4.0') format('woff'), url('../fonts/Simple-Line-Icons.svg?v=2.4.0#simple-line-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+***REMOVED***
+/*
+ Use the following CSS code if you want to have a class per icon.
+ Instead of a list of all class selectors, you can use the generic [class*="icon-"] selector, but it's slower:
+*/
+.icon-user,
+.icon-people,
+.icon-user-female,
+.icon-user-follow,
+.icon-user-following,
+.icon-user-unfollow,
+.icon-login,
+.icon-logout,
+.icon-emotsmile,
+.icon-phone,
+.icon-call-end,
+.icon-call-in,
+.icon-call-out,
+.icon-map,
+.icon-location-pin,
+.icon-direction,
+.icon-directions,
+.icon-compass,
+.icon-layers,
+.icon-menu,
+.icon-list,
+.icon-options-vertical,
+.icon-options,
+.icon-arrow-down,
+.icon-arrow-left,
+.icon-arrow-right,
+.icon-arrow-up,
+.icon-arrow-up-circle,
+.icon-arrow-left-circle,
+.icon-arrow-right-circle,
+.icon-arrow-down-circle,
+.icon-check,
+.icon-clock,
+.icon-plus,
+.icon-minus,
+.icon-close,
+.icon-event,
+.icon-exclamation,
+.icon-organization,
+.icon-trophy,
+.icon-screen-smartphone,
+.icon-screen-desktop,
+.icon-plane,
+.icon-notebook,
+.icon-mustache,
+.icon-mouse,
+.icon-magnet,
+.icon-energy,
+.icon-disc,
+.icon-cursor,
+.icon-cursor-move,
+.icon-crop,
+.icon-chemistry,
+.icon-speedometer,
+.icon-shield,
+.icon-screen-tablet,
+.icon-magic-wand,
+.icon-hourglass,
+.icon-graduation,
+.icon-ghost,
+.icon-game-controller,
+.icon-fire,
+.icon-eyeglass,
+.icon-envelope-open,
+.icon-envelope-letter,
+.icon-bell,
+.icon-badge,
+.icon-anchor,
+.icon-wallet,
+.icon-vector,
+.icon-speech,
+.icon-puzzle,
+.icon-printer,
+.icon-present,
+.icon-playlist,
+.icon-pin,
+.icon-picture,
+.icon-handbag,
+.icon-globe-alt,
+.icon-globe,
+.icon-folder-alt,
+.icon-folder,
+.icon-film,
+.icon-feed,
+.icon-drop,
+.icon-drawer,
+.icon-docs,
+.icon-doc,
+.icon-diamond,
+.icon-cup,
+.icon-calculator,
+.icon-bubbles,
+.icon-briefcase,
+.icon-book-open,
+.icon-basket-loaded,
+.icon-basket,
+.icon-bag,
+.icon-action-undo,
+.icon-action-redo,
+.icon-wrench,
+.icon-umbrella,
+.icon-trash,
+.icon-tag,
+.icon-support,
+.icon-frame,
+.icon-size-fullscreen,
+.icon-size-actual,
+.icon-shuffle,
+.icon-share-alt,
+.icon-share,
+.icon-rocket,
+.icon-question,
+.icon-pie-chart,
+.icon-pencil,
+.icon-note,
+.icon-loop,
+.icon-home,
+.icon-grid,
+.icon-graph,
+.icon-microphone,
+.icon-music-tone-alt,
+.icon-music-tone,
+.icon-earphones-alt,
+.icon-earphones,
+.icon-equalizer,
+.icon-like,
+.icon-dislike,
+.icon-control-start,
+.icon-control-rewind,
+.icon-control-play,
+.icon-control-pause,
+.icon-control-forward,
+.icon-control-end,
+.icon-volume-1,
+.icon-volume-2,
+.icon-volume-off,
+.icon-calendar,
+.icon-bulb,
+.icon-chart,
+.icon-ban,
+.icon-bubble,
+.icon-camrecorder,
+.icon-camera,
+.icon-cloud-download,
+.icon-cloud-upload,
+.icon-envelope,
+.icon-eye,
+.icon-flag,
+.icon-heart,
+.icon-info,
+.icon-key,
+.icon-link,
+.icon-lock,
+.icon-lock-open,
+.icon-magnifier,
+.icon-magnifier-add,
+.icon-magnifier-remove,
+.icon-paper-clip,
+.icon-paper-plane,
+.icon-power,
+.icon-refresh,
+.icon-reload,
+.icon-settings,
+.icon-star,
+.icon-symbol-female,
+.icon-symbol-male,
+.icon-target,
+.icon-credit-card,
+.icon-paypal,
+.icon-social-tumblr,
+.icon-social-twitter,
+.icon-social-facebook,
+.icon-social-instagram,
+.icon-social-linkedin,
+.icon-social-pinterest,
+.icon-social-github,
+.icon-social-google,
+.icon-social-reddit,
+.icon-social-skype,
+.icon-social-dribbble,
+.icon-social-behance,
+.icon-social-foursqare,
+.icon-social-soundcloud,
+.icon-social-spotify,
+.icon-social-stumbleupon,
+.icon-social-youtube,
+.icon-social-dropbox,
+.icon-social-vkontakte,
+.icon-social-steam ***REMOVED***
+  font-family: 'simple-line-icons';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+***REMOVED***
+.icon-user:before ***REMOVED***
+  content: "\e005";
+***REMOVED***
+.icon-people:before ***REMOVED***
+  content: "\e001";
+***REMOVED***
+.icon-user-female:before ***REMOVED***
+  content: "\e000";
+***REMOVED***
+.icon-user-follow:before ***REMOVED***
+  content: "\e002";
+***REMOVED***
+.icon-user-following:before ***REMOVED***
+  content: "\e003";
+***REMOVED***
+.icon-user-unfollow:before ***REMOVED***
+  content: "\e004";
+***REMOVED***
+.icon-login:before ***REMOVED***
+  content: "\e066";
+***REMOVED***
+.icon-logout:before ***REMOVED***
+  content: "\e065";
+***REMOVED***
+.icon-emotsmile:before ***REMOVED***
+  content: "\e021";
+***REMOVED***
+.icon-phone:before ***REMOVED***
+  content: "\e600";
+***REMOVED***
+.icon-call-end:before ***REMOVED***
+  content: "\e048";
+***REMOVED***
+.icon-call-in:before ***REMOVED***
+  content: "\e047";
+***REMOVED***
+.icon-call-out:before ***REMOVED***
+  content: "\e046";
+***REMOVED***
+.icon-map:before ***REMOVED***
+  content: "\e033";
+***REMOVED***
+.icon-location-pin:before ***REMOVED***
+  content: "\e096";
+***REMOVED***
+.icon-direction:before ***REMOVED***
+  content: "\e042";
+***REMOVED***
+.icon-directions:before ***REMOVED***
+  content: "\e041";
+***REMOVED***
+.icon-compass:before ***REMOVED***
+  content: "\e045";
+***REMOVED***
+.icon-layers:before ***REMOVED***
+  content: "\e034";
+***REMOVED***
+.icon-menu:before ***REMOVED***
+  content: "\e601";
+***REMOVED***
+.icon-list:before ***REMOVED***
+  content: "\e067";
+***REMOVED***
+.icon-options-vertical:before ***REMOVED***
+  content: "\e602";
+***REMOVED***
+.icon-options:before ***REMOVED***
+  content: "\e603";
+***REMOVED***
+.icon-arrow-down:before ***REMOVED***
+  content: "\e604";
+***REMOVED***
+.icon-arrow-left:before ***REMOVED***
+  content: "\e605";
+***REMOVED***
+.icon-arrow-right:before ***REMOVED***
+  content: "\e606";
+***REMOVED***
+.icon-arrow-up:before ***REMOVED***
+  content: "\e607";
+***REMOVED***
+.icon-arrow-up-circle:before ***REMOVED***
+  content: "\e078";
+***REMOVED***
+.icon-arrow-left-circle:before ***REMOVED***
+  content: "\e07a";
+***REMOVED***
+.icon-arrow-right-circle:before ***REMOVED***
+  content: "\e079";
+***REMOVED***
+.icon-arrow-down-circle:before ***REMOVED***
+  content: "\e07b";
+***REMOVED***
+.icon-check:before ***REMOVED***
+  content: "\e080";
+***REMOVED***
+.icon-clock:before ***REMOVED***
+  content: "\e081";
+***REMOVED***
+.icon-plus:before ***REMOVED***
+  content: "\e095";
+***REMOVED***
+.icon-minus:before ***REMOVED***
+  content: "\e615";
+***REMOVED***
+.icon-close:before ***REMOVED***
+  content: "\e082";
+***REMOVED***
+.icon-event:before ***REMOVED***
+  content: "\e619";
+***REMOVED***
+.icon-exclamation:before ***REMOVED***
+  content: "\e617";
+***REMOVED***
+.icon-organization:before ***REMOVED***
+  content: "\e616";
+***REMOVED***
+.icon-trophy:before ***REMOVED***
+  content: "\e006";
+***REMOVED***
+.icon-screen-smartphone:before ***REMOVED***
+  content: "\e010";
+***REMOVED***
+.icon-screen-desktop:before ***REMOVED***
+  content: "\e011";
+***REMOVED***
+.icon-plane:before ***REMOVED***
+  content: "\e012";
+***REMOVED***
+.icon-notebook:before ***REMOVED***
+  content: "\e013";
+***REMOVED***
+.icon-mustache:before ***REMOVED***
+  content: "\e014";
+***REMOVED***
+.icon-mouse:before ***REMOVED***
+  content: "\e015";
+***REMOVED***
+.icon-magnet:before ***REMOVED***
+  content: "\e016";
+***REMOVED***
+.icon-energy:before ***REMOVED***
+  content: "\e020";
+***REMOVED***
+.icon-disc:before ***REMOVED***
+  content: "\e022";
+***REMOVED***
+.icon-cursor:before ***REMOVED***
+  content: "\e06e";
+***REMOVED***
+.icon-cursor-move:before ***REMOVED***
+  content: "\e023";
+***REMOVED***
+.icon-crop:before ***REMOVED***
+  content: "\e024";
+***REMOVED***
+.icon-chemistry:before ***REMOVED***
+  content: "\e026";
+***REMOVED***
+.icon-speedometer:before ***REMOVED***
+  content: "\e007";
+***REMOVED***
+.icon-shield:before ***REMOVED***
+  content: "\e00e";
+***REMOVED***
+.icon-screen-tablet:before ***REMOVED***
+  content: "\e00f";
+***REMOVED***
+.icon-magic-wand:before ***REMOVED***
+  content: "\e017";
+***REMOVED***
+.icon-hourglass:before ***REMOVED***
+  content: "\e018";
+***REMOVED***
+.icon-graduation:before ***REMOVED***
+  content: "\e019";
+***REMOVED***
+.icon-ghost:before ***REMOVED***
+  content: "\e01a";
+***REMOVED***
+.icon-game-controller:before ***REMOVED***
+  content: "\e01b";
+***REMOVED***
+.icon-fire:before ***REMOVED***
+  content: "\e01c";
+***REMOVED***
+.icon-eyeglass:before ***REMOVED***
+  content: "\e01d";
+***REMOVED***
+.icon-envelope-open:before ***REMOVED***
+  content: "\e01e";
+***REMOVED***
+.icon-envelope-letter:before ***REMOVED***
+  content: "\e01f";
+***REMOVED***
+.icon-bell:before ***REMOVED***
+  content: "\e027";
+***REMOVED***
+.icon-badge:before ***REMOVED***
+  content: "\e028";
+***REMOVED***
+.icon-anchor:before ***REMOVED***
+  content: "\e029";
+***REMOVED***
+.icon-wallet:before ***REMOVED***
+  content: "\e02a";
+***REMOVED***
+.icon-vector:before ***REMOVED***
+  content: "\e02b";
+***REMOVED***
+.icon-speech:before ***REMOVED***
+  content: "\e02c";
+***REMOVED***
+.icon-puzzle:before ***REMOVED***
+  content: "\e02d";
+***REMOVED***
+.icon-printer:before ***REMOVED***
+  content: "\e02e";
+***REMOVED***
+.icon-present:before ***REMOVED***
+  content: "\e02f";
+***REMOVED***
+.icon-playlist:before ***REMOVED***
+  content: "\e030";
+***REMOVED***
+.icon-pin:before ***REMOVED***
+  content: "\e031";
+***REMOVED***
+.icon-picture:before ***REMOVED***
+  content: "\e032";
+***REMOVED***
+.icon-handbag:before ***REMOVED***
+  content: "\e035";
+***REMOVED***
+.icon-globe-alt:before ***REMOVED***
+  content: "\e036";
+***REMOVED***
+.icon-globe:before ***REMOVED***
+  content: "\e037";
+***REMOVED***
+.icon-folder-alt:before ***REMOVED***
+  content: "\e039";
+***REMOVED***
+.icon-folder:before ***REMOVED***
+  content: "\e089";
+***REMOVED***
+.icon-film:before ***REMOVED***
+  content: "\e03a";
+***REMOVED***
+.icon-feed:before ***REMOVED***
+  content: "\e03b";
+***REMOVED***
+.icon-drop:before ***REMOVED***
+  content: "\e03e";
+***REMOVED***
+.icon-drawer:before ***REMOVED***
+  content: "\e03f";
+***REMOVED***
+.icon-docs:before ***REMOVED***
+  content: "\e040";
+***REMOVED***
+.icon-doc:before ***REMOVED***
+  content: "\e085";
+***REMOVED***
+.icon-diamond:before ***REMOVED***
+  content: "\e043";
+***REMOVED***
+.icon-cup:before ***REMOVED***
+  content: "\e044";
+***REMOVED***
+.icon-calculator:before ***REMOVED***
+  content: "\e049";
+***REMOVED***
+.icon-bubbles:before ***REMOVED***
+  content: "\e04a";
+***REMOVED***
+.icon-briefcase:before ***REMOVED***
+  content: "\e04b";
+***REMOVED***
+.icon-book-open:before ***REMOVED***
+  content: "\e04c";
+***REMOVED***
+.icon-basket-loaded:before ***REMOVED***
+  content: "\e04d";
+***REMOVED***
+.icon-basket:before ***REMOVED***
+  content: "\e04e";
+***REMOVED***
+.icon-bag:before ***REMOVED***
+  content: "\e04f";
+***REMOVED***
+.icon-action-undo:before ***REMOVED***
+  content: "\e050";
+***REMOVED***
+.icon-action-redo:before ***REMOVED***
+  content: "\e051";
+***REMOVED***
+.icon-wrench:before ***REMOVED***
+  content: "\e052";
+***REMOVED***
+.icon-umbrella:before ***REMOVED***
+  content: "\e053";
+***REMOVED***
+.icon-trash:before ***REMOVED***
+  content: "\e054";
+***REMOVED***
+.icon-tag:before ***REMOVED***
+  content: "\e055";
+***REMOVED***
+.icon-support:before ***REMOVED***
+  content: "\e056";
+***REMOVED***
+.icon-frame:before ***REMOVED***
+  content: "\e038";
+***REMOVED***
+.icon-size-fullscreen:before ***REMOVED***
+  content: "\e057";
+***REMOVED***
+.icon-size-actual:before ***REMOVED***
+  content: "\e058";
+***REMOVED***
+.icon-shuffle:before ***REMOVED***
+  content: "\e059";
+***REMOVED***
+.icon-share-alt:before ***REMOVED***
+  content: "\e05a";
+***REMOVED***
+.icon-share:before ***REMOVED***
+  content: "\e05b";
+***REMOVED***
+.icon-rocket:before ***REMOVED***
+  content: "\e05c";
+***REMOVED***
+.icon-question:before ***REMOVED***
+  content: "\e05d";
+***REMOVED***
+.icon-pie-chart:before ***REMOVED***
+  content: "\e05e";
+***REMOVED***
+.icon-pencil:before ***REMOVED***
+  content: "\e05f";
+***REMOVED***
+.icon-note:before ***REMOVED***
+  content: "\e060";
+***REMOVED***
+.icon-loop:before ***REMOVED***
+  content: "\e064";
+***REMOVED***
+.icon-home:before ***REMOVED***
+  content: "\e069";
+***REMOVED***
+.icon-grid:before ***REMOVED***
+  content: "\e06a";
+***REMOVED***
+.icon-graph:before ***REMOVED***
+  content: "\e06b";
+***REMOVED***
+.icon-microphone:before ***REMOVED***
+  content: "\e063";
+***REMOVED***
+.icon-music-tone-alt:before ***REMOVED***
+  content: "\e061";
+***REMOVED***
+.icon-music-tone:before ***REMOVED***
+  content: "\e062";
+***REMOVED***
+.icon-earphones-alt:before ***REMOVED***
+  content: "\e03c";
+***REMOVED***
+.icon-earphones:before ***REMOVED***
+  content: "\e03d";
+***REMOVED***
+.icon-equalizer:before ***REMOVED***
+  content: "\e06c";
+***REMOVED***
+.icon-like:before ***REMOVED***
+  content: "\e068";
+***REMOVED***
+.icon-dislike:before ***REMOVED***
+  content: "\e06d";
+***REMOVED***
+.icon-control-start:before ***REMOVED***
+  content: "\e06f";
+***REMOVED***
+.icon-control-rewind:before ***REMOVED***
+  content: "\e070";
+***REMOVED***
+.icon-control-play:before ***REMOVED***
+  content: "\e071";
+***REMOVED***
+.icon-control-pause:before ***REMOVED***
+  content: "\e072";
+***REMOVED***
+.icon-control-forward:before ***REMOVED***
+  content: "\e073";
+***REMOVED***
+.icon-control-end:before ***REMOVED***
+  content: "\e074";
+***REMOVED***
+.icon-volume-1:before ***REMOVED***
+  content: "\e09f";
+***REMOVED***
+.icon-volume-2:before ***REMOVED***
+  content: "\e0a0";
+***REMOVED***
+.icon-volume-off:before ***REMOVED***
+  content: "\e0a1";
+***REMOVED***
+.icon-calendar:before ***REMOVED***
+  content: "\e075";
+***REMOVED***
+.icon-bulb:before ***REMOVED***
+  content: "\e076";
+***REMOVED***
+.icon-chart:before ***REMOVED***
+  content: "\e077";
+***REMOVED***
+.icon-ban:before ***REMOVED***
+  content: "\e07c";
+***REMOVED***
+.icon-bubble:before ***REMOVED***
+  content: "\e07d";
+***REMOVED***
+.icon-camrecorder:before ***REMOVED***
+  content: "\e07e";
+***REMOVED***
+.icon-camera:before ***REMOVED***
+  content: "\e07f";
+***REMOVED***
+.icon-cloud-download:before ***REMOVED***
+  content: "\e083";
+***REMOVED***
+.icon-cloud-upload:before ***REMOVED***
+  content: "\e084";
+***REMOVED***
+.icon-envelope:before ***REMOVED***
+  content: "\e086";
+***REMOVED***
+.icon-eye:before ***REMOVED***
+  content: "\e087";
+***REMOVED***
+.icon-flag:before ***REMOVED***
+  content: "\e088";
+***REMOVED***
+.icon-heart:before ***REMOVED***
+  content: "\e08a";
+***REMOVED***
+.icon-info:before ***REMOVED***
+  content: "\e08b";
+***REMOVED***
+.icon-key:before ***REMOVED***
+  content: "\e08c";
+***REMOVED***
+.icon-link:before ***REMOVED***
+  content: "\e08d";
+***REMOVED***
+.icon-lock:before ***REMOVED***
+  content: "\e08e";
+***REMOVED***
+.icon-lock-open:before ***REMOVED***
+  content: "\e08f";
+***REMOVED***
+.icon-magnifier:before ***REMOVED***
+  content: "\e090";
+***REMOVED***
+.icon-magnifier-add:before ***REMOVED***
+  content: "\e091";
+***REMOVED***
+.icon-magnifier-remove:before ***REMOVED***
+  content: "\e092";
+***REMOVED***
+.icon-paper-clip:before ***REMOVED***
+  content: "\e093";
+***REMOVED***
+.icon-paper-plane:before ***REMOVED***
+  content: "\e094";
+***REMOVED***
+.icon-power:before ***REMOVED***
+  content: "\e097";
+***REMOVED***
+.icon-refresh:before ***REMOVED***
+  content: "\e098";
+***REMOVED***
+.icon-reload:before ***REMOVED***
+  content: "\e099";
+***REMOVED***
+.icon-settings:before ***REMOVED***
+  content: "\e09a";
+***REMOVED***
+.icon-star:before ***REMOVED***
+  content: "\e09b";
+***REMOVED***
+.icon-symbol-female:before ***REMOVED***
+  content: "\e09c";
+***REMOVED***
+.icon-symbol-male:before ***REMOVED***
+  content: "\e09d";
+***REMOVED***
+.icon-target:before ***REMOVED***
+  content: "\e09e";
+***REMOVED***
+.icon-credit-card:before ***REMOVED***
+  content: "\e025";
+***REMOVED***
+.icon-paypal:before ***REMOVED***
+  content: "\e608";
+***REMOVED***
+.icon-social-tumblr:before ***REMOVED***
+  content: "\e00a";
+***REMOVED***
+.icon-social-twitter:before ***REMOVED***
+  content: "\e009";
+***REMOVED***
+.icon-social-facebook:before ***REMOVED***
+  content: "\e00b";
+***REMOVED***
+.icon-social-instagram:before ***REMOVED***
+  content: "\e609";
+***REMOVED***
+.icon-social-linkedin:before ***REMOVED***
+  content: "\e60a";
+***REMOVED***
+.icon-social-pinterest:before ***REMOVED***
+  content: "\e60b";
+***REMOVED***
+.icon-social-github:before ***REMOVED***
+  content: "\e60c";
+***REMOVED***
+.icon-social-google:before ***REMOVED***
+  content: "\e60d";
+***REMOVED***
+.icon-social-reddit:before ***REMOVED***
+  content: "\e60e";
+***REMOVED***
+.icon-social-skype:before ***REMOVED***
+  content: "\e60f";
+***REMOVED***
+.icon-social-dribbble:before ***REMOVED***
+  content: "\e00d";
+***REMOVED***
+.icon-social-behance:before ***REMOVED***
+  content: "\e610";
+***REMOVED***
+.icon-social-foursqare:before ***REMOVED***
+  content: "\e611";
+***REMOVED***
+.icon-social-soundcloud:before ***REMOVED***
+  content: "\e612";
+***REMOVED***
+.icon-social-spotify:before ***REMOVED***
+  content: "\e613";
+***REMOVED***
+.icon-social-stumbleupon:before ***REMOVED***
+  content: "\e614";
+***REMOVED***
+.icon-social-youtube:before ***REMOVED***
+  content: "\e008";
+***REMOVED***
+.icon-social-dropbox:before ***REMOVED***
+  content: "\e00c";
+***REMOVED***
+.icon-social-vkontakte:before ***REMOVED***
+  content: "\e618";
+***REMOVED***
+.icon-social-steam:before ***REMOVED***
+  content: "\e620";
+***REMOVED***

@@ -1,0 +1,41 @@
+// Margin and Padding
+
+@each $breakpoint in map-keys($grid-breakpoints) ***REMOVED***
+  @include media-breakpoint-up($breakpoint) ***REMOVED***
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    @each $prop, $abbrev in (margin: m, padding: p) ***REMOVED***
+      @each $size, $length in $spacers ***REMOVED***
+
+        .#***REMOVED***$abbrev***REMOVED***#***REMOVED***$infix***REMOVED***-#***REMOVED***$size***REMOVED***  ***REMOVED*** #***REMOVED***$prop***REMOVED***:        $length !important; ***REMOVED***
+        .#***REMOVED***$abbrev***REMOVED***t#***REMOVED***$infix***REMOVED***-#***REMOVED***$size***REMOVED*** ***REMOVED*** #***REMOVED***$prop***REMOVED***-top:    $length !important; ***REMOVED***
+        .#***REMOVED***$abbrev***REMOVED***r#***REMOVED***$infix***REMOVED***-#***REMOVED***$size***REMOVED*** ***REMOVED*** #***REMOVED***$prop***REMOVED***-right:  $length !important; ***REMOVED***
+        .#***REMOVED***$abbrev***REMOVED***b#***REMOVED***$infix***REMOVED***-#***REMOVED***$size***REMOVED*** ***REMOVED*** #***REMOVED***$prop***REMOVED***-bottom: $length !important; ***REMOVED***
+        .#***REMOVED***$abbrev***REMOVED***l#***REMOVED***$infix***REMOVED***-#***REMOVED***$size***REMOVED*** ***REMOVED*** #***REMOVED***$prop***REMOVED***-left:   $length !important; ***REMOVED***
+        .#***REMOVED***$abbrev***REMOVED***x#***REMOVED***$infix***REMOVED***-#***REMOVED***$size***REMOVED*** ***REMOVED***
+          #***REMOVED***$prop***REMOVED***-right: $length !important;
+          #***REMOVED***$prop***REMOVED***-left:  $length !important;
+        ***REMOVED***
+        .#***REMOVED***$abbrev***REMOVED***y#***REMOVED***$infix***REMOVED***-#***REMOVED***$size***REMOVED*** ***REMOVED***
+          #***REMOVED***$prop***REMOVED***-top:    $length !important;
+          #***REMOVED***$prop***REMOVED***-bottom: $length !important;
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+
+    // Some special margin utils
+    .m#***REMOVED***$infix***REMOVED***-auto  ***REMOVED*** margin:        auto !important; ***REMOVED***
+    .mt#***REMOVED***$infix***REMOVED***-auto ***REMOVED*** margin-top:    auto !important; ***REMOVED***
+    .mr#***REMOVED***$infix***REMOVED***-auto ***REMOVED*** margin-right:  auto !important; ***REMOVED***
+    .mb#***REMOVED***$infix***REMOVED***-auto ***REMOVED*** margin-bottom: auto !important; ***REMOVED***
+    .ml#***REMOVED***$infix***REMOVED***-auto ***REMOVED*** margin-left:   auto !important; ***REMOVED***
+    .mx#***REMOVED***$infix***REMOVED***-auto ***REMOVED***
+      margin-right: auto !important;
+      margin-left:  auto !important;
+    ***REMOVED***
+    .my#***REMOVED***$infix***REMOVED***-auto ***REMOVED***
+      margin-top:    auto !important;
+      margin-bottom: auto !important;
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
