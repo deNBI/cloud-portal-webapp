@@ -28,10 +28,10 @@ cd cloud-portal-webapp
 npm install
 ~~~
 
-6. Since there is a problem to install some modules we need to install them manuall
-~~BASH
+6. Since there is a problem to install some modules we need to install them manually
+~~~BASH
 npm install react-transition-group --save
-~~
+~~~
 
 7. Start the npm server
 ~~~BASH
