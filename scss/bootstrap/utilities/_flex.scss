@@ -1,0 +1,48 @@
+// Flex variation
+//
+// Custom styles for additional flex alignment options.
+
+@each $breakpoint in map-keys($grid-breakpoints) ***REMOVED***
+  @include media-breakpoint-up($breakpoint) ***REMOVED***
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .order#***REMOVED***$infix***REMOVED***-first ***REMOVED*** order: -1; ***REMOVED***
+    .order#***REMOVED***$infix***REMOVED***-last  ***REMOVED*** order: 1; ***REMOVED***
+    .order#***REMOVED***$infix***REMOVED***-0     ***REMOVED*** order: 0; ***REMOVED***
+
+    .flex#***REMOVED***$infix***REMOVED***-row            ***REMOVED*** flex-direction: row !important; ***REMOVED***
+    .flex#***REMOVED***$infix***REMOVED***-column         ***REMOVED*** flex-direction: column !important; ***REMOVED***
+    .flex#***REMOVED***$infix***REMOVED***-row-reverse    ***REMOVED*** flex-direction: row-reverse !important; ***REMOVED***
+    .flex#***REMOVED***$infix***REMOVED***-column-reverse ***REMOVED*** flex-direction: column-reverse !important; ***REMOVED***
+
+    .flex#***REMOVED***$infix***REMOVED***-wrap         ***REMOVED*** flex-wrap: wrap !important; ***REMOVED***
+    .flex#***REMOVED***$infix***REMOVED***-nowrap       ***REMOVED*** flex-wrap: nowrap !important; ***REMOVED***
+    .flex#***REMOVED***$infix***REMOVED***-wrap-reverse ***REMOVED*** flex-wrap: wrap-reverse !important; ***REMOVED***
+
+    .justify-content#***REMOVED***$infix***REMOVED***-start   ***REMOVED*** justify-content: flex-start !important; ***REMOVED***
+    .justify-content#***REMOVED***$infix***REMOVED***-end     ***REMOVED*** justify-content: flex-end !important; ***REMOVED***
+    .justify-content#***REMOVED***$infix***REMOVED***-center  ***REMOVED*** justify-content: center !important; ***REMOVED***
+    .justify-content#***REMOVED***$infix***REMOVED***-between ***REMOVED*** justify-content: space-between !important; ***REMOVED***
+    .justify-content#***REMOVED***$infix***REMOVED***-around  ***REMOVED*** justify-content: space-around !important; ***REMOVED***
+
+    .align-items#***REMOVED***$infix***REMOVED***-start    ***REMOVED*** align-items: flex-start !important; ***REMOVED***
+    .align-items#***REMOVED***$infix***REMOVED***-end      ***REMOVED*** align-items: flex-end !important; ***REMOVED***
+    .align-items#***REMOVED***$infix***REMOVED***-center   ***REMOVED*** align-items: center !important; ***REMOVED***
+    .align-items#***REMOVED***$infix***REMOVED***-baseline ***REMOVED*** align-items: baseline !important; ***REMOVED***
+    .align-items#***REMOVED***$infix***REMOVED***-stretch  ***REMOVED*** align-items: stretch !important; ***REMOVED***
+
+    .align-content#***REMOVED***$infix***REMOVED***-start   ***REMOVED*** align-content: flex-start !important; ***REMOVED***
+    .align-content#***REMOVED***$infix***REMOVED***-end     ***REMOVED*** align-content: flex-end !important; ***REMOVED***
+    .align-content#***REMOVED***$infix***REMOVED***-center  ***REMOVED*** align-content: center !important; ***REMOVED***
+    .align-content#***REMOVED***$infix***REMOVED***-between ***REMOVED*** align-content: space-between !important; ***REMOVED***
+    .align-content#***REMOVED***$infix***REMOVED***-around  ***REMOVED*** align-content: space-around !important; ***REMOVED***
+    .align-content#***REMOVED***$infix***REMOVED***-stretch ***REMOVED*** align-content: stretch !important; ***REMOVED***
+
+    .align-self#***REMOVED***$infix***REMOVED***-auto     ***REMOVED*** align-self: auto !important; ***REMOVED***
+    .align-self#***REMOVED***$infix***REMOVED***-start    ***REMOVED*** align-self: flex-start !important; ***REMOVED***
+    .align-self#***REMOVED***$infix***REMOVED***-end      ***REMOVED*** align-self: flex-end !important; ***REMOVED***
+    .align-self#***REMOVED***$infix***REMOVED***-center   ***REMOVED*** align-self: center !important; ***REMOVED***
+    .align-self#***REMOVED***$infix***REMOVED***-baseline ***REMOVED*** align-self: baseline !important; ***REMOVED***
+    .align-self#***REMOVED***$infix***REMOVED***-stretch  ***REMOVED*** align-self: stretch !important; ***REMOVED***
+  ***REMOVED***
+***REMOVED***

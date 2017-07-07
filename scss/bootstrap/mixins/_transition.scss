@@ -1,0 +1,9 @@
+@mixin transition($transition...) ***REMOVED***
+  @if $enable-transitions ***REMOVED***
+    @if length($transition) == 0 ***REMOVED***
+      transition: $transition-base;
+    ***REMOVED*** @else ***REMOVED***
+      transition: $transition;
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***

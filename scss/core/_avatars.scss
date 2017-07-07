@@ -1,0 +1,51 @@
+.img-avatar ***REMOVED***
+  border-radius: 50em;
+***REMOVED***
+
+.avatar ***REMOVED***
+  $width: 36px;
+  $status-width: 10px;
+  @include avatar($width,$status-width);
+***REMOVED***
+
+.avatar.avatar-xs ***REMOVED***
+  $width: 20px;
+  $status-width: 8px;
+  @include avatar($width,$status-width);
+***REMOVED***
+
+.avatar.avatar-sm ***REMOVED***
+  $width: 24px;
+  $status-width: 8px;
+  @include avatar($width,$status-width);
+***REMOVED***
+
+.avatar.avatar-lg ***REMOVED***
+  $width: 72px;
+  $status-width: 12px;
+  @include avatar($width,$status-width);
+***REMOVED***
+
+.avatars-stack ***REMOVED***
+  .avatar.avatar-xs ***REMOVED***
+    margin-right: -10px;
+  ***REMOVED***
+
+  // .avatar.avatar-sm ***REMOVED***
+  //
+  // ***REMOVED***
+
+  .avatar ***REMOVED***
+    margin-right: -15px;
+    transition: margin-left $layout-transition-speed, margin-right $layout-transition-speed;
+
+    &:hover ***REMOVED***
+      margin-right: 0 !important;
+    ***REMOVED***
+  ***REMOVED***
+
+  // .avatar.avatar-lg ***REMOVED***
+  //
+  // ***REMOVED***
+
+***REMOVED***

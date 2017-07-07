@@ -1,0 +1,26 @@
+// List Groups
+
+@mixin list-group-item-variant($state, $background, $color) ***REMOVED***
+  .list-group-item-#***REMOVED***$state***REMOVED*** ***REMOVED***
+    color: $color;
+    background-color: $background;
+  ***REMOVED***
+
+  //scss-lint:disable QualifyingElement
+  a.list-group-item-#***REMOVED***$state***REMOVED***,
+  button.list-group-item-#***REMOVED***$state***REMOVED*** ***REMOVED***
+    color: $color;
+
+    @include hover-focus ***REMOVED***
+      color: $color;
+      background-color: darken($background, 5%);
+    ***REMOVED***
+
+    &.active ***REMOVED***
+      color: #fff;
+      background-color: $color;
+      border-color: $color;
+    ***REMOVED***
+  ***REMOVED***
+  // scss-lint:enable QualifyingElement
+***REMOVED***

@@ -1,0 +1,575 @@
+.btn ***REMOVED***
+  .badge ***REMOVED***
+    position: absolute;
+    top: 2px;
+    right: 6px;
+    font-size: 9px;
+  ***REMOVED***
+***REMOVED***
+
+
+.btn-transparent ***REMOVED***
+  $color: #fff;
+  $background: transparent;
+  $border: transparent;
+
+  @include button-variant($color, $background, $border)
+***REMOVED***
+
+
+.btn ***REMOVED***
+  [class^="icon-"], [class*=" icon-"] ***REMOVED***
+    display: inline-block;
+    margin-top: -2px;
+    vertical-align: middle;
+  ***REMOVED***
+***REMOVED***
+
+.btn-facebook,
+.btn-twitter,
+.btn-linkedin,
+.btn-flickr,
+.btn-tumblr,
+.btn-xing,
+.btn-github,
+.btn-html5,
+.btn-openid,
+.btn-stack-overflow,
+.btn-youtube,
+.btn-css3,
+.btn-dribbble,
+.btn-google-plus,
+.btn-instagram,
+.btn-pinterest,
+.btn-vk,
+.btn-yahoo,
+.btn-behance,
+.btn-dropbox,
+.btn-reddit,
+.btn-spotify,
+.btn-vine,
+.btn-foursquare,
+.btn-vimeo ***REMOVED***
+  position: relative;
+  overflow: hidden;
+  color: #fff !important;
+  text-align: center;
+
+  &::before ***REMOVED***
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    font-family: "FontAwesome";
+    font-style: normal;
+    font-weight: normal;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    color: #fff;
+  ***REMOVED***
+
+  &.icon ***REMOVED***
+
+    span ***REMOVED***
+      display: none;
+    ***REMOVED***
+  ***REMOVED***
+
+  &.text ***REMOVED***
+    &::before ***REMOVED***
+      display: none;
+    ***REMOVED***
+
+    span ***REMOVED***
+      margin-left: 0 !important;
+    ***REMOVED***
+  ***REMOVED***
+  @include button-social-size($input-btn-padding-y, $input-btn-padding-x, $font-size-base, $line-height-base, $btn-border-radius);
+
+  &.btn-lg ***REMOVED***
+    @include button-social-size($input-btn-padding-y-lg, $input-btn-padding-x-lg, $font-size-lg, $line-height-lg, $btn-border-radius-lg);
+  ***REMOVED***
+
+  &.btn-sm ***REMOVED***
+    @include button-social-size($input-btn-padding-y-sm, $input-btn-padding-x-sm, $font-size-sm, $line-height-sm, $btn-border-radius-sm);
+  ***REMOVED***
+
+***REMOVED***
+
+.btn-facebook ***REMOVED***
+  $color: $facebook;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f09a";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-twitter ***REMOVED***
+  $color: $twitter;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f099";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-linkedin ***REMOVED***
+  $color: $linkedin;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f0e1";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-flickr ***REMOVED***
+  $color: $flickr;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f16e";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-tumblr ***REMOVED***
+  $color: $tumblr;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f173";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-xing ***REMOVED***
+  $color: $xing;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f168";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-github ***REMOVED***
+  $color: $github;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f09b";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-html5 ***REMOVED***
+  $color: $html5;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f13b";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-openid ***REMOVED***
+  $color: $openid;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f19b";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-stack-overflow ***REMOVED***
+  $color: $stack-overflow;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f16c";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-css3 ***REMOVED***
+  $color: $css3;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f13c";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-youtube ***REMOVED***
+  $color: $youtube;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f167";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-dribbble ***REMOVED***
+  $color: $dribbble;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f17d";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-google-plus ***REMOVED***
+  $color: $google-plus;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f0d5";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-instagram ***REMOVED***
+  $color: $instagram;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f16d";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-pinterest ***REMOVED***
+  $color: $pinterest;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f0d2";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-vk ***REMOVED***
+  $color: $vk;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f189";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-yahoo ***REMOVED***
+  $color: $yahoo;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f19e";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-behance ***REMOVED***
+  $color: $behance;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f1b4";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-dropbox ***REMOVED***
+  $color: $dropbox;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f16b";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-reddit ***REMOVED***
+  $color: $reddit;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f1a1";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-spotify ***REMOVED***
+  $color: $spotify;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f1bc";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-vine ***REMOVED***
+  $color: $vine;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f1ca";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-foursquare ***REMOVED***
+  $color: $foursquare;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f180";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.btn-vimeo ***REMOVED***
+  $color: $vimeo;
+
+  background: $color;
+  &::before ***REMOVED***
+    content: "\f194";
+    background: darken($color, 5%);
+
+  ***REMOVED***
+
+  &:hover ***REMOVED***
+    background: darken($color, 5%);
+
+    &::before ***REMOVED***
+      background: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***

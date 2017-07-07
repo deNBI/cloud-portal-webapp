@@ -1,0 +1,116 @@
+@mixin button-social-size($padding-y, $padding-x, $font-size, $line-height, $border-radius) ***REMOVED***
+  padding: $padding-y $padding-x;
+  font-size: $font-size;
+  line-height: $line-height;
+  border: 0;
+  @include border-radius($border-radius);
+
+  &::before ***REMOVED***
+    width: ($padding-y * 2) + ($font-size * $line-height);
+    height: ($padding-y * 2) + ($font-size * $line-height);
+    padding: $padding-y 0;
+    font-size: $font-size;
+    line-height: $line-height;
+    @include border-radius($border-radius);
+  ***REMOVED***
+
+  span ***REMOVED***
+    margin-left: ($padding-y * 2) + ($font-size * $line-height);
+  ***REMOVED***
+
+  &.icon ***REMOVED***
+    width: ($padding-y * 2) + ($font-size * $line-height);
+    height: ($padding-y * 2) + ($font-size * $line-height);
+  ***REMOVED***
+***REMOVED***
+
+@mixin avatar($width, $status-width) ***REMOVED***
+  position: relative;
+  display: inline-block;
+  width: $width;
+
+  .img-avatar ***REMOVED***
+    width: $width;
+    height: $width;
+  ***REMOVED***
+
+  .avatar-status ***REMOVED***
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: block;
+    width: $status-width;
+    height: $status-width;
+    border: 1px solid #fff;
+    border-radius: 50em;
+  ***REMOVED***
+***REMOVED***
+
+@mixin borders($borders) ***REMOVED***
+  @each $border in $borders ***REMOVED***
+    $direction: nth($border, 1);
+    @if $direction == "all" ***REMOVED***
+      $size: map-get(map-get($borders, $direction), size);
+      $style: map-get(map-get($borders, $direction), style);
+      $color: map-get(map-get($borders, $direction), color);
+      border: $size $style $color;
+    ***REMOVED*** @else if $direction == "top" ***REMOVED***
+      $size: map-get(map-get($borders, $direction), size);
+      $style: map-get(map-get($borders, $direction), style);
+      $color: map-get(map-get($borders, $direction), color);
+      border-top: $size $style $color;
+    ***REMOVED*** @else if $direction == "right" ***REMOVED***
+      $size: map-get(map-get($borders, $direction), size);
+      $style: map-get(map-get($borders, $direction), style);
+      $color: map-get(map-get($borders, $direction), color);
+      border-right: $size $style $color;
+    ***REMOVED*** @else if $direction == "bottom" ***REMOVED***
+      $size: map-get(map-get($borders, $direction), size);
+      $style: map-get(map-get($borders, $direction), style);
+      $color: map-get(map-get($borders, $direction), color);
+      border-bottom: $size $style $color;
+    ***REMOVED*** @else if $direction == "left" ***REMOVED***
+      $size: map-get(map-get($borders, $direction), size);
+      $style: map-get(map-get($borders, $direction), style);
+      $color: map-get(map-get($borders, $direction), color);
+      border-left: $size $style $color;
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+@mixin sidebar-width($borders, $width) ***REMOVED***
+  $sidebar-width: $width;
+
+  @each $border in $borders ***REMOVED***
+    $direction: nth($border, 1);
+    @if $direction == "all" ***REMOVED***
+      $size: map-get(map-get($borders, $direction), size);
+      $sidebar-width: ($sidebar-width - (2 * $size));
+    ***REMOVED*** @else if $direction == "right" ***REMOVED***
+      $size: map-get(map-get($borders, $direction), size);
+      $sidebar-width: $sidebar-width - $size;
+    ***REMOVED*** @else if $direction == "left" ***REMOVED***
+      $size: map-get(map-get($borders, $direction), size);
+      $sidebar-width: $sidebar-width - $size;
+    ***REMOVED***
+    width: $sidebar-width;
+  ***REMOVED***
+***REMOVED***
+
+@mixin bg-variant($parent, $color) ***REMOVED***
+  #***REMOVED***$parent***REMOVED*** ***REMOVED***
+    @include border-radius($card-border-radius-inner $card-border-radius-inner $card-border-radius-inner $card-border-radius-inner);
+    color: #fff !important;
+    background-color: $color !important;
+  ***REMOVED***
+  a#***REMOVED***$parent***REMOVED*** ***REMOVED***
+    @include hover-focus ***REMOVED***
+      background-color: darken($color, 10%);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+@mixin card-accent-variant($color) ***REMOVED***
+  border-top-width: 2px;
+  border-top-color: $color;
+***REMOVED***

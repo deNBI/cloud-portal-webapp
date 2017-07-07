@@ -1,0 +1,85 @@
+.callout ***REMOVED***
+  position: relative;
+  padding: 0 $spacer;
+  margin: $spacer 0;
+  border: 0 solid $border-color;
+  border-left-width: .25rem;
+
+  @if $enable-rounded ***REMOVED***
+    border-radius: .25rem;
+  ***REMOVED***
+
+  .chart-wrapper ***REMOVED***
+    position: absolute;
+    top: 18px;
+    left: 45%;
+    float: right;
+    width: 100px;
+  ***REMOVED***
+***REMOVED***
+
+.callout-bordered ***REMOVED***
+  border: 1px solid $border-color;
+  border-left-width: .25rem;
+***REMOVED***
+.callout code ***REMOVED***
+  border-radius: .25rem;
+***REMOVED***
+.callout h4 ***REMOVED***
+  margin-top: 0;
+  margin-bottom: .25rem;
+***REMOVED***
+.callout p:last-child ***REMOVED***
+  margin-bottom: 0;
+***REMOVED***
+.callout + .callout ***REMOVED***
+  margin-top: - .25rem;
+***REMOVED***
+
+.callout-default ***REMOVED***
+  border-left-color: $text-muted;
+
+  h4 ***REMOVED***
+    color: $text-muted;
+  ***REMOVED***
+***REMOVED***
+
+.callout-primary ***REMOVED***
+  border-left-color: $brand-primary;
+
+  h4 ***REMOVED***
+    color: $brand-primary;
+  ***REMOVED***
+***REMOVED***
+
+.callout-info ***REMOVED***
+  border-left-color: $brand-info;
+
+  h4 ***REMOVED***
+    color: $brand-info;
+  ***REMOVED***
+***REMOVED***
+
+.callout-warning ***REMOVED***
+  border-left-color: $brand-warning;
+
+  h4 ***REMOVED***
+    color: $brand-warning;
+  ***REMOVED***
+***REMOVED***
+
+.callout-danger ***REMOVED***
+  border-left-color: $brand-danger;
+
+  h4 ***REMOVED***
+    color: $brand-danger;
+  ***REMOVED***
+***REMOVED***
+
+.callout-success ***REMOVED***
+  border-left-color: $brand-success;
+
+  h4 ***REMOVED***
+    color: $brand-success;
+  ***REMOVED***
+***REMOVED***

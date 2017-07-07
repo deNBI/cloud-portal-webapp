@@ -1,0 +1,301 @@
+@mixin switch-size($width, $height, $font-size, $handle-margin) ***REMOVED***
+  width: $width;
+  height: $height;
+
+  .switch-label ***REMOVED***
+    font-size: $font-size;
+  ***REMOVED***
+
+  .switch-handle ***REMOVED***
+    width: $height - $handle-margin * 2;
+    height: $height - $handle-margin * 2;
+  ***REMOVED***
+
+  .switch-input:checked ~ .switch-handle ***REMOVED***
+    left: $width - $height + $handle-margin;
+  ***REMOVED***
+***REMOVED***
+
+@mixin switch($type, $width, $height, $font-size, $handle-margin) ***REMOVED***
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: $width;
+  height: $height;
+  background-color: transparent;
+  cursor: pointer;
+
+  .switch-input ***REMOVED***
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+  ***REMOVED***
+
+  .switch-label ***REMOVED***
+    position: relative;
+    display: block;
+    height: inherit;
+    @if $type == icon ***REMOVED***
+      font-family: FontAwesome;
+    ***REMOVED***
+    font-size: $font-size;
+    font-weight: 600;
+    text-transform: uppercase;
+    @if $type == ddd ***REMOVED***
+      background-color: $gray-lightest;
+    ***REMOVED*** @else ***REMOVED***
+      background-color: #fff;
+    ***REMOVED***
+    border: 1px solid $border-color;
+    border-radius: 2px;
+    transition: opacity background .15s ease-out;
+  ***REMOVED***
+  @if $type == text or $type == icon ***REMOVED***
+    .switch-label::before,
+    .switch-label::after ***REMOVED***
+      position: absolute;
+      top: 50%;
+      width: 50%;
+      margin-top: -.5em;
+      line-height: 1;
+      text-align: center;
+      transition: inherit;
+    ***REMOVED***
+    .switch-label::before ***REMOVED***
+      right: 1px;
+      color: $gray-lighter;
+      content: attr(data-off);
+    ***REMOVED***
+    .switch-label::after ***REMOVED***
+      left: 1px;
+      color: #fff;
+      content: attr(data-on);
+      opacity: 0;
+    ***REMOVED***
+  ***REMOVED***
+  .switch-input:checked ~ .switch-label ***REMOVED***
+    //background: $gray-lightest;
+  ***REMOVED***
+  .switch-input:checked ~ .switch-label::before ***REMOVED***
+    opacity: 0;
+  ***REMOVED***
+  .switch-input:checked ~ .switch-label::after ***REMOVED***
+    opacity: 1;
+  ***REMOVED***
+
+  .switch-handle ***REMOVED***
+    position: absolute;
+    top: $handle-margin;
+    left: $handle-margin;
+    width: $height - $handle-margin * 2;
+    height: $height - $handle-margin * 2;
+    background: #fff;
+    border: 1px solid $border-color;
+    border-radius: 1px;
+    transition: left .15s ease-out;
+    @if $type == ddd ***REMOVED***
+      border: 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+    ***REMOVED***
+  ***REMOVED***
+
+  .switch-input:checked ~ .switch-handle ***REMOVED***
+    left: $width - $height + $handle-margin;
+  ***REMOVED***
+
+
+  @if $type == ddd ***REMOVED***
+    @extend .switch-pill;
+  ***REMOVED***
+
+  //size variations
+  @if $type == default ***REMOVED***
+
+    &.switch-lg ***REMOVED***
+      @include switch-size($switch-lg-width, $switch-lg-height, $switch-lg-font-size, $handle-margin);
+    ***REMOVED***
+    &.switch-sm ***REMOVED***
+      @include switch-size($switch-sm-width, $switch-sm-height, $switch-sm-font-size, $handle-margin);
+    ***REMOVED***
+    &.switch-xs ***REMOVED***
+      @include switch-size($switch-xs-width, $switch-xs-height, $switch-xs-font-size, $handle-margin);
+    ***REMOVED***
+
+  ***REMOVED*** @else if $type == text ***REMOVED***
+
+    &.switch-lg ***REMOVED***
+      @include switch-size($switch-text-lg-width, $switch-text-lg-height, $switch-text-lg-font-size, $handle-margin);
+    ***REMOVED***
+    &.switch-sm ***REMOVED***
+      @include switch-size($switch-text-sm-width, $switch-text-sm-height, $switch-text-sm-font-size, $handle-margin);
+    ***REMOVED***
+    &.switch-xs ***REMOVED***
+      @include switch-size($switch-text-xs-width, $switch-text-xs-height, $switch-text-xs-font-size, $handle-margin);
+    ***REMOVED***
+
+  ***REMOVED*** @else if $type == icon ***REMOVED***
+
+    &.switch-lg ***REMOVED***
+      @include switch-size($switch-icon-lg-width, $switch-icon-lg-height, $switch-icon-lg-font-size, $handle-margin);
+    ***REMOVED***
+    &.switch-sm ***REMOVED***
+      @include switch-size($switch-icon-sm-width, $switch-icon-sm-height, $switch-icon-sm-font-size, $handle-margin);
+    ***REMOVED***
+    &.switch-xs ***REMOVED***
+      @include switch-size($switch-icon-xs-width, $switch-icon-xs-height, $switch-icon-xs-font-size, $handle-margin);
+    ***REMOVED***
+
+  ***REMOVED*** @else if $type == ddd ***REMOVED***
+
+    &.switch-lg ***REMOVED***
+      @include switch-size($switch-lg-width, $switch-lg-height, $switch-lg-font-size, 0);
+    ***REMOVED***
+    &.switch-sm ***REMOVED***
+      @include switch-size($switch-sm-width, $switch-sm-height, $switch-sm-font-size, 0);
+    ***REMOVED***
+    &.switch-xs ***REMOVED***
+      @include switch-size($switch-xs-width, $switch-xs-height, $switch-xs-font-size, 0);
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+@mixin switch-variant($color) ***REMOVED***
+  > .switch-input:checked ~ .switch-label ***REMOVED***
+    background: $color !important;
+    border-color: darken($color,10%);
+  ***REMOVED***
+
+  > .switch-input:checked ~ .switch-handle ***REMOVED***
+    border-color: darken($color,10%);
+  ***REMOVED***
+***REMOVED***
+
+@mixin switch-outline-variant($color) ***REMOVED***
+  > .switch-input:checked ~ .switch-label ***REMOVED***
+    background: #fff !important;
+    border-color: $color;
+
+    &::after ***REMOVED***
+      color: $color;
+    ***REMOVED***
+  ***REMOVED***
+
+  > .switch-input:checked ~ .switch-handle ***REMOVED***
+    border-color: $color;
+  ***REMOVED***
+***REMOVED***
+
+@mixin switch-outline-alt-variant($color) ***REMOVED***
+  > .switch-input:checked ~ .switch-label ***REMOVED***
+    background: #fff !important;
+    border-color: $color;
+
+    &::after ***REMOVED***
+      color: $color;
+    ***REMOVED***
+  ***REMOVED***
+
+  > .switch-input:checked ~ .switch-handle ***REMOVED***
+    background: $color !important;
+    border-color: $color;
+  ***REMOVED***
+***REMOVED***
+
+$switch-lg-width: 48px;
+$switch-lg-height: 28px;
+$switch-lg-font-size: 12px;
+
+$switch-width: 40px;
+$switch-height: 24px;
+$switch-font-size: 10px;
+
+$handle-margin: 2px;
+
+$switch-sm-width: 32px;
+$switch-sm-height: 20px;
+$switch-sm-font-size: 8px;
+
+$switch-xs-width: 24px;
+$switch-xs-height: 16px;
+$switch-xs-font-size: 7px;
+
+
+$switch-text-lg-width: 56px;
+$switch-text-lg-height: 28px;
+$switch-text-lg-font-size: 12px;
+
+$switch-text-width: 48px;
+$switch-text-height: 24px;
+$switch-text-font-size: 10px;
+
+$switch-text-sm-width: 40px;
+$switch-text-sm-height: 20px;
+$switch-text-sm-font-size: 8px;
+
+$switch-text-xs-width: 32px;
+$switch-text-xs-height: 16px;
+$switch-text-xs-font-size: 7px;
+
+
+$switch-icon-lg-width: 56px;
+$switch-icon-lg-height: 28px;
+$switch-icon-lg-font-size: 12px;
+
+$switch-icon-width: 48px;
+$switch-icon-height: 24px;
+$switch-icon-font-size: 10px;
+
+$switch-icon-sm-width: 40px;
+$switch-icon-sm-height: 20px;
+$switch-icon-sm-font-size: 8px;
+
+$switch-icon-xs-width: 32px;
+$switch-icon-xs-height: 16px;
+$switch-icon-xs-font-size: 7px;
+
+.switch.switch-default ***REMOVED***
+  @include switch('default', $switch-width, $switch-height, $switch-font-size, $handle-margin);
+***REMOVED***
+
+.switch.switch-text ***REMOVED***
+  @include switch('text', $switch-text-width, $switch-text-height, $switch-text-font-size, $handle-margin);
+***REMOVED***
+
+.switch.switch-icon ***REMOVED***
+  @include switch('icon', $switch-icon-width, $switch-icon-height, $switch-icon-font-size, $handle-margin);
+***REMOVED***
+
+.switch.switch-3d ***REMOVED***
+  @include switch('ddd', $switch-width, $switch-height, $switch-font-size, 0);
+***REMOVED***
+
+//pills style
+.switch-pill ***REMOVED***
+  .switch-label,
+  .switch-handle ***REMOVED***
+    border-radius: 50em !important;
+  ***REMOVED***
+
+  .switch-label::before ***REMOVED***
+    right: 2px !important;
+  ***REMOVED***
+  .switch-label::after ***REMOVED***
+    left: 2px !important;
+  ***REMOVED***
+***REMOVED***
+
+@each $variant, $color in (primary: $brand-primary, secondary: $gray-lighter, success: $brand-success, info: $brand-info, warning: $brand-warning, danger: $brand-danger) ***REMOVED***
+  //normal style
+  .switch-#***REMOVED***$variant***REMOVED*** ***REMOVED***
+    @include switch-variant($color);
+  ***REMOVED***
+  //outline style
+  .switch-#***REMOVED***$variant***REMOVED***-outline ***REMOVED***
+    @include switch-outline-variant($color);
+  ***REMOVED***
+  //outline alternative style
+  .switch-#***REMOVED***$variant***REMOVED***-outline-alt ***REMOVED***
+    @include switch-outline-alt-variant($color);
+  ***REMOVED***
+***REMOVED***

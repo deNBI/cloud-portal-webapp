@@ -1,0 +1,53 @@
+//
+// Utilities for common `display` values
+//
+
+@each $breakpoint in map-keys($grid-breakpoints) ***REMOVED***
+  @include media-breakpoint-up($breakpoint) ***REMOVED***
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .d#***REMOVED***$infix***REMOVED***-none         ***REMOVED*** display: none !important; ***REMOVED***
+    .d#***REMOVED***$infix***REMOVED***-inline       ***REMOVED*** display: inline !important; ***REMOVED***
+    .d#***REMOVED***$infix***REMOVED***-inline-block ***REMOVED*** display: inline-block !important; ***REMOVED***
+    .d#***REMOVED***$infix***REMOVED***-block        ***REMOVED*** display: block !important; ***REMOVED***
+    .d#***REMOVED***$infix***REMOVED***-table        ***REMOVED*** display: table !important; ***REMOVED***
+    .d#***REMOVED***$infix***REMOVED***-table-cell   ***REMOVED*** display: table-cell !important; ***REMOVED***
+    .d#***REMOVED***$infix***REMOVED***-flex         ***REMOVED*** display: flex !important; ***REMOVED***
+    .d#***REMOVED***$infix***REMOVED***-inline-flex  ***REMOVED*** display: inline-flex !important; ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+
+//
+// Utilities for toggling `display` in print
+//
+
+.d-print-block ***REMOVED***
+  display: none !important;
+
+  @media print ***REMOVED***
+    display: block !important;
+  ***REMOVED***
+***REMOVED***
+
+.d-print-inline ***REMOVED***
+  display: none !important;
+
+  @media print ***REMOVED***
+    display: inline !important;
+  ***REMOVED***
+***REMOVED***
+
+.d-print-inline-block ***REMOVED***
+  display: none !important;
+
+  @media print ***REMOVED***
+    display: inline-block !important;
+  ***REMOVED***
+***REMOVED***
+
+.d-print-none ***REMOVED***
+  @media print ***REMOVED***
+    display: none !important;
+  ***REMOVED***
+***REMOVED***

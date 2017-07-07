@@ -1,0 +1,425 @@
+// scss-lint:disable NestingDepth, SelectorDepth
+.sidebar ***REMOVED***
+  padding: $sidebar-padding;
+  overflow: hidden;
+  color: $sidebar-color;
+  background: $sidebar-bg;
+  @include borders($sidebar-borders);
+
+  .sidebar-close ***REMOVED***
+    position: absolute;
+    right: 0;
+    display: none;
+    padding: 0 $spacer;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: $navbar-height;
+    color: $sidebar-color;
+    background: 0;
+    border: 0;
+    opacity: .8;
+
+    &:hover ***REMOVED***
+      opacity: 1;
+    ***REMOVED***
+  ***REMOVED***
+
+  .sidebar-nav ***REMOVED***
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    @include sidebar-width($sidebar-borders, $sidebar-width);
+
+    &::-webkit-scrollbar ***REMOVED***
+
+      position: absolute;
+      width: 10px;
+      margin-left: -10px;
+      -webkit-appearance: none;
+    ***REMOVED***
+
+    // &::-webkit-scrollbar-button ***REMOVED***    ***REMOVED***
+
+    &::-webkit-scrollbar-track ***REMOVED***
+      background-color: lighten($sidebar-bg, 5%);
+      border-right: 1px solid darken($sidebar-bg, 5%);
+      border-left: 1px solid darken($sidebar-bg, 5%);
+    ***REMOVED***
+
+    // &::-webkit-scrollbar-track-piece ***REMOVED***    ***REMOVED***
+
+    &::-webkit-scrollbar-thumb ***REMOVED***
+      height: 50px;
+      background-color: darken($sidebar-bg, 10%);
+      background-clip: content-box;
+      border-color: transparent;
+      border-style: solid;
+      border-width: 1px 2px;
+    ***REMOVED***
+
+    // &::-webkit-scrollbar-corner ***REMOVED***    ***REMOVED***
+
+    // &::-webkit-resizer ***REMOVED***    ***REMOVED***
+  ***REMOVED***
+
+  .nav ***REMOVED***
+    @include sidebar-width($sidebar-borders, $sidebar-width);
+    flex-direction: column !important;
+
+    .nav-title ***REMOVED***
+      padding: $sidebar-nav-title-padding-y $sidebar-nav-title-padding-x;
+      font-size: 11px;
+      font-weight: 600;
+      color: $sidebar-nav-title-color;
+      text-transform: uppercase;
+    ***REMOVED***
+
+    .divider ***REMOVED***
+      height: 10px;
+    ***REMOVED***
+
+    .nav-item ***REMOVED***
+      position: relative;
+      margin: 0;
+      transition: background .3s ease-in-out;
+
+      ul ***REMOVED***
+        max-height: 0;
+        padding: 0;
+        margin: 0;
+        overflow-y: hidden;
+        transition: max-height .3s ease-in-out;
+
+        li ***REMOVED***
+          padding: 0;
+          list-style: none;
+        ***REMOVED***
+      ***REMOVED***
+
+      .nav-link ***REMOVED***
+        display: block;
+        padding: $sidebar-nav-link-padding-y $sidebar-nav-link-padding-x;
+        color: $sidebar-nav-link-color;
+        text-decoration: none;
+        background: $sidebar-nav-link-bg;
+        @include borders($sidebar-nav-link-borders);
+        @if $enable-sidebar-nav-rounded ***REMOVED***
+          border-radius: $border-radius;
+        ***REMOVED***
+
+        &:hover ***REMOVED***
+          color: $sidebar-nav-link-hover-color !important;
+          background: $sidebar-nav-link-hover-bg !important;
+          @include borders($sidebar-nav-link-hover-borders);
+
+          i ***REMOVED***
+            color: $sidebar-nav-link-hover-icon-color;
+          ***REMOVED***
+        ***REMOVED***
+
+        &.active ***REMOVED***
+          color: $sidebar-nav-link-active-color;
+          background: $sidebar-nav-link-active-bg;
+          @include borders($sidebar-nav-link-active-borders);
+
+          i ***REMOVED***
+            color: $sidebar-nav-link-active-icon-color;
+          ***REMOVED***
+        ***REMOVED***
+
+        [class^="icon-"], [class*=" icon-"] ***REMOVED***
+          display: inline-block;
+          margin-top: -4px;
+          vertical-align: middle;
+        ***REMOVED***
+
+        i ***REMOVED***
+          width: 20px;
+          margin: 0 ($sidebar-nav-link-padding-x / 2) 0 0;
+          font-size: 14px;
+          color: $sidebar-nav-link-icon-color;
+          text-align: center;
+        ***REMOVED***
+
+        .badge ***REMOVED***
+          float: right;
+          margin-top: 2px;
+          // margin-left: 10px;
+        ***REMOVED***
+
+        &.nav-dropdown-toggle ***REMOVED***
+
+          &::before ***REMOVED***
+            position: absolute;
+            top: ($sidebar-nav-link-padding-y + ($font-size-base / 4));
+            right: $sidebar-nav-link-padding-x;
+            display: block;
+            width: ($font-size-base);
+            height: ($font-size-base);
+            padding: 0;
+            font-size: $font-size-base;
+            line-height: ($font-size-base * 3 / 4);
+            text-align: center;
+            content: "\2039";
+            transition: .3s;
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+
+      &.nav-dropdown ***REMOVED***
+        &.open ***REMOVED***
+          background: $sidebar-nav-dropdown-bg;
+          @include borders($sidebar-nav-dropdown-borders);
+          @if $enable-sidebar-nav-rounded ***REMOVED***
+            border-radius: $border-radius;
+          ***REMOVED***
+          > ul, > ol ***REMOVED***
+            // display: inline;
+            max-height: 1000px;
+          ***REMOVED***
+
+          .nav-link ***REMOVED***
+            color: $sidebar-nav-dropdown-color;
+            border-left: 0 !important;
+          ***REMOVED***
+
+          > .nav-link.nav-dropdown-toggle::before ***REMOVED***
+            transform: rotate(-90deg);
+          ***REMOVED***
+
+          .nav-dropdown.open ***REMOVED***
+            border-left: 0;
+          ***REMOVED***
+        ***REMOVED***
+        &.nt ***REMOVED***
+          transition: 0s !important;
+          > ul, > ol ***REMOVED***
+            transition: 0s !important;
+          ***REMOVED***
+          .nav-link ***REMOVED***
+            &.nav-dropdown-toggle ***REMOVED***
+
+              &::before ***REMOVED***
+                transition: 0s !important;
+              ***REMOVED***
+            ***REMOVED***
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+
+      .nav-label ***REMOVED***
+        display: block;
+        padding: ($sidebar-nav-link-padding-y / 8) $sidebar-nav-link-padding-x;
+        color: $sidebar-nav-title-color;
+
+        &:hover ***REMOVED***
+          color: $sidebar-color;
+          text-decoration: none;
+        ***REMOVED***
+
+        i ***REMOVED***
+          width: 20px;
+          margin: -3px ($sidebar-nav-link-padding-x / 2) 0 0;
+          font-size: 10px;
+          color: $sidebar-nav-link-icon-color;
+          text-align: center;
+          vertical-align: middle;
+        ***REMOVED***
+      ***REMOVED***
+
+      @if (lightness( $sidebar-bg ) < 40) ***REMOVED***
+        .progress ***REMOVED***
+          background-color: lighten($sidebar-bg, 15%) !important;
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+@include media-breakpoint-up(lg) ***REMOVED***
+  .sidebar-compact ***REMOVED***
+    .sidebar ***REMOVED***
+      .sidebar-nav ***REMOVED***
+        @include sidebar-width($sidebar-borders, $sidebar-compact-width);
+      ***REMOVED***
+
+      .nav ***REMOVED***
+        @include sidebar-width($sidebar-borders, $sidebar-compact-width);
+
+        .nav-title ***REMOVED***
+          text-align: center;
+        ***REMOVED***
+
+        .nav-item ***REMOVED***
+          width: $sidebar-compact-width;
+          border-left: 0 !important;
+
+          .nav-link ***REMOVED***
+            text-align: center;
+
+            i ***REMOVED***
+              display: block;
+              width: 100%;
+              margin: $spacer / 4 0;
+              font-size: 24px;
+            ***REMOVED***
+
+            .badge ***REMOVED***
+              position: absolute;
+              top: 18px;
+              right: 10px;
+            ***REMOVED***
+
+            &.nav-dropdown-toggle ***REMOVED***
+
+              &::before ***REMOVED***
+                top: 30px;
+              ***REMOVED***
+            ***REMOVED***
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+  .sidebar-minimized ***REMOVED***
+    .hidden-cn ***REMOVED***
+      display: none;
+    ***REMOVED***
+    .sidebar ***REMOVED***
+      z-index: $zindex-sticky - 1;
+
+      &:hover ***REMOVED***
+        overflow: visible;
+      ***REMOVED***
+
+      .sidebar-nav ***REMOVED***
+        overflow: visible;
+        @include sidebar-width($sidebar-borders, $sidebar-minimized-width);
+      ***REMOVED***
+
+      .nav ***REMOVED***
+        @include sidebar-width($sidebar-borders, $sidebar-minimized-width);
+
+        .nav-title, .divider ***REMOVED***
+          display: none;
+        ***REMOVED***
+
+        .nav-item ***REMOVED***
+          width: $sidebar-minimized-width;
+          overflow: hidden;
+          border-left: 0 !important;
+
+          ul ***REMOVED***
+            background: $sidebar-bg;
+          ***REMOVED***
+
+          .nav-link ***REMOVED***
+            position: relative;
+            padding-left: 0;
+            margin: 0;
+            white-space: nowrap;
+            border-left: 0 !important;
+
+            &.nav-dropdown-toggle ***REMOVED***
+
+              &::before ***REMOVED***
+                display: none;
+              ***REMOVED***
+            ***REMOVED***
+
+            i ***REMOVED***
+              display: block;
+              float: left;
+              width: $sidebar-minimized-height;
+              padding: 0;
+              margin: 0 !important;
+              font-size: 18px;
+            ***REMOVED***
+
+            .badge ***REMOVED***
+              position: absolute;
+              // top: 14px;
+              right: 15px;
+              display: none;
+            ***REMOVED***
+
+            &:hover ***REMOVED***
+              width: $sidebar-width;
+
+              .badge ***REMOVED***
+                display: inline;
+              ***REMOVED***
+            ***REMOVED***
+          ***REMOVED***
+
+          ul ***REMOVED***
+            position: absolute;
+            left: $sidebar-minimized-width;
+
+            li ***REMOVED***
+              position: relative;
+              padding: 0;
+
+              .nav-link ***REMOVED***
+                width: $sidebar-width - $sidebar-minimized-width;
+              ***REMOVED***
+
+              ul, ol ***REMOVED***
+                position: absolute;
+                top: 0;
+                left: 100%;
+              ***REMOVED***
+            ***REMOVED***
+          ***REMOVED***
+
+          &.nav-dropdown ***REMOVED***
+            &.open ***REMOVED***
+              background: $sidebar-nav-link-active-bg;
+              > .nav-link i ***REMOVED***
+                color: $sidebar-nav-link-active-icon-color;
+              ***REMOVED***
+              > ul, > ol ***REMOVED***
+                display: none;
+              ***REMOVED***
+            ***REMOVED***
+          ***REMOVED***
+
+          &:hover ***REMOVED***
+            width: $sidebar-width + $sidebar-minimized-width;
+            overflow: visible;
+            background: $sidebar-nav-link-hover-bg;
+            transition: 0s;
+
+            > .nav-link ***REMOVED***
+              width: $sidebar-width + $sidebar-minimized-width;
+            ***REMOVED***
+
+            > ul, > ol ***REMOVED***
+              display: inline;
+              max-height: 10000px;
+              transition: 0s;
+
+              li ***REMOVED***
+                width: $sidebar-width;
+
+                .nav-link ***REMOVED***
+                  width: $sidebar-width;
+                ***REMOVED***
+              ***REMOVED***
+            ***REMOVED***
+
+            &.nav-dropdown ***REMOVED***
+              &.open ***REMOVED***
+                > ul, > ol ***REMOVED***
+                  display: inline;
+                ***REMOVED***
+              ***REMOVED***
+            ***REMOVED***
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***

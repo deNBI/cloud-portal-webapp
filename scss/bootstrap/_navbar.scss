@@ -1,0 +1,284 @@
+// Contents
+//
+// Navbar
+// Navbar brand
+// Navbar nav
+// Navbar text
+// Navbar divider
+// Responsive navbar
+// Navbar position
+// Navbar themes
+
+
+// Navbar
+//
+// Provide a static navbar from which we expand to create full-width, fixed, and
+// other navbar variations.
+
+.navbar ***REMOVED***
+  position: relative;
+  display: flex;
+  flex-wrap: wrap; // allow us to do the line break for collapsing content
+  align-items: center;
+  justify-content: space-between; // space out brand from logo
+  padding: $navbar-padding-y $navbar-padding-x;
+
+  // Because flex properties aren't inherited, we need to redeclare these first
+  // few properities so that content nested within behave properly.
+  > .container,
+  > .container-fluid ***REMOVED***
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+
+    @include media-breakpoint-down(nth(map-keys($grid-breakpoints), 1)) ***REMOVED***
+      width: 100%; // prevent flex parent container from collapsing
+      margin-right: 0;
+      margin-left: 0;
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+
+// Navbar brand
+//
+// Used for brand, project, or site names.
+
+.navbar-brand ***REMOVED***
+  display: inline-block;
+  padding-top: $navbar-brand-padding-y;
+  padding-bottom: $navbar-brand-padding-y;
+  margin-right: $navbar-padding-x;
+  font-size: $navbar-brand-font-size;
+  line-height: inherit;
+  white-space: nowrap;
+
+  @include hover-focus ***REMOVED***
+    text-decoration: none;
+  ***REMOVED***
+***REMOVED***
+
+
+// Navbar nav
+//
+// Custom navbar navigation (doesn't require `.nav`, but does make use of `.nav-link`).
+
+.navbar-nav ***REMOVED***
+  display: flex;
+  flex-direction: column; // cannot use `inherit` to get the `.navbar`s value
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+
+  .nav-link ***REMOVED***
+    padding-right: 0;
+    padding-left: 0;
+  ***REMOVED***
+***REMOVED***
+
+
+// Navbar text
+//
+//
+
+.navbar-text ***REMOVED***
+  display: inline-block;
+  padding-top: $nav-link-padding-y;
+  padding-bottom: $nav-link-padding-y;
+***REMOVED***
+
+
+// Responsive navbar
+//
+// Custom styles for responsive collapsing and toggling of navbar contents.
+// Powered by the collapse Bootstrap JavaScript plugin.
+
+// When collapsed, prevent the toggleable navbar contents from appearing in
+// the default flexbox row orienation. Requires the use of `flex-wrap: wrap`
+// on the `.navbar` parent.
+.navbar-collapse ***REMOVED***
+  flex-basis: 100%;
+***REMOVED***
+
+// Button for toggling the navbar when in its collapsed state
+.navbar-toggler ***REMOVED***
+  padding: $navbar-toggler-padding-y $navbar-toggler-padding-x;
+  font-size: $navbar-toggler-font-size;
+  line-height: 1;
+  background: transparent; // remove default button style
+  border: $border-width solid transparent; // remove default button style
+  @include border-radius($navbar-toggler-border-radius);
+
+  @include hover-focus ***REMOVED***
+    text-decoration: none;
+  ***REMOVED***
+***REMOVED***
+
+// Keep as a separate element so folks can easily override it with another icon
+// or image file as needed.
+.navbar-toggler-icon ***REMOVED***
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: middle;
+  content: "";
+  background: no-repeat center center;
+  background-size: 100% 100%;
+***REMOVED***
+
+// Generate series of `.navbar-expand-*` responsive classes for configuring
+// where your navbar collapses.
+.navbar-expand ***REMOVED***
+  @each $breakpoint in map-keys($grid-breakpoints) ***REMOVED***
+    $next: breakpoint-next($breakpoint, $grid-breakpoints);
+    $infix: breakpoint-infix($next, $grid-breakpoints);
+
+    &#***REMOVED***$infix***REMOVED*** ***REMOVED***
+      @include media-breakpoint-down($breakpoint) ***REMOVED***
+        .navbar-nav ***REMOVED***
+          .dropdown-menu ***REMOVED***
+            position: static;
+            float: none;
+          ***REMOVED***
+        ***REMOVED***
+
+        > .container,
+        > .container-fluid ***REMOVED***
+          padding-right: 0;
+          padding-left: 0;
+        ***REMOVED***
+      ***REMOVED***
+
+      @include media-breakpoint-up($next) ***REMOVED***
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+
+        .navbar-nav ***REMOVED***
+          flex-direction: row;
+
+          .dropdown-menu ***REMOVED***
+            position: absolute;
+          ***REMOVED***
+
+          .nav-link ***REMOVED***
+            padding-right: .5rem;
+            padding-left: .5rem;
+          ***REMOVED***
+        ***REMOVED***
+
+        // For nesting containers, have to redeclare for alignment purposes
+        > .container,
+        > .container-fluid ***REMOVED***
+          flex-wrap: nowrap;
+        ***REMOVED***
+
+        // scss-lint:disable ImportantRule
+        .navbar-collapse ***REMOVED***
+          display: flex !important;
+        ***REMOVED***
+        // scss-lint:enable ImportantRule
+
+        .navbar-toggler ***REMOVED***
+          display: none;
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+
+// Navbar themes
+//
+// Styles for switching between navbars with light or dark background.
+
+// Dark links against a light background
+.navbar-light ***REMOVED***
+  .navbar-brand ***REMOVED***
+    color: $navbar-light-active-color;
+
+    @include hover-focus ***REMOVED***
+      color: $navbar-light-active-color;
+    ***REMOVED***
+  ***REMOVED***
+
+  .navbar-nav ***REMOVED***
+    .nav-link ***REMOVED***
+      color: $navbar-light-color;
+
+      @include hover-focus ***REMOVED***
+        color: $navbar-light-hover-color;
+      ***REMOVED***
+
+      &.disabled ***REMOVED***
+        color: $navbar-light-disabled-color;
+      ***REMOVED***
+    ***REMOVED***
+
+    .show > .nav-link,
+    .active > .nav-link,
+    .nav-link.show,
+    .nav-link.active ***REMOVED***
+      color: $navbar-light-active-color;
+    ***REMOVED***
+  ***REMOVED***
+
+  .navbar-toggler ***REMOVED***
+    color: $navbar-light-color;
+    border-color: $navbar-light-toggler-border-color;
+  ***REMOVED***
+
+  .navbar-toggler-icon ***REMOVED***
+    background-image: $navbar-light-toggler-bg;
+  ***REMOVED***
+
+  .navbar-text ***REMOVED***
+    color: $navbar-light-color;
+  ***REMOVED***
+***REMOVED***
+
+// White links against a dark background
+.navbar-inverse ***REMOVED***
+  .navbar-brand ***REMOVED***
+    color: $navbar-inverse-active-color;
+
+    @include hover-focus ***REMOVED***
+      color: $navbar-inverse-active-color;
+    ***REMOVED***
+  ***REMOVED***
+
+  .navbar-nav ***REMOVED***
+    .nav-link ***REMOVED***
+      color: $navbar-inverse-color;
+
+      @include hover-focus ***REMOVED***
+        color: $navbar-inverse-hover-color;
+      ***REMOVED***
+
+      &.disabled ***REMOVED***
+        color: $navbar-inverse-disabled-color;
+      ***REMOVED***
+    ***REMOVED***
+
+    .show > .nav-link,
+    .active > .nav-link,
+    .nav-link.show,
+    .nav-link.active ***REMOVED***
+      color: $navbar-inverse-active-color;
+    ***REMOVED***
+  ***REMOVED***
+
+  .navbar-toggler ***REMOVED***
+    color: $navbar-inverse-color;
+    border-color: $navbar-inverse-toggler-border-color;
+  ***REMOVED***
+
+  .navbar-toggler-icon ***REMOVED***
+    background-image: $navbar-inverse-toggler-bg;
+  ***REMOVED***
+
+  .navbar-text ***REMOVED***
+    color: $navbar-inverse-color;
+  ***REMOVED***
+***REMOVED***

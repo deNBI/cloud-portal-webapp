@@ -1,0 +1,12 @@
+// Contextual backgrounds
+
+@mixin bg-variant($parent, $color) ***REMOVED***
+  #***REMOVED***$parent***REMOVED*** ***REMOVED***
+    background-color: $color !important;
+  ***REMOVED***
+  a#***REMOVED***$parent***REMOVED*** ***REMOVED***
+    @include hover-focus ***REMOVED***
+      background-color: darken($color, 10%) !important;
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***

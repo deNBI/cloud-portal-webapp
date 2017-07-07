@@ -1,0 +1,253 @@
+// .social-box
+.social-box ***REMOVED***
+  min-height: 160px;
+  margin-bottom: 2 * $card-spacer-y;
+  text-align: center;
+  background: #fff;
+  border: $card-border-width solid $card-border-color;
+  @include border-radius($card-border-radius);
+
+  i ***REMOVED***
+    display: block;
+    margin: -1px -1px 0;
+    font-size: 40px;
+    line-height: 90px;
+    background: $gray-lighter;
+
+    @include border-radius($card-border-radius-inner $card-border-radius-inner 0 0);
+  ***REMOVED***
+
+  .chart-wrapper ***REMOVED***
+    height: 90px;
+    margin: -90px 0 0;
+
+    canvas ***REMOVED***
+      width: 100% !important;
+      height: 90px !important;
+    ***REMOVED***
+  ***REMOVED***
+
+  ul ***REMOVED***
+    padding: 10px 0;
+    list-style: none;
+
+
+    li ***REMOVED***
+      display: block;
+      float: left;
+      width: 50%;
+
+      &:first-child ***REMOVED***
+        border-right: 1px solid $border-color;
+      ***REMOVED***
+
+      strong ***REMOVED***
+        display: block;
+        font-size: 20px;
+      ***REMOVED***
+
+      span ***REMOVED***
+        font-size: 10px;
+        font-weight: 500;
+        color: $border-color;
+        text-transform: uppercase;
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+  &.facebook ***REMOVED***
+    i ***REMOVED***
+      color: #fff;
+      background: $facebook;
+    ***REMOVED***
+  ***REMOVED***
+
+  &.twitter ***REMOVED***
+    i ***REMOVED***
+      color: #fff;
+      background: $twitter;
+    ***REMOVED***
+  ***REMOVED***
+
+  &.linkedin ***REMOVED***
+    i ***REMOVED***
+      color: #fff;
+      background: $linkedin;
+    ***REMOVED***
+  ***REMOVED***
+
+  &.google-plus ***REMOVED***
+    i ***REMOVED***
+      color: #fff;
+      background: $google-plus;
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.horizontal-bars ***REMOVED***
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  li ***REMOVED***
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    vertical-align: middle;
+
+    .title ***REMOVED***
+      width: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      color: $text-muted;
+      vertical-align: middle;
+    ***REMOVED***
+
+    .bars ***REMOVED***
+      position: absolute;
+      top: 15px;
+      width: 100%;
+      padding-left: 100px;
+
+      .progress:first-child ***REMOVED***
+        margin-bottom: 2px;
+      ***REMOVED***
+    ***REMOVED***
+
+    &.legend ***REMOVED***
+      text-align: center;
+
+      .badge ***REMOVED***
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        padding: 0;
+      ***REMOVED***
+    ***REMOVED***
+
+    &.divider ***REMOVED***
+      height: 40px;
+
+      i ***REMOVED***
+        margin: 0 !important;
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+  &.type-2 ***REMOVED***
+
+    li ***REMOVED***
+      overflow: hidden;
+
+      i ***REMOVED***
+        display: inline-block;
+        margin-right: $spacer;
+        margin-left: 5px;
+        font-size: 18px;
+        line-height: 40px;
+      ***REMOVED***
+
+      .title ***REMOVED***
+        display: inline-block;
+        width: auto;
+        margin-top: -9px;
+        font-size: $font-size-base;
+        font-weight: normal;
+        line-height: 40px;
+        color: $body-color;
+      ***REMOVED***
+
+      .value ***REMOVED***
+        float: right;
+        font-weight: 600;
+      ***REMOVED***
+
+      .bars ***REMOVED***
+        position: absolute;
+        top: auto;
+        bottom: 0;
+        padding: 0;
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+.icons-list ***REMOVED***
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  li ***REMOVED***
+    position: relative;
+    height: 40px;
+    vertical-align: middle;
+
+    i ***REMOVED***
+      display: block;
+      float: left;
+      width: 35px !important;
+      height: 35px !important;
+      margin: 2px;
+      line-height: 35px !important;
+      text-align: center;
+    ***REMOVED***
+
+    .desc ***REMOVED***
+      height: 40px;
+      margin-left: 50px;
+      border-bottom: 1px solid $border-color;
+
+      .title ***REMOVED***
+        padding: 2px 0 0;
+        margin: 0;
+      ***REMOVED***
+      small ***REMOVED***
+        display: block;
+        margin-top: -4px;
+        color: $text-muted;
+      ***REMOVED***
+    ***REMOVED***
+
+    .value ***REMOVED***
+      position: absolute;
+      top: 2px;
+      right: 45px;
+      text-align: right;
+
+      strong ***REMOVED***
+        display: block;
+        margin-top: -3px;
+      ***REMOVED***
+    ***REMOVED***
+
+    .actions ***REMOVED***
+      position: absolute;
+      top: -4px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+
+      i ***REMOVED***
+        float: none;
+        width: auto;
+        height: auto;
+        padding: 0;
+        margin: 0;
+        line-height: normal;
+      ***REMOVED***
+    ***REMOVED***
+
+    &.divider ***REMOVED***
+      height: 40px;
+
+      i ***REMOVED***
+        width: auto;
+        height: auto;
+        margin: 2px 0 0;
+        font-size: 18px;
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
