@@ -1,0 +1,44 @@
+<div class="animated fadeIn" ng-app>
+  <div class="row">
+    <!--/.col-->
+    <h1>Projects Overview</h1>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Projects
+        </div>
+        <div class="card-block">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Project ID</th>
+                <th>Project Name</th>
+                <th>Description</th>
+                <th>Date created</th>
+                <th>Days running</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let project of projects" >
+                <td>***REMOVED******REMOVED*** project["id"] ***REMOVED******REMOVED***</td>
+                <td>***REMOVED******REMOVED*** project["name"] ***REMOVED******REMOVED***</td>
+                <td>***REMOVED******REMOVED*** project["description"] ***REMOVED******REMOVED***</td>
+                <td>***REMOVED******REMOVED*** project["created"] ***REMOVED******REMOVED***</td>
+                <td>***REMOVED******REMOVED***project["days_running"]***REMOVED******REMOVED***</td>
+                <td>
+                  <!--Everyone can start a VM-->
+                  <button type="button" class="btn btn-secondary"><i class="fa fa-cube"></i>&nbsp; Start VM</button>
+
+                  <button *ngIf="project['is_pi'] == true" type="button" class="btn btn-secondary"><i class="fa fa-users"></i>&nbsp; Users</button>
+                  <button  *ngIf="project['is_admin'] == true" type="button" class="btn btn-secondary"><i class="fa fa-cogs"></i>&nbsp; Administration</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+</div>

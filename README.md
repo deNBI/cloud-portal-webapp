@@ -1,39 +1,28 @@
-#Starting the Webapp (on Ubuntu)
+# Cloud Webapplication 
 
-1. Colone this repo and switch to branch 'feature/react-setup
-~~~BASH
-git clone https://github.com/deNBI/cloud-portal-webapp.git
-git checkout feature/react-setup
-~~~
+The use of this application is to provide access to the Portal-API and to the Perun API in one Application. 
+Simple request, that do not require administrative rights or special previliges can be done directly from the webapplicaiton
 
-2. Install nodeJS (v6.x.x) and npm 
-~~~BASH
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-sudo apt-get install -y nodejs
-~~~
+## Development server
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-3. Create a symling from 'nodejs' to 'node'
-~~~BASH
-sudo ln -s /usr/bin/nodejs /usr/bin/node
-~~~
+## Code scaffolding
 
-4. Uptade npm
-~~~BASH
-sudo npm install npm@latest -g
-~~~
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
 
-5. Go into repository and install dependencies
-~~~BASH
-cd cloud-portal-webapp
-npm install
-~~~
+## Build
 
-6. Since there is a problem to install some modules we need to install them manually
-~~~BASH
-npm install react-transition-group --save
-~~~
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-7. Start the npm server
-~~~BASH
-npm start
-~~~
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Before running the tests make sure you are serving the app via `ng serve`.
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
