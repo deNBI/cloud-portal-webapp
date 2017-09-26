@@ -1,14 +1,16 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "version": "1.0.0-alpha.6",
-    "name": "coreui-angular"
+    "name": "coreui-angular",
+    "ejected": false
   },
   "apps": [
     {
       "root": "src",
       "outDir": "dist",
-      "assets": ["assets"],
+      "assets": [
+        "../static/webapp/assets"
+      ],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
@@ -53,13 +55,10 @@
   },
   "defaults": {
     "styleExt": "scss",
-    "prefixInterfaces": false,
     "serve": {
       "port": 443,
       "host": "portal-dev.denbi.de",
-      "ssl": 1,
-      "ssl-key": "key.pem",
-      "ssl-cert": "cert.pem"
+      "ssl": true
     }
   }
 }
