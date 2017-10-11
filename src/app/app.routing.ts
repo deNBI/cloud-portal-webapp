@@ -8,7 +8,7 @@ import ***REMOVED*** SimpleLayoutComponent ***REMOVED*** from './layouts/simple-
 export const routes: Routes = [
   ***REMOVED***
     path: '',
-    redirectTo: 'project-management',
+    redirectTo: 'userinfo',
     pathMatch: 'full',
   ***REMOVED***,
   ***REMOVED***
@@ -19,13 +19,18 @@ export const routes: Routes = [
     ***REMOVED***,
     children: [
       ***REMOVED***
-        path: 'dashboard',
-        loadChildren: './dashboard/dashboard.module#DashboardModule'
+        path: 'userinfo',
+        loadChildren: './userinfo/userinfo.module#UserinfoModule'
       ***REMOVED***,
       ***REMOVED***
         path: 'project-management',
         loadChildren: './projectmanagement/projectmanagement.module#ProjectManagementModule'
+      ***REMOVED***,
       ***REMOVED***
+        path: 'applications',
+        loadChildren: './applications/applications.module#ApplicationsModule'
+      ***REMOVED***
+
     ]
   ***REMOVED***
 ];

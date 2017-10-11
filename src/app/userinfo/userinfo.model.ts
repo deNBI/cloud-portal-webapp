@@ -1,0 +1,38 @@
+export class  Userinfo***REMOVED***
+
+  private _Id: number;
+  private _FirstName: string;
+  private _LastName: string;
+
+  constructor()***REMOVED***
+    this.LastName = " ";
+    this.FirstName = " ";
+    this.Id = -1;
+  ***REMOVED***
+
+  get Id(): number ***REMOVED***
+    return this._Id;
+  ***REMOVED***
+
+  set Id(value: number) ***REMOVED***
+    this._Id = value;
+  ***REMOVED***
+
+  get FirstName(): string ***REMOVED***
+    return this._FirstName;
+  ***REMOVED***
+
+  set FirstName(value: string) ***REMOVED***
+    this._FirstName = value;
+  ***REMOVED***
+
+  get LastName(): string ***REMOVED***
+    return this._LastName;
+  ***REMOVED***
+
+  set LastName(value: string) ***REMOVED***
+    this._LastName = value;
+  ***REMOVED***
+
+
+***REMOVED***

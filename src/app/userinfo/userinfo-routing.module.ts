@@ -1,14 +1,13 @@
 import ***REMOVED*** NgModule ***REMOVED*** from '@angular/core';
 import ***REMOVED*** Routes, RouterModule ***REMOVED*** from '@angular/router';
-
-import ***REMOVED*** OverviewComponent ***REMOVED*** from './overview.component';
+import ***REMOVED*** UserinfoComponent ***REMOVED*** from './userinfo.component';
 
 const routes: Routes = [
   ***REMOVED***
     path: '',
-    component: OverviewComponent,
+    component: UserinfoComponent,
     data: ***REMOVED***
-      title: 'Project overview'
+      title: 'User information'
     ***REMOVED***
 
   ***REMOVED***
@@ -18,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 ***REMOVED***)
-export class ProjectManagementRoutingModule ***REMOVED******REMOVED***
+export class UserinfoRoutingModule ***REMOVED******REMOVED***

@@ -5,6 +5,8 @@ import ***REMOVED***MembersManager***REMOVED*** from '../perun-connector/members
 import ***REMOVED***UsersManager***REMOVED*** from '../perun-connector/users-manager.service'
 import ***REMOVED***Http***REMOVED*** from '@angular/http';
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
+import ***REMOVED***Project***REMOVED*** from './project.model';
+
 import 'rxjs/add/operator/toPromise';
 @Component(***REMOVED***
   templateUrl: 'overview.component.html',
@@ -20,7 +22,7 @@ export class OverviewComponent ***REMOVED***
   user_data: ***REMOVED******REMOVED***;
   admingroups: ***REMOVED******REMOVED***;
   adminvos: ***REMOVED******REMOVED***;
-  projects = [];
+  projects: Project[] = new Array();
 
 
   constructor(private authzresolver: AuthzResolver,
@@ -102,16 +104,14 @@ export class OverviewComponent ***REMOVED***
           is_pi = true;
         ***REMOVED***
 
-        this.projects.push(***REMOVED***
-          id: group["id"],
-          name: group["name"],
-          description: group["description"],
-          created: dateCreated.getDate() + "." + dateCreated.getMonth() + "." + dateCreated.getFullYear(),
-          days_running: dateDayDifference,
-          is_pi: is_pi,
-          is_admin: is_admin
-
-        ***REMOVED***);
+        this.projects.push(new Project(
+          group["id"],
+          group["name"],
+          group["description"],
+          dateCreated.getDate() + "." + dateCreated.getMonth() + "." + dateCreated.getFullYear(),
+          dateDayDifference,
+          is_pi,
+          is_admin));
 
 
       ***REMOVED***
@@ -120,5 +120,9 @@ export class OverviewComponent ***REMOVED***
     // .then( function()***REMOVED*** groupsmanager.getGroupsWhereUserIsAdmin(this.userid); ***REMOVED***);
 
 
+  ***REMOVED***
+
+  public comingSoon() ***REMOVED***
+    alert("This function will be implemented soon.")
   ***REMOVED***
 ***REMOVED***

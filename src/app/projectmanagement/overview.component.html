@@ -21,17 +21,14 @@
             </thead>
             <tbody>
               <tr *ngFor="let project of projects" >
-                <td>***REMOVED******REMOVED*** project["id"] ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** project["name"] ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** project["description"] ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** project["created"] ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED***project["days_running"]***REMOVED******REMOVED***</td>
+                <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
+                <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
+                <td>***REMOVED******REMOVED*** project.Description ***REMOVED******REMOVED***</td>
+                <td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>
+                <td>***REMOVED******REMOVED*** project.DaysRunning ***REMOVED******REMOVED***</td>
                 <td>
-                  <!--Everyone can start a VM-->
-                  <button type="button" class="btn btn-secondary"><i class="fa fa-cube"></i>&nbsp; Start VM</button>
-
-                  <button *ngIf="project['is_pi'] == true" type="button" class="btn btn-secondary"><i class="fa fa-users"></i>&nbsp; Users</button>
-                  <button  *ngIf="project['is_admin'] == true" type="button" class="btn btn-secondary"><i class="fa fa-cogs"></i>&nbsp; Administration</button>
+                  <button (click)="comingSoon()" *ngIf="project.UserIsPi == true" type="button" class="btn btn-secondary"><i class="fa fa-users"></i>&nbsp; Users</button>
+                  <button (click)="comingSoon()" *ngIf="project.UserIsAdmin == true" type="button" class="btn btn-secondary"><i class="fa fa-cogs"></i>&nbsp; Administration</button>
                 </td>
               </tr>
             </tbody>
