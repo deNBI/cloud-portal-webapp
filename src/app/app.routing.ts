@@ -8,7 +8,7 @@ import { SimpleLayoutComponent } from './layouts/simple-layout.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'project-management',
+    redirectTo: 'userinfo',
     pathMatch: 'full',
   },
   {
@@ -19,13 +19,18 @@ export const routes: Routes = [
     },
     children: [
       {
-        path: 'dashboard',
-        loadChildren: './dashboard/dashboard.module#DashboardModule'
+        path: 'userinfo',
+        loadChildren: './userinfo/userinfo.module#UserinfoModule'
       },
       {
         path: 'project-management',
         loadChildren: './projectmanagement/projectmanagement.module#ProjectManagementModule'
+      },
+      {
+        path: 'applications',
+        loadChildren: './applications/applications.module#ApplicationsModule'
       }
+
     ]
   }
 ];

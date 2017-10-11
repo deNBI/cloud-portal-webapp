@@ -18,4 +18,14 @@ export class GroupsManager {
     });
   }
 
+
+  createGroup(group_name: string, group_description: string) {
+    var parameter = JSON.stringify({
+      vo: this.settings.getPerunVO(),
+      group: {name: group_name, description: group_description}
+    });
+    return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/createGroup', parameter,
+      {withCredentials: true});
+  }
+
 }

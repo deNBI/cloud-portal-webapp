@@ -1,0 +1,30 @@
+<div class="animated fadeIn" ng-app>
+    <div class="row">
+        <!--/.col-->
+        <h1>Hello, {{ userinfo.FirstName }} {{ userinfo.LastName }}</h1>
+    </div>
+        <div class="row">
+        <h3>This is your personal data page.</h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Personal Information
+                </div>
+                <div class="card-block">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>Full name</td>
+                            <td>{{ userinfo.FirstName }} {{ userinfo.LastName }}</td>
+                        </tr>
+                        <tr>
+                            <td>User ID</td>
+                            <td>{{ userinfo.Id }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

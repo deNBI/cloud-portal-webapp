@@ -56,9 +56,9 @@
   "defaults": {
     "styleExt": "scss",
     "serve": {
-      "port": 443,
+      "port": 8001,
       "host": "portal-dev.denbi.de",
-      "ssl": true
+      "ssl": false
     }
   }
 }

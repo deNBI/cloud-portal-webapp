@@ -5,6 +5,8 @@ import {MembersManager} from '../perun-connector/members-manager.service'
 import {UsersManager} from '../perun-connector/users-manager.service'
 import {Http} from '@angular/http';
 import {PerunSettings} from "../perun-connector/connector-settings.service";
+import {Project} from './project.model';
+
 import 'rxjs/add/operator/toPromise';
 @Component({
   templateUrl: 'overview.component.html',
@@ -20,7 +22,7 @@ export class OverviewComponent {
   user_data: {};
   admingroups: {};
   adminvos: {};
-  projects = [];
+  projects: Project[] = new Array();
 
 
   constructor(private authzresolver: AuthzResolver,
@@ -102,16 +104,14 @@ export class OverviewComponent {
           is_pi = true;
         }
 
-        this.projects.push({
-          id: group["id"],
-          name: group["name"],
-          description: group["description"],
-          created: dateCreated.getDate() + "." + dateCreated.getMonth() + "." + dateCreated.getFullYear(),
-          days_running: dateDayDifference,
-          is_pi: is_pi,
-          is_admin: is_admin
-
-        });
+        this.projects.push(new Project(
+          group["id"],
+          group["name"],
+          group["description"],
+          dateCreated.getDate() + "." + dateCreated.getMonth() + "." + dateCreated.getFullYear(),
+          dateDayDifference,
+          is_pi,
+          is_admin));
 
 
       }
@@ -120,5 +120,9 @@ export class OverviewComponent {
     // .then( function(){ groupsmanager.getGroupsWhereUserIsAdmin(this.userid); });
 
 
+  }
+
+  public comingSoon() {
+    alert("This function will be implemented soon.")
   }
 }

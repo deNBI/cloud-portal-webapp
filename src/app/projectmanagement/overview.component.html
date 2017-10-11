@@ -21,17 +21,14 @@
             </thead>
             <tbody>
               <tr *ngFor="let project of projects" >
-                <td>{{ project["id"] }}</td>
-                <td>{{ project["name"] }}</td>
-                <td>{{ project["description"] }}</td>
-                <td>{{ project["created"] }}</td>
-                <td>{{project["days_running"]}}</td>
+                <td>{{ project.Id }}</td>
+                <td>{{ project.Name }}</td>
+                <td>{{ project.Description }}</td>
+                <td>{{ project.DateCreated }}</td>
+                <td>{{ project.DaysRunning }}</td>
                 <td>
-                  <!--Everyone can start a VM-->
-                  <button type="button" class="btn btn-secondary"><i class="fa fa-cube"></i>&nbsp; Start VM</button>
-
-                  <button *ngIf="project['is_pi'] == true" type="button" class="btn btn-secondary"><i class="fa fa-users"></i>&nbsp; Users</button>
-                  <button  *ngIf="project['is_admin'] == true" type="button" class="btn btn-secondary"><i class="fa fa-cogs"></i>&nbsp; Administration</button>
+                  <button (click)="comingSoon()" *ngIf="project.UserIsPi == true" type="button" class="btn btn-secondary"><i class="fa fa-users"></i>&nbsp; Users</button>
+                  <button (click)="comingSoon()" *ngIf="project.UserIsAdmin == true" type="button" class="btn btn-secondary"><i class="fa fa-cogs"></i>&nbsp; Administration</button>
                 </td>
               </tr>
             </tbody>
