@@ -28,4 +28,38 @@ export class GroupsManager {
       {withCredentials: true});
   }
 
+  getGroupRichMembers(group_id: number) {
+    return this.http.get(this.settings.getPerunBaseURL() + 'groupsManager/getGroupRichMembers', {
+      withCredentials: true,
+      params: {group: group_id}
+    });
+  }
+
+  addMember(group_id: number, member_id: number) {
+    var parameter = JSON.stringify({
+      group: group_id,
+      member: member_id
+    });
+    return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/addMember', parameter,
+      {withCredentials: true});
+  }
+
+  addAdmin(group_id: number, user_id: number) {
+    var parameter = JSON.stringify({
+      group: group_id,
+      user: user_id
+    });
+    return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/addAdmin', parameter,
+      {withCredentials: true});
+  }
+
+  removeMember(group_id: number, member_id: number) {
+    var parameter = JSON.stringify({
+      group: group_id,
+      member: member_id
+    });
+    return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/removeMember', parameter,
+      {withCredentials: true});
+  }
+
 }

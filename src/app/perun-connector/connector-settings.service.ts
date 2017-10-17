@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {stringDistance} from "codelyzer/util/utils";
 
 @Injectable()
 export class PerunSettings {
@@ -20,4 +21,13 @@ export class PerunSettings {
     return 3334;
   }
 
+  /*
+    returns the current used IdP service, which is configured with shibboleth
+    Reuired for the member identification by VO and elixir ID
+   */
+  getUserExtSource(): string{
+    return "https://login.elixir-czech.org/idp/";
+  }
+
 }
+

@@ -1,41 +1,149 @@
 <div class="animated fadeIn" ng-app>
-  <div class="row">
-    <!--/.col-->
-    <h1>Projects Overview</h1>
-    <div class="col-lg-12">
-      <div class="card">
-        <div class="card-header">
-          <i class="fa fa-align-justify"></i> Projects
+    <div class="row">
+        <!--/.col-->
+        <h1>Projects Overview</h1>
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Projects
+                </div>
+                <div class="card-block">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Project ID</th>
+                            <th>Project Name</th>
+                            <th>Description</th>
+                            <th>Date created</th>
+                            <th>Days running</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let project of projects">
+                            <td>{{ project.Id }}</td>
+                            <td>{{ project.Name }}</td>
+                            <td>{{ project.Description }}</td>
+                            <td>{{ project.DateCreated }}</td>
+                            <td>{{ project.DaysRunning }}</td>
+                            <td>
+                                <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                        (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
+                                        *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
+                                    <i class="fa fa-users"></i>&nbsp;Show Members
+                                </button>
+                                <button (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name); addUserModal.show();"
+                                        *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
+                                        type="button"
+                                        class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="card-block">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Project ID</th>
-                <th>Project Name</th>
-                <th>Description</th>
-                <th>Date created</th>
-                <th>Days running</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let project of projects" >
-                <td>{{ project.Id }}</td>
-                <td>{{ project.Name }}</td>
-                <td>{{ project.Description }}</td>
-                <td>{{ project.DateCreated }}</td>
-                <td>{{ project.DaysRunning }}</td>
-                <td>
-                  <button (click)="comingSoon()" *ngIf="project.UserIsPi == true" type="button" class="btn btn-secondary"><i class="fa fa-users"></i>&nbsp; Users</button>
-                  <button (click)="comingSoon()" *ngIf="project.UserIsAdmin == true" type="button" class="btn btn-secondary"><i class="fa fa-cogs"></i>&nbsp; Administration</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+        <!--/.col-->
     </div>
-    <!--/.col-->
-  </div>
 </div>
+
+
+<div bsModal #usersModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
+                    ({{ usersModalProjectName }})</h4>
+                <button type="button" class="close" (click)="usersModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Member ID</th>
+                        <th>Full Name</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let member of usersModalProjectMembers">
+                        <td>{{ member.Id }}</td>
+                        <td>{{ member.MemberId }}</td>
+                        <td>{{ member.Username }}</td>
+                        <td>
+                            <button (click)="usersModal.hide();
+                                                notificationModal.show();
+                                                removeMember(usersModalProjectID, member.MemberId);
+                                                updateUserProjects();" class="btn btn-secondary" type="button">
+                                <i class="fa fa-trash"></i>&nbsp; Remove member
+                            </button>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #addUserModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add member to the project {{ addUserModalProjectID }}
+                    ({{ addUserModalProjectName }})</h4>
+            </div>
+            <div class="modal-body">
+                <p>To add new user to the project please enter the user ID of the new user.</p>
+                <div class="input-group">
+                                    <span class="input-group-addon">UserID
+                                    </span>
+                    <input #addMemberID type="number" id="addMemberID" name="addMemberID" class="form-control"
+                           placeholder="UserID">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="addUserModal.hide();
+                                                notificationModal.show();
+                                                addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
+                    Add User
+                </button>
+                <button type="button" (click)="addUserModalProjectID = -1; addUserModal.hide();" type="reset"
+                        class="btn  btn-danger"><i class="fa fa-ban"></i> Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-{{ notificationModalType }}" role="alert">
+                    {{ notificationModalMessage }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="notificationModalIsClosable == true" type="button" (click)="resetNotificaitonModal(); notificationModal.hide();" type="reset"
+                        class="btn  btn-secondary"> Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

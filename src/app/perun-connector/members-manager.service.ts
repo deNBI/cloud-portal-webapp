@@ -18,4 +18,15 @@ export class MembersManager {
     });
   }
 
+  getMemberByExtSourceNameAndExtLogin(ext_login: string) {
+    var vo = this.settings.getPerunVO();
+    var idp = this.settings.getUserExtSource();
+    return this.http.get(this.settings.getPerunBaseURL() + `membersManager/getMemberByExtSourceNameAndExtLogin`, {
+      withCredentials: true,
+      params: {extSourceName: idp,
+               extLogin: ext_login,
+               vo: vo}
+    });
+  }
+
 }
