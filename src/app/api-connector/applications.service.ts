@@ -12,11 +12,31 @@ export class ApplicationsService {
   }
 
   getUserApplications() {
-    return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', {withCredentials: true, params:{format: this.settings.getApiFormat()}});
+    return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', {
+      withCredentials: true,
+      params: {format: this.settings.getApiFormat()}
+    });
   }
 
   getAllApplications() {
-    return this.http.get(this.settings.getApiBaseURL() + 'all_applications/', {withCredentials: true, params:{format: this.settings.getApiFormat()}});
+    return this.http.get(this.settings.getApiBaseURL() + 'all_applications/', {
+      withCredentials: true,
+      params: {format: this.settings.getApiFormat()}
+    });
+  }
+
+  addNewApplication(data) {
+    let parameter = data;
+    let header = new Headers({
+      'X-CSRFToken': this.settings.getCSRFToken(),
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post(this.settings.getApiBaseURL() + 'add_application/', parameter,
+      {
+        headers: header,
+        withCredentials: true
+      });
   }
 
 }

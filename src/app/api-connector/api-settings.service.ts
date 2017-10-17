@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-
+import {Cookie} from 'ng2-cookies/ng2-cookies';
 @Injectable()
 export class ApiSettings {
   constructor() {}
@@ -17,6 +17,10 @@ export class ApiSettings {
    */
   getApiFormat(): string{
     return 'json';
+  }
+
+  getCSRFToken(): string{
+    return Cookie.get("csrftoken");
   }
 
 }

@@ -14,6 +14,7 @@ export class Application{
   private _DateSubmitted: string;
   private _DateStatusChanged: string;
   private _User: number;
+  private _UserEmail: number;
   private _Status: number;
 
   constructor(){}
@@ -144,5 +145,14 @@ export class Application{
 
   set Status(value: number) {
     this._Status = value;
+  }
+
+
+  get UserEmail(): number {
+    return this._UserEmail;
+  }
+
+  set UserEmail(value: number) {
+    this._UserEmail = value;
   }
 }

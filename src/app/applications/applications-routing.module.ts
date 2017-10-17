@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ApplicationsComponent } from './applications.component';
+import { AddApplicationComponent } from './addapplication.component';
 
 const routes: Routes = [
   {
@@ -9,6 +10,14 @@ const routes: Routes = [
     component: ApplicationsComponent,
     data: {
       title: 'Application overview'
+    }
+
+  },
+  {
+    path: 'new',
+    component: AddApplicationComponent,
+    data: {
+      title: 'New Application'
     }
 
   }
