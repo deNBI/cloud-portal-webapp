@@ -1,5 +1,5 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-
+import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 @Injectable()
 export class ApiSettings ***REMOVED***
   constructor() ***REMOVED******REMOVED***
@@ -17,6 +17,10 @@ export class ApiSettings ***REMOVED***
    */
   getApiFormat(): string***REMOVED***
     return 'json';
+  ***REMOVED***
+
+  getCSRFToken(): string***REMOVED***
+    return Cookie.get("csrftoken");
   ***REMOVED***
 
 ***REMOVED***

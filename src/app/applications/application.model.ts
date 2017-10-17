@@ -14,6 +14,7 @@ export class Application***REMOVED***
   private _DateSubmitted: string;
   private _DateStatusChanged: string;
   private _User: number;
+  private _UserEmail: number;
   private _Status: number;
 
   constructor()***REMOVED******REMOVED***
@@ -144,5 +145,14 @@ export class Application***REMOVED***
 
   set Status(value: number) ***REMOVED***
     this._Status = value;
+  ***REMOVED***
+
+
+  get UserEmail(): number ***REMOVED***
+    return this._UserEmail;
+  ***REMOVED***
+
+  set UserEmail(value: number) ***REMOVED***
+    this._UserEmail = value;
   ***REMOVED***
 ***REMOVED***
