@@ -1,43 +1,53 @@
 <header class="app-header navbar">
-  <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>&#9776;</button>
-  <a class="navbar-brand" href="#"></a>
+    <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>&#9776;</button>
+    <a class="navbar-brand" href="#"></a>
+    <h4 style="color: #FF4500;margin-right: 20px;">This version of portal works only after login on the <a target="_blank" href="https://perun.elixir-czech.cz/fed/gui">Perun platform</a>!</h4>
 </header>
-
 <div class="app-body">
-  <div class="sidebar">
-    <nav class="sidebar-nav">
-      <ul class="nav">
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/userinfo']"><i class="icon-user"></i> User Information </a>
-        </li>
-        <li class="divider"></li>
-         <li class="nav-title">
-          Project management
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/project-management']"><i class="icon-briefcase"></i> Project Overview</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications']"><i class="icon-drawer"></i> Applications</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
+    <div class="sidebar">
+        <nav class="sidebar-nav">
+            <ul class="nav">
+                <li class="nav-title">
+                    Profile
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/userinfo']"><i class="icon-user"></i>
+                        User Information </a>
+                </li>
+                <li class="divider"></li>
+                <li class="nav-title">
+                    Project management
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/project-management']"><i
+                            class="icon-briefcase"></i> Project Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications']"><i
+                            class="icon-drawer"></i> Applications</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications/new']"><i
+                            class="icon-pencil"></i> New Application</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
-  <!-- Main content -->
-  <main class="main">
+    <!-- Main content -->
+    <main class="main">
 
-    <!-- Breadcrumb -->
-    <ol class="breadcrumb">
-      <app-breadcrumbs></app-breadcrumbs>
-    </ol>
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb">
+            <app-breadcrumbs></app-breadcrumbs>
+        </ol>
 
-    <div class="container-fluid">
-      <router-outlet></router-outlet>
-    </div><!-- /.conainer-fluid -->
-  </main>
+        <div class="container-fluid">
+            <router-outlet></router-outlet>
+        </div><!-- /.conainer-fluid -->
+    </main>
 </div>
 
 <footer class="app-footer">
-  <a href="http://denbi.de">de.NBI</a> &copy; {{ year }}
+    <a href="http://denbi.de">de.NBI</a> &copy; {{ year }}
 </footer>
