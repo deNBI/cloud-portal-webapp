@@ -3,7 +3,7 @@ export class  Userinfo***REMOVED***
   private _Id: number;
   private _FirstName: string;
   private _LastName: string;
-
+  private _MemberId:number;
   constructor()***REMOVED***
     this.LastName = " ";
     this.FirstName = " ";
@@ -34,5 +34,11 @@ export class  Userinfo***REMOVED***
     this._LastName = value;
   ***REMOVED***
 
+  get MemberId(): number ***REMOVED***
+    return this._MemberId;
+  ***REMOVED***
 
+  set MemberId(value: number) ***REMOVED***
+    this._MemberId = value;
+  ***REMOVED***
 ***REMOVED***

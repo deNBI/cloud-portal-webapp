@@ -3,15 +3,16 @@ import 'rxjs/add/operator/toPromise';
 import ***REMOVED***Userinfo***REMOVED*** from './userinfo.model'
 import ***REMOVED***AuthzResolver***REMOVED*** from '../perun-connector/authz-resolver.service'
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
+import ***REMOVED***MembersManager***REMOVED*** from '../perun-connector/members-manager.service'
 
 @Component(***REMOVED***
   templateUrl: 'userinfo.component.html',
-  providers: [AuthzResolver, PerunSettings]
+  providers: [AuthzResolver, PerunSettings, MembersManager]
 ***REMOVED***)
 export class UserinfoComponent ***REMOVED***
   userinfo: Userinfo;
 
-  constructor(private authzresolver: AuthzResolver) ***REMOVED***
+  constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager) ***REMOVED***
     this.userinfo = new Userinfo();
     this.getUserinfo();
   ***REMOVED***
@@ -25,7 +26,11 @@ export class UserinfoComponent ***REMOVED***
         this.userinfo.LastName = res["lastName"];
         this.userinfo.Id = res["id"];
 
-      ***REMOVED***)
+        return this.memberssmanager.getMemberByUser(res["id"]).toPromise();
+
+      ***REMOVED***).then(memberinfo => ***REMOVED***
+      this.userinfo.MemberId = memberinfo.json()["id"];
+    ***REMOVED***);
   ***REMOVED***
 
 ***REMOVED***
