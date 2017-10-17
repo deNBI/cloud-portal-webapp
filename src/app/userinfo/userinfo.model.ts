@@ -3,7 +3,7 @@ export class  Userinfo{
   private _Id: number;
   private _FirstName: string;
   private _LastName: string;
-
+  private _MemberId:number;
   constructor(){
     this.LastName = " ";
     this.FirstName = " ";
@@ -34,5 +34,11 @@ export class  Userinfo{
     this._LastName = value;
   }
 
+  get MemberId(): number {
+    return this._MemberId;
+  }
 
+  set MemberId(value: number) {
+    this._MemberId = value;
+  }
 }
