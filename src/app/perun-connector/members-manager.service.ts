@@ -18,4 +18,15 @@ export class MembersManager ***REMOVED***
     ***REMOVED***);
   ***REMOVED***
 
+  getMemberByExtSourceNameAndExtLogin(ext_login: string) ***REMOVED***
+    var vo = this.settings.getPerunVO();
+    var idp = this.settings.getUserExtSource();
+    return this.http.get(this.settings.getPerunBaseURL() + `membersManager/getMemberByExtSourceNameAndExtLogin`, ***REMOVED***
+      withCredentials: true,
+      params: ***REMOVED***extSourceName: idp,
+               extLogin: ext_login,
+               vo: vo***REMOVED***
+    ***REMOVED***);
+  ***REMOVED***
+
 ***REMOVED***

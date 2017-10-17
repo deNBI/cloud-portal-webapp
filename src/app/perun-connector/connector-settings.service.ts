@@ -1,4 +1,5 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
+import ***REMOVED***stringDistance***REMOVED*** from "codelyzer/util/utils";
 
 @Injectable()
 export class PerunSettings ***REMOVED***
@@ -20,4 +21,13 @@ export class PerunSettings ***REMOVED***
     return 3334;
   ***REMOVED***
 
+  /*
+    returns the current used IdP service, which is configured with shibboleth
+    Reuired for the member identification by VO and elixir ID
+   */
+  getUserExtSource(): string***REMOVED***
+    return "https://login.elixir-czech.org/idp/";
+  ***REMOVED***
+
 ***REMOVED***
+

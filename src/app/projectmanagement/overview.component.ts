@@ -1,4 +1,4 @@
-import ***REMOVED***Component***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, ViewChild***REMOVED*** from '@angular/core';
 import ***REMOVED***AuthzResolver***REMOVED*** from '../perun-connector/authz-resolver.service'
 import ***REMOVED***GroupsManager***REMOVED*** from '../perun-connector/groups-manager.service'
 import ***REMOVED***MembersManager***REMOVED*** from '../perun-connector/members-manager.service'
@@ -6,8 +6,11 @@ import ***REMOVED***UsersManager***REMOVED*** from '../perun-connector/users-man
 import ***REMOVED***Http***REMOVED*** from '@angular/http';
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***Project***REMOVED*** from './project.model';
+import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
+import ***REMOVED***ProjectMember***REMOVED*** from './project_member.model'
 
 import 'rxjs/add/operator/toPromise';
+import ***REMOVED***isNumber***REMOVED*** from "util";
 @Component(***REMOVED***
   templateUrl: 'overview.component.html',
   providers: [AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings]
@@ -24,13 +27,36 @@ export class OverviewComponent ***REMOVED***
   adminvos: ***REMOVED******REMOVED***;
   projects: Project[] = new Array();
 
+  // modal variables for User list
+  public usersModal;
+  public usersModalProjectMembers: ProjectMember[] = new Array;
+  public usersModalProjectID: number;
+  public usersModalProjectName: string;
+
+  //modal variables for Add User Modal
+  public addUserModal;
+  public addUserModalProjectID: number;
+  public addUserModalProjectName: string;
+
+
+  //notification Modal variables
+  public notificationModal;
+  public notificationModalTitle: string = "Notification";
+  public notificationModalMessage: string = "Please wait...";
+  public notificationModalType: string = "info";
+  public notificationModalIsClosable: boolean = false;
 
   constructor(private authzresolver: AuthzResolver,
               private perunsettings: PerunSettings,
-              useresmanager: UsersManager,
-              groupsmanager: GroupsManager,
-              membersmanager: MembersManager) ***REMOVED***
+              private useresmanager: UsersManager,
+              private groupsmanager: GroupsManager,
+              private membersmanager: MembersManager) ***REMOVED***
     this.getUserProjects(groupsmanager, membersmanager, useresmanager);
+  ***REMOVED***
+
+  public updateUserProjects()***REMOVED***
+    this.projects = [];
+    this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
   ***REMOVED***
 
   getUserProjects(groupsmanager: GroupsManager,
@@ -118,8 +144,97 @@ export class OverviewComponent ***REMOVED***
 
     ***REMOVED***);
     // .then( function()***REMOVED*** groupsmanager.getGroupsWhereUserIsAdmin(this.userid); ***REMOVED***);
+  ***REMOVED***
+
+  public resetAddUserModal()***REMOVED***
+    this.addUserModalProjectID = null;
+    this.addUserModalProjectName = null;
+  ***REMOVED***
+
+    getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
+    this.groupsmanager.getGroupRichMembers(projectid).toPromise()
+      .then(function (members_raw) ***REMOVED***
+        return members_raw.json();
+      ***REMOVED***).then(members => ***REMOVED***
+      this.usersModalProjectID = projectid;
+      this.usersModalProjectName = projectname;
+      this.usersModalProjectMembers = new Array();
+      for (let member of members) ***REMOVED***
+        let member_id = member["id"];
+        let user_id = member["userId"];
+        let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
+        this.usersModalProjectMembers.push(new ProjectMember(user_id, fullName, member_id));
+      ***REMOVED***
+
+    ***REMOVED***);
+  ***REMOVED***
+
+  public showMembersOfTheProject(projectid: number, projectname: string) ***REMOVED***
+    this.getMembesOfTheProject(projectid, projectname);
+  ***REMOVED***
 
 
+  public resetNotificaitonModal() ***REMOVED***
+    this.notificationModalTitle = "Notification";
+    this.notificationModalMessage = "Please wait...";
+    this.notificationModalIsClosable = false;
+    this.notificationModalType = "info";
+  ***REMOVED***
+
+  public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
+    this.notificationModalTitle = title;
+    this.notificationModalMessage = message;
+    this.notificationModalIsClosable = closable;
+    this.notificationModalType = type;
+  ***REMOVED***
+
+  public makeNotificationModalClosable(closable: boolean) ***REMOVED***
+    this.notificationModalIsClosable = closable;
+  ***REMOVED***
+
+  public changeNotificationModalTitle(title: string) ***REMOVED***
+    this.notificationModalTitle = title;
+  ***REMOVED***
+
+  public changeNotificationModalMessage(message: string) ***REMOVED***
+    this.notificationModalMessage = message;
+  ***REMOVED***
+
+  public changeNotificationModalType(type: string) ***REMOVED***
+    this.notificationModalType = type;
+  ***REMOVED***
+
+  public showAddUserToProjectModal(projectid: number, projectname: string) ***REMOVED***
+    this.addUserModalProjectID = projectid;
+    this.addUserModalProjectName = projectname;
+  ***REMOVED***
+
+  public addMember(groupid:number, memberid:number)***REMOVED***
+    this.groupsmanager.addMember(groupid, memberid).toPromise()
+      .then(result => ***REMOVED***
+        if(result.status == 200)***REMOVED***
+          this.updateNotificaitonModal("Success", "Member " + memberid + " added.", true, "success");
+
+        ***REMOVED***else***REMOVED***
+          this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+        ***REMOVED***
+      ***REMOVED***).catch(error =>***REMOVED***
+        this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+    ***REMOVED***);
+  ***REMOVED***
+
+  public removeMember(groupid:number, memberid:number)***REMOVED***
+    this.groupsmanager.removeMember(groupid, memberid).toPromise()
+      .then(result => ***REMOVED***
+        if(result.status == 200)***REMOVED***
+          this.updateNotificaitonModal("Success", "Member " + memberid + "deletrd from the group", true, "success");
+
+        ***REMOVED***else***REMOVED***
+          this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
+        ***REMOVED***
+      ***REMOVED***).catch(error =>***REMOVED***
+        this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
+    ***REMOVED***);
   ***REMOVED***
 
   public comingSoon() ***REMOVED***

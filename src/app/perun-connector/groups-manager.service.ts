@@ -28,4 +28,38 @@ export class GroupsManager ***REMOVED***
       ***REMOVED***withCredentials: true***REMOVED***);
   ***REMOVED***
 
+  getGroupRichMembers(group_id: number) ***REMOVED***
+    return this.http.get(this.settings.getPerunBaseURL() + 'groupsManager/getGroupRichMembers', ***REMOVED***
+      withCredentials: true,
+      params: ***REMOVED***group: group_id***REMOVED***
+    ***REMOVED***);
+  ***REMOVED***
+
+  addMember(group_id: number, member_id: number) ***REMOVED***
+    var parameter = JSON.stringify(***REMOVED***
+      group: group_id,
+      member: member_id
+    ***REMOVED***);
+    return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/addMember', parameter,
+      ***REMOVED***withCredentials: true***REMOVED***);
+  ***REMOVED***
+
+  addAdmin(group_id: number, user_id: number) ***REMOVED***
+    var parameter = JSON.stringify(***REMOVED***
+      group: group_id,
+      user: user_id
+    ***REMOVED***);
+    return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/addAdmin', parameter,
+      ***REMOVED***withCredentials: true***REMOVED***);
+  ***REMOVED***
+
+  removeMember(group_id: number, member_id: number) ***REMOVED***
+    var parameter = JSON.stringify(***REMOVED***
+      group: group_id,
+      member: member_id
+    ***REMOVED***);
+    return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/removeMember', parameter,
+      ***REMOVED***withCredentials: true***REMOVED***);
+  ***REMOVED***
+
 ***REMOVED***
