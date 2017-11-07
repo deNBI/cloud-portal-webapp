@@ -7,6 +7,10 @@ import { ApplicationsRoutingModule } from './applications-routing.module';
 import {CommonModule} from "@angular/common";
 import {FormsModule} from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import {ImageDetailComponent} from "./imagedetail.component";
+import {VirtualMachineComponent} from "./addvm.component";
+import {FlavorDetailComponent} from './flavordetail.component';
+
 
 @NgModule({
   imports: [
@@ -14,11 +18,16 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     TabsModule,
     CommonModule,
     FormsModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+
+
   ],
   declarations: [
     ApplicationsComponent,
-    AddApplicationComponent
+    AddApplicationComponent,
+    ImageDetailComponent,
+    VirtualMachineComponent,
+    FlavorDetailComponent
 
   ]
 })

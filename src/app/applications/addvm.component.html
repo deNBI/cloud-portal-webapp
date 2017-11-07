@@ -1,0 +1,94 @@
+<div class="animated fadeIn">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <strong>New VirtualMachine</strong>
+                    – Formular
+                </div>
+
+                <div class="card-body">
+                    <form id="application_form" #f="ngForm" class="form-horizontal">
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label" for="textarea-input"><strong>Name</strong></label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <input required class="form-control" id="id_vm_name"
+                                           name="vm_name"
+                                           placeholder="Name"
+                                           type="string"  ngModel>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label" ><strong>Flavor</strong></label>
+                            <div class="col-md-9">
+
+
+                                    <select class="form-control col-md-9>" name="selectedFlavor"  [(ngModel)]="selectedFlavor" >
+
+                                      <option *ngFor="  let flavor of flavors" [ngValue]="flavor"> {{flavor.name}} </option>
+
+                                    </select>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label" ><strong>Image</strong></label>
+                            <div class="col-md-9">
+
+                                    <select class="form-control col-md-9>" name="selectedImage" [(ngModel)]="selectedImage">
+                                      <option *ngFor="let image of images" [ngValue]="image"> {{image.name}} </option>
+
+                                    </select>
+
+
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group row">
+                            <label class="col-md-3 form-control-label" for="textarea-input"><strong>Key</strong></label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <input class="form-control" id="id_vm_key"
+                                           name="vm_key"
+                                           placeholder="Key"
+                                           type="string"  ngModel>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <br>
+                      <button type="button" class="btn btn-primary float-right">Start VM</button>
+
+                    </form>
+
+        </div>
+        <!--/.col-->
+
+    </div>
+        </div>
+      <div class="col-md-6">
+        <div><flavor-detail [flavor]="selectedFlavor" ></flavor-detail></div>
+       <div><image-detail [image]="selectedImage"></image-detail></div>
+
+      </div>
+
+    </div>
+</div>
+
+
+
+
+
