@@ -7,6 +7,10 @@ import ***REMOVED*** ApplicationsRoutingModule ***REMOVED*** from './application
 import ***REMOVED***CommonModule***REMOVED*** from "@angular/common";
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED*** ModalModule ***REMOVED*** from 'ngx-bootstrap/modal';
+import ***REMOVED***ImageDetailComponent***REMOVED*** from "./imagedetail.component";
+import ***REMOVED***VirtualMachineComponent***REMOVED*** from "./addvm.component";
+import ***REMOVED***FlavorDetailComponent***REMOVED*** from './flavordetail.component';
+
 
 @NgModule(***REMOVED***
   imports: [
@@ -14,11 +18,16 @@ import ***REMOVED*** ModalModule ***REMOVED*** from 'ngx-bootstrap/modal';
     TabsModule,
     CommonModule,
     FormsModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+
+
   ],
   declarations: [
     ApplicationsComponent,
-    AddApplicationComponent
+    AddApplicationComponent,
+    ImageDetailComponent,
+    VirtualMachineComponent,
+    FlavorDetailComponent
 
   ]
 ***REMOVED***)

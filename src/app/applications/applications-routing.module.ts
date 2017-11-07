@@ -3,7 +3,8 @@ import ***REMOVED*** Routes, RouterModule ***REMOVED*** from '@angular/router';
 
 import ***REMOVED*** ApplicationsComponent ***REMOVED*** from './applications.component';
 import ***REMOVED*** AddApplicationComponent ***REMOVED*** from './addapplication.component';
-
+import  ***REMOVED*** ImageDetailComponent***REMOVED*** from './imagedetail.component';
+import ***REMOVED*** VirtualMachineComponent***REMOVED*** from './addvm.component';
 const routes: Routes = [
   ***REMOVED***
     path: '',
@@ -19,6 +20,11 @@ const routes: Routes = [
     data: ***REMOVED***
       title: 'New Application'
     ***REMOVED***
+
+  ***REMOVED***,
+  ***REMOVED***
+    path: 'newVM',
+    component: VirtualMachineComponent,
 
   ***REMOVED***
 ];
