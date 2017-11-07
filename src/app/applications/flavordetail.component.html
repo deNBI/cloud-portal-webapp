@@ -1,0 +1,25 @@
+<div class="card">
+  <div class="card-header">
+                    <strong>Flavor</strong>
+                    –Info
+                </div>
+  <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Ram</th>
+                            <th>Disk</th>
+                            <th>Vcpus</th>
+
+                        </tr>
+
+                        </thead>
+                        <tbody *ngIf="flavor">
+                         <td>{{flavor.name}}</td>
+                            <td>{{flavor.ram}}</td>
+                            <td>{{flavor.disk}}</td>
+                            <td>{{flavor.vcpus}}</td>
+                        </tbody>
+                    </table>
+
+   </div>
