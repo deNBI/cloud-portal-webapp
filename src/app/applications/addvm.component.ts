@@ -34,11 +34,18 @@ export class VirtualMachineComponent implements OnInit***REMOVED***
  onSelectImage(image: Image): void ***REMOVED***
   this.selectedImage = image;
 ***REMOVED***
+checkMetadataKeys(key:string):boolean***REMOVED***
+for(let metadata of this.metadatalist)***REMOVED***
+  if(metadata.key == key)***REMOVED***return false;***REMOVED***
+***REMOVED***
+return true;
+***REMOVED***
 
 addMetadataItem(key:string,value:string):void ***REMOVED***
-if (key  && value )***REMOVED***this.metadatalist.push(new Metadata(key,value));***REMOVED***
+if (key  && value && this.checkMetadataKeys(key) )***REMOVED***this.metadatalist.push(new Metadata(key,value));***REMOVED***
 
 ***REMOVED***
+
 deleteMetadataItem(metadata:Metadata):void***REMOVED***
 this.metadatalist.splice(this.metadatalist.indexOf(metadata,1));
 ***REMOVED***
