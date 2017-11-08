@@ -68,25 +68,39 @@
                             </div>
                         </div>
 
-                      <div >
+                      <div class="form-group row" >
                         <label class="col-md-3 form-control-label" ><strong>Metadata</strong></label>
+                      </div>
                          <div class="form-group col">
-                          <li *ngFor="let metadata of metadatalist">***REMOVED******REMOVED***metadata.key***REMOVED******REMOVED*** :***REMOVED******REMOVED***metadata.value***REMOVED******REMOVED***
-                            <button (click)="deleteMetadataItem(metadata)"><strong>-</strong></button>
-                          </li> </div>
-
+                             <table class="table">
+                                 <thead>
+                                    <tr>
+                                        <th>Key</th>
+                                        <th>Value</th>
+                                        <th>remove key</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                 <tr *ngFor="let metadata of metadatalist">
+                                     <td>***REMOVED******REMOVED***metadata.key***REMOVED******REMOVED***</td>
+                                    <td>***REMOVED******REMOVED***metadata.value***REMOVED******REMOVED***</td>
+                                     <td><button (click)="deleteMetadataItem(metadata)"><strong>-</strong></button></td>
+                                 </tr>
+                                 </tbody>
+                             </table>
+                          </div>
 
 
                        <input   type="text" placeholder="Key"  #key>
                          <input   type="text" placeholder="Value"  #value>
                        <button (click)="addMetadataItem(key.value,value.value)"><strong>+</strong></button>
-                      </div>
-                        <br>
+
+                        <br><br><br>
                       <button type="button" class="btn btn-primary float-right">Start VM</button>
 
                     </form>
 
-        </div>
+                </div>
         <!--/.col-->
 
     </div>

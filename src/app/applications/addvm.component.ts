@@ -47,7 +47,7 @@ if (key  && value && this.checkMetadataKeys(key) )***REMOVED***this.metadatalist
 ***REMOVED***
 
 deleteMetadataItem(metadata:Metadata):void***REMOVED***
-this.metadatalist.splice(this.metadatalist.indexOf(metadata,1));
+this.metadatalist.splice(this.metadatalist.indexOf(metadata),1);
 ***REMOVED***
   ngOnInit(): void ***REMOVED***
   this.getImages();
