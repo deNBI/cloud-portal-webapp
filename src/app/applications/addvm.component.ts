@@ -5,6 +5,7 @@ import ***REMOVED*** ImageService ***REMOVED*** from '../api-connector/image.ser
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***ImageDetailComponent***REMOVED*** from "./imagedetail.component";
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
+import ***REMOVED***Metadata***REMOVED*** from '../virtualmachinemodels/metadata';
 
 @Component(***REMOVED***
   selector: 'new-vm',
@@ -15,6 +16,7 @@ export class VirtualMachineComponent implements OnInit***REMOVED***
 
   constructor (private imageService:ImageService,private  flavorService:FlavorService)***REMOVED******REMOVED***
   images:Image[];
+  metadatalist:Metadata []=[]
   flavors:Flavor[];
   selectedImage:Image;
   selectedFlavor:Flavor;
@@ -31,6 +33,14 @@ export class VirtualMachineComponent implements OnInit***REMOVED***
 ***REMOVED***
  onSelectImage(image: Image): void ***REMOVED***
   this.selectedImage = image;
+***REMOVED***
+
+addMetadataItem(key:string,value:string):void ***REMOVED***
+if (key  && value )***REMOVED***this.metadatalist.push(new Metadata(key,value));***REMOVED***
+
+***REMOVED***
+deleteMetadataItem(metadata:Metadata):void***REMOVED***
+this.metadatalist.splice(this.metadatalist.indexOf(metadata,1));
 ***REMOVED***
   ngOnInit(): void ***REMOVED***
   this.getImages();
