@@ -72,12 +72,12 @@
                         <label class="col-md-3 form-control-label" ><strong>Metadata</strong></label>
                       </div>
                          <div class="form-group col">
-                             <table class="table" *ngIf="metadatalist?.length >0">
-                                 <thead>
+                             <table class="table" >
+                                 <thead >
                                     <tr>
                                         <th>Key</th>
                                         <th>Value</th>
-                                        <th></th>
+                                        <th>Add/Remove</th>
                                     </tr>
                                  </thead>
                                  <tbody>
@@ -86,14 +86,17 @@
                                     <td>***REMOVED******REMOVED***metadata.value***REMOVED******REMOVED***</td>
                                      <td><button (click)="deleteMetadataItem(metadata)"><strong>-</strong></button></td>
                                  </tr>
+                                 <tr >
+                                   <td> <input   type="text" placeholder="Key"  #key></td>
+                                   <td><input   type="text" placeholder="Value"  #value></td>
+                                   <td><button (click)="addMetadataItem(key.value,value.value)"><strong>+</strong></button> </td>
+
+                                 </tr>
                                  </tbody>
                              </table>
 
 
-
-                       <input   type="text" placeholder="Key"  #key>
-                         <input   type="text" placeholder="Value"  #value>
-                       <button (click)="addMetadataItem(key.value,value.value)"><strong>+</strong></button> </div>
+                         </div>
 
                         <br><br><br>
                       <button type="button" class="btn btn-primary float-right">Start VM</button>
