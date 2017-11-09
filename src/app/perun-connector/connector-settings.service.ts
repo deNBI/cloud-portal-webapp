@@ -10,7 +10,7 @@ export class PerunSettings ***REMOVED***
     All requiest inside of the perun-connector use it on order to make requests
    */
   getPerunBaseURL(): string ***REMOVED***
-    return 'https://perun.elixir-czech.cz/fed-denbi/rpc/json/';
+    return 'https://perun.elixir-czech.cz/oauth/rpc/json/';
   ***REMOVED***
 
   /*

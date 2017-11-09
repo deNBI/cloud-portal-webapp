@@ -11,9 +11,10 @@ import ***REMOVED***ProjectMember***REMOVED*** from './project_member.model'
 
 import 'rxjs/add/operator/toPromise';
 import ***REMOVED***isNumber***REMOVED*** from "util";
+import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 @Component(***REMOVED***
   templateUrl: 'overview.component.html',
-  providers: [AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings]
+  providers: [AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 ***REMOVED***)
 export class OverviewComponent ***REMOVED***
 

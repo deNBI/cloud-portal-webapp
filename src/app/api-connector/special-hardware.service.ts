@@ -12,7 +12,9 @@ export class SpecialHardwareService ***REMOVED***
   ***REMOVED***
 
   getAllSpecialHardware() ***REMOVED***
-    return this.http.get(this.settings.getApiBaseURL() + 'special_hardware/', ***REMOVED***withCredentials: true, params:***REMOVED***format: this.settings.getApiFormat()***REMOVED******REMOVED***);
+    return this.http.get(this.settings.getApiBaseURL() + 'special_hardware/', ***REMOVED***
+      withCredentials: true,
+      params:***REMOVED***format: this.settings.getApiFormat()***REMOVED******REMOVED***);
   ***REMOVED***
 
 ***REMOVED***

@@ -77,7 +77,7 @@ export class AddApplicationComponent ***REMOVED***
         this.updateNotificaitonModal("Success", "The application was submitted", true, "success");
         this.notificationModalStay = false;
       ***REMOVED***).catch(error => ***REMOVED***
-      this.updateNotificaitonModal("Failed", "The application was not submitted, please check the required fields ans try again.", true, "danger");
+      this.updateNotificaitonModal("Failed", "The application was not submitted, please check the required fields and try again.", true, "danger");
       this.notificationModalStay = true;
 
     ***REMOVED***)
