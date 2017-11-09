@@ -12,7 +12,9 @@ export class SpecialHardwareService {
   }
 
   getAllSpecialHardware() {
-    return this.http.get(this.settings.getApiBaseURL() + 'special_hardware/', {withCredentials: true, params:{format: this.settings.getApiFormat()}});
+    return this.http.get(this.settings.getApiBaseURL() + 'special_hardware/', {
+      withCredentials: true,
+      params:{format: this.settings.getApiFormat()}});
   }
 
 }

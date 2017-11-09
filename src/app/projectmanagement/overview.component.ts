@@ -11,9 +11,10 @@ import {ProjectMember} from './project_member.model'
 
 import 'rxjs/add/operator/toPromise';
 import {isNumber} from "util";
+import {ApiSettings} from "../api-connector/api-settings.service";
 @Component({
   templateUrl: 'overview.component.html',
-  providers: [AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings]
+  providers: [AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 

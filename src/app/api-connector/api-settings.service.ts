@@ -8,7 +8,7 @@ export class ApiSettings {
     Provides base URL with trailing slash for all Portal API calls.
    */
   getApiBaseURL(): string {
-    return 'https://portal-dev.denbi.de/portal/api/v0/';
+    return 'https://portal-dev.denbi.de/api/v0/';
   }
 
   /*
@@ -23,4 +23,7 @@ export class ApiSettings {
     return Cookie.get("csrftoken");
   }
 
+  getAccessToken(): string{
+    return Cookie.get("access_token");
+  }
 }

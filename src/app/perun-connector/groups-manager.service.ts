@@ -5,15 +5,16 @@ import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
+import {ApiSettings} from "../api-connector/api-settings.service";
 
 @Injectable()
 export class GroupsManager {
-  constructor(private http: Http, private settings: PerunSettings) {
+  constructor(private http: Http, private settings: PerunSettings, private apiSettings: ApiSettings) {
   }
 
   getMemberGroups(member_id: number) {
     return this.http.get(this.settings.getPerunBaseURL() + 'groupsManager/getMemberGroups', {
-      withCredentials: true,
+      headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
       params: {member: member_id}
     });
   }
@@ -25,12 +26,14 @@ export class GroupsManager {
       group: {name: group_name, description: group_description}
     });
     return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/createGroup', parameter,
-      {withCredentials: true});
+      {
+        headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      });
   }
 
   getGroupRichMembers(group_id: number) {
     return this.http.get(this.settings.getPerunBaseURL() + 'groupsManager/getGroupRichMembers', {
-      withCredentials: true,
+      headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
       params: {group: group_id}
     });
   }
@@ -41,7 +44,9 @@ export class GroupsManager {
       member: member_id
     });
     return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/addMember', parameter,
-      {withCredentials: true});
+      {
+      headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      });
   }
 
   addAdmin(group_id: number, user_id: number) {
@@ -50,7 +55,9 @@ export class GroupsManager {
       user: user_id
     });
     return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/addAdmin', parameter,
-      {withCredentials: true});
+      {
+        headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      });
   }
 
   removeMember(group_id: number, member_id: number) {
@@ -59,7 +66,9 @@ export class GroupsManager {
       member: member_id
     });
     return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/removeMember', parameter,
-      {withCredentials: true});
+      {
+        headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      });
   }
 
 }

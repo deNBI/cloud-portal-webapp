@@ -4,10 +4,11 @@ import {Userinfo} from './userinfo.model'
 import {AuthzResolver} from '../perun-connector/authz-resolver.service'
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {MembersManager} from '../perun-connector/members-manager.service'
+import {ApiSettings} from '../api-connector/api-settings.service'
 
 @Component({
   templateUrl: 'userinfo.component.html',
-  providers: [AuthzResolver, PerunSettings, MembersManager]
+  providers: [AuthzResolver, PerunSettings, MembersManager, ApiSettings]
 })
 export class UserinfoComponent {
   userinfo: Userinfo;
@@ -20,7 +21,6 @@ export class UserinfoComponent {
   getUserinfo() {
     this.authzresolver.getLoggedUser().toPromise()
       .then(result => {
-
         let res = result.json()
         this.userinfo.FirstName = res["firstName"];
         this.userinfo.LastName = res["lastName"];
