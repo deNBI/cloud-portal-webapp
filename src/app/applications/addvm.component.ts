@@ -5,16 +5,19 @@ import ***REMOVED*** ImageService ***REMOVED*** from '../api-connector/image.ser
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***ImageDetailComponent***REMOVED*** from "./imagedetail.component";
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
+import 'rxjs/Rx'
+
 import ***REMOVED***Metadata***REMOVED*** from '../virtualmachinemodels/metadata';
+import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
 
 @Component(***REMOVED***
   selector: 'new-vm',
   templateUrl: 'addvm.component.html',
-  providers:[ImageService,FlavorService]
+  providers:[ImageService,FlavorService,VirtualmachineService]
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit***REMOVED***
 
-  constructor (private imageService:ImageService,private  flavorService:FlavorService)***REMOVED******REMOVED***
+  constructor (private imageService:ImageService,private  flavorService:FlavorService,private virtualmachineservice:VirtualmachineService)***REMOVED******REMOVED***
   images:Image[];
   metadatalist:Metadata []=[]
   flavors:Flavor[];
@@ -22,17 +25,23 @@ export class VirtualMachineComponent implements OnInit***REMOVED***
   selectedFlavor:Flavor;
 
   getImages():void***REMOVED***
-  this.imageService.getImages().then(images => this.images = images);
+  this.imageService.getImages().subscribe(images => this.images = images);
   ***REMOVED***
  getFlavors():void***REMOVED***
-  this.flavorService.getFlavors().then(flavors => this.flavors = flavors);
+  this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
+
+  ***REMOVED***
+
+  startVM(flavor :string,image :string,key:string ,servername:string ):void***REMOVED***
+   this.virtualmachineservice.startVM(flavor, image,key,servername);
+
   ***REMOVED***
 
   onSelectFlavor(flavor: Flavor): void ***REMOVED***
   this.selectedFlavor = flavor;
 ***REMOVED***
  onSelectImage(image: Image): void ***REMOVED***
-  this.selectedImage = image;
+  this.selectedImage = image
 ***REMOVED***
 checkMetadataKeys(key:string):boolean***REMOVED***
 for(let metadata of this.metadatalist)***REMOVED***
