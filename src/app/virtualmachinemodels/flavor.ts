@@ -3,7 +3,7 @@ export class Flavor {
   name: string;
   vcpus: number;
   ram: number;
-  disk: number;
+  rootdisk: number;
 
 }
 

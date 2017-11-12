@@ -15,10 +15,7 @@
                             <label class="col-md-3 form-control-label" ><strong>Name</strong></label>
                             <div class="col-md-9">
                                 <div class="input-group">
-                                    <input required class="form-control" id="id_vm_name"
-                                           name="vm_name"
-                                           placeholder="Name"
-                                           type="string"  ngModel>
+                                     <input   type="text" placeholder="Servername"  #servername>
                                 </div>
                             </div>
                         </div>
@@ -57,10 +54,7 @@
                             <label class="col-md-3 form-control-label" ><strong>Key</strong></label>
                             <div class="col-md-9">
                                 <div class="input-group">
-                                    <input class="form-control" id="id_vm_key"
-                                           name="vm_key"
-                                           placeholder="Key"
-                                           type="string"  ngModel>
+                                     <input   type="text" placeholder="Key"  #serverkey>
 
 
                                 </div>
@@ -72,7 +66,7 @@
                         <label class="col-md-3 form-control-label" ><strong>Metadata</strong></label>
                       </div>
                          <div class="form-group col">
-                             <div class="table-responsive">
+                             <div class="table-striped">
                              <table class="table">
                                  <thead >
                                     <tr>
@@ -102,7 +96,7 @@
                               </div>
 
                         <br><br><br>
-                      <button type="button" class="btn btn-primary float-right">Start VM</button>
+                      <button type="button" (click)="startVM(selectedFlavor.name,selectedImage.name,serverkey.value,servername.value)" class="btn btn-primary float-right">Start VM</button>
 
                     </form>
 
