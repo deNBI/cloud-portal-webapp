@@ -1,118 +1,158 @@
 <div class="animated fadeIn">
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <strong>New VirtualMachine</strong>
-                    – Formular
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <strong>New VirtualMachine</strong>
+          – Formular
+        </div>
+
+        <div class="card-body">
+
+          <form id="application_form" #f="ngForm" class="form-horizontal">
+
+            <div class="form-group row">
+              <label class="col-md-3 form-control-label"><strong>Name</strong></label>
+              <div class="col-md-9">
+                <div class="input-group">
+                  <input type="text" placeholder="Servername" #servername>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-3 form-control-label"><strong>Flavor</strong></label>
+              <div class="col-md-9">
+
+
+                <select class="form-control col-md-9>" name="selectedFlavor" [(ngModel)]="selectedFlavor">
+
+                  <option *ngFor="  let flavor of flavors" [ngValue]="flavor"> ***REMOVED******REMOVED***flavor.name***REMOVED******REMOVED***</option>
+
+                </select>
+
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-3 form-control-label"><strong>Image</strong></label>
+              <div class="col-md-9">
+
+                <select class="form-control col-md-9>" name="selectedImage" [(ngModel)]="selectedImage">
+                  <option *ngFor="let image of images" [ngValue]="image"> ***REMOVED******REMOVED***image.name***REMOVED******REMOVED***</option>
+
+
+                </select>
+
+
+              </div>
+            </div>
+
+
+            <div class="form-group row">
+              <label class="col-md-3 form-control-label"><strong>Key</strong></label>
+              <div class="col-md-9">
+                <div class="input-group">
+                  <input type="text" placeholder="Key" #serverkey>
+
+
                 </div>
 
-                <div class="card-body">
-                    <form id="application_form" #f="ngForm" class="form-horizontal">
-
-                        <div class="form-group row">
-                            <label class="col-md-3 form-control-label" ><strong>Name</strong></label>
-                            <div class="col-md-9">
-                                <div class="input-group">
-                                     <input   type="text" placeholder="Servername"  #servername>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-md-3 form-control-label" ><strong>Flavor</strong></label>
-                            <div class="col-md-9">
+              </div>
+            </div>
 
 
-                                    <select class="form-control col-md-9>" name="selectedFlavor"  [(ngModel)]="selectedFlavor" >
-
-                                      <option *ngFor="  let flavor of flavors" [ngValue]="flavor"> ***REMOVED******REMOVED***flavor.name***REMOVED******REMOVED*** </option>
-
-                                    </select>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-md-3 form-control-label" ><strong>Image</strong></label>
-                            <div class="col-md-9">
-
-                                    <select class="form-control col-md-9>" name="selectedImage" [(ngModel)]="selectedImage">
-                                      <option *ngFor="let image of images" [ngValue]="image"> ***REMOVED******REMOVED***image.name***REMOVED******REMOVED*** </option>
-
-                                    </select>
-
-
-
-                            </div>
-                        </div>
-
+            <!-- <div class="form-group row" >
+               <label class="col-md-3 form-control-label" ><strong>Metadata</strong></label>
+             </div>
+                <div class="form-group col">
+                    <div class="table-striped">
+                    <table class="table">
+                        <thead >
+                           <tr>
+                               <th>Key</th>
+                               <th>Value</th>
+                               <th>Add/Remove</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let metadata of metadatalist">
+                            <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">***REMOVED******REMOVED***metadata.key***REMOVED******REMOVED***</td>
+                           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">***REMOVED******REMOVED***metadata.value***REMOVED******REMOVED***</td>
+                            <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal"><button (click)="deleteMetadataItem(metadata)"><strong>-</strong></button></td>
+                        </tr>
+                        </tbody>
+                    </table>
 
 
-                        <div class="form-group row">
-                            <label class="col-md-3 form-control-label" ><strong>Key</strong></label>
-                            <div class="col-md-9">
-                                <div class="input-group">
-                                     <input   type="text" placeholder="Key"  #serverkey>
+                          <input   type="text" placeholder="Key"  #key>
+                          <input   type="text" placeholder="Value"  #value>
+                          <button (click)="addMetadataItem(key.value,value.value)"><strong>+</strong></button>
 
 
-                                </div>
-
-                            </div>
-                        </div>
-
-                      <div class="form-group row" >
-                        <label class="col-md-3 form-control-label" ><strong>Metadata</strong></label>
-                      </div>
-                         <div class="form-group col">
-                             <div class="table-striped">
-                             <table class="table">
-                                 <thead >
-                                    <tr>
-                                        <th>Key</th>
-                                        <th>Value</th>
-                                        <th>Add/Remove</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                 <tr *ngFor="let metadata of metadatalist">
-                                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">***REMOVED******REMOVED***metadata.key***REMOVED******REMOVED***</td>
-                                    <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">***REMOVED******REMOVED***metadata.value***REMOVED******REMOVED***</td>
-                                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal"><button (click)="deleteMetadataItem(metadata)"><strong>-</strong></button></td>
-                                 </tr>
-                                 </tbody>
-                             </table>
+                   </div>
 
 
-                                   <input   type="text" placeholder="Key"  #key>
-                                   <input   type="text" placeholder="Value"  #value>
-                                   <button (click)="addMetadataItem(key.value,value.value)"><strong>+</strong></button>
+                     </div>-->
+
+            <br><br><br>
 
 
-                            </div>
+            <button type="button" class="btn btn-primary float-right" data-toggle="modal"
+                    (click)="startVM(selectedFlavor.name,selectedImage.name,serverkey.value,servername.value);resetData();infoModal.show();">
+              Start VM
+            </button>
+
+          </form>
+
+        </div>
 
 
-                              </div>
-
-                        <br><br><br>
-                      <button type="button" (click)="startVM(selectedFlavor.name,selectedImage.name,serverkey.value,servername.value)" class="btn btn-primary float-right">Start VM</button>
-
-                    </form>
-
-                </div>
         <!--/.col-->
 
+      </div>
     </div>
-        </div>
-      <div class="col-md-6">
-        <div><flavor-detail [flavor]="selectedFlavor" ></flavor-detail></div>
-       <div><image-detail [image]="selectedImage"></image-detail></div>
-
+    <div class="col-md-6">
+      <div>
+        <flavor-detail [flavor]="selectedFlavor"></flavor-detail>
+      </div>
+      <div>
+        <image-detail [image]="selectedImage"></image-detail>
       </div>
 
     </div>
+
+  </div>
 </div>
+<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Status</h4>
+        <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="!data">
+        Warten auf Antwort
+      </div>
+      <div class="modal-body" *ngIf="data=='true'">
+        Server wurde gestartet
+      </div>
+      <div class="modal-body" *ngIf="data!='true'">
+        ***REMOVED******REMOVED***data***REMOVED******REMOVED***
+      </div>
+      <div class="modal-body" *ngIf="data=='INVALID'">
+        Parameter fehlen
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="infoModal.hide();resetData2()">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 

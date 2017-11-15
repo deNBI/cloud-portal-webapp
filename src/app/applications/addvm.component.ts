@@ -1,5 +1,6 @@
-import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
 import ***REMOVED***Image***REMOVED*** from "../virtualmachinemodels/image";
+import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachinemodels/flavor';
 import ***REMOVED*** ImageService ***REMOVED*** from '../api-connector/image.service';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
@@ -18,11 +19,13 @@ import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/vi
 export class VirtualMachineComponent implements OnInit***REMOVED***
 
   constructor (private imageService:ImageService,private  flavorService:FlavorService,private virtualmachineservice:VirtualmachineService)***REMOVED******REMOVED***
+  data:string;
   images:Image[];
-  metadatalist:Metadata []=[]
+  metadatalist:Metadata []=[];
   flavors:Flavor[];
   selectedImage:Image;
   selectedFlavor:Flavor;
+
 
   getImages():void***REMOVED***
   this.imageService.getImages().subscribe(images => this.images = images);
@@ -32,11 +35,25 @@ export class VirtualMachineComponent implements OnInit***REMOVED***
 
   ***REMOVED***
 
-  startVM(flavor :string,image :string,key:string ,servername:string ):void***REMOVED***
-   this.virtualmachineservice.startVM(flavor, image,key,servername);
+  startVM(flavor :string,image :string,key:string ,servername:string ):void ***REMOVED***
+    if (image  && key && flavor && servername) ***REMOVED***
 
+        this.virtualmachineservice.startVM(flavor, image, key, servername).subscribe(data => ***REMOVED***
+          console.log(data.text());
+          this.data = data.text();
+          console.log(this.data);
+          this.printData();
+
+        ***REMOVED***);
+    ***REMOVED***
+    else***REMOVED***
+      this.data="INVALID"
+      console.log(this.data)
+    ***REMOVED***
   ***REMOVED***
-
+  printData():void ***REMOVED***console.log(this.data)***REMOVED***
+  resetData():void***REMOVED***if(this.data=='INVALID' ) ***REMOVED***return; ***REMOVED***this.data=null;***REMOVED***
+   resetData2():void***REMOVED***this.data=null;***REMOVED***
   onSelectFlavor(flavor: Flavor): void ***REMOVED***
   this.selectedFlavor = flavor;
 ***REMOVED***
