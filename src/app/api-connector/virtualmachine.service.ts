@@ -19,7 +19,9 @@ export class VirtualmachineService {
     urlSearchParams.append('image',image);
     urlSearchParams.append('key',key);
     urlSearchParams.append('servername',servername);
-     return this.http.post('https://portal-dev.denbi.de/connector/vms/',urlSearchParams)
+     urlSearchParams.append('host','localhost');
+      urlSearchParams.append('port','9090');
+    return this.http.post('https://portal-dev.denbi.de/connector/vms/',urlSearchParams);}
 
 
 }
