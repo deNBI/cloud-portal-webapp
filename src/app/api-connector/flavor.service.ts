@@ -20,7 +20,7 @@ export class FlavorService {
   getFlavors() :Observable<Flavor[]> {
 
 
-    return this.http.get('https://localhost:8443/flavors/').map((res:Response) => res.json()).catch((error:any) => Observable.throw(error.json().error ||'Server error'))
+    return this.http.get('https://portal-dev.denbi.de/connector/flavors/').map((res:Response) => res.json()).catch((error:any) => Observable.throw(error.json().error ||'Server error'))
   }
 
 }

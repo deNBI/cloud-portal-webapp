@@ -20,7 +20,7 @@ export class ImageService {
   getImages() :Observable<Image[]> {
 
 
-    return this.http.get('https://localhost:8443/images/').map((res:Response) => res.json()).catch((error:any) => Observable.throw(error.json().error ||'Server error'))
+    return this.http.get('https://portal-dev.denbi.de/connector/images').map((res:Response) => res.json()).catch((error:any) => Observable.throw(error.json().error ||'Server error'))
   }
 
 }
