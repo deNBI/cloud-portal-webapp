@@ -21,6 +21,7 @@ export class FlavorService {
 
 
     return this.http.get('https://portal-dev.denbi.de/connector/flavors/').map((res:Response) => res.json()).catch((error:any) => Observable.throw(error.json().error ||'Server error'))
+
   }
 
 }

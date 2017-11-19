@@ -20,6 +20,6 @@ export class VirtualmachineService {
     urlSearchParams.append('key',key);
     urlSearchParams.append('servername',servername);
      return this.http.post('https://portal-dev.denbi.de/connector/vms/',urlSearchParams)
-   }
+
 
 }
