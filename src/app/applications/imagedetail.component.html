@@ -1,27 +1,29 @@
 
-<div class="card">
-  <div class="card-header">
-                    <strong>Image</strong>
-                    –Info
-                </div>
-  <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th>Min_Disk</th>
-                            <th>Min_Ram</th>
+<table fixed class="form-control table table-striped">
 
-                        </tr>
+  <tr *ngIf="collapse1">
+    <td clas="col-md-3">
+      Description
+    </td>
+    <td class="col-md-3">
+      {{image.description}}
+    </td>
+  </tr>
+  <tr *ngIf="collapse1">
+    <td>
+      Min_Disk
+    </td>
+    <td>
+      {{image.min_disk}}
+    </td>
+  </tr>
+  <tr *ngIf="collapse1">
+    <td>
+      Min_Ram
+    </td>
+    <td>
+      {{image.min_ram}}
+    </td>
+  </tr>
 
-                        </thead>
-                        <tbody *ngIf="image">
-                        <td>{{image.name}}</td>
-                           <td>{{image.status}}</td>
-                            <td>{{image.min_ram}}</td>
-                            <td>{{image.description}}</td>
-
-                        </tbody>
-                    </table>
-
-   </div>
+</table>
