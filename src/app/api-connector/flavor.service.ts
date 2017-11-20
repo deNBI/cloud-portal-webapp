@@ -24,7 +24,7 @@ export class FlavorService {
      urlSearchParams.append('host','localhost');
       urlSearchParams.append('port','9090');
 
-    return this.http.get('https://portal-dev.denbi.de/connector/flavors',{search:urlSearchParams}).map((res:Response) => res.json()).catch((error:any) => Observable.throw(error.json().error ||'Server error'))
+    return this.http.get('https://portal-dev.denbi.de/connector/flavors/',{search:urlSearchParams}).map((res:Response) => res.json()).catch((error:any) => Observable.throw(error.json().error ||'Server error'))
 
   }
 
