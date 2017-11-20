@@ -20,6 +20,7 @@ export class VirtualMachineComponent implements OnInit***REMOVED***
 
   constructor (private imageService:ImageService,private  flavorService:FlavorService,private virtualmachineservice:VirtualmachineService)***REMOVED******REMOVED***
   data:string;
+  informationButton:string = "Show Information";
   images:Image[];
   metadatalist:Metadata []=[];
   flavors:Flavor[];
@@ -32,6 +33,15 @@ export class VirtualMachineComponent implements OnInit***REMOVED***
   ***REMOVED***
  getFlavors():void***REMOVED***
   this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
+
+  ***REMOVED***
+
+  toggleInformationButton():void***REMOVED***
+    if (this.informationButton == "Show Information")***REMOVED***
+      this.informationButton = "Hide Information";
+    ***REMOVED***else***REMOVED***
+      this.informationButton = "Show Information";
+    ***REMOVED***
 
   ***REMOVED***
 
