@@ -21,7 +21,7 @@ export class VirtualmachineService ***REMOVED***
     urlSearchParams.append('servername',servername);
      urlSearchParams.append('host','localhost');
       urlSearchParams.append('port','9090');
-    return this.http.post('https://portal-dev.denbi.de/connector/vms/',urlSearchParams);***REMOVED***
+    return this.http.post('https://portal-dev.denbi.de/connector/vms/',urlSearchParams); ***REMOVED***
 
 
 ***REMOVED***

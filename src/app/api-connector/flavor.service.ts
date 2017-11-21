@@ -6,12 +6,6 @@ import ***REMOVED***URLSearchParams***REMOVED*** from "@angular/http";
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-export const FLAVORS: Flavor[] = [
-
-  ***REMOVED*** id: '11', name: 'Flav1',rootdisk:20,vcpus:2,ram: 2048 ***REMOVED***,
-  ***REMOVED*** id: '12', name: 'Flav2',rootdisk:10,vcpus:4,ram: 4096 ***REMOVED***,
-  ***REMOVED*** id: '13', name: 'Flav3',rootdisk:220,vcpus:2,ram: 2048 ***REMOVED***,
-];
 
 @Injectable()
 export class FlavorService ***REMOVED***

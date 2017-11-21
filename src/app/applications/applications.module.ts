@@ -10,6 +10,7 @@ import ***REMOVED*** ModalModule ***REMOVED*** from 'ngx-bootstrap/modal';
 import ***REMOVED***ImageDetailComponent***REMOVED*** from "./imagedetail.component";
 import ***REMOVED***VirtualMachineComponent***REMOVED*** from "./addvm.component";
 import ***REMOVED***FlavorDetailComponent***REMOVED*** from './flavordetail.component';
+import ***REMOVED***ClientOverviewComponent***REMOVED*** from "./vmClients.component";
 
 
 @NgModule(***REMOVED***
@@ -27,7 +28,8 @@ import ***REMOVED***FlavorDetailComponent***REMOVED*** from './flavordetail.comp
     AddApplicationComponent,
     ImageDetailComponent,
     VirtualMachineComponent,
-    FlavorDetailComponent
+    FlavorDetailComponent,
+    ClientOverviewComponent
 
   ]
 ***REMOVED***)

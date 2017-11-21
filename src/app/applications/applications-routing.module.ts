@@ -5,6 +5,7 @@ import ***REMOVED*** ApplicationsComponent ***REMOVED*** from './applications.co
 import ***REMOVED*** AddApplicationComponent ***REMOVED*** from './addapplication.component';
 import  ***REMOVED*** ImageDetailComponent***REMOVED*** from './imagedetail.component';
 import ***REMOVED*** VirtualMachineComponent***REMOVED*** from './addvm.component';
+import ***REMOVED***ClientOverviewComponent***REMOVED*** from "./vmClients.component";
 const routes: Routes = [
   ***REMOVED***
     path: '',
@@ -26,6 +27,10 @@ const routes: Routes = [
     path: 'newVM',
     component: VirtualMachineComponent,
 
+  ***REMOVED***,
+  ***REMOVED***
+    path:'clientOverview',
+    component:ClientOverviewComponent,
   ***REMOVED***
 ];
 
