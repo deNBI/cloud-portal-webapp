@@ -20,6 +20,7 @@ export class VirtualMachineComponent implements OnInit{
 
   constructor (private imageService:ImageService,private  flavorService:FlavorService,private virtualmachineservice:VirtualmachineService){}
   data:string;
+  informationButton:string = "Show Information";
   images:Image[];
   metadatalist:Metadata []=[];
   flavors:Flavor[];
@@ -35,10 +36,19 @@ export class VirtualMachineComponent implements OnInit{
 
   }
 
-  startVM(flavor :string,image :string,key:string ,servername:string ):void {
-    if (image  && key && flavor && servername) {
+  toggleInformationButton():void{
+    if (this.informationButton == "Show Information"){
+      this.informationButton = "Hide Information";
+    }else{
+      this.informationButton = "Show Information";
+    }
 
-        this.virtualmachineservice.startVM(flavor, image, key, servername).subscribe(data => {
+  }
+
+  startVM(flavor :string,image :string,servername:string ):void {
+    if (image  && flavor && servername) {
+
+        this.virtualmachineservice.startVM(flavor, image, "test", servername).subscribe(data => {
           console.log(data.text());
           this.data = data.text();
           console.log(this.data);

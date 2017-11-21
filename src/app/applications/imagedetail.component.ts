@@ -7,4 +7,5 @@ import { Image } from '../virtualmachinemodels/image'
 })
 export class ImageDetailComponent {
   @Input() image: Image;
+  @Input() collapse1: boolean;
 }
