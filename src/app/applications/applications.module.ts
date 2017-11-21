@@ -10,6 +10,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import {ImageDetailComponent} from "./imagedetail.component";
 import {VirtualMachineComponent} from "./addvm.component";
 import {FlavorDetailComponent} from './flavordetail.component';
+import {ClientOverviewComponent} from "./vmClients.component";
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import {FlavorDetailComponent} from './flavordetail.component';
     AddApplicationComponent,
     ImageDetailComponent,
     VirtualMachineComponent,
-    FlavorDetailComponent
+    FlavorDetailComponent,
+    ClientOverviewComponent
 
   ]
 })
