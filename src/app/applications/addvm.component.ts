@@ -45,10 +45,10 @@ export class VirtualMachineComponent implements OnInit{
 
   }
 
-  startVM(flavor :string,image :string,key:string ,servername:string ):void {
-    if (image  && key && flavor && servername) {
+  startVM(flavor :string,image :string,servername:string ):void {
+    if (image  && flavor && servername) {
 
-        this.virtualmachineservice.startVM(flavor, image, key, servername).subscribe(data => {
+        this.virtualmachineservice.startVM(flavor, image, "test", servername).subscribe(data => {
           console.log(data.text());
           this.data = data.text();
           console.log(this.data);

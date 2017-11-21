@@ -1,28 +1,26 @@
-
-<table fixed class="form-control table table-striped">
-
+<table class="table table-striped">
   <tr *ngIf="collapse1">
-    <td clas="col-md-3">
+    <td class="field-label col-md-6 active">
       Description
     </td>
-    <td class="col-md-3">
+    <td class="col-md-6">
       {{image.description}}
     </td>
   </tr>
   <tr *ngIf="collapse1">
-    <td>
-      Min_Disk
+     <td class="field-label col-md-6 active">
+    Min_Disk
     </td>
-    <td>
-      {{image.min_disk}}
+    <td class="col-md-6">
+      {{image.min_disk}} GB
     </td>
   </tr>
   <tr *ngIf="collapse1">
-    <td>
-      Min_Ram
+     <td class="field-label col-md-6 active">
+     Min_Ram
     </td>
-    <td>
-      {{image.min_ram}}
+    <td class="col-md-6">
+      {{image.min_ram}} MB
     </td>
   </tr>
 

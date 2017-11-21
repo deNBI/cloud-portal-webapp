@@ -23,10 +23,10 @@
 
             <div class="form-group row">
               <label class="col-md-3 form-control-label"><strong>Flavor</strong></label>
-              <div class="col-md-9">
+              <div class="col-md-6">
 
 
-                <select class="form-control col-md-9" name="selectedFlavor" [(ngModel)]="selectedFlavor">
+                <select class="form-control col-md-6" name="selectedFlavor" [(ngModel)]="selectedFlavor">
 
                   <option *ngFor="  let flavor of flavors" [ngValue]="flavor"> {{flavor.name}}</option>
 
@@ -51,11 +51,12 @@
                 {{informationButton}}
               </button>
             </div>
-            <div>
+                        <div class="col-md-9">
               <image-detail [collapse1]="collapsed1" [image]="selectedImage"></image-detail>
             </div>
 
-            <div class="form-group row">
+
+           <!-- <div class="form-group row">
               <label class="col-md-3 form-control-label"><strong>Key</strong></label>
               <div class="col-md-9">
                 <div class="input-group">
@@ -65,7 +66,7 @@
                 </div>
 
               </div>
-            </div>
+            </div>-->
 
 
             <!-- <div class="form-group row" >
@@ -100,19 +101,16 @@
 
 
                      </div>-->
-
-            <br><br><br>
-
-
-            <button type="button" class="btn btn-primary float-right" data-toggle="modal"
-                    (click)="startVM(selectedFlavor.name,selectedImage.name,serverkey.value,servername.value);resetData();infoModal.show();">
+                        <button type="button" class="btn btn-primary offset-md-8" data-toggle="modal"
+                    (click)="startVM(selectedFlavor.name,selectedImage.name,'test',servername.value);resetData();infoModal.show();">
               Start VM
             </button>
+        <br><br><br>
 
           </form>
 
-        </div>
 
+        </div>
 
         <!--/.col-->
 
@@ -159,6 +157,4 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-
 
