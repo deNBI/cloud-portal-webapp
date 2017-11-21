@@ -7,4 +7,5 @@ import ***REMOVED*** Image ***REMOVED*** from '../virtualmachinemodels/image'
 ***REMOVED***)
 export class ImageDetailComponent ***REMOVED***
   @Input() image: Image;
+  @Input() collapse1: boolean;
 ***REMOVED***
