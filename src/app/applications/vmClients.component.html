@@ -1,0 +1,24 @@
+<div *ngIf="is_vo_admin">
+  <div >
+    <li *ngFor="let client of clients" >
+      {{client.port}}
+      {{client.host}}
+      {{client.status}}
+      <button type="button" class="btn" (click)="deleteClient(client.host,client.port);getClientsUnchecked();">Delete
+        Client
+      </button>
+
+    </li>
+    <button type="button" class="btn" (click)="getClientsChecked();">Check all Client</button>
+  </div>
+  <div>
+    <input type="text" placeholder="Port" #port>
+    <input type="text" placeholder="Host" #hos>
+
+
+  </div>
+  <div>
+    <button type="button" class="btn" (click)="postClient(hos.value,port.value);getClientsChecked();">Post clinet
+    </button>
+  </div>
+</div>
