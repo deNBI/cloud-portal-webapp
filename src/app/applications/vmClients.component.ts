@@ -12,18 +12,18 @@ import {ApiSettings} from "../api-connector/api-settings.service";
 @Component({
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings,ApiSettings]
+  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
 })
 
 export class ClientOverviewComponent implements OnInit {
   clients: Vmclient[];
   is_vo_admin = false;
+  checkStatus: string = 'Not checked';
 
-  constructor(private clientservice: ClientService,private perunsettings:PerunSettings,private usersmanager:UsersManager,private authzresolver:AuthzResolver
-              ) {
+  constructor(private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
   }
 
-checkVOstatus(usersmanager:UsersManager) {
+  checkVOstatus(usersmanager: UsersManager) {
     let user_id: number;
     let admin_vos: {};
     this.authzresolver
@@ -56,6 +56,22 @@ checkVOstatus(usersmanager:UsersManager) {
 
   }
 
+  checkClient(host: string, port: string): void {
+
+    this.clientservice.checkClient(host, port).subscribe(data => {
+      console.log(data.text());
+      if (data.text()== "false"){
+        this.checkStatus='No Connection';
+      }
+      else if (data.text() =='true'){
+        this.checkStatus="Connected";
+      }
+      else {this.checkStatus="check failed";
+      console.log(data.text())}
+
+    });
+  }
+
   postClient(host: string, port: string): void {
 
 
@@ -72,7 +88,7 @@ checkVOstatus(usersmanager:UsersManager) {
 
   ngOnInit(): void {
     this.checkVOstatus(this.usersmanager);
-    this.getClientsUnchecked();
+    this.getClientsChecked();
 
   }
 

@@ -23,7 +23,13 @@ export class ClientService {
     return this.http.get('https://portal-dev.denbi.de/connector/clients/',{search: urlSearchParams}).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error ||'Server error'))
 
   }
-
+  checkClient(host:string,port:string): Observable<Response>{
+     let urlSearchParams= new URLSearchParams();
+    urlSearchParams.append('port', port);
+    urlSearchParams.append('host', host);
+    urlSearchParams.append('request', 'check');
+    return this.http.post('https://portal-dev.denbi.de/connector/clients/',urlSearchParams)
+  }
   postClient(host:string,port:string): Observable<Response> {
     let urlSearchParams= new URLSearchParams();
     urlSearchParams.append('port', port);

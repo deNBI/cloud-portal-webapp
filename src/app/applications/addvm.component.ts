@@ -17,8 +17,6 @@ import {VirtualmachineService} from "../api-connector/virtualmachine.service";
   providers:[ImageService,FlavorService,VirtualmachineService]
 })
 export class VirtualMachineComponent implements OnInit{
-
-  constructor (private imageService:ImageService,private  flavorService:FlavorService,private virtualmachineservice:VirtualmachineService){}
   data:string;
   informationButton:string = "Show Information";
   images:Image[];
@@ -26,6 +24,8 @@ export class VirtualMachineComponent implements OnInit{
   flavors:Flavor[];
   selectedImage:Image;
   selectedFlavor:Flavor;
+
+  constructor (private imageService:ImageService,private  flavorService:FlavorService,private virtualmachineservice:VirtualmachineService){}
 
 
   getImages():void{

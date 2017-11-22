@@ -1,24 +1,50 @@
-<div *ngIf="is_vo_admin">
-  <div >
-    <li *ngFor="let client of clients" >
-      {{client.port}}
-      {{client.host}}
-      {{client.status}}
-      <button type="button" class="btn" (click)="deleteClient(client.host,client.port);getClientsUnchecked();">Delete
-        Client
-      </button>
-
-    </li>
-    <button type="button" class="btn" (click)="getClientsChecked();">Check all Client</button>
+<div class="card" *ngIf="!is_vo_admin">
+  <div class="card-header">
+    <strong>Clients</strong>
+    –Overview
   </div>
   <div>
-    <input type="text" placeholder="Port" #port>
-    <input type="text" placeholder="Host" #hos>
+    <div>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Host</th>
+          <th>Port</th>
+          <th>Status</th>
+
+        </tr>
+
+        </thead>
+        <tbody *ngFor="let client of clients" >
+
+        <td >{{client.host}}</td>
+        <td>{{client.port}}</td>
+        <td>{{client.status}}</td>
+        <td>
+          <button type="button" class="btn" (click)="deleteClient(client.host,client.port);getClientsUnchecked();">
+            Delete
+            Client
+          </button>
+        </td>
+
+        </tbody>
+        <tbody>
+        <td><input type="text" placeholder="Host" #hos></td>
+        <td><input type="text" placeholder="Port" #port></td>
+        <td>{{checkStatus}}</td>
+
+        <td>
+          <button type="button" class="btn" (click)="checkClient(hos.value,port.value)">Check Status</button>
+        </td>
+        <td>
+          <button type="button" class="btn" (click)="postClient(hos.value,port.value);getClientsChecked();">Add Client
+          </button>
+        </td>
+        </tbody>
+      </table>
+      <button type="button" class="btn btn-primary offset-md-8" (click)="getClientsChecked();">Check all Clients</button>
+    </div>
 
 
-  </div>
-  <div>
-    <button type="button" class="btn" (click)="postClient(hos.value,port.value);getClientsChecked();">Post clinet
-    </button>
   </div>
 </div>
