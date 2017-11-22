@@ -7,12 +7,13 @@ import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connecto
 import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
 import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
+import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
 
 
 @Component(***REMOVED***
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
+  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings,GroupsManager]
 ***REMOVED***)
 
 export class ClientOverviewComponent implements OnInit ***REMOVED***
@@ -20,7 +21,8 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
   is_vo_admin = false;
   checkStatus: string = 'Not checked';
 
-  constructor(private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
+  constructor(private groupsmanager: GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
+ 
   ***REMOVED***
 
   checkVOstatus(usersmanager: UsersManager) ***REMOVED***
@@ -53,6 +55,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
 
   getClientsChecked(): void ***REMOVED***
     this.clientservice.getClientsChecked().subscribe(clients => this.clients = clients);
+
 
   ***REMOVED***
 
