@@ -17,8 +17,6 @@ import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/vi
   providers:[ImageService,FlavorService,VirtualmachineService]
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit***REMOVED***
-
-  constructor (private imageService:ImageService,private  flavorService:FlavorService,private virtualmachineservice:VirtualmachineService)***REMOVED******REMOVED***
   data:string;
   informationButton:string = "Show Information";
   images:Image[];
@@ -26,6 +24,8 @@ export class VirtualMachineComponent implements OnInit***REMOVED***
   flavors:Flavor[];
   selectedImage:Image;
   selectedFlavor:Flavor;
+
+  constructor (private imageService:ImageService,private  flavorService:FlavorService,private virtualmachineservice:VirtualmachineService)***REMOVED******REMOVED***
 
 
   getImages():void***REMOVED***

@@ -12,18 +12,18 @@ import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings
 @Component(***REMOVED***
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings,ApiSettings]
+  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
 ***REMOVED***)
 
 export class ClientOverviewComponent implements OnInit ***REMOVED***
   clients: Vmclient[];
   is_vo_admin = false;
+  checkStatus: string = 'Not checked';
 
-  constructor(private clientservice: ClientService,private perunsettings:PerunSettings,private usersmanager:UsersManager,private authzresolver:AuthzResolver
-              ) ***REMOVED***
+  constructor(private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
   ***REMOVED***
 
-checkVOstatus(usersmanager:UsersManager) ***REMOVED***
+  checkVOstatus(usersmanager: UsersManager) ***REMOVED***
     let user_id: number;
     let admin_vos: ***REMOVED******REMOVED***;
     this.authzresolver
@@ -56,6 +56,22 @@ checkVOstatus(usersmanager:UsersManager) ***REMOVED***
 
   ***REMOVED***
 
+  checkClient(host: string, port: string): void ***REMOVED***
+
+    this.clientservice.checkClient(host, port).subscribe(data => ***REMOVED***
+      console.log(data.text());
+      if (data.text()== "false")***REMOVED***
+        this.checkStatus='No Connection';
+      ***REMOVED***
+      else if (data.text() =='true')***REMOVED***
+        this.checkStatus="Connected";
+      ***REMOVED***
+      else ***REMOVED***this.checkStatus="check failed";
+      console.log(data.text())***REMOVED***
+
+    ***REMOVED***);
+  ***REMOVED***
+
   postClient(host: string, port: string): void ***REMOVED***
 
 
@@ -72,7 +88,7 @@ checkVOstatus(usersmanager:UsersManager) ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
     this.checkVOstatus(this.usersmanager);
-    this.getClientsUnchecked();
+    this.getClientsChecked();
 
   ***REMOVED***
 
