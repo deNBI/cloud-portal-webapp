@@ -7,12 +7,13 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 import {UsersManager} from "../perun-connector/users-manager.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
+import {GroupsManager} from "../perun-connector/groups-manager.service";
 
 
 @Component({
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
+  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings,GroupsManager]
 })
 
 export class ClientOverviewComponent implements OnInit {
@@ -20,7 +21,8 @@ export class ClientOverviewComponent implements OnInit {
   is_vo_admin = false;
   checkStatus: string = 'Not checked';
 
-  constructor(private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
+  constructor(private groupsmanager: GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
+ 
   }
 
   checkVOstatus(usersmanager: UsersManager) {
@@ -53,6 +55,7 @@ export class ClientOverviewComponent implements OnInit {
 
   getClientsChecked(): void {
     this.clientservice.getClientsChecked().subscribe(clients => this.clients = clients);
+
 
   }
 
