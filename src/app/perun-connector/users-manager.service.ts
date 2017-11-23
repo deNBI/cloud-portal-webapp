@@ -25,5 +25,4 @@ export class UsersManager ***REMOVED***
       params: ***REMOVED***user: user_id***REMOVED***
     ***REMOVED***);
   ***REMOVED***
-
 ***REMOVED***

@@ -12,6 +12,7 @@ import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings
 ***REMOVED***)
 export class UserinfoComponent ***REMOVED***
   userinfo: Userinfo;
+  elixid: string;
 
   constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager) ***REMOVED***
     this.userinfo = new Userinfo();
@@ -22,7 +23,7 @@ export class UserinfoComponent ***REMOVED***
     this.authzresolver.getLoggedUser().toPromise()
       .then(result => ***REMOVED***
         let res = result.json();
-        console.log(res)
+
         this.userinfo.FirstName = res["firstName"];
         this.userinfo.LastName = res["lastName"];
         this.userinfo.Id = res["id"];
@@ -31,8 +32,13 @@ export class UserinfoComponent ***REMOVED***
 
       ***REMOVED***).then(memberinfo => ***REMOVED***
       this.userinfo.MemberId = memberinfo.json()["id"];
-    ***REMOVED***);
+
+    ***REMOVED***)
+    this.authzresolver.getPerunPrincipal().toPromise().then(result =>***REMOVED***
+        this.userinfo.ElxirId = result.json()['actor'];
+      ***REMOVED***);
   ***REMOVED***
+
 
 ***REMOVED***
 

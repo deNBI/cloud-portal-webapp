@@ -19,8 +19,8 @@ export class AuthzResolver ***REMOVED***
       ***REMOVED***);
   ***REMOVED***
 
-  isVoAdmin(): Observable<Response> ***REMOVED***
-    return this.http.get(this.perunSettings.getPerunBaseURL() + 'authzResolver/isVoAdmin',
+  getPerunPrincipal(): Observable<Response> ***REMOVED***
+    return this.http.get(this.perunSettings.getPerunBaseURL() + 'authzResolver/getPerunPrincipal',
       ***REMOVED***
         headers: new Headers(***REMOVED***'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()***REMOVED***),
       ***REMOVED***);
