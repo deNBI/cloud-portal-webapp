@@ -15,8 +15,16 @@ export class AuthzResolver {
   getLoggedUser() {
     return this.http.get(this.perunSettings.getPerunBaseURL() + 'authzResolver/getLoggedUser',
       {
-      headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-  });
+        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      });
+  }
+
+  isVoAdmin(): Observable<Response> {
+    return this.http.get(this.perunSettings.getPerunBaseURL() + 'authzResolver/isVoAdmin',
+      {
+        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      });
+
   }
 
 }
