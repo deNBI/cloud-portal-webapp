@@ -8,6 +8,7 @@
       <table class="table table-striped ">
         <thead>
         <tr>
+          <th>Location</th>
           <th>Host</th>
           <th>Port</th>
           <th>Status</th>
@@ -17,19 +18,21 @@
         </thead>
         <tbody>
         <tr *ngFor="let client of clients">
+          <td>***REMOVED******REMOVED***client.location***REMOVED******REMOVED***</td>
           <td>***REMOVED******REMOVED***client.host***REMOVED******REMOVED***</td>
           <td>***REMOVED******REMOVED***client.port***REMOVED******REMOVED***</td>
           <td>***REMOVED******REMOVED***client.status***REMOVED******REMOVED***</td>
           <td>
-            <button type="button" class="btn btn-primary navbar-inverse" (click)="deleteClient(client.host,client.port);getClientsUnchecked();">
+            <button type="button" class="btn btn-primary navbar-inverse" (click)="deleteClient(client.host,client.port,client.location);getClientsChecked();">
               Delete
               Client
             </button>
           </td>
-          <td></td>
+
         </tr>
 
         <tr>
+          <td><input type="text" placeholder="Location" #loc></td>
           <td><input type="text" placeholder="Host" #hos></td>
           <td><input type="text" placeholder="Port" #port></td>
           <td>***REMOVED******REMOVED***checkStatus***REMOVED******REMOVED***</td>
@@ -38,7 +41,7 @@
             <button type="button" class="btn btn-primary navbar-inverse" (click)="checkClient(hos.value,port.value)">Check Status</button>
           </td>
           <td>
-            <button type="button" class="btn btn-primary navbar-inverse" (click)="postClient(hos.value,port.value);getClientsChecked();">Add Client
+            <button type="button" class="btn btn-primary navbar-inverse" (click)="postClient(hos.value,port.value,loc.value);getClientsChecked();">Add Client
             </button>
           </td>
           <td></td>
@@ -47,10 +50,11 @@
           <td></td>
           <td></td>
           <td></td>
+          <td></td>
           <td>
             <button type="button" class="btn btn-primary navbar-inverse" (click)="getClientsChecked();">Check all Clients</button>
           </td>
-          <td></td>
+
         </tr>
         </tbody>
 

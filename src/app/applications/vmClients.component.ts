@@ -21,7 +21,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
   is_vo_admin = false;
   checkStatus: string = 'Not checked';
 
-  constructor( private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
+  constructor(private groupsmanager: GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
 
   ***REMOVED***
 
@@ -75,16 +75,16 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***);
   ***REMOVED***
 
-  postClient(host: string, port: string): void ***REMOVED***
+  postClient(host: string, port: string,location:string): void ***REMOVED***
 
 
-    this.clientservice.postClient(host, port).subscribe(data => ***REMOVED***
+    this.clientservice.postClient(host, port,location).subscribe(data => ***REMOVED***
       console.log(data.text());
     ***REMOVED***);
   ***REMOVED***
 
-  deleteClient(host: string, port: string): void ***REMOVED***
-    this.clientservice.deleteClient(host, port).subscribe(data => ***REMOVED***
+  deleteClient(host: string, port: string,location:string): void ***REMOVED***
+    this.clientservice.deleteClient(host, port,location).subscribe(data => ***REMOVED***
       console.log(data.text());
     ***REMOVED***);
   ***REMOVED***

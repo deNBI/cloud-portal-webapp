@@ -14,34 +14,36 @@ export class ClientService ***REMOVED***
   getClientsUnchecked() :Observable<Vmclient[]> ***REMOVED***
     let urlSearchParams= new URLSearchParams();
     urlSearchParams.append('request','unchecked');
-    return this.http.get('https://portal-dev.denbi.de/connector/clients/',***REMOVED***search: urlSearchParams***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error ||'Server error'))
+    return this.http.get('https://portal-dev.denbi.de/connector/clients/',***REMOVED***search: urlSearchParams***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error ||'Server error'));
 
   ***REMOVED***
   getClientsChecked() :Observable<Vmclient[]> ***REMOVED***
     let urlSearchParams= new URLSearchParams();
     urlSearchParams.append('request','checked');
-    return this.http.get('https://portal-dev.denbi.de/connector/clients/',***REMOVED***search: urlSearchParams***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error ||'Server error'))
-
+    return this.http.get('https://portal-dev.denbi.de/connector/clients/',***REMOVED***search: urlSearchParams***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error ||'Server error'));
   ***REMOVED***
   checkClient(host:string,port:string): Observable<Response>***REMOVED***
      let urlSearchParams= new URLSearchParams();
     urlSearchParams.append('port', port);
+
     urlSearchParams.append('host', host);
     urlSearchParams.append('request', 'check');
     return this.http.post('https://portal-dev.denbi.de/connector/clients/',urlSearchParams)
   ***REMOVED***
-  postClient(host:string,port:string): Observable<Response> ***REMOVED***
+  postClient(host:string,port:string,location:string): Observable<Response> ***REMOVED***
     let urlSearchParams= new URLSearchParams();
     urlSearchParams.append('port', port);
+     urlSearchParams.append('location', location);
     urlSearchParams.append('host', host);
     urlSearchParams.append('request', 'add');
     return this.http.post('https://portal-dev.denbi.de/connector/clients/', urlSearchParams);
   ***REMOVED***
 
-  deleteClient(host:string,port:string):Observable<Response>***REMOVED***
+  deleteClient(host:string,port:string,location:string):Observable<Response>***REMOVED***
     let urlSearchParams= new URLSearchParams();
     urlSearchParams.append('port', port);
     urlSearchParams.append('host', host);
+     urlSearchParams.append('location', location);
     urlSearchParams.append('request', 'delete');
      return this.http.post('https://portal-dev.denbi.de/connector/clients/', urlSearchParams);
   ***REMOVED***

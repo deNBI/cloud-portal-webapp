@@ -21,7 +21,8 @@ export class UserinfoComponent ***REMOVED***
   getUserinfo() ***REMOVED***
     this.authzresolver.getLoggedUser().toPromise()
       .then(result => ***REMOVED***
-        let res = result.json()
+        let res = result.json();
+        console.log(res)
         this.userinfo.FirstName = res["firstName"];
         this.userinfo.LastName = res["lastName"];
         this.userinfo.Id = res["id"];
