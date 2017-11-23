@@ -25,5 +25,4 @@ export class UsersManager {
       params: {user: user_id}
     });
   }
-
 }

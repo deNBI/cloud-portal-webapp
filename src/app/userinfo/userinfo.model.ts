@@ -4,6 +4,7 @@ export class  Userinfo{
   private _FirstName: string;
   private _LastName: string;
   private _MemberId:number;
+  private _ElixirId:string;
   constructor(){
     this.LastName = " ";
     this.FirstName = " ";
@@ -40,5 +41,12 @@ export class  Userinfo{
 
   set MemberId(value: number) {
     this._MemberId = value;
+  }
+  set ElxirId(value :string) {
+    this._ElixirId =value;
+  }
+
+  get ElxirId() {
+   return this._ElixirId
   }
 }

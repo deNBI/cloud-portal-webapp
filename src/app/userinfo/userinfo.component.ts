@@ -12,6 +12,7 @@ import {ApiSettings} from '../api-connector/api-settings.service'
 })
 export class UserinfoComponent {
   userinfo: Userinfo;
+  elixid: string;
 
   constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager) {
     this.userinfo = new Userinfo();
@@ -22,7 +23,7 @@ export class UserinfoComponent {
     this.authzresolver.getLoggedUser().toPromise()
       .then(result => {
         let res = result.json();
-        console.log(res)
+
         this.userinfo.FirstName = res["firstName"];
         this.userinfo.LastName = res["lastName"];
         this.userinfo.Id = res["id"];
@@ -31,8 +32,13 @@ export class UserinfoComponent {
 
       }).then(memberinfo => {
       this.userinfo.MemberId = memberinfo.json()["id"];
-    });
+
+    })
+    this.authzresolver.getPerunPrincipal().toPromise().then(result =>{
+        this.userinfo.ElxirId = result.json()['actor'];
+      });
   }
+
 
 }
 
