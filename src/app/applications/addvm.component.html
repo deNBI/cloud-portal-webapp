@@ -33,6 +33,14 @@
                 </select>
 
               </div>
+              <button *ngIf="selectedFlavor" (click)="collapsed2=!collapsed2; toggleInformationButton2()"
+                      class="btn btn-primary">
+                {{informationButton2}}
+              </button>
+            </div>
+
+            <div class="col-md-9">
+              <flavor-detail [collapse2]="collapsed2" [flavor]="selectedFlavor"></flavor-detail>
             </div>
 
             <div class="form-group row">

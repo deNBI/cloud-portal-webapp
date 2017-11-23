@@ -1,25 +1,27 @@
-<div class="card">
-  <div class="card-header">
-                    <strong>Flavor</strong>
-                    –Info
-                </div>
-  <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Ram</th>
-                            <th>Disk</th>
-                            <th>Vcpus</th>
+<table class="table table-striped">
+  <tr *ngIf="collapse2">
+    <td class="field-label col-md-6 active">
+      RAM
+    </td>
+    <td class="col-md-6">
+      {{flavor.ram}}MB
+    </td>
+  </tr>
+  <tr *ngIf="collapse2">
+     <td class="field-label col-md-6 active">
+    Root_Disk
+    </td>
+    <td class="col-md-6">
+      {{flavor.rootdisk}}
+    </td>
+  </tr>
+  <tr *ngIf="collapse2">
+     <td class="field-label col-md-6 active">
+     Vcpus
+    </td>
+    <td class="col-md-6">
+      {{flavor.vcpus}}
+    </td>
+  </tr>
 
-                        </tr>
-
-                        </thead>
-                        <tbody *ngIf="flavor">
-                         <td>{{flavor.name}}</td>
-                            <td>{{flavor.ram}}</td>
-                            <td>{{flavor.rootdisk}}</td>
-                            <td>{{flavor.vcpus}}</td>
-                        </tbody>
-                    </table>
-
-   </div>
+</table>

@@ -9,6 +9,7 @@ import { Flavor} from '../virtualmachinemodels/flavor'
 })
 export class FlavorDetailComponent implements OnInit{
   @Input() flavor: Flavor;
+  @Input() collapse2: boolean;
 
 
   construcot(){}

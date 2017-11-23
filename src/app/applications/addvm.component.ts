@@ -19,6 +19,7 @@ import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 export class VirtualMachineComponent implements OnInit{
   data:string;
   informationButton:string = "Show Information";
+  informationButton2:string = "Show Information";
   images:Image[];
   metadatalist:Metadata []=[];
   flavors:Flavor[];
@@ -41,6 +42,15 @@ export class VirtualMachineComponent implements OnInit{
       this.informationButton = "Hide Information";
     }else{
       this.informationButton = "Show Information";
+    }
+
+  }
+
+    toggleInformationButton2():void{
+    if (this.informationButton2 == "Show Information"){
+      this.informationButton2 = "Hide Information";
+    }else{
+      this.informationButton2 = "Show Information";
     }
 
   }
