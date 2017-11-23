@@ -9,6 +9,7 @@ import ***REMOVED*** Flavor***REMOVED*** from '../virtualmachinemodels/flavor'
 ***REMOVED***)
 export class FlavorDetailComponent implements OnInit***REMOVED***
   @Input() flavor: Flavor;
+  @Input() collapse2: boolean;
 
 
   construcot()***REMOVED******REMOVED***

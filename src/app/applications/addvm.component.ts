@@ -19,6 +19,7 @@ import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/vi
 export class VirtualMachineComponent implements OnInit***REMOVED***
   data:string;
   informationButton:string = "Show Information";
+  informationButton2:string = "Show Information";
   images:Image[];
   metadatalist:Metadata []=[];
   flavors:Flavor[];
@@ -41,6 +42,15 @@ export class VirtualMachineComponent implements OnInit***REMOVED***
       this.informationButton = "Hide Information";
     ***REMOVED***else***REMOVED***
       this.informationButton = "Show Information";
+    ***REMOVED***
+
+  ***REMOVED***
+
+    toggleInformationButton2():void***REMOVED***
+    if (this.informationButton2 == "Show Information")***REMOVED***
+      this.informationButton2 = "Hide Information";
+    ***REMOVED***else***REMOVED***
+      this.informationButton2 = "Show Information";
     ***REMOVED***
 
   ***REMOVED***

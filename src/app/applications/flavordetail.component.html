@@ -1,25 +1,27 @@
-<div class="card">
-  <div class="card-header">
-                    <strong>Flavor</strong>
-                    –Info
-                </div>
-  <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Ram</th>
-                            <th>Disk</th>
-                            <th>Vcpus</th>
+<table class="table table-striped">
+  <tr *ngIf="collapse2">
+    <td class="field-label col-md-6 active">
+      RAM
+    </td>
+    <td class="col-md-6">
+      ***REMOVED******REMOVED***flavor.ram***REMOVED******REMOVED***MB
+    </td>
+  </tr>
+  <tr *ngIf="collapse2">
+     <td class="field-label col-md-6 active">
+    Root_Disk
+    </td>
+    <td class="col-md-6">
+      ***REMOVED******REMOVED***flavor.rootdisk***REMOVED******REMOVED***
+    </td>
+  </tr>
+  <tr *ngIf="collapse2">
+     <td class="field-label col-md-6 active">
+     Vcpus
+    </td>
+    <td class="col-md-6">
+      ***REMOVED******REMOVED***flavor.vcpus***REMOVED******REMOVED***
+    </td>
+  </tr>
 
-                        </tr>
-
-                        </thead>
-                        <tbody *ngIf="flavor">
-                         <td>***REMOVED******REMOVED***flavor.name***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED***flavor.ram***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED***flavor.rootdisk***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED***flavor.vcpus***REMOVED******REMOVED***</td>
-                        </tbody>
-                    </table>
-
-   </div>
+</table>
