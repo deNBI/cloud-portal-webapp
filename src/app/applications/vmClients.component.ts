@@ -21,8 +21,8 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
   is_vo_admin = false;
   checkStatus: string = 'Not checked';
 
-  constructor(private groupsmanager: GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
- 
+  constructor( private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
+
   ***REMOVED***
 
   checkVOstatus(usersmanager: UsersManager) ***REMOVED***

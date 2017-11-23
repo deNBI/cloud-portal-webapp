@@ -5,7 +5,7 @@
   </div>
   <div>
     <div>
-      <table class="table table-striped">
+      <table class="table table-striped ">
         <thead>
         <tr>
           <th>Host</th>
@@ -15,34 +15,47 @@
         </tr>
 
         </thead>
-        <tbody *ngFor="let client of clients" >
-
-        <td >***REMOVED******REMOVED***client.host***REMOVED******REMOVED***</td>
-        <td>***REMOVED******REMOVED***client.port***REMOVED******REMOVED***</td>
-        <td>***REMOVED******REMOVED***client.status***REMOVED******REMOVED***</td>
-        <td>
-          <button type="button" class="btn" (click)="deleteClient(client.host,client.port);getClientsUnchecked();">
-            Delete
-            Client
-          </button>
-        </td>
-
-        </tbody>
         <tbody>
-        <td><input type="text" placeholder="Host" #hos></td>
-        <td><input type="text" placeholder="Port" #port></td>
-        <td>***REMOVED******REMOVED***checkStatus***REMOVED******REMOVED***</td>
+        <tr *ngFor="let client of clients">
+          <td>***REMOVED******REMOVED***client.host***REMOVED******REMOVED***</td>
+          <td>***REMOVED******REMOVED***client.port***REMOVED******REMOVED***</td>
+          <td>***REMOVED******REMOVED***client.status***REMOVED******REMOVED***</td>
+          <td>
+            <button type="button" class="btn btn-primary navbar-inverse" (click)="deleteClient(client.host,client.port);getClientsUnchecked();">
+              Delete
+              Client
+            </button>
+          </td>
+          <td></td>
+        </tr>
 
-        <td>
-          <button type="button" class="btn" (click)="checkClient(hos.value,port.value)">Check Status</button>
-        </td>
-        <td>
-          <button type="button" class="btn" (click)="postClient(hos.value,port.value);getClientsChecked();">Add Client
-          </button>
-        </td>
+        <tr>
+          <td><input type="text" placeholder="Host" #hos></td>
+          <td><input type="text" placeholder="Port" #port></td>
+          <td>***REMOVED******REMOVED***checkStatus***REMOVED******REMOVED***</td>
+
+          <td>
+            <button type="button" class="btn btn-primary navbar-inverse" (click)="checkClient(hos.value,port.value)">Check Status</button>
+          </td>
+          <td>
+            <button type="button" class="btn btn-primary navbar-inverse" (click)="postClient(hos.value,port.value);getClientsChecked();">Add Client
+            </button>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>
+            <button type="button" class="btn btn-primary navbar-inverse" (click)="getClientsChecked();">Check all Clients</button>
+          </td>
+          <td></td>
+        </tr>
         </tbody>
+
       </table>
-      <button type="button" class="btn btn-primary offset-md-8" (click)="getClientsChecked();">Check all Clients</button>
+
     </div>
 
 
