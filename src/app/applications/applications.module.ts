@@ -11,6 +11,7 @@ import ***REMOVED***ImageDetailComponent***REMOVED*** from "./imagedetail.compon
 import ***REMOVED***VirtualMachineComponent***REMOVED*** from "./addvm.component";
 import ***REMOVED***FlavorDetailComponent***REMOVED*** from './flavordetail.component';
 import ***REMOVED***ClientOverviewComponent***REMOVED*** from "./vmClients.component";
+import ***REMOVED***UserinfoComponent***REMOVED*** from "../userinfo/userinfo.component";
 
 
 @NgModule(***REMOVED***
@@ -29,7 +30,8 @@ import ***REMOVED***ClientOverviewComponent***REMOVED*** from "./vmClients.compo
     ImageDetailComponent,
     VirtualMachineComponent,
     FlavorDetailComponent,
-    ClientOverviewComponent
+    ClientOverviewComponent,
+
 
   ]
 ***REMOVED***)

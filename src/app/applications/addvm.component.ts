@@ -2,7 +2,7 @@ import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/c
 import ***REMOVED***Image***REMOVED*** from "../virtualmachinemodels/image";
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachinemodels/flavor';
-import ***REMOVED*** ImageService ***REMOVED*** from '../api-connector/image.service';
+import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***ImageDetailComponent***REMOVED*** from "./imagedetail.component";
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
@@ -11,94 +11,147 @@ import 'rxjs/Rx'
 import ***REMOVED***Metadata***REMOVED*** from '../virtualmachinemodels/metadata';
 import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
 
+import ***REMOVED***Userinfo***REMOVED*** from "../userinfo/userinfo.model";
+import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
+import ***REMOVED***MembersManager***REMOVED*** from "../perun-connector/members-manager.service";
+import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
+import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
+
 @Component(***REMOVED***
   selector: 'new-vm',
   templateUrl: 'addvm.component.html',
-  providers:[ImageService,FlavorService,VirtualmachineService]
+  providers: [ImageService, FlavorService, VirtualmachineService, AuthzResolver, PerunSettings, MembersManager, ApiSettings]
 ***REMOVED***)
-export class VirtualMachineComponent implements OnInit***REMOVED***
-  data:string;
-  informationButton:string = "Show Information";
-  informationButton2:string = "Show Information";
-  images:Image[];
-  metadatalist:Metadata []=[];
-  flavors:Flavor[];
-  selectedImage:Image;
-  selectedFlavor:Flavor;
+export class VirtualMachineComponent implements OnInit ***REMOVED***
+  data: string;
+  informationButton: string = "Show Details";
+  informationButton2: string = "Show Details";
+  images: Image[];
+  metadatalist: Metadata [] = [];
+  flavors: Flavor[];
+  selectedImage: Image;
+  selectedFlavor: Flavor;
+  userinfo: Userinfo;
 
-  constructor (private imageService:ImageService,private  flavorService:FlavorService,private virtualmachineservice:VirtualmachineService)***REMOVED******REMOVED***
-
-
-  getImages():void***REMOVED***
-  this.imageService.getImages().subscribe(images => this.images = images);
-  ***REMOVED***
- getFlavors():void***REMOVED***
-  this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
-
+  constructor(private imageService: ImageService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager) ***REMOVED***
   ***REMOVED***
 
-  toggleInformationButton():void***REMOVED***
-    if (this.informationButton == "Show Information")***REMOVED***
+
+  getImages(): void ***REMOVED***
+    this.imageService.getImages().subscribe(images => this.images = images);
+  ***REMOVED***
+
+  getFlavors(): void ***REMOVED***
+    this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
+
+  ***REMOVED***
+
+  toggleInformationButton(): void ***REMOVED***
+    if (this.informationButton == "Show Information") ***REMOVED***
       this.informationButton = "Hide Information";
-    ***REMOVED***else***REMOVED***
+    ***REMOVED*** else ***REMOVED***
       this.informationButton = "Show Information";
     ***REMOVED***
 
   ***REMOVED***
 
-    toggleInformationButton2():void***REMOVED***
-    if (this.informationButton2 == "Show Information")***REMOVED***
+  toggleInformationButton2(): void ***REMOVED***
+    if (this.informationButton2 == "Show Information") ***REMOVED***
       this.informationButton2 = "Hide Information";
-    ***REMOVED***else***REMOVED***
+    ***REMOVED*** else ***REMOVED***
       this.informationButton2 = "Show Information";
     ***REMOVED***
 
   ***REMOVED***
 
-  startVM(flavor :string,image :string,servername:string ):void ***REMOVED***
-    if (image  && flavor && servername) ***REMOVED***
+  startVM(flavor: string, image: string, servername: string): void ***REMOVED***
+    if (image && flavor && servername) ***REMOVED***
 
-        this.virtualmachineservice.startVM(flavor, image, "test", servername).subscribe(data => ***REMOVED***
-          console.log(data.text());
-          this.data = data.text();
-          console.log(this.data);
-          this.printData();
 
-        ***REMOVED***);
+      this.virtualmachineservice.startVM(flavor, image, "neu", servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId).subscribe(data => ***REMOVED***
+        console.log(data.text());
+        this.data = data.text();
+        console.log(this.data);
+        this.printData();
+
+      ***REMOVED***);
+
     ***REMOVED***
-    else***REMOVED***
-      this.data="INVALID"
+    else ***REMOVED***
+      this.data = "INVALID"
       console.log(this.data)
     ***REMOVED***
   ***REMOVED***
-  printData():void ***REMOVED***console.log(this.data)***REMOVED***
-  resetData():void***REMOVED***if(this.data=='INVALID' ) ***REMOVED***return; ***REMOVED***this.data=null;***REMOVED***
-   resetData2():void***REMOVED***this.data=null;***REMOVED***
+
+  printData(): void ***REMOVED***
+    console.log(this.data)
+  ***REMOVED***
+
+  resetData(): void ***REMOVED***
+    if (this.data == 'INVALID') ***REMOVED***
+      return;
+    ***REMOVED***
+    this.data = null;
+  ***REMOVED***
+
+  resetData2(): void ***REMOVED***
+    this.data = null;
+  ***REMOVED***
+
   onSelectFlavor(flavor: Flavor): void ***REMOVED***
-  this.selectedFlavor = flavor;
-***REMOVED***
- onSelectImage(image: Image): void ***REMOVED***
-  this.selectedImage = image
-***REMOVED***
-checkMetadataKeys(key:string):boolean***REMOVED***
-for(let metadata of this.metadatalist)***REMOVED***
-  if(metadata.key == key)***REMOVED***return false;***REMOVED***
-***REMOVED***
-return true;
-***REMOVED***
+    this.selectedFlavor = flavor;
+  ***REMOVED***
 
-addMetadataItem(key:string,value:string):void ***REMOVED***
-if (key  && value && this.checkMetadataKeys(key) )***REMOVED***this.metadatalist.push(new Metadata(key,value));***REMOVED***
+  onSelectImage(image: Image): void ***REMOVED***
+    this.selectedImage = image
+  ***REMOVED***
 
-***REMOVED***
+  checkMetadataKeys(key: string): boolean ***REMOVED***
+    for (let metadata of this.metadatalist) ***REMOVED***
+      if (metadata.key == key) ***REMOVED***
+        return false;
+      ***REMOVED***
+    ***REMOVED***
+    return true;
+  ***REMOVED***
 
-deleteMetadataItem(metadata:Metadata):void***REMOVED***
-this.metadatalist.splice(this.metadatalist.indexOf(metadata),1);
-***REMOVED***
+  getUserinfo() ***REMOVED***
+    this.authzresolver.getLoggedUser().toPromise()
+      .then(result => ***REMOVED***
+        let res = result.json();
+
+        this.userinfo.FirstName = res["firstName"];
+        this.userinfo.LastName = res["lastName"];
+        this.userinfo.Id = res["id"];
+
+        return this.memberssmanager.getMemberByUser(res["id"]).toPromise();
+
+      ***REMOVED***).then(memberinfo => ***REMOVED***
+      this.userinfo.MemberId = memberinfo.json()["id"];
+
+    ***REMOVED***)
+    this.authzresolver.getPerunPrincipal().toPromise().then(result => ***REMOVED***
+      this.userinfo.ElxirId = result.json()['actor'];
+    ***REMOVED***);
+  ***REMOVED***
+
+  addMetadataItem(key: string, value: string): void ***REMOVED***
+    if (key && value && this.checkMetadataKeys(key)) ***REMOVED***
+      this.metadatalist.push(new Metadata(key, value));
+    ***REMOVED***
+
+  ***REMOVED***
+
+  deleteMetadataItem(metadata: Metadata): void ***REMOVED***
+    this.metadatalist.splice(this.metadatalist.indexOf(metadata), 1);
+  ***REMOVED***
+
   ngOnInit(): void ***REMOVED***
-  this.getImages();
-  this.getFlavors();
+    this.getImages();
+    this.getFlavors();
+    this.userinfo = new Userinfo();
+    this.getUserinfo();
 
 
-***REMOVED***
+  ***REMOVED***
 ***REMOVED***
