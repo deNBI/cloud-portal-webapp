@@ -16,11 +16,12 @@ import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings
 import ***REMOVED***MembersManager***REMOVED*** from "../perun-connector/members-manager.service";
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
+import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 
 @Component(***REMOVED***
   selector: 'new-vm',
   templateUrl: 'addvm.component.html',
-  providers: [ImageService, FlavorService, VirtualmachineService, AuthzResolver, PerunSettings, MembersManager, ApiSettings]
+  providers: [ImageService, FlavorService, VirtualmachineService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService]
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
   data: string;
@@ -33,7 +34,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   selectedFlavor: Flavor;
   userinfo: Userinfo;
 
-  constructor(private imageService: ImageService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager) ***REMOVED***
+  constructor(private imageService: ImageService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService) ***REMOVED***
   ***REMOVED***
 
 
@@ -64,11 +65,17 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
   ***REMOVED***
 
+    getUserPublicKey()***REMOVED***
+    this.keyservice.getKey(this.userinfo.ElxirId).subscribe(result =>***REMOVED***
+      this.userinfo.PublicKey = result.toString();
+    ***REMOVED***)
+  ***REMOVED***
+
   startVM(flavor: string, image: string, servername: string): void ***REMOVED***
     if (image && flavor && servername) ***REMOVED***
 
 
-      this.virtualmachineservice.startVM(flavor, image, "neu", servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId).subscribe(data => ***REMOVED***
+      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId).subscribe(data => ***REMOVED***
         console.log(data.text());
         this.data = data.text();
         console.log(this.data);
@@ -115,7 +122,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     return true;
   ***REMOVED***
 
-  getUserinfo() ***REMOVED***
+ getUserinfo() ***REMOVED***
     this.authzresolver.getLoggedUser().toPromise()
       .then(result => ***REMOVED***
         let res = result.json();
@@ -130,10 +137,11 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       this.userinfo.MemberId = memberinfo.json()["id"];
 
     ***REMOVED***)
-    this.authzresolver.getPerunPrincipal().toPromise().then(result => ***REMOVED***
-      this.userinfo.ElxirId = result.json()['actor'];
-    ***REMOVED***);
+    this.authzresolver.getPerunPrincipal().toPromise().then(result =>***REMOVED***
+        this.userinfo.ElxirId = result.json()['actor'];
+      ***REMOVED***).then(result => ***REMOVED***this.getUserPublicKey()***REMOVED***);
   ***REMOVED***
+
 
   addMetadataItem(key: string, value: string): void ***REMOVED***
     if (key && value && this.checkMetadataKeys(key)) ***REMOVED***

@@ -5,6 +5,8 @@ export class  Userinfo***REMOVED***
   private _LastName: string;
   private _MemberId:number;
   private _ElixirId:string;
+  private _PublicKey:string;
+
   constructor()***REMOVED***
     this.LastName = " ";
     this.FirstName = " ";
@@ -48,5 +50,12 @@ export class  Userinfo***REMOVED***
 
   get ElxirId() ***REMOVED***
    return this._ElixirId
+  ***REMOVED***
+   set PublicKey(value :string) ***REMOVED***
+    this._PublicKey =value;
+  ***REMOVED***
+
+  get PublicKey() ***REMOVED***
+   return this._PublicKey
   ***REMOVED***
 ***REMOVED***

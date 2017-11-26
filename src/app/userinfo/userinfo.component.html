@@ -30,6 +30,17 @@
               <td>Elixir ID</td>
               <td>***REMOVED******REMOVED***userinfo.ElxirId***REMOVED******REMOVED***</td>
             </tr>
+            <tr>
+              <td>Public Key</td>
+              <td>***REMOVED******REMOVED***userinfo.PublicKey***REMOVED******REMOVED***</td>
+              <td><input type="text"
+                                                                           placeholder="publickey"
+                                                                           #publickey>
+                <button class="btn btn-primary" type="button" (click)="importKey(publickey.value, userinfo.ElxirId)">add
+                  Key
+                </button>
+              </td>
+            </tr>
           </table>
         </div>
       </div>

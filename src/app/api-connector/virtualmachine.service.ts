@@ -14,11 +14,11 @@ export class VirtualmachineService ***REMOVED***
 
    constructor (private http: Http)***REMOVED******REMOVED***
   data:string;
-   startVM(flavor :string,image :string,key:string ,servername:string ,username:string,elixir_id:string):Observable<Response>***REMOVED***
+   startVM(flavor :string,image :string,public_key:string ,servername:string ,username:string,elixir_id:string):Observable<Response>***REMOVED***
     let urlSearchParams=new URLSearchParams();
     urlSearchParams.append('flavor',flavor);
     urlSearchParams.append('image',image);
-    urlSearchParams.append('key',key);
+    urlSearchParams.append('public_key',public_key);
     urlSearchParams.append('username',username)
      urlSearchParams.append('elixir_id',elixir_id)
     urlSearchParams.append('servername',servername);
