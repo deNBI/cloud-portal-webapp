@@ -5,6 +5,8 @@ export class  Userinfo{
   private _LastName: string;
   private _MemberId:number;
   private _ElixirId:string;
+  private _PublicKey:string;
+
   constructor(){
     this.LastName = " ";
     this.FirstName = " ";
@@ -48,5 +50,12 @@ export class  Userinfo{
 
   get ElxirId() {
    return this._ElixirId
+  }
+   set PublicKey(value :string) {
+    this._PublicKey =value;
+  }
+
+  get PublicKey() {
+   return this._PublicKey
   }
 }

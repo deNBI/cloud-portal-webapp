@@ -30,6 +30,17 @@
               <td>Elixir ID</td>
               <td>{{userinfo.ElxirId}}</td>
             </tr>
+            <tr>
+              <td>Public Key</td>
+              <td>{{userinfo.PublicKey}}</td>
+              <td><input type="text"
+                                                                           placeholder="publickey"
+                                                                           #publickey>
+                <button class="btn btn-primary" type="button" (click)="importKey(publickey.value, userinfo.ElxirId)">add
+                  Key
+                </button>
+              </td>
+            </tr>
           </table>
         </div>
       </div>

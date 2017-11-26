@@ -16,11 +16,12 @@ import {ApiSettings} from "../api-connector/api-settings.service";
 import {MembersManager} from "../perun-connector/members-manager.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {AuthzResolver} from "../perun-connector/authz-resolver.service";
+import {keyService} from "../api-connector/key.service";
 
 @Component({
   selector: 'new-vm',
   templateUrl: 'addvm.component.html',
-  providers: [ImageService, FlavorService, VirtualmachineService, AuthzResolver, PerunSettings, MembersManager, ApiSettings]
+  providers: [ImageService, FlavorService, VirtualmachineService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService]
 })
 export class VirtualMachineComponent implements OnInit {
   data: string;
@@ -33,7 +34,7 @@ export class VirtualMachineComponent implements OnInit {
   selectedFlavor: Flavor;
   userinfo: Userinfo;
 
-  constructor(private imageService: ImageService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager) {
+  constructor(private imageService: ImageService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService) {
   }
 
 
@@ -64,11 +65,17 @@ export class VirtualMachineComponent implements OnInit {
 
   }
 
+    getUserPublicKey(){
+    this.keyservice.getKey(this.userinfo.ElxirId).subscribe(result =>{
+      this.userinfo.PublicKey = result.toString();
+    })
+  }
+
   startVM(flavor: string, image: string, servername: string): void {
     if (image && flavor && servername) {
 
 
-      this.virtualmachineservice.startVM(flavor, image, "neu", servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId).subscribe(data => {
+      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId).subscribe(data => {
         console.log(data.text());
         this.data = data.text();
         console.log(this.data);
@@ -115,7 +122,7 @@ export class VirtualMachineComponent implements OnInit {
     return true;
   }
 
-  getUserinfo() {
+ getUserinfo() {
     this.authzresolver.getLoggedUser().toPromise()
       .then(result => {
         let res = result.json();
@@ -130,10 +137,11 @@ export class VirtualMachineComponent implements OnInit {
       this.userinfo.MemberId = memberinfo.json()["id"];
 
     })
-    this.authzresolver.getPerunPrincipal().toPromise().then(result => {
-      this.userinfo.ElxirId = result.json()['actor'];
-    });
+    this.authzresolver.getPerunPrincipal().toPromise().then(result =>{
+        this.userinfo.ElxirId = result.json()['actor'];
+      }).then(result => {this.getUserPublicKey()});
   }
+
 
   addMetadataItem(key: string, value: string): void {
     if (key && value && this.checkMetadataKeys(key)) {
