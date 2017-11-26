@@ -11,6 +11,7 @@ import {ImageDetailComponent} from "./imagedetail.component";
 import {VirtualMachineComponent} from "./addvm.component";
 import {FlavorDetailComponent} from './flavordetail.component';
 import {ClientOverviewComponent} from "./vmClients.component";
+import {UserinfoComponent} from "../userinfo/userinfo.component";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import {ClientOverviewComponent} from "./vmClients.component";
     ImageDetailComponent,
     VirtualMachineComponent,
     FlavorDetailComponent,
-    ClientOverviewComponent
+    ClientOverviewComponent,
+
 
   ]
 })

@@ -7,17 +7,20 @@ import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {observableToBeFn} from "rxjs/testing/TestScheduler";
+import {Metadata} from "../virtualmachinemodels/metadata";
 
 @Injectable()
 export class VirtualmachineService {
 
    constructor (private http: Http){}
   data:string;
-   startVM(flavor :string,image :string,key:string ,servername:string ,):Observable<Response>{
+   startVM(flavor :string,image :string,key:string ,servername:string ,username:string,elixir_id:string):Observable<Response>{
     let urlSearchParams=new URLSearchParams();
     urlSearchParams.append('flavor',flavor);
     urlSearchParams.append('image',image);
     urlSearchParams.append('key',key);
+    urlSearchParams.append('username',username)
+     urlSearchParams.append('elixir_id',elixir_id)
     urlSearchParams.append('servername',servername);
      urlSearchParams.append('host','localhost');
       urlSearchParams.append('port','9090');

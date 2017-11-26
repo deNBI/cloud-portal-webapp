@@ -12,7 +12,7 @@ import {ApiSettings} from '../api-connector/api-settings.service'
 })
 export class UserinfoComponent {
   userinfo: Userinfo;
-  elixid: string;
+
 
   constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager) {
     this.userinfo = new Userinfo();
