@@ -21,7 +21,14 @@ export class UserinfoComponent ***REMOVED***
 
   ***REMOVED***
   importKey(publicKey:string, keyname:string)***REMOVED***
-    this.keyService.postKey(this.userinfo.ElxirId, publicKey, keyname).subscribe();
+    console.log("import key")
+    let re = /\+/gi;
+
+let newstr = publicKey.replace(re, "%2B");
+console.log(newstr)
+    console.log(publicKey.replace(re,'%2B'))
+
+    this.keyService.postKey(this.userinfo.ElxirId, publicKey.replace(re,'%2B'), keyname).subscribe();
   ***REMOVED***
   getUserPublicKey()***REMOVED***
     this.keyService.getKey(this.userinfo.ElxirId).subscribe(result =>***REMOVED***
