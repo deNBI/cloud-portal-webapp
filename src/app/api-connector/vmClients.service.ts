@@ -8,15 +8,22 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class ClientService {
-
+  clientURL= 'https://portal-dev.denbi.de/connector/clients/';
   constructor (private http: Http){}
 
   getClientsUnchecked() :Observable<Vmclient[]> {
     let urlSearchParams= new URLSearchParams();
     urlSearchParams.append('request','unchecked');
-    return this.http.get('https://portal-dev.denbi.de/connector/clients/',{search: urlSearchParams}).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error ||'Server error'));
+    return this.http.get(this.clientURL,{search: urlSearchParams}).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error ||'Server error'));
 
   }
+   getRRFirstClient():Observable<Vmclient>{
+
+    let urlSearchParams= new URLSearchParams();
+    urlSearchParams.append('request','rr');
+    return this.http.get(this.clientURL,{search: urlSearchParams}).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error ||'Server error'));
+
+    }
   getClientsChecked() :Observable<Vmclient[]> {
     let urlSearchParams= new URLSearchParams();
     urlSearchParams.append('request','checked');

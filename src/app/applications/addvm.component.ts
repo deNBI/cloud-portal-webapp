@@ -17,11 +17,13 @@ import {MembersManager} from "../perun-connector/members-manager.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 import {keyService} from "../api-connector/key.service";
+import {ClientService} from "../api-connector/vmClients.service";
+import {Vmclient} from "../virtualmachinemodels/vmclient";
 
 @Component({
   selector: 'new-vm',
   templateUrl: 'addvm.component.html',
-  providers: [ImageService, FlavorService, VirtualmachineService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService]
+  providers: [ImageService, FlavorService, VirtualmachineService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService]
 })
 export class VirtualMachineComponent implements OnInit {
   data: string;
@@ -33,18 +35,34 @@ export class VirtualMachineComponent implements OnInit {
   selectedImage: Image;
   selectedFlavor: Flavor;
   userinfo: Userinfo;
+  vmclient: Vmclient;
 
-  constructor(private imageService: ImageService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService) {
+  constructor(private imageService: ImageService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) {
   }
 
 
   getImages(): void {
-    this.imageService.getImages().subscribe(images => this.images = images);
+    this.imageService.getImages(this.vmclient.host, this.vmclient.port).subscribe(images => this.images = images);
   }
 
   getFlavors(): void {
-    this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
+    this.flavorService.getFlavors(this.vmclient.host, this.vmclient.port).subscribe(flavors => this.flavors = flavors);
 
+  }
+
+  getClientData() {
+    this.clientservice.getClientsChecked().subscribe(response => {
+      this.getRRFirstClient();
+      this.getImages();
+      this.getFlavors()
+    })
+  }
+
+  getRRFirstClient(): void {
+    this.clientservice.getRRFirstClient().subscribe(client =>
+      this.vmclient = client
+    )
+    ;
   }
 
   toggleInformationButton(): void {
@@ -65,8 +83,8 @@ export class VirtualMachineComponent implements OnInit {
 
   }
 
-    getUserPublicKey(){
-    this.keyservice.getKey(this.userinfo.ElxirId).subscribe(result =>{
+  getUserPublicKey() {
+    this.keyservice.getKey(this.userinfo.ElxirId).subscribe(result => {
       this.userinfo.PublicKey = result.toString();
     })
   }
@@ -75,7 +93,7 @@ export class VirtualMachineComponent implements OnInit {
     if (image && flavor && servername) {
 
 
-      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId).subscribe(data => {
+      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port).subscribe(data => {
         console.log(data.text());
         this.data = data.text();
         console.log(this.data);
@@ -122,7 +140,7 @@ export class VirtualMachineComponent implements OnInit {
     return true;
   }
 
- getUserinfo() {
+  getUserinfo() {
     this.authzresolver.getLoggedUser().toPromise()
       .then(result => {
         let res = result.json();
@@ -137,9 +155,11 @@ export class VirtualMachineComponent implements OnInit {
       this.userinfo.MemberId = memberinfo.json()["id"];
 
     })
-    this.authzresolver.getPerunPrincipal().toPromise().then(result =>{
-        this.userinfo.ElxirId = result.json()['actor'];
-      }).then(result => {this.getUserPublicKey()});
+    this.authzresolver.getPerunPrincipal().toPromise().then(result => {
+      this.userinfo.ElxirId = result.json()['actor'];
+    }).then(result => {
+      this.getUserPublicKey()
+    });
   }
 
 
@@ -155,10 +175,10 @@ export class VirtualMachineComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getImages();
-    this.getFlavors();
+
     this.userinfo = new Userinfo();
     this.getUserinfo();
+    this.getClientData()
 
 
   }
