@@ -12,6 +12,7 @@ import {VirtualMachineComponent} from "./addvm.component";
 import {FlavorDetailComponent} from './flavordetail.component';
 import {ClientOverviewComponent} from "./vmClients.component";
 import {UserinfoComponent} from "../userinfo/userinfo.component";
+import {VmOverviewComponent} from "./vmOverview.component";
 
 
 @NgModule({
@@ -31,8 +32,7 @@ import {UserinfoComponent} from "../userinfo/userinfo.component";
     VirtualMachineComponent,
     FlavorDetailComponent,
     ClientOverviewComponent,
-
-
+    VmOverviewComponent,
   ]
 })
 export class ApplicationsModule { }
