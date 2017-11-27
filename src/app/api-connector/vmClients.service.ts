@@ -18,6 +18,7 @@ export class ClientService {
 
   }
    getRRFirstClient():Observable<Vmclient>{
+
     let urlSearchParams= new URLSearchParams();
     urlSearchParams.append('request','rr');
     return this.http.get(this.clientURL,{search: urlSearchParams}).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error ||'Server error'));

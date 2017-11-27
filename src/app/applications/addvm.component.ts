@@ -50,12 +50,19 @@ export class VirtualMachineComponent implements OnInit {
 
   }
 
-  getRRFirstClient(): void {
-    this.clientservice.getRRFirstClient().subscribe(client => {
-      this.vmclient = client;
-      this.getFlavors();
+  getClientData() {
+    this.clientservice.getClientsChecked().subscribe(response => {
+      this.getRRFirstClient();
       this.getImages();
-    });
+      this.getFlavors()
+    })
+  }
+
+  getRRFirstClient(): void {
+    this.clientservice.getRRFirstClient().subscribe(client =>
+      this.vmclient = client
+    )
+    ;
   }
 
   toggleInformationButton(): void {
@@ -171,7 +178,7 @@ export class VirtualMachineComponent implements OnInit {
 
     this.userinfo = new Userinfo();
     this.getUserinfo();
-    this.getRRFirstClient()
+    this.getClientData()
 
 
   }
