@@ -6,6 +6,8 @@ import ***REMOVED*** AddApplicationComponent ***REMOVED*** from './addapplicatio
 import  ***REMOVED*** ImageDetailComponent***REMOVED*** from './imagedetail.component';
 import ***REMOVED*** VirtualMachineComponent***REMOVED*** from './addvm.component';
 import ***REMOVED***ClientOverviewComponent***REMOVED*** from "./vmClients.component";
+import ***REMOVED***VmOverviewComponent***REMOVED*** from "./vmOverview.component";
+
 const routes: Routes = [
   ***REMOVED***
     path: '',
@@ -31,7 +33,11 @@ const routes: Routes = [
   ***REMOVED***
     path:'clientOverview',
     component:ClientOverviewComponent,
+  ***REMOVED***,
   ***REMOVED***
+    path:'vmOverview',
+    component:VmOverviewComponent,
+  ***REMOVED***,
 ];
 
 @NgModule(***REMOVED***

@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import ***REMOVED***observableToBeFn***REMOVED*** from "rxjs/testing/TestScheduler";
 import ***REMOVED***Metadata***REMOVED*** from "../virtualmachinemodels/metadata";
+import ***REMOVED***VirtualMachine***REMOVED*** from "../virtualmachinemodels/virtualmachine";
 
 @Injectable()
 export class VirtualmachineService ***REMOVED***
@@ -34,5 +35,10 @@ export class VirtualmachineService ***REMOVED***
     return this.http.post('https://portal-dev.denbi.de/connector/vms/', urlSearchParams);
   ***REMOVED***
 
+   getVm(elixir_id: string): Observable<VirtualMachine[]>***REMOVED***
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('elixir_id', elixir_id)
+    return this.http.get('https://portal-dev.denbi.de/connector/vms/', ***REMOVED***search: urlSearchParams***REMOVED***).map((res:Response) => res.json()).catch((error:any) => Observable.throw(error.json().error ||'Server error'))
+  ***REMOVED***
 
 ***REMOVED***
