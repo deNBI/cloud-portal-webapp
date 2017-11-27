@@ -12,11 +12,11 @@ export class FlavorService ***REMOVED***
 
   constructor (private http: Http)***REMOVED******REMOVED***
 
-  getFlavors() :Observable<Flavor[]> ***REMOVED***
+  getFlavors(host:string,port:string) :Observable<Flavor[]> ***REMOVED***
      let urlSearchParams=new URLSearchParams();
 
-     urlSearchParams.append('host','localhost');
-      urlSearchParams.append('port','9090');
+     urlSearchParams.append('host',host);
+      urlSearchParams.append('port',port);
 
     return this.http.get('https://portal-dev.denbi.de/connector/flavors/',***REMOVED***search:urlSearchParams***REMOVED***).map((res:Response) => res.json()).catch((error:any) => Observable.throw(error.json().error ||'Server error'))
 

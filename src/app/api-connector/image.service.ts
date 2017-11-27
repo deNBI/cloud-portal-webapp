@@ -13,11 +13,11 @@ import 'rxjs/add/operator/catch';
 export class ImageService ***REMOVED***
    constructor (private http: Http)***REMOVED******REMOVED***
 
-  getImages() :Observable<Image[]> ***REMOVED***
+  getImages(host:string,port:string) :Observable<Image[]> ***REMOVED***
          let urlSearchParams=new URLSearchParams();
 
-     urlSearchParams.set('host','localhost');
-      urlSearchParams.set('port','9090');
+     urlSearchParams.set('host',host);
+      urlSearchParams.set('port',port);
 
 
     return this.http.get('https://portal-dev.denbi.de/connector/images/',***REMOVED***search:urlSearchParams***REMOVED***).map((res:Response) => res.json()).catch((error:any) => Observable.throw(error.json().error ||'Server error'))
