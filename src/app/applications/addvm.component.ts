@@ -67,19 +67,19 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
   toggleInformationButton(): void ***REMOVED***
-    if (this.informationButton == "Show Information") ***REMOVED***
-      this.informationButton = "Hide Information";
+    if (this.informationButton == "Show Details") ***REMOVED***
+      this.informationButton = "Hide Details";
     ***REMOVED*** else ***REMOVED***
-      this.informationButton = "Show Information";
+      this.informationButton = "Show Details";
     ***REMOVED***
 
   ***REMOVED***
 
   toggleInformationButton2(): void ***REMOVED***
-    if (this.informationButton2 == "Show Information") ***REMOVED***
-      this.informationButton2 = "Hide Information";
+    if (this.informationButton2 == "Show Details") ***REMOVED***
+      this.informationButton2 = "Hide Details";
     ***REMOVED*** else ***REMOVED***
-      this.informationButton2 = "Show Information";
+      this.informationButton2 = "Show Details";
     ***REMOVED***
 
   ***REMOVED***
