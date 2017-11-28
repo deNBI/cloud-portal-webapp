@@ -32,6 +32,7 @@ export class VirtualmachineService {
     urlSearchParams.append('servername', servername);
     urlSearchParams.append('host', host);
     urlSearchParams.append('port', port);
+    urlSearchParams.append('request', 'add');
     return this.http.post('https://portal-dev.denbi.de/connector/vms/', urlSearchParams);
   }
 
@@ -54,6 +55,7 @@ export class VirtualmachineService {
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('elixir_id', elixir_id)
     urlSearchParams.append('openstack_id', openstack_id)
+     urlSearchParams.append('request', 'stop');
     return this.http.post('https://portal-dev.denbi.de/connector/vms/', urlSearchParams);
   }
 
