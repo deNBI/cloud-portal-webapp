@@ -26,8 +26,11 @@ export class VmOverviewComponent implements OnInit {
   constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  usersmanager: UsersManager, private perunsettings: PerunSettings) {
 
   }
-  stopVm(openstack_id :string):void {
-    this.virtualmachineservice.stopVM(openstack_id).subscribe(result =>{console.log(result.text());})
+
+  stopVm(openstack_id: string): void {
+    this.virtualmachineservice.stopVM(openstack_id).subscribe(result => {
+      console.log(result.text());
+    })
   }
 
   getVms(elixir_id: string): void {
@@ -35,6 +38,7 @@ export class VmOverviewComponent implements OnInit {
         this.vms = vms;
         for (let vm of this.vms) {
           vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+          vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
         }
       }
     );
