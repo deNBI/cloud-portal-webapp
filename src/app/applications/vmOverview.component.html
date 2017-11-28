@@ -1,3 +1,9 @@
+<ul class="nav nav-tabs">
+  <li><button (click)="getVm(elixir_id)">Own Machines</button></li>
+  <li><button (click)="getAllVms()">All Machines</button></li>
+</ul>
+
+
 <table class="table table-striped">
   <tr *ngFor="let vm of vms"  >
     <td class="field-label col-md-6 active">
