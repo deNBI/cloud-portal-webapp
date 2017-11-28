@@ -30,8 +30,11 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
   constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  memberssmanager: MembersManager, private keyService: keyService) ***REMOVED***
 
   ***REMOVED***
-  stopVm(openstack_id :string):void ***REMOVED***
-    this.virtualmachineservice.stopVM(openstack_id).subscribe(result =>***REMOVED***console.log(result.text());***REMOVED***)
+
+  stopVm(openstack_id: string): void ***REMOVED***
+    this.virtualmachineservice.stopVM(openstack_id).subscribe(result => ***REMOVED***
+      console.log(result.text());
+    ***REMOVED***)
   ***REMOVED***
 
   getVms(elixir_id: string): void ***REMOVED***
@@ -39,6 +42,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.vms = vms;
         for (let vm of this.vms) ***REMOVED***
           vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+          vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
         ***REMOVED***
       ***REMOVED***
     );
