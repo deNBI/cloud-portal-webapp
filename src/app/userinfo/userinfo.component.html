@@ -32,10 +32,17 @@
             </tr>
             <tr>
               <td>Public Key</td>
-              <td>{{userinfo.PublicKey}}</td>
+              <td>
+                <button *ngIf="userinfo.PublicKey" (click)="collapsed1=!collapsed1"
+                        class="btn btn-primary">
+                  +
+                </button>
+                <div *ngIf="collapsed1"><br>{{userinfo.PublicKey}}</div>
+              </td>
+
               <td><input type="text"
-                                                                           placeholder="publickey"
-                                                                           #publickey>
+                         placeholder="publickey"
+                         #publickey>
                 <button class="btn btn-primary" type="button" (click)="importKey(publickey.value, userinfo.ElxirId)">add
                   Key
                 </button>
