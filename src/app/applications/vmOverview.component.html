@@ -1,9 +1,9 @@
+<ng-container *ngIf="is_vo_admin">
 <ul class="nav nav-tabs">
   <li><button (click)="getVm(elixir_id)">Own Machines</button></li>
   <li><button (click)="getAllVms()">All Machines</button></li>
 </ul>
-
-
+</ng-container>
 <table class="table table-striped">
   <tr *ngFor="let vm of vms"  >
     <td class="field-label col-md-6 active">

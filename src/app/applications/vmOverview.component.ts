@@ -5,28 +5,25 @@ import 'rxjs/Rx'
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 import {UsersManager} from "../perun-connector/users-manager.service";
-import {ApiSettings} from "../api-connector/api-settings.service";
-import {MembersManager} from '../perun-connector/members-manager.service'
-import {GroupsManager} from "../perun-connector/groups-manager.service";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {VirtualMachine} from "../virtualmachinemodels/virtualmachine";
-import {Userinfo} from "../userinfo/userinfo.model";
-import {keyService} from "../api-connector/key.service";
+import {FullLayoutComponent} from "../layouts/full-layout.component";
 
 
 @Component({
   selector: 'vm-overview',
   templateUrl: 'vmOverview.component.html',
-  providers: [VirtualmachineService, AuthzResolver, UsersManager, MembersManager, Userinfo, PerunSettings, ApiSettings, GroupsManager, keyService]
+  providers: [VirtualmachineService, FullLayoutComponent, AuthzResolver, UsersManager, PerunSettings]
 })
 
 
 export class VmOverviewComponent implements OnInit {
   vms: VirtualMachine[];
-  elixir_id: string
+  elixir_id: string;
+  is_vo_admin: boolean;
 
 
-  constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver) {
+  constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  usersmanager: UsersManager, private perunsettings: PerunSettings) {
 
   }
   stopVm(openstack_id :string):void {
@@ -55,6 +52,29 @@ export class VmOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getElixirId();
+    this.checkVOstatus(this.usersmanager)
+  }
+
+    checkVOstatus(usersmanager: UsersManager) {
+    let user_id: number;
+    let admin_vos: {};
+    this.authzresolver
+      .getLoggedUser().toPromise()
+      .then(function (userdata) {
+        //TODO catch errors
+        user_id = userdata.json()["id"];
+        return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+      }).then(function (adminvos) {
+      admin_vos = adminvos.json();
+    }).then(result => {
+      //check if user is a Vo admin so we can serv according buttons
+      for (let vkey in admin_vos) {
+        if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
+          this.is_vo_admin = true;
+        }
+        break;
+      }
+    });
   }
 
 
