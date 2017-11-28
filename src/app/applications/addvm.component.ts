@@ -53,14 +53,15 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   getClientData() ***REMOVED***
     this.clientservice.getClientsChecked().subscribe(response => ***REMOVED***
       this.getRRFirstClient();
-      this.getImages();
-      this.getFlavors()
+
     ***REMOVED***)
   ***REMOVED***
 
   getRRFirstClient(): void ***REMOVED***
-    this.clientservice.getRRFirstClient().subscribe(client =>
-      this.vmclient = client
+    this.clientservice.getRRFirstClient().subscribe(client =>***REMOVED***
+      this.vmclient = client;
+    this.getImages();
+      this.getFlavors()***REMOVED***
     )
     ;
   ***REMOVED***

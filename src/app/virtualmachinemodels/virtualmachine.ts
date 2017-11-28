@@ -1,6 +1,5 @@
-import ***REMOVED*** Image ***REMOVED*** from './image';
-import ***REMOVED*** Flavor ***REMOVED*** from './flavor';
-
+import ***REMOVED***Image***REMOVED*** from './image';
+import ***REMOVED***Flavor***REMOVED*** from './flavor';
 
 
 export class VirtualMachine ***REMOVED***
@@ -8,6 +7,9 @@ export class VirtualMachine ***REMOVED***
   image: Image;
   status: string;
   keyname: string;
-
+  name: string;
+  openstackid: string;
+  created_at: string;
+  stopped_at: string;
 ***REMOVED***
 
