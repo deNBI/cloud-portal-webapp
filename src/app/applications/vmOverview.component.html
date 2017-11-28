@@ -1,40 +1,49 @@
-<ng-container *ngIf="is_vo_admin">
-<ul class="nav nav-tabs">
-  <li><button (click)="getVm(elixir_id)">Own Machines</button></li>
-  <li><button (click)="getAllVms()">All Machines</button></li>
-</ul>
-</ng-container>
-<table class="table table-striped">
-  <tr *ngFor="let vm of vms"  >
-    <td class="field-label col-md-6 active">
-       Name: {{vm.name}}
-    </td>
-    <td>Status: {{vm.status}} </td>
-    <td> Created_at: {{vm.created_at}}</td>
-    <td>Openstackid: {{vm.openstackid}} |</td>
-    <td >
-      Stopped_at: {{vm.stopped_at}}
-    </td>
-    <td> <button (click)="stopVm(vm.openstackid)"
-                      class="btn btn-primary">
-                StopVM
-              </button></td>
-  </tr>
-  <tr>
-     <td class="field-label col-md-6 active">
+<div class="card" *ngIf="is_vo_admin">
+  <div class="card-header">
+    <strong>Instance</strong>
+    –Overview
+  </div>
+  <ng-container *ngIf="is_vo_admin">
+    <ul class="nav nav-pills">
+      <li>
+        <button class="btn btn-primary" (click)="getVm(elixir_id)">Own Machines</button>
+      </li>
+      <li>
+        <button class="btn btn-primary" (click)="getAllVms()">All Machines</button>
+      </li>
+    </ul>
+  </ng-container>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Created at</th>
+      <th>Openstack_Id</th>
+      <th>Stopped at</th>
+    </tr>
 
-    </td>
-    <td class="col-md-6">
+    </thead>
+    <tbody>
 
-    </td>
-  </tr>
-  <tr>
-     <td class="field-label col-md-6 active">
+    </tbody>
+    <tr *ngFor="let vm of vms">
+      <td>
+        {{vm.name}}
+      </td>
+      <td>{{vm.status}}</td>
+      <td>  {{vm.created_at}}</td>
+      <td> {{vm.openstackid}} |</td>
+      <td>
+        {{vm.stopped_at}}
+      </td>
+      <td>
+        <button (click)="stopVm(vm.openstackid)"
+                class="btn btn-primary">
+          StopVM
+        </button>
+      </td>
+    </tr>
 
-    </td>
-    <td class="col-md-6">
-
-    </td>
-  </tr>
-
-</table>
+  </table>
+</div>
