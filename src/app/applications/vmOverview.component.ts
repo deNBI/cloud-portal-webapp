@@ -5,28 +5,25 @@ import 'rxjs/Rx'
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
 import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
-import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
-import ***REMOVED***MembersManager***REMOVED*** from '../perun-connector/members-manager.service'
-import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
 import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
 import ***REMOVED***VirtualMachine***REMOVED*** from "../virtualmachinemodels/virtualmachine";
-import ***REMOVED***Userinfo***REMOVED*** from "../userinfo/userinfo.model";
-import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
+import ***REMOVED***FullLayoutComponent***REMOVED*** from "../layouts/full-layout.component";
 
 
 @Component(***REMOVED***
   selector: 'vm-overview',
   templateUrl: 'vmOverview.component.html',
-  providers: [VirtualmachineService, AuthzResolver, UsersManager, MembersManager, Userinfo, PerunSettings, ApiSettings, GroupsManager, keyService]
+  providers: [VirtualmachineService, FullLayoutComponent, AuthzResolver, UsersManager, PerunSettings]
 ***REMOVED***)
 
 
 export class VmOverviewComponent implements OnInit ***REMOVED***
   vms: VirtualMachine[];
-  elixir_id: string
+  elixir_id: string;
+  is_vo_admin: boolean;
 
 
-  constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver) ***REMOVED***
+  constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  usersmanager: UsersManager, private perunsettings: PerunSettings) ***REMOVED***
 
   ***REMOVED***
   stopVm(openstack_id :string):void ***REMOVED***
@@ -55,6 +52,29 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
     this.getElixirId();
+    this.checkVOstatus(this.usersmanager)
+  ***REMOVED***
+
+    checkVOstatus(usersmanager: UsersManager) ***REMOVED***
+    let user_id: number;
+    let admin_vos: ***REMOVED******REMOVED***;
+    this.authzresolver
+      .getLoggedUser().toPromise()
+      .then(function (userdata) ***REMOVED***
+        //TODO catch errors
+        user_id = userdata.json()["id"];
+        return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+      ***REMOVED***).then(function (adminvos) ***REMOVED***
+      admin_vos = adminvos.json();
+    ***REMOVED***).then(result => ***REMOVED***
+      //check if user is a Vo admin so we can serv according buttons
+      for (let vkey in admin_vos) ***REMOVED***
+        if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) ***REMOVED***
+          this.is_vo_admin = true;
+        ***REMOVED***
+        break;
+      ***REMOVED***
+    ***REMOVED***);
   ***REMOVED***
 
 

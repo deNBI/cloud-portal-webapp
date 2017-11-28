@@ -89,11 +89,11 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***);
   ***REMOVED***
 
+
   ngOnInit(): void ***REMOVED***
     this.checkVOstatus(this.usersmanager);
     this.getClientsChecked();
 
   ***REMOVED***
-
 
 ***REMOVED***
