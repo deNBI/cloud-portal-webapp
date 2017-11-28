@@ -33,9 +33,9 @@
             <tr>
               <td>Public Key</td>
               <td>
-                <button *ngIf="userinfo.PublicKey" (click)="collapsed1=!collapsed1"
+                <button *ngIf="userinfo.PublicKey" (click)="collapsed1=!collapsed1; toggleKey()"
                         class="btn btn-primary">
-                  +
+                  ***REMOVED******REMOVED***key***REMOVED******REMOVED***
                 </button>
                 <div *ngIf="collapsed1"><br>***REMOVED******REMOVED***userinfo.PublicKey***REMOVED******REMOVED***</div>
               </td>

@@ -13,6 +13,7 @@ import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 ***REMOVED***)
 export class UserinfoComponent ***REMOVED***
   userinfo: Userinfo;
+  key:string = 'Show Public Key';
 
 
   constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService) ***REMOVED***
@@ -54,6 +55,14 @@ console.log(newstr)
     this.authzresolver.getPerunPrincipal().toPromise().then(result =>***REMOVED***
         this.userinfo.ElxirId = result.json()['actor'];
       ***REMOVED***).then(result => ***REMOVED***this.getUserPublicKey()***REMOVED***);
+  ***REMOVED***
+
+  toggleKey()***REMOVED***
+    if(this.key == 'Show Public Key')***REMOVED***
+      this.key = 'Hide Public Key';
+    ***REMOVED***else***REMOVED***
+      this.key = 'Show Public Key';
+    ***REMOVED***
   ***REMOVED***
 
 
