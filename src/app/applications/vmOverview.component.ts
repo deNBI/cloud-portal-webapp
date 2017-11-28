@@ -30,6 +30,8 @@ export class VmOverviewComponent implements OnInit {
   stopVm(openstack_id: string): void {
     this.virtualmachineservice.stopVM(openstack_id).subscribe(result => {
       console.log(result.text());
+      this.virtualmachineservice.getVm(this.elixir_id);
+
     })
   }
 
@@ -44,7 +46,15 @@ export class VmOverviewComponent implements OnInit {
     );
   }
 
-  getAllVms():void{
+  resumeVM(openstack_id: string): void {
+
+    this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => {
+      console.log(result.text());
+      this.virtualmachineservice.getVm(this.elixir_id);
+    })
+  }
+
+  getAllVms(): void {
     this.virtualmachineservice.getAllVM().subscribe(vms => {
         this.vms = vms;
         for (let vm of this.vms) {

@@ -32,7 +32,7 @@
         {{vm.name}}
       </td>
       <td>{{vm.status}}</td>
-      <td>  {{vm.created_at}}</td>
+      <td> {{vm.created_at}}</td>
       <td> {{vm.openstackid}} |</td>
       <td>
         {{vm.stopped_at}}
@@ -41,6 +41,12 @@
         <button (click)="stopVm(vm.openstackid)"
                 class="btn btn-primary">
           StopVM
+        </button>
+      </td>
+      <td>
+        <button (click)="resumeVM(vm.openstackid);"
+                class="btn btn-primary">
+          ResumeVM
         </button>
       </td>
     </tr>
