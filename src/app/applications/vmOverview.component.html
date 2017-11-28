@@ -1,10 +1,13 @@
 <table class="table table-striped">
-  <tr >
-    <td *ngFor="let vm of vms" class="field-label col-md-6 active">
-        hallo
+  <tr *ngFor="let vm of vms"  >
+    <td class="field-label col-md-6 active">
+       Name: {{vm.name}}
     </td>
-    <td class="col-md-6">
-
+    <td>Status: {{vm.status}} </td>
+    <td> Created_at: {{vm.created_at}}</td>
+    <td>Openstackid: {{vm.openstackid}} |</td>
+    <td >
+      Stopped_at: {{vm.stopped_at}}
     </td>
   </tr>
   <tr>

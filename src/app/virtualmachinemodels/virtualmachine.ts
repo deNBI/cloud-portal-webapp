@@ -1,6 +1,5 @@
-import { Image } from './image';
-import { Flavor } from './flavor';
-
+import {Image} from './image';
+import {Flavor} from './flavor';
 
 
 export class VirtualMachine {
@@ -8,6 +7,9 @@ export class VirtualMachine {
   image: Image;
   status: string;
   keyname: string;
-
+  name: string;
+  openstackid: string;
+  created_at: string;
+  stopped_at: string;
 }
 

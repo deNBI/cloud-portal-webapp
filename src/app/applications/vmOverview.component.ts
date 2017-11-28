@@ -14,17 +14,16 @@ import {Userinfo} from "../userinfo/userinfo.model";
 import {keyService} from "../api-connector/key.service";
 
 
-
 @Component({
   selector: 'vm-overview',
   templateUrl: 'vmOverview.component.html',
-  providers: [VirtualmachineService,AuthzResolver, UsersManager, MembersManager, Userinfo, PerunSettings, ApiSettings,GroupsManager, keyService]
+  providers: [VirtualmachineService, AuthzResolver, UsersManager, MembersManager, Userinfo, PerunSettings, ApiSettings, GroupsManager, keyService]
 })
 
 
 export class VmOverviewComponent implements OnInit {
-  vms : VirtualMachine[];
-  userinfo : Userinfo;
+  vms: VirtualMachine[];
+  userinfo: Userinfo;
   elixir_id: string
 
 
@@ -33,24 +32,32 @@ export class VmOverviewComponent implements OnInit {
   }
 
 
-   getVms(elixir_id: string): void{
-    this.virtualmachineservice.getVm(elixir_id).subscribe(vms => this.vms = vms);
+  getVms(elixir_id: string): void {
+    this.virtualmachineservice.getVm(elixir_id).subscribe(vms => {
+        this.vms = vms;
+        for (let vm of this.vms) {
+          vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+        }
+      }
+    );
   }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
     this.getUserinfo();
   }
 
-    getUserPublicKey(){
-    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result =>{
+  getUserPublicKey() {
+    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => {
       this.userinfo.PublicKey = result.toString();
     })
   }
 
-getUserinfo() {
-    this.authzresolver.getPerunPrincipal().toPromise().then(result =>{
-        this.elixir_id= result.json()['actor'];
-      }).then(result =>{ this.getVms(this.elixir_id)});
+  getUserinfo() {
+    this.authzresolver.getPerunPrincipal().toPromise().then(result => {
+      this.elixir_id = result.json()['actor'];
+    }).then(result => {
+      this.getVms(this.elixir_id)
+    });
   }
 
 }
