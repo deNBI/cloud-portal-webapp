@@ -53,7 +53,15 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
       this.virtualmachineservice.getVm(this.elixir_id);
     ***REMOVED***)
   ***REMOVED***
-
+ getAllVmsOPS(): void ***REMOVED***
+    this.virtualmachineservice.getALLVMOPS().subscribe(vms => ***REMOVED***
+        this.vms = vms;
+        for (let vm of this.vms) ***REMOVED***
+          vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+        ***REMOVED***
+      ***REMOVED***
+    );
+  ***REMOVED***
   getAllVms(): void ***REMOVED***
     this.virtualmachineservice.getAllVM().subscribe(vms => ***REMOVED***
         this.vms = vms;

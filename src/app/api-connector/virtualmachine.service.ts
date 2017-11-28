@@ -43,7 +43,10 @@ export class VirtualmachineService ***REMOVED***
     urlSearchParams.append('request', 'all')
     return this.http.get('https://portal-dev.denbi.de/connector/vms/', ***REMOVED***search: urlSearchParams***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
   ***REMOVED***
-
+    getALLVMOPS()***REMOVED*** let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('request', 'allOPS')
+    return this.http.get('https://portal-dev.denbi.de/connector/vms/', ***REMOVED***search: urlSearchParams***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+  ***REMOVED***
   getVm(elixir_id: string): Observable<VirtualMachine[]> ***REMOVED***
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('elixir_id', elixir_id)
