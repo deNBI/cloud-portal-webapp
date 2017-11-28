@@ -18,13 +18,13 @@ export class VirtualmachineService ***REMOVED***
 
   data: string;
 
-  startVM(flavor: string, image: string, public_key: string, servername: string, username: string, elixir_id: string,host:string,port:string): Observable<Response> ***REMOVED***
+  startVM(flavor: string, image: string, public_key: string, servername: string, username: string, elixir_id: string, host: string, port: string): Observable<Response> ***REMOVED***
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('flavor', flavor);
     urlSearchParams.append('image', image);
-   let re = /\+/gi;
+    let re = /\+/gi;
 
-  let newstr = public_key.replace(re, "%2B");
+    let newstr = public_key.replace(re, "%2B");
 
     urlSearchParams.append('public_key', newstr);
     urlSearchParams.append('username', username);
@@ -35,10 +35,19 @@ export class VirtualmachineService ***REMOVED***
     return this.http.post('https://portal-dev.denbi.de/connector/vms/', urlSearchParams);
   ***REMOVED***
 
-   getVm(elixir_id: string): Observable<VirtualMachine[]>***REMOVED***
+  getAllVM(): Observable<VirtualMachine[]> ***REMOVED***
+
+
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('request', 'all')
+    return this.http.get('https://portal-dev.denbi.de/connector/vms/', ***REMOVED***search: urlSearchParams***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+  ***REMOVED***
+
+  getVm(elixir_id: string): Observable<VirtualMachine[]> ***REMOVED***
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('elixir_id', elixir_id)
-    return this.http.get('https://portal-dev.denbi.de/connector/vms/', ***REMOVED***search: urlSearchParams***REMOVED***).map((res:Response) => res.json()).catch((error:any) => Observable.throw(error.json().error ||'Server error'))
+    urlSearchParams.append('request', 'user')
+    return this.http.get('https://portal-dev.denbi.de/connector/vms/', ***REMOVED***search: urlSearchParams***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
   ***REMOVED***
 
 ***REMOVED***
