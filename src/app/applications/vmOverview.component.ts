@@ -30,6 +30,8 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
   stopVm(openstack_id: string): void ***REMOVED***
     this.virtualmachineservice.stopVM(openstack_id).subscribe(result => ***REMOVED***
       console.log(result.text());
+      this.virtualmachineservice.getVm(this.elixir_id);
+
     ***REMOVED***)
   ***REMOVED***
 
@@ -44,7 +46,15 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     );
   ***REMOVED***
 
-  getAllVms():void***REMOVED***
+  resumeVM(openstack_id: string): void ***REMOVED***
+
+    this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => ***REMOVED***
+      console.log(result.text());
+      this.virtualmachineservice.getVm(this.elixir_id);
+    ***REMOVED***)
+  ***REMOVED***
+
+  getAllVms(): void ***REMOVED***
     this.virtualmachineservice.getAllVM().subscribe(vms => ***REMOVED***
         this.vms = vms;
         for (let vm of this.vms) ***REMOVED***
