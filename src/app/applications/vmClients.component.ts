@@ -89,11 +89,11 @@ export class ClientOverviewComponent implements OnInit {
     });
   }
 
+
   ngOnInit(): void {
     this.checkVOstatus(this.usersmanager);
     this.getClientsChecked();
 
   }
-
 
 }
