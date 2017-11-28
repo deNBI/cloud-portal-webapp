@@ -53,7 +53,15 @@ export class VmOverviewComponent implements OnInit {
       this.virtualmachineservice.getVm(this.elixir_id);
     })
   }
-
+ getAllVmsOPS(): void {
+    this.virtualmachineservice.getALLVMOPS().subscribe(vms => {
+        this.vms = vms;
+        for (let vm of this.vms) {
+          vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+        }
+      }
+    );
+  }
   getAllVms(): void {
     this.virtualmachineservice.getAllVM().subscribe(vms => {
         this.vms = vms;
