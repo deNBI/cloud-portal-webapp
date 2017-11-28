@@ -30,7 +30,9 @@ export class VmOverviewComponent implements OnInit {
   constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  memberssmanager: MembersManager, private keyService: keyService) {
 
   }
-
+  stopVm(openstack_id :string):void {
+    this.virtualmachineservice.stopVM(openstack_id).subscribe(result =>{console.log(result.text());})
+  }
 
   getVms(elixir_id: string): void {
     this.virtualmachineservice.getVm(elixir_id).subscribe(vms => {

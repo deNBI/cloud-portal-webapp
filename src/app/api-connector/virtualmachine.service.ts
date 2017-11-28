@@ -51,9 +51,9 @@ export class VirtualmachineService {
     return this.http.get('https://portal-dev.denbi.de/connector/vms/', {search: urlSearchParams}).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
   }
 
-  stopVM(elixir_id: string, openstack_id: string) {
+  stopVM( openstack_id: string) {
     let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('elixir_id', elixir_id)
+
     urlSearchParams.append('openstack_id', openstack_id)
      urlSearchParams.append('request', 'stop');
     return this.http.post('https://portal-dev.denbi.de/connector/vms/', urlSearchParams);
