@@ -15,9 +15,13 @@
     <td >
       Stopped_at: {{vm.stopped_at}}
     </td>
-    <td> <button (click)="stopVm(vm.openstackid)"
+    <td> <button (click)="stopVm(vm.openstackid);"
                       class="btn btn-primary">
                 StopVM
+              </button></td>
+    <td> <button (click)="resumeVM(vm.openstackid);"
+                      class="btn btn-primary">
+                ResumeVM
               </button></td>
   </tr>
   <tr>

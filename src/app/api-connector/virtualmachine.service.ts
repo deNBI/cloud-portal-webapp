@@ -59,4 +59,12 @@ export class VirtualmachineService {
     return this.http.post('https://portal-dev.denbi.de/connector/vms/', urlSearchParams);
   }
 
+  resumeVM( openstack_id: string): Observable<Response> {
+    let urlSearchParams = new URLSearchParams();
+
+    urlSearchParams.append('openstack_id', openstack_id)
+     urlSearchParams.append('request', 'resume');
+    return this.http.post('https://portal-dev.denbi.de/connector/vms/', urlSearchParams);
+  }
+
 }
