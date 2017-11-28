@@ -23,11 +23,10 @@ import {keyService} from "../api-connector/key.service";
 
 export class VmOverviewComponent implements OnInit {
   vms: VirtualMachine[];
-  userinfo: Userinfo;
   elixir_id: string
 
 
-  constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  memberssmanager: MembersManager, private keyService: keyService) {
+  constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver) {
 
   }
 
@@ -48,17 +47,22 @@ export class VmOverviewComponent implements OnInit {
     );
   }
 
+  getAllVms():void{
+    this.virtualmachineservice.getAllVM().subscribe(vms => {
+        this.vms = vms;
+        for (let vm of this.vms) {
+          vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+        }
+      }
+    );
+  }
+
   ngOnInit(): void {
-    this.getUserinfo();
+    this.getElixirId();
   }
 
-  getUserPublicKey() {
-    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => {
-      this.userinfo.PublicKey = result.toString();
-    })
-  }
 
-  getUserinfo() {
+  getElixirId() {
     this.authzresolver.getPerunPrincipal().toPromise().then(result => {
       this.elixir_id = result.json()['actor'];
     }).then(result => {

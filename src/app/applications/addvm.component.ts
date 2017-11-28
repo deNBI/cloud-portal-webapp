@@ -67,19 +67,19 @@ export class VirtualMachineComponent implements OnInit {
   }
 
   toggleInformationButton(): void {
-    if (this.informationButton == "Show Information") {
-      this.informationButton = "Hide Information";
+    if (this.informationButton == "Show Details") {
+      this.informationButton = "Hide Details";
     } else {
-      this.informationButton = "Show Information";
+      this.informationButton = "Show Details";
     }
 
   }
 
   toggleInformationButton2(): void {
-    if (this.informationButton2 == "Show Information") {
-      this.informationButton2 = "Hide Information";
+    if (this.informationButton2 == "Show Details") {
+      this.informationButton2 = "Hide Details";
     } else {
-      this.informationButton2 = "Show Information";
+      this.informationButton2 = "Show Details";
     }
 
   }
