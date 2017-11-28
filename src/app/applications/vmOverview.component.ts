@@ -30,7 +30,9 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
   constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  memberssmanager: MembersManager, private keyService: keyService) ***REMOVED***
 
   ***REMOVED***
-
+  stopVm(openstack_id :string):void ***REMOVED***
+    this.virtualmachineservice.stopVM(openstack_id).subscribe(result =>***REMOVED***console.log(result.text());***REMOVED***)
+  ***REMOVED***
 
   getVms(elixir_id: string): void ***REMOVED***
     this.virtualmachineservice.getVm(elixir_id).subscribe(vms => ***REMOVED***
