@@ -51,7 +51,7 @@ export class VirtualmachineService ***REMOVED***
     return this.http.get('https://portal-dev.denbi.de/connector/vms/', ***REMOVED***search: urlSearchParams***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
   ***REMOVED***
 
-  stopVM( openstack_id: string) ***REMOVED***
+  stopVM( openstack_id: string): Observable<Response> ***REMOVED***
     let urlSearchParams = new URLSearchParams();
 
     urlSearchParams.append('openstack_id', openstack_id)
