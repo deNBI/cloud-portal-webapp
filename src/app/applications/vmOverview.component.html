@@ -46,13 +46,12 @@
       </td>
 
       <td>
-        <button (click)="stopVm(vm.openstackid)"
+        <button *ngIf="vm.status =='ACTIVE'" (click)="stopVm(vm.openstackid)"
                 class="btn btn-primary">
           StopVM
         </button>
-      </td>
-      <td>
-        <button (click)="resumeVM(vm.openstackid);"
+
+        <button *ngIf="vm.status =='SUSPENDED'" (click)="resumeVM(vm.openstackid);"
                 class="btn btn-primary">
           ResumeVM
         </button>
