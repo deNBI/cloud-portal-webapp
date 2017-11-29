@@ -22,7 +22,8 @@
       <th>Name</th>
       <th>Status</th>
       <th>Created at</th>
-      <th>Openstack_Id</th>
+      <th *ngIf="is_vo_admin">Username</th>
+      <th *ngIf="is_vo_admin">Elixir ID</th>
       <th>Stopped at</th>
     </tr>
 
@@ -36,10 +37,12 @@
       </td>
       <td>***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</td>
       <td> ***REMOVED******REMOVED***vm.created_at***REMOVED******REMOVED***</td>
-      <td> ***REMOVED******REMOVED***vm.openstackid***REMOVED******REMOVED*** |</td>
+        <td *ngIf="is_vo_admin"> ***REMOVED******REMOVED***vm.username***REMOVED******REMOVED***</td>
+        <td *ngIf="is_vo_admin"> ***REMOVED******REMOVED***vm.elixir_id***REMOVED******REMOVED***</td>
       <td>
         ***REMOVED******REMOVED***vm.stopped_at***REMOVED******REMOVED***
       </td>
+
       <td>
         <button (click)="stopVm(vm.openstackid)"
                 class="btn btn-primary">
