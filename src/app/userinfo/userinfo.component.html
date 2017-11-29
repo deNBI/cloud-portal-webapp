@@ -46,8 +46,11 @@
               <td><input type="text"
                          placeholder="publickey"
                          #publickey>
-                <button class="btn btn-primary" type="button" (click)="importKey(publickey.value, userinfo.ElxirId)">add
-                  Key
+                <button *ngIf="userinfo.PublicKey == 'None'" class="btn btn-primary" type="button" (click)="importKey(publickey.value, userinfo.ElxirId)">
+                  add Key
+                </button>
+                <button *ngIf="userinfo.PublicKey != 'None'" class="btn btn-primary" type="button" (click)="importKey(publickey.value, userinfo.ElxirId)">
+                  change Key
                 </button>
               </td>
             </tr>
