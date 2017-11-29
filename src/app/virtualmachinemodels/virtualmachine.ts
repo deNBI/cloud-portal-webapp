@@ -11,5 +11,7 @@ export class VirtualMachine {
   openstackid: string;
   created_at: string;
   stopped_at: string;
+  elixir_id: string;
+  username: string;
 }
 
