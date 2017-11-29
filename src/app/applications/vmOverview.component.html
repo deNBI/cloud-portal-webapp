@@ -21,6 +21,7 @@
     <tr>
       <th>Name</th>
       <th>Status</th>
+      <th>Floating IP</th>
       <th>Created at</th>
       <th *ngIf="is_vo_admin">Username</th>
       <th *ngIf="is_vo_admin">Elixir ID</th>
@@ -36,6 +37,7 @@
         {{vm.name}}
       </td>
       <td>{{vm.status}}</td>
+      <td>{{vm.floating_ip}}</td>
       <td> {{vm.created_at}}</td>
         <td *ngIf="is_vo_admin"> {{vm.username}}</td>
         <td *ngIf="is_vo_admin"> {{vm.elixir_id}}</td>
