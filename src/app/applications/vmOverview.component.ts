@@ -21,10 +21,102 @@ export class VmOverviewComponent implements OnInit {
   vms: VirtualMachine[];
   elixir_id: string;
   is_vo_admin: boolean;
+  filterusername: string;
+  filterip: string;
+  filtername: string;
+  filterstatus: string;
+  filtercreated_at: string;
+  filterelixir_id: string;
+  filterstopped_at: string;
 
 
   constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  usersmanager: UsersManager, private perunsettings: PerunSettings) {
 
+  }
+
+  isFilterStopped_at(vmstopped_at: string): boolean {
+    if (!this.filterstopped_at) {
+      return true;
+    }
+    else if (vmstopped_at.indexOf(this.filterstopped_at) === 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+
+  isFilterElixir_id(vmelixir_id: string): boolean {
+    if (!this.filterelixir_id) {
+      return true;
+    }
+    else if (vmelixir_id.indexOf(this.filterelixir_id)=== 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  isFilterCreated_at(vmcreated_at: string): boolean {
+    if (!this.filtercreated_at) {
+      return true;
+    }
+    else if (vmcreated_at.indexOf(this.filtercreated_at) === 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  isFilterName(vmname: string): boolean {
+    if (!this.filtername) {
+      return true;
+    }
+    else if (vmname.indexOf(this.filtername)=== 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  isFilterIP(vmip: string): boolean {
+    if (!this.filterip) {
+      return true;
+    }
+    else if (vmip.indexOf(this.filterip) === 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  isFilterstatus(vmstatus: string): boolean {
+    if (!this.filterstatus) {
+      return true;
+    }
+    else if (vmstatus.indexOf(this.filterstatus) === 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  isFilterUsername(vmusername: string): boolean {
+    if (!this.filterusername) {
+      return true;
+    }
+    else if (vmusername.indexOf(this.filterusername) === 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
   stopVm(openstack_id: string): void {
@@ -53,7 +145,8 @@ export class VmOverviewComponent implements OnInit {
       this.virtualmachineservice.getVm(this.elixir_id);
     })
   }
- getAllVmsOPS(): void {
+
+  getAllVmsOPS(): void {
     this.virtualmachineservice.getALLVMOPS().subscribe(vms => {
         this.vms = vms;
         for (let vm of this.vms) {
@@ -62,6 +155,7 @@ export class VmOverviewComponent implements OnInit {
       }
     );
   }
+
   getAllVms(): void {
     this.virtualmachineservice.getAllVM().subscribe(vms => {
         this.vms = vms;
@@ -77,7 +171,7 @@ export class VmOverviewComponent implements OnInit {
     this.checkVOstatus(this.usersmanager)
   }
 
-    checkVOstatus(usersmanager: UsersManager) {
+  checkVOstatus(usersmanager: UsersManager) {
     let user_id: number;
     let admin_vos: {};
     this.authzresolver
