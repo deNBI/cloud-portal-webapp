@@ -176,6 +176,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.vms = vms;
         for (let vm of this.vms) ***REMOVED***
           vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+           vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
         ***REMOVED***
       ***REMOVED***
     );
@@ -186,6 +187,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.vms = vms;
         for (let vm of this.vms) ***REMOVED***
           vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+           vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
         ***REMOVED***
       ***REMOVED***
     );
