@@ -157,6 +157,7 @@ export class VmOverviewComponent implements OnInit {
 
     this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => {
       console.log(result.text());
+
        if (this.tab === 'own') {
         this.getVms(this.elixir_id);
       }
