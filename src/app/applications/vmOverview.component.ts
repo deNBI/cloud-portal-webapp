@@ -21,6 +21,7 @@ export class VmOverviewComponent implements OnInit {
   vms: VirtualMachine[];
   elixir_id: string;
   is_vo_admin: boolean;
+  tab = 'own';
   filterusername: string;
   filterip: string;
   filtername: string;
@@ -32,6 +33,10 @@ export class VmOverviewComponent implements OnInit {
 
   constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  usersmanager: UsersManager, private perunsettings: PerunSettings) {
 
+  }
+
+  toggleTab(tabString: string) {
+    this.tab = tabString;
   }
 
   isFilterStopped_at(vmstopped_at: string): boolean {
@@ -51,7 +56,7 @@ export class VmOverviewComponent implements OnInit {
     if (!this.filterelixir_id) {
       return true;
     }
-    else if (vmelixir_id.indexOf(this.filterelixir_id)=== 0) {
+    else if (vmelixir_id.indexOf(this.filterelixir_id) === 0) {
       return true;
     }
     else {
@@ -75,7 +80,7 @@ export class VmOverviewComponent implements OnInit {
     if (!this.filtername) {
       return true;
     }
-    else if (vmname.indexOf(this.filtername)=== 0) {
+    else if (vmname.indexOf(this.filtername) === 0) {
       return true;
     }
     else {
@@ -122,7 +127,16 @@ export class VmOverviewComponent implements OnInit {
   stopVm(openstack_id: string): void {
     this.virtualmachineservice.stopVM(openstack_id).subscribe(result => {
       console.log(result.text());
-      this.virtualmachineservice.getVm(this.elixir_id);
+      if (this.tab === 'own') {
+        this.getVms(this.elixir_id);
+      }
+      else if (this.tab === 'all') {
+        this.getAllVms();
+
+      }
+      else if (this.tab === 'allOPS') {
+        this.getAllVmsOPS();
+      }
 
     })
   }
@@ -134,6 +148,7 @@ export class VmOverviewComponent implements OnInit {
           vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
           vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
         }
+        console.log(vms)
       }
     );
   }
@@ -142,7 +157,16 @@ export class VmOverviewComponent implements OnInit {
 
     this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => {
       console.log(result.text());
-      this.virtualmachineservice.getVm(this.elixir_id);
+       if (this.tab === 'own') {
+        this.getVms(this.elixir_id);
+      }
+      else if (this.tab === 'all') {
+        this.getAllVms();
+
+      }
+      else if (this.tab === 'allOPS') {
+        this.getAllVmsOPS();
+      }
     })
   }
 

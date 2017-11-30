@@ -13,7 +13,7 @@ import {GroupsManager} from "../perun-connector/groups-manager.service";
 @Component({
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings,GroupsManager]
+  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
 })
 
 export class ClientOverviewComponent implements OnInit {
@@ -21,7 +21,7 @@ export class ClientOverviewComponent implements OnInit {
   is_vo_admin = false;
   checkStatus: string = 'Not checked';
 
-  constructor(private groupsmanager: GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
+  constructor(private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
 
   }
 
@@ -63,29 +63,33 @@ export class ClientOverviewComponent implements OnInit {
 
     this.clientservice.checkClient(host, port).subscribe(data => {
       console.log(data.text());
-      if (data.text()== "false"){
-        this.checkStatus='No Connection';
+      if (data.text() == "false") {
+        this.checkStatus = 'No Connection';
       }
-      else if (data.text() =='true'){
-        this.checkStatus="Connected";
+      else if (data.text() == 'true') {
+        this.checkStatus = "Connected";
       }
-      else {this.checkStatus="check failed";
-      console.log(data.text())}
+      else {
+        this.checkStatus = "check failed";
+        console.log(data.text())
+      }
 
     });
   }
 
-  postClient(host: string, port: string,location:string): void {
+  postClient(host: string, port: string, location: string): void {
 
 
-    this.clientservice.postClient(host, port,location).subscribe(data => {
+    this.clientservice.postClient(host, port, location).subscribe(data => {
       console.log(data.text());
+      this.getClientsChecked();
     });
   }
 
-  deleteClient(host: string, port: string,location:string): void {
-    this.clientservice.deleteClient(host, port,location).subscribe(data => {
+  deleteClient(host: string, port: string, location: string): void {
+    this.clientservice.deleteClient(host, port, location).subscribe(data => {
       console.log(data.text());
+      this.getClientsChecked();
     });
   }
 

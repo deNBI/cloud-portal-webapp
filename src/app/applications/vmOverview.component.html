@@ -6,13 +6,13 @@
   <ng-container *ngIf="is_vo_admin">
     <ul class="nav nav-pills">
       <li>
-        <button class="btn btn-primary" (click)="getVm(elixir_id)">Own Machines</button>
+        <button class="btn btn-primary" (click)="getVms(elixir_id);toggleTab('own');">Own Machines</button>
       </li>
       <li>
-        <button class="btn btn-primary" (click)="getAllVms()">All Machines(DB)</button>
+        <button class="btn btn-primary" (click)="getAllVms();toggleTab('all')">All Machines(DB)</button>
       </li>
       <li>
-        <button class="btn btn-primary" (click)="getAllVmsOPS()">All Machines(OPS)</button>
+        <button class="btn btn-primary" (click)="getAllVmsOPS();toggleTab('allOPS');">All Machines(OPS)</button>
       </li>
     </ul>
   </ng-container>

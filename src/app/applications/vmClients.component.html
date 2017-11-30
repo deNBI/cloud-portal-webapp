@@ -23,7 +23,7 @@
           <td>{{client.port}}</td>
           <td>{{client.status}}</td>
           <td>
-            <button type="button" class="btn btn-primary navbar-inverse" (click)="deleteClient(client.host,client.port,client.location);getClientsChecked();">
+            <button type="button" class="btn btn-primary navbar-inverse" (click)="deleteClient(client.host,client.port,client.location);">
               Delete
               Client
             </button>
@@ -41,7 +41,7 @@
             <button type="button" class="btn btn-primary navbar-inverse" (click)="checkClient(hos.value,port.value)">Check Status</button>
           </td>
           <td>
-            <button type="button" class="btn btn-primary navbar-inverse" (click)="postClient(hos.value,port.value,loc.value);getClientsChecked();">Add Client
+            <button type="button" class="btn btn-primary navbar-inverse" (click)="postClient(hos.value,port.value,loc.value);">Add Client
             </button>
           </td>
           <td></td>
