@@ -146,7 +146,9 @@ export class VmOverviewComponent implements OnInit {
         this.vms = vms;
         for (let vm of this.vms) {
           vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-          vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+        if (vm.stopped_at != 'ACTIVE') {
+            vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+          }
         }
         console.log(vms)
       }
@@ -158,7 +160,7 @@ export class VmOverviewComponent implements OnInit {
     this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => {
       console.log(result.text());
 
-       if (this.tab === 'own') {
+      if (this.tab === 'own') {
         this.getVms(this.elixir_id);
       }
       else if (this.tab === 'all') {
@@ -176,7 +178,9 @@ export class VmOverviewComponent implements OnInit {
         this.vms = vms;
         for (let vm of this.vms) {
           vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-           vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+          if (vm.stopped_at != 'ACTIVE') {
+            vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+          }
         }
       }
     );
@@ -187,7 +191,9 @@ export class VmOverviewComponent implements OnInit {
         this.vms = vms;
         for (let vm of this.vms) {
           vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-           vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+          if (vm.stopped_at != 'ACTIVE') {
+            vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+          }
         }
       }
     );
