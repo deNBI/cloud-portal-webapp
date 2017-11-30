@@ -32,31 +32,43 @@
     <tbody>
 
     </tbody>
-    <tr *ngFor="let vm of vms">
-      <td>
-        ***REMOVED******REMOVED***vm.name***REMOVED******REMOVED***
-      </td>
-      <td>***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</td>
-      <td>***REMOVED******REMOVED***vm.floating_ip***REMOVED******REMOVED***</td>
-      <td> ***REMOVED******REMOVED***vm.created_at***REMOVED******REMOVED***</td>
+    <ng-container *ngFor="let vm of vms">
+
+      <tr
+        *ngIf="isFilterstatus(vm.status ) && isFilterCreated_at(vm.created_at) && isFilterElixir_id(vm.elixir_id) && isFilterIP(vm.floating_ip) && isFilterName(vm.name) && isFilterStopped_at(vm.stopped_at) && isFilterUsername(vm.username)">
+        <td>
+          ***REMOVED******REMOVED***vm.name***REMOVED******REMOVED***
+        </td>
+        <td>***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</td>
+        <td>***REMOVED******REMOVED***vm.floating_ip***REMOVED******REMOVED***</td>
+        <td> ***REMOVED******REMOVED***vm.created_at***REMOVED******REMOVED***</td>
         <td *ngIf="is_vo_admin"> ***REMOVED******REMOVED***vm.username***REMOVED******REMOVED***</td>
         <td *ngIf="is_vo_admin"> ***REMOVED******REMOVED***vm.elixir_id***REMOVED******REMOVED***</td>
-      <td>
-        ***REMOVED******REMOVED***vm.stopped_at***REMOVED******REMOVED***
-      </td>
+        <td>
+          ***REMOVED******REMOVED***vm.stopped_at***REMOVED******REMOVED***
+        </td>
 
-      <td>
-        <button *ngIf="vm.status =='ACTIVE'" (click)="stopVm(vm.openstackid)"
-                class="btn btn-primary">
-          StopVM
-        </button>
+        <td>
+          <button *ngIf="vm.status =='ACTIVE'" (click)="stopVm(vm.openstackid)"
+                  class="btn btn-primary">
+            StopVM
+          </button>
 
-        <button *ngIf="vm.status =='SUSPENDED'" (click)="resumeVM(vm.openstackid);"
-                class="btn btn-primary">
-          ResumeVM
-        </button>
-      </td>
-    </tr>
+          <button *ngIf="vm.status =='SUSPENDED'" (click)="resumeVM(vm.openstackid);"
+                  class="btn btn-primary">
+            ResumeVM
+          </button>
+        </td>
+      </tr>
+    </ng-container>
 
   </table>
+
+  <input type="text" placeholder="Sopped-at" name="filterstopped_at" [(ngModel)]="filterstopped_at">
+  <input type="text" placeholder="Elixir_ID" name="filterelixir_id" [(ngModel)]="filterelixir_id">
+  <input type="text" placeholder="Created_at" name="filtercreated_at" [(ngModel)]="filtercreated_at">
+  <input type="text" placeholder="IP" name="filterip" [(ngModel)]="filterip">
+  <input type="text" placeholder="Username" name="filterusername" [(ngModel)]="filterusername">
+  <input type="text" placeholder="Name" name="filtername" [(ngModel)]="filtername">
+  <input type="text" placeholder="Status" name="filterstatus" [(ngModel)]="filterstatus">
 </div>

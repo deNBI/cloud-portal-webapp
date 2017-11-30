@@ -21,10 +21,102 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
   vms: VirtualMachine[];
   elixir_id: string;
   is_vo_admin: boolean;
+  filterusername: string;
+  filterip: string;
+  filtername: string;
+  filterstatus: string;
+  filtercreated_at: string;
+  filterelixir_id: string;
+  filterstopped_at: string;
 
 
   constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  usersmanager: UsersManager, private perunsettings: PerunSettings) ***REMOVED***
 
+  ***REMOVED***
+
+  isFilterStopped_at(vmstopped_at: string): boolean ***REMOVED***
+    if (!this.filterstopped_at) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else if (vmstopped_at.indexOf(this.filterstopped_at) === 0) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else ***REMOVED***
+      return false;
+    ***REMOVED***
+  ***REMOVED***
+
+
+  isFilterElixir_id(vmelixir_id: string): boolean ***REMOVED***
+    if (!this.filterelixir_id) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else if (vmelixir_id.indexOf(this.filterelixir_id)=== 0) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else ***REMOVED***
+      return false;
+    ***REMOVED***
+  ***REMOVED***
+
+  isFilterCreated_at(vmcreated_at: string): boolean ***REMOVED***
+    if (!this.filtercreated_at) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else if (vmcreated_at.indexOf(this.filtercreated_at) === 0) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else ***REMOVED***
+      return false;
+    ***REMOVED***
+  ***REMOVED***
+
+  isFilterName(vmname: string): boolean ***REMOVED***
+    if (!this.filtername) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else if (vmname.indexOf(this.filtername)=== 0) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else ***REMOVED***
+      return false;
+    ***REMOVED***
+  ***REMOVED***
+
+  isFilterIP(vmip: string): boolean ***REMOVED***
+    if (!this.filterip) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else if (vmip.indexOf(this.filterip) === 0) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else ***REMOVED***
+      return false;
+    ***REMOVED***
+  ***REMOVED***
+
+  isFilterstatus(vmstatus: string): boolean ***REMOVED***
+    if (!this.filterstatus) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else if (vmstatus.indexOf(this.filterstatus) === 0) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else ***REMOVED***
+      return false;
+    ***REMOVED***
+  ***REMOVED***
+
+  isFilterUsername(vmusername: string): boolean ***REMOVED***
+    if (!this.filterusername) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else if (vmusername.indexOf(this.filterusername) === 0) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else ***REMOVED***
+      return false;
+    ***REMOVED***
   ***REMOVED***
 
   stopVm(openstack_id: string): void ***REMOVED***
@@ -53,7 +145,8 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
       this.virtualmachineservice.getVm(this.elixir_id);
     ***REMOVED***)
   ***REMOVED***
- getAllVmsOPS(): void ***REMOVED***
+
+  getAllVmsOPS(): void ***REMOVED***
     this.virtualmachineservice.getALLVMOPS().subscribe(vms => ***REMOVED***
         this.vms = vms;
         for (let vm of this.vms) ***REMOVED***
@@ -62,6 +155,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
       ***REMOVED***
     );
   ***REMOVED***
+
   getAllVms(): void ***REMOVED***
     this.virtualmachineservice.getAllVM().subscribe(vms => ***REMOVED***
         this.vms = vms;
@@ -77,7 +171,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     this.checkVOstatus(this.usersmanager)
   ***REMOVED***
 
-    checkVOstatus(usersmanager: UsersManager) ***REMOVED***
+  checkVOstatus(usersmanager: UsersManager) ***REMOVED***
     let user_id: number;
     let admin_vos: ***REMOVED******REMOVED***;
     this.authzresolver
