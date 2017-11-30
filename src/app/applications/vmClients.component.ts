@@ -13,7 +13,7 @@ import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-m
 @Component(***REMOVED***
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings,GroupsManager]
+  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
 ***REMOVED***)
 
 export class ClientOverviewComponent implements OnInit ***REMOVED***
@@ -21,7 +21,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
   is_vo_admin = false;
   checkStatus: string = 'Not checked';
 
-  constructor(private groupsmanager: GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
+  constructor(private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
 
   ***REMOVED***
 
@@ -63,29 +63,33 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
 
     this.clientservice.checkClient(host, port).subscribe(data => ***REMOVED***
       console.log(data.text());
-      if (data.text()== "false")***REMOVED***
-        this.checkStatus='No Connection';
+      if (data.text() == "false") ***REMOVED***
+        this.checkStatus = 'No Connection';
       ***REMOVED***
-      else if (data.text() =='true')***REMOVED***
-        this.checkStatus="Connected";
+      else if (data.text() == 'true') ***REMOVED***
+        this.checkStatus = "Connected";
       ***REMOVED***
-      else ***REMOVED***this.checkStatus="check failed";
-      console.log(data.text())***REMOVED***
+      else ***REMOVED***
+        this.checkStatus = "check failed";
+        console.log(data.text())
+      ***REMOVED***
 
     ***REMOVED***);
   ***REMOVED***
 
-  postClient(host: string, port: string,location:string): void ***REMOVED***
+  postClient(host: string, port: string, location: string): void ***REMOVED***
 
 
-    this.clientservice.postClient(host, port,location).subscribe(data => ***REMOVED***
+    this.clientservice.postClient(host, port, location).subscribe(data => ***REMOVED***
       console.log(data.text());
+      this.getClientsChecked();
     ***REMOVED***);
   ***REMOVED***
 
-  deleteClient(host: string, port: string,location:string): void ***REMOVED***
-    this.clientservice.deleteClient(host, port,location).subscribe(data => ***REMOVED***
+  deleteClient(host: string, port: string, location: string): void ***REMOVED***
+    this.clientservice.deleteClient(host, port, location).subscribe(data => ***REMOVED***
       console.log(data.text());
+      this.getClientsChecked();
     ***REMOVED***);
   ***REMOVED***
 

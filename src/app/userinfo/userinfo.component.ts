@@ -29,7 +29,7 @@ let newstr = publicKey.replace(re, "%2B");
 console.log(newstr)
     console.log(publicKey.replace(re,'%2B'));
 
-    this.keyService.postKey(this.userinfo.ElxirId, publicKey.replace(re,'%2B'), keyname).subscribe();
+    this.keyService.postKey(this.userinfo.ElxirId, publicKey.replace(re,'%2B'), keyname).subscribe(result=>***REMOVED***this.getUserPublicKey();***REMOVED***);
   ***REMOVED***
 
   getUserPublicKey()***REMOVED***
