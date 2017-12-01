@@ -43,15 +43,24 @@
                 </button>
                 <div *ngIf="collapsed1"><br>{{userinfo.PublicKey}}</div>
               </td>
-              <td><input type="text"
-                         placeholder="publickey"
-                         #publickey>
-                <button *ngIf="userinfo.PublicKey == 'None'" class="btn btn-primary" type="button" (click)="importKey(publickey.value, userinfo.ElxirId)">
+              <td>
+                <ng-container *ngIf="userinfo.PublicKey != 'None'">
+                  <div class="alert alert-danger">
+                    <strong>Warning!</strong> If the key is changed,all your running machines may become unreachable!
+                  </div>
+                  <button class="btn btn-primary" type="button"
+                          (click)="reimportKey(publickey.value, userinfo.ElxirId)">
+                    change Key
+                  </button>
+                </ng-container>
+                <input type="text" class="form-control input-lg"
+                       placeholder="publickey"
+                       #publickey>
+                <button *ngIf="userinfo.PublicKey == 'None'" class="btn btn-primary" type="button"
+                        (click)="importKey(publickey.value, userinfo.ElxirId)">
                   add Key
                 </button>
-                <button *ngIf="userinfo.PublicKey != 'None'" class="btn btn-primary" type="button" (click)="importKey(publickey.value, userinfo.ElxirId)">
-                  change Key
-                </button>
+
               </td>
             </tr>
           </table>

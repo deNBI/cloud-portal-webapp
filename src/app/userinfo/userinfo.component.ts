@@ -13,7 +13,7 @@ import {keyService} from "../api-connector/key.service";
 })
 export class UserinfoComponent {
   userinfo: Userinfo;
-  key:string = 'Show Public Key';
+  key: string = 'Show Public Key';
 
 
   constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService) {
@@ -21,19 +21,31 @@ export class UserinfoComponent {
     this.getUserinfo();
 
   }
-  importKey(publicKey:string, keyname:string){
+
+  importKey(publicKey: string, keyname: string) {
     console.log("import key");
     let re = /\+/gi;
 
-let newstr = publicKey.replace(re, "%2B");
-console.log(newstr)
-    console.log(publicKey.replace(re,'%2B'));
+    let newstr = publicKey.replace(re, "%2B");
 
-    this.keyService.postKey(this.userinfo.ElxirId, publicKey.replace(re,'%2B'), keyname).subscribe(result=>{this.getUserPublicKey();});
+    this.keyService.postKey(this.userinfo.ElxirId, publicKey.replace(re, '%2B'), keyname).subscribe(result => {
+      this.getUserPublicKey();
+    });
   }
 
-  getUserPublicKey(){
-    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result =>{
+  reimportKey(publicKey: string, keyname: string) {
+    console.log("import key");
+    let re = /\+/gi;
+
+    let newstr = publicKey.replace(re, "%2B");
+
+    this.keyService.reimportKey(this.userinfo.ElxirId, publicKey.replace(re, '%2B'), keyname).subscribe(result => {
+      this.getUserPublicKey();
+    });
+  }
+
+  getUserPublicKey() {
+    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => {
       this.userinfo.PublicKey = result.toString();
     })
   }
@@ -53,15 +65,17 @@ console.log(newstr)
       this.userinfo.MemberId = memberinfo.json()["id"];
 
     })
-    this.authzresolver.getPerunPrincipal().toPromise().then(result =>{
-        this.userinfo.ElxirId = result.json()['actor'];
-      }).then(result => {this.getUserPublicKey()});
+    this.authzresolver.getPerunPrincipal().toPromise().then(result => {
+      this.userinfo.ElxirId = result.json()['actor'];
+    }).then(result => {
+      this.getUserPublicKey()
+    });
   }
 
-  toggleKey(){
-    if(this.key == 'Show Public Key'){
+  toggleKey() {
+    if (this.key == 'Show Public Key') {
       this.key = 'Hide Public Key';
-    }else{
+    } else {
       this.key = 'Show Public Key';
     }
   }
