@@ -13,7 +13,7 @@ import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 ***REMOVED***)
 export class UserinfoComponent ***REMOVED***
   userinfo: Userinfo;
-  key:string = 'Show Public Key';
+  key: string = 'Show Public Key';
 
 
   constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService) ***REMOVED***
@@ -21,19 +21,31 @@ export class UserinfoComponent ***REMOVED***
     this.getUserinfo();
 
   ***REMOVED***
-  importKey(publicKey:string, keyname:string)***REMOVED***
+
+  importKey(publicKey: string, keyname: string) ***REMOVED***
     console.log("import key");
     let re = /\+/gi;
 
-let newstr = publicKey.replace(re, "%2B");
-console.log(newstr)
-    console.log(publicKey.replace(re,'%2B'));
+    let newstr = publicKey.replace(re, "%2B");
 
-    this.keyService.postKey(this.userinfo.ElxirId, publicKey.replace(re,'%2B'), keyname).subscribe(result=>***REMOVED***this.getUserPublicKey();***REMOVED***);
+    this.keyService.postKey(this.userinfo.ElxirId, publicKey.replace(re, '%2B'), keyname).subscribe(result => ***REMOVED***
+      this.getUserPublicKey();
+    ***REMOVED***);
   ***REMOVED***
 
-  getUserPublicKey()***REMOVED***
-    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result =>***REMOVED***
+  reimportKey(publicKey: string, keyname: string) ***REMOVED***
+    console.log("import key");
+    let re = /\+/gi;
+
+    let newstr = publicKey.replace(re, "%2B");
+
+    this.keyService.reimportKey(this.userinfo.ElxirId, publicKey.replace(re, '%2B'), keyname).subscribe(result => ***REMOVED***
+      this.getUserPublicKey();
+    ***REMOVED***);
+  ***REMOVED***
+
+  getUserPublicKey() ***REMOVED***
+    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => ***REMOVED***
       this.userinfo.PublicKey = result.toString();
     ***REMOVED***)
   ***REMOVED***
@@ -53,15 +65,17 @@ console.log(newstr)
       this.userinfo.MemberId = memberinfo.json()["id"];
 
     ***REMOVED***)
-    this.authzresolver.getPerunPrincipal().toPromise().then(result =>***REMOVED***
-        this.userinfo.ElxirId = result.json()['actor'];
-      ***REMOVED***).then(result => ***REMOVED***this.getUserPublicKey()***REMOVED***);
+    this.authzresolver.getPerunPrincipal().toPromise().then(result => ***REMOVED***
+      this.userinfo.ElxirId = result.json()['actor'];
+    ***REMOVED***).then(result => ***REMOVED***
+      this.getUserPublicKey()
+    ***REMOVED***);
   ***REMOVED***
 
-  toggleKey()***REMOVED***
-    if(this.key == 'Show Public Key')***REMOVED***
+  toggleKey() ***REMOVED***
+    if (this.key == 'Show Public Key') ***REMOVED***
       this.key = 'Hide Public Key';
-    ***REMOVED***else***REMOVED***
+    ***REMOVED*** else ***REMOVED***
       this.key = 'Show Public Key';
     ***REMOVED***
   ***REMOVED***
