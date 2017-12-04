@@ -6,17 +6,18 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {MembersManager} from '../perun-connector/members-manager.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {keyService} from "../api-connector/key.service";
+import {UsersManager} from "../perun-connector/users-manager.service";
 
 @Component({
   templateUrl: 'userinfo.component.html',
-  providers: [AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService]
+  providers: [AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager]
 })
 export class UserinfoComponent {
   userinfo: Userinfo;
   key: string = 'Show Public Key';
 
 
-  constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService) {
+  constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager) {
     this.userinfo = new Userinfo();
     this.getUserinfo();
 
@@ -63,6 +64,8 @@ export class UserinfoComponent {
 
       }).then(memberinfo => {
       this.userinfo.MemberId = memberinfo.json()["id"];
+      this.usersmanager.getRichUser(this.userinfo.Id).toPromise()
+
 
     })
     this.authzresolver.getPerunPrincipal().toPromise().then(result => {
