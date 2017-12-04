@@ -29,6 +29,7 @@ export class VmOverviewComponent implements OnInit {
   filtercreated_at: string;
   filterelixir_id: string;
   filterstopped_at: string;
+  filterproject: string;
 
 
   constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  usersmanager: UsersManager, private perunsettings: PerunSettings) {
@@ -37,6 +38,20 @@ export class VmOverviewComponent implements OnInit {
 
   toggleTab(tabString: string) {
     this.tab = tabString;
+  }
+
+  isFilterProject(vmproject: string): boolean {
+    if (!this.filterproject) {
+      return true;
+    }
+    else if (vmproject.indexOf(this.filterproject) === 0) {
+       console.log(this.filterproject)
+      return true;
+
+    }
+    else {
+      return false;
+    }
   }
 
   isFilterStopped_at(vmstopped_at: string): boolean {
@@ -146,7 +161,7 @@ export class VmOverviewComponent implements OnInit {
         this.vms = vms;
         for (let vm of this.vms) {
           vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-        if (vm.stopped_at != 'ACTIVE') {
+          if (vm.stopped_at != 'ACTIVE') {
             vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
           }
         }

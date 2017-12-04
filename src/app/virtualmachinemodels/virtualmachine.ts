@@ -5,6 +5,7 @@ import {Flavor} from './flavor';
 export class VirtualMachine {
   flavor: Flavor;
   image: Image;
+  project: string;
   status: string;
   keyname: string;
   name: string;
