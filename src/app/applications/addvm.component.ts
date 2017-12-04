@@ -19,11 +19,12 @@ import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-re
 import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
 import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachinemodels/vmclient";
+import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
 
 @Component(***REMOVED***
   selector: 'new-vm',
   templateUrl: 'addvm.component.html',
-  providers: [ImageService, FlavorService, VirtualmachineService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService]
+  providers: [ImageService, FlavorService, VirtualmachineService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
   data: string;
@@ -36,8 +37,10 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   selectedFlavor: Flavor;
   userinfo: Userinfo;
   vmclient: Vmclient;
+  selectedProject: string;
+  memberprojects: ***REMOVED******REMOVED***;
 
-  constructor(private imageService: ImageService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) ***REMOVED***
+  constructor(private imageService: ImageService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) ***REMOVED***
   ***REMOVED***
 
 
@@ -58,10 +61,11 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
   getRRFirstClient(): void ***REMOVED***
-    this.clientservice.getRRFirstClient().subscribe(client =>***REMOVED***
-      this.vmclient = client;
-    this.getImages();
-      this.getFlavors()***REMOVED***
+    this.clientservice.getRRFirstClient().subscribe(client => ***REMOVED***
+        this.vmclient = client;
+        this.getImages();
+        this.getFlavors()
+      ***REMOVED***
     )
     ;
   ***REMOVED***
@@ -90,11 +94,15 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     ***REMOVED***)
   ***REMOVED***
 
-  startVM(flavor: string, image: string, servername: string): void ***REMOVED***
-    if (image && flavor && servername) ***REMOVED***
+  startVM(flavor: string, image: string, servername: string, project: string): void ***REMOVED***
+    console.log(project);
+    console.log(image);
+    console.log(flavor);
+    console.log(servername);
+    if (image && flavor && servername ) ***REMOVED***
 
 
-      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port).subscribe(data => ***REMOVED***
+      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port, project).subscribe(data => ***REMOVED***
         console.log(data.text());
         this.data = data.text();
         console.log(this.data);
@@ -154,15 +162,15 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
       ***REMOVED***).then(memberinfo => ***REMOVED***
       this.userinfo.MemberId = memberinfo.json()["id"];
-
-    ***REMOVED***)
+      this.groupsmanager.getMemberGroups(this.userinfo.MemberId).toPromise().then(membergroups => this.memberprojects = membergroups.json());
+      console.log(this.memberprojects);
+    ***REMOVED***);
     this.authzresolver.getPerunPrincipal().toPromise().then(result => ***REMOVED***
       this.userinfo.ElxirId = result.json()['actor'];
     ***REMOVED***).then(result => ***REMOVED***
       this.getUserPublicKey()
     ***REMOVED***);
   ***REMOVED***
-
 
   addMetadataItem(key: string, value: string): void ***REMOVED***
     if (key && value && this.checkMetadataKeys(key)) ***REMOVED***

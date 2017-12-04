@@ -18,7 +18,7 @@ export class VirtualmachineService ***REMOVED***
 
   data: string;
 
-  startVM(flavor: string, image: string, public_key: string, servername: string, username: string, elixir_id: string, host: string, port: string): Observable<Response> ***REMOVED***
+  startVM(flavor: string, image: string, public_key: string, servername: string, username: string, elixir_id: string, host: string, port: string, project :string): Observable<Response> ***REMOVED***
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('flavor', flavor);
     urlSearchParams.append('image', image);
@@ -32,6 +32,7 @@ export class VirtualmachineService ***REMOVED***
     urlSearchParams.append('servername', servername);
     urlSearchParams.append('host', host);
     urlSearchParams.append('port', port);
+     urlSearchParams.append('project', project);
     urlSearchParams.append('request', 'add');
     return this.http.post('https://portal-dev.denbi.de/connector/vms/', urlSearchParams);
   ***REMOVED***
