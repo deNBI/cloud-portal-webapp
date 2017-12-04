@@ -5,6 +5,7 @@ import ***REMOVED***Flavor***REMOVED*** from './flavor';
 export class VirtualMachine ***REMOVED***
   flavor: Flavor;
   image: Image;
+  project: string;
   status: string;
   keyname: string;
   name: string;

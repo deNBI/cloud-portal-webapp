@@ -29,6 +29,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
   filtercreated_at: string;
   filterelixir_id: string;
   filterstopped_at: string;
+  filterproject: string;
 
 
   constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  usersmanager: UsersManager, private perunsettings: PerunSettings) ***REMOVED***
@@ -37,6 +38,20 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
   toggleTab(tabString: string) ***REMOVED***
     this.tab = tabString;
+  ***REMOVED***
+
+  isFilterProject(vmproject: string): boolean ***REMOVED***
+    if (!this.filterproject) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else if (vmproject.indexOf(this.filterproject) === 0) ***REMOVED***
+       console.log(this.filterproject)
+      return true;
+
+    ***REMOVED***
+    else ***REMOVED***
+      return false;
+    ***REMOVED***
   ***REMOVED***
 
   isFilterStopped_at(vmstopped_at: string): boolean ***REMOVED***
@@ -146,7 +161,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.vms = vms;
         for (let vm of this.vms) ***REMOVED***
           vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-        if (vm.stopped_at != 'ACTIVE') ***REMOVED***
+          if (vm.stopped_at != 'ACTIVE') ***REMOVED***
             vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
           ***REMOVED***
         ***REMOVED***

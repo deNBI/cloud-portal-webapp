@@ -20,6 +20,7 @@
     <thead>
     <tr>
       <th>Name</th>
+      <th>Project</th>
       <th>Status</th>
       <th>Floating IP</th>
       <th>Created at</th>
@@ -35,10 +36,11 @@
     <ng-container *ngFor="let vm of vms">
 
       <tr
-        *ngIf="isFilterstatus(vm.status ) && isFilterCreated_at(vm.created_at) && isFilterElixir_id(vm.elixir_id) && isFilterIP(vm.floating_ip) && isFilterName(vm.name) && isFilterStopped_at(vm.stopped_at) && isFilterUsername(vm.username)">
+        *ngIf="isFilterstatus(vm.status ) && isFilterProject(vm.project) && isFilterCreated_at(vm.created_at) && isFilterElixir_id(vm.elixir_id) && isFilterIP(vm.floating_ip) && isFilterName(vm.name) && isFilterStopped_at(vm.stopped_at) && isFilterUsername(vm.username)">
         <td>
           ***REMOVED******REMOVED***vm.name***REMOVED******REMOVED***
         </td>
+        <td>***REMOVED******REMOVED***vm.project***REMOVED******REMOVED***</td>
         <td>***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</td>
         <td>***REMOVED******REMOVED***vm.floating_ip***REMOVED******REMOVED***</td>
         <td> ***REMOVED******REMOVED***vm.created_at***REMOVED******REMOVED***</td>
@@ -71,4 +73,5 @@
   <input type="text" placeholder="Username" name="filterusername" [(ngModel)]="filterusername">
   <input type="text" placeholder="Name" name="filtername" [(ngModel)]="filtername">
   <input type="text" placeholder="Status" name="filterstatus" [(ngModel)]="filterstatus">
+  <input type="text" placeholder="Project" name="filterproject" [(ngModel)]="filterproject">
 </div>
