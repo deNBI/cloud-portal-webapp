@@ -6,17 +6,18 @@ import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connecto
 import ***REMOVED***MembersManager***REMOVED*** from '../perun-connector/members-manager.service'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
+import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
 
 @Component(***REMOVED***
   templateUrl: 'userinfo.component.html',
-  providers: [AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService]
+  providers: [AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager]
 ***REMOVED***)
 export class UserinfoComponent ***REMOVED***
   userinfo: Userinfo;
   key: string = 'Show Public Key';
 
 
-  constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService) ***REMOVED***
+  constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager) ***REMOVED***
     this.userinfo = new Userinfo();
     this.getUserinfo();
 
@@ -63,6 +64,8 @@ export class UserinfoComponent ***REMOVED***
 
       ***REMOVED***).then(memberinfo => ***REMOVED***
       this.userinfo.MemberId = memberinfo.json()["id"];
+      this.usersmanager.getRichUser(this.userinfo.Id).toPromise()
+
 
     ***REMOVED***)
     this.authzresolver.getPerunPrincipal().toPromise().then(result => ***REMOVED***

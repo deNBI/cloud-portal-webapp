@@ -1,13 +1,14 @@
-export class  Userinfo***REMOVED***
+export class Userinfo ***REMOVED***
 
   private _Id: number;
   private _FirstName: string;
   private _LastName: string;
-  private _MemberId:number;
-  private _ElixirId:string;
-  private _PublicKey:string;
+  private _MemberId: number;
+  private _ElixirId: string;
+  private _PublicKey: string;
+  private _UserLogin: string;
 
-  constructor()***REMOVED***
+  constructor() ***REMOVED***
     this.LastName = " ";
     this.FirstName = " ";
     this.Id = -1;
@@ -44,18 +45,30 @@ export class  Userinfo***REMOVED***
   set MemberId(value: number) ***REMOVED***
     this._MemberId = value;
   ***REMOVED***
-  set ElxirId(value :string) ***REMOVED***
-    this._ElixirId =value;
+
+  set ElxirId(value: string) ***REMOVED***
+    this._ElixirId = value;
   ***REMOVED***
 
   get ElxirId() ***REMOVED***
-   return this._ElixirId
+    return this._ElixirId
   ***REMOVED***
-   set PublicKey(value :string) ***REMOVED***
-    this._PublicKey =value;
+
+  set PublicKey(value: string) ***REMOVED***
+    this._PublicKey = value;
   ***REMOVED***
 
   get PublicKey() ***REMOVED***
-   return this._PublicKey
+    return this._PublicKey
   ***REMOVED***
+
+  set UserLogin(value: string) ***REMOVED***
+
+    this._UserLogin = value;
+  ***REMOVED***
+
+  get UserLogin() ***REMOVED***
+    return this.UserLogin;
+  ***REMOVED***
+
 ***REMOVED***

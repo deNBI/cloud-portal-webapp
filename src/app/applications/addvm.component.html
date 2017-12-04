@@ -30,7 +30,7 @@
 
 
                 <select class="form-control col-md-6" name="selectedFlavor" [(ngModel)]="selectedFlavor">
-                  <option value="undefined" disabled selected hidden> Pleace Select</option>
+                  <option value="undefined" disabled selected hidden> Please Select</option>
                   <option *ngFor="  let flavor of flavors" [ngValue]="flavor"> ***REMOVED******REMOVED***flavor.name***REMOVED******REMOVED***</option>
 
                 </select>
@@ -51,7 +51,7 @@
               <div class="col-md-6">
 
                 <select class="form-control" name="selectedImage" [(ngModel)]="selectedImage">
-                  <option value="undefined" disabled selected hidden> Pleace Select</option>
+                  <option value="undefined" disabled selected hidden> Please Select</option>
 
                   <option *ngFor="let image of images" [ngValue]="image"> ***REMOVED******REMOVED***image.name***REMOVED******REMOVED***</option>
 
@@ -73,14 +73,14 @@
               <div class="col-md-6">
 
                 <select class="form-control" name="selectedProject" [(ngModel)]="selectedProject">
-                    <option hidden >Please select</option>
+                   <option value="undefined" disabled selected hidden> Please Select</option>
                   <option *ngFor="let project of memberprojects" > ***REMOVED******REMOVED***project['name']***REMOVED******REMOVED***</option>
 
                 </select>
 
 
               </div>
-                 
+
               </div>
 
 
