@@ -7,19 +7,22 @@ import {MembersManager} from '../perun-connector/members-manager.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {keyService} from "../api-connector/key.service";
 import {UsersManager} from "../perun-connector/users-manager.service";
+import {AttributesManager} from "../perun-connector/attributes-manager";
+
 
 @Component({
   templateUrl: 'userinfo.component.html',
-  providers: [AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager]
+  providers: [AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager, AttributesManager]
 })
 export class UserinfoComponent {
   userinfo: Userinfo;
   key: string = 'Show Public Key';
 
 
-  constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager) {
+  constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) {
     this.userinfo = new Userinfo();
     this.getUserinfo();
+
 
   }
 
@@ -64,15 +67,25 @@ export class UserinfoComponent {
 
       }).then(memberinfo => {
       this.userinfo.MemberId = memberinfo.json()["id"];
-      this.usersmanager.getRichUser(this.userinfo.Id).toPromise()
+      this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => {
+        let logins = result.json()
+        for (let login of logins) {
+          if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
+            this.userinfo.ElxirId = login['value']
+          }
+          else if (login['friendlyName'] === 'login-namespace:elixir') {
+            this.userinfo.UserLogin = login['value'];
 
+          }
+
+        }
+
+      }).then(result => {
+        this.getUserPublicKey()
+
+      });
 
     })
-    this.authzresolver.getPerunPrincipal().toPromise().then(result => {
-      this.userinfo.ElxirId = result.json()['actor'];
-    }).then(result => {
-      this.getUserPublicKey()
-    });
   }
 
   toggleKey() {

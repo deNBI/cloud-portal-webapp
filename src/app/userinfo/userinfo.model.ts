@@ -68,7 +68,7 @@ export class Userinfo {
   }
 
   get UserLogin() {
-    return this.UserLogin;
+    return this._UserLogin
   }
 
 }

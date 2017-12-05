@@ -20,11 +20,12 @@ import {keyService} from "../api-connector/key.service";
 import {ClientService} from "../api-connector/vmClients.service";
 import {Vmclient} from "../virtualmachinemodels/vmclient";
 import {GroupsManager} from "../perun-connector/groups-manager.service";
+import {AttributesManager} from "../perun-connector/attributes-manager";
 
 @Component({
   selector: 'new-vm',
   templateUrl: 'addvm.component.html',
-  providers: [ImageService, FlavorService, VirtualmachineService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+  providers: [ImageService, FlavorService, VirtualmachineService, AttributesManager, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 })
 export class VirtualMachineComponent implements OnInit {
   data: string;
@@ -40,7 +41,7 @@ export class VirtualMachineComponent implements OnInit {
   selectedProject: string;
   memberprojects: {};
 
-  constructor(private imageService: ImageService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) {
+  constructor(private imageService: ImageService,private attributemanager: AttributesManager, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) {
   }
 
 
@@ -99,10 +100,10 @@ export class VirtualMachineComponent implements OnInit {
     console.log(image);
     console.log(flavor);
     console.log(servername);
-    if (image && flavor && servername ) {
+    if (image && flavor && servername && project) {
 
 
-      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port, project).subscribe(data => {
+      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port, project,this.userinfo.UserLogin).subscribe(data => {
         console.log(data.text());
         this.data = data.text();
         console.log(this.data);
@@ -169,6 +170,20 @@ export class VirtualMachineComponent implements OnInit {
       this.userinfo.ElxirId = result.json()['actor'];
     }).then(result => {
       this.getUserPublicKey()
+      this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => {
+        let logins = result.json()
+        for (let login of logins) {
+          if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
+            this.userinfo.ElxirId = login['value']
+          }
+          else if (login['friendlyName'] === 'login-namespace:elixir') {
+            this.userinfo.UserLogin = login['value'];
+
+          }
+
+        }
+
+      });
     });
   }
 
