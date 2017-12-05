@@ -41,7 +41,7 @@ export class VirtualMachineComponent implements OnInit {
   selectedProject: string;
   memberprojects: {};
 
-  constructor(private imageService: ImageService,private attributemanager: AttributesManager, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) {
+  constructor(private imageService: ImageService, private attributemanager: AttributesManager, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) {
   }
 
 
@@ -103,7 +103,7 @@ export class VirtualMachineComponent implements OnInit {
     if (image && flavor && servername && project) {
 
 
-      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port, project,this.userinfo.UserLogin).subscribe(data => {
+      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port, project, this.userinfo.UserLogin).subscribe(data => {
         console.log(data.text());
         this.data = data.text();
         console.log(this.data);

@@ -12,13 +12,14 @@ import {VirtualMachine} from "../virtualmachinemodels/virtualmachine";
 
 @Injectable()
 export class VirtualmachineService {
+  data: string;
 
   constructor(private http: Http) {
   }
 
-  data: string;
 
-  startVM(flavor: string, image: string, public_key: string, servername: string, username: string, elixir_id: string, host: string, port: string, project :string ,userlogin: string): Observable<Response> {
+  startVM(flavor: string, image: string, public_key: string, servername: string, username: string,
+          elixir_id: string, host: string, port: string, project: string, userlogin: string): Observable<Response> {
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('flavor', flavor);
     urlSearchParams.append('image', image);
@@ -32,8 +33,8 @@ export class VirtualmachineService {
     urlSearchParams.append('servername', servername);
     urlSearchParams.append('host', host);
     urlSearchParams.append('port', port);
-     urlSearchParams.append('project', project);
-      urlSearchParams.append('userlogin', userlogin);
+    urlSearchParams.append('project', project);
+    urlSearchParams.append('userlogin', userlogin);
     urlSearchParams.append('request', 'add');
     return this.http.post('https://portal-dev.denbi.de/connector/vms/', urlSearchParams);
   }
@@ -45,10 +46,13 @@ export class VirtualmachineService {
     urlSearchParams.append('request', 'all')
     return this.http.get('https://portal-dev.denbi.de/connector/vms/', {search: urlSearchParams}).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
   }
-    getALLVMOPS(){ let urlSearchParams = new URLSearchParams();
+
+  getALLVMOPS() {
+    let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('request', 'allOPS')
     return this.http.get('https://portal-dev.denbi.de/connector/vms/', {search: urlSearchParams}).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
   }
+
   getVm(elixir_id: string): Observable<VirtualMachine[]> {
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('elixir_id', elixir_id)
@@ -56,19 +60,19 @@ export class VirtualmachineService {
     return this.http.get('https://portal-dev.denbi.de/connector/vms/', {search: urlSearchParams}).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
   }
 
-  stopVM( openstack_id: string): Observable<Response> {
+  stopVM(openstack_id: string): Observable<Response> {
     let urlSearchParams = new URLSearchParams();
 
     urlSearchParams.append('openstack_id', openstack_id)
-     urlSearchParams.append('request', 'stop');
+    urlSearchParams.append('request', 'stop');
     return this.http.post('https://portal-dev.denbi.de/connector/vms/', urlSearchParams);
   }
 
-  resumeVM( openstack_id: string): Observable<Response> {
+  resumeVM(openstack_id: string): Observable<Response> {
     let urlSearchParams = new URLSearchParams();
 
     urlSearchParams.append('openstack_id', openstack_id)
-     urlSearchParams.append('request', 'resume');
+    urlSearchParams.append('request', 'resume');
     return this.http.post('https://portal-dev.denbi.de/connector/vms/', urlSearchParams);
   }
 
