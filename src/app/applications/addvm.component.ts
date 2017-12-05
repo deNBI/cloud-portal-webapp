@@ -41,7 +41,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   selectedProject: string;
   memberprojects: ***REMOVED******REMOVED***;
 
-  constructor(private imageService: ImageService,private attributemanager: AttributesManager, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) ***REMOVED***
+  constructor(private imageService: ImageService, private attributemanager: AttributesManager, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) ***REMOVED***
   ***REMOVED***
 
 
@@ -103,7 +103,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     if (image && flavor && servername && project) ***REMOVED***
 
 
-      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port, project,this.userinfo.UserLogin).subscribe(data => ***REMOVED***
+      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port, project, this.userinfo.UserLogin).subscribe(data => ***REMOVED***
         console.log(data.text());
         this.data = data.text();
         console.log(this.data);
