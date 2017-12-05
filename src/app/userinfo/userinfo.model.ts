@@ -68,7 +68,7 @@ export class Userinfo ***REMOVED***
   ***REMOVED***
 
   get UserLogin() ***REMOVED***
-    return this.UserLogin;
+    return this._UserLogin
   ***REMOVED***
 
 ***REMOVED***
