@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {stringDistance} from "codelyzer/util/utils";
+import {environment} from '../../environments/environment'
 
 @Injectable()
 export class PerunSettings {
@@ -18,7 +19,7 @@ export class PerunSettings {
     3334 is the denbi-dev VO
    */
   getPerunVO(int: boolean = false): number{
-    return 3334;
+    return environment.vo;
   }
 
   /*
