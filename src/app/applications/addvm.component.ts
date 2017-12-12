@@ -106,6 +106,16 @@ export class VirtualMachineComponent implements OnInit {
       this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port, project, this.userinfo.UserLogin).subscribe(data => {
         console.log(data.text());
         this.data = data.text();
+        let datajson=data.json()
+        try{
+        if (datajson['floating_ip']){
+          this.data="Server was started. You can acces it with command 'ssh -i private_key_file ubuntu@" + datajson['floating_ip'] + "'";
+        }}
+        catch (e) {
+
+        }
+
+
         console.log(this.data);
         this.printData();
 
@@ -165,11 +175,6 @@ export class VirtualMachineComponent implements OnInit {
       this.userinfo.MemberId = memberinfo.json()["id"];
       this.groupsmanager.getMemberGroups(this.userinfo.MemberId).toPromise().then(membergroups => this.memberprojects = membergroups.json());
       console.log(this.memberprojects);
-    });
-    this.authzresolver.getPerunPrincipal().toPromise().then(result => {
-      this.userinfo.ElxirId = result.json()['actor'];
-    }).then(result => {
-      this.getUserPublicKey()
       this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => {
         let logins = result.json()
         for (let login of logins) {
@@ -178,12 +183,19 @@ export class VirtualMachineComponent implements OnInit {
           }
           else if (login['friendlyName'] === 'login-namespace:elixir') {
             this.userinfo.UserLogin = login['value'];
+            console.log(this.userinfo.UserLogin)
 
           }
 
         }
 
       });
+    });
+    this.authzresolver.getPerunPrincipal().toPromise().then(result => {
+      this.userinfo.ElxirId = result.json()['actor'];
+    }).then(result => {
+      this.getUserPublicKey()
+
     });
   }
 

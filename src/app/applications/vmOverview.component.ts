@@ -138,7 +138,22 @@ export class VmOverviewComponent implements OnInit {
       return false;
     }
   }
+  deleteVm(openstack_id: string): void {
+    this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => {
+      console.log(result.text());
+      if (this.tab === 'own') {
+        this.getVms(this.elixir_id);
+      }
+      else if (this.tab === 'all') {
+        this.getAllVms();
 
+      }
+      else if (this.tab === 'allOPS') {
+        this.getAllVmsOPS();
+      }
+
+    })
+  }
   stopVm(openstack_id: string): void {
     this.virtualmachineservice.stopVM(openstack_id).subscribe(result => {
       console.log(result.text());

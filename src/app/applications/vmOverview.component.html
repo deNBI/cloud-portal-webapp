@@ -61,6 +61,10 @@
             ResumeVM
           </button>
         </td>
+        <td> <button *ngIf="vm.status !='DELETED'" (click)="deleteVm(vm.openstackid);"
+                  class="btn btn-primary">
+            DeleteVM
+          </button></td>
       </tr>
     </ng-container>
 

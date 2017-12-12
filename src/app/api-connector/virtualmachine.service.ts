@@ -59,7 +59,13 @@ export class VirtualmachineService {
     urlSearchParams.append('request', 'user')
     return this.http.get('https://portal-dev.denbi.de/connector/vms/', {search: urlSearchParams}).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
   }
+  deleteVM(openstack_id: string): Observable<Response> {
+    let urlSearchParams = new URLSearchParams();
 
+    urlSearchParams.append('openstack_id', openstack_id)
+    urlSearchParams.append('request', 'delete');
+    return this.http.post('https://portal-dev.denbi.de/connector/vms/', urlSearchParams);
+  }
   stopVM(openstack_id: string): Observable<Response> {
     let urlSearchParams = new URLSearchParams();
 
