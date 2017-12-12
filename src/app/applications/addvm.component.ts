@@ -106,6 +106,16 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port, project, this.userinfo.UserLogin).subscribe(data => ***REMOVED***
         console.log(data.text());
         this.data = data.text();
+        let datajson=data.json()
+        try***REMOVED***
+        if (datajson['floating_ip'])***REMOVED***
+          this.data="Server was started. You can acces it with command 'ssh -i private_key_file ubuntu@" + datajson['floating_ip'] + "'";
+        ***REMOVED******REMOVED***
+        catch (e) ***REMOVED***
+
+        ***REMOVED***
+
+
         console.log(this.data);
         this.printData();
 
@@ -165,11 +175,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       this.userinfo.MemberId = memberinfo.json()["id"];
       this.groupsmanager.getMemberGroups(this.userinfo.MemberId).toPromise().then(membergroups => this.memberprojects = membergroups.json());
       console.log(this.memberprojects);
-    ***REMOVED***);
-    this.authzresolver.getPerunPrincipal().toPromise().then(result => ***REMOVED***
-      this.userinfo.ElxirId = result.json()['actor'];
-    ***REMOVED***).then(result => ***REMOVED***
-      this.getUserPublicKey()
       this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => ***REMOVED***
         let logins = result.json()
         for (let login of logins) ***REMOVED***
@@ -178,12 +183,19 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
           ***REMOVED***
           else if (login['friendlyName'] === 'login-namespace:elixir') ***REMOVED***
             this.userinfo.UserLogin = login['value'];
+            console.log(this.userinfo.UserLogin)
 
           ***REMOVED***
 
         ***REMOVED***
 
       ***REMOVED***);
+    ***REMOVED***);
+    this.authzresolver.getPerunPrincipal().toPromise().then(result => ***REMOVED***
+      this.userinfo.ElxirId = result.json()['actor'];
+    ***REMOVED***).then(result => ***REMOVED***
+      this.getUserPublicKey()
+
     ***REMOVED***);
   ***REMOVED***
 

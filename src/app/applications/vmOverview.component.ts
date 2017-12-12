@@ -138,7 +138,22 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
       return false;
     ***REMOVED***
   ***REMOVED***
+  deleteVm(openstack_id: string): void ***REMOVED***
+    this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => ***REMOVED***
+      console.log(result.text());
+      if (this.tab === 'own') ***REMOVED***
+        this.getVms(this.elixir_id);
+      ***REMOVED***
+      else if (this.tab === 'all') ***REMOVED***
+        this.getAllVms();
 
+      ***REMOVED***
+      else if (this.tab === 'allOPS') ***REMOVED***
+        this.getAllVmsOPS();
+      ***REMOVED***
+
+    ***REMOVED***)
+  ***REMOVED***
   stopVm(openstack_id: string): void ***REMOVED***
     this.virtualmachineservice.stopVM(openstack_id).subscribe(result => ***REMOVED***
       console.log(result.text());

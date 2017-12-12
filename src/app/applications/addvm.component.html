@@ -171,10 +171,7 @@
       <div class="modal-body" *ngIf="!data">
         Warten auf Antwort
       </div>
-      <div class="modal-body" *ngIf="data=='true'">
-        Server wurde gestartet
-      </div>
-      <div class="modal-body" *ngIf="data!='true'">
+      <div class="modal-body" *ngIf="data!='INVALID'">
         ***REMOVED******REMOVED***data***REMOVED******REMOVED***
       </div>
       <div class="modal-body" *ngIf="data=='INVALID'">
