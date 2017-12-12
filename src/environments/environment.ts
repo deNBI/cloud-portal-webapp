@@ -4,5 +4,7 @@
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
 export const environment = ***REMOVED***
-  production: false
+  production: false,
+  vo: 3334,
+  apiBaseUrl: 'https://portal-dev.denbi.de/api/v0/'
 ***REMOVED***;

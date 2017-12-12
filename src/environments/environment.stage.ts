@@ -1,5 +1,5 @@
 export const environment = ***REMOVED***
+  vo: 3334,
   production: true,
-  vo: 3335,
-  apiBaseUrl: 'https://cloud.denbi.de/portal/api/v0/'
+  apiBaseUrl: 'https://portal-dev.denbi.de/portal/api/v0/'
 ***REMOVED***;
