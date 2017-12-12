@@ -8,4 +8,5 @@ export const environment = ***REMOVED***
   vo: 3334,
   apiBaseUrl: 'https://portal-dev.denbi.de/api/v0/',
   voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev'
+
 ***REMOVED***;
