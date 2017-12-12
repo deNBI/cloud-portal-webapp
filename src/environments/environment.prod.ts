@@ -5,4 +5,5 @@ export const environment = {
   apiBaseUrl: 'https://cloud.denbi.de/portal/api/v0/',
   voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi',
 
+
 };
