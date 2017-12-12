@@ -1,5 +1,6 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***stringDistance***REMOVED*** from "codelyzer/util/utils";
+import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
 
 @Injectable()
 export class PerunSettings ***REMOVED***
@@ -18,7 +19,7 @@ export class PerunSettings ***REMOVED***
     3334 is the denbi-dev VO
    */
   getPerunVO(int: boolean = false): number***REMOVED***
-    return 3334;
+    return environment.vo;
   ***REMOVED***
 
   /*

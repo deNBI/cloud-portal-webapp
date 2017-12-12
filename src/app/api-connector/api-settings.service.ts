@@ -1,5 +1,6 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
+import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
 @Injectable()
 export class ApiSettings ***REMOVED***
   constructor() ***REMOVED******REMOVED***
@@ -8,7 +9,7 @@ export class ApiSettings ***REMOVED***
     Provides base URL with trailing slash for all Portal API calls.
    */
   getApiBaseURL(): string ***REMOVED***
-    return 'https://portal-dev.denbi.de/api/v0/';
+    return environment.apiBaseUrl;
   ***REMOVED***
 
   /*
