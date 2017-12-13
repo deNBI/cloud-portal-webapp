@@ -10,7 +10,7 @@ import 'rxjs/Rx'
 
 import ***REMOVED***Metadata***REMOVED*** from '../virtualmachinemodels/metadata';
 import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
-
+import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***Userinfo***REMOVED*** from "../userinfo/userinfo.model";
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***MembersManager***REMOVED*** from "../perun-connector/members-manager.service";
@@ -21,11 +21,13 @@ import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.
 import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachinemodels/vmclient";
 import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
 import ***REMOVED***AttributesManager***REMOVED*** from "../perun-connector/attributes-manager";
+import ***REMOVED***Application***REMOVED*** from "./application.model";
+import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
 
 @Component(***REMOVED***
   selector: 'new-vm',
   templateUrl: 'addvm.component.html',
-  providers: [ImageService, FlavorService, VirtualmachineService, AttributesManager, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+  providers: [ImageService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
   data: string;
@@ -39,9 +41,9 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   userinfo: Userinfo;
   vmclient: Vmclient;
   selectedProject: string;
-  memberprojects: ***REMOVED******REMOVED***;
+  projects: string[] = new Array();
 
-  constructor(private imageService: ImageService, private attributemanager: AttributesManager, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) ***REMOVED***
+  constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) ***REMOVED***
   ***REMOVED***
 
 
@@ -65,7 +67,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     this.clientservice.getRRFirstClient().subscribe(client => ***REMOVED***
         this.vmclient = client;
         this.getImages();
-        this.getFlavors()
+        this.getFlavors();
       ***REMOVED***
     )
     ;
@@ -106,11 +108,12 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port, project, this.userinfo.UserLogin).subscribe(data => ***REMOVED***
         console.log(data.text());
         this.data = data.text();
-        let datajson=data.json()
-        try***REMOVED***
-        if (datajson['floating_ip'])***REMOVED***
-          this.data="Server was started. You can acces it with command 'ssh -i private_key_file ubuntu@" + datajson['floating_ip'] + "'";
-        ***REMOVED******REMOVED***
+        let datajson = data.json()
+        try ***REMOVED***
+          if (datajson['floating_ip']) ***REMOVED***
+            this.data = "Server was started. You can acces it with command 'ssh -i private_key_file ubuntu@" + datajson['floating_ip'] + "'";
+          ***REMOVED***
+        ***REMOVED***
         catch (e) ***REMOVED***
 
         ***REMOVED***
@@ -160,6 +163,9 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     return true;
   ***REMOVED***
 
+
+
+
   getUserinfo() ***REMOVED***
     this.authzresolver.getLoggedUser().toPromise()
       .then(result => ***REMOVED***
@@ -173,8 +179,12 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
       ***REMOVED***).then(memberinfo => ***REMOVED***
       this.userinfo.MemberId = memberinfo.json()["id"];
-      this.groupsmanager.getMemberGroups(this.userinfo.MemberId).toPromise().then(membergroups => this.memberprojects = membergroups.json());
-      console.log(this.memberprojects);
+      this.groupsmanager.getMemberGroups(this.userinfo.MemberId).toPromise().then(membergroups => ***REMOVED***
+        for (let project of membergroups.json()) ***REMOVED***
+          this.projects.push(project['name']);console.log(this.projects)
+        ***REMOVED***
+      ***REMOVED***);
+      console.log(this.projects);
       this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => ***REMOVED***
         let logins = result.json()
         for (let login of logins) ***REMOVED***
@@ -195,6 +205,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       this.userinfo.ElxirId = result.json()['actor'];
     ***REMOVED***).then(result => ***REMOVED***
       this.getUserPublicKey()
+      this.getClientData();
+
 
     ***REMOVED***);
   ***REMOVED***
@@ -214,7 +226,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
     this.userinfo = new Userinfo();
     this.getUserinfo();
-    this.getClientData()
 
 
   ***REMOVED***
