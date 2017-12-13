@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
 import {ApiSettings} from "../api-connector/api-settings.service";
+import {Project} from "../projectmanagement/project.model";
 
 @Injectable()
 export class GroupsManager {
@@ -18,6 +19,9 @@ export class GroupsManager {
       params: {member: member_id}
     });
   }
+
+
+
 
 
   createGroup(group_name: string, group_description: string) {

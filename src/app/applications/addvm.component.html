@@ -74,7 +74,7 @@
 
                 <select class="form-control" name="selectedProject" [(ngModel)]="selectedProject">
                    <option value="undefined" disabled selected hidden> Please Select</option>
-                  <option *ngFor="let project of memberprojects" > {{project['name']}}</option>
+                  <option *ngFor="let project of projects" > {{project}}</option>
 
                 </select>
 

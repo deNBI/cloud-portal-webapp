@@ -10,7 +10,7 @@ import 'rxjs/Rx'
 
 import {Metadata} from '../virtualmachinemodels/metadata';
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
-
+import {ApplicationsService} from '../api-connector/applications.service'
 import {Userinfo} from "../userinfo/userinfo.model";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {MembersManager} from "../perun-connector/members-manager.service";
@@ -21,11 +21,13 @@ import {ClientService} from "../api-connector/vmClients.service";
 import {Vmclient} from "../virtualmachinemodels/vmclient";
 import {GroupsManager} from "../perun-connector/groups-manager.service";
 import {AttributesManager} from "../perun-connector/attributes-manager";
+import {Application} from "./application.model";
+import {Project} from "../projectmanagement/project.model";
 
 @Component({
   selector: 'new-vm',
   templateUrl: 'addvm.component.html',
-  providers: [ImageService, FlavorService, VirtualmachineService, AttributesManager, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+  providers: [ImageService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 })
 export class VirtualMachineComponent implements OnInit {
   data: string;
@@ -39,9 +41,9 @@ export class VirtualMachineComponent implements OnInit {
   userinfo: Userinfo;
   vmclient: Vmclient;
   selectedProject: string;
-  memberprojects: {};
+  projects: string[] = new Array();
 
-  constructor(private imageService: ImageService, private attributemanager: AttributesManager, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) {
+  constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) {
   }
 
 
@@ -65,7 +67,7 @@ export class VirtualMachineComponent implements OnInit {
     this.clientservice.getRRFirstClient().subscribe(client => {
         this.vmclient = client;
         this.getImages();
-        this.getFlavors()
+        this.getFlavors();
       }
     )
     ;
@@ -106,11 +108,12 @@ export class VirtualMachineComponent implements OnInit {
       this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port, project, this.userinfo.UserLogin).subscribe(data => {
         console.log(data.text());
         this.data = data.text();
-        let datajson=data.json()
-        try{
-        if (datajson['floating_ip']){
-          this.data="Server was started. You can acces it with command 'ssh -i private_key_file ubuntu@" + datajson['floating_ip'] + "'";
-        }}
+        let datajson = data.json()
+        try {
+          if (datajson['floating_ip']) {
+            this.data = "Server was started. You can acces it with command 'ssh -i private_key_file ubuntu@" + datajson['floating_ip'] + "'";
+          }
+        }
         catch (e) {
 
         }
@@ -160,6 +163,9 @@ export class VirtualMachineComponent implements OnInit {
     return true;
   }
 
+
+
+
   getUserinfo() {
     this.authzresolver.getLoggedUser().toPromise()
       .then(result => {
@@ -173,8 +179,12 @@ export class VirtualMachineComponent implements OnInit {
 
       }).then(memberinfo => {
       this.userinfo.MemberId = memberinfo.json()["id"];
-      this.groupsmanager.getMemberGroups(this.userinfo.MemberId).toPromise().then(membergroups => this.memberprojects = membergroups.json());
-      console.log(this.memberprojects);
+      this.groupsmanager.getMemberGroups(this.userinfo.MemberId).toPromise().then(membergroups => {
+        for (let project of membergroups.json()) {
+          this.projects.push(project['name']);console.log(this.projects)
+        }
+      });
+      console.log(this.projects);
       this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => {
         let logins = result.json()
         for (let login of logins) {
@@ -195,6 +205,8 @@ export class VirtualMachineComponent implements OnInit {
       this.userinfo.ElxirId = result.json()['actor'];
     }).then(result => {
       this.getUserPublicKey()
+      this.getClientData();
+
 
     });
   }
@@ -214,7 +226,6 @@ export class VirtualMachineComponent implements OnInit {
 
     this.userinfo = new Userinfo();
     this.getUserinfo();
-    this.getClientData()
 
 
   }

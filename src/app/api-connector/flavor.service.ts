@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import  { Flavor} from '../virtualmachinemodels/flavor';
+import {Injectable} from '@angular/core';
+import {Flavor} from '../virtualmachinemodels/flavor';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {URLSearchParams} from "@angular/http";
@@ -10,15 +10,19 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class FlavorService {
 
-  constructor (private http: Http){}
+  constructor(private http: Http) {
+  }
 
-  getFlavors(host:string,port:string) :Observable<Flavor[]> {
-     let urlSearchParams=new URLSearchParams();
+  getFlavors(host: string, port: string): Observable<Flavor[]> {
+    let urlSearchParams = new URLSearchParams();
 
-     urlSearchParams.append('host',host);
-      urlSearchParams.append('port',port);
+    urlSearchParams.append('host', host);
+    urlSearchParams.append('port', port);
 
-    return this.http.get('https://portal-dev.denbi.de/connector/flavors/',{search:urlSearchParams}).map((res:Response) => res.json()).catch((error:any) => Observable.throw(error.json().error ||'Server error'))
+    return this.http.get('https://portal-dev.denbi.de/connector/flavors/', {
+      withCredentials: true,
+      search: urlSearchParams
+    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
   }
 
