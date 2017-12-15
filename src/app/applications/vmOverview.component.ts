@@ -148,9 +148,7 @@ export class VmOverviewComponent implements OnInit {
         this.getAllVms();
 
       }
-      else if (this.tab === 'allOPS') {
-        this.getAllVmsOPS();
-      }
+
 
     })
   }
@@ -164,9 +162,7 @@ export class VmOverviewComponent implements OnInit {
         this.getAllVms();
 
       }
-      else if (this.tab === 'allOPS') {
-        this.getAllVmsOPS();
-      }
+
 
     })
   }
@@ -197,24 +193,11 @@ export class VmOverviewComponent implements OnInit {
         this.getAllVms();
 
       }
-      else if (this.tab === 'allOPS') {
-        this.getAllVmsOPS();
-      }
+
     })
   }
 
-  getAllVmsOPS(): void {
-    this.virtualmachineservice.getALLVMOPS().subscribe(vms => {
-        this.vms = vms;
-        for (let vm of this.vms) {
-          vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-          if (vm.stopped_at != 'ACTIVE') {
-            vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-          }
-        }
-      }
-    );
-  }
+
 
   getAllVms(): void {
     this.virtualmachineservice.getAllVM().subscribe(vms => {
