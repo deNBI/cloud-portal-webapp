@@ -148,9 +148,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.getAllVms();
 
       ***REMOVED***
-      else if (this.tab === 'allOPS') ***REMOVED***
-        this.getAllVmsOPS();
-      ***REMOVED***
+
 
     ***REMOVED***)
   ***REMOVED***
@@ -164,9 +162,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.getAllVms();
 
       ***REMOVED***
-      else if (this.tab === 'allOPS') ***REMOVED***
-        this.getAllVmsOPS();
-      ***REMOVED***
+
 
     ***REMOVED***)
   ***REMOVED***
@@ -197,24 +193,11 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.getAllVms();
 
       ***REMOVED***
-      else if (this.tab === 'allOPS') ***REMOVED***
-        this.getAllVmsOPS();
-      ***REMOVED***
+
     ***REMOVED***)
   ***REMOVED***
 
-  getAllVmsOPS(): void ***REMOVED***
-    this.virtualmachineservice.getALLVMOPS().subscribe(vms => ***REMOVED***
-        this.vms = vms;
-        for (let vm of this.vms) ***REMOVED***
-          vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-          if (vm.stopped_at != 'ACTIVE') ***REMOVED***
-            vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-          ***REMOVED***
-        ***REMOVED***
-      ***REMOVED***
-    );
-  ***REMOVED***
+
 
   getAllVms(): void ***REMOVED***
     this.virtualmachineservice.getAllVM().subscribe(vms => ***REMOVED***

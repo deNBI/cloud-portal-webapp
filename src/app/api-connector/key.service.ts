@@ -10,6 +10,8 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class keyService ***REMOVED***
+  baseKeysUrl = 'https://portal-dev.denbi.de/connector/keys/';
+
   constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
   ***REMOVED***
 
@@ -18,7 +20,7 @@ export class keyService ***REMOVED***
     urlSearchParams.append('elixir_id', elixir_id);
 
 
-    return this.http.get('https://portal-dev.denbi.de/connector/keys/', ***REMOVED***
+    return this.http.get(this.baseKeysUrl + 'getPublicKeyByUser/', ***REMOVED***
       withCredentials: true,
       search: urlSearchParams
     ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
@@ -26,22 +28,22 @@ export class keyService ***REMOVED***
   ***REMOVED***
 
   postKey(elixir_id: string, public_key: string, keyname: string): Observable<Response> ***REMOVED***
-      let header = new Headers(***REMOVED***
+    let header = new Headers(***REMOVED***
       'X-CSRFToken': this.settings.getCSRFToken(),
     ***REMOVED***);
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('elixir_id', elixir_id);
     urlSearchParams.append('public_key', public_key);
     urlSearchParams.append('keyname', keyname);
-    urlSearchParams.append('request', 'import');
-    return this.http.post('https://portal-dev.denbi.de/connector/keys/',urlSearchParams, ***REMOVED***
+
+    return this.http.post(this.baseKeysUrl + 'importKey/', urlSearchParams, ***REMOVED***
       withCredentials: true,
       headers: header,
     ***REMOVED***);
   ***REMOVED***
 
   reimportKey(elixir_id: string, public_key: string, keyname: string): Observable<Response> ***REMOVED***
-      let header = new Headers(***REMOVED***
+    let header = new Headers(***REMOVED***
       'X-CSRFToken': this.settings.getCSRFToken(),
     ***REMOVED***);
     let urlSearchParams = new URLSearchParams();
@@ -49,7 +51,7 @@ export class keyService ***REMOVED***
     urlSearchParams.append('public_key', public_key);
     urlSearchParams.append('keyname', keyname);
     urlSearchParams.append('request', 'reimport');
-    return this.http.post('https://portal-dev.denbi.de/connector/keys/', urlSearchParams, ***REMOVED***
+    return this.http.post(this.baseKeysUrl + 'reimportKey/', urlSearchParams, ***REMOVED***
       withCredentials: true,
       headers: header,
     ***REMOVED***);

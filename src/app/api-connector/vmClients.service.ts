@@ -16,8 +16,8 @@ export class ClientService ***REMOVED***
 
   getClientsUnchecked(): Observable<Vmclient[]> ***REMOVED***
     let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('request', 'unchecked');
-    return this.http.get(this.clientURL, ***REMOVED***
+
+    return this.http.get(this.clientURL + 'getUncheckedClients/', ***REMOVED***
       withCredentials: true,
       search: urlSearchParams
     ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
@@ -27,8 +27,8 @@ export class ClientService ***REMOVED***
   getRRFirstClient(): Observable<Vmclient> ***REMOVED***
 
     let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('request', 'rr');
-    return this.http.get(this.clientURL, ***REMOVED***
+
+    return this.http.get(this.clientURL + 'getFirstClient/', ***REMOVED***
       withCredentials: true,
       search: urlSearchParams
     ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
@@ -37,8 +37,8 @@ export class ClientService ***REMOVED***
 
   getClientsChecked(): Observable<Vmclient[]> ***REMOVED***
     let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('request', 'checked');
-    return this.http.get('https://portal-dev.denbi.de/connector/clients/', ***REMOVED***
+
+    return this.http.get(this.clientURL + 'getCheckedClients/', ***REMOVED***
       withCredentials: true,
       search: urlSearchParams
     ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
@@ -52,8 +52,8 @@ export class ClientService ***REMOVED***
     urlSearchParams.append('port', port);
 
     urlSearchParams.append('host', host);
-    urlSearchParams.append('request', 'check');
-    return this.http.post('https://portal-dev.denbi.de/connector/clients/', urlSearchParams, ***REMOVED***
+
+    return this.http.post(this.clientURL + 'checkClient/', urlSearchParams, ***REMOVED***
       withCredentials: true,
       headers: header,
     ***REMOVED***);
@@ -68,8 +68,8 @@ export class ClientService ***REMOVED***
     urlSearchParams.append('port', port);
     urlSearchParams.append('location', location);
     urlSearchParams.append('host', host);
-    urlSearchParams.append('request', 'add');
-    return this.http.post('https://portal-dev.denbi.de/connector/clients/',urlSearchParams, ***REMOVED***
+
+    return this.http.post(this.clientURL + 'addClient/',urlSearchParams, ***REMOVED***
       withCredentials: true,
       headers: header,
     ***REMOVED***);
@@ -84,7 +84,7 @@ export class ClientService ***REMOVED***
     urlSearchParams.append('host', host);
     urlSearchParams.append('location', location);
     urlSearchParams.append('request', 'delete');
-    return this.http.post('https://portal-dev.denbi.de/connector/clients/', urlSearchParams, ***REMOVED***
+    return this.http.post(this.clientURL + 'deleteClient/', urlSearchParams, ***REMOVED***
       withCredentials: true,
       headers: header,
     ***REMOVED***);
