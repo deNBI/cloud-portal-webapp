@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {AuthzResolver} from '../perun-connector/authz-resolver.service'
 import {GroupsManager} from '../perun-connector/groups-manager.service'
 import {MembersManager} from '../perun-connector/members-manager.service'
@@ -11,6 +11,7 @@ import {ProjectMember} from './project_member.model'
 
 import 'rxjs/add/operator/toPromise';
 import {isNumber} from "util";
+import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
 @Component({
   templateUrl: 'overview.component.html',
@@ -19,6 +20,8 @@ import {ApiSettings} from "../api-connector/api-settings.service";
 export class OverviewComponent {
 
   debug_module = false;
+
+  @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
   userprojects: {};
   userid: number;
@@ -228,7 +231,7 @@ export class OverviewComponent {
     this.groupsmanager.removeMember(groupid, memberid).toPromise()
       .then(result => {
         if(result.status == 200){
-          this.updateNotificaitonModal("Success", "Member " + memberid + "deletrd from the group", true, "success");
+          this.updateNotificaitonModal("Success", "Member " + memberid + " deleted from the group", true, "success");
 
         }else{
           this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
