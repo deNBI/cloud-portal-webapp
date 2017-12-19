@@ -1,4 +1,4 @@
-import ***REMOVED***Component, ViewChild***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, Input, ViewChild***REMOVED*** from '@angular/core';
 import ***REMOVED***AuthzResolver***REMOVED*** from '../perun-connector/authz-resolver.service'
 import ***REMOVED***GroupsManager***REMOVED*** from '../perun-connector/groups-manager.service'
 import ***REMOVED***MembersManager***REMOVED*** from '../perun-connector/members-manager.service'
@@ -11,6 +11,7 @@ import ***REMOVED***ProjectMember***REMOVED*** from './project_member.model'
 
 import 'rxjs/add/operator/toPromise';
 import ***REMOVED***isNumber***REMOVED*** from "util";
+import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 @Component(***REMOVED***
   templateUrl: 'overview.component.html',
@@ -19,6 +20,8 @@ import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings
 export class OverviewComponent ***REMOVED***
 
   debug_module = false;
+
+  @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
   userprojects: ***REMOVED******REMOVED***;
   userid: number;
@@ -228,7 +231,7 @@ export class OverviewComponent ***REMOVED***
     this.groupsmanager.removeMember(groupid, memberid).toPromise()
       .then(result => ***REMOVED***
         if(result.status == 200)***REMOVED***
-          this.updateNotificaitonModal("Success", "Member " + memberid + "deletrd from the group", true, "success");
+          this.updateNotificaitonModal("Success", "Member " + memberid + " deleted from the group", true, "success");
 
         ***REMOVED***else***REMOVED***
           this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
