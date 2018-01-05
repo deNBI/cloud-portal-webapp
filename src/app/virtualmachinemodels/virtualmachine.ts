@@ -14,6 +14,7 @@ export class VirtualMachine {
   stopped_at: string;
   elixir_id: string;
   username: string;
-  floating_ip:string;
+  floating_ip: string;
+  ssh_command: string;
 }
 

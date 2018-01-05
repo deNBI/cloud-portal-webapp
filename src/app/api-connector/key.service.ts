@@ -16,13 +16,9 @@ export class keyService {
   }
 
   getKey(elixir_id: string): Observable<Response> {
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('elixir_id', elixir_id);
-
 
     return this.http.get(this.baseKeysUrl + 'getPublicKeyByUser/', {
       withCredentials: true,
-      search: urlSearchParams
     }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
   }
@@ -32,7 +28,6 @@ export class keyService {
       'X-CSRFToken': this.settings.getCSRFToken(),
     });
     let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('elixir_id', elixir_id);
     urlSearchParams.append('public_key', public_key);
     urlSearchParams.append('keyname', keyname);
 
@@ -47,10 +42,8 @@ export class keyService {
       'X-CSRFToken': this.settings.getCSRFToken(),
     });
     let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('elixir_id', elixir_id);
     urlSearchParams.append('public_key', public_key);
     urlSearchParams.append('keyname', keyname);
-    urlSearchParams.append('request', 'reimport');
     return this.http.post(this.baseKeysUrl + 'reimportKey/', urlSearchParams, {
       withCredentials: true,
       headers: header,
