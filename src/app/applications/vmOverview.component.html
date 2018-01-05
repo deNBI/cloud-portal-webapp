@@ -22,9 +22,11 @@
       <th>Status</th>
       <th>Floating IP</th>
       <th>Created at</th>
+      <th>SSH Command</th>
       <th *ngIf="is_vo_admin">Username</th>
       <th *ngIf="is_vo_admin">Elixir ID</th>
       <th>Stopped at</th>
+
     </tr>
 
     </thead>
@@ -42,6 +44,7 @@
         <td>***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</td>
         <td>***REMOVED******REMOVED***vm.floating_ip***REMOVED******REMOVED***</td>
         <td> ***REMOVED******REMOVED***vm.created_at***REMOVED******REMOVED***</td>
+        <td>***REMOVED******REMOVED***vm.ssh_command***REMOVED******REMOVED***</td>
         <td *ngIf="is_vo_admin"> ***REMOVED******REMOVED***vm.username***REMOVED******REMOVED***</td>
         <td *ngIf="is_vo_admin"> ***REMOVED******REMOVED***vm.elixir_id***REMOVED******REMOVED***</td>
         <td>
@@ -68,7 +71,7 @@
 
   </table>
 
-  <input type="text" placeholder="Sopped-at" name="filterstopped_at" [(ngModel)]="filterstopped_at">
+  <input type="text" placeholder="Stopped-at" name="filterstopped_at" [(ngModel)]="filterstopped_at">
   <input type="text" placeholder="Elixir_ID" name="filterelixir_id" [(ngModel)]="filterelixir_id">
   <input type="text" placeholder="Created_at" name="filtercreated_at" [(ngModel)]="filtercreated_at">
   <input type="text" placeholder="IP" name="filterip" [(ngModel)]="filterip">

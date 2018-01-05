@@ -16,13 +16,9 @@ export class keyService ***REMOVED***
   ***REMOVED***
 
   getKey(elixir_id: string): Observable<Response> ***REMOVED***
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('elixir_id', elixir_id);
-
 
     return this.http.get(this.baseKeysUrl + 'getPublicKeyByUser/', ***REMOVED***
       withCredentials: true,
-      search: urlSearchParams
     ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
   ***REMOVED***
@@ -32,7 +28,6 @@ export class keyService ***REMOVED***
       'X-CSRFToken': this.settings.getCSRFToken(),
     ***REMOVED***);
     let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('elixir_id', elixir_id);
     urlSearchParams.append('public_key', public_key);
     urlSearchParams.append('keyname', keyname);
 
@@ -47,10 +42,8 @@ export class keyService ***REMOVED***
       'X-CSRFToken': this.settings.getCSRFToken(),
     ***REMOVED***);
     let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('elixir_id', elixir_id);
     urlSearchParams.append('public_key', public_key);
     urlSearchParams.append('keyname', keyname);
-    urlSearchParams.append('request', 'reimport');
     return this.http.post(this.baseKeysUrl + 'reimportKey/', urlSearchParams, ***REMOVED***
       withCredentials: true,
       headers: header,
