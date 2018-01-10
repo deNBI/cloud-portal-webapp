@@ -29,6 +29,7 @@ export class keyService ***REMOVED***
     ***REMOVED***);
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('public_key', public_key);
+
     return this.http.post(this.baseKeysUrl + 'importKey/', urlSearchParams, ***REMOVED***
       withCredentials: true,
       headers: header,

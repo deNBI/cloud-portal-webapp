@@ -98,14 +98,10 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
   startVM(flavor: string, image: string, servername: string, project: string): void ***REMOVED***
-    console.log(project);
-    console.log(image);
-    console.log(flavor);
-    console.log(servername);
     if (image && flavor && servername && project) ***REMOVED***
 
 
-      this.virtualmachineservice.startVM(flavor, image, this.userinfo.PublicKey, servername, this.userinfo.FirstName + ' ' + this.userinfo.LastName, this.userinfo.ElxirId, this.vmclient.host, this.vmclient.port, project, this.userinfo.UserLogin).subscribe(data => ***REMOVED***
+      this.virtualmachineservice.startVM(flavor, image, servername, this.vmclient.host, this.vmclient.port, project).subscribe(data => ***REMOVED***
         console.log(data.text());
         this.data = data.text();
         let datajson = data.json()

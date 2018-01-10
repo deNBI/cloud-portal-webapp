@@ -19,25 +19,17 @@ export class VirtualmachineService ***REMOVED***
   ***REMOVED***
 
 
-  startVM(flavor: string, image: string, public_key: string, servername: string, username: string,
-          elixir_id: string, host: string, port: string, project: string, userlogin: string): Observable<Response> ***REMOVED***
+  startVM(flavor: string, image: string, servername: string,host: string, port: string, project: string): Observable<Response> ***REMOVED***
      let header = new Headers(***REMOVED***
       'X-CSRFToken': this.settings.getCSRFToken(),
     ***REMOVED***);
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('flavor', flavor);
     urlSearchParams.append('image', image);
-    let re = /\+/gi;
-
-    let newstr = public_key.replace(re, "%2B");
-
-
-    urlSearchParams.append('username', username);
     urlSearchParams.append('servername', servername);
     urlSearchParams.append('host', host);
     urlSearchParams.append('port', port);
     urlSearchParams.append('project', project);
-    urlSearchParams.append('userlogin', userlogin);
 
     return this.http.post(this.baseVmUrl + 'addVm/', urlSearchParams, ***REMOVED***
       withCredentials: true,
