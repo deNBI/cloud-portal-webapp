@@ -30,7 +30,7 @@ import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.mode
   providers: [ImageService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
-  data: string;
+  data: string = "";
   informationButton: string = "Show Details";
   informationButton2: string = "Show Details";
   images: Image[];
@@ -102,22 +102,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
 
       this.virtualmachineservice.startVM(flavor, image, servername, this.vmclient.host, this.vmclient.port, project).subscribe(data => ***REMOVED***
-        console.log(data.text());
-        this.data = data.text();
-        let datajson = data.json()
-        try ***REMOVED***
-          if (datajson['floating_ip']) ***REMOVED***
-            this.data = "Server was started. You can acces it with command 'ssh -i private_key_file ubuntu@" + datajson['floating_ip'] + "'";
-          ***REMOVED***
-        ***REMOVED***
-        catch (e) ***REMOVED***
 
-        ***REMOVED***
-
-
-        console.log(this.data);
-        this.printData();
-
+        this.data = data.json();
       ***REMOVED***);
 
     ***REMOVED***

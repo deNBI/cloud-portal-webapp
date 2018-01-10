@@ -169,13 +169,19 @@
         </button>
       </div>
       <div class="modal-body" *ngIf="!data">
-        Warten auf Antwort
+        Wait for response!
       </div>
-      <div class="modal-body" *ngIf="data!='INVALID'">
-        ***REMOVED******REMOVED***data***REMOVED******REMOVED***
+      <div class="modal-body" *ngIf="data['Started']">
+        Server started use the following command to connect <br><br>
+        <pre><code>***REMOVED******REMOVED***data['Started']***REMOVED******REMOVED***</code></pre>
       </div>
+      <div class="modal-body" *ngIf="data['Error']">
+        An Error occured<br><br>
+        <pre><code>***REMOVED******REMOVED***data['Error']***REMOVED******REMOVED***</code></pre>
+      </div>
+
       <div class="modal-body" *ngIf="data=='INVALID'">
-        Parameter fehlen
+        Parameters missing
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="infoModal.hide();resetData2()">Close</button>
