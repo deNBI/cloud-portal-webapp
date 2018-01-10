@@ -29,24 +29,11 @@ export class keyService {
     });
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('public_key', public_key);
-    urlSearchParams.append('keyname', keyname);
-
     return this.http.post(this.baseKeysUrl + 'importKey/', urlSearchParams, {
       withCredentials: true,
       headers: header,
     });
   }
 
-  reimportKey(elixir_id: string, public_key: string, keyname: string): Observable<Response> {
-    let header = new Headers({
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    });
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('public_key', public_key);
-    urlSearchParams.append('keyname', keyname);
-    return this.http.post(this.baseKeysUrl + 'reimportKey/', urlSearchParams, {
-      withCredentials: true,
-      headers: header,
-    });
-  }
+
 }

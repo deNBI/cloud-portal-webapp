@@ -31,9 +31,8 @@ export class VirtualmachineService {
 
     let newstr = public_key.replace(re, "%2B");
 
-    urlSearchParams.append('public_key', newstr);
+
     urlSearchParams.append('username', username);
-    urlSearchParams.append('elixir_id', elixir_id)
     urlSearchParams.append('servername', servername);
     urlSearchParams.append('host', host);
     urlSearchParams.append('port', port);
