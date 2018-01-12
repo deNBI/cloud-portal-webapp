@@ -234,7 +234,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) ***REMOVED***
           this.is_vo_admin = true;
         ***REMOVED***
-        break;
+        
       ***REMOVED***
     ***REMOVED***);
   ***REMOVED***
