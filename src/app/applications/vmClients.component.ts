@@ -42,7 +42,6 @@ export class ClientOverviewComponent implements OnInit {
         if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
           this.is_vo_admin = true;
         }
-        break;
       }
     });
   }
