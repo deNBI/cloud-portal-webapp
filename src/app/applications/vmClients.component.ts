@@ -59,21 +59,22 @@ export class ClientOverviewComponent implements OnInit {
   }
 
   checkClient(host: string, port: string): void {
+    if (host && port) {
+      this.clientservice.checkClient(host, port).subscribe(data => {
+        console.log(data.text());
+        if (data.text() == "false") {
+          this.checkStatus = 'No Connection';
+        }
+        else if (data.text() == 'true') {
+          this.checkStatus = "Connected";
+        }
+        else {
+          this.checkStatus = "check failed";
+          console.log(data.text())
+        }
 
-    this.clientservice.checkClient(host, port).subscribe(data => {
-      console.log(data.text());
-      if (data.text() == "false") {
-        this.checkStatus = 'No Connection';
-      }
-      else if (data.text() == 'true') {
-        this.checkStatus = "Connected";
-      }
-      else {
-        this.checkStatus = "check failed";
-        console.log(data.text())
-      }
-
-    });
+      });
+    }
   }
 
   postClient(host: string, port: string, location: string): void {
