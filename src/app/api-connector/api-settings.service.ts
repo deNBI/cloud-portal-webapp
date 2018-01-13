@@ -11,6 +11,9 @@ export class ApiSettings ***REMOVED***
   getApiBaseURL(): string ***REMOVED***
     return environment.apiBaseUrl;
   ***REMOVED***
+  getConnectorBaseUrl(): string ***REMOVED***
+    return environment.connectorBaseUrl;
+  ***REMOVED***
 
   /*
     Returns the format of the API call.

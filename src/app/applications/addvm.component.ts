@@ -67,14 +67,16 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   getRRFirstClient(): void ***REMOVED***
     this.clientservice.getRRFirstClient().subscribe(client => ***REMOVED***
         this.vmclient = client;
-        if (this.vmclient.status ==="Connected")***REMOVED***
-          this.client_avaiable= true;
+        if (this.vmclient.status === "Connected") ***REMOVED***
+          this.client_avaiable = true;
+          this.getImages();
+          this.getFlavors();
         ***REMOVED***
         else ***REMOVED***
-          this.client_avaiable= false;
+          this.client_avaiable = false;
         ***REMOVED***
-        this.getImages();
-        this.getFlavors();
+
+
       ***REMOVED***
     )
     ;
@@ -98,11 +100,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
   ***REMOVED***
 
-  getUserPublicKey() ***REMOVED***
-    this.keyservice.getKey(this.userinfo.ElxirId).subscribe(result => ***REMOVED***
-      this.userinfo.PublicKey = result.toString();
-    ***REMOVED***)
-  ***REMOVED***
+
 
   startVM(flavor: string, image: string, servername: string, project: string): void ***REMOVED***
     if (image && flavor && servername && project) ***REMOVED***
@@ -119,7 +117,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
   ***REMOVED***
-
 
 
   resetData(): void ***REMOVED***
@@ -151,52 +148,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
 
-  getUserinfo() ***REMOVED***
-    this.authzresolver.getLoggedUser().toPromise()
-      .then(result => ***REMOVED***
-        let res = result.json();
-
-        this.userinfo.FirstName = res["firstName"];
-        this.userinfo.LastName = res["lastName"];
-        this.userinfo.Id = res["id"];
-
-        return this.memberssmanager.getMemberByUser(res["id"]).toPromise();
-
-      ***REMOVED***).then(memberinfo => ***REMOVED***
-      this.userinfo.MemberId = memberinfo.json()["id"];
-      this.groupsmanager.getMemberGroupsStatus().toPromise().then(membergroups => ***REMOVED***
-        for (let project of membergroups.json()) ***REMOVED***
-          this.projects.push(project);
-
-        ***REMOVED***
-      ***REMOVED***);
-
-      this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => ***REMOVED***
-        let logins = result.json()
-        for (let login of logins) ***REMOVED***
-          if (login['friendlyName'] === 'login-namespace:elixir-persistent') ***REMOVED***
-            this.userinfo.ElxirId = login['value']
-          ***REMOVED***
-          else if (login['friendlyName'] === 'login-namespace:elixir') ***REMOVED***
-            this.userinfo.UserLogin = login['value'];
-
-
-          ***REMOVED***
-
-        ***REMOVED***
-
-      ***REMOVED***);
-    ***REMOVED***);
-    this.authzresolver.getPerunPrincipal().toPromise().then(result => ***REMOVED***
-      this.userinfo.ElxirId = result.json()['actor'];
-    ***REMOVED***).then(result => ***REMOVED***
-      this.getUserPublicKey()
-      this.getClientData();
-
-
-    ***REMOVED***);
-  ***REMOVED***
-
   addMetadataItem(key: string, value: string): void ***REMOVED***
     if (key && value && this.checkMetadataKeys(key)) ***REMOVED***
       this.metadatalist.push(new Metadata(key, value));
@@ -208,10 +159,20 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     this.metadatalist.splice(this.metadatalist.indexOf(metadata), 1);
   ***REMOVED***
 
+  getUserApprovedProjects() ***REMOVED***
+    this.groupsmanager.getMemberGroupsStatus().toPromise().then(membergroups => ***REMOVED***
+      for (let project of membergroups.json()) ***REMOVED***
+        this.projects.push(project);
+
+      ***REMOVED***
+    ***REMOVED***);
+  ***REMOVED***
+
   ngOnInit(): void ***REMOVED***
 
     this.userinfo = new Userinfo();
-    this.getUserinfo();
+    this.getClientData();
+    this.getUserApprovedProjects();
 
 
   ***REMOVED***
