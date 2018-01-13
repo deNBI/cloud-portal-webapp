@@ -67,14 +67,16 @@ export class VirtualMachineComponent implements OnInit {
   getRRFirstClient(): void {
     this.clientservice.getRRFirstClient().subscribe(client => {
         this.vmclient = client;
-        if (this.vmclient.status ==="Connected"){
-          this.client_avaiable= true;
+        if (this.vmclient.status === "Connected") {
+          this.client_avaiable = true;
+          this.getImages();
+          this.getFlavors();
         }
         else {
-          this.client_avaiable= false;
+          this.client_avaiable = false;
         }
-        this.getImages();
-        this.getFlavors();
+
+
       }
     )
     ;
@@ -98,11 +100,7 @@ export class VirtualMachineComponent implements OnInit {
 
   }
 
-  getUserPublicKey() {
-    this.keyservice.getKey(this.userinfo.ElxirId).subscribe(result => {
-      this.userinfo.PublicKey = result.toString();
-    })
-  }
+
 
   startVM(flavor: string, image: string, servername: string, project: string): void {
     if (image && flavor && servername && project) {
@@ -119,7 +117,6 @@ export class VirtualMachineComponent implements OnInit {
 
     }
   }
-
 
 
   resetData(): void {
@@ -151,52 +148,6 @@ export class VirtualMachineComponent implements OnInit {
   }
 
 
-  getUserinfo() {
-    this.authzresolver.getLoggedUser().toPromise()
-      .then(result => {
-        let res = result.json();
-
-        this.userinfo.FirstName = res["firstName"];
-        this.userinfo.LastName = res["lastName"];
-        this.userinfo.Id = res["id"];
-
-        return this.memberssmanager.getMemberByUser(res["id"]).toPromise();
-
-      }).then(memberinfo => {
-      this.userinfo.MemberId = memberinfo.json()["id"];
-      this.groupsmanager.getMemberGroupsStatus().toPromise().then(membergroups => {
-        for (let project of membergroups.json()) {
-          this.projects.push(project);
-
-        }
-      });
-
-      this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => {
-        let logins = result.json()
-        for (let login of logins) {
-          if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
-            this.userinfo.ElxirId = login['value']
-          }
-          else if (login['friendlyName'] === 'login-namespace:elixir') {
-            this.userinfo.UserLogin = login['value'];
-
-
-          }
-
-        }
-
-      });
-    });
-    this.authzresolver.getPerunPrincipal().toPromise().then(result => {
-      this.userinfo.ElxirId = result.json()['actor'];
-    }).then(result => {
-      this.getUserPublicKey()
-      this.getClientData();
-
-
-    });
-  }
-
   addMetadataItem(key: string, value: string): void {
     if (key && value && this.checkMetadataKeys(key)) {
       this.metadatalist.push(new Metadata(key, value));
@@ -208,10 +159,20 @@ export class VirtualMachineComponent implements OnInit {
     this.metadatalist.splice(this.metadatalist.indexOf(metadata), 1);
   }
 
+  getUserApprovedProjects() {
+    this.groupsmanager.getMemberGroupsStatus().toPromise().then(membergroups => {
+      for (let project of membergroups.json()) {
+        this.projects.push(project);
+
+      }
+    });
+  }
+
   ngOnInit(): void {
 
     this.userinfo = new Userinfo();
-    this.getUserinfo();
+    this.getClientData();
+    this.getUserApprovedProjects();
 
 
   }

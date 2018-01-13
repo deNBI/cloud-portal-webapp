@@ -9,7 +9,7 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class ClientService {
-  clientURL = 'https://portal-dev.denbi.de/connector/clients/';
+  clientURL =  this.settings.getConnectorBaseUrl()  + 'clients/';
 
   constructor(private http: Http,private settings: ApiSettings) {
   }
@@ -83,7 +83,6 @@ export class ClientService {
     urlSearchParams.append('port', port);
     urlSearchParams.append('host', host);
     urlSearchParams.append('location', location);
-    urlSearchParams.append('request', 'delete');
     return this.http.post(this.clientURL + 'deleteClient/', urlSearchParams, {
       withCredentials: true,
       headers: header,

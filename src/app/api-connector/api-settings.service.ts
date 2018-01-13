@@ -11,6 +11,9 @@ export class ApiSettings {
   getApiBaseURL(): string {
     return environment.apiBaseUrl;
   }
+  getConnectorBaseUrl(): string {
+    return environment.connectorBaseUrl;
+  }
 
   /*
     Returns the format of the API call.

@@ -4,13 +4,14 @@ import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {URLSearchParams} from "@angular/http";
 import {ApiSettings} from "./api-settings.service";
+
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 
 @Injectable()
 export class keyService {
-  baseKeysUrl = 'https://portal-dev.denbi.de/connector/keys/';
+  baseKeysUrl = this.settings.getConnectorBaseUrl() + 'keys/';
 
   constructor(private http: Http, private settings: ApiSettings) {
   }
