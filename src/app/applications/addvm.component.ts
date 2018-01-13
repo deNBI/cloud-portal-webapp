@@ -41,6 +41,7 @@ export class VirtualMachineComponent implements OnInit {
   userinfo: Userinfo;
   vmclient: Vmclient;
   selectedProject: string;
+  client_avaiable: boolean;
   projects: string[] = new Array();
 
   constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) {
@@ -66,6 +67,12 @@ export class VirtualMachineComponent implements OnInit {
   getRRFirstClient(): void {
     this.clientservice.getRRFirstClient().subscribe(client => {
         this.vmclient = client;
+        if (this.vmclient.status ==="Connected"){
+          this.client_avaiable= true;
+        }
+        else {
+          this.client_avaiable= false;
+        }
         this.getImages();
         this.getFlavors();
       }
@@ -109,13 +116,11 @@ export class VirtualMachineComponent implements OnInit {
     }
     else {
       this.data = "INVALID"
-      console.log(this.data)
+
     }
   }
 
-  printData(): void {
-    console.log(this.data)
-  }
+
 
   resetData(): void {
     if (this.data == 'INVALID') {
@@ -146,8 +151,6 @@ export class VirtualMachineComponent implements OnInit {
   }
 
 
-
-
   getUserinfo() {
     this.authzresolver.getLoggedUser().toPromise()
       .then(result => {
@@ -161,12 +164,13 @@ export class VirtualMachineComponent implements OnInit {
 
       }).then(memberinfo => {
       this.userinfo.MemberId = memberinfo.json()["id"];
-      this.groupsmanager.getMemberGroups(this.userinfo.MemberId).toPromise().then(membergroups => {
+      this.groupsmanager.getMemberGroupsStatus().toPromise().then(membergroups => {
         for (let project of membergroups.json()) {
-          this.projects.push(project['name']);console.log(this.projects)
+          this.projects.push(project);
+
         }
       });
-      console.log(this.projects);
+
       this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => {
         let logins = result.json()
         for (let login of logins) {
@@ -175,7 +179,7 @@ export class VirtualMachineComponent implements OnInit {
           }
           else if (login['friendlyName'] === 'login-namespace:elixir') {
             this.userinfo.UserLogin = login['value'];
-            console.log(this.userinfo.UserLogin)
+
 
           }
 

@@ -8,6 +8,6 @@ export const environment = {
   vo: 3334,
 
   apiBaseUrl: 'https://portal-dev.denbi.de/api/v0/',
-  voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev'
-
+  voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev',
+  connectorBaseUrl : 'https://portal-dev.denbi.de/connector/'
 };

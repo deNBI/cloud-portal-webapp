@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {PerunSettings}  from './connector-settings.service'
+import {PerunSettings} from './connector-settings.service'
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -10,19 +10,27 @@ import {Project} from "../projectmanagement/project.model";
 
 @Injectable()
 export class GroupsManager {
+  baseConnectorUrl = 'https://portal-dev.denbi.de/connector/'
+
   constructor(private http: Http, private settings: PerunSettings, private apiSettings: ApiSettings) {
   }
 
   getMemberGroups(member_id: number) {
     return this.http.get(this.settings.getPerunBaseURL() + 'groupsManager/getMemberGroups', {
-      headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
       params: {member: member_id}
     });
   }
 
 
 
+  getMemberGroupsStatus() {
+    return this.http.get("https://portal-dev.denbi.de/connector/projects/", {
+       withCredentials: true,
+      headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+    });
 
+  }
 
   createGroup(group_name: string, group_description: string) {
     var parameter = JSON.stringify({
@@ -31,13 +39,33 @@ export class GroupsManager {
     });
     return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/createGroup', parameter,
       {
-        headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      });
+  }
+
+  setPerunGroupStatus(group_id: number, status: number) {
+    /* 1:submitted
+       2: approved
+       3: declined
+     */
+
+    var parameter = JSON.stringify({
+      group: group_id,
+      attribute: {
+        id: 3291, namespace: 'urn:perun:group:attribute-def:opt',
+        friendlyName: 'denbiProjectStatus', type: 'java.lang.Integer',
+        value: status,
+      }
+    });
+    return this.http.post(this.settings.getPerunBaseURL() + 'attributesManager/setAttribute', parameter,
+      {
+        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
       });
   }
 
   getGroupRichMembers(group_id: number) {
     return this.http.get(this.settings.getPerunBaseURL() + 'groupsManager/getGroupRichMembers', {
-      headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
       params: {group: group_id}
     });
   }
@@ -49,7 +77,7 @@ export class GroupsManager {
     });
     return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/addMember', parameter,
       {
-      headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
       });
   }
 
@@ -60,7 +88,7 @@ export class GroupsManager {
     });
     return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/addAdmin', parameter,
       {
-        headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
       });
   }
 
@@ -71,7 +99,7 @@ export class GroupsManager {
     });
     return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/removeMember', parameter,
       {
-        headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
       });
   }
 

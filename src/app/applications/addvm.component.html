@@ -1,4 +1,6 @@
-<div class="animated fadeIn">
+<div class="allert alert-info" *ngIf="!client_avaiable"><strong>Info</strong> No Client avaiable.</div>
+
+<div class="animated fadeIn" *ngIf="client_avaiable">
 
   <div class="row">
     <div class="col-md-12">
