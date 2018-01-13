@@ -41,6 +41,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   userinfo: Userinfo;
   vmclient: Vmclient;
   selectedProject: string;
+  client_avaiable: boolean;
   projects: string[] = new Array();
 
   constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) ***REMOVED***
@@ -66,6 +67,12 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   getRRFirstClient(): void ***REMOVED***
     this.clientservice.getRRFirstClient().subscribe(client => ***REMOVED***
         this.vmclient = client;
+        if (this.vmclient.status ==="Connected")***REMOVED***
+          this.client_avaiable= true;
+        ***REMOVED***
+        else ***REMOVED***
+          this.client_avaiable= false;
+        ***REMOVED***
         this.getImages();
         this.getFlavors();
       ***REMOVED***
@@ -109,13 +116,11 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     ***REMOVED***
     else ***REMOVED***
       this.data = "INVALID"
-      console.log(this.data)
+
     ***REMOVED***
   ***REMOVED***
 
-  printData(): void ***REMOVED***
-    console.log(this.data)
-  ***REMOVED***
+
 
   resetData(): void ***REMOVED***
     if (this.data == 'INVALID') ***REMOVED***
@@ -146,8 +151,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
 
-
-
   getUserinfo() ***REMOVED***
     this.authzresolver.getLoggedUser().toPromise()
       .then(result => ***REMOVED***
@@ -161,12 +164,13 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
       ***REMOVED***).then(memberinfo => ***REMOVED***
       this.userinfo.MemberId = memberinfo.json()["id"];
-      this.groupsmanager.getMemberGroups(this.userinfo.MemberId).toPromise().then(membergroups => ***REMOVED***
+      this.groupsmanager.getMemberGroupsStatus().toPromise().then(membergroups => ***REMOVED***
         for (let project of membergroups.json()) ***REMOVED***
-          this.projects.push(project['name']);console.log(this.projects)
+          this.projects.push(project);
+
         ***REMOVED***
       ***REMOVED***);
-      console.log(this.projects);
+
       this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => ***REMOVED***
         let logins = result.json()
         for (let login of logins) ***REMOVED***
@@ -175,7 +179,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
           ***REMOVED***
           else if (login['friendlyName'] === 'login-namespace:elixir') ***REMOVED***
             this.userinfo.UserLogin = login['value'];
-            console.log(this.userinfo.UserLogin)
+
 
           ***REMOVED***
 

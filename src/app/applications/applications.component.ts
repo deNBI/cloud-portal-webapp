@@ -34,7 +34,7 @@ export class ApplicationsComponent ***REMOVED***
   public notificationModalIsClosable: boolean = false;
 
 
-  collapse_status: ***REMOVED***[id: string]: boolean***REMOVED*** = ***REMOVED******REMOVED***;
+  collapse_status: ***REMOVED*** [id: string]: boolean ***REMOVED*** = ***REMOVED******REMOVED***;
 
   constructor(private applicataionsservice: ApplicationsService,
               private applicationstatusservice: ApplicationStatusService,
@@ -224,6 +224,8 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***).then(null_result => ***REMOVED***
       return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved")).toPromise();
     ***REMOVED***).then(null_result => ***REMOVED***
+      //setting approved status for Perun Group
+      this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
       //update modal
       this.updateNotificaitonModal("Success", "The new project was created", true, "success");
       //update applications

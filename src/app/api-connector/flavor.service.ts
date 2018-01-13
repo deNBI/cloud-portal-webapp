@@ -3,7 +3,6 @@ import ***REMOVED***Flavor***REMOVED*** from '../virtualmachinemodels/flavor';
 import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
 import ***REMOVED***URLSearchParams***REMOVED*** from "@angular/http";
-
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
