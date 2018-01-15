@@ -23,7 +23,6 @@
       <th>Floating IP</th>
       <th>Created at</th>
       <th>SSH Command</th>
-      <th *ngIf="is_vo_admin">Username</th>
       <th *ngIf="is_vo_admin">Elixir ID</th>
       <th>Stopped at</th>
 
@@ -45,7 +44,6 @@
         <td>{{vm.floating_ip}}</td>
         <td> {{vm.created_at}}</td>
         <td>{{vm.ssh_command}}</td>
-        <td *ngIf="is_vo_admin"> {{vm.username}}</td>
         <td *ngIf="is_vo_admin"> {{vm.elixir_id}}</td>
         <td>
           {{vm.stopped_at}}
@@ -75,7 +73,6 @@
   <input type="text" placeholder="Elixir_ID" name="filterelixir_id" [(ngModel)]="filterelixir_id">
   <input type="text" placeholder="Created_at" name="filtercreated_at" [(ngModel)]="filtercreated_at">
   <input type="text" placeholder="IP" name="filterip" [(ngModel)]="filterip">
-  <input type="text" placeholder="Username" name="filterusername" [(ngModel)]="filterusername">
   <input type="text" placeholder="Name" name="filtername" [(ngModel)]="filtername">
   <input type="text" placeholder="Status" name="filterstatus" [(ngModel)]="filterstatus">
   <input type="text" placeholder="Project" name="filterproject" [(ngModel)]="filterproject">
