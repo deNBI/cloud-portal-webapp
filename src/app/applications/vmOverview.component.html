@@ -39,12 +39,12 @@
         <td>
           {{vm.name}}
         </td>
-        <td>{{vm.project}}</td>
-        <td>{{vm.status}}</td>
-        <td>{{vm.floating_ip}}</td>
-        <td> {{vm.created_at}}</td>
-        <td>{{vm.ssh_command}}</td>
-        <td *ngIf="is_vo_admin"> {{vm.elixir_id}}</td>
+        <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">{{vm.project}}</td>
+        <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">{{vm.status}}</td>
+        <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">{{vm.floating_ip}}</td>
+        <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal"> {{vm.created_at}}</td>
+        <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">{{vm.ssh_command}}</td>
+        <td *ngIf="is_vo_admin" style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal"> {{vm.elixir_id}}</td>
         <td>
           {{vm.stopped_at}}
         </td>
