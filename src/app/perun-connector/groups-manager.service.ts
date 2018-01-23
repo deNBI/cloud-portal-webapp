@@ -25,7 +25,7 @@ export class GroupsManager {
 
 
   getMemberGroupsStatus() {
-    return this.http.get("https://portal-dev.denbi.de/connector/projects/", {
+    return this.http.get(this.apiSettings.getApiBaseURL() + 'approved_projects/', {
        withCredentials: true,
       headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
     });

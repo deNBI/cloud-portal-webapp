@@ -11,7 +11,7 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class keyService {
-  baseKeysUrl = this.settings.getConnectorBaseUrl() + 'keys/';
+  baseKeysUrl = this.settings.getApiBaseURL() + 'keys/';
 
   constructor(private http: Http, private settings: ApiSettings) {
   }
