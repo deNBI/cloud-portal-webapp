@@ -19,7 +19,9 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
   constructor(  private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
 
   ***REMOVED***
-
+ public get_is_vo_admin(): boolean ***REMOVED***
+    return this.is_vo_admin;
+ ***REMOVED***
   public toggled(open: boolean): void ***REMOVED***
     console.log('Dropdown is now: ', open);
   ***REMOVED***
