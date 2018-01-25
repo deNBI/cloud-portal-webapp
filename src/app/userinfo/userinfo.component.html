@@ -42,11 +42,11 @@
             <tr>
               <td>Public Key</td>
               <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-                <button *ngIf="userinfo.PublicKey" (click)="collapsed1=!collapsed1; toggleKey()"
+                <button *ngIf="userinfo.PublicKey" (click)="toggleKey()"
                         class="btn btn-primary">
                   {{key}}
                 </button>
-                <div *ngIf="collapsed1"><br>{{userinfo.PublicKey}}</div>
+                <div><br>{{userinfo.PublicKey}}</div>
               </td>
               <td>
                 <ng-container *ngIf="userinfo.PublicKey != 'None'">
