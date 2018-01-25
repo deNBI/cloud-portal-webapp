@@ -19,7 +19,9 @@ export class FullLayoutComponent implements OnInit {
   constructor(  private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
 
   }
-
+ public get_is_vo_admin(): boolean {
+    return this.is_vo_admin;
+ }
   public toggled(open: boolean): void {
     console.log('Dropdown is now: ', open);
   }
