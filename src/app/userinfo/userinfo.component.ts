@@ -17,6 +17,7 @@ import ***REMOVED***AttributesManager***REMOVED*** from "../perun-connector/attr
 export class UserinfoComponent ***REMOVED***
   userinfo: Userinfo;
   key: string = 'Show Public Key';
+  key_visible=false;
 
 
   constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) ***REMOVED***
@@ -80,8 +81,10 @@ export class UserinfoComponent ***REMOVED***
   toggleKey() ***REMOVED***
     if (this.key == 'Show Public Key') ***REMOVED***
       this.key = 'Hide Public Key';
+      this.key_visible= true;
     ***REMOVED*** else ***REMOVED***
       this.key = 'Show Public Key';
+      this.key_visible= false;
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***

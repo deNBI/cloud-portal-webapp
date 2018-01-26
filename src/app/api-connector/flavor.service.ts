@@ -19,7 +19,7 @@ export class FlavorService ***REMOVED***
     urlSearchParams.append('host', host);
     urlSearchParams.append('port', port);
 
-    return this.http.get(this.settings.getConnectorBaseUrl() + 'flavors/', ***REMOVED***
+    return this.http.get(this.settings.getConnectorBaseUrl() + 'flavors/getFlavorByClient/', ***REMOVED***
       withCredentials: true,
       search: urlSearchParams
     ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))

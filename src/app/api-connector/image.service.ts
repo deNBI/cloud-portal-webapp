@@ -20,7 +20,7 @@ export class ImageService ***REMOVED***
     urlSearchParams.set('port', port);
 
 
-    return this.http.get(this.settings.getConnectorBaseUrl() + 'images/', ***REMOVED***
+    return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getImageByClient/', ***REMOVED***
       withCredentials: true,
       search: urlSearchParams
     ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
