@@ -46,7 +46,7 @@
                         class="btn btn-primary">
                   {{key}}
                 </button>
-                <div><br>{{userinfo.PublicKey}}</div>
+                <div *ngIf="key_visible"><br>{{userinfo.PublicKey}}</div>
               </td>
               <td>
                 <ng-container *ngIf="userinfo.PublicKey != 'None'">
