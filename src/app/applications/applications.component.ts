@@ -204,7 +204,7 @@ export class ApplicationsComponent {
     let manager_member_user_id: number;
     let new_group_id: number;
 
-    this.membersmanager.getMemberByUser(46526).toPromise()
+    this.membersmanager.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
       .then(member_raw => {
           let member = member_raw.json();
           manager_member_id = member["id"];
