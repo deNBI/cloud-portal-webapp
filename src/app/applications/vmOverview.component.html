@@ -1,20 +1,21 @@
-<div class="card" *ngIf="is_vo_admin">
+<div class="card">
   <div class="card-header">
     <strong>Instance</strong>
     –Overview
   </div>
+
   <ng-container *ngIf="is_vo_admin">
     <ul class="nav nav-pills">
       <li>
         <button class="btn btn-primary" (click)="getVms(elixir_id);toggleTab('own');">Own Machines</button>
       </li>
       <li>
-        <button class="btn btn-primary" (click)="getAllVms();toggleTab('all')">All Machines(DB)</button>
+        <button class="btn btn-primary" (click)="getAllVms();toggleTab('all')">All Machines</button>
       </li>
 
     </ul>
   </ng-container>
-  <table class="table table-striped">
+  <table class="table table-hover" >
     <thead>
     <tr>
       <th>Name</th>
@@ -26,16 +27,24 @@
       <th *ngIf="is_vo_admin">Elixir ID</th>
       <th>Stopped at</th>
 
+
     </tr>
 
     </thead>
     <tbody>
+    <td> <input  style="width: 110px;"type="text" placeholder="Filter" name="filtername" [(ngModel)]="filtername"></td>
+    <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterproject" [(ngModel)]="filterproject"></td>
+    <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterstatus" [(ngModel)]="filterstatus"></td>
+    <td> <input style="width: 110px;"t type="text" placeholder="Filter" name="filterip" [(ngModel)]="filterip"></td>
+    <td> <input style="width: 110px;"t type="text" placeholder="Filter" name="filtercreated_at" [(ngModel)]="filtercreated_at"></td>
+    <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterssh" [(ngModel)]="filterssh"></td>
+    <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterelixir_id" [(ngModel)]="filterelixir_id"></td>
+    <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterstopped_at" [(ngModel)]="filterstopped_at"></td>
 
-    </tbody>
     <ng-container *ngFor="let vm of vms">
 
       <tr
-        *ngIf="isFilterstatus(vm.status ) && isFilterProject(vm.project) && isFilterCreated_at(vm.created_at) && isFilterElixir_id(vm.elixir_id) && isFilterIP(vm.floating_ip) && isFilterName(vm.name) && isFilterStopped_at(vm.stopped_at) && isFilterUsername(vm.username)">
+        *ngIf="isFilterSSH(vm.ssh_command) && isFilterstatus(vm.status ) && isFilterProject(vm.project) && isFilterCreated_at(vm.created_at) && isFilterElixir_id(vm.elixir_id) && isFilterIP(vm.floating_ip) && isFilterName(vm.name) && isFilterStopped_at(vm.stopped_at) && isFilterUsername(vm.username)">
         <td>
           {{vm.name}}
         </td>
@@ -66,14 +75,7 @@
           </button></td>
       </tr>
     </ng-container>
-
+ </tbody>
   </table>
 
-  <input type="text" placeholder="Stopped-at" name="filterstopped_at" [(ngModel)]="filterstopped_at">
-  <input type="text" placeholder="Elixir_ID" name="filterelixir_id" [(ngModel)]="filterelixir_id">
-  <input type="text" placeholder="Created_at" name="filtercreated_at" [(ngModel)]="filtercreated_at">
-  <input type="text" placeholder="IP" name="filterip" [(ngModel)]="filterip">
-  <input type="text" placeholder="Name" name="filtername" [(ngModel)]="filtername">
-  <input type="text" placeholder="Status" name="filterstatus" [(ngModel)]="filterstatus">
-  <input type="text" placeholder="Project" name="filterproject" [(ngModel)]="filterproject">
 </div>

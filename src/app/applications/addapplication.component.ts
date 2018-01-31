@@ -45,6 +45,8 @@ export class AddApplicationComponent {
   }
 
   onSubmit(f: NgForm) {
+    this.updateNotificaitonModal("Notification", "Please wait...", true, "info");
+    this.notificationModalStay = true;
     console.log("F.VALUE:")
     console.log(f.value)
     console.log("F.DATA:")
@@ -64,6 +66,9 @@ export class AddApplicationComponent {
       let newdata = {}
       for (let key in f.value) {
         if (data[key] === null || data[key] === undefined || data[key] === "") {
+          this.updateNotificaitonModal("Failed", "The application was not submitted, please check the required fields and try again.", true, "danger");
+          this.notificationModalStay = true;
+          return;
         } else {
           newdata[key] = data[key];
         }
