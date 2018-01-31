@@ -1,6 +1,6 @@
 <div class="allert alert-info" *ngIf="!client_avaiable"><strong>Info</strong> No Client avaiable.</div>
-
-<div class="animated fadeIn" *ngIf="client_avaiable">
+<div class="allert alert-info" *ngIf="!validatePublicKey()"><strong>Info</strong>You need to set a valid Key before you can start a machine. Please set a Key on the Userinfo tab.</div>
+<div class="animated fadeIn" *ngIf="client_avaiable && validatePublicKey()">
 
   <div class="row">
     <div class="col-md-12">
