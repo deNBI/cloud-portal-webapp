@@ -28,15 +28,26 @@ const routes: Routes = [
   {
     path: 'newVM',
     component: VirtualMachineComponent,
+       data: {
+      title: 'New Server'
+    }
 
   },
   {
     path:'clientOverview',
     component:ClientOverviewComponent,
+    data: {
+      title: 'Client Overview'
+    }
+
   },
   {
     path:'vmOverview',
     component:VmOverviewComponent,
+    data: {
+      title: 'VM Overview'
+    }
+
   },
 ];
 
