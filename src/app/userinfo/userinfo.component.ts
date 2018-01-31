@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
+
 import {Userinfo} from './userinfo.model'
 import {AuthzResolver} from '../perun-connector/authz-resolver.service'
 import {PerunSettings} from "../perun-connector/connector-settings.service";
@@ -17,8 +18,8 @@ import {AttributesManager} from "../perun-connector/attributes-manager";
 export class UserinfoComponent {
   userinfo: Userinfo;
   key: string = 'Show Public Key';
-  key_visible=false;
-
+  key_visible = false;
+  public_key: string;
 
   constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) {
     this.userinfo = new Userinfo();
@@ -28,7 +29,7 @@ export class UserinfoComponent {
   }
 
   importKey(publicKey: string, keyname: string) {
-    console.log("import key");
+
     let re = /\+/gi;
 
     let newstr = publicKey.replace(re, "%2B");
@@ -36,6 +37,18 @@ export class UserinfoComponent {
     this.keyService.postKey(this.userinfo.ElxirId, publicKey.replace(re, '%2B'), keyname).subscribe(result => {
       this.getUserPublicKey();
     });
+  }
+
+  validatePublicKey() {
+
+    if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key)) {
+      return true;
+    }
+    else {
+
+      return false;
+    }
+
   }
 
   getUserPublicKey() {
@@ -81,10 +94,10 @@ export class UserinfoComponent {
   toggleKey() {
     if (this.key == 'Show Public Key') {
       this.key = 'Hide Public Key';
-      this.key_visible= true;
+      this.key_visible = true;
     } else {
       this.key = 'Show Public Key';
-      this.key_visible= false;
+      this.key_visible = false;
     }
   }
 }

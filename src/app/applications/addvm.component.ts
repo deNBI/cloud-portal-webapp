@@ -16,18 +16,19 @@ import {ApiSettings} from "../api-connector/api-settings.service";
 import {MembersManager} from "../perun-connector/members-manager.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {AuthzResolver} from "../perun-connector/authz-resolver.service";
-import {keyService} from "../api-connector/key.service";
+
 import {ClientService} from "../api-connector/vmClients.service";
 import {Vmclient} from "../virtualmachinemodels/vmclient";
 import {GroupsManager} from "../perun-connector/groups-manager.service";
 import {AttributesManager} from "../perun-connector/attributes-manager";
 import {Application} from "./application.model";
+import {keyService} from "../api-connector/key.service";
 import {Project} from "../projectmanagement/project.model";
 
 @Component({
   selector: 'new-vm',
   templateUrl: 'addvm.component.html',
-  providers: [ImageService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+  providers: [ImageService, keyService,FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 })
 export class VirtualMachineComponent implements OnInit {
   data: string = "";
@@ -44,7 +45,8 @@ export class VirtualMachineComponent implements OnInit {
   client_avaiable: boolean;
   projects: string[] = new Array();
 
-  constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) {
+
+  constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) {
   }
 
 
@@ -81,7 +83,23 @@ export class VirtualMachineComponent implements OnInit {
     )
     ;
   }
+    validatePublicKey() {
 
+    if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)) {
+      return true;
+    }
+    else {
+
+      return false;
+    }
+
+  }
+
+  getUserPublicKey() {
+    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => {
+      this.userinfo.PublicKey = result.toString();
+    })
+  }
   toggleInformationButton(): void {
     if (this.informationButton == "Show Details") {
       this.informationButton = "Hide Details";
@@ -173,6 +191,7 @@ export class VirtualMachineComponent implements OnInit {
     this.userinfo = new Userinfo();
     this.getClientData();
     this.getUserApprovedProjects();
+    this.getUserPublicKey();
 
 
   }
