@@ -16,18 +16,19 @@ import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings
 import ***REMOVED***MembersManager***REMOVED*** from "../perun-connector/members-manager.service";
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
-import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
+
 import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
 import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachinemodels/vmclient";
 import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
 import ***REMOVED***AttributesManager***REMOVED*** from "../perun-connector/attributes-manager";
 import ***REMOVED***Application***REMOVED*** from "./application.model";
+import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
 
 @Component(***REMOVED***
   selector: 'new-vm',
   templateUrl: 'addvm.component.html',
-  providers: [ImageService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+  providers: [ImageService, keyService,FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
   data: string = "";
@@ -44,7 +45,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   client_avaiable: boolean;
   projects: string[] = new Array();
 
-  constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyservice: keyService, private clientservice: ClientService) ***REMOVED***
+
+  constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) ***REMOVED***
   ***REMOVED***
 
 
@@ -81,7 +83,23 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     )
     ;
   ***REMOVED***
+    validatePublicKey() ***REMOVED***
 
+    if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]***REMOVED***0,3***REMOVED***( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)) ***REMOVED***
+      return true;
+    ***REMOVED***
+    else ***REMOVED***
+
+      return false;
+    ***REMOVED***
+
+  ***REMOVED***
+
+  getUserPublicKey() ***REMOVED***
+    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => ***REMOVED***
+      this.userinfo.PublicKey = result.toString();
+    ***REMOVED***)
+  ***REMOVED***
   toggleInformationButton(): void ***REMOVED***
     if (this.informationButton == "Show Details") ***REMOVED***
       this.informationButton = "Hide Details";
@@ -173,6 +191,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     this.userinfo = new Userinfo();
     this.getClientData();
     this.getUserApprovedProjects();
+    this.getUserPublicKey();
 
 
   ***REMOVED***

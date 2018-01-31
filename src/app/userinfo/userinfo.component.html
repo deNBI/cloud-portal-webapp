@@ -53,17 +53,20 @@
                   <div class="alert alert-danger">
                     <strong>Warning!</strong> If the key is changed,all your running machines may become unreachable!
                   </div>
-                  <button class="btn btn-primary" type="button"
-                          (click)="importKey(publickey.value, userinfo.ElxirId)">
-                    change Key
+                  <div *ngIf="!validatePublicKey()" class="aler alert-info">
+                    <strong>Info</strong> Insert a valid Key!
+                  </div>
+                  <button *ngIf="validatePublicKey()" class="btn btn-primary" type="button"
+                          (click)="importKey(publickey.value, userinfo.ElxirId);toggleKey();">
+                    Change Key
                   </button>
                 </ng-container>
                 <input type="text" class="form-control input-lg"
-                       placeholder="publickey"
+                       placeholder="New PublicKey" name="public_key" [(ngModel)]="public_key"
                        #publickey>
-                <button *ngIf="userinfo.PublicKey == 'None'" class="btn btn-primary" type="button"
+                <button *ngIf="userinfo.PublicKey == 'None' && validatePublicKey()" class="btn btn-primary" type="button"
                         (click)="importKey(publickey.value, userinfo.ElxirId)">
-                  add Key
+                  Add Key
                 </button>
 
               </td>
