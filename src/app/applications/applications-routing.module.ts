@@ -28,15 +28,26 @@ const routes: Routes = [
   ***REMOVED***
     path: 'newVM',
     component: VirtualMachineComponent,
+       data: ***REMOVED***
+      title: 'New Server'
+    ***REMOVED***
 
   ***REMOVED***,
   ***REMOVED***
     path:'clientOverview',
     component:ClientOverviewComponent,
+    data: ***REMOVED***
+      title: 'Client Overview'
+    ***REMOVED***
+
   ***REMOVED***,
   ***REMOVED***
     path:'vmOverview',
     component:VmOverviewComponent,
+    data: ***REMOVED***
+      title: 'VM Overview'
+    ***REMOVED***
+
   ***REMOVED***,
 ];
 
