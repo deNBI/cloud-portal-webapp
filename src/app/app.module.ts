@@ -20,6 +20,7 @@ import ***REMOVED*** AppRoutingModule ***REMOVED*** from './app.routing';
 // Layouts
 import ***REMOVED*** FullLayoutComponent ***REMOVED*** from './layouts/full-layout.component';
 import ***REMOVED*** SimpleLayoutComponent ***REMOVED*** from './layouts/simple-layout.component';
+import ***REMOVED***ModalModule***REMOVED*** from "ngx-bootstrap";
 
 @NgModule(***REMOVED***
   imports: [
@@ -29,7 +30,7 @@ import ***REMOVED*** SimpleLayoutComponent ***REMOVED*** from './layouts/simple-
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,
-
+    ModalModule.forRoot(),
   ],
   declarations: [
     AppComponent,
