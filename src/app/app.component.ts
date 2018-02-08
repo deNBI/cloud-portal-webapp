@@ -1,7 +1,35 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {RequestOptions, XHRBackend, Http} from '@angular/http';
+import {HttpInterceptor} from "app/interceptor";
+import {ModalDirective} from "ngx-bootstrap";
+
+
+export function httpInterceptor(backend: XHRBackend, options: RequestOptions, modal: AppComponent) {
+  return new HttpInterceptor(backend, options, modal.getModal());
+}
+
 @Component({
-  // tslint:disable-next-line
   selector: 'body',
-  template: '<router-outlet></router-outlet>'
+  templateUrl: 'app.component.html',
+  providers: [ {
+    provide: Http,
+    useFactory: httpInterceptor,
+    deps: [XHRBackend, RequestOptions, AppComponent]
+  }]
 })
-export class AppComponent { }
+export class AppComponent implements AfterViewInit {
+
+  ngAfterViewInit(): void {
+  }
+
+  @ViewChild('timeoutModal') modal: ModalDirective;
+
+  refresh() {
+    window.sessionStorage.clear();
+    window.location.reload(true);
+  }
+
+  getModal() {
+    return this.modal;
+  }
+}
