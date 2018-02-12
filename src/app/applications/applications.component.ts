@@ -68,6 +68,7 @@ export class ApplicationsComponent ***REMOVED***
           a.Description = aj["project_application_description"];
           a.VMsRequested = aj["project_application_vms_requested"];
           a.RamPerVM = aj["project_application_ram_per_vm"];
+          a.CoresPerVM = aj["project_application_cores_per_vm"];
           a.DiskSpace = aj["project_application_disk_space"];
           a.ObjectStorage = aj["project_application_object_storage"];
           a.SpecialHardware = aj["project_application_special_hardware"];
@@ -134,6 +135,7 @@ export class ApplicationsComponent ***REMOVED***
 
                 a.VMsRequested = aj["project_application_vms_requested"];
                 a.RamPerVM = aj["project_application_ram_per_vm"];
+                a.CoresPerVM = aj["project_application_cores_per_vm"];
                 a.DiskSpace = aj["project_application_disk_space"];
                 a.ObjectStorage = aj["project_application_object_storage"];
                 a.SpecialHardware = aj["project_application_special_hardware"];
