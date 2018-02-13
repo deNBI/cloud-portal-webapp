@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 // Layouts
 import { FullLayoutComponent } from './layouts/full-layout.component';
 import { SimpleLayoutComponent } from './layouts/simple-layout.component';
+import {MemberGuardService} from './member-guard.service';
+import {RegistrationInfoComponent} from "./registration-info.component";
 
 export const routes: Routes = [
   {
@@ -11,9 +13,15 @@ export const routes: Routes = [
     redirectTo: 'userinfo',
     pathMatch: 'full',
   },
+    {
+    path: 'registration-info',
+    component: RegistrationInfoComponent,
+    pathMatch:'full'
+  },
   {
     path: '',
     component: FullLayoutComponent,
+     canActivate: [MemberGuardService],
     data: {
       title: 'de.NBI Portal'
     },
@@ -35,8 +43,11 @@ export const routes: Routes = [
   }
 ];
 
+
+
 @NgModule({
   imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ]
+  exports: [ RouterModule ],
+  providers: [MemberGuardService]
 })
 export class AppRoutingModule {}
