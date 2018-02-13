@@ -21,13 +21,11 @@ export class MemberGuardService implements CanActivate {
           return this.memberssmanager.getMemberByUser(res['id']).toPromise();
 
         }).then(memberinfo => {
-        console.log('true 1')
         return resolve(true);
 
 
       }).catch(rejection => {
         this.router.navigate(['/registration-info']);
-        console.log('false 1')
         resolve(false);
 
       });
