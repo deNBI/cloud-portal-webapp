@@ -21,13 +21,11 @@ export class MemberGuardService implements CanActivate ***REMOVED***
           return this.memberssmanager.getMemberByUser(res['id']).toPromise();
 
         ***REMOVED***).then(memberinfo => ***REMOVED***
-        console.log('true 1')
         return resolve(true);
 
 
       ***REMOVED***).catch(rejection => ***REMOVED***
         this.router.navigate(['/registration-info']);
-        console.log('false 1')
         resolve(false);
 
       ***REMOVED***);
