@@ -1,23 +1,20 @@
-import ***REMOVED***Component, ViewChild***REMOVED*** from '@angular/core';
+import ***REMOVED***Component***REMOVED*** from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
-import ***REMOVED***NgForm, FormsModule***REMOVED*** from '@angular/forms';
+import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
 import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/special-hardware.service'
 import ***REMOVED***SpecialHardware***REMOVED*** from './special_hardware.model'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
-import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
 
 @Component(***REMOVED***
   templateUrl: 'addapplication.component.html',
   providers: [SpecialHardwareService, ApiSettings, ApplicationsService]
-  // providers: []
 ***REMOVED***)
 
 export class AddApplicationComponent ***REMOVED***
 
   //notification Modal variables
-  public notificationModal;
   public notificationModalTitle: string = "Notification";
   public notificationModalMessage: string = "Please wait...";
   public notificationModalType: string = "info";
@@ -45,32 +42,8 @@ export class AddApplicationComponent ***REMOVED***
   ***REMOVED***
 
   onSubmit(f: NgForm) ***REMOVED***
-    console.log("F.VALUE:")
-    console.log(f.value)
-    console.log("F.DATA:")
-    let data = f.value
-    console.log(data)
-    console.log("LOOOP-BEGIN")
-    for (let key in f.value) ***REMOVED***
-      console.log("KEY BACK:" + key + "=>" + data[key]);
-      console.log("KEY VAL :" + key + "=>" + data.key);
-      if (data[key] === null || data[key] === undefined || data[key] === "") ***REMOVED***
-        delete data[key];
-      ***REMOVED***
-      console.log("F.VALUE (2):")
-      console.log(f.value)
-      console.log("F.DATA (2):")
-      console.log(data)
-      let newdata = ***REMOVED******REMOVED***
-      for (let key in f.value) ***REMOVED***
-        if (data[key] === null || data[key] === undefined || data[key] === "") ***REMOVED***
-        ***REMOVED*** else ***REMOVED***
-          newdata[key] = data[key];
-        ***REMOVED***
-      ***REMOVED***
-      console.log("NEWDATA:")
-      console.log(newdata);
-    ***REMOVED***
+    f.controls['project_application_special_hardware']
+      .setValue(this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id))
 
     this.applicationsservice.addNewApplication(f.value).toPromise()
       .then(result => ***REMOVED***
@@ -79,10 +52,8 @@ export class AddApplicationComponent ***REMOVED***
       ***REMOVED***).catch(error => ***REMOVED***
       this.updateNotificaitonModal("Failed", "The application was not submitted, please check the required fields and try again.", true, "danger");
       this.notificationModalStay = true;
-
     ***REMOVED***)
   ***REMOVED***
-
 
   public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
     this.notificationModalTitle = title;
@@ -90,7 +61,5 @@ export class AddApplicationComponent ***REMOVED***
     this.notificationModalIsClosable = closable;
     this.notificationModalType = type;
   ***REMOVED***
-
-
 ***REMOVED***
 
