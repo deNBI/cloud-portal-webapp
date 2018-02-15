@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-
+import {environment} from '../environments/environment';
 
 @Component({
   selector: 'registration-info',
@@ -7,4 +7,6 @@ import {Component} from '@angular/core';
 
 
 })
-export class RegistrationInfoComponent{}
+export class RegistrationInfoComponent{
+  voRegistrationLink= environment.voRegistrationLink;
+}
