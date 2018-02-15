@@ -3,11 +3,13 @@ export class SpecialHardware {
   private _Id: number;
   private _Key: string;
   private _Name: string;
+  private _Checked: boolean;
 
   constructor(Id: number, Key: string, Name: string) {
     this._Id = Id;
     this._Key = Key;
     this._Name = Name;
+    this._Checked = false;
   }
 
   get Id(): number {
@@ -34,5 +36,12 @@ export class SpecialHardware {
     this._Name = value;
   }
 
+  get Checked(): boolean {
+    return this._Checked;
+  }
+
+  set Checked(value: boolean) {
+    this._Checked = value;
+  }
 
 }
