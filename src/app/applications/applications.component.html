@@ -127,9 +127,8 @@
                   <td>
 
                       <select class="form-control" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
-                        <option value="" selected hidden> None</option>
+                        <option value="default"  selected> none</option>
                         <option *ngFor="let computeCenter of computeCenters" [ngValue]="computeCenter"> {{computeCenter}}</option>
-
                       </select>
 
 
