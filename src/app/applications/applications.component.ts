@@ -13,10 +13,11 @@ import ***REMOVED***Application***REMOVED*** from "./application.model";
 import ***REMOVED***ApplicationStatus***REMOVED*** from "./application_status.model";
 import ***REMOVED***SpecialHardware***REMOVED*** from "./special_hardware.model";
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
+import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 
 @Component(***REMOVED***
   templateUrl: 'applications.component.html',
-  providers: [AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+  providers: [GroupService, AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 ***REMOVED***)
 export class ApplicationsComponent ***REMOVED***
 
@@ -25,7 +26,8 @@ export class ApplicationsComponent ***REMOVED***
   all_applications: Application[] = [];
   application_status: ApplicationStatus[] = [];
   special_hardware: SpecialHardware[] = [];
-  selectedComputeCenter: string='test';
+  selectedComputeCenter: string;
+  computeCenters: string[];
 
   //notification Modal variables
   public notificationModal;
@@ -44,14 +46,21 @@ export class ApplicationsComponent ***REMOVED***
               private perunsettings: PerunSettings,
               private groupsmanager: GroupsManager,
               private usersmanager: UsersManager,
-              private membersmanager: MembersManager) ***REMOVED***
+              private membersmanager: MembersManager,
+              private groupservice: GroupService) ***REMOVED***
     this.getUserApplications();
     this.getAllApplications(usersmanager);
     this.getApplicationStatus();
     this.getSpecialHardware();
+    this.getComputeCenters();
 
   ***REMOVED***
 
+  getComputeCenters() ***REMOVED***
+    this.groupservice.getComputeCenters().subscribe(result => ***REMOVED***
+      this.computeCenters = result;
+    ***REMOVED***)
+  ***REMOVED***
 
   getUserApplications() ***REMOVED***
     this.applicataionsservice
@@ -229,6 +238,7 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***).then(null_result => ***REMOVED***
       //setting approved status for Perun Group
       this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
+      this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
       //update modal
       this.updateNotificaitonModal("Success", "The new project was created", true, "success");
       //update applications
