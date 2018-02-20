@@ -25,6 +25,7 @@ export class ApplicationsComponent ***REMOVED***
   all_applications: Application[] = [];
   application_status: ApplicationStatus[] = [];
   special_hardware: SpecialHardware[] = [];
+  selectedComputeCenter: string='test';
 
   //notification Modal variables
   public notificationModal;
@@ -200,7 +201,7 @@ export class ApplicationsComponent ***REMOVED***
     this.notificationModalType = type;
   ***REMOVED***
 
-  public createGroup(name, description, manager_elixir_id, application_id) ***REMOVED***
+  public createGroup(name, description, manager_elixir_id, application_id, compute_center) ***REMOVED***
     //get memeber id in order to add the user later as the new member and manager of the group
     let manager_member_id: number;
     let manager_member_user_id: number;
