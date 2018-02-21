@@ -23,10 +23,14 @@ export class GroupService {
 
   assignGroupToResource(groupid: string, computecenter: string): Observable<any> {
     let urlSearchParams = new URLSearchParams();
+    let header = new Headers({
+      'X-CSRFToken': this.settings.getCSRFToken(),
+    });
     urlSearchParams.append('compute_center', computecenter);
     urlSearchParams.append('groupid', groupid);
     return this.http.post(this.settings.getApiBaseURL() + 'assignGroupToResource/', urlSearchParams, {
       withCredentials: true,
+      headers: header
     }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
 
