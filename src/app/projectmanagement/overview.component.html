@@ -98,41 +98,32 @@
 <div bsModal #addUserModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
   <div class="modal-dialog " role="document">
-    <div class="modal-content">
+    <div class="modal-content modal-lg">
       <div class="modal-header">
         <h4 class="modal-title">Add member to the project ***REMOVED******REMOVED*** addUserModalProjectID ***REMOVED******REMOVED***
           (***REMOVED******REMOVED*** addUserModalProjectName ***REMOVED******REMOVED***)</h4>
       </div>
       <div class="modal-body">
-        <p>In order to add a new user to the project please do the following</p>
-        <ol>
-          <li>Send one of the following links to the user you would like to add:
-            <ul>
-              <li>If the user does have an elixir account, please send him the following link:
-                <pre>***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
-              </li>
-              <li>If the user does not have an elixir account, please send him the following link:
-                <pre>https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew=***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
-              </li>
-            </ul>
-          </li>
-          <li>As soon as the user went through the registration process, he can enter https://cloud.denbi.de/portal/ and report you his user id (User Information tab).</li>
-          <li>Please send the following information to cloud@denbi.de
-              <ul>
-                <li>Your User Id and the user id of the user you would like to add.</li>
-                <li>Project name and project description.</li>
-              </ul>
-          </li>
-          <li>You will be notified when the user is member of your project.</li>
-        </ol>
-          <!--
-          <div class="input-group">
-                                      <span class="input-group-addon">UserID
-                                      </span>
-            <input #addMemberID type="number" id="addMemberID" name="addMemberID" class="form-control"
-                   placeholder="UserID">
-          </div>
-          -->
+        <p>Search your member in the de.NBI vo</p>
+        <input placeholder="firstName" #firstName><input placeholder="lastName" #lastName>
+        <button (click)="filterMembers(firstName.value,lastName.value)"> Search</button>
+
+      <table class="table">
+        <thead>
+          <th>FirstName</th>
+        <th>LastName</th>
+        <th>Email</th>
+        <th>MemberID</th>
+        </thead>
+        <tbody *ngFor="  let member of filteredMembers">
+        <td>***REMOVED******REMOVED***member['firstName']***REMOVED******REMOVED***
+        </td>
+        <td>***REMOVED******REMOVED***member['lastName']***REMOVED******REMOVED***</td>
+        <td>***REMOVED******REMOVED***member['mail']***REMOVED******REMOVED***</td>
+        <td>***REMOVED******REMOVED***member['member_id']***REMOVED******REMOVED***</td>
+        </tbody>
+        </table>
+
       </div>
        <div class="modal-footer">
          <!--  <button type="button" (click)="addUserModal.hide();
