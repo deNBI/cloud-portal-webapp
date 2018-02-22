@@ -13,10 +13,11 @@ import {Application} from "./application.model";
 import {ApplicationStatus} from "./application_status.model";
 import {SpecialHardware} from "./special_hardware.model";
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
+import {GroupService} from "../api-connector/group.service";
 
 @Component({
   templateUrl: 'applications.component.html',
-  providers: [AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+  providers: [GroupService, AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -25,6 +26,8 @@ export class ApplicationsComponent {
   all_applications: Application[] = [];
   application_status: ApplicationStatus[] = [];
   special_hardware: SpecialHardware[] = [];
+  selectedComputeCenter: string;
+  computeCenters: string[];
 
   //notification Modal variables
   public notificationModal;
@@ -43,14 +46,21 @@ export class ApplicationsComponent {
               private perunsettings: PerunSettings,
               private groupsmanager: GroupsManager,
               private usersmanager: UsersManager,
-              private membersmanager: MembersManager) {
+              private membersmanager: MembersManager,
+              private groupservice: GroupService) {
     this.getUserApplications();
     this.getAllApplications(usersmanager);
     this.getApplicationStatus();
     this.getSpecialHardware();
+    this.getComputeCenters();
 
   }
 
+  getComputeCenters() {
+    this.groupservice.getComputeCenters().subscribe(result => {
+      this.computeCenters = result;
+    })
+  }
 
   getUserApplications() {
     this.applicataionsservice
@@ -200,7 +210,7 @@ export class ApplicationsComponent {
     this.notificationModalType = type;
   }
 
-  public createGroup(name, description, manager_elixir_id, application_id) {
+  public createGroup(name, description, manager_elixir_id, application_id, compute_center) {
     //get memeber id in order to add the user later as the new member and manager of the group
     let manager_member_id: number;
     let manager_member_user_id: number;
@@ -228,6 +238,7 @@ export class ApplicationsComponent {
     }).then(null_result => {
       //setting approved status for Perun Group
       this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
+      this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
       //update modal
       this.updateNotificaitonModal("Success", "The new project was created", true, "success");
       //update applications
@@ -270,4 +281,3 @@ export class ApplicationsComponent {
 
 
 }
-
