@@ -29,6 +29,7 @@ export class OverviewComponent {
   user_data: {};
   admingroups: {};
   adminvos: {};
+  filteredMembers;
   projects: Project[] = new Array();
 
   // modal variables for User list
@@ -154,7 +155,11 @@ export class OverviewComponent {
     this.addUserModalProjectID = null;
     this.addUserModalProjectName = null;
   }
-
+    filterMembers(firstName: string, lastName: string){
+    this.membersmanager.getMembersOfdeNBIVo(firstName, lastName).subscribe(result => {
+      this.filteredMembers=result
+    })
+    }
     getMembesOfTheProject(projectid: number, projectname: string) {
     this.groupsmanager.getGroupRichMembers(projectid).toPromise()
       .then(function (members_raw) {

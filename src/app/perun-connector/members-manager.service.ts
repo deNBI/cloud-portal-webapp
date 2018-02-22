@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {ApiSettings} from '../api-connector/api-settings.service';
+import {URLSearchParams} from "@angular/http";
 
 @Injectable()
 export class MembersManager {
@@ -14,7 +15,7 @@ export class MembersManager {
   getMemberByUser(user_id: number) {
     var vo = this.settings.getPerunVO();
     return this.http.get(this.settings.getPerunBaseURL() + `membersManager/getMemberByUser`, {
-      headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
       params: {user: user_id, vo: vo}
     });
   }
@@ -24,11 +25,25 @@ export class MembersManager {
       idp = this.settings.getUserExtSource();
 
     return this.http.get(this.settings.getPerunBaseURL() + `membersManager/getMemberByExtSourceNameAndExtLogin`, {
-      headers: new Headers({ 'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-      params: {extSourceName: idp,
-               extLogin: ext_login,
-               vo: vo}
+      headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      params: {
+        extSourceName: idp,
+        extLogin: ext_login,
+        vo: vo
+      }
     });
   }
 
+  getMembersOfdeNBIVo(firstname: string, lastName: string) {
+
+    return this.http.get(this.apiSettings.getApiBaseURL() + 'filter_deNBIMembers/', {
+      withCredentials: true,
+      params: {
+        firstName: firstname,
+        lastName: lastName,
+      }
+    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+  }
 }
