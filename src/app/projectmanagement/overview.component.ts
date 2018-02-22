@@ -155,8 +155,8 @@ export class OverviewComponent {
     this.addUserModalProjectID = null;
     this.addUserModalProjectName = null;
   }
-    filterMembers(firstName: string, lastName: string){
-    this.membersmanager.getMembersOfdeNBIVo(firstName, lastName).subscribe(result => {
+    filterMembers(firstName: string, lastName: string, groupid: string){
+    this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid).subscribe(result => {
       this.filteredMembers=result
     })
     }
@@ -218,11 +218,11 @@ export class OverviewComponent {
     this.addUserModalProjectName = projectname;
   }
 
-  public addMember(groupid:number, memberid:number){
+  public addMember(groupid:number, memberid:number,firstName:string,lastName:string){
     this.groupsmanager.addMember(groupid, memberid).toPromise()
       .then(result => {
         if(result.status == 200){
-          this.updateNotificaitonModal("Success", "Member " + memberid + " added.", true, "success");
+          this.updateNotificaitonModal("Success", "Member " + firstName +" "+ lastName +  " added.", true, "success");
 
         }else{
           this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");

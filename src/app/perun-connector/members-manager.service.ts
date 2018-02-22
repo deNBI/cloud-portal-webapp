@@ -34,13 +34,14 @@ export class MembersManager {
     });
   }
 
-  getMembersOfdeNBIVo(firstname: string, lastName: string) {
+  getMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string) {
 
     return this.http.get(this.apiSettings.getApiBaseURL() + 'filter_deNBIMembers/', {
       withCredentials: true,
       params: {
         firstName: firstname,
         lastName: lastName,
+        groupid: groupid
       }
     }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
