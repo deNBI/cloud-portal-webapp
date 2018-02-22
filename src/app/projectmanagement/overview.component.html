@@ -107,7 +107,7 @@
       <div class="modal-body">
         <p>Search your member in the de.NBI vo</p>
         <input placeholder="firstName" #firstName><input placeholder="lastName" #lastName>
-        <button (click)="filterMembers(firstName.value,lastName.value)"> Search</button>
+        <button (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"> Search</button>
 
         <table class="table">
           <thead>
@@ -118,7 +118,7 @@
           <th>MemberID</th>
           </thead>
           <tbody *ngFor="  let member of filteredMembers">
-          <td><button (click)="addMember(addUserModalProjectID,member['member_id'])">Add</button></td>
+          <td><button (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();">Add</button></td>
           <td>***REMOVED******REMOVED***member['firstName']***REMOVED******REMOVED***
           </td>
           <td>***REMOVED******REMOVED***member['lastName']***REMOVED******REMOVED***</td>

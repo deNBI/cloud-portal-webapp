@@ -155,8 +155,8 @@ export class OverviewComponent ***REMOVED***
     this.addUserModalProjectID = null;
     this.addUserModalProjectName = null;
   ***REMOVED***
-    filterMembers(firstName: string, lastName: string)***REMOVED***
-    this.membersmanager.getMembersOfdeNBIVo(firstName, lastName).subscribe(result => ***REMOVED***
+    filterMembers(firstName: string, lastName: string, groupid: string)***REMOVED***
+    this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid).subscribe(result => ***REMOVED***
       this.filteredMembers=result
     ***REMOVED***)
     ***REMOVED***
@@ -218,11 +218,11 @@ export class OverviewComponent ***REMOVED***
     this.addUserModalProjectName = projectname;
   ***REMOVED***
 
-  public addMember(groupid:number, memberid:number)***REMOVED***
+  public addMember(groupid:number, memberid:number,firstName:string,lastName:string)***REMOVED***
     this.groupsmanager.addMember(groupid, memberid).toPromise()
       .then(result => ***REMOVED***
         if(result.status == 200)***REMOVED***
-          this.updateNotificaitonModal("Success", "Member " + memberid + " added.", true, "success");
+          this.updateNotificaitonModal("Success", "Member " + firstName +" "+ lastName +  " added.", true, "success");
 
         ***REMOVED***else***REMOVED***
           this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
