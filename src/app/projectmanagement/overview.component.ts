@@ -160,7 +160,7 @@ export class OverviewComponent {
               group["id"],
               group["name"],
               group["description"],
-              dateCreated.getDate() + "." + dateCreated.getMonth() + "." + dateCreated.getFullYear(),
+              dateCreated.getDate() + "." + (dateCreated.getMonth()+1) + "." + dateCreated.getFullYear(),
               dateDayDifference,
               is_pi,
               is_admin,
