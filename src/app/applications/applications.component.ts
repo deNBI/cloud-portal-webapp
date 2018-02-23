@@ -18,7 +18,7 @@ import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.servi
 
 @Component(***REMOVED***
   templateUrl: 'applications.component.html',
-  providers: [GroupService,ResourcesManager AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+  providers: [GroupService,ResourcesManager, AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 ***REMOVED***)
 export class ApplicationsComponent ***REMOVED***
 
