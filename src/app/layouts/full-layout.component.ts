@@ -4,8 +4,7 @@ import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-re
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
-import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachinemodels/vmclient";
-import ***REMOVED***isType***REMOVED*** from "@angular/core/src/type";
+
 
 @Component(***REMOVED***
   selector: 'app-dashboard',
