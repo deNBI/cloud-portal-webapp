@@ -1,4 +1,4 @@
-export class Application{
+export class Application {
   private _Id: number;
   private _Name: string;
   private _Institute: string;
@@ -16,8 +16,18 @@ export class Application{
   private _User: number;
   private _UserEmail: number;
   private _Status: number;
+  private _ComputeCenter: string;
 
-  constructor(){}
+  constructor() {
+  }
+
+  get ComputeCenter(): string {
+    return this._ComputeCenter
+  }
+
+  set ComputeCenter(value: string) {
+    this._ComputeCenter = value;
+  }
 
   get Id(): number {
     return this._Id;

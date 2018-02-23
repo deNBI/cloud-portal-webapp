@@ -13,10 +13,11 @@ import {Application} from "./application.model";
 import {ApplicationStatus} from "./application_status.model";
 import {SpecialHardware} from "./special_hardware.model";
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
+import {ResourcesManager} from "../perun-connector/resources_manager";
 
 @Component({
   templateUrl: 'applications.component.html',
-  providers: [AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+  providers: [ResourcesManager,AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -43,7 +44,8 @@ export class ApplicationsComponent {
               private perunsettings: PerunSettings,
               private groupsmanager: GroupsManager,
               private usersmanager: UsersManager,
-              private membersmanager: MembersManager) {
+              private membersmanager: MembersManager,
+              private resourcemanager: ResourcesManager) {
     this.getUserApplications();
     this.getAllApplications(usersmanager);
     this.getApplicationStatus();
