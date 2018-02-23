@@ -4,8 +4,7 @@ import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {ClientService} from "../api-connector/vmClients.service";
-import {Vmclient} from "../virtualmachinemodels/vmclient";
-import {isType} from "@angular/core/src/type";
+
 
 @Component({
   selector: 'app-dashboard',
