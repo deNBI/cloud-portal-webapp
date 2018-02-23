@@ -18,7 +18,7 @@ import {GroupService} from "../api-connector/group.service";
 
 @Component({
   templateUrl: 'applications.component.html',
-  providers: [GroupService,ResourcesManager AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+  providers: [GroupService,ResourcesManager, AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
