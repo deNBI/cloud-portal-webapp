@@ -26,7 +26,6 @@ export class ApplicationsComponent {
   all_applications: Application[] = [];
   application_status: ApplicationStatus[] = [];
   special_hardware: SpecialHardware[] = [];
-  selectedComputeCenter: string;
   computeCenters: string[];
 
   //notification Modal variables

@@ -126,16 +126,16 @@
                   <td>{{ application.Institute }}</td>
                   <td>
 
-                      <select class="form-control" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
+                      <select class="form-control" #selectedComputeCenter>
                         <option value="undefined"  selected> no center</option>
-                        <option *ngFor="let computeCenter of computeCenters" [ngValue]="computeCenter"> {{computeCenter}}</option>
+                        <option *ngFor="let computeCenter of computeCenters"> {{computeCenter}}</option>
                       </select>
 
 
                   </td>
                   <td>
                     <button
-                      (click)='createGroup(application.Name, application.Description, application.UserEmail, application.Id,selectedComputeCenter); notificationModal.show();'
+                      (click)='createGroup(application.Name, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();'
                       type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
                       Approve
                       & Create
