@@ -13,10 +13,11 @@ import ***REMOVED***Application***REMOVED*** from "./application.model";
 import ***REMOVED***ApplicationStatus***REMOVED*** from "./application_status.model";
 import ***REMOVED***SpecialHardware***REMOVED*** from "./special_hardware.model";
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
+import ***REMOVED***ResourcesManager***REMOVED*** from "../perun-connector/resources_manager";
 
 @Component(***REMOVED***
   templateUrl: 'applications.component.html',
-  providers: [AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+  providers: [ResourcesManager,AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 ***REMOVED***)
 export class ApplicationsComponent ***REMOVED***
 
@@ -43,7 +44,8 @@ export class ApplicationsComponent ***REMOVED***
               private perunsettings: PerunSettings,
               private groupsmanager: GroupsManager,
               private usersmanager: UsersManager,
-              private membersmanager: MembersManager) ***REMOVED***
+              private membersmanager: MembersManager,
+              private resourcemanager: ResourcesManager) ***REMOVED***
     this.getUserApplications();
     this.getAllApplications(usersmanager);
     this.getApplicationStatus();

@@ -1,4 +1,4 @@
-export class Application***REMOVED***
+export class Application ***REMOVED***
   private _Id: number;
   private _Name: string;
   private _Institute: string;
@@ -16,8 +16,18 @@ export class Application***REMOVED***
   private _User: number;
   private _UserEmail: number;
   private _Status: number;
+  private _ComputeCenter: string;
 
-  constructor()***REMOVED******REMOVED***
+  constructor() ***REMOVED***
+  ***REMOVED***
+
+  get ComputeCenter(): string ***REMOVED***
+    return this._ComputeCenter
+  ***REMOVED***
+
+  set ComputeCenter(value: string) ***REMOVED***
+    this._ComputeCenter = value;
+  ***REMOVED***
 
   get Id(): number ***REMOVED***
     return this._Id;

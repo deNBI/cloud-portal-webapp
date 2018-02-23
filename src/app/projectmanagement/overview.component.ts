@@ -8,14 +8,15 @@ import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connecto
 import ***REMOVED***Project***REMOVED*** from './project.model';
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
 import ***REMOVED***ProjectMember***REMOVED*** from './project_member.model'
-
+import ***REMOVED***ResourcesManager***REMOVED*** from "../perun-connector/resources_manager";
 import 'rxjs/add/operator/toPromise';
 import ***REMOVED***isNumber***REMOVED*** from "util";
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
+
 @Component(***REMOVED***
   templateUrl: 'overview.component.html',
-  providers: [AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+  providers: [ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 ***REMOVED***)
 export class OverviewComponent ***REMOVED***
 
@@ -54,11 +55,12 @@ export class OverviewComponent ***REMOVED***
               private perunsettings: PerunSettings,
               private useresmanager: UsersManager,
               private groupsmanager: GroupsManager,
-              private membersmanager: MembersManager) ***REMOVED***
+              private membersmanager: MembersManager,
+              private  resourceManager: ResourcesManager) ***REMOVED***
     this.getUserProjects(groupsmanager, membersmanager, useresmanager);
   ***REMOVED***
 
-  public updateUserProjects()***REMOVED***
+  public updateUserProjects() ***REMOVED***
     this.projects = [];
     this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
   ***REMOVED***
@@ -133,15 +135,41 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED*** else ***REMOVED***
           is_pi = true;
         ***REMOVED***
+        this.resourceManager.getGroupAssignedResources(group['id']).subscribe(resource => ***REMOVED***
+          try ***REMOVED***
+           
+            this.resourceManager.getFacilityByResource(resource.json()[0]['id']).subscribe(facility => ***REMOVED***
 
-        this.projects.push(new Project(
-          group["id"],
-          group["name"],
-          group["description"],
-          dateCreated.getDate() + "." + dateCreated.getMonth() + "." + dateCreated.getFullYear(),
-          dateDayDifference,
-          is_pi,
-          is_admin));
+              this.projects.push(new Project(
+                group["id"],
+                group["name"],
+                group["description"],
+                dateCreated.getDate() + "." + dateCreated.getMonth() + "." + dateCreated.getFullYear(),
+                dateDayDifference,
+                is_pi,
+                is_admin,
+                facility.json()['name'])
+              );
+
+
+            ***REMOVED***)
+          ***REMOVED***
+          catch (e) ***REMOVED***
+
+            this.projects.push(new Project(
+              group["id"],
+              group["name"],
+              group["description"],
+              dateCreated.getDate() + "." + dateCreated.getMonth() + "." + dateCreated.getFullYear(),
+              dateDayDifference,
+              is_pi,
+              is_admin,
+              'None')
+            );
+
+
+          ***REMOVED***
+        ***REMOVED***)
 
 
       ***REMOVED***
@@ -150,12 +178,12 @@ export class OverviewComponent ***REMOVED***
     // .then( function()***REMOVED*** groupsmanager.getGroupsWhereUserIsAdmin(this.userid); ***REMOVED***);
   ***REMOVED***
 
-  public resetAddUserModal()***REMOVED***
+  public resetAddUserModal() ***REMOVED***
     this.addUserModalProjectID = null;
     this.addUserModalProjectName = null;
   ***REMOVED***
 
-    getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
+  getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
     this.groupsmanager.getGroupRichMembers(projectid).toPromise()
       .then(function (members_raw) ***REMOVED***
         return members_raw.json();
@@ -213,31 +241,31 @@ export class OverviewComponent ***REMOVED***
     this.addUserModalProjectName = projectname;
   ***REMOVED***
 
-  public addMember(groupid:number, memberid:number)***REMOVED***
+  public addMember(groupid: number, memberid: number) ***REMOVED***
     this.groupsmanager.addMember(groupid, memberid).toPromise()
       .then(result => ***REMOVED***
-        if(result.status == 200)***REMOVED***
+        if (result.status == 200) ***REMOVED***
           this.updateNotificaitonModal("Success", "Member " + memberid + " added.", true, "success");
 
-        ***REMOVED***else***REMOVED***
+        ***REMOVED*** else ***REMOVED***
           this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
         ***REMOVED***
-      ***REMOVED***).catch(error =>***REMOVED***
-        this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+      ***REMOVED***).catch(error => ***REMOVED***
+      this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
     ***REMOVED***);
   ***REMOVED***
 
-  public removeMember(groupid:number, memberid:number)***REMOVED***
+  public removeMember(groupid: number, memberid: number) ***REMOVED***
     this.groupsmanager.removeMember(groupid, memberid).toPromise()
       .then(result => ***REMOVED***
-        if(result.status == 200)***REMOVED***
+        if (result.status == 200) ***REMOVED***
           this.updateNotificaitonModal("Success", "Member " + memberid + " deleted from the group", true, "success");
 
-        ***REMOVED***else***REMOVED***
+        ***REMOVED*** else ***REMOVED***
           this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
         ***REMOVED***
-      ***REMOVED***).catch(error =>***REMOVED***
-        this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
+      ***REMOVED***).catch(error => ***REMOVED***
+      this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
     ***REMOVED***);
   ***REMOVED***
 
