@@ -23,11 +23,21 @@ export class GroupsManager ***REMOVED***
   ***REMOVED***
 
 
-
   getMemberGroupsStatus() ***REMOVED***
     return this.http.get(this.apiSettings.getApiBaseURL() + 'approved_projects/', ***REMOVED***
-       withCredentials: true,
+      withCredentials: true,
       headers: new Headers(***REMOVED***'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()***REMOVED***),
+    ***REMOVED***);
+
+  ***REMOVED***
+
+
+  getGroupByVoandName(groupname: string) ***REMOVED***
+
+    return this.http.get(this.settings.getPerunBaseURL() + 'groupsManager/getGroupByName', ***REMOVED***
+
+      headers: new Headers(***REMOVED***'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()***REMOVED***),
+      params: ***REMOVED***vo: this.settings.getPerunVO(), name: groupname***REMOVED***
     ***REMOVED***);
 
   ***REMOVED***
