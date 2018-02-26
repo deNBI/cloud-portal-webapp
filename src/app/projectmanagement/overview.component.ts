@@ -29,7 +29,7 @@ export class OverviewComponent ***REMOVED***
   user_data: ***REMOVED******REMOVED***;
   admingroups: ***REMOVED******REMOVED***;
   adminvos: ***REMOVED******REMOVED***;
-  filteredMembers;
+  filteredMembers=null;
   projects: Project[] = new Array();
 
   // modal variables for User list
