@@ -126,16 +126,16 @@
                   <td>***REMOVED******REMOVED*** application.Institute ***REMOVED******REMOVED***</td>
                   <td>
 
-                      <select class="form-control" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
+                      <select class="form-control" #selectedComputeCenter>
                         <option value="undefined"  selected> no center</option>
-                        <option *ngFor="let computeCenter of computeCenters" [ngValue]="computeCenter"> ***REMOVED******REMOVED***computeCenter***REMOVED******REMOVED***</option>
+                        <option *ngFor="let computeCenter of computeCenters"> ***REMOVED******REMOVED***computeCenter***REMOVED******REMOVED***</option>
                       </select>
 
 
                   </td>
                   <td>
                     <button
-                      (click)='createGroup(application.Name, application.Description, application.UserEmail, application.Id,selectedComputeCenter); notificationModal.show();'
+                      (click)='createGroup(application.Name, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();'
                       type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
                       Approve
                       & Create
@@ -239,6 +239,7 @@
               <th>Date submitted</th>
               <th>User</th>
               <th>Institute</th>
+              <th>Facility</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -251,6 +252,7 @@
                   <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>
                   <td>***REMOVED******REMOVED*** application.User ***REMOVED******REMOVED***</td>
                   <td>***REMOVED******REMOVED*** application.Institute ***REMOVED******REMOVED***</td>
+                  <td>***REMOVED******REMOVED***application.ComputeCenter***REMOVED******REMOVED***</td>
                   <td>***REMOVED******REMOVED*** getStatusById(application.Status) ***REMOVED******REMOVED***</td>
                   <td>
                     <button (click)="switchCollapseStatus('application_history-' + application.Id)"

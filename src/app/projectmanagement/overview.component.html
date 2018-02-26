@@ -14,6 +14,7 @@
               <th>Project ID</th>
               <th>Project Name</th>
               <th>Description</th>
+              <th>Facility</th>
               <th>Date created</th>
               <th>Days running</th>
               <th>Actions</th>
@@ -24,6 +25,7 @@
               <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
               <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
               <td>***REMOVED******REMOVED*** project.Description ***REMOVED******REMOVED***</td>
+              <td>***REMOVED******REMOVED***project.ComputeCenter***REMOVED******REMOVED***</td>
               <td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>
               <td>***REMOVED******REMOVED*** project.DaysRunning ***REMOVED******REMOVED***</td>
               <td>
@@ -33,7 +35,7 @@
                   <i class="fa fa-users"></i>&nbsp;Show Members
                 </button>
                 <button
-                  (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name); addUserModal.show();"
+                  (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.ComputeCenter); addUserModal.show();"
                   *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
                   type="button"
                   class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
@@ -105,60 +107,108 @@
           (***REMOVED******REMOVED*** addUserModalProjectName ***REMOVED******REMOVED***)</h4>
       </div>
       <div class="modal-body">
-        <div style=" margin-bottom: 25px;">
-          <p style=" margin-bottom: 15px;">If you want to add a user to your project you need to do the following</p>
+        <div *ngIf="addUserModalFacility === null"><p>In order to add a new user to the project please do the
+          following</p>
+
           <ol>
 
-            <li style=" margin-bottom: 10px;">If the user is not a member of the de.NBI vo send one of the following
-              links to the user you would like to add:
+            <li>Send one of the following links to the user you would like to add:
+
+              <ul>
+
+                <li>If the user does have an elixir account, please send him the following link:
+
+                  <pre>***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
+
+                </li>
+
+                <li>If the user does not have an elixir account, please send him the following link:
+
+                  <pre>https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew=***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
+
+                </li>
+
+              </ul>
+
             </li>
-            <ul>
-              <li>If the user does have an elixir account, please send him the following link:
-                <pre>***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
-              </li>
-              <li>If the user does not have an elixir account, please send him the following link:
-                <pre>
-              https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew=***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***
-            </pre>
-              </li>
-            </ul>
 
-            <li style=" margin-bottom: 10px;">If the user is a member of the de.NBI vo you can search for him by his exact name:</li>
+            <li>As soon as the user went through the registration process, he can enter https://cloud.denbi.de/portal/
+              and report you his user id (User Information tab).
+            </li>
 
-            <ul style="list-style-type:none;">
-              <li><input placeholder="firstName" #firstName> <input placeholder="lastName" #lastName>
-                <button type="button" class="btn btn-primary"
-                        (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"><i
-                  class="fa fa-search"></i> Search
-                </button>
-              </li>
-            </ul>
+            <li>Please send the following information to cloud@denbi.de
+
+              <ul>
+
+                <li>Your User Id and the user id of the user you would like to add.</li>
+
+                <li>Project name and project description.</li>
+
+              </ul>
+
+            </li>
+
+            <li>You will be notified when the user is member of your project.</li>
+
           </ol>
         </div>
+        <div *ngIf="addUserModalFacility !== null">
+          <div style=" margin-bottom: 25px;">
+            <p style=" margin-bottom: 15px;">If you want to add a user to your project you need to do the following</p>
+            <ol>
+
+              <li style=" margin-bottom: 10px;">If the user is not a member of the de.NBI vo send one of the following
+                links to the user you would like to add:
+              </li>
+              <ul>
+                <li>If the user does have an elixir account, please send him the following link:
+                  <pre>***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
+                </li>
+                <li>If the user does not have an elixir account, please send him the following link:
+                  <pre>
+              https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew=***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***
+            </pre>
+                </li>
+              </ul>
+
+              <li style=" margin-bottom: 10px;">If the user is a member of the de.NBI vo you can search for him by his
+                exact name:
+              </li>
+
+              <ul style="list-style-type:none;">
+                <li><input placeholder="firstName" #firstName> <input placeholder="lastName" #lastName>
+                  <button type="button" class="btn btn-primary"
+                          (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"><i
+                    class="fa fa-search"></i> Search
+                  </button>
+                </li>
+              </ul>
+            </ol>
+          </div>
 
 
-        <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
-          <thead>
-          <th>Add</th>
-          <th>FirstName</th>
-          <th>LastName</th>
-          <th>Email</th>
-          <th>MemberID</th>
-          </thead>
-          <tbody *ngFor="  let member of filteredMembers">
-          <td>
-            <button
-              (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
-              class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
-            </button>
-          </td>
-          <td>***REMOVED******REMOVED***member['firstName']***REMOVED******REMOVED***</td>
-          <td>***REMOVED******REMOVED***member['lastName']***REMOVED******REMOVED***</td>
-          <td>***REMOVED******REMOVED***member['mail']***REMOVED******REMOVED***</td>
-          <td>***REMOVED******REMOVED***member['member_id']***REMOVED******REMOVED***</td>
-          </tbody>
-        </table>
-
+          <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
+            <thead>
+            <th>Add</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Email</th>
+            <th>MemberID</th>
+            </thead>
+            <tbody *ngFor="  let member of filteredMembers">
+            <td>
+              <button
+                (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
+              </button>
+            </td>
+            <td>***REMOVED******REMOVED***member['firstName']***REMOVED******REMOVED***</td>
+            <td>***REMOVED******REMOVED***member['lastName']***REMOVED******REMOVED***</td>
+            <td>***REMOVED******REMOVED***member['mail']***REMOVED******REMOVED***</td>
+            <td>***REMOVED******REMOVED***member['member_id']***REMOVED******REMOVED***</td>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="modal-footer">
         <!--  <button type="button" (click)="addUserModal.hide();
