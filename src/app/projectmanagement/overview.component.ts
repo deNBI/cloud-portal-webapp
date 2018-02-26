@@ -8,14 +8,15 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Project} from './project.model';
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {ProjectMember} from './project_member.model'
-
+import {ResourcesManager} from "../perun-connector/resources_manager";
 import 'rxjs/add/operator/toPromise';
 import {isNumber} from "util";
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
+
 @Component({
   templateUrl: 'overview.component.html',
-  providers: [AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+  providers: [ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 
@@ -54,11 +55,12 @@ export class OverviewComponent {
               private perunsettings: PerunSettings,
               private useresmanager: UsersManager,
               private groupsmanager: GroupsManager,
-              private membersmanager: MembersManager) {
+              private membersmanager: MembersManager,
+              private  resourceManager: ResourcesManager) {
     this.getUserProjects(groupsmanager, membersmanager, useresmanager);
   }
 
-  public updateUserProjects(){
+  public updateUserProjects() {
     this.projects = [];
     this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
   }
@@ -133,15 +135,41 @@ export class OverviewComponent {
         } else {
           is_pi = true;
         }
+        this.resourceManager.getGroupAssignedResources(group['id']).subscribe(resource => {
+          try {
+           
+            this.resourceManager.getFacilityByResource(resource.json()[0]['id']).subscribe(facility => {
 
-        this.projects.push(new Project(
-          group["id"],
-          group["name"],
-          group["description"],
-          dateCreated.getDate() + "." + dateCreated.getMonth() + "." + dateCreated.getFullYear(),
-          dateDayDifference,
-          is_pi,
-          is_admin));
+              this.projects.push(new Project(
+                group["id"],
+                group["name"],
+                group["description"],
+                dateCreated.getDate() + "." + dateCreated.getMonth() + "." + dateCreated.getFullYear(),
+                dateDayDifference,
+                is_pi,
+                is_admin,
+                facility.json()['name'])
+              );
+
+
+            })
+          }
+          catch (e) {
+
+            this.projects.push(new Project(
+              group["id"],
+              group["name"],
+              group["description"],
+              dateCreated.getDate() + "." + dateCreated.getMonth() + "." + dateCreated.getFullYear(),
+              dateDayDifference,
+              is_pi,
+              is_admin,
+              'None')
+            );
+
+
+          }
+        })
 
 
       }
@@ -150,12 +178,12 @@ export class OverviewComponent {
     // .then( function(){ groupsmanager.getGroupsWhereUserIsAdmin(this.userid); });
   }
 
-  public resetAddUserModal(){
+  public resetAddUserModal() {
     this.addUserModalProjectID = null;
     this.addUserModalProjectName = null;
   }
 
-    getMembesOfTheProject(projectid: number, projectname: string) {
+  getMembesOfTheProject(projectid: number, projectname: string) {
     this.groupsmanager.getGroupRichMembers(projectid).toPromise()
       .then(function (members_raw) {
         return members_raw.json();
@@ -213,31 +241,31 @@ export class OverviewComponent {
     this.addUserModalProjectName = projectname;
   }
 
-  public addMember(groupid:number, memberid:number){
+  public addMember(groupid: number, memberid: number) {
     this.groupsmanager.addMember(groupid, memberid).toPromise()
       .then(result => {
-        if(result.status == 200){
+        if (result.status == 200) {
           this.updateNotificaitonModal("Success", "Member " + memberid + " added.", true, "success");
 
-        }else{
+        } else {
           this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
         }
-      }).catch(error =>{
-        this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+      }).catch(error => {
+      this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
     });
   }
 
-  public removeMember(groupid:number, memberid:number){
+  public removeMember(groupid: number, memberid: number) {
     this.groupsmanager.removeMember(groupid, memberid).toPromise()
       .then(result => {
-        if(result.status == 200){
+        if (result.status == 200) {
           this.updateNotificaitonModal("Success", "Member " + memberid + " deleted from the group", true, "success");
 
-        }else{
+        } else {
           this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
         }
-      }).catch(error =>{
-        this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
+      }).catch(error => {
+      this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
     });
   }
 
