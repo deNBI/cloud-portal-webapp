@@ -18,7 +18,7 @@ import {GroupService} from "../api-connector/group.service";
 
 @Component({
   templateUrl: 'applications.component.html',
-  providers: [GroupService,ResourcesManager, AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+  providers: [GroupService, ResourcesManager, AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -48,7 +48,7 @@ export class ApplicationsComponent {
               private groupsmanager: GroupsManager,
               private usersmanager: UsersManager,
               private membersmanager: MembersManager,
-              private resourcemanager: ResourcesManager,
+              private resourceManager: ResourcesManager,
               private groupservice: GroupService) {
     this.getUserApplications();
     this.getAllApplications(usersmanager);
@@ -160,9 +160,37 @@ export class ApplicationsComponent {
                 a.User = aj["project_application_user"]["username"];
                 a.UserEmail = aj["project_application_user"]["email"];
                 a.Status = aj["project_application_status"];
+                if (a.Status !==1) {
+                this.groupsmanager.getGroupByVoandName(a.Name).subscribe(group => {
+                  if (group.status !== 200){
+                      a.ComputeCenter = 'None'
+                      this.all_applications.push(a)
+                  }
+                  this.resourceManager.getGroupAssignedResources(group.json()['id']).subscribe(resource => {
+                    try {
+                      this.resourceManager.getFacilityByResource(resource.json()[0]['id']).subscribe(facility => {
+                        a.ComputeCenter = facility.json()['name'];
+                        this.all_applications.push(a)
 
 
-                this.all_applications.push(a)
+                      })
+                    }
+                    catch (e) {
+
+                      a.ComputeCenter = 'None'
+
+                      this.all_applications.push(a)
+
+
+                    }
+                  })
+                });}
+                else {
+                   a.ComputeCenter = 'None'
+
+                      this.all_applications.push(a)
+
+                }
               }
             });
           break;
