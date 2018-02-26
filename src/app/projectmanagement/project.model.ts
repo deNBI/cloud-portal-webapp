@@ -14,9 +14,10 @@ export class Project ***REMOVED***
   private _DaysRunning: number;
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
+  private _ComputeCenter:string;
 
 
-  constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean) ***REMOVED***
+  constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: string) ***REMOVED***
     this._Id = Id;
     this._Name = Name;
     this._Description = Description;
@@ -24,9 +25,19 @@ export class Project ***REMOVED***
     this._DaysRunning = DaysRunning;
     this._UserIsAdmin = UserIsAdmin;
     this._UserIsPi = UserIsPi;
+    this._ComputeCenter= ComputeCenter;
   ***REMOVED***
 
 //todo exdend with additional information
+
+
+  get ComputeCenter(): string ***REMOVED***
+    return this._ComputeCenter
+  ***REMOVED***
+
+  set ComputeCenter(value: string) ***REMOVED***
+    this._ComputeCenter = value;
+  ***REMOVED***
 
   get Id(): number ***REMOVED***
     return this._Id;

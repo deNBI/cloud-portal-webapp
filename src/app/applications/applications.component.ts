@@ -13,11 +13,12 @@ import ***REMOVED***Application***REMOVED*** from "./application.model";
 import ***REMOVED***ApplicationStatus***REMOVED*** from "./application_status.model";
 import ***REMOVED***SpecialHardware***REMOVED*** from "./special_hardware.model";
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
+import ***REMOVED***ResourcesManager***REMOVED*** from "../perun-connector/resources_manager";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 
 @Component(***REMOVED***
   templateUrl: 'applications.component.html',
-  providers: [GroupService, AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+  providers: [GroupService, ResourcesManager, AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 ***REMOVED***)
 export class ApplicationsComponent ***REMOVED***
 
@@ -46,6 +47,7 @@ export class ApplicationsComponent ***REMOVED***
               private groupsmanager: GroupsManager,
               private usersmanager: UsersManager,
               private membersmanager: MembersManager,
+              private resourceManager: ResourcesManager,
               private groupservice: GroupService) ***REMOVED***
     this.getUserApplications();
     this.getAllApplications(usersmanager);
@@ -157,9 +159,37 @@ export class ApplicationsComponent ***REMOVED***
                 a.User = aj["project_application_user"]["username"];
                 a.UserEmail = aj["project_application_user"]["email"];
                 a.Status = aj["project_application_status"];
+                if (a.Status !==1) ***REMOVED***
+                this.groupsmanager.getGroupByVoandName(a.Name).subscribe(group => ***REMOVED***
+                  if (group.status !== 200)***REMOVED***
+                      a.ComputeCenter = 'None'
+                      this.all_applications.push(a)
+                  ***REMOVED***
+                  this.resourceManager.getGroupAssignedResources(group.json()['id']).subscribe(resource => ***REMOVED***
+                    try ***REMOVED***
+                      this.resourceManager.getFacilityByResource(resource.json()[0]['id']).subscribe(facility => ***REMOVED***
+                        a.ComputeCenter = facility.json()['name'];
+                        this.all_applications.push(a)
 
 
-                this.all_applications.push(a)
+                      ***REMOVED***)
+                    ***REMOVED***
+                    catch (e) ***REMOVED***
+
+                      a.ComputeCenter = 'None'
+
+                      this.all_applications.push(a)
+
+
+                    ***REMOVED***
+                  ***REMOVED***)
+                ***REMOVED***);***REMOVED***
+                else ***REMOVED***
+                   a.ComputeCenter = 'None'
+
+                      this.all_applications.push(a)
+
+                ***REMOVED***
               ***REMOVED***
             ***REMOVED***);
           break;
