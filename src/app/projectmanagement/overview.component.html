@@ -105,11 +105,39 @@
           ({{ addUserModalProjectName }})</h4>
       </div>
       <div class="modal-body">
-        <p>Search your member in the de.NBI vo</p>
-        <input placeholder="firstName" #firstName><input placeholder="lastName" #lastName>
-        <button (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"> Search</button>
+        <div style=" margin-bottom: 25px;">
+          <p style=" margin-bottom: 15px;">If you want to add a user to your project you need to do the following</p>
+          <ol>
 
-        <table class="table">
+            <li style=" margin-bottom: 10px;">If the user is not a member of the de.NBI vo send one of the following
+              links to the user you would like to add:
+            </li>
+            <ul>
+              <li>If the user does have an elixir account, please send him the following link:
+                <pre>{{voRegistrationLink}}</pre>
+              </li>
+              <li>If the user does not have an elixir account, please send him the following link:
+                <pre>
+              https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew={{voRegistrationLink}}
+            </pre>
+              </li>
+            </ul>
+
+            <li style=" margin-bottom: 10px;">If the user is a member of the de.NBI vo you can search for him by his exact name:</li>
+
+            <ul style="list-style-type:none;">
+              <li><input placeholder="firstName" #firstName> <input placeholder="lastName" #lastName>
+                <button type="button" class="btn btn-primary"
+                        (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"><i
+                  class="fa fa-search"></i> Search
+                </button>
+              </li>
+            </ul>
+          </ol>
+        </div>
+
+
+        <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
           <thead>
           <th>Add</th>
           <th>FirstName</th>
@@ -118,9 +146,13 @@
           <th>MemberID</th>
           </thead>
           <tbody *ngFor="  let member of filteredMembers">
-          <td><button (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();">Add</button></td>
-          <td>{{member['firstName']}}
+          <td>
+            <button
+              (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+              class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
+            </button>
           </td>
+          <td>{{member['firstName']}}</td>
           <td>{{member['lastName']}}</td>
           <td>{{member['mail']}}</td>
           <td>{{member['member_id']}}</td>

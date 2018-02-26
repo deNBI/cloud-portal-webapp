@@ -29,7 +29,7 @@ export class OverviewComponent {
   user_data: {};
   admingroups: {};
   adminvos: {};
-  filteredMembers;
+  filteredMembers=null;
   projects: Project[] = new Array();
 
   // modal variables for User list
