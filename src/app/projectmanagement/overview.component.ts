@@ -155,9 +155,9 @@ export class OverviewComponent {
     this.addUserModalProjectID = null;
     this.addUserModalProjectName = null;
   }
-    filterMembers(firstName: string, lastName: string, groupid: string){
-    this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid).subscribe(result => {
-      this.filteredMembers=result
+    filterMembers(firstName: string, lastName: string, groupid: number) {
+    this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
+      this.filteredMembers = result;
     })
     }
     getMembesOfTheProject(projectid: number, projectname: string) {
