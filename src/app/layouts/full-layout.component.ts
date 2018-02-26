@@ -3,11 +3,13 @@ import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-man
 import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
+import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
+
 
 @Component(***REMOVED***
   selector: 'app-dashboard',
   templateUrl: './full-layout.component.html',
-  providers: [AuthzResolver, UsersManager, PerunSettings, ApiSettings]
+  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
 ***REMOVED***)
 export class FullLayoutComponent implements OnInit ***REMOVED***
 
@@ -15,13 +17,16 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
   public disabled = false;
   public status: ***REMOVED*** isopen: boolean ***REMOVED*** = ***REMOVED***isopen: false***REMOVED***;
   private is_vo_admin = false;
+  client_avaiable;
 
-  constructor(  private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
-
+  constructor(private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
+    this.is_client_avaiable();
   ***REMOVED***
- public get_is_vo_admin(): boolean ***REMOVED***
+
+  public get_is_vo_admin(): boolean ***REMOVED***
     return this.is_vo_admin;
- ***REMOVED***
+  ***REMOVED***
+
   public toggled(open: boolean): void ***REMOVED***
     console.log('Dropdown is now: ', open);
   ***REMOVED***
@@ -30,6 +35,25 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     $event.preventDefault();
     $event.stopPropagation();
     this.status.isopen = !this.status.isopen;
+  ***REMOVED***
+
+  is_client_avaiable() ***REMOVED***
+    this.clientservice.getRRFirstClient().subscribe(result => ***REMOVED***
+      try ***REMOVED***
+        if (result['status'] === 'Connected') ***REMOVED***
+          this.client_avaiable = true;
+          return
+        ***REMOVED***
+        this.client_avaiable = false;
+        return;
+      ***REMOVED***
+      catch (e) ***REMOVED***
+        this.client_avaiable = false;
+        return;
+      ***REMOVED***
+
+    ***REMOVED***)
+
   ***REMOVED***
 
   checkVOstatus(usersmanager: UsersManager) ***REMOVED***
