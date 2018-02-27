@@ -83,6 +83,7 @@ export class ApplicationsComponent {
           a.DiskSpace = aj["project_application_disk_space"];
           a.ObjectStorage = aj["project_application_object_storage"];
           a.SpecialHardware = aj["project_application_special_hardware"];
+          a.OpenStackProject=aj["project_application_openstack_project"];
 
           this.user_applications.push(a)
         }
@@ -159,6 +160,7 @@ export class ApplicationsComponent {
                 a.User = aj["project_application_user"]["username"];
                 a.UserEmail = aj["project_application_user"]["email"];
                 a.Status = aj["project_application_status"];
+                a.OpenStackProject=aj["project_application_openstack_project"];
                 if (a.Status !==1) {
                 this.groupsmanager.getGroupByVoandName(a.Name).subscribe(group => {
                   if (group.status !== 200){
