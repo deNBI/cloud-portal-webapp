@@ -30,6 +30,7 @@ export class OverviewComponent ***REMOVED***
   user_data: ***REMOVED******REMOVED***;
   admingroups: ***REMOVED******REMOVED***;
   adminvos: ***REMOVED******REMOVED***;
+  filteredMembers = null;
   projects: Project[] = new Array();
 
   // modal variables for User list
@@ -42,6 +43,7 @@ export class OverviewComponent ***REMOVED***
   public addUserModal;
   public addUserModalProjectID: number;
   public addUserModalProjectName: string;
+  public addUserModalFacility: string;
 
 
   //notification Modal variables
@@ -144,7 +146,7 @@ export class OverviewComponent ***REMOVED***
                 group["id"],
                 group["name"],
                 group["description"],
-                dateCreated.getDate() + "." + (dateCreated.getMonth()+1) + "." + dateCreated.getFullYear(),
+                dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
                 dateDayDifference,
                 is_pi,
                 is_admin,
@@ -160,7 +162,7 @@ export class OverviewComponent ***REMOVED***
               group["id"],
               group["name"],
               group["description"],
-              dateCreated.getDate() + "." + (dateCreated.getMonth()+1) + "." + dateCreated.getFullYear(),
+              dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
               dateDayDifference,
               is_pi,
               is_admin,
@@ -181,7 +183,15 @@ export class OverviewComponent ***REMOVED***
   public resetAddUserModal() ***REMOVED***
     this.addUserModalProjectID = null;
     this.addUserModalProjectName = null;
+    this.addUserModalFacility = null;
   ***REMOVED***
+
+  filterMembers(firstName: string, lastName: string, groupid: number) ***REMOVED***
+    this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => ***REMOVED***
+      this.filteredMembers = result;
+    ***REMOVED***)
+  ***REMOVED***
+
 
   getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
     this.groupsmanager.getGroupRichMembers(projectid).toPromise()
@@ -236,16 +246,22 @@ export class OverviewComponent ***REMOVED***
     this.notificationModalType = type;
   ***REMOVED***
 
-  public showAddUserToProjectModal(projectid: number, projectname: string) ***REMOVED***
+  public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) ***REMOVED***
     this.addUserModalProjectID = projectid;
     this.addUserModalProjectName = projectname;
+    if (facility === 'None') ***REMOVED***
+      this.addUserModalFacility = null;
+    ***REMOVED***
+    else ***REMOVED***
+      this.addUserModalFacility = facility;
+    ***REMOVED***
   ***REMOVED***
 
-  public addMember(groupid: number, memberid: number) ***REMOVED***
+  public addMember(groupid: number, memberid: number, firstName: string, lastName: string) ***REMOVED***
     this.groupsmanager.addMember(groupid, memberid).toPromise()
       .then(result => ***REMOVED***
         if (result.status == 200) ***REMOVED***
-          this.updateNotificaitonModal("Success", "Member " + memberid + " added.", true, "success");
+          this.updateNotificaitonModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
 
         ***REMOVED*** else ***REMOVED***
           this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");

@@ -1,148 +1,214 @@
 <div class="animated fadeIn" ng-app>
-    <div class="row">
-        <!--/.col-->
-        <h1>Projects Overview</h1>
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fa fa-align-justify"></i> Projects
-                </div>
-                <div class="card-block">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Project ID</th>
-                            <th>Project Name</th>
-                            <th>Description</th>
-                            <th>Facility</th>
-                            <th>Date created</th>
-                            <th>Days running</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let project of projects">
-                            <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED*** project.Description ***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED***project.ComputeCenter***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED*** project.DaysRunning ***REMOVED******REMOVED***</td>
-                            <td>
-                                <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                        (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
-                                        *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
-                                    <i class="fa fa-users"></i>&nbsp;Show Members
-                                </button>
-                                <button (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name); addUserModal.show();"
-                                        *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
-                                        type="button"
-                                        class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+  <div class="row">
+    <!--/.col-->
+    <h1>Projects Overview</h1>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Projects
         </div>
-        <!--/.col-->
+        <div class="card-block">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>Project ID</th>
+              <th>Project Name</th>
+              <th>Description</th>
+              <th>Facility</th>
+              <th>Date created</th>
+              <th>Days running</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let project of projects">
+              <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
+              <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
+              <td>***REMOVED******REMOVED*** project.Description ***REMOVED******REMOVED***</td>
+              <td>***REMOVED******REMOVED***project.ComputeCenter***REMOVED******REMOVED***</td>
+              <td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>
+              <td>***REMOVED******REMOVED*** project.DaysRunning ***REMOVED******REMOVED***</td>
+              <td>
+                <button type="button" class="btn btn-secondary" data-toggle="modal"
+                        (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
+                        *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
+                  <i class="fa fa-users"></i>&nbsp;Show Members
+                </button>
+                <button
+                  (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.ComputeCenter); addUserModal.show();"
+                  *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
+                  type="button"
+                  class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+    <!--/.col-->
+  </div>
 </div>
 
 
 <div bsModal #usersModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Members of the Project ***REMOVED******REMOVED*** usersModalProjectID ***REMOVED******REMOVED***
-                    (***REMOVED******REMOVED*** usersModalProjectName ***REMOVED******REMOVED***)</h4>
-                <button type="button" class="close" (click)="usersModal.hide()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Member ID</th>
-                        <th>Full Name</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let member of usersModalProjectMembers">
-                        <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
-                        <td>
-                            <button (click)="usersModal.hide();
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Members of the Project ***REMOVED******REMOVED*** usersModalProjectID ***REMOVED******REMOVED***
+          (***REMOVED******REMOVED*** usersModalProjectName ***REMOVED******REMOVED***)</h4>
+        <button type="button" class="close" (click)="usersModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Member ID</th>
+            <th>Full Name</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let member of usersModalProjectMembers">
+            <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
+            <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
+            <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
+            <td>
+              <button (click)="usersModal.hide();
                                                 removeMemberModal.show();
                                                 updateUserProjects();" class="btn btn-secondary" type="button">
-                                <i class="fa fa-trash"></i>&nbsp; Remove member
-                            </button>
-                        </td>
-                    </tr>
+                <i class="fa fa-trash"></i>&nbsp; Remove member
+              </button>
+            </td>
+          </tr>
 
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
 <div bsModal #addUserModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-  <div class="modal-dialog " role="document">
-    <div class="modal-content">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content ">
       <div class="modal-header">
         <h4 class="modal-title">Add member to the project ***REMOVED******REMOVED*** addUserModalProjectID ***REMOVED******REMOVED***
           (***REMOVED******REMOVED*** addUserModalProjectName ***REMOVED******REMOVED***)</h4>
       </div>
       <div class="modal-body">
-        <p>In order to add a new user to the project please do the following</p>
-        <ol>
-          <li>Send one of the following links to the user you would like to add:
-            <ul>
-              <li>If the user does have an elixir account, please send him the following link:
-                <pre>***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
-              </li>
-              <li>If the user does not have an elixir account, please send him the following link:
-                <pre>https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew=***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
-              </li>
-            </ul>
-          </li>
-          <li>As soon as the user went through the registration process, he can enter https://cloud.denbi.de/portal/ and report you his user id (User Information tab).</li>
-          <li>Please send the following information to cloud@denbi.de
+        <div *ngIf="addUserModalFacility === null"><p>In order to add a new user to the project please do the
+          following</p>
+
+          <ol>
+
+            <li>Send one of the following links to the user you would like to add:
+
               <ul>
-                <li>Your User Id and the user id of the user you would like to add.</li>
-                <li>Project name and project description.</li>
+
+                <li>If the user does have an elixir account, please send him the following link:
+
+                  <pre>***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
+
+                </li>
+
+                <li>If the user does not have an elixir account, please send him the following link:
+
+                  <pre>https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew=***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
+
+                </li>
+
               </ul>
-          </li>
-          <li>You will be notified when the user is member of your project.</li>
-        </ol>
-          <!--
-          <div class="input-group">
-                                      <span class="input-group-addon">UserID
-                                      </span>
-            <input #addMemberID type="number" id="addMemberID" name="addMemberID" class="form-control"
-                   placeholder="UserID">
+
+            </li>
+
+            <li>As soon as the user went through the registration process, he can enter https://cloud.denbi.de/portal/
+              and report you his user id (User Information tab).
+            </li>
+
+            <li>Please send the following information to cloud@denbi.de
+
+              <ul>
+
+                <li>Your User Id and the user id of the user you would like to add.</li>
+
+                <li>Project name and project description.</li>
+
+              </ul>
+
+            </li>
+
+            <li>You will be notified when the user is member of your project.</li>
+
+          </ol>
+        </div>
+        <div *ngIf="addUserModalFacility !== null">
+          <div>
+            <p style=" margin-bottom: 15px;">Search and add a user to your project by providing his exact name:</p>
+
+            <input placeholder="first name" #firstName> <input placeholder="last name" #lastName>
+            <button type="button" class="btn btn-primary"
+                    (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"><i
+              class="fa fa-search"></i> Search
+            </button>
+            <br>
+            <br>
+            <strong>Please note</strong> that if you can not find the user, he is not a member of the de.NBI vo. In that case you can invite him by sending him
+            one of the following links:
+            <br>
+            <br>
+            <ul>
+                <li>If the user does have an elixir account:
+                  <pre>***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
+                </li>
+                <li>If the user does not have an elixir account:
+                  <pre>https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew=***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
+                </li>
+            </ul>
           </div>
-          -->
+
+
+          <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
+            <thead>
+            <th>Add</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Email</th>
+            <th>MemberID</th>
+            </thead>
+            <tbody *ngFor="  let member of filteredMembers">
+            <td>
+              <button
+                (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
+              </button>
+            </td>
+            <td>***REMOVED******REMOVED***member['firstName']***REMOVED******REMOVED***</td>
+            <td>***REMOVED******REMOVED***member['lastName']***REMOVED******REMOVED***</td>
+            <td>***REMOVED******REMOVED***member['mail']***REMOVED******REMOVED***</td>
+            <td>***REMOVED******REMOVED***member['member_id']***REMOVED******REMOVED***</td>
+            </tbody>
+          </table>
+        </div>
       </div>
-       <div class="modal-footer">
-         <!--  <button type="button" (click)="addUserModal.hide();
-                                           notificationModal.show();
-                                           addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
-               Add User
-           </button> -->
-        <button type="button" (click)="addUserModalProjectID = -1; addUserModal.hide();" type="reset"
+      <div class="modal-footer">
+        <!--  <button type="button" (click)="addUserModal.hide();
+                                          notificationModal.show();
+                                          addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
+              Add User
+          </button> -->
+        <button type="button" (click)="addUserModalProjectID = -1;filteredMembers=null; addUserModal.hide();"
+                type="reset"
                 class="btn  btn-danger"><i class="fa fa-ban"></i> Close
         </button>
       </div>
@@ -177,21 +243,22 @@
 
 <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
-                    ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button *ngIf="notificationModalIsClosable == true" type="button" (click)="resetNotificaitonModal(); notificationModal.hide();" type="reset"
-                        class="btn  btn-secondary"> Close
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
+          ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="notificationModalIsClosable == true" type="button"
+                (click)="resetNotificaitonModal(); notificationModal.hide();" type="reset"
+                class="btn  btn-secondary"> Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
