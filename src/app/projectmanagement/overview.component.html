@@ -153,37 +153,28 @@
           </ol>
         </div>
         <div *ngIf="addUserModalFacility !== null">
-          <div style=" margin-bottom: 25px;">
-            <p style=" margin-bottom: 15px;">If you want to add a user to your project you need to do the following</p>
-            <ol>
+          <div>
+            <p style=" margin-bottom: 15px;">Search and add a user to your project by providing his exact name:</p>
 
-              <li style=" margin-bottom: 10px;">If the user is not a member of the de.NBI vo send one of the following
-                links to the user you would like to add:
-              </li>
-              <ul>
-                <li>If the user does have an elixir account, please send him the following link:
+            <input placeholder="first name" #firstName> <input placeholder="last name" #lastName>
+            <button type="button" class="btn btn-primary"
+                    (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"><i
+              class="fa fa-search"></i> Search
+            </button>
+            <br>
+            <br>
+            <strong>Please note</strong> that if you can not find the user, he is not a member of the de.NBI vo. In that case you can invite him by sending him
+            one of the following links:
+            <br>
+            <br>
+            <ul>
+                <li>If the user does have an elixir account:
                   <pre>***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
                 </li>
-                <li>If the user does not have an elixir account, please send him the following link:
-                  <pre>
-              https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew=***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***
-            </pre>
+                <li>If the user does not have an elixir account:
+                  <pre>https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew=***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
                 </li>
-              </ul>
-
-              <li style=" margin-bottom: 10px;">If the user is a member of the de.NBI vo you can search for him by his
-                exact name:
-              </li>
-
-              <ul style="list-style-type:none;">
-                <li><input placeholder="firstName" #firstName> <input placeholder="lastName" #lastName>
-                  <button type="button" class="btn btn-primary"
-                          (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"><i
-                    class="fa fa-search"></i> Search
-                  </button>
-                </li>
-              </ul>
-            </ol>
+            </ul>
           </div>
 
 
