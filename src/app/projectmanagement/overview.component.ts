@@ -30,6 +30,7 @@ export class OverviewComponent {
   user_data: {};
   admingroups: {};
   adminvos: {};
+  filteredMembers = null;
   projects: Project[] = new Array();
 
   // modal variables for User list
@@ -42,6 +43,7 @@ export class OverviewComponent {
   public addUserModal;
   public addUserModalProjectID: number;
   public addUserModalProjectName: string;
+  public addUserModalFacility: string;
 
 
   //notification Modal variables
@@ -144,7 +146,7 @@ export class OverviewComponent {
                 group["id"],
                 group["name"],
                 group["description"],
-                dateCreated.getDate() + "." + (dateCreated.getMonth()+1) + "." + dateCreated.getFullYear(),
+                dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
                 dateDayDifference,
                 is_pi,
                 is_admin,
@@ -160,7 +162,7 @@ export class OverviewComponent {
               group["id"],
               group["name"],
               group["description"],
-              dateCreated.getDate() + "." + (dateCreated.getMonth()+1) + "." + dateCreated.getFullYear(),
+              dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
               dateDayDifference,
               is_pi,
               is_admin,
@@ -181,7 +183,15 @@ export class OverviewComponent {
   public resetAddUserModal() {
     this.addUserModalProjectID = null;
     this.addUserModalProjectName = null;
+    this.addUserModalFacility = null;
   }
+
+  filterMembers(firstName: string, lastName: string, groupid: number) {
+    this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
+      this.filteredMembers = result;
+    })
+  }
+
 
   getMembesOfTheProject(projectid: number, projectname: string) {
     this.groupsmanager.getGroupRichMembers(projectid).toPromise()
@@ -236,16 +246,22 @@ export class OverviewComponent {
     this.notificationModalType = type;
   }
 
-  public showAddUserToProjectModal(projectid: number, projectname: string) {
+  public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) {
     this.addUserModalProjectID = projectid;
     this.addUserModalProjectName = projectname;
+    if (facility === 'None') {
+      this.addUserModalFacility = null;
+    }
+    else {
+      this.addUserModalFacility = facility;
+    }
   }
 
-  public addMember(groupid: number, memberid: number) {
+  public addMember(groupid: number, memberid: number, firstName: string, lastName: string) {
     this.groupsmanager.addMember(groupid, memberid).toPromise()
       .then(result => {
         if (result.status == 200) {
-          this.updateNotificaitonModal("Success", "Member " + memberid + " added.", true, "success");
+          this.updateNotificaitonModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
 
         } else {
           this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
