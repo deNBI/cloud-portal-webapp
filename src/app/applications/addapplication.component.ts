@@ -44,8 +44,15 @@ export class AddApplicationComponent {
   onSubmit(f: NgForm) {
     f.controls['project_application_special_hardware']
       .setValue(this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id))
+        let values={};
+         for(let v in f.controls){
 
-    this.applicationsservice.addNewApplication(f.value).toPromise()
+        if(f.controls[v].value){
+            values[v]=f.controls[v].value;
+        }
+    }
+
+    this.applicationsservice.addNewApplication(values).toPromise()
       .then(result => {
         this.updateNotificaitonModal("Success", "The application was submitted", true, "success");
         this.notificationModalStay = false;
