@@ -43,7 +43,7 @@ export class OverviewComponent {
   public addUserModal;
   public addUserModalProjectID: number;
   public addUserModalProjectName: string;
-  public addUserModalFacility: string;
+  public UserModalFacility: string;
 
 
   //notification Modal variables
@@ -183,7 +183,7 @@ export class OverviewComponent {
   public resetAddUserModal() {
     this.addUserModalProjectID = null;
     this.addUserModalProjectName = null;
-    this.addUserModalFacility = null;
+    this.UserModalFacility = null;
   }
 
   filterMembers(firstName: string, lastName: string, groupid: number) {
@@ -211,8 +211,14 @@ export class OverviewComponent {
     });
   }
 
-  public showMembersOfTheProject(projectid: number, projectname: string) {
+  public showMembersOfTheProject(projectid: number, projectname: string,facility:string) {
     this.getMembesOfTheProject(projectid, projectname);
+    if (facility === 'None') {
+      this.UserModalFacility = null;
+    }
+    else {
+      this.UserModalFacility = facility;
+    }
   }
 
 
@@ -250,10 +256,10 @@ export class OverviewComponent {
     this.addUserModalProjectID = projectid;
     this.addUserModalProjectName = projectname;
     if (facility === 'None') {
-      this.addUserModalFacility = null;
+      this.UserModalFacility = null;
     }
     else {
-      this.addUserModalFacility = facility;
+      this.UserModalFacility = facility;
     }
   }
 
