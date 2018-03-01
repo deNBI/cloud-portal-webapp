@@ -43,7 +43,7 @@ export class OverviewComponent ***REMOVED***
   public addUserModal;
   public addUserModalProjectID: number;
   public addUserModalProjectName: string;
-  public addUserModalFacility: string;
+  public UserModalFacility: string;
 
 
   //notification Modal variables
@@ -183,7 +183,7 @@ export class OverviewComponent ***REMOVED***
   public resetAddUserModal() ***REMOVED***
     this.addUserModalProjectID = null;
     this.addUserModalProjectName = null;
-    this.addUserModalFacility = null;
+    this.UserModalFacility = null;
   ***REMOVED***
 
   filterMembers(firstName: string, lastName: string, groupid: number) ***REMOVED***
@@ -211,8 +211,14 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***);
   ***REMOVED***
 
-  public showMembersOfTheProject(projectid: number, projectname: string) ***REMOVED***
+  public showMembersOfTheProject(projectid: number, projectname: string,facility:string) ***REMOVED***
     this.getMembesOfTheProject(projectid, projectname);
+    if (facility === 'None') ***REMOVED***
+      this.UserModalFacility = null;
+    ***REMOVED***
+    else ***REMOVED***
+      this.UserModalFacility = facility;
+    ***REMOVED***
   ***REMOVED***
 
 
@@ -250,10 +256,10 @@ export class OverviewComponent ***REMOVED***
     this.addUserModalProjectID = projectid;
     this.addUserModalProjectName = projectname;
     if (facility === 'None') ***REMOVED***
-      this.addUserModalFacility = null;
+      this.UserModalFacility = null;
     ***REMOVED***
     else ***REMOVED***
-      this.addUserModalFacility = facility;
+      this.UserModalFacility = facility;
     ***REMOVED***
   ***REMOVED***
 
