@@ -13,10 +13,11 @@ import 'rxjs/add/operator/toPromise';
 import {isNumber} from "util";
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
+import {GroupService} from "../api-connector/group.service";
 
 @Component({
   templateUrl: 'overview.component.html',
-  providers: [ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+  providers: [GroupService,ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 
@@ -58,7 +59,8 @@ export class OverviewComponent {
               private useresmanager: UsersManager,
               private groupsmanager: GroupsManager,
               private membersmanager: MembersManager,
-              private  resourceManager: ResourcesManager) {
+              private  resourceManager: ResourcesManager,
+              private groupservice:GroupService) {
     this.getUserProjects(groupsmanager, membersmanager, useresmanager);
   }
 
@@ -139,10 +141,9 @@ export class OverviewComponent {
         }
         this.resourceManager.getGroupAssignedResources(group['id']).subscribe(resource => {
           try {
-
-            this.resourceManager.getFacilityByResource(resource.json()[0]['id']).subscribe(facility => {
-
-              this.projects.push(new Project(
+            let resource_id=resource.json()[0]['id'];
+            this.resourceManager.getFacilityByResource(resource_id).subscribe(facility => {
+               let newProject= new Project(
                 group["id"],
                 group["name"],
                 group["description"],
@@ -151,7 +152,16 @@ export class OverviewComponent {
                 is_pi,
                 is_admin,
                 facility.json()['name'])
-              );
+              this.groupservice.getComputeCentersDetails(resource_id).subscribe(details =>{
+                  if(details){
+                  newProject.ComputecenterDetails=details;}
+                  this.projects.push(newProject);
+
+              })
+
+
+
+
 
 
             })
