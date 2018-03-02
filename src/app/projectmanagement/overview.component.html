@@ -180,11 +180,10 @@
 
           <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
             <thead>
-            <th>Add</th>
-            <th>FirstName</th>
-            <th>LastName</th>
+            <th></th>
+            <th>first name</th>
+            <th>last name</th>
             <th>Email</th>
-            <th>MemberID</th>
             </thead>
             <tbody *ngFor="  let member of filteredMembers">
             <td>
@@ -196,7 +195,6 @@
             <td>{{member['firstName']}}</td>
             <td>{{member['lastName']}}</td>
             <td>{{member['mail']}}</td>
-            <td>{{member['member_id']}}</td>
             </tbody>
           </table>
         </div>
