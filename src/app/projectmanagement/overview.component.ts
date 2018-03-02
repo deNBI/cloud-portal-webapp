@@ -69,6 +69,10 @@ export class OverviewComponent {
         this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
     }
 
+    toggleDetailsVisibility(project:Project){
+        project.DetailsVisible=!project.DetailsVisible;
+
+    }
     getUserProjects(groupsmanager: GroupsManager,
                     membersmanager: MembersManager,
                     usersmanager: UsersManager) {
@@ -152,18 +156,23 @@ export class OverviewComponent {
                                 is_pi,
                                 is_admin,
                                 facility.json()['name'])
-                            this.groupservice.getComputeCentersDetails(resource_id).subscribe(details => {
-                                if (details) {
-                                    let details_array = [];
-                                    for (let detail in details) {
-                                        let detail_as_string = detail + ': ' + details[detail];
-                                        details_array.push(detail_as_string);
+                            try {
+                                this.groupservice.getComputeCentersDetails(resource_id).subscribe(details => {
+                                    if (details) {
+                                        let details_array = [];
+                                        for (let detail in details) {
+                                            let detail_as_string = detail + ': ' + details[detail];
+                                            details_array.push(detail_as_string);
+                                        }
+                                        newProject.ComputecenterDetails = details_array;
                                     }
-                                    newProject.ComputecenterDetails = details_array;
-                                }
-                                this.projects.push(newProject);
+                                    this.projects.push(newProject);
 
-                            })
+                                })
+                            }
+                            catch(e){
+                                this.projects.push(newProject);
+                            }
 
 
                         })

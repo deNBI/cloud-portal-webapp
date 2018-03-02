@@ -16,6 +16,7 @@ export class Project {
   private _UserIsPi: boolean;
   private _ComputeCenter:string;
   private _ComputeCenterDetails:{};
+  private _DetailsVisible=false;
 
 
   constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: string) {
@@ -31,6 +32,13 @@ export class Project {
 
 //todo exdend with additional information
 
+  get DetailsVisible():boolean{
+    return this._DetailsVisible
+  }
+  set DetailsVisible(value:boolean){
+    this._DetailsVisible=value
+
+  }
   get ComputeCenterDetails(){
     return this._ComputeCenterDetails;
   }
