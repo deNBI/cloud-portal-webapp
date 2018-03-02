@@ -179,7 +179,7 @@ export class ApplicationsComponent {
                             }
 
                           a.ComputecenterDetails=details_array;
-                          console.log(a.ComputeCenterDetails)}
+                         }
                            this.all_applications.push(a)
                         })
 

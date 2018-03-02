@@ -25,7 +25,12 @@
               <td>{{ project.Id }}</td>
               <td>{{ project.Name }}</td>
               <td>{{ project.Description }}</td>
-              <td>{{project.ComputeCenter}}</td>
+                <td>{{project.ComputeCenter}}    <button href="#computecenterdetails" data-toggle="collapse" *ngIf="project.ComputeCenter !=='None'" class="btn btn-secondary btn-sm"><i class="fa fa-plus"></i></button>
+                    <div id="computecenterdetails" >
+                    <ul >
+                        <li *ngFor="let details of project.ComputeCenterDetails">{{details}}</li>
+                    </ul></div>
+                </td>
               <td>{{ project.DateCreated }}</td>
               <td>{{ project.DaysRunning }}</td>
               <td>
