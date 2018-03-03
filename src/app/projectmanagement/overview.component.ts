@@ -69,10 +69,7 @@ export class OverviewComponent {
         this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
     }
 
-    toggleDetailsVisibility(project:Project){
-        project.DetailsVisible=!project.DetailsVisible;
 
-    }
     getUserProjects(groupsmanager: GroupsManager,
                     membersmanager: MembersManager,
                     usersmanager: UsersManager) {
