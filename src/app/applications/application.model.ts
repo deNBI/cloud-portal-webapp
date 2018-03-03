@@ -17,10 +17,18 @@ export class Application {
   private _UserEmail: number;
   private _Status: number;
   private _ComputeCenter: string;
+  private  _ComputeCenterDetails:{};
+
 
   constructor() {
   }
 
+    get ComputeCenterDetails(){
+    return this._ComputeCenterDetails;
+  }
+  set ComputecenterDetails(value:{}){
+    this._ComputeCenterDetails=value;
+  }
   get ComputeCenter(): string {
     return this._ComputeCenter
   }
