@@ -17,10 +17,18 @@ export class Application ***REMOVED***
   private _UserEmail: number;
   private _Status: number;
   private _ComputeCenter: string;
+  private  _ComputeCenterDetails:***REMOVED******REMOVED***;
+
 
   constructor() ***REMOVED***
   ***REMOVED***
 
+    get ComputeCenterDetails()***REMOVED***
+    return this._ComputeCenterDetails;
+  ***REMOVED***
+  set ComputecenterDetails(value:***REMOVED******REMOVED***)***REMOVED***
+    this._ComputeCenterDetails=value;
+  ***REMOVED***
   get ComputeCenter(): string ***REMOVED***
     return this._ComputeCenter
   ***REMOVED***
