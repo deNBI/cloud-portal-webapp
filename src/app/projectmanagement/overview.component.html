@@ -25,6 +25,7 @@
                             <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
                             <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
                             <td>***REMOVED******REMOVED*** project.Description ***REMOVED******REMOVED***</td>
+
                             <td>***REMOVED******REMOVED***project.ComputeCenter***REMOVED******REMOVED***
 
 
@@ -32,11 +33,13 @@
                                         <li *ngFor="let details of project.ComputeCenterDetails">***REMOVED******REMOVED***details***REMOVED******REMOVED***</li>
                                     </ul>
                             </td>
+
                             <td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>
                             <td>***REMOVED******REMOVED*** project.DaysRunning ***REMOVED******REMOVED***</td>
                             <td>
                                 <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                        (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
+                                        (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
+
                                         *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
                                     <i class="fa fa-users"></i>&nbsp;Show Members
                                 </button>
@@ -85,9 +88,16 @@
                         <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
                         <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
                         <td>
-                            <button (click)="usersModal.hide();
+
+                            <button *ngIf="UserModalFacility === null" (click)="usersModal.hide();
                                                 removeMemberModal.show();
-                                                updateUserProjects();" class="btn btn-secondary" type="button">
+                                                " class="btn btn-secondary" type="button">
+                                <i class="fa fa-trash"></i>&nbsp; Remove member
+                            </button>
+                            <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username);
+                                                notificationModal.show();
+                                               " class="btn btn-secondary" type="button">
+
                                 <i class="fa fa-trash"></i>&nbsp; Remove member
                             </button>
                         </td>
@@ -113,7 +123,8 @@
                     (***REMOVED******REMOVED*** addUserModalProjectName ***REMOVED******REMOVED***)</h4>
             </div>
             <div class="modal-body">
-                <div *ngIf="addUserModalFacility === null"><p>In order to add a new user to the project please do the
+                <div *ngIf="UserModalFacility === null"><p>In order to add a new user to the project please do the
+
                     following</p>
 
                     <ol>
@@ -159,7 +170,8 @@
 
                     </ol>
                 </div>
-                <div *ngIf="addUserModalFacility !== null">
+                <div *ngIf="UserModalFacility !== null">
+
                     <div>
                         <p style=" margin-bottom: 15px;">Search and add a user to your project by providing his exact
                             name:</p>
@@ -189,6 +201,7 @@
 
                     <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
                         <thead>
+
                         <th></th>
                         <th>first name</th>
                         <th>last name</th>
@@ -231,18 +244,21 @@
                 <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
-                In order to remove a user of your project please send the following information to cloud@denbi.de:
-                <ul>
-                    <li>Projekt name</li>
-                    <li>Projekt description</li>
-                    <li>You user id</li>
-                    <li>The user id of the project member you would like to remove</li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" (click)="removeMemberModal.hide();" type="reset"
-                        class="btn  btn-secondary"> Close
-                </button>
+                <div *ngIf="UserModalFacility == null ">
+                    In order to remove a user of your project please send the following information to cloud@denbi.de:
+                    <ul>
+                        <li>Projekt name</li>
+                        <li>Projekt description</li>
+                        <li>Your user id</li>
+                        <li>The user id of the project member you would like to remove</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="removeMemberModal.hide();" type="reset"
+                            class="btn  btn-secondary"> Close
+                    </button>
+                </div>
+
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -269,3 +285,4 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
