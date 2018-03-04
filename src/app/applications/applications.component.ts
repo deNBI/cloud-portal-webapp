@@ -167,9 +167,22 @@ export class ApplicationsComponent ***REMOVED***
                   ***REMOVED***
                   this.resourceManager.getGroupAssignedResources(group.json()['id']).subscribe(resource => ***REMOVED***
                     try ***REMOVED***
-                      this.resourceManager.getFacilityByResource(resource.json()[0]['id']).subscribe(facility => ***REMOVED***
+                       let resource_id=resource.json()[0]['id'];
+                      this.resourceManager.getFacilityByResource(resource_id).subscribe(facility => ***REMOVED***
                         a.ComputeCenter = facility.json()['name'];
-                        this.all_applications.push(a)
+                        this.groupservice.getComputeCentersDetails(resource_id).subscribe(details =>***REMOVED***
+                          if(details)***REMOVED***
+                            let details_array=[];
+                            for(let detail in details)***REMOVED***
+                              let detail_as_string=detail + ': ' + details[detail];
+                              details_array.push(detail_as_string);
+                            ***REMOVED***
+
+                          a.ComputecenterDetails=details_array;
+                         ***REMOVED***
+                           this.all_applications.push(a)
+                        ***REMOVED***)
+
 
 
                       ***REMOVED***)

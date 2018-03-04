@@ -25,12 +25,21 @@
                             <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
                             <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
                             <td>***REMOVED******REMOVED*** project.Description ***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED***project.ComputeCenter***REMOVED******REMOVED***</td>
+
+                            <td>***REMOVED******REMOVED***project.ComputeCenter***REMOVED******REMOVED***
+
+
+                                    <ul>
+                                        <li *ngFor="let details of project.ComputeCenterDetails">***REMOVED******REMOVED***details***REMOVED******REMOVED***</li>
+                                    </ul>
+                            </td>
+
                             <td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>
                             <td>***REMOVED******REMOVED*** project.DaysRunning ***REMOVED******REMOVED***</td>
                             <td>
                                 <button type="button" class="btn btn-secondary" data-toggle="modal"
                                         (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
+
                                         *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
                                     <i class="fa fa-users"></i>&nbsp;Show Members
                                 </button>
@@ -79,6 +88,7 @@
                         <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
                         <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
                         <td>
+
                             <button *ngIf="UserModalFacility === null" (click)="usersModal.hide();
                                                 removeMemberModal.show();
                                                 " class="btn btn-secondary" type="button">
@@ -87,6 +97,7 @@
                             <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button">
+
                                 <i class="fa fa-trash"></i>&nbsp; Remove member
                             </button>
                         </td>
@@ -113,6 +124,7 @@
             </div>
             <div class="modal-body">
                 <div *ngIf="UserModalFacility === null"><p>In order to add a new user to the project please do the
+
                     following</p>
 
                     <ol>
@@ -159,6 +171,7 @@
                     </ol>
                 </div>
                 <div *ngIf="UserModalFacility !== null">
+
                     <div>
                         <p style=" margin-bottom: 15px;">Search and add a user to your project by providing his exact
                             name:</p>
@@ -188,11 +201,11 @@
 
                     <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
                         <thead>
-                        <th>Add</th>
-                        <th>FirstName</th>
-                        <th>LastName</th>
+
+                        <th></th>
+                        <th>first name</th>
+                        <th>last name</th>
                         <th>Email</th>
-                        <th>MemberID</th>
                         </thead>
                         <tbody *ngFor="  let member of filteredMembers">
                         <td>
@@ -204,7 +217,6 @@
                         <td>***REMOVED******REMOVED***member['firstName']***REMOVED******REMOVED***</td>
                         <td>***REMOVED******REMOVED***member['lastName']***REMOVED******REMOVED***</td>
                         <td>***REMOVED******REMOVED***member['mail']***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED***member['member_id']***REMOVED******REMOVED***</td>
                         </tbody>
                     </table>
                 </div>
@@ -246,6 +258,7 @@
                             class="btn  btn-secondary"> Close
                     </button>
                 </div>
+
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

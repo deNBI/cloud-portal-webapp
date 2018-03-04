@@ -15,6 +15,7 @@ export class Project ***REMOVED***
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
   private _ComputeCenter:string;
+  private _ComputeCenterDetails:***REMOVED******REMOVED***;
 
 
   constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: string) ***REMOVED***
@@ -31,6 +32,12 @@ export class Project ***REMOVED***
 //todo exdend with additional information
 
 
+  get ComputeCenterDetails()***REMOVED***
+    return this._ComputeCenterDetails;
+  ***REMOVED***
+  set ComputecenterDetails(value:***REMOVED******REMOVED***)***REMOVED***
+    this._ComputeCenterDetails=value;
+  ***REMOVED***
   get ComputeCenter(): string ***REMOVED***
     return this._ComputeCenter
   ***REMOVED***
