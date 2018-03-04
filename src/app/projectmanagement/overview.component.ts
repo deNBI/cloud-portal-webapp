@@ -21,53 +21,54 @@ import {GroupService} from "../api-connector/group.service";
 })
 export class OverviewComponent {
 
-    debug_module = false;
+  debug_module = false;
 
-    @Input() voRegistrationLink: string = environment.voRegistrationLink;
+  @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
-    userprojects: {};
-    userid: number;
-    member_id: number;
-    user_data: {};
-    admingroups: {};
-    adminvos: {};
-    filteredMembers = null;
-    projects: Project[] = new Array();
+  userprojects: {};
+  userid: number;
+  member_id: number;
+  user_data: {};
+  admingroups: {};
+  adminvos: {};
+  filteredMembers = null;
+  projects: Project[] = new Array();
 
-    // modal variables for User list
-    public usersModal;
-    public usersModalProjectMembers: ProjectMember[] = new Array;
-    public usersModalProjectID: number;
-    public usersModalProjectName: string;
+  // modal variables for User list
+  public usersModal;
+  public usersModalProjectMembers: ProjectMember[] = new Array;
+  public usersModalProjectID: number;
+  public usersModalProjectName: string;
 
-    //modal variables for Add User Modal
-    public addUserModal;
-    public addUserModalProjectID: number;
-    public addUserModalProjectName: string;
-    public addUserModalFacility: string;
+  //modal variables for Add User Modal
+  public addUserModal;
+  public addUserModalProjectID: number;
+  public addUserModalProjectName: string;
+  public UserModalFacility: string;
 
 
-    //notification Modal variables
-    public notificationModal;
-    public notificationModalTitle: string = "Notification";
-    public notificationModalMessage: string = "Please wait...";
-    public notificationModalType: string = "info";
-    public notificationModalIsClosable: boolean = false;
+  //notification Modal variables
+  public notificationModal;
+  public notificationModalTitle: string = "Notification";
+  public notificationModalMessage: string = "Please wait...";
+  public notificationModalType: string = "info";
+  public notificationModalIsClosable: boolean = false;
 
-    constructor(private authzresolver: AuthzResolver,
-                private perunsettings: PerunSettings,
-                private useresmanager: UsersManager,
-                private groupsmanager: GroupsManager,
-                private membersmanager: MembersManager,
-                private  resourceManager: ResourcesManager,
-                private groupservice: GroupService) {
-        this.getUserProjects(groupsmanager, membersmanager, useresmanager);
-    }
+  constructor(private authzresolver: AuthzResolver,
+              private perunsettings: PerunSettings,
+              private useresmanager: UsersManager,
+              private groupsmanager: GroupsManager,
+              private membersmanager: MembersManager,
+              private  resourceManager: ResourcesManager,
+             private groupservice: GroupService) {
+    this.getUserProjects(groupsmanager, membersmanager, useresmanager);
+  }
 
-    public updateUserProjects() {
-        this.projects = [];
-        this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
-    }
+  public updateUserProjects() {
+    this.projects = [];
+    this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
+  }
+
 
 
     getUserProjects(groupsmanager: GroupsManager,
@@ -198,82 +199,96 @@ export class OverviewComponent {
         // .then( function(){ groupsmanager.getGroupsWhereUserIsAdmin(this.userid); });
     }
 
-    public resetAddUserModal() {
-        this.addUserModalProjectID = null;
-        this.addUserModalProjectName = null;
-        this.addUserModalFacility = null;
+
+
+
+  public resetAddUserModal() {
+    this.addUserModalProjectID = null;
+    this.addUserModalProjectName = null;
+    this.UserModalFacility = null;
+  }
+
+  filterMembers(firstName: string, lastName: string, groupid: number) {
+    this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
+      this.filteredMembers = result;
+    })
+  }
+
+
+  getMembesOfTheProject(projectid: number, projectname: string) {
+    this.groupsmanager.getGroupRichMembers(projectid).toPromise()
+      .then(function (members_raw) {
+        return members_raw.json();
+      }).then(members => {
+      this.usersModalProjectID = projectid;
+      this.usersModalProjectName = projectname;
+      this.usersModalProjectMembers = new Array();
+      for (let member of members) {
+        let member_id = member["id"];
+        let user_id = member["userId"];
+        let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
+        this.usersModalProjectMembers.push(new ProjectMember(user_id, fullName, member_id));
+      }
+
+    });
+  }
+
+  public showMembersOfTheProject(projectid: number, projectname: string,facility:string) {
+    this.getMembesOfTheProject(projectid, projectname);
+    if (facility === 'None') {
+      this.UserModalFacility = null;
     }
-
-    filterMembers(firstName: string, lastName: string, groupid: number) {
-        this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
-            this.filteredMembers = result;
-        })
+    else {
+      this.UserModalFacility = facility;
     }
+  }
 
 
-    getMembesOfTheProject(projectid: number, projectname: string) {
-        this.groupsmanager.getGroupRichMembers(projectid).toPromise()
-            .then(function (members_raw) {
-                return members_raw.json();
-            }).then(members => {
-            this.usersModalProjectID = projectid;
-            this.usersModalProjectName = projectname;
-            this.usersModalProjectMembers = new Array();
-            for (let member of members) {
-                let member_id = member["id"];
-                let user_id = member["userId"];
-                let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
-                this.usersModalProjectMembers.push(new ProjectMember(user_id, fullName, member_id));
-            }
+  public resetNotificaitonModal() {
+    this.notificationModalTitle = "Notification";
+    this.notificationModalMessage = "Please wait...";
+    this.notificationModalIsClosable = false;
+    this.notificationModalType = "info";
+  }
 
-        });
-    }
+  public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
+    this.notificationModalTitle = title;
+    this.notificationModalMessage = message;
+    this.notificationModalIsClosable = closable;
+    this.notificationModalType = type;
+  }
 
-    public showMembersOfTheProject(projectid: number, projectname: string) {
-        this.getMembesOfTheProject(projectid, projectname);
-    }
+  public makeNotificationModalClosable(closable: boolean) {
+    this.notificationModalIsClosable = closable;
+  }
+
+  public changeNotificationModalTitle(title: string) {
+    this.notificationModalTitle = title;
+  }
+
+  public changeNotificationModalMessage(message: string) {
+    this.notificationModalMessage = message;
+  }
+
+  public changeNotificationModalType(type: string) {
+    this.notificationModalType = type;
+  }
+
+  public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) {
+      this.addUserModalProjectID = projectid;
+      this.addUserModalProjectName = projectname;
+      if (facility === 'None') {
+          this.UserModalFacility = null;
+      }
+      else {
+          this.UserModalFacility = facility;
+
+      }
+  }
 
 
-    public resetNotificaitonModal() {
-        this.notificationModalTitle = "Notification";
-        this.notificationModalMessage = "Please wait...";
-        this.notificationModalIsClosable = false;
-        this.notificationModalType = "info";
-    }
 
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    }
 
-    public makeNotificationModalClosable(closable: boolean) {
-        this.notificationModalIsClosable = closable;
-    }
-
-    public changeNotificationModalTitle(title: string) {
-        this.notificationModalTitle = title;
-    }
-
-    public changeNotificationModalMessage(message: string) {
-        this.notificationModalMessage = message;
-    }
-
-    public changeNotificationModalType(type: string) {
-        this.notificationModalType = type;
-    }
-
-    public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) {
-        this.addUserModalProjectID = projectid;
-        this.addUserModalProjectName = projectname;
-        if (facility === 'None') {
-            this.addUserModalFacility = null;
-        }
-        else {
-            this.addUserModalFacility = facility;
-        }
-    }
 
     public addMember(groupid: number, memberid: number, firstName: string, lastName: string) {
         this.groupsmanager.addMember(groupid, memberid).toPromise()
@@ -289,17 +304,17 @@ export class OverviewComponent {
         });
     }
 
-    public removeMember(groupid: number, memberid: number) {
+    public removeMember(groupid: number, memberid: number,name:string) {
         this.groupsmanager.removeMember(groupid, memberid).toPromise()
             .then(result => {
                 if (result.status == 200) {
-                    this.updateNotificaitonModal("Success", "Member " + memberid + " deleted from the group", true, "success");
+                    this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
 
                 } else {
-                    this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
+                    this.updateNotificaitonModal("Failed", "Member"  + name + " could not be removed !", true, "danger");
                 }
             }).catch(error => {
-            this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
+            this.updateNotificaitonModal("Failed", "Member"  + name + " could not be removed !", true, "danger");
         });
     }
 
