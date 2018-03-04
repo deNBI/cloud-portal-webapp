@@ -69,62 +69,6 @@ export class OverviewComponent ***REMOVED***
     this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
   ***REMOVED***
 
-  getUserProjects(groupsmanager: GroupsManager,
-                  membersmanager: MembersManager,
-                  usersmanager: UsersManager) ***REMOVED***
-    let user_id: number;
-    let member_id: number;
-    let user_projects: ***REMOVED******REMOVED***;
-    let user_data: ***REMOVED******REMOVED***;
-    let admin_groups: ***REMOVED******REMOVED***;
-    let admin_vos: ***REMOVED******REMOVED***;
-
-    this.authzresolver
-      .getLoggedUser().toPromise()
-      .then(function (userdata) ***REMOVED***
-        //TODO catch errors
-        let userid = userdata.json()["id"];
-        user_id = userid;
-        user_data = userdata.json();
-        return membersmanager.getMemberByUser(userid).toPromise();
-      ***REMOVED***)
-      .then(function (memberdata) ***REMOVED***
-        let memberid = memberdata.json()["id"];
-        member_id = memberid;
-        return groupsmanager.getMemberGroups(memberid).toPromise();
-      ***REMOVED***).then(function (groupsdata) ***REMOVED***
-      user_projects = groupsdata.json();
-    ***REMOVED***).then(function () ***REMOVED***
-      return usersmanager.getGroupsWhereUserIsAdmin(user_id).toPromise();
-    ***REMOVED***).then(function (admingroups) ***REMOVED***
-      admin_groups = admingroups.json();
-    ***REMOVED***).then(function () ***REMOVED***
-      return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
-    ***REMOVED***).then(function (adminvos) ***REMOVED***
-      admin_vos = adminvos.json();
-    ***REMOVED***).then(result => ***REMOVED***
-
-      //hold data in the class just in case
-      this.userprojects = user_projects;
-      this.userid = user_id;
-      this.user_data = user_data;
-      this.member_id = member_id;
-      this.admingroups = admin_groups;
-      this.adminvos = admin_vos;
-
-      let is_admin = false;
-      //check if user is a Vo admin so we can serv according buttons
-      for (let vkey in this.adminvos) ***REMOVED***
-        if (this.adminvos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) ***REMOVED***
-          is_admin = true;
-          break;
-        ***REMOVED***
-      ***REMOVED***
-
-    public updateUserProjects() ***REMOVED***
-        this.projects = [];
-        this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
-    ***REMOVED***
 
 
     getUserProjects(groupsmanager: GroupsManager,
@@ -255,23 +199,8 @@ export class OverviewComponent ***REMOVED***
         // .then( function()***REMOVED*** groupsmanager.getGroupsWhereUserIsAdmin(this.userid); ***REMOVED***);
     ***REMOVED***
 
-    public resetAddUserModal() ***REMOVED***
-        this.addUserModalProjectID = null;
-        this.addUserModalProjectName = null;
-        this.addUserModalFacility = null;
-    ***REMOVED***
 
-    filterMembers(firstName: string, lastName: string, groupid: number) ***REMOVED***
-        this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => ***REMOVED***
-            this.filteredMembers = result;
-        ***REMOVED***)
-    ***REMOVED***
 
-      ***REMOVED***
-
-    ***REMOVED***);
-    // .then( function()***REMOVED*** groupsmanager.getGroupsWhereUserIsAdmin(this.userid); ***REMOVED***);
-  ***REMOVED***
 
   public resetAddUserModal() ***REMOVED***
     this.addUserModalProjectID = null;
@@ -346,57 +275,20 @@ export class OverviewComponent ***REMOVED***
   ***REMOVED***
 
   public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) ***REMOVED***
-    this.addUserModalProjectID = projectid;
-    this.addUserModalProjectName = projectname;
-    if (facility === 'None') ***REMOVED***
-      this.UserModalFacility = null;
-    ***REMOVED***
-    else ***REMOVED***
-      this.UserModalFacility = facility;
+      this.addUserModalProjectID = projectid;
+      this.addUserModalProjectName = projectname;
+      if (facility === 'None') ***REMOVED***
+          this.UserModalFacility = null;
+      ***REMOVED***
+      else ***REMOVED***
+          this.UserModalFacility = facility;
 
-    ***REMOVED***
+      ***REMOVED***
+  ***REMOVED***
 
 
-    public resetNotificaitonModal() ***REMOVED***
-        this.notificationModalTitle = "Notification";
-        this.notificationModalMessage = "Please wait...";
-        this.notificationModalIsClosable = false;
-        this.notificationModalType = "info";
-    ***REMOVED***
 
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    ***REMOVED***
 
-    public makeNotificationModalClosable(closable: boolean) ***REMOVED***
-        this.notificationModalIsClosable = closable;
-    ***REMOVED***
-
-    public changeNotificationModalTitle(title: string) ***REMOVED***
-        this.notificationModalTitle = title;
-    ***REMOVED***
-
-    public changeNotificationModalMessage(message: string) ***REMOVED***
-        this.notificationModalMessage = message;
-    ***REMOVED***
-
-    public changeNotificationModalType(type: string) ***REMOVED***
-        this.notificationModalType = type;
-    ***REMOVED***
-
-    public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) ***REMOVED***
-        this.addUserModalProjectID = projectid;
-        this.addUserModalProjectName = projectname;
-        if (facility === 'None') ***REMOVED***
-            this.addUserModalFacility = null;
-        ***REMOVED***
-        else ***REMOVED***
-            this.addUserModalFacility = facility;
-        ***REMOVED***
-    ***REMOVED***
 
     public addMember(groupid: number, memberid: number, firstName: string, lastName: string) ***REMOVED***
         this.groupsmanager.addMember(groupid, memberid).toPromise()
@@ -412,17 +304,17 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    public removeMember(groupid: number, memberid: number) ***REMOVED***
+    public removeMember(groupid: number, memberid: number,name:string) ***REMOVED***
         this.groupsmanager.removeMember(groupid, memberid).toPromise()
             .then(result => ***REMOVED***
                 if (result.status == 200) ***REMOVED***
-                    this.updateNotificaitonModal("Success", "Member " + memberid + " deleted from the group", true, "success");
+                    this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
+                    this.updateNotificaitonModal("Failed", "Member"  + name + " could not be removed !", true, "danger");
                 ***REMOVED***
             ***REMOVED***).catch(error => ***REMOVED***
-            this.updateNotificaitonModal("Failed", "Member could not be deleted!", true, "danger");
+            this.updateNotificaitonModal("Failed", "Member"  + name + " could not be removed !", true, "danger");
         ***REMOVED***);
     ***REMOVED***
 
