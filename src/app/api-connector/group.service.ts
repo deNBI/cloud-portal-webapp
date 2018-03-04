@@ -17,6 +17,16 @@ export class GroupService {
 
     return this.http.get(this.settings.getApiBaseURL() + 'computecenters/', {
       withCredentials: true,
+
+    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+  }
+
+    getComputeCentersDetails(resource_id:number): Observable<any> {
+
+    return this.http.get(this.settings.getApiBaseURL() + 'facility_details/', {
+      withCredentials: true,
+        params:{resource_id:resource_id}
     }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
   }
