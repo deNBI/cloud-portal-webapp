@@ -31,7 +31,7 @@ import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.mode
   providers: [ImageService, keyService,FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
-  data: string = "";
+  data: string = '';
   informationButton: string = "Show Details";
   informationButton2: string = "Show Details";
   images: Image[];
@@ -141,11 +141,11 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     if (this.data == 'INVALID') ***REMOVED***
       return;
     ***REMOVED***
-    this.data = null;
+    this.data = '';
   ***REMOVED***
 
   resetData2(): void ***REMOVED***
-    this.data = null;
+    this.data = '';
   ***REMOVED***
 
   onSelectFlavor(flavor: Flavor): void ***REMOVED***
