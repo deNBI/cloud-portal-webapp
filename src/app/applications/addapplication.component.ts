@@ -61,8 +61,7 @@ export class AddApplicationComponent {
 
     onSubmit(f: NgForm) {
     if(this.project_application_openstack_project){
-    f.controls['project_application_special_hardware']
-      .setValue(this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id))}
+    f.controls['project_application_special_hardware'].setValue(this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id))}
         let values={}
     for(let v in f.controls){
 
@@ -70,9 +69,6 @@ export class AddApplicationComponent {
             values[v]=f.controls[v].value;
         }
     }
-
-
-
     this.applicationsservice.addNewApplication(values).toPromise()
       .then(result => {
         this.updateNotificaitonModal("Success", "The application was submitted", true, "success");
