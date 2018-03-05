@@ -173,8 +173,20 @@
 
             <br>
 
-            <div *ngIf='showjustvm' class="alert alert-info">
-              <strong>Info</strong> At the moment one vm per user is allowed!
+             <div *ngIf='showjustvm' class="form-group row">
+              <label class="col-md-3 form-control-label" for="textarea-input"><strong>Number of Virtual
+                Machines*</strong></label>
+              <div class="col-md-9">
+                <div class="input-group">
+                  <input required class="form-control" id="id_project_application_vms_requested"
+                         name="project_application_vms_requested"
+                         placeholder="e.g. 5"
+                         type="number" min="1" step="1" ngModel>
+                  <span class="input-group-addon"> VMs
+                                    </span>
+                </div>
+                <span class="help-block">How many VMs would you run simultaneously?</span>
+              </div>
             </div>
             <div *ngIf='showjustvm' class="form-group row">
               <label class="col-md-3 form-control-label">You are able to start machines of the
