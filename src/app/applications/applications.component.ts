@@ -252,7 +252,7 @@ export class ApplicationsComponent {
     this.notificationModalType = type;
   }
 
-  public createGroup(name, description, manager_elixir_id, application_id, compute_center) {
+  public createGroup(name, description, manager_elixir_id, application_id, compute_center,numberOfVms) {
     //get memeber id in order to add the user later as the new member and manager of the group
     let manager_member_id: number;
     let manager_member_user_id: number;
@@ -281,6 +281,7 @@ export class ApplicationsComponent {
       //setting approved status for Perun Group
       this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
       this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
+      this.groupservice.setNumberOfVms(new_group_id.toString(),numberOfVms.toString()).subscribe();
       //update modal
       this.updateNotificaitonModal("Success", "The new project was created", true, "success");
       //update applications
