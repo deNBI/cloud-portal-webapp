@@ -31,7 +31,7 @@ import {Project} from "../projectmanagement/project.model";
   providers: [ImageService, keyService,FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 })
 export class VirtualMachineComponent implements OnInit {
-  data: string = "";
+  data: string = '';
   informationButton: string = "Show Details";
   informationButton2: string = "Show Details";
   images: Image[];
@@ -141,11 +141,11 @@ export class VirtualMachineComponent implements OnInit {
     if (this.data == 'INVALID') {
       return;
     }
-    this.data = null;
+    this.data = '';
   }
 
   resetData2(): void {
-    this.data = null;
+    this.data = '';
   }
 
   onSelectFlavor(flavor: Flavor): void {
