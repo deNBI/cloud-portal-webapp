@@ -17,10 +17,15 @@ export class Application {
   private _UserEmail: number;
   private _Status: number;
   private _ComputeCenter: string;
+
   private _OpenStackProject: boolean;
+
+  private  _ComputeCenterDetails:{};
+
 
   constructor() {
   }
+
 
   get OpenStackProject(): boolean {
     return this._OpenStackProject
@@ -28,6 +33,14 @@ export class Application {
 
   set OpenStackProject(value: boolean) {
     this._OpenStackProject = value;
+  }
+
+
+    get ComputeCenterDetails(){
+    return this._ComputeCenterDetails;
+  }
+  set ComputecenterDetails(value:{}){
+    this._ComputeCenterDetails=value;
   }
 
   get ComputeCenter(): string {
