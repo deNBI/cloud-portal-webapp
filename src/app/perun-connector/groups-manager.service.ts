@@ -53,6 +53,21 @@ export class GroupsManager {
       });
   }
 
+  setdeNBIDirectAcces(group_id: number, value: boolean) {
+    var parameter = JSON.stringify({
+      group: group_id,
+      attribute: {id: 3279,
+        namespace: 'urn:perun:group:attribute-def:opt',
+        friendlyName: 'denbiDirectAccess', type: 'java.lang.Boolean',
+        value: value
+      }
+    });
+    return this.http.post(this.settings.getPerunBaseURL() + 'attributesManager/setAttribute', parameter,
+      {
+        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      });
+  }
+
   setPerunGroupStatus(group_id: number, status: number) {
     /* 1:submitted
        2: approved

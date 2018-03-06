@@ -52,11 +52,33 @@
               </div>
             </div>
             <br>
+            <br>
             <div class="form-group row">
-              <h5 class="col-md-6 form-control-label">Resources</h5>
+              <h4 class="col-md-6 form-control-label">Choose the type of your Project</h4>
+            </div>
+            <div class="form-group row">
+              <h5 class="col-md-6 form-control-label">Single Virtual Machines</h5>
+              <label>
+                <input type="checkbox"
+                       [(ngModel)]="showjustvm" name="showjustvm" (change)="chosenProjectType(1)">
+
+              </label>
+
+            </div>
+            <div class="form-group row">
+              <h5 class="col-md-6 form-control-label">Full Fledged Cloud Project (OpenStack)</h5>
+              <label>
+                <input type="checkbox"
+                       [(ngModel)]="project_application_openstack_project" name="project_application_openstack_project"
+                       (change)="chosenProjectType(0)">
+
+              </label>
+            </div>
+            <div *ngIf='project_application_openstack_project' class="form-group row">
+              <h6 class="col-md-6 form-control-label">Resources</h6>
             </div>
 
-            <div class="form-group row">
+            <div *ngIf='project_application_openstack_project' class="form-group row">
               <label class="col-md-3 form-control-label" for="textarea-input"><strong>Number of Virtual
                 Machines*</strong></label>
               <div class="col-md-9">
@@ -72,7 +94,7 @@
               </div>
             </div>
 
-            <div class="form-group row">
+            <div *ngIf='project_application_openstack_project' class="form-group row">
               <label class="col-md-3 form-control-label" for="textarea-input">Cores per VM</label>
               <div class="col-md-9">
                 <div class="input-group">
@@ -87,7 +109,7 @@
               </div>
             </div>
 
-            <div class="form-group row">
+            <div *ngIf='project_application_openstack_project' class="form-group row">
               <label class="col-md-3 form-control-label" for="textarea-input">RAM per VM</label>
               <div class="col-md-9">
                 <div class="input-group">
@@ -102,7 +124,7 @@
               </div>
             </div>
 
-            <div class="form-group row">
+            <div *ngIf='project_application_openstack_project' class="form-group row">
               <label class="col-md-3 form-control-label" for="textarea-input">Disk per VM</label>
               <div class="col-md-9">
                 <div class="input-group">
@@ -117,14 +139,14 @@
               </div>
             </div>
 
-            <div class="form-group row">
+            <div *ngIf='project_application_openstack_project' class="form-group row">
               <label class="col-md-3 form-control-label" for="textarea-input">Object Storage</label>
               <div class="col-md-9">
                 <div class="input-group">
                   <input class="form-control" id="id_project_application_object_storage"
                          name="project_application_object_storage"
                          placeholder="e.g. 8"
-                         type="number" min="1" step="1" ngModel>
+                         type="number" min="0" step="1" ngModel>
                   <span class="input-group-addon"> GB
                                     </span>
                 </div>
@@ -132,18 +154,53 @@
               </div>
             </div>
 
-            <div class="form-group row">
-              <label class="col-md-3 form-control-label" for="id_project_application_special_hardware">Special Hardware</label>
+            <div *ngIf='project_application_openstack_project' class="form-group row">
+              <label class="col-md-3 form-control-label" for="id_project_application_special_hardware">Special
+                Hardware</label>
               <div class="col-md-9">
-                <div id="id_project_application_special_hardware" *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
+                <div id="id_project_application_special_hardware"
+                     *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
                   <label>
-                    <input name="project_application_special_hardware" type="checkbox" [checked]="( checkboxValue === true ? sh.Checked : False )" (change)="sh.Checked = $event.target.checked;" ngModel/>
+                    <input name="project_application_special_hardware" type="checkbox"
+                           [checked]="( checkboxValue === true ? sh.Checked : False )"
+                           (change)="sh.Checked = $event.target.checked;" ngModel/>
                     {{sh.Name}}
                   </label>
                 </div>
                 <span class="help-block">Which special Hardware would you need?</span>
               </div>
             </div>
+
+            <br>
+
+             <div *ngIf='showjustvm' class="form-group row">
+              <label class="col-md-3 form-control-label" for="textarea-input"><strong>Number of Virtual
+                Machines*</strong></label>
+              <div class="col-md-9">
+                <div class="input-group">
+                  <input required class="form-control" id="id_project_application_vms_requested"
+                         name="project_application_vms_requested"
+                         placeholder="e.g. 5"
+                         type="number" min="1" step="1" ngModel>
+                  <span class="input-group-addon"> VMs
+                                    </span>
+                </div>
+                <span class="help-block">How many VMs would you run simultaneously?</span>
+              </div>
+            </div>
+            <div *ngIf='showjustvm' class="form-group row">
+              <label class="col-md-3 form-control-label">You are able to start machines of the
+                type:</label>
+              <div class="col-md-9">
+                <ul>
+                  <li>de.NBI Large</li>
+                  <li>de.NBI Medium</li>
+                  <li>de.NBI Small</li>
+                </ul>
+              </div>
+            </div>
+
+
             <br>
             <div class="form-group row">
               <h5 class="col-md-6 form-control-label">Institutional Information</h5>
@@ -178,7 +235,8 @@
           </form>
         </div>
         <div class="card-footer">
-          <button (click)="notificationModal.show()" form="application_form" type="submit" name="_save" class="btn btn-sm btn-primary"><i
+          <button (click)="notificationModal.show()" form="application_form" type="submit" name="_save"
+                  class="btn btn-sm btn-primary"><i
             class="fa fa-dot-circle-o"></i> Submit
             Application
           </button>
@@ -208,10 +266,11 @@
                 (click)="notificationModal.hide();" type="reset"
                 class="btn  btn-secondary"> Close
         </button>
-        <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)" [routerLink]="['/applications']">
-          <button  type="button"
-                   (click)="notificationModal.hide();" type="reset"
-                   class="btn  btn-secondary"> Close
+        <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
+           [routerLink]="['/applications']">
+          <button type="button"
+                  (click)="notificationModal.hide();" type="reset"
+                  class="btn  btn-secondary"> Close
           </button>
         </a>
       </div>

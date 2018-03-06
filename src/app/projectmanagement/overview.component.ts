@@ -14,10 +14,11 @@ import {isNumber} from "util";
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
+import {GeneralServicemanager} from "../perun-connector/generalservice_manager";
 
 @Component({
     templateUrl: 'overview.component.html',
-    providers: [GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [GeneralServicemanager,GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 
@@ -44,7 +45,7 @@ export class OverviewComponent {
   public addUserModal;
   public addUserModalProjectID: number;
   public addUserModalProjectName: string;
-  public UserModalFacility: string;
+  public UserModalFacility: [string,number];
 
 
   //notification Modal variables
@@ -60,7 +61,8 @@ export class OverviewComponent {
               private groupsmanager: GroupsManager,
               private membersmanager: MembersManager,
               private  resourceManager: ResourcesManager,
-             private groupservice: GroupService) {
+             private groupservice: GroupService,
+              private generalServiceManager :GeneralServicemanager) {
     this.getUserProjects(groupsmanager, membersmanager, useresmanager);
   }
 
@@ -145,6 +147,7 @@ export class OverviewComponent {
                     try {
                         let resource_id = resource.json()[0]['id'];
                         this.resourceManager.getFacilityByResource(resource_id).subscribe(facility => {
+                            facility=facility.json()
                             let newProject = new Project(
                                 group["id"],
                                 group["name"],
@@ -153,7 +156,7 @@ export class OverviewComponent {
                                 dateDayDifference,
                                 is_pi,
                                 is_admin,
-                                facility.json()['name'])
+                                [facility['name'],facility['id']])
                             try {
                                 this.groupservice.getComputeCentersDetails(resource_id).subscribe(details => {
                                     if (details) {
@@ -185,8 +188,8 @@ export class OverviewComponent {
                             dateDayDifference,
                             is_pi,
                             is_admin,
-                            'None')
-                        );
+                            ['None',-1]
+                        ));
 
 
                     }
@@ -233,9 +236,9 @@ export class OverviewComponent {
     });
   }
 
-  public showMembersOfTheProject(projectid: number, projectname: string,facility:string) {
+  public showMembersOfTheProject(projectid: number, projectname: string,facility:[string,number]) {
     this.getMembesOfTheProject(projectid, projectname);
-    if (facility === 'None') {
+    if (facility[0] === 'None') {
       this.UserModalFacility = null;
     }
     else {
@@ -274,10 +277,10 @@ export class OverviewComponent {
     this.notificationModalType = type;
   }
 
-  public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) {
+  public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string,number]) {
       this.addUserModalProjectID = projectid;
       this.addUserModalProjectName = projectname;
-      if (facility === 'None') {
+      if (facility[0] === 'None') {
           this.UserModalFacility = null;
       }
       else {
@@ -290,7 +293,7 @@ export class OverviewComponent {
 
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string) {
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string,facility:string) {
         this.groupsmanager.addMember(groupid, memberid).toPromise()
             .then(result => {
                 if (result.status == 200) {
@@ -299,7 +302,7 @@ export class OverviewComponent {
                 } else {
                     this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
                 }
-            }).catch(error => {
+            }).then(result => {this.generalServiceManager.forceDenbiComputeCenterServicePropagation(facility).subscribe()}).catch(error => {
             this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
         });
     }
