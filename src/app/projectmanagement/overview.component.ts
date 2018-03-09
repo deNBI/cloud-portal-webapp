@@ -34,6 +34,7 @@ export class OverviewComponent {
     filteredMembers = null;
     projects: Project[] = new Array();
 
+
     // modal variables for User list
     public usersModal;
     public usersModalProjectMembers: ProjectMember[] = new Array;
@@ -142,14 +143,6 @@ export class OverviewComponent {
                 }
                 this.groupservice.getFacilityByGroup(group["name"]).subscribe(result => {
 
-                    let details = result['Details'];
-                    let details_array = [];
-                    for (let detail in details) {
-                        let detail_as_string = detail + ': ' + details[detail];
-                        details_array.push(detail_as_string);
-                    }
-
-
                     let newProject = new Project(
                         group["id"],
                         group["name"],
@@ -159,6 +152,12 @@ export class OverviewComponent {
                         is_pi,
                         is_admin,
                         result['Facility'])
+                    let details = result['Details'];
+                    let details_array = [];
+                    for (let detail in details) {
+                        let detail_tuple = [detail,details[detail]];
+                        details_array.push(detail_tuple);
+                    }
                     newProject.ComputecenterDetails = details_array;
 
                     this.projects.push(newProject);

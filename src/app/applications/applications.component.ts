@@ -162,11 +162,11 @@ export class ApplicationsComponent {
                                 if (a.Status !== 1) {
                                     this.groupservice.getFacilityByGroup(a.Name).subscribe(result => {
 
-                                        let details=result['Details'];
+                                        let details = result['Details'];
                                         let details_array = [];
                                         for (let detail in details) {
-                                            let detail_as_string = detail + ': ' + details[detail];
-                                            details_array.push(detail_as_string);
+                                            let detail_tuple = [detail, details[detail]];
+                                            details_array.push(detail_tuple);
                                         }
 
                                         a.ComputecenterDetails = details_array;
