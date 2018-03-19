@@ -319,12 +319,15 @@
                                                 <tr *ngIf="application.ComputeCenterDetails">
                                                     <td>Facility Details</td>
                                                     <td>
-                                                    <ul>
-                                                        <li>Name: ***REMOVED******REMOVED***application.ComputeCenter***REMOVED******REMOVED***</li>
-                                                        <li *ngFor="let detail of application.ComputeCenterDetails">
-                                                            ***REMOVED******REMOVED***detail***REMOVED******REMOVED***
-                                                        </li>
-                                                    </ul>
+                                                        <ul>
+                                                            <li>Name: ***REMOVED******REMOVED***application.ComputeCenter***REMOVED******REMOVED***</li>
+                                                            <li *ngFor="let details of application.ComputeCenterDetails">
+                                                                ***REMOVED******REMOVED***details[0]***REMOVED******REMOVED***: <a target="_blank"
+                                                                                   *ngIf="details[0] == 'Login'"
+                                                                                   href="***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</a>
+                                                                <span *ngIf="details[0] != 'Login'">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</span>
+                                                            </li>
+                                                        </ul>
                                                     </td>
 
                                                 </tr>
