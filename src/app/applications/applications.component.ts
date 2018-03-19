@@ -57,132 +57,8 @@ export class ApplicationsComponent {
 
   }
 
-  getComputeCenters() {
-    this.groupservice.getComputeCenters().subscribe(result => {
-      this.computeCenters = result;
-    })
-  }
 
-  getUserApplications() {
-    this.applicataionsservice
-      .getUserApplications().toPromise()
-      .then(result => {
-        let res = result.json();
-        for (let key in res) {
-          let aj = res[key];
-          let a = new Application();
-          a.Id = aj["project_application_id"];
-          a.Name = aj["project_application_name"];
-          a.Shortname=aj["project_application_shortname"];
-          a.Lifetime = aj["project_application_lifetime"];
-          a.DateSubmitted = aj["project_application_date_submitted"];
-          a.Status = aj["project_application_status"]["application_status_name"];
-          a.Description = aj["project_application_description"];
-          a.VMsRequested = aj["project_application_vms_requested"];
-          a.RamPerVM = aj["project_application_ram_per_vm"];
-          a.CoresPerVM = aj["project_application_cores_per_vm"];
-          a.DiskSpace = aj["project_application_disk_space"];
-          a.ObjectStorage = aj["project_application_object_storage"];
-          a.SpecialHardware = aj["project_application_special_hardware"];
-
-          this.user_applications.push(a)
-        }
-      });
-  }
-
-  getApplicationStatus() {
-    this.applicationstatusservice.getAllApplicationStatus().toPromise()
-      .then(result => {
-        let res = result.json();
-        for (let key in res) {
-          let asj = res[key];
-          let aj = new ApplicationStatus(asj["application_status_id"], asj["application_status_name"]);
-          this.application_status.push(aj)
-        }
-      });
-  }
-
-  getSpecialHardware() {
-    this.specialhardwareservice.getAllSpecialHardware().toPromise()
-      .then(result => {
-        let res = result.json();
-        for (let key in res) {
-          let shj = res[key];
-          let sh = new SpecialHardware(shj["special_hardware_id"], shj["special_hardware_key"], shj["special_hardware_name"]);
-          this.special_hardware.push(sh)
-        }
-      });
-  }
-
-  getAllApplications(usersmanager: UsersManager) {
-    //todo check if user is VO Admin
-    let user_id: number;
-    let admin_vos: {};
-
-    this.authzresolver
-      .getLoggedUser().toPromise()
-      .then(function (userdata) {
-        //TODO catch errors
-        user_id = userdata.json()["id"];
-        return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
-      }).then(function (adminvos) {
-      admin_vos = adminvos.json();
-    }).then(result => {
-      //check if user is a Vo admin so we can serv according buttons
-      for (let vkey in admin_vos) {
-        if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
-          this.is_vo_admin = true;
-          this.applicataionsservice
-            .getAllApplications().toPromise()
-            .then(result => {
-              let res = result.json();
-              for (let key in res) {
-                let aj = res[key];
-                let a = new Application();
-                a.Id = aj["project_application_id"];
-
-                a.Name = aj["project_application_name"];
-                a.Shortname=aj["project_application_shortname"];
-                a.Description = aj["project_application_description"];
-                a.Lifetime = aj["project_application_lifetime"];
-
-                a.VMsRequested = aj["project_application_vms_requested"];
-                a.RamPerVM = aj["project_application_ram_per_vm"];
-                a.CoresPerVM = aj["project_application_cores_per_vm"];
-                a.DiskSpace = aj["project_application_disk_space"];
-                a.ObjectStorage = aj["project_application_object_storage"];
-                a.SpecialHardware = aj["project_application_special_hardware"];
-
-                a.Institute = aj["project_application_institute"];
-                a.Workgroup = aj["project_application_workgroup"];
-
-                a.DateSubmitted = aj["project_application_date_submitted"];
-                a.DateStatusChanged = aj["project_application_date_status_changed"];
-                a.User = aj["project_application_user"]["username"];
-                a.UserEmail = aj["project_application_user"]["email"];
-                a.Status = aj["project_application_status"];
-                if (a.Status !==1) {
-                this.groupsmanager.getGroupByVoandName(a.Name).subscribe(group => {
-                  if (group.status !== 200){
-                      a.ComputeCenter = 'None'
-                      this.all_applications.push(a)
-                  }
-                  this.resourceManager.getGroupAssignedResources(group.json()['id']).subscribe(resource => {
-                    try {
-                       let resource_id=resource.json()[0]['id'];
-                      this.resourceManager.getFacilityByResource(resource_id).subscribe(facility => {
-                        a.ComputeCenter = facility.json()['name'];
-                        this.groupservice.getComputeCentersDetails(resource_id).subscribe(details =>{
-                          if(details){
-                            let details_array=[];
-                            for(let detail in details){
-                              let detail_as_string=detail + ': ' + details[detail];
-                              details_array.push(detail_as_string);
-                            }
-
-
-    }
-
+    
     getComputeCenters() {
         this.groupservice.getComputeCenters().subscribe(result => {
             this.computeCenters = result;
@@ -199,6 +75,7 @@ export class ApplicationsComponent {
                     let a = new Application();
                     a.Id = aj["project_application_id"];
                     a.Name = aj["project_application_name"];
+                     a.Shortname=aj["project_application_shortname"];
                     a.Lifetime = aj["project_application_lifetime"];
                     a.DateSubmitted = aj["project_application_date_submitted"];
                     a.Status = aj["project_application_status"]["application_status_name"];
@@ -267,6 +144,7 @@ export class ApplicationsComponent {
                                 a.Id = aj["project_application_id"];
 
                                 a.Name = aj["project_application_name"];
+                                 a.Shortname=aj["project_application_shortname"];
                                 a.Description = aj["project_application_description"];
                                 a.Lifetime = aj["project_application_lifetime"];
 
