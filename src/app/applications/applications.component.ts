@@ -22,40 +22,42 @@ import {GroupService} from "../api-connector/group.service";
 })
 export class ApplicationsComponent {
 
-    user_applications: Application[] = [];
-    is_vo_admin = false;
-    all_applications: Application[] = [];
-    application_status: ApplicationStatus[] = [];
-    special_hardware: SpecialHardware[] = [];
-    computeCenters: string[];
+  user_applications: Application[] = [];
+  is_vo_admin = false;
+  all_applications: Application[] = [];
+  application_status: ApplicationStatus[] = [];
+  special_hardware: SpecialHardware[] = [];
+  computeCenters: string[];
 
-    //notification Modal variables
-    public notificationModal;
-    public notificationModalTitle: string = "Notification";
-    public notificationModalMessage: string = "Please wait...";
-    public notificationModalType: string = "info";
-    public notificationModalIsClosable: boolean = false;
+  //notification Modal variables
+  public notificationModal;
+  public notificationModalTitle: string = "Notification";
+  public notificationModalMessage: string = "Please wait...";
+  public notificationModalType: string = "info";
+  public notificationModalIsClosable: boolean = false;
 
 
-    collapse_status: { [id: string]: boolean } = {};
+  collapse_status: { [id: string]: boolean } = {};
 
-    constructor(private applicataionsservice: ApplicationsService,
-                private applicationstatusservice: ApplicationStatusService,
-                private specialhardwareservice: SpecialHardwareService,
-                private authzresolver: AuthzResolver,
-                private perunsettings: PerunSettings,
-                private groupsmanager: GroupsManager,
-                private usersmanager: UsersManager,
-                private membersmanager: MembersManager,
-                private resourceManager: ResourcesManager,
-                private groupservice: GroupService) {
-        this.getUserApplications();
-        this.getAllApplications(usersmanager);
-        this.getApplicationStatus();
-        this.getSpecialHardware();
-        this.getComputeCenters();
+  constructor(private applicataionsservice: ApplicationsService,
+              private applicationstatusservice: ApplicationStatusService,
+              private specialhardwareservice: SpecialHardwareService,
+              private authzresolver: AuthzResolver,
+              private perunsettings: PerunSettings,
+              private groupsmanager: GroupsManager,
+              private usersmanager: UsersManager,
+              private membersmanager: MembersManager,
+              private resourceManager: ResourcesManager,
+              private groupservice: GroupService) {
+    this.getUserApplications();
+    this.getAllApplications(usersmanager);
+    this.getApplicationStatus();
+    this.getSpecialHardware();
+    this.getComputeCenters();
 
-    }
+  }
+
+
 
     getComputeCenters() {
         this.groupservice.getComputeCenters().subscribe(result => {
@@ -73,6 +75,7 @@ export class ApplicationsComponent {
                     let a = new Application();
                     a.Id = aj["project_application_id"];
                     a.Name = aj["project_application_name"];
+                     a.Shortname=aj["project_application_shortname"];
                     a.Lifetime = aj["project_application_lifetime"];
                     a.DateSubmitted = aj["project_application_date_submitted"];
                     a.Status = aj["project_application_status"]["application_status_name"];
@@ -141,6 +144,7 @@ export class ApplicationsComponent {
                                 a.Id = aj["project_application_id"];
 
                                 a.Name = aj["project_application_name"];
+                                 a.Shortname=aj["project_application_shortname"];
                                 a.Description = aj["project_application_description"];
                                 a.Lifetime = aj["project_application_lifetime"];
 
