@@ -58,7 +58,7 @@ export class ApplicationsComponent {
   }
 
 
-    
+
     getComputeCenters() {
         this.groupservice.getComputeCenters().subscribe(result => {
             this.computeCenters = result;
