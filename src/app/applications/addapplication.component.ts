@@ -35,7 +35,7 @@ export class AddApplicationComponent {
     }
 
     chosenProjectType(checkbox: number) {
-        if (checkbox == 0){
+        if (checkbox == 0) {
             if (this.project_application_openstack_project) {
                 this.showjustvm = false;
             }
@@ -70,16 +70,16 @@ export class AddApplicationComponent {
             }
         }
 
+
+        this.applicationsservice.addNewApplication(values).toPromise()
+            .then(result => {
+                this.updateNotificaitonModal("Success", "The application was submitted", true, "success");
+                this.notificationModalStay = false;
+            }).catch(error => {
+            this.updateNotificaitonModal("Failed", "The application was not submitted, please check the required fields and try again.", true, "danger");
+            this.notificationModalStay = true;
+        })
     }
-    this.applicationsservice.addNewApplication(values).toPromise()
-      .then(result => {
-        this.updateNotificaitonModal("Success", "The application was submitted", true, "success");
-        this.notificationModalStay = false;
-      }).catch(error => {
-      this.updateNotificaitonModal("Failed", "The application was not submitted, please check the required fields and try again.", true, "danger");
-      this.notificationModalStay = true;
-    })
-}
 
 
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
