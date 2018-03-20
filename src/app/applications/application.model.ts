@@ -1,6 +1,7 @@
 export class Application ***REMOVED***
   private _Id: number;
   private _Name: string;
+  private _Shortname: string;
   private _Institute: string;
   private _Workgroup: string;
   private _Lifetime: number;
@@ -51,6 +52,13 @@ export class Application ***REMOVED***
 
   set Name(value: string) ***REMOVED***
     this._Name = value;
+  ***REMOVED***
+  get Shortname(): string ***REMOVED***
+    return this._Shortname;
+  ***REMOVED***
+
+  set Shortname(value: string) ***REMOVED***
+    this._Shortname = value;
   ***REMOVED***
 
   get Institute(): string ***REMOVED***
