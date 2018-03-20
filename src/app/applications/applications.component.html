@@ -17,6 +17,7 @@
                         <thead>
                         <tr>
                             <th>Project Name</th>
+                            <th>Shortname</th>
                             <th>Lifetime</th>
                             <th>Date submitted</th>
                             <th>Status</th>
@@ -27,6 +28,7 @@
                         <ng-container *ngFor="let application of user_applications">
                             <tr>
                                 <td>{{ application.Name }}</td>
+                                <td>{{application.Shortname}}</td>
                                 <td>{{ application.Lifetime }}</td>
                                 <td>{{ application.DateSubmitted }}</td>
                                 <td>{{ application.Status }}</td>
@@ -108,6 +110,7 @@
                         <thead>
                         <tr>
                             <th>Project Name</th>
+                            <th>Shortname</th>
                             <th>Date submitted</th>
                             <th>User</th>
                             <th>Institute</th>
@@ -120,6 +123,7 @@
                             <ng-container *ngIf="application.Status == 1">
                                 <tr>
                                     <td>{{ application.Name }}</td>
+                                    <td>{{application.Shortname}}</td>
                                     <td>{{ application.DateSubmitted }}</td>
                                     <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
                                         {{ application.User }}
@@ -138,7 +142,7 @@
                                     </td>
                                     <td>
                                         <button
-                                                (click)='createGroup(application.Name, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();'
+                                                (click)='createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();'
                                                 type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
                                             Approve
                                             & Create
@@ -239,6 +243,7 @@
                         <thead>
                         <tr>
                             <th>Project Name</th>
+                            <th>Shortname</th>
                             <th>Date submitted</th>
                             <th>User</th>
                             <th>Institute</th>
@@ -252,6 +257,7 @@
                             <ng-container *ngIf="application.Status != 1">
                                 <tr>
                                     <td>{{ application.Name }}</td>
+                                    <td>{{application.Shortname}}</td>
                                     <td>{{ application.DateSubmitted }}</td>
                                     <td>{{ application.User }}</td>
                                     <td>{{ application.Institute }}</td>
