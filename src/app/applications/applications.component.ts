@@ -73,6 +73,7 @@ export class ApplicationsComponent {
                     let a = new Application();
                     a.Id = aj["project_application_id"];
                     a.Name = aj["project_application_name"];
+                    a.Shortname=aj["project_application_shortname"];
                     a.Lifetime = aj["project_application_lifetime"];
                     a.DateSubmitted = aj["project_application_date_submitted"];
                     a.Status = aj["project_application_status"]["application_status_name"];
@@ -141,6 +142,7 @@ export class ApplicationsComponent {
                                 a.Id = aj["project_application_id"];
 
                                 a.Name = aj["project_application_name"];
+                                 a.Shortname=aj["project_application_shortname"];
                                 a.Description = aj["project_application_description"];
                                 a.Lifetime = aj["project_application_lifetime"];
 
