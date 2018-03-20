@@ -291,6 +291,16 @@ export class ApplicationsComponent {
             });
     }
 
+
+    public activeApplicationsAvailable(): boolean {
+        for (let application of this.all_applications) {
+            if (application.Status == 1) {
+                return true;
+            }
+        }
+        return false;
+}
+
     public comingSoon() {
         alert("This functinality will be implemented soon!")
     }
