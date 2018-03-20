@@ -1,6 +1,7 @@
 export class Application {
   private _Id: number;
   private _Name: string;
+  private _Shortname: string;
   private _Institute: string;
   private _Workgroup: string;
   private _Lifetime: number;
@@ -64,6 +65,13 @@ export class Application {
 
   set Name(value: string) {
     this._Name = value;
+  }
+  get Shortname(): string {
+    return this._Shortname;
+  }
+
+  set Shortname(value: string) {
+    this._Shortname = value;
   }
 
   get Institute(): string {
