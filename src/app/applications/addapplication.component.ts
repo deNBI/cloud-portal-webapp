@@ -20,6 +20,7 @@ export class AddApplicationComponent {
     public notificationModalType: string = "info";
     public notificationModalIsClosable: boolean = false;
     public notificationModalStay: boolean = true;
+
     showjustvm: boolean;
     project_application_openstack_project: boolean;
 
@@ -60,14 +61,15 @@ export class AddApplicationComponent {
     }
 
     onSubmit(f: NgForm) {
-    if(this.project_application_openstack_project){
-    f.controls['project_application_special_hardware'].setValue(this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id))}
-        let values={}
-    for(let v in f.controls){
 
-        if(f.controls[v].value){
-            values[v]=f.controls[v].value;
+        let values = {};
+        values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
+        for (let v in f.controls) {
+            if (f.controls[v].value) {
+                values[v] = f.controls[v].value;
+            }
         }
+
     }
     this.applicationsservice.addNewApplication(values).toPromise()
       .then(result => {
@@ -78,6 +80,7 @@ export class AddApplicationComponent {
       this.notificationModalStay = true;
     })
 }
+
 
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
         this.notificationModalTitle = title;

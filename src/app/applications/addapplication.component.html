@@ -157,16 +157,13 @@
               </div>
             </div>
 
+
             <div *ngIf='project_application_openstack_project' class="form-group row">
-              <label class="col-md-3 form-control-label" for="id_project_application_special_hardware">Special
-                Hardware</label>
+              <label class="col-md-3 form-control-label">Special Hardware</label>
               <div class="col-md-9">
-                <div id="id_project_application_special_hardware"
-                     *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
+                <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
                   <label>
-                    <input name="project_application_special_hardware" type="checkbox"
-                           [checked]="( checkboxValue === true ? sh.Checked : False )"
-                           (change)="sh.Checked = $event.target.checked;" ngModel/>
+                    <input  type="checkbox" [checked]="( checkboxValue === true ? sh.Checked : False )" (change)="sh.Checked = $event.target.checked;" />
                     {{sh.Name}}
                   </label>
                 </div>
