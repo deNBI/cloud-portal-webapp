@@ -21,54 +21,54 @@ import {GroupService} from "../api-connector/group.service";
 })
 export class OverviewComponent {
 
-  debug_module = false;
+    debug_module = false;
 
-  @Input() voRegistrationLink: string = environment.voRegistrationLink;
+    @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
-  userprojects: {};
-  userid: number;
-  member_id: number;
-  user_data: {};
-  admingroups: {};
-  adminvos: {};
-  filteredMembers = null;
-  projects: Project[] = new Array();
-
-  // modal variables for User list
-  public usersModal;
-  public usersModalProjectMembers: ProjectMember[] = new Array;
-  public usersModalProjectID: number;
-  public usersModalProjectName: string;
-
-  //modal variables for Add User Modal
-  public addUserModal;
-  public addUserModalProjectID: number;
-  public addUserModalProjectName: string;
-  public UserModalFacility: string;
+    userprojects: {};
+    userid: number;
+    member_id: number;
+    user_data: {};
+    admingroups: {};
+    adminvos: {};
+    filteredMembers = null;
+    projects: Project[] = new Array();
 
 
-  //notification Modal variables
-  public notificationModal;
-  public notificationModalTitle: string = "Notification";
-  public notificationModalMessage: string = "Please wait...";
-  public notificationModalType: string = "info";
-  public notificationModalIsClosable: boolean = false;
+    // modal variables for User list
+    public usersModal;
+    public usersModalProjectMembers: ProjectMember[] = new Array;
+    public usersModalProjectID: number;
+    public usersModalProjectName: string;
 
-  constructor(private authzresolver: AuthzResolver,
-              private perunsettings: PerunSettings,
-              private useresmanager: UsersManager,
-              private groupsmanager: GroupsManager,
-              private membersmanager: MembersManager,
-              private  resourceManager: ResourcesManager,
-             private groupservice: GroupService) {
-    this.getUserProjects(groupsmanager, membersmanager, useresmanager);
-  }
+    //modal variables for Add User Modal
+    public addUserModal;
+    public addUserModalProjectID: number;
+    public addUserModalProjectName: string;
+    public UserModalFacility: string;
 
-  public updateUserProjects() {
-    this.projects = [];
-    this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
-  }
 
+    //notification Modal variables
+    public notificationModal;
+    public notificationModalTitle: string = "Notification";
+    public notificationModalMessage: string = "Please wait...";
+    public notificationModalType: string = "info";
+    public notificationModalIsClosable: boolean = false;
+
+    constructor(private authzresolver: AuthzResolver,
+                private perunsettings: PerunSettings,
+                private useresmanager: UsersManager,
+                private groupsmanager: GroupsManager,
+                private membersmanager: MembersManager,
+                private  resourceManager: ResourcesManager,
+                private groupservice: GroupService) {
+        this.getUserProjects(groupsmanager, membersmanager, useresmanager);
+    }
+
+    public updateUserProjects() {
+        this.projects = [];
+        this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
+    }
 
 
     getUserProjects(groupsmanager: GroupsManager,
@@ -141,55 +141,27 @@ export class OverviewComponent {
                 } else {
                     is_pi = true;
                 }
-                this.resourceManager.getGroupAssignedResources(group['id']).subscribe(resource => {
-                    try {
-                        let resource_id = resource.json()[0]['id'];
-                        this.resourceManager.getFacilityByResource(resource_id).subscribe(facility => {
-                            let newProject = new Project(
-                                group["id"],
-                                group["name"],
-                                group["description"],
-                                dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
-                                dateDayDifference,
-                                is_pi,
-                                is_admin,
-                                facility.json()['name'])
-                            try {
-                                this.groupservice.getComputeCentersDetails(resource_id).subscribe(details => {
-                                    if (details) {
-                                        let details_array = [];
-                                        for (let detail in details) {
-                                            let detail_as_string = detail + ': ' + details[detail];
-                                            details_array.push(detail_as_string);
-                                        }
-                                        newProject.ComputecenterDetails = details_array;
-                                    }
-                                    this.projects.push(newProject);
+                this.groupservice.getFacilityByGroup(group["name"]).subscribe(result => {
 
-                                })
-                            }
-                            catch(e){
-                                this.projects.push(newProject);
-                            }
-
-
-                        })
+                    let newProject = new Project(
+                        group["id"],
+                        group["name"],
+                        group["description"],
+                        dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
+                        dateDayDifference,
+                        is_pi,
+                        is_admin,
+                        result['Facility'])
+                    let details = result['Details'];
+                    let details_array = [];
+                    for (let detail in details) {
+                        let detail_tuple = [detail,details[detail]];
+                        details_array.push(detail_tuple);
                     }
-                    catch (e) {
+                    newProject.ComputecenterDetails = details_array;
 
-                        this.projects.push(new Project(
-                            group["id"],
-                            group["name"],
-                            group["description"],
-                            dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
-                            dateDayDifference,
-                            is_pi,
-                            is_admin,
-                            'None')
-                        );
+                    this.projects.push(newProject);
 
-
-                    }
                 })
 
 
@@ -200,94 +172,89 @@ export class OverviewComponent {
     }
 
 
-
-
-  public resetAddUserModal() {
-    this.addUserModalProjectID = null;
-    this.addUserModalProjectName = null;
-    this.UserModalFacility = null;
-  }
-
-  filterMembers(firstName: string, lastName: string, groupid: number) {
-    this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
-      this.filteredMembers = result;
-    })
-  }
-
-
-  getMembesOfTheProject(projectid: number, projectname: string) {
-    this.groupsmanager.getGroupRichMembers(projectid).toPromise()
-      .then(function (members_raw) {
-        return members_raw.json();
-      }).then(members => {
-      this.usersModalProjectID = projectid;
-      this.usersModalProjectName = projectname;
-      this.usersModalProjectMembers = new Array();
-      for (let member of members) {
-        let member_id = member["id"];
-        let user_id = member["userId"];
-        let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
-        this.usersModalProjectMembers.push(new ProjectMember(user_id, fullName, member_id));
-      }
-
-    });
-  }
-
-  public showMembersOfTheProject(projectid: number, projectname: string,facility:string) {
-    this.getMembesOfTheProject(projectid, projectname);
-    if (facility === 'None') {
-      this.UserModalFacility = null;
+    public resetAddUserModal() {
+        this.addUserModalProjectID = null;
+        this.addUserModalProjectName = null;
+        this.UserModalFacility = null;
     }
-    else {
-      this.UserModalFacility = facility;
+
+    filterMembers(firstName: string, lastName: string, groupid: number) {
+        this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
+            this.filteredMembers = result;
+        })
     }
-  }
 
 
-  public resetNotificaitonModal() {
-    this.notificationModalTitle = "Notification";
-    this.notificationModalMessage = "Please wait...";
-    this.notificationModalIsClosable = false;
-    this.notificationModalType = "info";
-  }
+    getMembesOfTheProject(projectid: number, projectname: string) {
+        this.groupsmanager.getGroupRichMembers(projectid).toPromise()
+            .then(function (members_raw) {
+                return members_raw.json();
+            }).then(members => {
+            this.usersModalProjectID = projectid;
+            this.usersModalProjectName = projectname;
+            this.usersModalProjectMembers = new Array();
+            for (let member of members) {
+                let member_id = member["id"];
+                let user_id = member["userId"];
+                let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
+                this.usersModalProjectMembers.push(new ProjectMember(user_id, fullName, member_id));
+            }
 
-  public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
-    this.notificationModalTitle = title;
-    this.notificationModalMessage = message;
-    this.notificationModalIsClosable = closable;
-    this.notificationModalType = type;
-  }
+        });
+    }
 
-  public makeNotificationModalClosable(closable: boolean) {
-    this.notificationModalIsClosable = closable;
-  }
-
-  public changeNotificationModalTitle(title: string) {
-    this.notificationModalTitle = title;
-  }
-
-  public changeNotificationModalMessage(message: string) {
-    this.notificationModalMessage = message;
-  }
-
-  public changeNotificationModalType(type: string) {
-    this.notificationModalType = type;
-  }
-
-  public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) {
-      this.addUserModalProjectID = projectid;
-      this.addUserModalProjectName = projectname;
-      if (facility === 'None') {
-          this.UserModalFacility = null;
-      }
-      else {
-          this.UserModalFacility = facility;
-
-      }
-  }
+    public showMembersOfTheProject(projectid: number, projectname: string, facility: string) {
+        this.getMembesOfTheProject(projectid, projectname);
+        if (facility === 'None') {
+            this.UserModalFacility = null;
+        }
+        else {
+            this.UserModalFacility = facility;
+        }
+    }
 
 
+    public resetNotificaitonModal() {
+        this.notificationModalTitle = "Notification";
+        this.notificationModalMessage = "Please wait...";
+        this.notificationModalIsClosable = false;
+        this.notificationModalType = "info";
+    }
 
+    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
+        this.notificationModalTitle = title;
+        this.notificationModalMessage = message;
+        this.notificationModalIsClosable = closable;
+        this.notificationModalType = type;
+    }
+
+    public makeNotificationModalClosable(closable: boolean) {
+        this.notificationModalIsClosable = closable;
+    }
+
+    public changeNotificationModalTitle(title: string) {
+        this.notificationModalTitle = title;
+    }
+
+    public changeNotificationModalMessage(message: string) {
+        this.notificationModalMessage = message;
+    }
+
+    public changeNotificationModalType(type: string) {
+        this.notificationModalType = type;
+    }
+
+    public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) {
+        this.addUserModalProjectID = projectid;
+        this.addUserModalProjectName = projectname;
+        if (facility === 'None') {
+            this.UserModalFacility = null;
+        }
+        else {
+            this.UserModalFacility = facility;
+
+        }
+    }
 
 
     public addMember(groupid: number, memberid: number, firstName: string, lastName: string) {
@@ -304,17 +271,17 @@ export class OverviewComponent {
         });
     }
 
-    public removeMember(groupid: number, memberid: number,name:string) {
+    public removeMember(groupid: number, memberid: number, name: string) {
         this.groupsmanager.removeMember(groupid, memberid).toPromise()
             .then(result => {
                 if (result.status == 200) {
                     this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
 
                 } else {
-                    this.updateNotificaitonModal("Failed", "Member"  + name + " could not be removed !", true, "danger");
+                    this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
                 }
             }).catch(error => {
-            this.updateNotificaitonModal("Failed", "Member"  + name + " could not be removed !", true, "danger");
+            this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
         });
     }
 

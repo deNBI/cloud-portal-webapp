@@ -325,7 +325,21 @@
                           <td>Last status changed</td>
                           <td>{{ application.DateStatusChanged }}</td>
                         </tr>
+                                               <tr *ngIf="application.ComputeCenterDetails">
+                                                    <td>Facility Details</td>
+                                                    <td>
+                                                        <ul>
+                                                            <li>Name: {{application.ComputeCenter}}</li>
+                                                            <li *ngFor="let details of application.ComputeCenterDetails">
+                                                                {{details[0]}}: <a target="_blank"
+                                                                                   *ngIf="details[0] == 'Login'"
+                                                                                   href="{{details[1]}}">{{details[1]}}</a>
+                                                                <span *ngIf="details[0] != 'Login'">{{details[1]}}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
 
+                                                </tr>
 
                       </table>
 

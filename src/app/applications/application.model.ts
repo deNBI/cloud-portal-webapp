@@ -17,10 +17,9 @@ export class Application {
   private _UserEmail: number;
   private _Status: number;
   private _ComputeCenter: string;
-
   private _OpenStackProject: boolean;
+  private _ComputeCenterDetails:[string,string][];
 
-  private  _ComputeCenterDetails:{};
 
 
   constructor() {
@@ -39,7 +38,7 @@ export class Application {
     get ComputeCenterDetails(){
     return this._ComputeCenterDetails;
   }
-  set ComputecenterDetails(value:{}){
+  set ComputecenterDetails(value:[string,string][]){
     this._ComputeCenterDetails=value;
   }
 
