@@ -132,15 +132,17 @@
                                     <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
                                         {{ application.User }}
                                     </td>
+                                  <td>{{application.Institute}}</td>
 
-
+                      <td>
                       <select class="form-control" #selectedComputeCenter>
                         <option value="undefined"  selected> no center</option>
                         <option *ngFor="let computeCenter of computeCenters"> {{computeCenter}}</option>
                       </select>
+                                  </td>
 
 
-                  </td>
+
                   <td>
                     <button
                       (click)='createGroup(application.Name, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value,application.OpenStackProject); notificationModal.show();'
@@ -156,7 +158,7 @@
 
                                     </td>
                                     <td>
-                                  
+
 
                     <button (click)="switchCollapseStatus('application_review-' + application.Id)"
                             type="button" class="btn btn-secondary">
@@ -251,7 +253,7 @@
           <table class="table table-striped table-hover">
             <thead>
             <tr>
-        
+
                             <th>Project Name</th>
                             <th>Short Name</th>
                             <th>Date submitted</th>
