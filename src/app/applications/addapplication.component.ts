@@ -21,12 +21,31 @@ export class AddApplicationComponent ***REMOVED***
     public notificationModalIsClosable: boolean = false;
     public notificationModalStay: boolean = true;
 
+    showjustvm: boolean;
+    project_application_openstack_project: boolean;
+
+
     csrf: Object = Cookie.get("csrftoken");
     special_hardware: SpecialHardware[] = new Array();
 
     constructor(private specialhardwareservice: SpecialHardwareService,
                 private  applicationsservice: ApplicationsService) ***REMOVED***
         this.getSpecialHardware();
+
+    ***REMOVED***
+
+    chosenProjectType(checkbox: number) ***REMOVED***
+        if (checkbox == 0) ***REMOVED***
+            if (this.project_application_openstack_project) ***REMOVED***
+                this.showjustvm = false;
+            ***REMOVED***
+        ***REMOVED***
+
+        else if (checkbox == 1) ***REMOVED***
+            if (this.showjustvm) ***REMOVED***
+                this.project_application_openstack_project = false;
+            ***REMOVED***
+        ***REMOVED***
     ***REMOVED***
 
     getSpecialHardware() ***REMOVED***
@@ -42,14 +61,15 @@ export class AddApplicationComponent ***REMOVED***
     ***REMOVED***
 
     onSubmit(f: NgForm) ***REMOVED***
+
         let values = ***REMOVED******REMOVED***;
         values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
         for (let v in f.controls) ***REMOVED***
-
             if (f.controls[v].value) ***REMOVED***
                 values[v] = f.controls[v].value;
             ***REMOVED***
         ***REMOVED***
+
 
         this.applicationsservice.addNewApplication(values).toPromise()
             .then(result => ***REMOVED***
@@ -59,9 +79,8 @@ export class AddApplicationComponent ***REMOVED***
             this.updateNotificaitonModal("Failed", "The application was not submitted, please check the required fields and try again.", true, "danger");
             this.notificationModalStay = true;
         ***REMOVED***)
-
-
     ***REMOVED***
+
 
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
         this.notificationModalTitle = title;

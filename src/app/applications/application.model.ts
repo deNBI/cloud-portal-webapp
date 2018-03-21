@@ -18,11 +18,23 @@ export class Application ***REMOVED***
   private _UserEmail: number;
   private _Status: number;
   private _ComputeCenter: string;
-   private _ComputeCenterDetails:[string,string][];
+  private _OpenStackProject: boolean;
+  private _ComputeCenterDetails:[string,string][];
+
 
 
   constructor() ***REMOVED***
   ***REMOVED***
+
+
+  get OpenStackProject(): boolean ***REMOVED***
+    return this._OpenStackProject
+  ***REMOVED***
+
+  set OpenStackProject(value: boolean) ***REMOVED***
+    this._OpenStackProject = value;
+  ***REMOVED***
+
 
     get ComputeCenterDetails()***REMOVED***
     return this._ComputeCenterDetails;
@@ -30,6 +42,7 @@ export class Application ***REMOVED***
   set ComputecenterDetails(value:[string,string][])***REMOVED***
     this._ComputeCenterDetails=value;
   ***REMOVED***
+
   get ComputeCenter(): string ***REMOVED***
     return this._ComputeCenter
   ***REMOVED***
