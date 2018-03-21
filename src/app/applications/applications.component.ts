@@ -55,6 +55,7 @@ export class ApplicationsComponent {
         this.getSpecialHardware();
         this.getComputeCenters();
 
+
     }
 
     getComputeCenters() {
@@ -84,6 +85,7 @@ export class ApplicationsComponent {
                     a.DiskSpace = aj["project_application_disk_space"];
                     a.ObjectStorage = aj["project_application_object_storage"];
                     a.SpecialHardware = aj["project_application_special_hardware"];
+                    a.OpenStackProject = aj["project_application_openstack_project"];
 
                     this.user_applications.push(a)
                 }
@@ -161,6 +163,7 @@ export class ApplicationsComponent {
                                 a.User = aj["project_application_user"]["username"];
                                 a.UserEmail = aj["project_application_user"]["email"];
                                 a.Status = aj["project_application_status"];
+                                a.OpenStackProject = aj["project_application_openstack_project"];
                                 if (a.Status !== 1) {
                                     this.groupservice.getFacilityByGroup(a.Name).subscribe(result => {
 
@@ -233,7 +236,7 @@ export class ApplicationsComponent {
         this.notificationModalType = type;
     }
 
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center) {
+    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project) {
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
         let manager_member_user_id: number;
@@ -261,6 +264,7 @@ export class ApplicationsComponent {
         }).then(null_result => {
             //setting approved status for Perun Group
             this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
+            this.groupsmanager.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
@@ -289,6 +293,7 @@ export class ApplicationsComponent {
             });
     }
 
+
     public activeApplicationsAvailable(): boolean {
         for (let application of this.all_applications) {
             if (application.Status == 1) {
@@ -296,7 +301,7 @@ export class ApplicationsComponent {
             }
         }
         return false;
-    }
+}
 
     public comingSoon() {
         alert("This functinality will be implemented soon!")

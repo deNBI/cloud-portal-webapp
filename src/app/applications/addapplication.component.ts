@@ -21,12 +21,31 @@ export class AddApplicationComponent {
     public notificationModalIsClosable: boolean = false;
     public notificationModalStay: boolean = true;
 
+    showjustvm: boolean;
+    project_application_openstack_project: boolean;
+
+
     csrf: Object = Cookie.get("csrftoken");
     special_hardware: SpecialHardware[] = new Array();
 
     constructor(private specialhardwareservice: SpecialHardwareService,
                 private  applicationsservice: ApplicationsService) {
         this.getSpecialHardware();
+
+    }
+
+    chosenProjectType(checkbox: number) {
+        if (checkbox == 0) {
+            if (this.project_application_openstack_project) {
+                this.showjustvm = false;
+            }
+        }
+
+        else if (checkbox == 1) {
+            if (this.showjustvm) {
+                this.project_application_openstack_project = false;
+            }
+        }
     }
 
     getSpecialHardware() {
@@ -42,14 +61,15 @@ export class AddApplicationComponent {
     }
 
     onSubmit(f: NgForm) {
+
         let values = {};
         values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
         for (let v in f.controls) {
-
             if (f.controls[v].value) {
                 values[v] = f.controls[v].value;
             }
         }
+
 
         this.applicationsservice.addNewApplication(values).toPromise()
             .then(result => {
@@ -59,9 +79,8 @@ export class AddApplicationComponent {
             this.updateNotificaitonModal("Failed", "The application was not submitted, please check the required fields and try again.", true, "danger");
             this.notificationModalStay = true;
         })
-
-
     }
+
 
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
         this.notificationModalTitle = title;
