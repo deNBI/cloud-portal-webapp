@@ -1,6 +1,7 @@
 export class Application {
   private _Id: number;
   private _Name: string;
+  private _Shortname: string;
   private _Institute: string;
   private _Workgroup: string;
   private _Lifetime: number;
@@ -17,18 +18,31 @@ export class Application {
   private _UserEmail: number;
   private _Status: number;
   private _ComputeCenter: string;
-  private  _ComputeCenterDetails:{};
+  private _OpenStackProject: boolean;
+  private _ComputeCenterDetails:[string,string][];
+
 
 
   constructor() {
   }
 
+
+  get OpenStackProject(): boolean {
+    return this._OpenStackProject
+  }
+
+  set OpenStackProject(value: boolean) {
+    this._OpenStackProject = value;
+  }
+
+
     get ComputeCenterDetails(){
     return this._ComputeCenterDetails;
   }
-  set ComputecenterDetails(value:{}){
+  set ComputecenterDetails(value:[string,string][]){
     this._ComputeCenterDetails=value;
   }
+
   get ComputeCenter(): string {
     return this._ComputeCenter
   }
@@ -51,6 +65,13 @@ export class Application {
 
   set Name(value: string) {
     this._Name = value;
+  }
+  get Shortname(): string {
+    return this._Shortname;
+  }
+
+  set Shortname(value: string) {
+    this._Shortname = value;
   }
 
   get Institute(): string {

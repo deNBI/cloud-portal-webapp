@@ -31,6 +31,17 @@ export class GroupService {
 
   }
 
+    getFacilityByGroup(groupname:string): Observable<any> {
+
+    return this.http.get(this.settings.getApiBaseURL() + 'getFacilityByGroup/', {
+      withCredentials: true,
+        params:{groupname:groupname}
+    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+  }
+
+
+
   assignGroupToResource(groupid: string, computecenter: string): Observable<any> {
     let urlSearchParams = new URLSearchParams();
     let header = new Headers({
