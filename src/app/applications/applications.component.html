@@ -17,6 +17,7 @@
                         <thead>
                         <tr>
                             <th>Project Name</th>
+                            <th>Short Name</th>
                             <th>Lifetime</th>
                             <th>Date submitted</th>
                             <th>Status</th>
@@ -27,87 +28,93 @@
                         <ng-container *ngFor="let application of user_applications">
                             <tr>
                                 <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** application.Lifetime ***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** application.Status ***REMOVED******REMOVED***</td>
                                 <td>
 
-                                    <button (click)="switchCollapseStatus('user_application-' + application.Id)"
-                                            type="button" class="btn btn-secondary">
-                                        <i class="fa fa-info-circle"></i>&nbsp;
-                                        <span [hidden]="!getCollapseStatus('user_application-' + application.Id)">Show</span><span
-                                            [hidden]="getCollapseStatus('user_application-' + application.Id)">Hide</span>
-                                        Information
-                                    </button>
+                  <button (click)="switchCollapseStatus('user_application-' + application.Id)"
+                          type="button" class="btn btn-secondary">
+                    <i class="fa fa-info-circle"></i>&nbsp;
+                    <span [hidden]="!getCollapseStatus('user_application-' + application.Id)">Show</span><span
+                    [hidden]="getCollapseStatus('user_application-' + application.Id)">Hide</span>
+                    Information
+                  </button>
 
-                                </td>
-                            </tr>
+                </td>
+              </tr>
 
-                            <tr>
-                                <td [class.collapse_no_margin]="getCollapseStatus('user_application-' + application.Id)"
-                                    colspan="6">
-                                    <div id="user_application-***REMOVED******REMOVED*** application.Id ***REMOVED******REMOVED***"
-                                         [class.collapse]="getCollapseStatus('user_application-' + application.Id)">
+              <tr>
+                <td [class.collapse_no_margin]="getCollapseStatus('user_application-' + application.Id)"
+                    colspan="6">
+                  <div id="user_application-***REMOVED******REMOVED*** application.Id ***REMOVED******REMOVED***"
+                       [class.collapse]="getCollapseStatus('user_application-' + application.Id)">
 
-                                        <table class="table table-striped">
-                                            <tr>
-                                                <td>Description</td>
-                                                <td>***REMOVED******REMOVED*** application.Description ***REMOVED******REMOVED***</td>
-                                            </tr>
-                                            <tr>
-                                                <td>VMs</td>
-                                                <td>***REMOVED******REMOVED*** application.VMsRequested ***REMOVED******REMOVED*** VMs</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Cores/VM</td>
-                                                <td>***REMOVED******REMOVED*** application.CoresPerVM ***REMOVED******REMOVED*** Cores per VM</td>
-                                            </tr>
-                                            <tr>
-                                                <td>RAM</td>
-                                                <td>***REMOVED******REMOVED*** application.RamPerVM ***REMOVED******REMOVED*** GB</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Disk</td>
-                                                <td>***REMOVED******REMOVED*** application.DiskSpace ***REMOVED******REMOVED*** GB</td>
-                                            </tr>
-                                            <tr>
-                                                <td>ObjectStorage</td>
-                                                <td>***REMOVED******REMOVED*** application.ObjectStorage ***REMOVED******REMOVED*** GB</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Special Hardware</td>
-                                                <td><span style="margin-right: 5px;" class="badge badge-primary"
-                                                          *ngFor="let sh of application.SpecialHardware">***REMOVED******REMOVED*** sh["special_hardware_name"] ***REMOVED******REMOVED***</span>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </td>
-                            </tr>
-                        </ng-container>
-                        </tbody>
+                    <table class="table table-striped">
+                      <tr>
+                        <td>Description</td>
+                        <td>***REMOVED******REMOVED*** application.Description ***REMOVED******REMOVED***</td>
+                      </tr>
+                      <tr>
+                        <td>VMs</td>
+                        <td>***REMOVED******REMOVED*** application.VMsRequested ***REMOVED******REMOVED*** VMs</td>
+                      </tr>
+                      <tr>
+                        <td>Cores/VM</td>
+                        <td>***REMOVED******REMOVED*** application.CoresPerVM ***REMOVED******REMOVED*** Cores per VM</td>
+                      </tr>
+                      <tr>
+                        <td>RAM</td>
+                        <td>***REMOVED******REMOVED*** application.RamPerVM ***REMOVED******REMOVED*** GB</td>
+                      </tr>
+                      <tr>
+                        <td>Disk</td>
+                        <td>***REMOVED******REMOVED*** application.DiskSpace ***REMOVED******REMOVED*** GB</td>
+                      </tr>
+                      <tr>
+                        <td>ObjectStorage</td>
+                        <td>***REMOVED******REMOVED*** application.ObjectStorage ***REMOVED******REMOVED*** GB</td>
+                      </tr>
+                      <tr>
+                        <td>Special Hardware</td>
+                        <td><span style="margin-right: 5px;" class="badge badge-primary"
+                                  *ngFor="let sh of application.SpecialHardware">***REMOVED******REMOVED*** sh["special_hardware_name"] ***REMOVED******REMOVED***</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>OpenStackProject</td>
+                        <td>***REMOVED******REMOVED***application.OpenStackProject***REMOVED******REMOVED***</td>
+                      </tr>
                     </table>
-                </div>
-
-            </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            </tbody>
+          </table>
         </div>
 
-        <div *ngIf="is_vo_admin == true" class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fa fa-align-justify"></i> Applications for review
-                </div>
-                <div class="card-block" *ngIf="this.activeApplicationsAvailable() == false">
-                    <div class="alert alert-success" role="alert">
-                        <strong>No new Applications!</strong> There are no new project applications for review.
-                    </div>
-                </div>
+      </div>
+    </div>
+
+    <div *ngIf="is_vo_admin == true" class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Applications for review
+        </div>
+        <div class="card-block" *ngIf="this.activeApplicationsAvailable() == false">
+          <div class="alert alert-success" role="alert">
+            <strong>No new Applications!</strong> There are no new project applications for review.
+          </div>
+        </div>
 
                 <div *ngIf="this.activeApplicationsAvailable() == true" class="card-block">
                     <table class="table table-striped">
                         <thead>
                         <tr>
                             <th>Project Name</th>
+                            <th>Short Name</th>
                             <th>Date submitted</th>
                             <th>User</th>
                             <th>Institute</th>
@@ -120,125 +127,133 @@
                             <ng-container *ngIf="application.Status == 1">
                                 <tr>
                                     <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
+                                    <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>
                                     <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
                                         ***REMOVED******REMOVED*** application.User ***REMOVED******REMOVED***
                                     </td>
+                                  <td>***REMOVED******REMOVED***application.Institute***REMOVED******REMOVED***</td>
 
-                                    <td>***REMOVED******REMOVED*** application.Institute ***REMOVED******REMOVED***</td>
-                                    <td>
-
-                                        <select class="form-control" #selectedComputeCenter>
-                                            <option value="undefined" selected> no center</option>
-                                            <option *ngFor="let computeCenter of computeCenters"> ***REMOVED******REMOVED***computeCenter***REMOVED******REMOVED***
-                                            </option>
-                                        </select>
-
-
-                                    </td>
-                                    <td>
-                                        <button
-                                                (click)='createGroup(application.Name, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();'
-                                                type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
-                                            Approve
-                                            & Create
-                                        </button>
-
-                                        <button (click)='declineApplication(application.Id)'
-                                                type="button" class="btn btn-secondary"><i class="fa fa-close"></i>&nbsp;
-                                            Decline
-                                        </button>
-
-                                        <button (click)="switchCollapseStatus('application_review-' + application.Id)"
-                                                type="button" class="btn btn-secondary">
-                                            <i class="fa fa-info-circle"></i>&nbsp;
-                                            <span [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
-                                                [hidden]="getCollapseStatus('application_review-' + application.Id)">Hide</span>
-                                            Information
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + application.Id)"
-                                        colspan="6">
-                                        <div id="application_review-***REMOVED******REMOVED*** application.Id ***REMOVED******REMOVED***"
-                                             [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
-
-                                            <table class="table table-striped">
-                                                <tr>
-                                                    <td>Description</td>
-                                                    <td>***REMOVED******REMOVED*** application.Description ***REMOVED******REMOVED***</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Workgroup</td>
-                                                    <td>***REMOVED******REMOVED*** application.Workgroup ***REMOVED******REMOVED***</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Lifetime</td>
-                                                    <td>***REMOVED******REMOVED*** application.Lifetime ***REMOVED******REMOVED*** months</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>VMs</td>
-                                                    <td>***REMOVED******REMOVED*** application.VMsRequested ***REMOVED******REMOVED*** VMs</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Cores/VM</td>
-                                                    <td>***REMOVED******REMOVED*** application.CoresPerVM ***REMOVED******REMOVED*** Cores per VM</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>RAM</td>
-                                                    <td>***REMOVED******REMOVED*** application.RamPerVM ***REMOVED******REMOVED*** GB</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Disk</td>
-                                                    <td>***REMOVED******REMOVED*** application.DiskSpace ***REMOVED******REMOVED*** GB</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>ObjectStorage</td>
-                                                    <td>***REMOVED******REMOVED*** application.ObjectStorage ***REMOVED******REMOVED*** GB</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Special Hardware</td>
-                                                    <td><span style="margin-right: 5px;" class="badge badge-primary"
-                                                              *ngFor="let sh of application.SpecialHardware">***REMOVED******REMOVED*** sh["special_hardware_name"] ***REMOVED******REMOVED***</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Last status changed</td>
-                                                    <td>***REMOVED******REMOVED*** application.DateStatusChanged ***REMOVED******REMOVED***</td>
-                                                </tr>
+                      <td>
+                      <select class="form-control" #selectedComputeCenter>
+                        <option value="undefined"  selected> no center</option>
+                        <option *ngFor="let computeCenter of computeCenters"> ***REMOVED******REMOVED***computeCenter***REMOVED******REMOVED***</option>
+                      </select>
+                                  </td>
 
 
-                                            </table>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </ng-container>
-                        </ng-container>
-                        </tbody>
-                    </table>
-                </div>
 
-            </div>
+                  <td>
+                    <button
+                      (click)='createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value,application.OpenStackProject); notificationModal.show();'
+                      type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
+                      Approve
+                      & Create
+                    </button>
+
+                    <button (click)='declineApplication(application.Id)'
+                            type="button" class="btn btn-secondary"><i class="fa fa-close"></i>&nbsp;
+                      Decline
+                    </button>
+
+
+
+                    <button (click)="switchCollapseStatus('application_review-' + application.Id)"
+                            type="button" class="btn btn-secondary">
+                      <i class="fa fa-info-circle"></i>&nbsp;
+                      <span [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
+                      [hidden]="getCollapseStatus('application_review-' + application.Id)">Hide</span>
+                      Information
+                    </button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + application.Id)"
+                      colspan="6">
+                    <div id="application_review-***REMOVED******REMOVED*** application.Id ***REMOVED******REMOVED***"
+                         [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
+
+                      <table class="table table-striped">
+                        <tr>
+                          <td>Description</td>
+                          <td>***REMOVED******REMOVED*** application.Description ***REMOVED******REMOVED***</td>
+                        </tr>
+                        <tr>
+                          <td>Workgroup</td>
+                          <td>***REMOVED******REMOVED*** application.Workgroup ***REMOVED******REMOVED***</td>
+                        </tr>
+                        <tr>
+                          <td>Lifetime</td>
+                          <td>***REMOVED******REMOVED*** application.Lifetime ***REMOVED******REMOVED*** months</td>
+                        </tr>
+                        <tr>
+                          <td>VMs</td>
+                          <td>***REMOVED******REMOVED*** application.VMsRequested ***REMOVED******REMOVED*** VMs</td>
+                        </tr>
+                        <tr>
+                          <td>Cores/VM</td>
+                          <td>***REMOVED******REMOVED*** application.CoresPerVM ***REMOVED******REMOVED*** Cores per VM</td>
+                        </tr>
+                        <tr>
+                          <td>RAM</td>
+                          <td>***REMOVED******REMOVED*** application.RamPerVM ***REMOVED******REMOVED*** GB</td>
+                        </tr>
+                        <tr>
+                          <td>Disk</td>
+                          <td>***REMOVED******REMOVED*** application.DiskSpace ***REMOVED******REMOVED*** GB</td>
+                        </tr>
+                        <tr>
+                          <td>ObjectStorage</td>
+                          <td>***REMOVED******REMOVED*** application.ObjectStorage ***REMOVED******REMOVED*** GB</td>
+                        </tr>
+                        <tr>
+                          <td>Special Hardware</td>
+                          <td><span style="margin-right: 5px;" class="badge badge-primary"
+                                    *ngFor="let sh of application.SpecialHardware">***REMOVED******REMOVED*** sh["special_hardware_name"] ***REMOVED******REMOVED***</span>
+                          </td>
+                        </tr>
+                         <tr>
+                        <td>OpenStackProject</td>
+                        <td>***REMOVED******REMOVED***application.OpenStackProject***REMOVED******REMOVED***</td>
+                      </tr>
+                        <tr>
+                          <td>Last status changed</td>
+                          <td>***REMOVED******REMOVED*** application.DateStatusChanged ***REMOVED******REMOVED***</td>
+                        </tr>
+
+
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+            </tbody>
+          </table>
         </div>
 
-        <div *ngIf="is_vo_admin == true" class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fa fa-align-justify"></i> Application history
-                </div>
-                <div class="card-block" *ngIf="all_applications.length == 0">
-                    <div class="alert alert-warning" role="alert">
-                        <strong>No Applications!</strong> There are no applications at all!
-                    </div>
-                </div>
+      </div>
+    </div>
 
-                <div *ngIf="all_applications.length > 0" class="card-block">
-                    <table class="table table-striped table-hover">
-                        <thead>
-                        <tr>
+    <div *ngIf="is_vo_admin == true" class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Application history
+        </div>
+        <div class="card-block" *ngIf="all_applications.length == 0">
+          <div class="alert alert-warning" role="alert">
+            <strong>No Applications!</strong> There are no applications at all!
+          </div>
+        </div>
+
+        <div *ngIf="all_applications.length > 0" class="card-block">
+          <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+
                             <th>Project Name</th>
+                            <th>Short Name</th>
                             <th>Date submitted</th>
                             <th>User</th>
                             <th>Institute</th>
@@ -252,6 +267,7 @@
                             <ng-container *ngIf="application.Status != 1">
                                 <tr>
                                     <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
+                                    <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED*** application.User ***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED*** application.Institute ***REMOVED******REMOVED***</td>
@@ -317,57 +333,61 @@
                                                     <td>***REMOVED******REMOVED*** application.DateStatusChanged ***REMOVED******REMOVED***</td>
                                                 </tr>
                                                 <tr *ngIf="application.ComputeCenterDetails">
+
                                                     <td>Facility Details</td>
                                                     <td>
-                                                    <ul>
-                                                        <li>Name: ***REMOVED******REMOVED***application.ComputeCenter***REMOVED******REMOVED***</li>
-                                                        <li *ngFor="let detail of application.ComputeCenterDetails">
-                                                            ***REMOVED******REMOVED***detail***REMOVED******REMOVED***
-                                                        </li>
-                                                    </ul>
+                                                        <ul>
+                                                            <li>Name: ***REMOVED******REMOVED***application.ComputeCenter***REMOVED******REMOVED***</li>
+                                                            <li *ngFor="let details of application.ComputeCenterDetails">
+                                                                ***REMOVED******REMOVED***details[0]***REMOVED******REMOVED***: <a target="_blank"
+                                                                                   *ngIf="details[0] == 'Login'"
+                                                                                   href="***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</a>
+                                                                <span *ngIf="details[0] != 'Login'">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</span>
+                                                            </li>
+                                                        </ul>
                                                     </td>
 
                                                 </tr>
 
+                      </table>
 
-                                            </table>
+                    </div>
+                  </td>
+                </tr>
 
-                                        </div>
-                                    </td>
-                                </tr>
-
-                            </ng-container>
+              </ng-container>
 
 
-                        </ng-container>
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
+            </ng-container>
+            </tbody>
+          </table>
         </div>
-        <!--/.col-->
+
+      </div>
     </div>
+    <!--/.col-->
+  </div>
 </div>
 
 <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
-                    ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button *ngIf="notificationModalIsClosable == true" type="button"
-                        (click)="notificationModal.hide();" type="reset"
-                        class="btn  btn-secondary"> Close
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
+          ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="notificationModalIsClosable == true" type="button"
+                (click)="notificationModal.hide();" type="reset"
+                class="btn  btn-secondary"> Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+

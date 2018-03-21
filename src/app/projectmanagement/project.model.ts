@@ -15,7 +15,7 @@ export class Project ***REMOVED***
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
   private _ComputeCenter:string;
-  private _ComputeCenterDetails:***REMOVED******REMOVED***;
+  private _ComputeCenterDetails:[string,string][];
 
 
   constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: string) ***REMOVED***
@@ -35,7 +35,7 @@ export class Project ***REMOVED***
   get ComputeCenterDetails()***REMOVED***
     return this._ComputeCenterDetails;
   ***REMOVED***
-  set ComputecenterDetails(value:***REMOVED******REMOVED***)***REMOVED***
+  set ComputecenterDetails(value:[string,string][])***REMOVED***
     this._ComputeCenterDetails=value;
   ***REMOVED***
   get ComputeCenter(): string ***REMOVED***

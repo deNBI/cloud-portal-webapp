@@ -21,54 +21,54 @@ import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.servi
 ***REMOVED***)
 export class OverviewComponent ***REMOVED***
 
-  debug_module = false;
+    debug_module = false;
 
-  @Input() voRegistrationLink: string = environment.voRegistrationLink;
+    @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
-  userprojects: ***REMOVED******REMOVED***;
-  userid: number;
-  member_id: number;
-  user_data: ***REMOVED******REMOVED***;
-  admingroups: ***REMOVED******REMOVED***;
-  adminvos: ***REMOVED******REMOVED***;
-  filteredMembers = null;
-  projects: Project[] = new Array();
-
-  // modal variables for User list
-  public usersModal;
-  public usersModalProjectMembers: ProjectMember[] = new Array;
-  public usersModalProjectID: number;
-  public usersModalProjectName: string;
-
-  //modal variables for Add User Modal
-  public addUserModal;
-  public addUserModalProjectID: number;
-  public addUserModalProjectName: string;
-  public UserModalFacility: string;
+    userprojects: ***REMOVED******REMOVED***;
+    userid: number;
+    member_id: number;
+    user_data: ***REMOVED******REMOVED***;
+    admingroups: ***REMOVED******REMOVED***;
+    adminvos: ***REMOVED******REMOVED***;
+    filteredMembers = null;
+    projects: Project[] = new Array();
 
 
-  //notification Modal variables
-  public notificationModal;
-  public notificationModalTitle: string = "Notification";
-  public notificationModalMessage: string = "Please wait...";
-  public notificationModalType: string = "info";
-  public notificationModalIsClosable: boolean = false;
+    // modal variables for User list
+    public usersModal;
+    public usersModalProjectMembers: ProjectMember[] = new Array;
+    public usersModalProjectID: number;
+    public usersModalProjectName: string;
 
-  constructor(private authzresolver: AuthzResolver,
-              private perunsettings: PerunSettings,
-              private useresmanager: UsersManager,
-              private groupsmanager: GroupsManager,
-              private membersmanager: MembersManager,
-              private  resourceManager: ResourcesManager,
-             private groupservice: GroupService) ***REMOVED***
-    this.getUserProjects(groupsmanager, membersmanager, useresmanager);
-  ***REMOVED***
+    //modal variables for Add User Modal
+    public addUserModal;
+    public addUserModalProjectID: number;
+    public addUserModalProjectName: string;
+    public UserModalFacility: string;
 
-  public updateUserProjects() ***REMOVED***
-    this.projects = [];
-    this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
-  ***REMOVED***
 
+    //notification Modal variables
+    public notificationModal;
+    public notificationModalTitle: string = "Notification";
+    public notificationModalMessage: string = "Please wait...";
+    public notificationModalType: string = "info";
+    public notificationModalIsClosable: boolean = false;
+
+    constructor(private authzresolver: AuthzResolver,
+                private perunsettings: PerunSettings,
+                private useresmanager: UsersManager,
+                private groupsmanager: GroupsManager,
+                private membersmanager: MembersManager,
+                private  resourceManager: ResourcesManager,
+                private groupservice: GroupService) ***REMOVED***
+        this.getUserProjects(groupsmanager, membersmanager, useresmanager);
+    ***REMOVED***
+
+    public updateUserProjects() ***REMOVED***
+        this.projects = [];
+        this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
+    ***REMOVED***
 
 
     getUserProjects(groupsmanager: GroupsManager,
@@ -141,55 +141,27 @@ export class OverviewComponent ***REMOVED***
                 ***REMOVED*** else ***REMOVED***
                     is_pi = true;
                 ***REMOVED***
-                this.resourceManager.getGroupAssignedResources(group['id']).subscribe(resource => ***REMOVED***
-                    try ***REMOVED***
-                        let resource_id = resource.json()[0]['id'];
-                        this.resourceManager.getFacilityByResource(resource_id).subscribe(facility => ***REMOVED***
-                            let newProject = new Project(
-                                group["id"],
-                                group["name"],
-                                group["description"],
-                                dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
-                                dateDayDifference,
-                                is_pi,
-                                is_admin,
-                                facility.json()['name'])
-                            try ***REMOVED***
-                                this.groupservice.getComputeCentersDetails(resource_id).subscribe(details => ***REMOVED***
-                                    if (details) ***REMOVED***
-                                        let details_array = [];
-                                        for (let detail in details) ***REMOVED***
-                                            let detail_as_string = detail + ': ' + details[detail];
-                                            details_array.push(detail_as_string);
-                                        ***REMOVED***
-                                        newProject.ComputecenterDetails = details_array;
-                                    ***REMOVED***
-                                    this.projects.push(newProject);
+                this.groupservice.getFacilityByGroup(group["name"]).subscribe(result => ***REMOVED***
 
-                                ***REMOVED***)
-                            ***REMOVED***
-                            catch(e)***REMOVED***
-                                this.projects.push(newProject);
-                            ***REMOVED***
-
-
-                        ***REMOVED***)
+                    let newProject = new Project(
+                        group["id"],
+                        group["name"],
+                        group["description"],
+                        dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
+                        dateDayDifference,
+                        is_pi,
+                        is_admin,
+                        result['Facility'])
+                    let details = result['Details'];
+                    let details_array = [];
+                    for (let detail in details) ***REMOVED***
+                        let detail_tuple = [detail,details[detail]];
+                        details_array.push(detail_tuple);
                     ***REMOVED***
-                    catch (e) ***REMOVED***
+                    newProject.ComputecenterDetails = details_array;
 
-                        this.projects.push(new Project(
-                            group["id"],
-                            group["name"],
-                            group["description"],
-                            dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
-                            dateDayDifference,
-                            is_pi,
-                            is_admin,
-                            'None')
-                        );
+                    this.projects.push(newProject);
 
-
-                    ***REMOVED***
                 ***REMOVED***)
 
 
@@ -200,94 +172,89 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-
-
-  public resetAddUserModal() ***REMOVED***
-    this.addUserModalProjectID = null;
-    this.addUserModalProjectName = null;
-    this.UserModalFacility = null;
-  ***REMOVED***
-
-  filterMembers(firstName: string, lastName: string, groupid: number) ***REMOVED***
-    this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => ***REMOVED***
-      this.filteredMembers = result;
-    ***REMOVED***)
-  ***REMOVED***
-
-
-  getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
-    this.groupsmanager.getGroupRichMembers(projectid).toPromise()
-      .then(function (members_raw) ***REMOVED***
-        return members_raw.json();
-      ***REMOVED***).then(members => ***REMOVED***
-      this.usersModalProjectID = projectid;
-      this.usersModalProjectName = projectname;
-      this.usersModalProjectMembers = new Array();
-      for (let member of members) ***REMOVED***
-        let member_id = member["id"];
-        let user_id = member["userId"];
-        let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
-        this.usersModalProjectMembers.push(new ProjectMember(user_id, fullName, member_id));
-      ***REMOVED***
-
-    ***REMOVED***);
-  ***REMOVED***
-
-  public showMembersOfTheProject(projectid: number, projectname: string,facility:string) ***REMOVED***
-    this.getMembesOfTheProject(projectid, projectname);
-    if (facility === 'None') ***REMOVED***
-      this.UserModalFacility = null;
+    public resetAddUserModal() ***REMOVED***
+        this.addUserModalProjectID = null;
+        this.addUserModalProjectName = null;
+        this.UserModalFacility = null;
     ***REMOVED***
-    else ***REMOVED***
-      this.UserModalFacility = facility;
+
+    filterMembers(firstName: string, lastName: string, groupid: number) ***REMOVED***
+        this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => ***REMOVED***
+            this.filteredMembers = result;
+        ***REMOVED***)
     ***REMOVED***
-  ***REMOVED***
 
 
-  public resetNotificaitonModal() ***REMOVED***
-    this.notificationModalTitle = "Notification";
-    this.notificationModalMessage = "Please wait...";
-    this.notificationModalIsClosable = false;
-    this.notificationModalType = "info";
-  ***REMOVED***
+    getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
+        this.groupsmanager.getGroupRichMembers(projectid).toPromise()
+            .then(function (members_raw) ***REMOVED***
+                return members_raw.json();
+            ***REMOVED***).then(members => ***REMOVED***
+            this.usersModalProjectID = projectid;
+            this.usersModalProjectName = projectname;
+            this.usersModalProjectMembers = new Array();
+            for (let member of members) ***REMOVED***
+                let member_id = member["id"];
+                let user_id = member["userId"];
+                let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
+                this.usersModalProjectMembers.push(new ProjectMember(user_id, fullName, member_id));
+            ***REMOVED***
 
-  public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
-    this.notificationModalTitle = title;
-    this.notificationModalMessage = message;
-    this.notificationModalIsClosable = closable;
-    this.notificationModalType = type;
-  ***REMOVED***
+        ***REMOVED***);
+    ***REMOVED***
 
-  public makeNotificationModalClosable(closable: boolean) ***REMOVED***
-    this.notificationModalIsClosable = closable;
-  ***REMOVED***
-
-  public changeNotificationModalTitle(title: string) ***REMOVED***
-    this.notificationModalTitle = title;
-  ***REMOVED***
-
-  public changeNotificationModalMessage(message: string) ***REMOVED***
-    this.notificationModalMessage = message;
-  ***REMOVED***
-
-  public changeNotificationModalType(type: string) ***REMOVED***
-    this.notificationModalType = type;
-  ***REMOVED***
-
-  public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) ***REMOVED***
-      this.addUserModalProjectID = projectid;
-      this.addUserModalProjectName = projectname;
-      if (facility === 'None') ***REMOVED***
-          this.UserModalFacility = null;
-      ***REMOVED***
-      else ***REMOVED***
-          this.UserModalFacility = facility;
-
-      ***REMOVED***
-  ***REMOVED***
+    public showMembersOfTheProject(projectid: number, projectname: string, facility: string) ***REMOVED***
+        this.getMembesOfTheProject(projectid, projectname);
+        if (facility === 'None') ***REMOVED***
+            this.UserModalFacility = null;
+        ***REMOVED***
+        else ***REMOVED***
+            this.UserModalFacility = facility;
+        ***REMOVED***
+    ***REMOVED***
 
 
+    public resetNotificaitonModal() ***REMOVED***
+        this.notificationModalTitle = "Notification";
+        this.notificationModalMessage = "Please wait...";
+        this.notificationModalIsClosable = false;
+        this.notificationModalType = "info";
+    ***REMOVED***
 
+    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
+        this.notificationModalTitle = title;
+        this.notificationModalMessage = message;
+        this.notificationModalIsClosable = closable;
+        this.notificationModalType = type;
+    ***REMOVED***
+
+    public makeNotificationModalClosable(closable: boolean) ***REMOVED***
+        this.notificationModalIsClosable = closable;
+    ***REMOVED***
+
+    public changeNotificationModalTitle(title: string) ***REMOVED***
+        this.notificationModalTitle = title;
+    ***REMOVED***
+
+    public changeNotificationModalMessage(message: string) ***REMOVED***
+        this.notificationModalMessage = message;
+    ***REMOVED***
+
+    public changeNotificationModalType(type: string) ***REMOVED***
+        this.notificationModalType = type;
+    ***REMOVED***
+
+    public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) ***REMOVED***
+        this.addUserModalProjectID = projectid;
+        this.addUserModalProjectName = projectname;
+        if (facility === 'None') ***REMOVED***
+            this.UserModalFacility = null;
+        ***REMOVED***
+        else ***REMOVED***
+            this.UserModalFacility = facility;
+
+        ***REMOVED***
+    ***REMOVED***
 
 
     public addMember(groupid: number, memberid: number, firstName: string, lastName: string) ***REMOVED***
@@ -304,17 +271,17 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    public removeMember(groupid: number, memberid: number,name:string) ***REMOVED***
+    public removeMember(groupid: number, memberid: number, name: string) ***REMOVED***
         this.groupsmanager.removeMember(groupid, memberid).toPromise()
             .then(result => ***REMOVED***
                 if (result.status == 200) ***REMOVED***
                     this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", "Member"  + name + " could not be removed !", true, "danger");
+                    this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
                 ***REMOVED***
             ***REMOVED***).catch(error => ***REMOVED***
-            this.updateNotificaitonModal("Failed", "Member"  + name + " could not be removed !", true, "danger");
+            this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
         ***REMOVED***);
     ***REMOVED***
 

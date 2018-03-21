@@ -53,6 +53,21 @@ export class GroupsManager ***REMOVED***
       ***REMOVED***);
   ***REMOVED***
 
+  setdeNBIDirectAcces(group_id: number, value: boolean) ***REMOVED***
+    var parameter = JSON.stringify(***REMOVED***
+      group: group_id,
+      attribute: ***REMOVED***id: 3279,
+        namespace: 'urn:perun:group:attribute-def:opt',
+        friendlyName: 'denbiDirectAccess', type: 'java.lang.Boolean',
+        value: value
+      ***REMOVED***
+    ***REMOVED***);
+    return this.http.post(this.settings.getPerunBaseURL() + 'attributesManager/setAttribute', parameter,
+      ***REMOVED***
+        headers: new Headers(***REMOVED***'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()***REMOVED***),
+      ***REMOVED***);
+  ***REMOVED***
+
   setPerunGroupStatus(group_id: number, status: number) ***REMOVED***
     /* 1:submitted
        2: approved

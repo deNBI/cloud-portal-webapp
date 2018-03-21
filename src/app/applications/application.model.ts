@@ -1,6 +1,7 @@
 export class Application ***REMOVED***
   private _Id: number;
   private _Name: string;
+  private _Shortname: string;
   private _Institute: string;
   private _Workgroup: string;
   private _Lifetime: number;
@@ -17,18 +18,31 @@ export class Application ***REMOVED***
   private _UserEmail: number;
   private _Status: number;
   private _ComputeCenter: string;
-  private  _ComputeCenterDetails:***REMOVED******REMOVED***;
+  private _OpenStackProject: boolean;
+  private _ComputeCenterDetails:[string,string][];
+
 
 
   constructor() ***REMOVED***
   ***REMOVED***
 
+
+  get OpenStackProject(): boolean ***REMOVED***
+    return this._OpenStackProject
+  ***REMOVED***
+
+  set OpenStackProject(value: boolean) ***REMOVED***
+    this._OpenStackProject = value;
+  ***REMOVED***
+
+
     get ComputeCenterDetails()***REMOVED***
     return this._ComputeCenterDetails;
   ***REMOVED***
-  set ComputecenterDetails(value:***REMOVED******REMOVED***)***REMOVED***
+  set ComputecenterDetails(value:[string,string][])***REMOVED***
     this._ComputeCenterDetails=value;
   ***REMOVED***
+
   get ComputeCenter(): string ***REMOVED***
     return this._ComputeCenter
   ***REMOVED***
@@ -51,6 +65,13 @@ export class Application ***REMOVED***
 
   set Name(value: string) ***REMOVED***
     this._Name = value;
+  ***REMOVED***
+  get Shortname(): string ***REMOVED***
+    return this._Shortname;
+  ***REMOVED***
+
+  set Shortname(value: string) ***REMOVED***
+    this._Shortname = value;
   ***REMOVED***
 
   get Institute(): string ***REMOVED***
