@@ -80,10 +80,11 @@ export class ClientOverviewComponent implements OnInit {
   postClient(host: string, port: string, location: string): void {
 
 
+    if(host &&port && location){
     this.clientservice.postClient(host, port, location).subscribe(data => {
       console.log(data.text());
       this.getClientsChecked();
-    });
+    });}
   }
 
   deleteClient(host: string, port: string, location: string): void {
