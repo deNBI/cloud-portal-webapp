@@ -145,7 +145,7 @@
 
                   <td>
                     <button
-                      (click)='createGroup(application.Name, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value,application.OpenStackProject); notificationModal.show();'
+                      (click)='createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value,application.OpenStackProject); notificationModal.show();'
                       type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
                       Approve
                       & Create
@@ -155,7 +155,7 @@
                             type="button" class="btn btn-secondary"><i class="fa fa-close"></i>&nbsp;
                       Decline
                     </button>
-                    
+
 
 
                     <button (click)="switchCollapseStatus('application_review-' + application.Id)"
