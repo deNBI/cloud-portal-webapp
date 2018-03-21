@@ -69,25 +69,32 @@
             <br>
             <br>
             <div class="form-group row">
-              <h4 class="col-md-6 form-control-label">Choose the type of your Project</h4>
+              <h5 class="col-md-12 form-control-label">Choose the type of your Project</h5>
             </div>
             <div class="form-group row">
-              <h5 class="col-md-6 form-control-label">Single Virtual Machines</h5>
-              <label>
-                <input type="checkbox"
-                       [(ngModel)]="showjustvm" name="showjustvm" (change)="chosenProjectType(1)">
-
+              <label class="col-md-6 form-control-label"><strong>Single Virtual Machines</strong><br>
+                This type of project allows you to start virtual machines with SSH access.
               </label>
-
+              <div class="col-md-6">
+                <label>
+                  <input type="checkbox"
+                         [(ngModel)]="showjustvm" name="showjustvm" (change)="chosenProjectType(1)">
+                </label>
+              </div>
             </div>
             <div class="form-group row">
-              <h5 class="col-md-6 form-control-label">Full Fledged Cloud Project (OpenStack)</h5>
-              <label>
-                <input type="checkbox"
-                       [(ngModel)]="project_application_openstack_project" name="project_application_openstack_project"
-                       (change)="chosenProjectType(0)">
-
+              <label class="col-md-6 form-control-label"><strong>Cloud Project</strong>
+                <br>
+              A cloud project is represented by an OpenStack project which allows you to manage your virtual
+                machines, storage and and network configurations.
               </label>
+              <div class="col-md-6">
+                <label>
+                  <input type="checkbox"
+                         [(ngModel)]="project_application_openstack_project" name="project_application_openstack_project"
+                         (change)="chosenProjectType(0)">
+                </label>
+              </div>
             </div>
             <div *ngIf='project_application_openstack_project' class="form-group row">
               <h6 class="col-md-6 form-control-label">Resources</h6>
@@ -205,9 +212,9 @@
                 type:</label>
               <div class="col-md-9">
                 <ul>
-                  <li>de.NBI Large</li>
-                  <li>de.NBI Medium</li>
-                  <li>de.NBI Small</li>
+                  <li>de.NBI Large (CPUs:32, RAM:64)</li>
+                  <li>de.NBI Medium (CPUs:16, RAM:32)</li>
+                  <li>de.NBI Small (CPUs:8, RAM:16)</li>
                 </ul>
               </div>
             </div>
