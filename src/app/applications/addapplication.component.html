@@ -10,6 +10,7 @@
         <div class="card-body">
             <div class="alert alert-info">
   <strong>Please be aware:</strong> Only applications submitted by a principal investigator of a german university or research facility will be accepted!
+              <hr> Starting vms with the portal is a beta version. It is possible bugs will occur.
 </div>
           <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
             <div class="form-group row">
@@ -81,6 +82,9 @@
                          [(ngModel)]="showjustvm" name="showjustvm" (change)="chosenProjectType(1)">
                 </label>
               </div>
+            </div>
+            <div class="alert alert-info">
+              This project mode is a beta version. Virtual machines might get lost or can not be started temporarily.
             </div>
             <div class="form-group row">
               <label class="col-md-6 form-control-label"><strong>Cloud Project</strong>
