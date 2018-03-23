@@ -260,7 +260,7 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***).then(null_result => ***REMOVED***
             return this.groupsmanager.addAdmin(new_group_id, manager_member_user_id).toPromise();
         ***REMOVED***).then(null_result => ***REMOVED***
-            return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved")).toPromise();
+            return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).toPromise();
         ***REMOVED***).then(null_result => ***REMOVED***
             //setting approved status for Perun Group
             this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
@@ -280,7 +280,7 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***
 
     public declineApplication(application_id) ***REMOVED***
-        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined")).toPromise()
+        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined"), '').toPromise()
             .then(result => ***REMOVED***
                 this.all_applications = [];
                 this.user_applications = [];
@@ -295,13 +295,16 @@ export class ApplicationsComponent ***REMOVED***
 
 
     public activeApplicationsAvailable(): boolean ***REMOVED***
-        for (let application of this.all_applications) ***REMOVED***
-            if (application.Status == 1) ***REMOVED***
-                return true;
-            ***REMOVED***
+      for (let application of this.all_applications) ***REMOVED***
+        if (application.Status == 1) ***REMOVED***
+          return true;
         ***REMOVED***
-        return false;
-***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+
+
+
+
 
     public comingSoon() ***REMOVED***
         alert("This functinality will be implemented soon!")
