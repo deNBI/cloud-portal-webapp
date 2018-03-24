@@ -8,20 +8,23 @@ import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-re
 import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
+import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 
 
 @Component(***REMOVED***
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
+  providers: [GroupService,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
 ***REMOVED***)
 
 export class ClientOverviewComponent implements OnInit ***REMOVED***
   clients: Vmclient[];
   is_vo_admin = false;
   checkStatus: string = 'Not checked';
+   computeCenters: string[];
+   selectedComputeCenter:string;
 
-  constructor(private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
+  constructor(private groupservice : GroupService,private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
 
   ***REMOVED***
 
@@ -57,6 +60,12 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
 
 
   ***REMOVED***
+
+   getComputeCenters() ***REMOVED***
+        this.groupservice.getComputeCenters().subscribe(result => ***REMOVED***
+            this.computeCenters = result;
+
+        ***REMOVED***)***REMOVED***
 
   checkClient(host: string, port: string): void ***REMOVED***
     if (host && port) ***REMOVED***
@@ -98,6 +107,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
   ngOnInit(): void ***REMOVED***
     this.checkVOstatus(this.usersmanager);
     this.getClientsChecked();
+    this.getComputeCenters();
 
   ***REMOVED***
 
