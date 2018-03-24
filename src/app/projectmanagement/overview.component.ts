@@ -18,7 +18,7 @@ import {UserService} from "../api-connector/user.service";
 
 @Component({
     templateUrl: 'overview.component.html',
-    providers: [UserService,GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [UserService, GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 
@@ -54,7 +54,13 @@ export class OverviewComponent {
     public notificationModalTitle: string = "Notification";
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
+    public notificationModalInfoMessage: string=''
     public notificationModalIsClosable: boolean = false;
+
+    public passwordModalTitle: string= "Changing Password";
+    public passwordModalType : string='info';
+    public passwordModalPassword: string ='';
+    public passwordModalFacility: string='';
 
     constructor(private authzresolver: AuthzResolver,
                 private perunsettings: PerunSettings,
@@ -74,9 +80,23 @@ export class OverviewComponent {
     }
 
 
-    setUserFacilityPassword(facility:string){
-         this.userservice.setUserFacilityPassword(facility).subscribe(result => {console.log(result)})
+    setUserFacilityPassword(facility: string) {
+        this.userservice.setUserFacilityPassword(facility).subscribe(result => {
+            console.log(result);
+            result = result.json()
+            this.passwordModalFacility=facility;
+            if (result['Error']) {
+               this.passwordModalTitle='Failed'
+                this.passwordModalType='danger'
+            }
+            else {
+                this.passwordModalTitle='Success'
+                this.passwordModalType='success'
+                this.passwordModalPassword=result.toString()
+            }
+        })
     }
+
     getUserProjects(groupsmanager: GroupsManager,
                     membersmanager: MembersManager,
                     usersmanager: UsersManager) {
@@ -161,7 +181,7 @@ export class OverviewComponent {
                     let details = result['Details'];
                     let details_array = [];
                     for (let detail in details) {
-                        let detail_tuple = [detail,details[detail]];
+                        let detail_tuple = [detail, details[detail]];
                         details_array.push(detail_tuple);
                     }
                     newProject.ComputecenterDetails = details_array;
@@ -219,6 +239,14 @@ export class OverviewComponent {
         }
     }
 
+
+    public resetPasswordModal() {
+        this.passwordModalTitle= "Changing Password";
+        this.passwordModalType ='info';
+        this.passwordModalPassword='';
+        this.passwordModalFacility='';
+
+    }
 
     public resetNotificaitonModal() {
         this.notificationModalTitle = "Notification";

@@ -31,7 +31,7 @@
 
 
                                 <ul>
-                                    <li *ngIf="project.ComputeCenter != 'None'"> <button  (click)="setUserFacilityPassword(project.ComputeCenter)" class="link">Set your password</button></li>
+                                    <li *ngIf="project.ComputeCenter != 'None'"> <button  (click)="setUserFacilityPassword(project.ComputeCenter);passwordModal.show();" class="link">Set your password</button></li>
                                     <li *ngFor="let details of project.ComputeCenterDetails">{{details[0]}}: <a target="_blank"
                                             *ngIf="details[0] == 'Login'" href="{{details[1]}}">{{details[1]}}</a>
                                         <span *ngIf="details[0] != 'Login'">{{details[1]}}</span>
@@ -284,6 +284,41 @@
             <div class="modal-footer">
                 <button *ngIf="notificationModalIsClosable == true" type="button"
                         (click)="resetNotificaitonModal(); notificationModal.hide();" type="reset"
+                        class="btn  btn-secondary"> Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #passwordModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ passwordModalTitle }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-{{ passwordModalType }}" role="alert">
+                    <div *ngIf="passwordModalType=='info'">
+                        Please wait...
+                    </div>
+                    <div *ngIf="passwordModalType=='success'">
+                        <h5>Password successfully changed!</h5>
+                        <p> Your new password for the {{passwordModalFacility}} facility  is:</p>
+                        <pre>{{passwordModalPassword}}</pre>
+                        <p>Be aware to memorize this password.</p>
+                        <p>However you can always request a new one.</p>
+                    </div>
+                    <div *ngIf="passwordModalType=='danger'">
+                        <h5>Failed to change password</h5>
+                        <p>Please contact the facility manager of the  {{passwordModalFacility}} facility</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        (click)="resetPasswordModal(); passwordModal.hide();" type="reset"
                         class="btn  btn-secondary"> Close
                 </button>
             </div>

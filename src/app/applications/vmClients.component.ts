@@ -90,7 +90,6 @@ export class ClientOverviewComponent implements OnInit {
 
 
     if(host &&port && location){
-      this.selectedComputeCenter=''
     this.clientservice.postClient(host, port, location).subscribe(data => {
       console.log(data.text());
       this.getClientsChecked();
