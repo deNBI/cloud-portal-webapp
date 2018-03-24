@@ -14,10 +14,11 @@ import {isNumber} from "util";
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
+import {UserService} from "../api-connector/user.service";
 
 @Component({
     templateUrl: 'overview.component.html',
-    providers: [GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [UserService,GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 
@@ -61,8 +62,10 @@ export class OverviewComponent {
                 private groupsmanager: GroupsManager,
                 private membersmanager: MembersManager,
                 private  resourceManager: ResourcesManager,
-                private groupservice: GroupService) {
+                private groupservice: GroupService,
+                private userservice: UserService) {
         this.getUserProjects(groupsmanager, membersmanager, useresmanager);
+
     }
 
     public updateUserProjects() {
@@ -71,6 +74,9 @@ export class OverviewComponent {
     }
 
 
+    setUserFacilityPassword(facility:string){
+         this.userservice.setUserFacilityPassword(facility).subscribe(result => {console.log(result)})
+    }
     getUserProjects(groupsmanager: GroupsManager,
                     membersmanager: MembersManager,
                     usersmanager: UsersManager) {

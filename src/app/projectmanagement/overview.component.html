@@ -29,7 +29,9 @@
                             <td>{{project.ComputeCenter}}
 
 
+
                                 <ul>
+                                    <li *ngIf="project.ComputeCenter != 'None'"> <button  (click)="setUserFacilityPassword(project.ComputeCenter)" class="link">Set your password</button></li>
                                     <li *ngFor="let details of project.ComputeCenterDetails">{{details[0]}}: <a target="_blank"
                                             *ngIf="details[0] == 'Login'" href="{{details[1]}}">{{details[1]}}</a>
                                         <span *ngIf="details[0] != 'Login'">{{details[1]}}</span>
