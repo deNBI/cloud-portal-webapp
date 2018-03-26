@@ -88,6 +88,9 @@ export class GroupService {
 
     setNumberOfVms(groupid: string, numberofVms: string): Observable<any> {
         let urlSearchParams = new URLSearchParams();
+         let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
         urlSearchParams.append('numberOfVms', numberofVms);
         urlSearchParams.append('groupid', groupid);
         return this.http.post(this.settings.getApiBaseURL() + 'setGroupNumberOfVms/', urlSearchParams, {
