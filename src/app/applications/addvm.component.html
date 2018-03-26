@@ -172,7 +172,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" *ngIf="!data">
+      <div class="modal-body" *ngIf="data==''">
         Wait for response!
       </div>
       <div class="modal-body" *ngIf="data['Started']">

@@ -141,11 +141,11 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     if (this.data == 'INVALID') ***REMOVED***
       return;
     ***REMOVED***
-    this.data = null;
+    this.data = '';
   ***REMOVED***
 
   resetData2(): void ***REMOVED***
-    this.data = null;
+    this.data = '';
   ***REMOVED***
 
   onSelectFlavor(flavor: Flavor): void ***REMOVED***
