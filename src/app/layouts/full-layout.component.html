@@ -41,7 +41,7 @@
           <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications/clientOverview']"><i
             class="icon-pencil"></i> Client Overview</a>
         </li>
-        <li class="nav-item" *ngIf="vm_project_member">
+        <li class="nav-item" *ngIf="vm_project_member || get_is_vo_admin()">
           <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications/vmOverview']"><i
             class="icon-pencil"></i> Instance Overview</a>
         </li>
