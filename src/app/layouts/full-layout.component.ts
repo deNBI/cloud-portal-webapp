@@ -18,7 +18,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
   public disabled = false;
   public status: ***REMOVED*** isopen: boolean ***REMOVED*** = ***REMOVED***isopen: false***REMOVED***;
   private is_vo_admin = false;
-  private  vm_project_member=false;
+  public  vm_project_member=false;
   client_avaiable;
 
   constructor(private groupsManager:GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
