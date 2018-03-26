@@ -257,9 +257,10 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string) ***REMOVED***
-        this.groupsmanager.addMember(groupid, memberid).toPromise()
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string,facility:string) ***REMOVED***
+        this.groupservice.addMember(groupid, memberid,facility).toPromise()
             .then(result => ***REMOVED***
+
                 if (result.status == 200) ***REMOVED***
                     this.updateNotificaitonModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
 
@@ -271,9 +272,10 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    public removeMember(groupid: number, memberid: number, name: string) ***REMOVED***
-        this.groupsmanager.removeMember(groupid, memberid).toPromise()
+    public removeMember(groupid: number, memberid: number, name: string,facility:string) ***REMOVED***
+        this.groupservice.removeMember(groupid, memberid,facility).toPromise()
             .then(result => ***REMOVED***
+
                 if (result.status == 200) ***REMOVED***
                     this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
 
