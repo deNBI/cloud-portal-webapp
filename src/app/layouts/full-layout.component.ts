@@ -4,12 +4,13 @@ import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {ClientService} from "../api-connector/vmClients.service";
+import {GroupsManager} from "../perun-connector/groups-manager.service";
 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './full-layout.component.html',
-  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
+  providers: [GroupsManager,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
 })
 export class FullLayoutComponent implements OnInit {
 
@@ -17,10 +18,12 @@ export class FullLayoutComponent implements OnInit {
   public disabled = false;
   public status: { isopen: boolean } = {isopen: false};
   private is_vo_admin = false;
+  private  vm_project_member=false;
   client_avaiable;
 
-  constructor(private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
+  constructor(private groupsManager:GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
     this.is_client_avaiable();
+    this.is_vm_project_member();
   }
 
   public get_is_vo_admin(): boolean {
@@ -36,7 +39,12 @@ export class FullLayoutComponent implements OnInit {
     $event.stopPropagation();
     this.status.isopen = !this.status.isopen;
   }
-
+  is_vm_project_member(){
+    this.groupsManager.getMemberGroupsStatus().subscribe(result => {
+      if (result.json().length > 0 ) {
+        this.vm_project_member = true }
+    })
+    }
   is_client_avaiable() {
     this.clientservice.getRRFirstClient().subscribe(result => {
       try {

@@ -17,7 +17,7 @@ export class VirtualmachineService {
   }
 
 
-  startVM(flavor: string, image: string, servername: string, host: string, port: string, project: string): Observable<Response> {
+  startVM(flavor: string, image: string, servername: string, host: string, port: string, project: string,projectid :string): Observable<Response> {
     let header = new Headers({
       'X-CSRFToken': this.settings.getCSRFToken(),
     });
@@ -28,6 +28,7 @@ export class VirtualmachineService {
     urlSearchParams.append('host', host);
     urlSearchParams.append('port', port);
     urlSearchParams.append('project', project);
+     urlSearchParams.append('projectid', projectid);
 
     return this.http.post(this.baseVmUrl + 'addVm/', urlSearchParams, {
       withCredentials: true,
