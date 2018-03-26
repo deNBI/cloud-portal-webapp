@@ -8,7 +8,7 @@
       <table class="table table-striped ">
         <thead>
         <tr>
-          <th>Location</th>
+          <th>Facility</th>
           <th>Host</th>
           <th>Port</th>
           <th>Status</th>
@@ -32,7 +32,12 @@
         </tr>
 
         <tr>
-          <td><input type="text" placeholder="Location" #loc></td>
+          <td>
+                <select class="form-control col-md-6" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
+                  <option value="undefined" disabled selected hidden> Please Select</option>
+                  <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter"> {{computecenter}}</option>
+
+                </select></td>
           <td><input type="text" placeholder="Host" #hos></td>
           <td><input type="text" placeholder="Port" #port></td>
           <td>{{checkStatus}}</td>
@@ -41,7 +46,7 @@
             <button type="button" class="btn btn-primary navbar-inverse" (click)="checkClient(hos.value,port.value)">Check Status</button>
           </td>
           <td>
-            <button type="button" class="btn btn-primary navbar-inverse" (click)="postClient(hos.value,port.value,loc.value);">Add Client
+            <button type="button" class="btn btn-primary navbar-inverse" (click)="postClient(hos.value,port.value,selectedComputeCenter);">Add Client
             </button>
           </td>
           <td></td>

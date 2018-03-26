@@ -8,20 +8,23 @@ import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 import {UsersManager} from "../perun-connector/users-manager.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupsManager} from "../perun-connector/groups-manager.service";
+import {GroupService} from "../api-connector/group.service";
 
 
 @Component({
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
+  providers: [GroupService,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
 })
 
 export class ClientOverviewComponent implements OnInit {
   clients: Vmclient[];
   is_vo_admin = false;
   checkStatus: string = 'Not checked';
+   computeCenters: string[];
+   selectedComputeCenter:string;
 
-  constructor(private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
+  constructor(private groupservice : GroupService,private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
 
   }
 
@@ -58,6 +61,12 @@ export class ClientOverviewComponent implements OnInit {
 
   }
 
+   getComputeCenters() {
+        this.groupservice.getComputeCenters().subscribe(result => {
+            this.computeCenters = result;
+
+        })}
+
   checkClient(host: string, port: string): void {
     if (host && port) {
       this.clientservice.checkClient(host, port).subscribe(data => {
@@ -80,10 +89,11 @@ export class ClientOverviewComponent implements OnInit {
   postClient(host: string, port: string, location: string): void {
 
 
+    if(host &&port && location){
     this.clientservice.postClient(host, port, location).subscribe(data => {
       console.log(data.text());
       this.getClientsChecked();
-    });
+    });}
   }
 
   deleteClient(host: string, port: string, location: string): void {
@@ -97,6 +107,7 @@ export class ClientOverviewComponent implements OnInit {
   ngOnInit(): void {
     this.checkVOstatus(this.usersmanager);
     this.getClientsChecked();
+    this.getComputeCenters();
 
   }
 

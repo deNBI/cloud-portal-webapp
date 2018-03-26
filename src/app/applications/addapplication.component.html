@@ -9,8 +9,7 @@
         </div>
         <div class="card-body">
             <div class="alert alert-info">
-  <strong>Please be aware:</strong> Only applications submitted by a principal investigator of a german university or research facility will be accepted!
-</div>
+  <strong>Please be aware:</strong> Only applications submitted by a principal investigator of a german university or research facility will be accepted!</div>
           <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
             <div class="form-group row">
               <h5 class="col-md-6 form-control-label">General Information</h5>
@@ -82,6 +81,9 @@
                 </label>
               </div>
             </div>
+            <div class="alert alert-info">
+              This project mode is a beta version. Virtual machines might get lost or can not be started temporarily.
+            </div>
             <div class="form-group row">
               <label class="col-md-6 form-control-label"><strong>Cloud Project</strong>
                 <br>
@@ -97,7 +99,7 @@
               </div>
             </div>
             <div *ngIf='project_application_openstack_project' class="form-group row">
-              <h6 class="col-md-6 form-control-label">Resources</h6>
+              <h5 class="col-md-12 form-control-label">Resources</h5>
             </div>
 
             <div *ngIf='project_application_openstack_project' class="form-group row">
@@ -190,7 +192,9 @@
               </div>
             </div>
 
-            <br>
+            <div *ngIf='showjustvm' class="form-group row">
+              <h5 class="col-md-12 form-control-label">Resources</h5>
+            </div>
 
              <div *ngIf='showjustvm' class="form-group row">
               <label class="col-md-3 form-control-label" for="textarea-input"><strong>Number of Virtual
@@ -212,9 +216,9 @@
                 type:</label>
               <div class="col-md-9">
                 <ul>
-                  <li>de.NBI Large (CPUs:32, RAM:64)</li>
-                  <li>de.NBI Medium (CPUs:16, RAM:32)</li>
-                  <li>de.NBI Small (CPUs:8, RAM:16)</li>
+                  <li>de.NBI Large (CPUs:32, RAM:64 GB)</li>
+                  <li>de.NBI Medium (CPUs:16, RAM:32 GB)</li>
+                  <li>de.NBI Small (CPUs:8, RAM:16 GB)</li>
                 </ul>
               </div>
             </div>
@@ -231,7 +235,7 @@
                 <input required type="text" id="id_project_application_institute"
                        name="project_application_institute" class="form-control"
                        placeholder="e.g. Center for Biotechnology, Bielefeld" ngModel>
-                <span class="help-block">To which institue do you belong?</span>
+                <span class="help-block">To which institute do you belong?</span>
               </div>
             </div>
 

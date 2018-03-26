@@ -260,7 +260,7 @@ export class ApplicationsComponent {
         }).then(null_result => {
             return this.groupsmanager.addAdmin(new_group_id, manager_member_user_id).toPromise();
         }).then(null_result => {
-            return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved")).toPromise();
+            return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).toPromise();
         }).then(null_result => {
             //setting approved status for Perun Group
             this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
@@ -281,7 +281,7 @@ export class ApplicationsComponent {
     }
 
     public declineApplication(application_id) {
-        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined")).toPromise()
+        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined"), '').toPromise()
             .then(result => {
                 this.all_applications = [];
                 this.user_applications = [];
@@ -296,13 +296,16 @@ export class ApplicationsComponent {
 
 
     public activeApplicationsAvailable(): boolean {
-        for (let application of this.all_applications) {
-            if (application.Status == 1) {
-                return true;
-            }
+      for (let application of this.all_applications) {
+        if (application.Status == 1) {
+          return true;
         }
-        return false;
-}
+      }
+    }
+
+
+
+
 
     public comingSoon() {
         alert("This functinality will be implemented soon!")
