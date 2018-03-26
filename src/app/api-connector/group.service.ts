@@ -9,52 +9,81 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class GroupService ***REMOVED***
 
-  constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
-  ***REMOVED***
+    constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
+    ***REMOVED***
 
-  getComputeCenters(): Observable<any> ***REMOVED***
-
-
-    return this.http.get(this.settings.getApiBaseURL() + 'computecenters/', ***REMOVED***
-      withCredentials: true,
-
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-
-  ***REMOVED***
-
-    getComputeCentersDetails(resource_id:number): Observable<any> ***REMOVED***
-
-    return this.http.get(this.settings.getApiBaseURL() + 'facility_details/', ***REMOVED***
-      withCredentials: true,
-        params:***REMOVED***resource_id:resource_id***REMOVED***
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-
-  ***REMOVED***
-
-    getFacilityByGroup(groupname:string): Observable<any> ***REMOVED***
-
-    return this.http.get(this.settings.getApiBaseURL() + 'getFacilityByGroup/', ***REMOVED***
-      withCredentials: true,
-        params:***REMOVED***groupname:groupname***REMOVED***
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-
-  ***REMOVED***
+    getComputeCenters(): Observable<any> ***REMOVED***
 
 
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/', ***REMOVED***
+            withCredentials: true,
 
-  assignGroupToResource(groupid: string, computecenter: string): Observable<any> ***REMOVED***
-    let urlSearchParams = new URLSearchParams();
-    let header = new Headers(***REMOVED***
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    ***REMOVED***);
-    urlSearchParams.append('compute_center', computecenter);
-    urlSearchParams.append('groupid', groupid);
-    return this.http.post(this.settings.getApiBaseURL() + 'assignGroupToResource/', urlSearchParams, ***REMOVED***
-      withCredentials: true,
-      headers: header
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ***REMOVED***
+
+    getComputeCentersDetails(resource_id: number): Observable<any> ***REMOVED***
+
+        return this.http.get(this.settings.getApiBaseURL() + 'facility_details/', ***REMOVED***
+            withCredentials: true,
+            params: ***REMOVED***resource_id: resource_id***REMOVED***
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ***REMOVED***
+
+    getFacilityByGroup(groupname: string): Observable<any> ***REMOVED***
+
+        return this.http.get(this.settings.getApiBaseURL() + 'getFacilityByGroup/', ***REMOVED***
+            withCredentials: true,
+            params: ***REMOVED***groupname: groupname***REMOVED***
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ***REMOVED***
 
 
-  ***REMOVED***
+    assignGroupToResource(groupid: string, computecenter: string): Observable<any> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        urlSearchParams.append('compute_center', computecenter);
+        urlSearchParams.append('groupid', groupid);
+        return this.http.post(this.settings.getApiBaseURL() + 'assignGroupToResource/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
+
+    ***REMOVED***
+
+    addMember(group_id: number, member_id: number, facility: string) ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        urlSearchParams.append('facility', facility);
+        urlSearchParams.append('group_id', group_id.toString());
+        urlSearchParams.append('member_id', member_id.toString())
+        return this.http.post(this.settings.getApiBaseURL() + 'group/addMember/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***)
+
+    ***REMOVED***
+
+        removeMember(group_id: number, member_id: number, facility: string) ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        urlSearchParams.append('facility', facility);
+        urlSearchParams.append('group_id', group_id.toString());
+        urlSearchParams.append('member_id', member_id.toString())
+        return this.http.post(this.settings.getApiBaseURL() + 'group/removeMember/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***)
+
+
+    ***REMOVED***
 ***REMOVED***
