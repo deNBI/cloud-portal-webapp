@@ -4,12 +4,13 @@ import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-re
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
+import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
 
 
 @Component(***REMOVED***
   selector: 'app-dashboard',
   templateUrl: './full-layout.component.html',
-  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
+  providers: [GroupsManager,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
 ***REMOVED***)
 export class FullLayoutComponent implements OnInit ***REMOVED***
 
@@ -17,10 +18,12 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
   public disabled = false;
   public status: ***REMOVED*** isopen: boolean ***REMOVED*** = ***REMOVED***isopen: false***REMOVED***;
   private is_vo_admin = false;
+  private  vm_project_member=false;
   client_avaiable;
 
-  constructor(private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
+  constructor(private groupsManager:GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
     this.is_client_avaiable();
+    this.is_vm_project_member();
   ***REMOVED***
 
   public get_is_vo_admin(): boolean ***REMOVED***
@@ -36,7 +39,12 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     $event.stopPropagation();
     this.status.isopen = !this.status.isopen;
   ***REMOVED***
-
+  is_vm_project_member()***REMOVED***
+    this.groupsManager.getMemberGroupsStatus().subscribe(result => ***REMOVED***
+      if (result.json().length > 0 ) ***REMOVED***
+        this.vm_project_member = true ***REMOVED***
+    ***REMOVED***)
+    ***REMOVED***
   is_client_avaiable() ***REMOVED***
     this.clientservice.getRRFirstClient().subscribe(result => ***REMOVED***
       try ***REMOVED***

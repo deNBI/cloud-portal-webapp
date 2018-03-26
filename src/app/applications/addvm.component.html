@@ -78,7 +78,7 @@
 
                 <select class="form-control" name="selectedProject" [(ngModel)]="selectedProject">
                    <option value="undefined" disabled selected hidden> Please Select</option>
-                  <option *ngFor="let project of projects" > ***REMOVED******REMOVED***project***REMOVED******REMOVED***</option>
+                  <option *ngFor="let project of projects" [ngValue]="project"> ***REMOVED******REMOVED***project[0]***REMOVED******REMOVED***</option>
 
                 </select>
 
@@ -135,7 +135,7 @@
 
                      </div>-->
                         <button type="button" class="btn btn-primary offset-md-8" data-toggle="modal"
-                    (click)="startVM(selectedFlavor.name,selectedImage.name,servername.value,selectedProject);resetData();infoModal.show();">
+                    (click)="startVM(selectedFlavor.name,selectedImage.name,servername.value,selectedProject[0],selectedProject[1]);resetData();infoModal.show();">
               Start VM
             </button>
         <br><br><br>

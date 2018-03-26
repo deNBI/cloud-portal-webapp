@@ -41,7 +41,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   selectedFlavor: Flavor;
   userinfo: Userinfo;
   vmclient: Vmclient;
-  selectedProject: string;
+  selectedProject: [string,number];
   client_avaiable: boolean;
   projects: string[] = new Array();
 
@@ -120,11 +120,11 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
 
 
-  startVM(flavor: string, image: string, servername: string, project: string): void ***REMOVED***
+  startVM(flavor: string, image: string, servername: string, project: string,projectid:string): void ***REMOVED***
     if (image && flavor && servername && project) ***REMOVED***
 
 
-      this.virtualmachineservice.startVM(flavor, image, servername, this.vmclient.host, this.vmclient.port, project).subscribe(data => ***REMOVED***
+      this.virtualmachineservice.startVM(flavor, image, servername, this.vmclient.host, this.vmclient.port, project,projectid).subscribe(data => ***REMOVED***
 
         this.data = data.json();
       ***REMOVED***);

@@ -236,12 +236,11 @@ export class ApplicationsComponent ***REMOVED***
         this.notificationModalType = type;
     ***REMOVED***
 
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project) ***REMOVED***
+    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project,numberofVms) ***REMOVED***
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
-
         this.membersmanager.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
             .then(member_raw => ***REMOVED***
                     let member = member_raw.json();
@@ -266,6 +265,7 @@ export class ApplicationsComponent ***REMOVED***
             this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
             this.groupsmanager.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
+            this.groupservice.setNumberOfVms(new_group_id.toString(),numberofVms.toString()).subscribe()
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications

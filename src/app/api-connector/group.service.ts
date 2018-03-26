@@ -68,10 +68,9 @@ export class GroupService ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
-
     ***REMOVED***
 
-        removeMember(group_id: number, member_id: number, facility: string) ***REMOVED***
+    removeMember(group_id: number, member_id: number, facility: string) ***REMOVED***
         let urlSearchParams = new URLSearchParams();
         let header = new Headers(***REMOVED***
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -86,4 +85,20 @@ export class GroupService ***REMOVED***
 
 
     ***REMOVED***
+
+    setNumberOfVms(groupid: string, numberofVms: string): Observable<any> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+         let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        urlSearchParams.append('numberOfVms', numberofVms);
+        urlSearchParams.append('groupid', groupid);
+        return this.http.post(this.settings.getApiBaseURL() + 'setGroupNumberOfVms/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    ***REMOVED***
+
 ***REMOVED***
