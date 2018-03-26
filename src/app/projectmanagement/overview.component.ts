@@ -257,9 +257,10 @@ export class OverviewComponent {
     }
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string) {
-        this.groupsmanager.addMember(groupid, memberid).toPromise()
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string,facility:string) {
+        this.groupservice.addMember(groupid, memberid,facility).toPromise()
             .then(result => {
+
                 if (result.status == 200) {
                     this.updateNotificaitonModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
 
@@ -271,9 +272,10 @@ export class OverviewComponent {
         });
     }
 
-    public removeMember(groupid: number, memberid: number, name: string) {
-        this.groupsmanager.removeMember(groupid, memberid).toPromise()
+    public removeMember(groupid: number, memberid: number, name: string,facility:string) {
+        this.groupservice.removeMember(groupid, memberid,facility).toPromise()
             .then(result => {
+
                 if (result.status == 200) {
                     this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
 
