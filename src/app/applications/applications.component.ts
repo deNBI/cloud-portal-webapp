@@ -264,7 +264,8 @@ export class ApplicationsComponent ***REMOVED***
             //setting approved status for Perun Group
             this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
             this.groupsmanager.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
-            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
+            if (compute_center != 'undefined')***REMOVED***
+            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();***REMOVED***
             this.groupservice.setNumberOfVms(new_group_id.toString(),numberofVms.toString()).subscribe()
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
