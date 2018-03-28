@@ -47,6 +47,7 @@ export class OverviewComponent {
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
     public UserModalFacility: string;
+    public UserModalFacilityDetails: [string,string][];
 
 
     //notification Modal variables
@@ -318,7 +319,10 @@ export class OverviewComponent {
             this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
         });
     }
-
+    public resetFacilityDetailsModal(){
+        this.UserModalFacility=null;
+        this.UserModalFacilityDetails=null;
+    }
     public comingSoon() {
         alert("This function will be implemented soon.")
     }

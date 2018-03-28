@@ -26,17 +26,8 @@
                             <td>{{ project.Name }}</td>
                             <td>{{ project.Description }}</td>
 
-                            <td>{{project.ComputeCenter}}
+                            <td><button *ngIf="project.ComputeCenter != 'None'" (click)="UserModalFacility=project.ComputeCenter;UserModalFacilityDetails=project.ComputeCenterDetails;facilityDetailsModal.show();">{{project.ComputeCenter}}</button> <p *ngIf="project.ComputeCenter == 'None'">{{project.ComputeCenter}}</p>
 
-
-
-                                <ul>
-                                    <li *ngIf="project.ComputeCenter != 'None'"> <button  (click)="setUserFacilityPassword(project.ComputeCenter);passwordModal.show();" class="link">Set your password</button></li>
-                                    <li *ngFor="let details of project.ComputeCenterDetails">{{details[0]}}: <a target="_blank"
-                                            *ngIf="details[0] == 'Login'" href="{{details[1]}}">{{details[1]}}</a>
-                                        <span *ngIf="details[0] != 'Login'">{{details[1]}}</span>
-                                    </li>
-                                </ul>
                             </td>
 
                             <td>{{ project.DateCreated }}</td>
@@ -305,14 +296,14 @@
                     </div>
                     <div *ngIf="passwordModalType=='success'">
                         <h5>Password successfully changed!</h5>
-                        <p> Your new password for the {{passwordModalFacility}} facility  is:</p>
+                        <p> Your new password for the {{passwordModalFacility}} facility is:</p>
                         <pre>{{passwordModalPassword}}</pre>
                         <p>Be aware to memorize this password.</p>
                         <p>However you can always request a new one.</p>
                     </div>
                     <div *ngIf="passwordModalType=='danger'">
                         <h5>Failed to change password</h5>
-                        <p>Please contact the facility manager of the  {{passwordModalFacility}} facility</p>
+                        <p>Please contact the facility manager of the {{passwordModalFacility}} facility</p>
                     </div>
                 </div>
             </div>
@@ -325,4 +316,37 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div bsModal #facilityDetailsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ UserModalFacility}}</h4>
+            </div>
+            <div class="modal-body">
+                    <div>
+                        <ul>
+                            <li>
+                                <button (click)="setUserFacilityPassword(UserModalFacility);facilityDetailsModal.hide();passwordModal.show();"
+                                        class="link">Set your password
+                                </button>
+                            </li>
+                            <li *ngFor="let details of UserModalFacilityDetails">{{details[0]}}: <a target="_blank"
+                                                                                                        *ngIf="details[0] == 'Login'"
+                                                                                                        href="{{details[1]}}">{{details[1]}}</a>
+                                <span *ngIf="details[0] != 'Login'">{{details[1]}}</span>
+                            </li>
+                        </ul>
+
+                    </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            (click)="resetFacilityDetailsModal(); facilityDetailsModal.hide();" type="reset"
+                            class="btn  btn-secondary"> Close
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
