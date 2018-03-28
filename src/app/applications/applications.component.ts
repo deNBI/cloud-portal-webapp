@@ -165,7 +165,7 @@ export class ApplicationsComponent {
                                 a.Status = aj["project_application_status"];
                                 a.OpenStackProject = aj["project_application_openstack_project"];
                                 if (a.Status !== 1) {
-                                    this.groupservice.getFacilityByGroup(a.Name).subscribe(result => {
+                                    this.groupservice.getFacilityByGroup(a.Shortname).subscribe(result => {
 
                                         let details = result['Details'];
                                         let details_array = [];
