@@ -165,7 +165,7 @@ export class ApplicationsComponent ***REMOVED***
                                 a.Status = aj["project_application_status"];
                                 a.OpenStackProject = aj["project_application_openstack_project"];
                                 if (a.Status !== 1) ***REMOVED***
-                                    this.groupservice.getFacilityByGroup(a.Name).subscribe(result => ***REMOVED***
+                                    this.groupservice.getFacilityByGroup(a.Shortname).subscribe(result => ***REMOVED***
 
                                         let details = result['Details'];
                                         let details_array = [];
