@@ -303,7 +303,7 @@
                     </div>
                     <div *ngIf="passwordModalType=='danger'">
                         <h5>Failed to change password</h5>
-                        <p>Please contact the facility manager of the {{passwordModalFacility}} facility</p>
+                        <p>Please send an email to  {{passwordModalEmail}} regarding your issue.</p>
                     </div>
                 </div>
             </div>
@@ -328,7 +328,7 @@
                     <div>
                         <ul>
                             <li>
-                                <button (click)="setUserFacilityPassword(UserModalFacility);facilityDetailsModal.hide();passwordModal.show();"
+                                <button (click)="setUserFacilityPassword(UserModalFacility,UserModalFacilityDetails);facilityDetailsModal.hide();passwordModal.show();"
                                         class="link">Set your password
                                 </button>
                             </li>

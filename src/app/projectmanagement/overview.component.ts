@@ -62,6 +62,7 @@ export class OverviewComponent {
     public passwordModalType : string='info';
     public passwordModalPassword: string ='';
     public passwordModalFacility: string='';
+    public passwordModalEmail: string='';
 
     constructor(private authzresolver: AuthzResolver,
                 private perunsettings: PerunSettings,
@@ -81,11 +82,18 @@ export class OverviewComponent {
     }
 
 
-    setUserFacilityPassword(facility: string) {
+    setUserFacilityPassword(facility: string,details:string) {
         this.userservice.setUserFacilityPassword(facility).subscribe(result => {
             console.log(result);
             result = result.json()
+            for(let key of details){
+                if (key[0] == 'Email'){
+                      this.passwordModalEmail=key[1];
+                }
+            }
+
             this.passwordModalFacility=facility;
+
             if (result['Error']) {
                this.passwordModalTitle='Failed'
                 this.passwordModalType='danger'
@@ -246,6 +254,7 @@ export class OverviewComponent {
         this.passwordModalType ='info';
         this.passwordModalPassword='';
         this.passwordModalFacility='';
+        this.passwordModalEmail='';
 
     }
 
