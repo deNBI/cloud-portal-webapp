@@ -63,7 +63,6 @@ export class AddApplicationComponent ***REMOVED***
     onSubmit(f: NgForm) ***REMOVED***
         this.parseName(f.controls['project_application_shortname'].value)
         f.controls['project_application_shortname'].setValue(this.parseName(f.controls['project_application_shortname'].value));
-        console.log(f.controls['project_application_shortname'].value);
         let values = ***REMOVED******REMOVED***;
         values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
         for (let v in f.controls) ***REMOVED***
