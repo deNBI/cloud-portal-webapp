@@ -61,7 +61,9 @@ export class AddApplicationComponent ***REMOVED***
     ***REMOVED***
 
     onSubmit(f: NgForm) ***REMOVED***
-
+        this.parseName(f.controls['project_application_shortname'].value)
+        f.controls['project_application_shortname'].setValue(this.parseName(f.controls['project_application_shortname'].value));
+        console.log(f.controls['project_application_shortname'].value);
         let values = ***REMOVED******REMOVED***;
         values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
         for (let v in f.controls) ***REMOVED***
@@ -88,5 +90,17 @@ export class AddApplicationComponent ***REMOVED***
         this.notificationModalIsClosable = closable;
         this.notificationModalType = type;
     ***REMOVED***
+
+public parseName(message:string)***REMOVED***
+    message = message.replace(/\u00e4/g, "ae");
+    message = message.replace(/\u00c4/g, "ae");
+    message = message.replace(/\u00dc/g, "ue");
+    message = message.replace(/\u00fc/g, "ue");
+    message = message.replace(/\u00d6/g, "oe");
+    message = message.replace(/\u00f6/g, "oe");
+    message = message.replace(/\u00df/g, "ss");
+    return message;
 ***REMOVED***
+***REMOVED***
+
 
