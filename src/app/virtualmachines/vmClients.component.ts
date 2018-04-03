@@ -1,7 +1,7 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import 'rxjs/Rx'
-import {Vmclient} from "../virtualmachinemodels/vmclient";
+import {Vmclient} from "./virtualmachinemodels/vmclient";
 import {ClientService} from "../api-connector/vmClients.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {AuthzResolver} from "../perun-connector/authz-resolver.service";

@@ -6,7 +6,7 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 import {UsersManager} from "../perun-connector/users-manager.service";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
-import {VirtualMachine} from "../virtualmachinemodels/virtualmachine";
+import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 import {FullLayoutComponent} from "../layouts/full-layout.component";
 
 

@@ -3,7 +3,7 @@ import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {ApiSettings}  from './api-settings.service'
 import {URLSearchParams} from "@angular/http";
-import {Vmclient} from "../virtualmachinemodels/vmclient";
+import {Vmclient} from "../virtualmachines/virtualmachinemodels/vmclient";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 

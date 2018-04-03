@@ -1,14 +1,14 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {Image} from "../virtualmachinemodels/image";
+import {Image} from "./virtualmachinemodels/image";
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
-import {Flavor} from '../virtualmachinemodels/flavor';
+import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
 import {FlavorService} from '../api-connector/flavor.service';
 import {ImageDetailComponent} from "./imagedetail.component";
 import {FormsModule} from '@angular/forms';
 import 'rxjs/Rx'
 
-import {Metadata} from '../virtualmachinemodels/metadata';
+import {Metadata} from './virtualmachinemodels/metadata';
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {ApplicationsService} from '../api-connector/applications.service'
 import {Userinfo} from "../userinfo/userinfo.model";
@@ -18,10 +18,10 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 
 import {ClientService} from "../api-connector/vmClients.service";
-import {Vmclient} from "../virtualmachinemodels/vmclient";
+import {Vmclient} from "./virtualmachinemodels/vmclient";
 import {GroupsManager} from "../perun-connector/groups-manager.service";
 import {AttributesManager} from "../perun-connector/attributes-manager";
-import {Application} from "./application.model";
+import {Application} from "../applications/application.model";
 import {keyService} from "../api-connector/key.service";
 import {Project} from "../projectmanagement/project.model";
 

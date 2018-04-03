@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Flavor} from '../virtualmachinemodels/flavor'
+import {Flavor} from './virtualmachinemodels/flavor'
 
 @Component({
   selector: 'flavor-detail',
