@@ -31,7 +31,7 @@
                 Short Name*</strong></label>
               <div class="col-md-9">
                 <div *ngIf='wronginput'>
-                  <strong><font color="red">shortname can only consist of letters and numbers.</font></strong>
+                  <strong><font color="red">Umlauts and special characters are prohibited in the shortname.</font></strong>
                 </div>
                 <input required type="text" id="id_project_application_shortname"
                        name="project_application_shortname" #shortname (keyup)="checkShortname(shortname.value)"
