@@ -35,7 +35,7 @@ export const routes: Routes = [
                 loadChildren: './projectmanagement/projectmanagement.module#ProjectManagementModule'
             },
             {
-                path: 'applications',
+                path: '',
                 loadChildren: './applications/applications.module#ApplicationsModule'
             },
             {
