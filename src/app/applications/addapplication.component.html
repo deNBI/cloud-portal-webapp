@@ -30,11 +30,14 @@
               <label class="col-md-3 form-control-label" for="text-input"><strong>Project
                 Short Name*</strong></label>
               <div class="col-md-9">
+                <div *ngIf='wronginput'>
+                  <strong><font color="red">shortname can only consist of letters and numbers.</font></strong>
+                </div>
                 <input required type="text" id="id_project_application_shortname"
-                       name="project_application_shortname"
+                       name="project_application_shortname" #shortname (keyup)="checkShortname(shortname.value)"
                        class="form-control" maxlength="15"
                        placeholder="e.g. ThalianaBench" ngModel>
-                <span class="help-block">Enter a short name (between 5 and 15 characters). Umlauts will be replaced.</span>
+                <span class="help-block">Enter a short name (between 5 and 15 characters).</span>
               </div>
             </div>
 
@@ -286,13 +289,13 @@
       </div>
       <div class="modal-footer">
         <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)" type="button"
-                (click)="notificationModal.hide();" type="reset"
+                (click)="notificationModal.hide();resetModal()" type="reset"
                 class="btn  btn-secondary"> Close
         </button>
         <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
            [routerLink]="['/applications']">
           <button type="button"
-                  (click)="notificationModal.hide();" type="reset"
+                  (click)="notificationModal.hide();resetModal()" type="reset"
                   class="btn  btn-secondary"> Close
           </button>
         </a>
