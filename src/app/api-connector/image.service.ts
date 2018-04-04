@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Image} from '../virtualmachinemodels/image';
+import {Image} from '../virtualmachines/virtualmachinemodels/image';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {URLSearchParams} from '@angular/http';

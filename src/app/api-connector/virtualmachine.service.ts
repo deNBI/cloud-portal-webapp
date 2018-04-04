@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {URLSearchParams} from '@angular/http';
-import {VirtualMachineComponent} from '../applications/addvm.component'
+import {VirtualMachineComponent} from '../virtualmachines/addvm.component'
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {ApiSettings} from './api-settings.service'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
+import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 
 @Injectable()
 export class VirtualmachineService {

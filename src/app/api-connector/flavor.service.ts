@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Flavor} from '../virtualmachinemodels/flavor';
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {ApiSettings} from './api-settings.service';
