@@ -173,7 +173,10 @@
         </button>
       </div>
       <div class="modal-body" *ngIf="data==''">
-        <p>Wait for response! &emsp; <i class="fa fa-spinner fa-spin" style="font-size:24px"></i></p>
+        <p>We are setting up a machine for you. This can take up to 5 minutes.</p>
+        <div class="text-center">
+        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+        </div>
       </div>
       <div class="modal-body" *ngIf="data['Started']">
         Server started use the following command to connect <br><br>
