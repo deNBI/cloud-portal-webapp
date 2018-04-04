@@ -1,5 +1,5 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***Image***REMOVED*** from '../virtualmachinemodels/image';
+import ***REMOVED***Image***REMOVED*** from '../virtualmachines/virtualmachinemodels/image';
 import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
 import ***REMOVED***URLSearchParams***REMOVED*** from '@angular/http';

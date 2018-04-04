@@ -1,5 +1,5 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***Flavor***REMOVED*** from '../virtualmachinemodels/flavor';
+import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';

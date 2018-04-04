@@ -1,7 +1,7 @@
 import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import 'rxjs/Rx'
-import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachinemodels/vmclient";
+import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
 import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";

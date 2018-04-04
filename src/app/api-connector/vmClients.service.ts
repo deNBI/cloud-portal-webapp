@@ -3,7 +3,7 @@ import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@
 import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
 import ***REMOVED***ApiSettings***REMOVED***  from './api-settings.service'
 import ***REMOVED***URLSearchParams***REMOVED*** from "@angular/http";
-import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachinemodels/vmclient";
+import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachines/virtualmachinemodels/vmclient";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 

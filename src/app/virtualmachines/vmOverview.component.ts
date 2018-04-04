@@ -6,7 +6,7 @@ import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connecto
 import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
 import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
 import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
-import ***REMOVED***VirtualMachine***REMOVED*** from "../virtualmachinemodels/virtualmachine";
+import ***REMOVED***VirtualMachine***REMOVED*** from "./virtualmachinemodels/virtualmachine";
 import ***REMOVED***FullLayoutComponent***REMOVED*** from "../layouts/full-layout.component";
 
 

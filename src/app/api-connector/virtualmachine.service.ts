@@ -1,12 +1,12 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***URLSearchParams***REMOVED*** from '@angular/http';
-import ***REMOVED***VirtualMachineComponent***REMOVED*** from '../applications/addvm.component'
+import ***REMOVED***VirtualMachineComponent***REMOVED*** from '../virtualmachines/addvm.component'
 import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachinemodels/virtualmachine';
+import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachines/virtualmachinemodels/virtualmachine';
 
 @Injectable()
 export class VirtualmachineService ***REMOVED***

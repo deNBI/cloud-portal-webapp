@@ -1,14 +1,14 @@
 import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
-import ***REMOVED***Image***REMOVED*** from "../virtualmachinemodels/image";
+import ***REMOVED***Image***REMOVED*** from "./virtualmachinemodels/image";
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
-import ***REMOVED***Flavor***REMOVED*** from '../virtualmachinemodels/flavor';
+import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor';
 import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***ImageDetailComponent***REMOVED*** from "./imagedetail.component";
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import 'rxjs/Rx'
 
-import ***REMOVED***Metadata***REMOVED*** from '../virtualmachinemodels/metadata';
+import ***REMOVED***Metadata***REMOVED*** from './virtualmachinemodels/metadata';
 import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***Userinfo***REMOVED*** from "../userinfo/userinfo.model";
@@ -18,10 +18,10 @@ import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connecto
 import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
 
 import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
-import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachinemodels/vmclient";
+import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
 import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
 import ***REMOVED***AttributesManager***REMOVED*** from "../perun-connector/attributes-manager";
-import ***REMOVED***Application***REMOVED*** from "./application.model";
+import ***REMOVED***Application***REMOVED*** from "../applications/application.model";
 import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
 
