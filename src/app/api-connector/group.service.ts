@@ -85,7 +85,20 @@ export class GroupService {
 
 
     }
+      setDescription(groupid: string, description: string): Observable<any> {
+        let urlSearchParams = new URLSearchParams();
+         let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('description', description);
+        urlSearchParams.append('groupid', groupid);
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setDescription/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
+
+    }
     setNumberOfVms(groupid: string, numberofVms: string): Observable<any> {
         let urlSearchParams = new URLSearchParams();
          let header = new Headers({
