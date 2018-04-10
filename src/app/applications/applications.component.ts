@@ -267,6 +267,7 @@ export class ApplicationsComponent ***REMOVED***
             if (compute_center != 'undefined')***REMOVED***
             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();***REMOVED***
             this.groupservice.setNumberOfVms(new_group_id.toString(),numberofVms.toString()).subscribe()
+            this.groupservice.setDescription(new_group_id.toString(),description).subscribe()
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications

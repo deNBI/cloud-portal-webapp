@@ -45,7 +45,7 @@ export class GroupsManager ***REMOVED***
   createGroup(group_name: string, group_description: string) ***REMOVED***
     var parameter = JSON.stringify(***REMOVED***
       vo: this.settings.getPerunVO(),
-      group: ***REMOVED***name: group_name, description: group_description***REMOVED***
+      group: ***REMOVED***name: group_name, description: group_description.substring(0,512)***REMOVED***
     ***REMOVED***);
     return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/createGroup', parameter,
       ***REMOVED***
