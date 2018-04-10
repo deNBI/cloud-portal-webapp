@@ -53,14 +53,15 @@
                             <td>
 
                                 <div *ngIf="userinfo.PublicKey != 'None'" class="alert alert-danger">
-                                    <strong>Warning!</strong> If the key is changed,all your running machines may become
+                                    <strong>Warning!</strong> If the key is changed, all your running machines may become
                                     unreachable!
                                 </div>
                                  <div *ngIf="validatePublicKey()" class="alert alert-success">
                                     <strong>Info!</strong> This is a valid public Key!
                                 </div>
                                 <div *ngIf="!validatePublicKey()" class="aler alert-info">
-                                    <strong>Info</strong> Insert a valid public Key!
+                                    <strong>Info</strong> Insert a valid public Key!<br>
+                                    <a href="https://confluence.atlassian.com/bitbucketserver/creating-ssh-keys-776639788.html">How to generate a ssh keypair?</a>
                                 </div>
                                 <div class="alert alert-danger" *ngIf="!validatePublicKey() && public_key?.length >0">
                                     <strong>Warning</strong> This is not a valid public key!
