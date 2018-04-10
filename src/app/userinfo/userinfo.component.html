@@ -65,17 +65,18 @@
                                 <div class="alert alert-danger" *ngIf="!validatePublicKey() && public_key?.length >0">
                                     <strong>Warning</strong> This is not a valid public key!
                                 </div>
-                                <input type="text" class="form-control input-lg"
+                                <textarea type="text" class="form-control input-lg"
                                        placeholder="Enter a new public key." name="public_key" [(ngModel)]="public_key"
-                                       #publickey>
+                                          #publickey></textarea>
+
                                 <button *ngIf="userinfo.PublicKey == 'None' && validatePublicKey()"
                                         class="btn btn-primary" type="button"
-                                        (click)="importKey(publickey.value, userinfo.ElxirId)">
+                                        (click)="importKey(publickey.value, userinfo.ElxirId);show_key();">
                                     Add Key
                                 </button>
                                 <button *ngIf="validatePublicKey() && userinfo.PublicKey != 'None'"
                                         class="btn btn-primary" type="button"
-                                        (click)="importKey(publickey.value, userinfo.ElxirId);">
+                                        (click)="importKey(publickey.value, userinfo.ElxirId);show_key();">
                                     Change Key
                                 </button>
 
