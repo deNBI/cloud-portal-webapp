@@ -27,7 +27,7 @@ export class ApplicationsComponent {
     all_applications: Application[] = [];
     application_status: ApplicationStatus[] = [];
     special_hardware: SpecialHardware[] = [];
-    computeCenters: string[];
+    computeCenters: [string,number][];
 
     //notification Modal variables
     public notificationModal;
@@ -175,14 +175,14 @@ export class ApplicationsComponent {
                                         }
 
                                         a.ComputecenterDetails = details_array;
-                                        a.ComputeCenter = result['Facility'];
+                                        a.ComputeCenter = [result['Facility'],result['FacilityID']];
 
                                         this.all_applications.push(a)
 
                                     })
                                 }
                                 else {
-                                    a.ComputeCenter = 'None'
+                                    a.ComputeCenter = ['None',-1]
 
                                     this.all_applications.push(a)
 
