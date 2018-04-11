@@ -45,7 +45,7 @@ export class OverviewComponent {
     public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
-    public UserModalFacility: string;
+    public UserModalFacility: [string,number];
 
 
     //notification Modal variables
@@ -151,7 +151,7 @@ export class OverviewComponent {
                         dateDayDifference,
                         is_pi,
                         is_admin,
-                        result['Facility'])
+                        [result['Facility'],result['FacilityId']])
                     let details = result['Details'];
                     let details_array = [];
                     for (let detail in details) {
@@ -203,9 +203,9 @@ export class OverviewComponent {
         });
     }
 
-    public showMembersOfTheProject(projectid: number, projectname: string, facility: string) {
+    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string,number]) {
         this.getMembesOfTheProject(projectid, projectname);
-        if (facility === 'None') {
+        if (facility[0] === 'None') {
             this.UserModalFacility = null;
         }
         else {
@@ -244,10 +244,10 @@ export class OverviewComponent {
         this.notificationModalType = type;
     }
 
-    public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) {
+    public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string,number]) {
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
-        if (facility === 'None') {
+        if (facility[0] === 'None') {
             this.UserModalFacility = null;
         }
         else {
@@ -257,8 +257,8 @@ export class OverviewComponent {
     }
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string,facility:string) {
-        this.groupservice.addMember(groupid, memberid,facility).toPromise()
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string,facility_id:number) {
+        this.groupservice.addMember(groupid, memberid,facility_id).toPromise()
             .then(result => {
 
                 if (result.status == 200) {
@@ -272,8 +272,8 @@ export class OverviewComponent {
         });
     }
 
-    public removeMember(groupid: number, memberid: number, name: string,facility:string) {
-        this.groupservice.removeMember(groupid, memberid,facility).toPromise()
+    public removeMember(groupid: number, memberid: number, name: string,facility_id:number) {
+        this.groupservice.removeMember(groupid, memberid,facility_id).toPromise()
             .then(result => {
 
                 if (result.status == 200) {

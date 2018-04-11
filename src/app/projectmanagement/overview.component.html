@@ -26,7 +26,7 @@
                             <td>{{ project.Name }}</td>
                             <td>{{ project.Description }}</td>
 
-                            <td>{{project.ComputeCenter}}
+                            <td>{{project.ComputeCenter[0]}}
 
 
                                 <ul>
@@ -41,13 +41,13 @@
                             <td>{{ project.DaysRunning }}</td>
                             <td>
                                 <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                        (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
+                                        (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
 
                                         *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
                                     <i class="fa fa-users"></i>&nbsp;Show Members
                                 </button>
                                 <button
-                                        (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.ComputeCenter); addUserModal.show();"
+                                        (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.ComputeCenter[0]); addUserModal.show();"
                                         *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
                                         type="button"
                                         class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
