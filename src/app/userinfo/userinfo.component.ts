@@ -28,6 +28,7 @@ export class UserinfoComponent ***REMOVED***
 
   ***REMOVED***
 
+
   importKey(publicKey: string, keyname: string) ***REMOVED***
 
     let re = /\+/gi;
@@ -90,7 +91,11 @@ export class UserinfoComponent ***REMOVED***
 
     ***REMOVED***)
   ***REMOVED***
-
+  show_key()***REMOVED***
+    if(this.key_visible ==false)***REMOVED***
+      this.toggleKey();
+    ***REMOVED***
+  ***REMOVED***
   toggleKey() ***REMOVED***
     if (this.key == 'Show Public Key') ***REMOVED***
       this.key = 'Hide Public Key';
