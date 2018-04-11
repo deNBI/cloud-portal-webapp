@@ -3,14 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ApplicationsComponent } from './applications.component';
 import { AddApplicationComponent } from './addapplication.component';
-import  { ImageDetailComponent} from './imagedetail.component';
-import { VirtualMachineComponent} from './addvm.component';
-import {ClientOverviewComponent} from "./vmClients.component";
-import {VmOverviewComponent} from "./vmOverview.component";
+
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'applications',
     component: ApplicationsComponent,
     data: {
       title: 'Application overview'
@@ -18,37 +15,14 @@ const routes: Routes = [
 
   },
   {
-    path: 'new',
+    path: 'newApplication',
     component: AddApplicationComponent,
     data: {
       title: 'New Application'
     }
 
   },
-  {
-    path: 'newVM',
-    component: VirtualMachineComponent,
-       data: {
-      title: 'New Server'
-    }
 
-  },
-  {
-    path:'clientOverview',
-    component:ClientOverviewComponent,
-    data: {
-      title: 'Client Overview'
-    }
-
-  },
-  {
-    path:'vmOverview',
-    component:VmOverviewComponent,
-    data: {
-      title: 'VM Overview'
-    }
-
-  },
 ];
 
 @NgModule({

@@ -26,7 +26,8 @@
                             <td>{{ project.Name }}</td>
                             <td>{{ project.Description }}</td>
 
-                            <td><button *ngIf="project.ComputeCenter != 'None'" (click)="UserModalFacility=project.ComputeCenter;UserModalFacilityDetails=project.ComputeCenterDetails;facilityDetailsModal.show();">{{project.ComputeCenter}}</button> <p *ngIf="project.ComputeCenter == 'None'">{{project.ComputeCenter}}</p>
+                            <td><button *ngIf="project.ComputeCenter[0] != 'None'" (click)="UserModalFacility=project.ComputeCenter;UserModalFacilityDetails=project.ComputeCenterDetails;facilityDetailsModal.show();">{{project.ComputeCenter[0]}}</button> <p *ngIf="project.ComputeCenter[0] == 'None'">{{project.ComputeCenter}}</p>
+
 
                             </td>
 
@@ -34,13 +35,13 @@
                             <td>{{ project.DaysRunning }}</td>
                             <td>
                                 <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                        (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
+                                        (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
 
                                         *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
                                     <i class="fa fa-users"></i>&nbsp;Show Members
                                 </button>
                                 <button
-                                        (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.ComputeCenter); addUserModal.show();"
+                                        (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.ComputeCenter[0]); addUserModal.show();"
                                         *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
                                         type="button"
                                         class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
@@ -90,7 +91,7 @@
                                                 " class="btn btn-secondary" type="button">
                                 <i class="fa fa-trash"></i>&nbsp; Remove member
                             </button>
-                            <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username);
+                            <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username,UserModalFacility);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button">
 
@@ -206,7 +207,7 @@
                         <tbody *ngFor="  let member of filteredMembers">
                         <td>
                             <button
-                                    (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                                    (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName'],UserModalFacility);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
                                     class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
                             </button>
                         </td>

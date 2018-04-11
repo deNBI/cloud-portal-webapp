@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {URLSearchParams} from '@angular/http';
-import {VirtualMachineComponent} from '../applications/addvm.component'
+import {VirtualMachineComponent} from '../virtualmachines/addvm.component'
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {ApiSettings} from './api-settings.service'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
+import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 
 @Injectable()
 export class VirtualmachineService {
@@ -17,7 +17,7 @@ export class VirtualmachineService {
   }
 
 
-  startVM(flavor: string, image: string, servername: string, host: string, port: string, project: string): Observable<Response> {
+  startVM(flavor: string, image: string, servername: string, host: string, port: string, project: string,projectid :string): Observable<Response> {
     let header = new Headers({
       'X-CSRFToken': this.settings.getCSRFToken(),
     });
@@ -28,6 +28,7 @@ export class VirtualmachineService {
     urlSearchParams.append('host', host);
     urlSearchParams.append('port', port);
     urlSearchParams.append('project', project);
+     urlSearchParams.append('projectid', projectid);
 
     return this.http.post(this.baseVmUrl + 'addVm/', urlSearchParams, {
       withCredentials: true,

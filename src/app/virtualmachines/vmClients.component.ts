@@ -1,7 +1,7 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import 'rxjs/Rx'
-import {Vmclient} from "../virtualmachinemodels/vmclient";
+import {Vmclient} from "./virtualmachinemodels/vmclient";
 import {ClientService} from "../api-connector/vmClients.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {AuthzResolver} from "../perun-connector/authz-resolver.service";
@@ -21,7 +21,7 @@ export class ClientOverviewComponent implements OnInit {
   clients: Vmclient[];
   is_vo_admin = false;
   checkStatus: string = 'Not checked';
-   computeCenters: string[];
+   computeCenters: [string,number][];
    selectedComputeCenter:string;
 
   constructor(private groupservice : GroupService,private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {

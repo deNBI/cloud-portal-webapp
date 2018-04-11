@@ -27,7 +27,7 @@ export class ApplicationsComponent {
     all_applications: Application[] = [];
     application_status: ApplicationStatus[] = [];
     special_hardware: SpecialHardware[] = [];
-    computeCenters: string[];
+    computeCenters: [string,number][];
 
     //notification Modal variables
     public notificationModal;
@@ -165,7 +165,7 @@ export class ApplicationsComponent {
                                 a.Status = aj["project_application_status"];
                                 a.OpenStackProject = aj["project_application_openstack_project"];
                                 if (a.Status !== 1) {
-                                    this.groupservice.getFacilityByGroup(a.Name).subscribe(result => {
+                                    this.groupservice.getFacilityByGroup(a.Shortname).subscribe(result => {
 
                                         let details = result['Details'];
                                         let details_array = [];
@@ -175,14 +175,14 @@ export class ApplicationsComponent {
                                         }
 
                                         a.ComputecenterDetails = details_array;
-                                        a.ComputeCenter = result['Facility'];
+                                        a.ComputeCenter = [result['Facility'],result['FacilityID']];
 
                                         this.all_applications.push(a)
 
                                     })
                                 }
                                 else {
-                                    a.ComputeCenter = 'None'
+                                    a.ComputeCenter = ['None',-1]
 
                                     this.all_applications.push(a)
 
@@ -236,12 +236,11 @@ export class ApplicationsComponent {
         this.notificationModalType = type;
     }
 
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project) {
+    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project,numberofVms) {
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
-
         this.membersmanager.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
             .then(member_raw => {
                     let member = member_raw.json();
@@ -265,7 +264,10 @@ export class ApplicationsComponent {
             //setting approved status for Perun Group
             this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
             this.groupsmanager.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
-            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
+            if (compute_center != 'undefined'){
+            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();}
+            this.groupservice.setNumberOfVms(new_group_id.toString(),numberofVms.toString()).subscribe()
+            this.groupservice.setDescription(new_group_id.toString(),description).subscribe()
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications

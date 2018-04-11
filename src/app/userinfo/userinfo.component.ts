@@ -28,6 +28,7 @@ export class UserinfoComponent {
 
   }
 
+
   importKey(publicKey: string, keyname: string) {
 
     let re = /\+/gi;
@@ -90,7 +91,11 @@ export class UserinfoComponent {
 
     })
   }
-
+  show_key(){
+    if(this.key_visible ==false){
+      this.toggleKey();
+    }
+  }
   toggleKey() {
     if (this.key == 'Show Public Key') {
       this.key = 'Hide Public Key';

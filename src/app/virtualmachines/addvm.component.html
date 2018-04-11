@@ -1,5 +1,7 @@
 <div class="allert alert-info" *ngIf="!client_avaiable"><strong>Info</strong> No Client avaiable.</div>
-<div class="allert alert-info" *ngIf="!validatePublicKey()"><strong>Info</strong>You need to set a valid Key before you can start a machine. Please set a Key on the Userinfo tab.</div>
+<div class="allert alert-info" *ngIf="!validatePublicKey()"><strong>Info</strong>You need to set a valid SSH Key before you
+  can start a machine. Please set a SSH Key on the User Information tab.
+</div>
 <div class="animated fadeIn" *ngIf="client_avaiable && validatePublicKey()">
 
   <div class="row">
@@ -13,12 +15,14 @@
         <div class="card-body">
 
           <form id="application_form" #f="ngForm" class="form-horizontal">
-      <div class="alert alert-danger">
-  <strong>Warning!</strong> This is for testing purposes only. Functionality of the machines can not be guaranteed at all times
-</div>
+            <div class="alert alert-danger">
+              <strong>Warning!</strong> This is for testing purposes only. Functionality of the machines
+              can not be guaranteed at all times
+            </div>
             <div class="alert alert-warning">
-  <strong>Warning!</strong> Be careful with sensitive data. The machine can be started anywhere!
-</div>
+              <strong>Warning!</strong> Be careful with sensitive data. The machine can be started
+              anywhere!
+            </div>
             <div class="form-group row">
               <label class="col-md-3 form-control-label"><strong>Name</strong></label>
               <div class="col-md-9">
@@ -33,9 +37,11 @@
               <div class="col-md-6">
 
 
-                <select class="form-control col-md-6" name="selectedFlavor" [(ngModel)]="selectedFlavor">
+                <select class="form-control col-md-6" name="selectedFlavor"
+                        [(ngModel)]="selectedFlavor">
                   <option value="undefined" disabled selected hidden> Please Select</option>
-                  <option *ngFor="  let flavor of flavors" [ngValue]="flavor"> {{flavor.name}}</option>
+                  <option *ngFor="  let flavor of flavors" [ngValue]="flavor"> {{flavor.name}}
+                  </option>
 
                 </select>
 
@@ -68,38 +74,38 @@
                 {{informationButton}}
               </button>
             </div>
-                        <div class="col-md-9">
+            <div class="col-md-9">
               <image-detail [collapse1]="collapsed1" [image]="selectedImage"></image-detail>
             </div>
 
-              <div class="form-group row">
+            <div class="form-group row">
               <label class="col-md-3 form-control-label"><strong>Project</strong></label>
               <div class="col-md-6">
 
                 <select class="form-control" name="selectedProject" [(ngModel)]="selectedProject">
-                   <option value="undefined" disabled selected hidden> Please Select</option>
-                  <option *ngFor="let project of projects" > {{project}}</option>
+                  <option value="undefined" disabled selected hidden> Please Select</option>
+                  <option *ngFor="let project of projects" [ngValue]="project"> {{project[0]}}
+                  </option>
 
                 </select>
 
 
               </div>
 
-              </div>
+            </div>
 
 
+            <!-- <div class="form-group row">
+               <label class="col-md-3 form-control-label"><strong>Key</strong></label>
+               <div class="col-md-9">
+                 <div class="input-group">
+                   <input type="text" placeholder="Key" #serverkey>
 
-           <!-- <div class="form-group row">
-              <label class="col-md-3 form-control-label"><strong>Key</strong></label>
-              <div class="col-md-9">
-                <div class="input-group">
-                  <input type="text" placeholder="Key" #serverkey>
 
+                 </div>
 
-                </div>
-
-              </div>
-            </div>-->
+               </div>
+             </div>-->
 
 
             <!-- <div class="form-group row" >
@@ -134,11 +140,11 @@
 
 
                      </div>-->
-                        <button type="button" class="btn btn-primary offset-md-8" data-toggle="modal"
-                    (click)="startVM(selectedFlavor.name,selectedImage.name,servername.value,selectedProject);resetData();infoModal.show();">
+            <button type="button" class="btn btn-primary offset-md-8" data-toggle="modal"
+                    (click)="startVM(selectedFlavor.name,selectedImage.name,servername.value,selectedProject[0],selectedProject[1]);resetData();infoModal.show();">
               Start VM
             </button>
-        <br><br><br>
+            <br><br><br>
 
           </form>
 
@@ -172,12 +178,18 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" *ngIf="!data">
-        Wait for response!
+      <div class="modal-body" *ngIf="data==''">
+        <p>We are setting up a machine for you. This can take up to 5 minutes.</p>
+        <div class="text-center">
+          <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+        </div>
       </div>
       <div class="modal-body" *ngIf="data['Started']">
         Server started use the following command to connect <br><br>
         <pre><code>{{data['Started']}}</code></pre>
+        <br>
+        Be aware that you may need to wait a few minutes till you can connect to the machine.
+
       </div>
       <div class="modal-body" *ngIf="data['Error']">
         An Error occured<br><br>
@@ -193,4 +205,5 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
 
