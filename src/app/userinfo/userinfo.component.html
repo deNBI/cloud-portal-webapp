@@ -1,79 +1,91 @@
 <div class="animated fadeIn" ng-app>
-  <div class="row">
-    <!--/.col-->
-    <h1>Hello, {{ userinfo.FirstName }} {{ userinfo.LastName }}</h1>
-  </div>
-  <div class="row">
-    <h3>This is your personal data page.</h3>
-  </div>
-  <div class="row">
-    <div>
-      <div class="card">
-        <div class="card-header">
-          <i class="fa fa-align-justify"></i> Personal Information
-        </div>
-        <div class="card-block">
-          <table class="table table-striped">
-            <tr>
-              <td>Full name</td>
-              <td>{{ userinfo.FirstName }} {{ userinfo.LastName }}</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>User ID</td>
-              <td>{{ userinfo.Id }}</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Member ID</td>
-              <td>{{ userinfo.MemberId }}</td>
-              <td></td>
-            </tr>
-           <tr>
-              <td>Elixir Login</td>
-              <td>{{ userinfo.UserLogin }}</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Elixir ID</td>
-              <td>{{userinfo.ElxirId}}</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Public Key</td>
-              <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-                <button *ngIf="userinfo.PublicKey" (click)="toggleKey()"
-                        class="btn btn-primary">
-                  {{key}}
-                </button>
-                <div *ngIf="key_visible"><br>{{userinfo.PublicKey}}</div>
-              </td>
-              <td>
-                <ng-container *ngIf="userinfo.PublicKey != 'None'">
-                  <div class="alert alert-danger">
-                    <strong>Warning!</strong> If the key is changed,all your running machines may become unreachable!
-                  </div>
-                  <div *ngIf="!validatePublicKey()" class="aler alert-info">
-                    <strong>Info</strong> Insert a valid Key!
-                  </div>
-                  <button *ngIf="validatePublicKey()" class="btn btn-primary" type="button"
-                          (click)="importKey(publickey.value, userinfo.ElxirId);toggleKey();">
-                    Change Key
-                  </button>
-                </ng-container>
-                <input type="text" class="form-control input-lg"
-                       placeholder="New PublicKey" name="public_key" [(ngModel)]="public_key"
-                       #publickey>
-                <button *ngIf="userinfo.PublicKey == 'None' && validatePublicKey()" class="btn btn-primary" type="button"
-                        (click)="importKey(publickey.value, userinfo.ElxirId)">
-                  Add Key
-                </button>
-
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
+    <div class="row">
+        <!--/.col-->
+        <h1>Hello, {{ userinfo.FirstName }} {{ userinfo.LastName }}</h1>
     </div>
-  </div>
+    <div class="row">
+        <h3>This is your personal data page.</h3>
+    </div>
+    <div class="row">
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Personal Information
+                </div>
+                <div class="card-block">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>Full name</td>
+                            <td>{{ userinfo.FirstName }} {{ userinfo.LastName }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>User ID</td>
+                            <td>{{ userinfo.Id }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Member ID</td>
+                            <td>{{ userinfo.MemberId }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Elixir Login</td>
+                            <td>{{ userinfo.UserLogin }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Elixir ID</td>
+                            <td>{{userinfo.ElxirId}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Public Key</td>
+                            <td *ngIf="userinfo.PublicKey == 'None'">No public key is set</td>
+                            <td *ngIf="userinfo.PublicKey != 'None'"
+                                style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
+                                <button *ngIf="userinfo.PublicKey" (click)="toggleKey()"
+                                        class="btn btn-primary">
+                                    {{key}}
+                                </button>
+                                <div *ngIf="key_visible"><br>{{userinfo.PublicKey}}</div>
+                            </td>
+                            <td>
+
+                                <div *ngIf="userinfo.PublicKey != 'None'" class="alert alert-danger">
+                                    <strong>Warning!</strong> If the key is changed, all your running machines may become
+                                    unreachable!
+                                </div>
+                                 <div *ngIf="validatePublicKey()" class="alert alert-success">
+                                    <strong>Info!</strong> This is a valid public Key!
+                                </div>
+                                <div *ngIf="!validatePublicKey()" class="aler alert-info">
+                                    <strong>Info</strong> Insert a valid public Key!<br>
+                                    <a href="https://confluence.csc.fi/pages/viewpage.action?pageId=58826074">How to generate a ssh keypair?</a>
+                                </div>
+                                <div class="alert alert-danger" *ngIf="!validatePublicKey() && public_key?.length >0">
+                                    <strong>Warning</strong> This is not a valid public key!
+                                </div>
+                                <textarea type="text" class="form-control input-lg"
+                                       placeholder="Enter a new public key." name="public_key" [(ngModel)]="public_key"
+                                          #publickey></textarea>
+
+                                <button *ngIf="userinfo.PublicKey == 'None' && validatePublicKey()"
+                                        class="btn btn-primary" type="button"
+                                        (click)="importKey(publickey.value, userinfo.ElxirId);show_key();">
+                                    Add Key
+                                </button>
+                                <button *ngIf="validatePublicKey() && userinfo.PublicKey != 'None'"
+                                        class="btn btn-primary" type="button"
+                                        (click)="importKey(publickey.value, userinfo.ElxirId);show_key();">
+                                    Change Key
+                                </button>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
