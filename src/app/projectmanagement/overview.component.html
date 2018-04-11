@@ -26,8 +26,21 @@
                             <td>{{ project.Name }}</td>
                             <td>{{ project.Description }}</td>
 
-                            <td><button *ngIf="project.ComputeCenter[0] != 'None'" (click)="UserModalFacility=project.ComputeCenter;UserModalFacilityDetails=project.ComputeCenterDetails;facilityDetailsModal.show();" class="btn btn-primary">{{project.ComputeCenter[0]}}</button> <p *ngIf="project.ComputeCenter[0] == 'None'">{{project.ComputeCenter}}</p>
+                            <td>
+                                <p *ngIf="project.ComputeCenter[0] == 'None'" >None</p>
+                                              <p *ngIf="project.ComputeCenter[0] != 'None'" >{{project.ComputeCenter[0]}}</p>
+                                    <ul *ngIf="project.ComputeCenter[0] != 'None'">
 
+                                         <button (click)="setUserFacilityPassword(project.ComputeCenter[0],project.ComputeCenterDetails);passwordModal.show();"
+                                                    class="btn btn-primary">Set your OpenStack API password
+                                            </button>
+                                        <li *ngFor="let details of project.ComputeCenterDetails">{{details[0]}}: <a
+                                                target="_blank"
+                                                *ngIf="details[0] == 'Login'"
+                                                href="{{details[1]}}">{{details[1]}}</a>
+                                            <span *ngIf="details[0] != 'Login'">{{details[1]}}</span>
+                                        </li>
+                                    </ul>
 
                             </td>
 
@@ -317,37 +330,4 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-<div bsModal #facilityDetailsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">{{ UserModalFacility}}</h4>
-            </div>
-            <div class="modal-body">
-                    <div>
-                        <ul>
-                            <li>
-                                <button (click)="setUserFacilityPassword(UserModalFacility[0],UserModalFacilityDetails);facilityDetailsModal.hide();passwordModal.show();"
-                                        class="btn btn-primary">Set your password
-                                </button>
-                            </li>
-                            <li *ngFor="let details of UserModalFacilityDetails">{{details[0]}}: <a target="_blank"
-                                                                                                        *ngIf="details[0] == 'Login'"
-                                                                                                        href="{{details[1]}}">{{details[1]}}</a>
-                                <span *ngIf="details[0] != 'Login'">{{details[1]}}</span>
-                            </li>
-                        </ul>
-
-                    </div>
-                <div class="modal-footer">
-                    <button type="button"
-                            (click)="resetFacilityDetailsModal(); facilityDetailsModal.hide();" type="reset"
-                            class="btn  btn-secondary"> Close
-                    </button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
