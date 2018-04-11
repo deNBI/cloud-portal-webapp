@@ -45,7 +45,7 @@ export class OverviewComponent ***REMOVED***
     public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
-    public UserModalFacility: string;
+    public UserModalFacility: [string,number];
 
 
     //notification Modal variables
@@ -151,7 +151,7 @@ export class OverviewComponent ***REMOVED***
                         dateDayDifference,
                         is_pi,
                         is_admin,
-                        result['Facility'])
+                        [result['Facility'],result['FacilityId']])
                     let details = result['Details'];
                     let details_array = [];
                     for (let detail in details) ***REMOVED***
@@ -203,9 +203,9 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    public showMembersOfTheProject(projectid: number, projectname: string, facility: string) ***REMOVED***
+    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string,number]) ***REMOVED***
         this.getMembesOfTheProject(projectid, projectname);
-        if (facility === 'None') ***REMOVED***
+        if (facility[0] === 'None') ***REMOVED***
             this.UserModalFacility = null;
         ***REMOVED***
         else ***REMOVED***
@@ -244,10 +244,10 @@ export class OverviewComponent ***REMOVED***
         this.notificationModalType = type;
     ***REMOVED***
 
-    public showAddUserToProjectModal(projectid: number, projectname: string, facility: string) ***REMOVED***
+    public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string,number]) ***REMOVED***
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
-        if (facility === 'None') ***REMOVED***
+        if (facility[0] === 'None') ***REMOVED***
             this.UserModalFacility = null;
         ***REMOVED***
         else ***REMOVED***
@@ -257,8 +257,8 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string,facility:string) ***REMOVED***
-        this.groupservice.addMember(groupid, memberid,facility).toPromise()
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string,facility_id:number) ***REMOVED***
+        this.groupservice.addMember(groupid, memberid,facility_id).toPromise()
             .then(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
@@ -272,8 +272,8 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    public removeMember(groupid: number, memberid: number, name: string,facility:string) ***REMOVED***
-        this.groupservice.removeMember(groupid, memberid,facility).toPromise()
+    public removeMember(groupid: number, memberid: number, name: string,facility_id:number) ***REMOVED***
+        this.groupservice.removeMember(groupid, memberid,facility_id).toPromise()
             .then(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***

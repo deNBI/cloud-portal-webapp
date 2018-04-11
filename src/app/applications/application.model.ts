@@ -17,7 +17,7 @@ export class Application ***REMOVED***
   private _User: number;
   private _UserEmail: number;
   private _Status: number;
-  private _ComputeCenter: string;
+  private _ComputeCenter: [string,number];
   private _OpenStackProject: boolean;
   private _ComputeCenterDetails:[string,string][];
 
@@ -43,11 +43,11 @@ export class Application ***REMOVED***
     this._ComputeCenterDetails=value;
   ***REMOVED***
 
-  get ComputeCenter(): string ***REMOVED***
+  get ComputeCenter(): [string,number] ***REMOVED***
     return this._ComputeCenter
   ***REMOVED***
 
-  set ComputeCenter(value: string) ***REMOVED***
+  set ComputeCenter(value: [string,number]) ***REMOVED***
     this._ComputeCenter = value;
   ***REMOVED***
 

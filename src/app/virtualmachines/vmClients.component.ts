@@ -21,7 +21,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
   clients: Vmclient[];
   is_vo_admin = false;
   checkStatus: string = 'Not checked';
-   computeCenters: string[];
+   computeCenters: [string,number][];
    selectedComputeCenter:string;
 
   constructor(private groupservice : GroupService,private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***

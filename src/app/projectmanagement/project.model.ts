@@ -14,11 +14,11 @@ export class Project ***REMOVED***
   private _DaysRunning: number;
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
-  private _ComputeCenter:string;
+  private _ComputeCenter:[string,number];
   private _ComputeCenterDetails:[string,string][];
 
 
-  constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: string) ***REMOVED***
+  constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: [string,number]) ***REMOVED***
     this._Id = Id;
     this._Name = Name;
     this._Description = Description;
@@ -38,11 +38,11 @@ export class Project ***REMOVED***
   set ComputecenterDetails(value:[string,string][])***REMOVED***
     this._ComputeCenterDetails=value;
   ***REMOVED***
-  get ComputeCenter(): string ***REMOVED***
+  get ComputeCenter(): [string,number] ***REMOVED***
     return this._ComputeCenter
   ***REMOVED***
 
-  set ComputeCenter(value: string) ***REMOVED***
+  set ComputeCenter(value: [string,number]) ***REMOVED***
     this._ComputeCenter = value;
   ***REMOVED***
 

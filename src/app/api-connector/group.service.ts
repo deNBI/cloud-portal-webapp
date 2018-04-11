@@ -56,12 +56,12 @@ export class GroupService ***REMOVED***
 
     ***REMOVED***
 
-    addMember(group_id: number, member_id: number, facility: string) ***REMOVED***
+    addMember(group_id: number, member_id: number, facility_id: number) ***REMOVED***
         let urlSearchParams = new URLSearchParams();
         let header = new Headers(***REMOVED***
             'X-CSRFToken': this.settings.getCSRFToken(),
         ***REMOVED***);
-        urlSearchParams.append('facility', facility);
+        urlSearchParams.append('facility_id', facility_id.toString());
         urlSearchParams.append('group_id', group_id.toString());
         urlSearchParams.append('member_id', member_id.toString())
         return this.http.post(this.settings.getApiBaseURL() + 'group/addMember/', urlSearchParams, ***REMOVED***
@@ -70,12 +70,12 @@ export class GroupService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    removeMember(group_id: number, member_id: number, facility: string) ***REMOVED***
+    removeMember(group_id: number, member_id: number, facility_id: number) ***REMOVED***
         let urlSearchParams = new URLSearchParams();
         let header = new Headers(***REMOVED***
             'X-CSRFToken': this.settings.getCSRFToken(),
         ***REMOVED***);
-        urlSearchParams.append('facility', facility);
+        urlSearchParams.append('facility_id', facility_id.toString());
         urlSearchParams.append('group_id', group_id.toString());
         urlSearchParams.append('member_id', member_id.toString())
         return this.http.post(this.settings.getApiBaseURL() + 'group/removeMember/', urlSearchParams, ***REMOVED***

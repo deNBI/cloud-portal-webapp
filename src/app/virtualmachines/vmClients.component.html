@@ -35,7 +35,7 @@
           <td>
                 <select class="form-control col-md-6" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
                   <option value="undefined" disabled selected hidden> Please Select</option>
-                  <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter"> ***REMOVED******REMOVED***computecenter***REMOVED******REMOVED***</option>
+                  <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter[0]"> ***REMOVED******REMOVED***computecenter[0]***REMOVED******REMOVED***</option>
 
                 </select></td>
           <td><input type="text" placeholder="Host" #hos></td>
