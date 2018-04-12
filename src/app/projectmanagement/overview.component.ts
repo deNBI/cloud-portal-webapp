@@ -14,10 +14,11 @@ import ***REMOVED***isNumber***REMOVED*** from "util";
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
+import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 
 @Component(***REMOVED***
     templateUrl: 'overview.component.html',
-    providers: [GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [UserService, GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 ***REMOVED***)
 export class OverviewComponent ***REMOVED***
 
@@ -45,7 +46,9 @@ export class OverviewComponent ***REMOVED***
     public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
+    public UserModalFacilityDetails: [string,string][];
     public UserModalFacility: [string,number];
+
 
 
     //notification Modal variables
@@ -53,7 +56,14 @@ export class OverviewComponent ***REMOVED***
     public notificationModalTitle: string = "Notification";
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
+    public notificationModalInfoMessage: string=''
     public notificationModalIsClosable: boolean = false;
+
+    public passwordModalTitle: string= "Changing Password";
+    public passwordModalType : string='info';
+    public passwordModalPassword: string ='';
+    public passwordModalFacility: string='';
+    public passwordModalEmail: string='';
 
     constructor(private authzresolver: AuthzResolver,
                 private perunsettings: PerunSettings,
@@ -61,8 +71,10 @@ export class OverviewComponent ***REMOVED***
                 private groupsmanager: GroupsManager,
                 private membersmanager: MembersManager,
                 private  resourceManager: ResourcesManager,
-                private groupservice: GroupService) ***REMOVED***
+                private groupservice: GroupService,
+                private userservice: UserService) ***REMOVED***
         this.getUserProjects(groupsmanager, membersmanager, useresmanager);
+
     ***REMOVED***
 
     public updateUserProjects() ***REMOVED***
@@ -70,6 +82,30 @@ export class OverviewComponent ***REMOVED***
         this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
     ***REMOVED***
 
+
+    setUserFacilityPassword(facility: string,details:string) ***REMOVED***
+        this.userservice.setUserFacilityPassword(facility).subscribe(result => ***REMOVED***
+            console.log(result);
+            result = result.json()
+            for(let key of details)***REMOVED***
+                if (key[0] == 'Email')***REMOVED***
+                      this.passwordModalEmail=key[1];
+                ***REMOVED***
+            ***REMOVED***
+
+            this.passwordModalFacility=facility;
+
+            if (result['Error']) ***REMOVED***
+               this.passwordModalTitle='Set or update password'
+                this.passwordModalType='warning'
+            ***REMOVED***
+            else ***REMOVED***
+                this.passwordModalTitle='Success'
+                this.passwordModalType='success'
+                this.passwordModalPassword=result.toString()
+            ***REMOVED***
+        ***REMOVED***)
+    ***REMOVED***
 
     getUserProjects(groupsmanager: GroupsManager,
                     membersmanager: MembersManager,
@@ -155,7 +191,7 @@ export class OverviewComponent ***REMOVED***
                     let details = result['Details'];
                     let details_array = [];
                     for (let detail in details) ***REMOVED***
-                        let detail_tuple = [detail,details[detail]];
+                        let detail_tuple = [detail, details[detail]];
                         details_array.push(detail_tuple);
                     ***REMOVED***
                     newProject.ComputecenterDetails = details_array;
@@ -213,6 +249,15 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
+
+    public resetPasswordModal() ***REMOVED***
+        this.passwordModalTitle= "Changing Password";
+        this.passwordModalType ='info';
+        this.passwordModalPassword='';
+        this.passwordModalFacility='';
+        this.passwordModalEmail='';
+
+    ***REMOVED***
 
     public resetNotificaitonModal() ***REMOVED***
         this.notificationModalTitle = "Notification";
@@ -286,7 +331,10 @@ export class OverviewComponent ***REMOVED***
             this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
         ***REMOVED***);
     ***REMOVED***
-
+    public resetFacilityDetailsModal()***REMOVED***
+        this.UserModalFacility=null;
+        this.UserModalFacilityDetails=null;
+    ***REMOVED***
     public comingSoon() ***REMOVED***
         alert("This function will be implemented soon.")
     ***REMOVED***

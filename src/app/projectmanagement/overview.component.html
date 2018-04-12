@@ -26,15 +26,22 @@
                             <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
                             <td>***REMOVED******REMOVED*** project.Description ***REMOVED******REMOVED***</td>
 
-                            <td>***REMOVED******REMOVED***project.ComputeCenter[0]***REMOVED******REMOVED***
+                            <td>
+                                <p *ngIf="project.ComputeCenter[0] == 'None'" >None</p>
+                                              <p *ngIf="project.ComputeCenter[0] != 'None'" >***REMOVED******REMOVED***project.ComputeCenter[0]***REMOVED******REMOVED***</p>
+                                    <ul *ngIf="project.ComputeCenter[0] != 'None'">
 
+                                         <button (click)="setUserFacilityPassword(project.ComputeCenter[0],project.ComputeCenterDetails);passwordModal.show();"
+                                                    class="btn btn-primary">Set your OpenStack API password
+                                            </button>
+                                        <li *ngFor="let details of project.ComputeCenterDetails">***REMOVED******REMOVED***details[0]***REMOVED******REMOVED***: <a
+                                                target="_blank"
+                                                *ngIf="details[0] == 'Login'"
+                                                href="***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</a>
+                                            <span *ngIf="details[0] != 'Login'">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</span>
+                                        </li>
+                                    </ul>
 
-                                <ul>
-                                    <li *ngFor="let details of project.ComputeCenterDetails">***REMOVED******REMOVED***details[0]***REMOVED******REMOVED***: <a target="_blank"
-                                            *ngIf="details[0] == 'Login'" href="***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</a>
-                                        <span *ngIf="details[0] != 'Login'">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</span>
-                                    </li>
-                                </ul>
                             </td>
 
                             <td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>
@@ -282,6 +289,40 @@
             <div class="modal-footer">
                 <button *ngIf="notificationModalIsClosable == true" type="button"
                         (click)="resetNotificaitonModal(); notificationModal.hide();" type="reset"
+                        class="btn  btn-secondary"> Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #passwordModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">***REMOVED******REMOVED*** passwordModalTitle ***REMOVED******REMOVED***</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-***REMOVED******REMOVED*** passwordModalType ***REMOVED******REMOVED***" role="alert">
+                    <div *ngIf="passwordModalType=='info'">
+                        Please wait...
+                    </div>
+                    <div *ngIf="passwordModalType=='success'">
+                        <h5>Password successfully set!</h5>
+                        <p> Your new password for the ***REMOVED******REMOVED***passwordModalFacility***REMOVED******REMOVED*** facility is:</p>
+                        <pre>***REMOVED******REMOVED***passwordModalPassword***REMOVED******REMOVED***</pre>
+                        <p>Please be aware that you have to remember this password.</p>
+                        <p>However you can always request a new one.</p>
+                    </div>
+                    <div *ngIf="passwordModalType=='warning'">
+                        <p>Please contact ***REMOVED******REMOVED***passwordModalEmail***REMOVED******REMOVED*** in order to set or change your password.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        (click)="resetPasswordModal(); passwordModal.hide();" type="reset"
                         class="btn  btn-secondary"> Close
                 </button>
             </div>
