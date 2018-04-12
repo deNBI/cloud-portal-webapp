@@ -96,8 +96,8 @@ export class OverviewComponent {
             this.passwordModalFacility=facility;
 
             if (result['Error']) {
-               this.passwordModalTitle='Failed to change password'
-                this.passwordModalType='danger'
+               this.passwordModalTitle='Set or update password'
+                this.passwordModalType='warning'
             }
             else {
                 this.passwordModalTitle='Success'

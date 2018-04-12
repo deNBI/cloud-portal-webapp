@@ -315,8 +315,7 @@
                         <p>Please be aware that you have to remember this password.</p>
                         <p>However you can always request a new one.</p>
                     </div>
-                    <div *ngIf="passwordModalType=='danger'">
-                        <h5>Failed to change password</h5>
+                    <div *ngIf="passwordModalType=='warning'">
                         <p>Please contact {{passwordModalEmail}} in order to set or change your password.</p>
                     </div>
                 </div>
