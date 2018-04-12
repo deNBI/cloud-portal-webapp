@@ -14,10 +14,11 @@ import {isNumber} from "util";
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
+import {UserService} from "../api-connector/user.service";
 
 @Component({
     templateUrl: 'overview.component.html',
-    providers: [GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [UserService, GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 
@@ -45,7 +46,9 @@ export class OverviewComponent {
     public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
+    public UserModalFacilityDetails: [string,string][];
     public UserModalFacility: [string,number];
+
 
 
     //notification Modal variables
@@ -53,7 +56,14 @@ export class OverviewComponent {
     public notificationModalTitle: string = "Notification";
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
+    public notificationModalInfoMessage: string=''
     public notificationModalIsClosable: boolean = false;
+
+    public passwordModalTitle: string= "Changing Password";
+    public passwordModalType : string='info';
+    public passwordModalPassword: string ='';
+    public passwordModalFacility: string='';
+    public passwordModalEmail: string='';
 
     constructor(private authzresolver: AuthzResolver,
                 private perunsettings: PerunSettings,
@@ -61,8 +71,10 @@ export class OverviewComponent {
                 private groupsmanager: GroupsManager,
                 private membersmanager: MembersManager,
                 private  resourceManager: ResourcesManager,
-                private groupservice: GroupService) {
+                private groupservice: GroupService,
+                private userservice: UserService) {
         this.getUserProjects(groupsmanager, membersmanager, useresmanager);
+
     }
 
     public updateUserProjects() {
@@ -70,6 +82,30 @@ export class OverviewComponent {
         this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
     }
 
+
+    setUserFacilityPassword(facility: string,details:string) {
+        this.userservice.setUserFacilityPassword(facility).subscribe(result => {
+            console.log(result);
+            result = result.json()
+            for(let key of details){
+                if (key[0] == 'Email'){
+                      this.passwordModalEmail=key[1];
+                }
+            }
+
+            this.passwordModalFacility=facility;
+
+            if (result['Error']) {
+               this.passwordModalTitle='Set or update password'
+                this.passwordModalType='warning'
+            }
+            else {
+                this.passwordModalTitle='Success'
+                this.passwordModalType='success'
+                this.passwordModalPassword=result.toString()
+            }
+        })
+    }
 
     getUserProjects(groupsmanager: GroupsManager,
                     membersmanager: MembersManager,
@@ -155,7 +191,7 @@ export class OverviewComponent {
                     let details = result['Details'];
                     let details_array = [];
                     for (let detail in details) {
-                        let detail_tuple = [detail,details[detail]];
+                        let detail_tuple = [detail, details[detail]];
                         details_array.push(detail_tuple);
                     }
                     newProject.ComputecenterDetails = details_array;
@@ -213,6 +249,15 @@ export class OverviewComponent {
         }
     }
 
+
+    public resetPasswordModal() {
+        this.passwordModalTitle= "Changing Password";
+        this.passwordModalType ='info';
+        this.passwordModalPassword='';
+        this.passwordModalFacility='';
+        this.passwordModalEmail='';
+
+    }
 
     public resetNotificaitonModal() {
         this.notificationModalTitle = "Notification";
@@ -286,7 +331,10 @@ export class OverviewComponent {
             this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
         });
     }
-
+    public resetFacilityDetailsModal(){
+        this.UserModalFacility=null;
+        this.UserModalFacilityDetails=null;
+    }
     public comingSoon() {
         alert("This function will be implemented soon.")
     }
