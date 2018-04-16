@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-
+import { FacilityProjectsOverviewComponent} from "./facilityprojectsoverview.component";
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { OverviewComponent } from './overview.component';
 import { ProjectManagementRoutingModule } from './projectmanagement-routing.module';
@@ -13,7 +13,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ModalModule.forRoot(),
   ],
   declarations: [
-    OverviewComponent
+    OverviewComponent,
+      FacilityProjectsOverviewComponent
   ]
 })
 export class ProjectManagementModule { }
