@@ -15,6 +15,7 @@ import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
 import {FacilityService} from "../api-connector/facility.service";
+import {FormsModule} from '@angular/forms';
 
 @Component({
     templateUrl: 'facilityprojectsoverview.component.html',
@@ -26,13 +27,7 @@ export class  FacilityProjectsOverviewComponent {
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
-    userprojects: {};
-    userid: number;
     member_id: number;
-    user_data: {};
-    admingroups: {};
-    adminvos: {};
-    filteredMembers = null;
     projects: Project[] = new Array();
 
 
@@ -41,6 +36,9 @@ export class  FacilityProjectsOverviewComponent {
     public usersModalProjectMembers: ProjectMember[] = new Array;
     public usersModalProjectID: number;
     public usersModalProjectName: string;
+
+    public managerFacilities: [string,number][];
+    public selectedFacility: [string,number]
 
 
 
@@ -51,13 +49,18 @@ export class  FacilityProjectsOverviewComponent {
                 private  facilityservice :FacilityService) {
 
         this.facilityservice.getManagerFacilities().subscribe(result => {
-               this.getFacilityProjects(result[0]['FacilityId'])
+                this.managerFacilities=result
+                this.selectedFacility=this.managerFacilities[0]
+                this.getFacilityProjects(this.managerFacilities[0]['FacilityId'])
+
         })
 
     }
 
 
-
+    onChangeSelectedFacility(){
+        this.getFacilityProjects(this.selectedFacility['FacilityId'])
+    }
     getFacilityProjects(facility) {
 
         this.facilityservice.getFacilityAllowedGroups(facility).subscribe(result => {

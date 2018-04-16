@@ -1,12 +1,22 @@
 <div class="animated fadeIn" ng-app>
     <div class="row">
         <!--/.col-->
-        <h1>Projects Overview</h1>
+        <h1 *ngIf="selectedFacility">Projects Overview: {{selectedFacility['Facility']}}
+
+
+        </h1>
+
         <div class="col-lg-12">
+
             <div class="card">
+                <div>  <select [(ngModel)]="selectedFacility"  (ngModelChange)="onChangeSelectedFacility($event)" class="form-control col-md-1" name="selectedFacility">
+                  <option  *ngFor="  let facility of managerFacilities" [ngValue]="facility"> {{facility['Facility']}} </option>
+
+                </select></div>
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Projects
                 </div>
+
                 <div class="card-block">
                     <table class="table table-striped">
                         <thead>
