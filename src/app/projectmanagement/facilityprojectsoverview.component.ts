@@ -10,17 +10,17 @@ import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {ProjectMember} from './project_member.model'
 import {ResourcesManager} from "../perun-connector/resources_manager";
 import 'rxjs/add/operator/toPromise';
-import {isNumber} from "util";
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
+import {FacilityService} from "../api-connector/facility.service";
 
 @Component({
     templateUrl: 'facilityprojectsoverview.component.html',
-    providers: [UserService, GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [FacilityService,UserService, GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 })
-export class FacilityProjectsOverviewComponent {
+export class  FacilityProjectsOverviewComponent {
 
     debug_module = false;
 
@@ -72,8 +72,12 @@ export class FacilityProjectsOverviewComponent {
                 private membersmanager: MembersManager,
                 private  resourceManager: ResourcesManager,
                 private groupservice: GroupService,
-                private userservice: UserService) {
-        this.getUserProjects(groupsmanager, membersmanager, useresmanager);
+                private userservice: UserService,
+                private  facilityservice :FacilityService) {
+
+        this.facilityservice.getManagerFacilities().subscribe(result => {
+               this.getFacilityProjects(result[0]['FacilityId'])
+        })
 
     }
 
@@ -107,104 +111,32 @@ export class FacilityProjectsOverviewComponent {
         })
     }
 
-    getUserProjects(groupsmanager: GroupsManager,
-                    membersmanager: MembersManager,
-                    usersmanager: UsersManager) {
-        let user_id: number;
-        let member_id: number;
-        let user_projects: {};
-        let user_data: {};
-        let admin_groups: {};
-        let admin_vos: {};
+    getFacilityProjects(facility) {
 
-        this.authzresolver
-            .getLoggedUser().toPromise()
-            .then(function (userdata) {
-                //TODO catch errors
-                let userid = userdata.json()["id"];
-                user_id = userid;
-                user_data = userdata.json();
-                return membersmanager.getMemberByUser(userid).toPromise();
-            })
-            .then(function (memberdata) {
-                let memberid = memberdata.json()["id"];
-                member_id = memberid;
-                return groupsmanager.getMemberGroups(memberid).toPromise();
-            }).then(function (groupsdata) {
-            user_projects = groupsdata.json();
-        }).then(function () {
-            return usersmanager.getGroupsWhereUserIsAdmin(user_id).toPromise();
-        }).then(function (admingroups) {
-            admin_groups = admingroups.json();
-        }).then(function () {
-            return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
-        }).then(function (adminvos) {
-            admin_vos = adminvos.json();
-        }).then(result => {
-
-            //hold data in the class just in case
-            this.userprojects = user_projects;
-            this.userid = user_id;
-            this.user_data = user_data;
-            this.member_id = member_id;
-            this.admingroups = admin_groups;
-            this.adminvos = admin_vos;
-
-            let is_admin = false;
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in this.adminvos) {
-                if (this.adminvos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
-                    is_admin = true;
-                    break;
-                }
-            }
-
-
-            for (let key in this.userprojects) {
-                let group = this.userprojects[key];
+        this.facilityservice.getFacilityAllowedGroups(facility).subscribe(result => {
+            for (let group of result) {
                 let dateCreated = new Date(group["createdAt"]);
                 let dateDayDifference = Math.ceil((Math.abs(Date.now() - dateCreated.getTime())) / (1000 * 3600 * 24));
                 let is_pi = false;
-
-                //check if user is a PI (group manager)
-                if (!is_admin) {
-                    for (let gkey in this.admingroups) {
-                        if (group["id"] == this.admingroups[gkey]["id"]) {
-                            is_pi = true;
-                            break;
-                        }
-                    }
-                } else {
-                    is_pi = true;
-                }
-                this.groupservice.getFacilityByGroup(group["name"]).subscribe(result => {
-
-                    let newProject = new Project(
-                        group["id"],
-                        group["name"],
-                        group["description"],
-                        dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
-                        dateDayDifference,
-                        is_pi,
-                        is_admin,
-                        [result['Facility'],result['FacilityId']])
-                    let details = result['Details'];
-                    let details_array = [];
-                    for (let detail in details) {
-                        let detail_tuple = [detail, details[detail]];
-                        details_array.push(detail_tuple);
-                    }
-                    newProject.ComputecenterDetails = details_array;
-
-                    this.projects.push(newProject);
-
-                })
-
-
+                let is_admin = false;
+                let newProject = new Project(
+                    group["id"],
+                    group["name"],
+                    group["description"],
+                    dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
+                    dateDayDifference,
+                    is_pi,
+                    is_admin,
+                    [result['Facility'], result['FacilityId']]
+                    )
+                 this.projects.push(newProject);
             }
 
-        });
-        // .then( function(){ groupsmanager.getGroupsWhereUserIsAdmin(this.userid); });
+
+
+        })
+
+
     }
 
 
