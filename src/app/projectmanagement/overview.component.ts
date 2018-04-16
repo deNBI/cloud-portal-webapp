@@ -85,7 +85,6 @@ export class OverviewComponent {
 
     setUserFacilityPassword(facility: string,details:string) {
         this.userservice.setUserFacilityPassword(facility).subscribe(result => {
-            console.log(result);
             result = result.json()
             for(let key of details){
                 if (key[0] == 'Email'){
@@ -94,7 +93,6 @@ export class OverviewComponent {
             }
 
             this.passwordModalFacility=facility;
-
             if (result['Error']) {
                this.passwordModalTitle='Set or update password'
                 this.passwordModalType='warning'
