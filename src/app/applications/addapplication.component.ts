@@ -64,7 +64,7 @@ export class AddApplicationComponent {
 
     check_not_zero(values: {}) {
         if ('project_application_openstack_project' in values) {
-            console.log('project_application_disk_space' in values && values['project_application_disk_space'] > 0)
+            
 
             if ('project_application_cores_per_vm' in values && values['project_application_cores_per_vm'] > 0 && 'project_application_ram_per_vm' in values
                 && values['project_application_ram_per_vm'] > 0 && 'project_application_disk_space' in values && values['project_application_disk_space'] > 0) {
