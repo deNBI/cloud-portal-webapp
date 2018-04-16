@@ -46,11 +46,11 @@
           <a class="nav-link" routerLinkActive="active" [routerLink]="['/vmOverview']"><i
             class="icon-pencil"></i> Instance Overview</a>
         </li>
-        <li  class="nav-title">
+        <li *ngIf="is_facility_manager" class="nav-title">
           Facilities
         </li>
-         <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/project-management/facilityProjects']"><i
+         <li *ngIf="is_facility_manager" class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/facilityProjects']"><i
             class="icon-briefcase"></i> Facility Projects</a>
         </li>
 

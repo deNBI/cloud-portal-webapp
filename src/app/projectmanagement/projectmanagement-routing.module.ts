@@ -5,7 +5,7 @@ import { OverviewComponent } from './overview.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'project-management',
     component: OverviewComponent,
     data: {
       title: 'Project overview'
