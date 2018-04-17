@@ -83,7 +83,7 @@ export class OverviewComponent {
     }
 
 
-    setUserFacilityPassword(facility: string,details:string) {
+    setUserFacilityPassword(facility: string,details:[string,string][]) {
         this.userservice.setUserFacilityPassword(facility).subscribe(result => {
             result = result.json()
             for(let key of details){
