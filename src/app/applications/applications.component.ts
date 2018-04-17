@@ -144,7 +144,7 @@ export class ApplicationsComponent ***REMOVED***
                                 a.Id = aj["project_application_id"];
 
                                 a.Name = aj["project_application_name"];
-                                 a.Shortname=aj["project_application_shortname"];
+                                a.Shortname=aj["project_application_shortname"];
                                 a.Description = aj["project_application_description"];
                                 a.Lifetime = aj["project_application_lifetime"];
 
@@ -165,6 +165,7 @@ export class ApplicationsComponent ***REMOVED***
                                 a.Status = aj["project_application_status"];
                                 a.OpenStackProject = aj["project_application_openstack_project"];
                                 if (a.Status !== 1) ***REMOVED***
+                                    if (a.Shortname)***REMOVED***
                                     this.groupservice.getFacilityByGroup(a.Shortname).subscribe(result => ***REMOVED***
 
                                         let details = result['Details'];
@@ -179,7 +180,25 @@ export class ApplicationsComponent ***REMOVED***
 
                                         this.all_applications.push(a)
 
+                                    ***REMOVED***)***REMOVED***
+                                    else ***REMOVED***
+                                         this.groupservice.getFacilityByGroup(a.Name).subscribe(result => ***REMOVED***
+
+                                        let details = result['Details'];
+                                        let details_array = [];
+                                        for (let detail in details) ***REMOVED***
+                                            let detail_tuple = [detail, details[detail]];
+                                            details_array.push(detail_tuple);
+                                        ***REMOVED***
+
+                                        a.ComputecenterDetails = details_array;
+                                        a.ComputeCenter = [result['Facility'],result['FacilityID']];
+
+                                        this.all_applications.push(a)
+
                                     ***REMOVED***)
+
+                                    ***REMOVED***
                                 ***REMOVED***
                                 else ***REMOVED***
                                     a.ComputeCenter = ['None',-1]
