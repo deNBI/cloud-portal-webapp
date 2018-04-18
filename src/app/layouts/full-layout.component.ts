@@ -19,7 +19,7 @@ export class FullLayoutComponent implements OnInit {
   public disabled = false;
   public status: { isopen: boolean } = {isopen: false};
   private is_vo_admin = false;
-  private is_facility_manager=false
+  public is_facility_manager=false
   public  vm_project_member=false;
   client_avaiable;
 

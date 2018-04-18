@@ -98,29 +98,3 @@
 </div><!-- /.modal -->
 
 
-
-
-
-
-<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">{{ notificationModalTitle }}</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-{{ notificationModalType }}" role="alert">
-                    {{ notificationModalMessage }}
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button *ngIf="notificationModalIsClosable == true" type="button"
-                        (click)="resetNotificaitonModal(); notificationModal.hide();" type="reset"
-                        class="btn  btn-secondary"> Close
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
