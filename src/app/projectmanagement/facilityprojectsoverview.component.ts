@@ -58,7 +58,7 @@ export class  FacilityProjectsOverviewComponent {
     }
 
 
-    onChangeSelectedFacility(){
+    onChangeSelectedFacility(value){
         this.getFacilityProjects(this.selectedFacility['FacilityId'])
     }
     getFacilityProjects(facility) {
