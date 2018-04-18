@@ -5,12 +5,13 @@ import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connecto
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
 import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
+import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
 
 
 @Component(***REMOVED***
   selector: 'app-dashboard',
   templateUrl: './full-layout.component.html',
-  providers: [GroupsManager,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
+  providers: [FacilityService,GroupsManager,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
 ***REMOVED***)
 export class FullLayoutComponent implements OnInit ***REMOVED***
 
@@ -18,12 +19,15 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
   public disabled = false;
   public status: ***REMOVED*** isopen: boolean ***REMOVED*** = ***REMOVED***isopen: false***REMOVED***;
   private is_vo_admin = false;
+  public is_facility_manager=false
   public  vm_project_member=false;
   client_avaiable;
 
-  constructor(private groupsManager:GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
+  constructor(private facilityservice:FacilityService,private groupsManager:GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
     this.is_client_avaiable();
     this.is_vm_project_member();
+    this.get_is_facility_manager();
+
   ***REMOVED***
 
   public get_is_vo_admin(): boolean ***REMOVED***
@@ -38,6 +42,13 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     $event.preventDefault();
     $event.stopPropagation();
     this.status.isopen = !this.status.isopen;
+  ***REMOVED***
+
+  public get_is_facility_manager()***REMOVED***
+    this.facilityservice.getManagerFacilities().subscribe(result => ***REMOVED***
+      if (result.length > 0 ) ***REMOVED***
+        this.is_facility_manager=true ***REMOVED***
+    ***REMOVED***)
   ***REMOVED***
   is_vm_project_member()***REMOVED***
     this.groupsManager.getMemberGroupsStatus().subscribe(result => ***REMOVED***

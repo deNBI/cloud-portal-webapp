@@ -99,6 +99,22 @@ export class GroupService ***REMOVED***
 
 
     ***REMOVED***
+
+
+
+
+     getGroupMembers(groupid: string): Observable<any> ***REMOVED***
+         let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupMembers/', ***REMOVED***
+            withCredentials: true,
+            params:***REMOVED***groupid:groupid***REMOVED***
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    ***REMOVED***
+
     setNumberOfVms(groupid: string, numberofVms: string): Observable<any> ***REMOVED***
         let urlSearchParams = new URLSearchParams();
          let header = new Headers(***REMOVED***
