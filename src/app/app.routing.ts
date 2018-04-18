@@ -31,7 +31,7 @@ export const routes: Routes = [
                 loadChildren: './userinfo/userinfo.module#UserinfoModule'
             },
             {
-                path: 'project-management',
+                path: '',
                 loadChildren: './projectmanagement/projectmanagement.module#ProjectManagementModule'
             },
             {

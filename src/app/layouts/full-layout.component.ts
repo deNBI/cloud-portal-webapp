@@ -5,12 +5,13 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {ClientService} from "../api-connector/vmClients.service";
 import {GroupsManager} from "../perun-connector/groups-manager.service";
+import {FacilityService} from "../api-connector/facility.service";
 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './full-layout.component.html',
-  providers: [GroupsManager,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
+  providers: [FacilityService,GroupsManager,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
 })
 export class FullLayoutComponent implements OnInit {
 
@@ -18,12 +19,15 @@ export class FullLayoutComponent implements OnInit {
   public disabled = false;
   public status: { isopen: boolean } = {isopen: false};
   private is_vo_admin = false;
+  public is_facility_manager=false
   public  vm_project_member=false;
   client_avaiable;
 
-  constructor(private groupsManager:GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
+  constructor(private facilityservice:FacilityService,private groupsManager:GroupsManager,private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
     this.is_client_avaiable();
     this.is_vm_project_member();
+    this.get_is_facility_manager();
+
   }
 
   public get_is_vo_admin(): boolean {
@@ -38,6 +42,13 @@ export class FullLayoutComponent implements OnInit {
     $event.preventDefault();
     $event.stopPropagation();
     this.status.isopen = !this.status.isopen;
+  }
+
+  public get_is_facility_manager(){
+    this.facilityservice.getManagerFacilities().subscribe(result => {
+      if (result.length > 0 ) {
+        this.is_facility_manager=true }
+    })
   }
   is_vm_project_member(){
     this.groupsManager.getMemberGroupsStatus().subscribe(result => {
