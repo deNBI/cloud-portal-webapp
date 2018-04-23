@@ -92,7 +92,17 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
     ***REMOVED***
 
 
+    sendMailToFacility(facility: number,subject:string,message:string)***REMOVED***
+        this.facilityservice.sendMailToFacility(facility,subject,message).subscribe(result =>***REMOVED***
+            if (result == 1)***REMOVED***
+                console.log("SÖRENHIER SUCESSFULL");
+            ***REMOVED***
+            else ***REMOVED***
+                console.log("HIErNEt");
+            ***REMOVED***
+            ***REMOVED***)
 
+    ***REMOVED***
     getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
         this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => ***REMOVED***
             this.usersModalProjectID = projectid;

@@ -149,7 +149,7 @@
                 </div>
 
                 <button style="width: 47%" class="btn  btn-success"
-                        (click)="verifyModal.hide();resetEmailModal()">
+                        (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText);verifyModal.hide();resetEmailModal()">
                     Yes
                 </button>
                 <button style="margin-left: 5%; width: 47% " class="btn  btn-danger" type="reset"
