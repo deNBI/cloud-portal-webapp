@@ -92,7 +92,17 @@ export class  FacilityProjectsOverviewComponent {
     }
 
 
+    sendMailToFacility(facility: number,subject:string,message:string){
+        this.facilityservice.sendMailToFacility(facility,subject,message).subscribe(result =>{
+            if (result == 1){
+                console.log("SÖRENHIER SUCESSFULL");
+            }
+            else {
+                console.log("HIErNEt");
+            }
+            })
 
+    }
     getMembesOfTheProject(projectid: number, projectname: string) {
         this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => {
             this.usersModalProjectID = projectid;

@@ -33,4 +33,19 @@ export class FacilityService {
 
   }
 
+  sendMailToFacility(facility,subject,message): Observable<any> {
+
+
+    return this.http.get(this.settings.getApiBaseURL()+ 'facilityManager/sendMailToAllMembers/', {
+        withCredentials: true,
+        params: {facility_id: facility,subject:subject,message:message}
+    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+
+
+
+
+  }
+
 }
