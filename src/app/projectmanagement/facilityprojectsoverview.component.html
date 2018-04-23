@@ -129,7 +129,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="emailModal.hide(); verifyModal.show()">Send email</button>
-        <button type="button" class="btn btn-secondary" (click)="emailModal.hide()">Close</button>
+        <button type="button" class="btn btn-secondary" (click)="emailModal.hide();resetEmailModal()">Close</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -144,16 +144,16 @@
             </div>
             <div class="modal-body">
 
-                <div class="alert alert-warning" role="alert">
-                    Are you sure you want the emails?
+                <div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
+                    Are you sure you want to send this email to all members of the ***REMOVED******REMOVED***selectedFacility['Facility']***REMOVED******REMOVED***?
                 </div>
 
                 <button style="width: 47%" class="btn  btn-success"
-                        (click)="verifyModal.hide()">
+                        (click)="verifyModal.hide();resetEmailModal()">
                     Yes
                 </button>
                 <button style="margin-left: 5%; width: 47% " class="btn  btn-danger" type="reset"
-                        (click)="verifyModal.hide()">Cancel
+                        (click)="verifyModal.hide();emailModal.show()">Cancel
                 </button>
 
             </div><!-- /.modal-content -->

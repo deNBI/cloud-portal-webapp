@@ -114,6 +114,12 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
 
     ***REMOVED***
 
+    public resetEmailModal() ***REMOVED***
+
+      this.emailSubject = '';
+      this.emailText = '';
+    ***REMOVED***
+
 
     public comingSoon() ***REMOVED***
         alert("This function will be implemented soon.")
