@@ -114,6 +114,12 @@ export class  FacilityProjectsOverviewComponent {
 
     }
 
+    public resetEmailModal() {
+
+      this.emailSubject = '';
+      this.emailText = '';
+    }
+
 
     public comingSoon() {
         alert("This function will be implemented soon.")
