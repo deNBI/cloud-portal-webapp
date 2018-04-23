@@ -37,6 +37,9 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
     public usersModalProjectID: number;
     public usersModalProjectName: string;
 
+    public emailSubject: string = '';
+    public emailText: string = '';
+
     public managerFacilities: [string,number][];
     public selectedFacility: [string,number]
 
@@ -54,7 +57,6 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
                 this.getFacilityProjects(this.managerFacilities[0]['FacilityId'])
 
         ***REMOVED***)
-
     ***REMOVED***
 
 
