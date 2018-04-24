@@ -149,12 +149,35 @@
                 </div>
 
                 <button style="width: 47%" class="btn  btn-success"
-                        (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText);verifyModal.hide();resetEmailModal()">
+                        (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText);verifyModal.hide();resetEmailModal();successModal.show()">
                     Yes
                 </button>
                 <button style="margin-left: 5%; width: 47% " class="btn  btn-danger" type="reset"
                         (click)="verifyModal.hide();emailModal.show()">Cancel
                 </button>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
+
+<div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" *ngIf="emailSuccess"> Success </h4>
+                <h4 class="modal-title" *ngIf="!emailSuccess"> Error </h4>
+            </div>
+            <div class="modal-body">
+
+                <p *ngIf="emailSuccess">The e-mail has been send successfully.</p>
+                <p *ngIf="!emailSuccess">when sending the email an error has occurred.</p>
+
+
+              <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="successModal.hide()">Close</button>
+      </div>
 
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

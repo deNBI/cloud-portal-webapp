@@ -39,6 +39,7 @@ export class  FacilityProjectsOverviewComponent {
 
     public emailSubject: string = '';
     public emailText: string = '';
+    public emailSuccess: boolean;
 
     public managerFacilities: [string,number][];
     public selectedFacility: [string,number]
@@ -95,10 +96,10 @@ export class  FacilityProjectsOverviewComponent {
     sendMailToFacility(facility: number,subject:string,message:string){
         this.facilityservice.sendMailToFacility(facility,subject,message).subscribe(result =>{
             if (result == 1){
-                console.log("SÖRENHIER SUCESSFULL");
+                this.emailSuccess = true;
             }
             else {
-                console.log("HIErNEt");
+                this.emailSuccess = false;
             }
             })
 
