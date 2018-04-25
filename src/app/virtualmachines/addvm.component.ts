@@ -120,11 +120,11 @@ export class VirtualMachineComponent implements OnInit {
 
 
 
-  startVM(flavor: string, image: string, servername: string, project: string,projectid:string): void {
+  startVM(flavor: string, image: string, servername: string, project: string,projectid:string,diskspace?: string): void {
     if (image && flavor && servername && project) {
 
 
-      this.virtualmachineservice.startVM(flavor, image, servername, this.vmclient.host, this.vmclient.port, project,projectid).subscribe(data => {
+      this.virtualmachineservice.startVM(flavor, image, servername, this.vmclient.host, this.vmclient.port, project,projectid,diskspace).subscribe(data => {
 
         this.data = data.json();
       });
