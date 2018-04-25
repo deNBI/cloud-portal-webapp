@@ -60,7 +60,6 @@
 </div>
 
 
-
 <div bsModal #usersModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -105,7 +104,8 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" *ngIf="selectedFacility"> Send email to all members of {{selectedFacility['Facility']}}</h4>
+        <h4 class="modal-title" *ngIf="selectedFacility"> Send email to all members of
+          {{selectedFacility['Facility']}}</h4>
         <button type="button" class="close" (click)="emailModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -114,7 +114,8 @@
         <div class="form-group">
           <label class="col-md-12 control-label" for="Subject">Email subject</label>
           <div class="col-md-12">
-            <input id="Subject" name="Subject" placeholder="Subject" class="form-control input-md" [(ngModel)]="emailSubject" type="text">
+            <input id="Subject" name="Subject" placeholder="Subject" class="form-control input-md"
+                   [(ngModel)]="emailSubject" type="text">
 
           </div>
         </div>
@@ -128,7 +129,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="emailModal.hide(); verifyModal.show()">Send email</button>
+        <button type="button" class="btn btn-primary" (click)="emailModal.hide(); verifyModal.show()">Send email
+        </button>
         <button type="button" class="btn btn-secondary" (click)="emailModal.hide();resetEmailModal()">Close</button>
       </div>
     </div><!-- /.modal-content -->
@@ -137,52 +139,59 @@
 
 <div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Send email</h4>
-            </div>
-            <div class="modal-body">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Send email</h4>
+      </div>
+      <div class="modal-body">
 
-                <div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
-                    Are you sure you want to send this email to all members of the {{selectedFacility['Facility']}}?
-                </div>
+        <div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
+          Are you sure you want to send this email to all members of the {{selectedFacility['Facility']}}?
+        </div>
 
-                <button style="width: 47%" class="btn  btn-success"
-                        (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText);verifyModal.hide();resetEmailModal();successModal.show()">
-                    Yes
-                </button>
-                <button style="margin-left: 5%; width: 47% " class="btn  btn-danger" type="reset"
-                        (click)="verifyModal.hide();emailModal.show()">Cancel
-                </button>
+        <button style="width: 47%" class="btn  btn-success"
+                (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText);verifyModal.hide();resetEmailModal();successModal.show()">
+          Yes
+        </button>
+        <button style="margin-left: 5%; width: 47% " class="btn  btn-danger" type="reset"
+                (click)="verifyModal.hide();emailModal.show()">Cancel
+        </button>
 
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 </div>
 
 <div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" *ngIf="emailSuccess"> Success </h4>
-                <h4 class="modal-title" *ngIf="!emailSuccess"> Error </h4>
-            </div>
-            <div class="modal-body">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" *ngIf="emailStatus == 0"> Waiting </h4>
+        <h4 class="modal-title" *ngIf="emailStatus == 1"> Success </h4>
+        <h4 class="modal-title" *ngIf="emailStatus == 2"> Error </h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info" role="alert" *ngIf="emailStatus == 0">
+          Sending the email. <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+        </div>
+        <div class="alert alert-success" role="alert" *ngIf="emailStatus == 1">
+          The e-mail has been send successfully.
+        </div>
+      </div>
+      <div class="alert alert-warning" role="alert" *ngIf="emailStatus == 2">
+        when sending the email an error has occurred.
+      </div>
 
-                <p *ngIf="emailSuccess">The e-mail has been send successfully.</p>
-                <p *ngIf="!emailSuccess">when sending the email an error has occurred.</p>
 
-
-              <div class="modal-footer">
+      <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="successModal.hide()">Close</button>
       </div>
 
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-</div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 
