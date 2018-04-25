@@ -255,7 +255,7 @@ export class ApplicationsComponent ***REMOVED***
         this.notificationModalType = type;
     ***REMOVED***
 
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project,numberofVms) ***REMOVED***
+    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project,numberofVms,diskspace) ***REMOVED***
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
         let manager_member_user_id: number;
@@ -287,6 +287,7 @@ export class ApplicationsComponent ***REMOVED***
             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();***REMOVED***
             this.groupservice.setNumberOfVms(new_group_id.toString(),numberofVms.toString()).subscribe()
             this.groupservice.setDescription(new_group_id.toString(),description).subscribe()
+            this.groupsmanager.setGroupDiskSpace(new_group_id,diskspace,numberofVms).subscribe()
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications
