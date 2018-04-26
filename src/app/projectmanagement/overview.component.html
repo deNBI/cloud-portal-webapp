@@ -308,19 +308,20 @@
                 <div class="alert alert-warning" role="alert">
                     Are you sure you want to change your password?
                 </div>
-
-                <button style="width: 47%" class="btn  btn-success"
+            </div>
+          <div class="modal-footer">
+                <button class="btn  btn-success mr-auto col-md-4"
                         (click)="verifyModal.hide();setUserFacilityPassword(UserModalFacility[0],UserModalFacilityDetails);passwordModal.show(); resetFacilityDetailsModal();">
                     Yes
                 </button>
-                <button style="margin-left: 5%; width: 47% " class="btn  btn-danger" type="reset"
+                <button class="btn  btn-danger col-md-4" type="reset"
                         (click)="verifyModal.hide()">Cancel
                 </button>
+        </div>
 
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-</div>
 
 
 <div bsModal #passwordModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
