@@ -215,6 +215,20 @@
               </div>
             </div>
             <div *ngIf='showjustvm' class="form-group row">
+              <label class="col-md-3 form-control-label" for="textarea-input"><strong>Disk per VM*</strong></label>
+              <div class="col-md-9">
+                <div class="input-group">
+                  <input class="form-control" id="id_project_application_disk_space"
+                         name="project_application_disk_space"
+                         placeholder="e.g. 20"
+                         type="number" min="1" step="1" [ngModel]="20">
+                  <span class="input-group-addon"> GB
+                                    </span>
+                </div>
+                <span class="help-block">How much disk space do you need per VM?</span>
+              </div>
+            </div>
+            <div *ngIf='showjustvm' class="form-group row">
               <label class="col-md-3 form-control-label">You are able to start machines of the
                 type:</label>
               <div class="col-md-9">

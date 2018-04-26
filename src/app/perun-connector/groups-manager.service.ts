@@ -11,6 +11,7 @@ import {Project} from "../projectmanagement/project.model";
 @Injectable()
 export class GroupsManager {
   baseConnectorUrl = 'https://portal-dev.denbi.de/connector/'
+  denbiProjectDiskSpace_ID=3288
 
   constructor(private http: Http, private settings: PerunSettings, private apiSettings: ApiSettings) {
   }
@@ -67,6 +68,26 @@ export class GroupsManager {
         headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
       });
   }
+
+
+  setGroupDiskSpace(group_id: number, value :number ,numberofVms:number){
+    value=value * numberofVms;
+    var parameter = JSON.stringify({
+      group: group_id,
+      attribute: {id: this.denbiProjectDiskSpace_ID,
+        namespace: 'urn:perun:group:attribute-def:opt',
+        friendlyName: 'denbiProjectDiskSpace', type: 'java.lang.Integer',
+        value: value
+      }
+    });
+    return this.http.post(this.settings.getPerunBaseURL() + 'attributesManager/setAttribute', parameter,
+      {
+        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      });
+
+  }
+
+
 
   setPerunGroupStatus(group_id: number, status: number) {
     /* 1:submitted
