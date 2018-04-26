@@ -150,18 +150,19 @@
           Are you sure you want to send this email to all members of the ***REMOVED******REMOVED***selectedFacility['Facility']***REMOVED******REMOVED***?
         </div>
 
-        <button style="width: 47%" class="btn  btn-success"
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
                 (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText);verifyModal.hide();resetEmailModal();successModal.show()">
           Yes
         </button>
-        <button style="margin-left: 5%; width: 47% " class="btn  btn-danger" type="reset"
+        <button class="btn  btn-danger col-md-4" type="reset"
                 (click)="verifyModal.hide();emailModal.show()">Cancel
         </button>
-
+      </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-</div>
 
 <div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
