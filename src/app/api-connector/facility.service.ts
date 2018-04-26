@@ -34,11 +34,17 @@ export class FacilityService {
   }
 
   sendMailToFacility(facility,subject,message): Observable<any> {
+      let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('subject', subject);
+    urlSearchParams.append('facility_id', facility);
+    urlSearchParams.append('message',message);
 
-
-    return this.http.get(this.settings.getApiBaseURL()+ 'facilityManager/sendMailToAllMembers/', {
+     let header = new Headers({
+      'X-CSRFToken': this.settings.getCSRFToken(),
+    });
+    return this.http.post(this.settings.getApiBaseURL()+ 'facilityManager/sendMailToAllMembers/',urlSearchParams, {
         withCredentials: true,
-        params: {facility_id: facility,subject:subject,message:message}
+        headers: header,
     }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
 
