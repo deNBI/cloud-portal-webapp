@@ -44,6 +44,7 @@ export class VirtualMachineComponent implements OnInit {
     selectedProject: [string, number];
     client_avaiable: boolean;
     projects: string[] = new Array();
+    private checkStatusTimeout: number = 5000;
 
 
     constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) {
@@ -121,18 +122,21 @@ export class VirtualMachineComponent implements OnInit {
     }
 
     check_status_loop(id: string) {
-        this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
-            res=res.json()
-            if (res['Started'] || res['Error']) {
-                this.data = res
+
+        setTimeout( () => {
+            this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
+                res = res.json()
+                if (res['Started'] || res['Error']) {
+                    this.data = res
 
 
-            }
-            else {
-               this.check_status_loop(id)
-            }
+                }
+                else {
+                    this.check_status_loop(id)
+                }
 
-        });
+            })
+        }, this.checkStatusTimeout);
     }
 
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string, diskspace?: string): void {
@@ -141,12 +145,12 @@ export class VirtualMachineComponent implements OnInit {
 
             this.virtualmachineservice.startVM(flavor, image, servername, this.vmclient.host, this.vmclient.port, project, projectid, diskspace).subscribe(data => {
 
-                if(data.json()['Created']){
-                    this.check_status_loop(data.json()['Created']);}
-                else {
-                    this.data=data.json()
+                if (data.json()['Created']) {
+                    this.check_status_loop(data.json()['Created']);
                 }
-
+                else {
+                    this.data = data.json()
+                }
 
 
             });
