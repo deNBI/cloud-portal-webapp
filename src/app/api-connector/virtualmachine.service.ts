@@ -59,6 +59,16 @@ export class VirtualmachineService {
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
     }
 
+        checkStatusInactiveVms(elixir_id: string): Observable<VirtualMachine[]> {
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('elixir_id', elixir_id)
+
+        return this.http.get(this.baseVmUrl + 'checkStatusInactiveVms/', {
+            withCredentials: true,
+            search: urlSearchParams
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+    }
+
 
     checkVmStatus(openstack_id: string): Observable<any> {
         let header = new Headers({

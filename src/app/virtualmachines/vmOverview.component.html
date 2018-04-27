@@ -26,8 +26,8 @@
       <th>SSH Command</th>
       <th *ngIf="is_vo_admin">Elixir ID</th>
       <th>Stopped at</th>
-      <th></th>
-      <th></th>
+      <th>Actions</th>
+
 
 
     </tr>
@@ -70,8 +70,12 @@
                   class="btn btn-primary">
             ResumeVM
           </button>
-        </td>
-        <td> <button *ngIf="vm.status !='DELETED'" (click)="deleteVm(vm.openstackid);"
+           <button *ngIf="vm.status !='SUSPENDED' && vm.status != 'ACTIVE' && vm.status != 'DELETED'" (click)="checkStatus(vm.openstackid);"
+                  class="btn btn-primary">
+            Check Status
+          </button>
+
+         <button *ngIf="vm.status !='DELETED'" (click)="deleteVm(vm.openstackid);"
                   class="btn btn-primary">
             DeleteVM
           </button></td>
