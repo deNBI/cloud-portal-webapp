@@ -16,7 +16,7 @@
             </div>
             <div class="form-group row">
               <label class="col-md-3 form-control-label" for="text-input"><strong>Project
-                Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Name for the project"></i></strong></label>
+                Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Full name for the project"></i></strong></label>
               <div class="col-md-9">
                 <input required type="text" id="id_project_application_name"
                        name="project_application_name"
@@ -28,7 +28,7 @@
 
               <div class="form-group row">
               <label class="col-md-3 form-control-label" for="text-input"><strong>Project
-                Short Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Shortname for the project use between 5 and 15 characters"></i></strong></label>
+                Short Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Shortname for the project. This name will be used as project when starting machines. Use between 5 and 15 characters"></i></strong></label>
               <div class="col-md-9">
                 <div *ngIf='wronginput'>
                   <strong><font color="red">Umlauts and special characters are prohibited in the shortname.</font></strong>
@@ -56,7 +56,7 @@
 
             <div class="form-group row">
               <label class="col-md-3 form-control-label" for="textarea-input"><strong>Desired
-                lifetime* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Lifetime for the project"></i></strong></label>
+                lifetime* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Lifetime in months for the project"></i></strong></label>
               <div class="col-md-9">
                 <div class="input-group">
                   <input class="form-control" id="id_project_application_lifetime"
@@ -74,7 +74,7 @@
               <h5 class="col-md-12 form-control-label">Choose the type of your Project</h5>
             </div>
             <div class="form-group row">
-              <label class="col-md-6 form-control-label"><strong>Single Virtual Machines <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Start virtual machines with SSH access in the portal"></i></strong><br>
+              <label class="col-md-6 form-control-label"><strong>Single Virtual Machines <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Start virtual machines in the portal and access them via ssh"></i></strong><br>
                 This type of project allows you to start virtual machines with SSH access.
               </label>
               <div class="col-md-6">
@@ -88,7 +88,7 @@
               This project mode is a beta version. Virtual machines might get lost or can not be started temporarily.
             </div>
             <div class="form-group row">
-              <label class="col-md-6 form-control-label"><strong>Cloud Project <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Openstack project. You won't be able to start machines in the portal."></i></strong>
+              <label class="col-md-6 form-control-label"><strong>Cloud Project <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="This will create an Openstack project. You won't be able to start machines in the portal."></i></strong>
                 <br>
               A cloud project is represented by an OpenStack project which allows you to manage your virtual
                 machines, storage and network configurations.
@@ -107,7 +107,7 @@
 
             <div *ngIf='project_application_openstack_project' class="form-group row">
               <label class="col-md-3 form-control-label" for="textarea-input"><strong>Number of Virtual
-                Machines* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Number of virtual machines you want to start with this project."></i></strong></label>
+                Machines* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Number of virtual machines you want to use in this project."></i></strong></label>
               <div class="col-md-9">
                 <div class="input-group">
                   <input required class="form-control" id="id_project_application_vms_requested"
@@ -122,7 +122,7 @@
             </div>
 
             <div *ngIf='project_application_openstack_project' class="form-group row">
-              <label class="col-md-3 form-control-label" for="textarea-input"><strong>Cores per VM* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Needed Cpu cores per vm"></i></strong></label>
+              <label class="col-md-3 form-control-label" for="textarea-input"><strong>Cores per VM* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Needed cpu cores per vm"></i></strong></label>
               <div class="col-md-9">
                 <div class="input-group">
                   <input class="form-control" id="id_project_application_cores_per_vm"
@@ -167,7 +167,7 @@
             </div>
 
             <div *ngIf='project_application_openstack_project' class="form-group row">
-              <label class="col-md-3 form-control-label" for="textarea-input">Object Storage <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Object storage for project"></i></label>
+              <label class="col-md-3 form-control-label" for="textarea-input">Object Storage <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Object storage for this project"></i></label>
               <div class="col-md-9">
                 <div class="input-group">
                   <input class="form-control" id="id_project_application_object_storage"
