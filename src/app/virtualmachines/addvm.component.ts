@@ -68,7 +68,7 @@ export class VirtualMachineComponent implements OnInit {
     }
 
     getRRFirstClient(): void {
-        this.clientservice.getRRFirstClient().subscribe(client => {
+        this.clientservice.isClientAvaiable().subscribe(client => {
                 if (client.toString() === "true") {
                     this.client_avaiable = true;
                     this.getImages();
