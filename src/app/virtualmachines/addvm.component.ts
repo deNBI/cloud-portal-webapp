@@ -26,173 +26,199 @@ import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
 
 @Component(***REMOVED***
-  selector: 'new-vm',
-  templateUrl: 'addvm.component.html',
-  providers: [ImageService, keyService,FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+    selector: 'new-vm',
+    templateUrl: 'addvm.component.html',
+    providers: [ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
-  data: string = "";
-  informationButton: string = "Show Details";
-  informationButton2: string = "Show Details";
-  images: Image[];
-  metadatalist: Metadata [] = [];
-  flavors: Flavor[];
-  selectedImage: Image;
-  selectedFlavor: Flavor;
-  userinfo: Userinfo;
-  vmclient: Vmclient;
-  selectedProject: [string,number];
-  client_avaiable: boolean;
-  projects: string[] = new Array();
+    data: string = "";
+    informationButton: string = "Show Details";
+    informationButton2: string = "Show Details";
+    images: Image[];
+    metadatalist: Metadata [] = [];
+    flavors: Flavor[];
+    selectedImage: Image;
+    selectedFlavor: Flavor;
+    userinfo: Userinfo;
+    vmclient: Vmclient;
+    selectedProject: [string, number];
+    client_avaiable: boolean;
+    projects: string[] = new Array();
+    private checkStatusTimeout: number = 5000;
 
 
-  constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) ***REMOVED***
-  ***REMOVED***
+    constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) ***REMOVED***
+    ***REMOVED***
 
 
-  getImages(): void ***REMOVED***
-    this.imageService.getImages(this.vmclient.host, this.vmclient.port).subscribe(images => this.images = images);
-  ***REMOVED***
+    getImages(): void ***REMOVED***
+        this.imageService.getImages(this.vmclient.host, this.vmclient.port).subscribe(images => this.images = images);
+    ***REMOVED***
 
-  getFlavors(): void ***REMOVED***
-    this.flavorService.getFlavors(this.vmclient.host, this.vmclient.port).subscribe(flavors => this.flavors = flavors);
+    getFlavors(): void ***REMOVED***
+        this.flavorService.getFlavors(this.vmclient.host, this.vmclient.port).subscribe(flavors => this.flavors = flavors);
 
-  ***REMOVED***
+    ***REMOVED***
 
-  getClientData() ***REMOVED***
-    this.clientservice.getClientsChecked().subscribe(response => ***REMOVED***
-      this.getRRFirstClient();
+    getClientData() ***REMOVED***
+        this.clientservice.getClientsChecked().subscribe(response => ***REMOVED***
+            this.getRRFirstClient();
 
-    ***REMOVED***)
-  ***REMOVED***
+        ***REMOVED***)
+    ***REMOVED***
 
-  getRRFirstClient(): void ***REMOVED***
-    this.clientservice.getRRFirstClient().subscribe(client => ***REMOVED***
-        this.vmclient = client;
-        if (this.vmclient.status === "Connected") ***REMOVED***
-          this.client_avaiable = true;
-          this.getImages();
-          this.getFlavors();
-        ***REMOVED***
-        else ***REMOVED***
-          this.client_avaiable = false;
-        ***REMOVED***
+    getRRFirstClient(): void ***REMOVED***
+        this.clientservice.getRRFirstClient().subscribe(client => ***REMOVED***
+                this.vmclient = client;
+                if (this.vmclient.status === "Connected") ***REMOVED***
+                    this.client_avaiable = true;
+                    this.getImages();
+                    this.getFlavors();
+                ***REMOVED***
+                else ***REMOVED***
+                    this.client_avaiable = false;
+                ***REMOVED***
 
 
-      ***REMOVED***
-    )
-    ;
-  ***REMOVED***
+            ***REMOVED***
+        )
+        ;
+    ***REMOVED***
+
     validatePublicKey() ***REMOVED***
 
-    if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]***REMOVED***0,3***REMOVED***( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)) ***REMOVED***
-      return true;
-    ***REMOVED***
-    else ***REMOVED***
+        if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]***REMOVED***0,3***REMOVED***( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)) ***REMOVED***
+            return true;
+        ***REMOVED***
+        else ***REMOVED***
 
-      return false;
-    ***REMOVED***
-
-  ***REMOVED***
-
-  getUserPublicKey() ***REMOVED***
-    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => ***REMOVED***
-      this.userinfo.PublicKey = result.toString();
-    ***REMOVED***)
-  ***REMOVED***
-  toggleInformationButton(): void ***REMOVED***
-    if (this.informationButton == "Show Details") ***REMOVED***
-      this.informationButton = "Hide Details";
-    ***REMOVED*** else ***REMOVED***
-      this.informationButton = "Show Details";
-    ***REMOVED***
-
-  ***REMOVED***
-
-  toggleInformationButton2(): void ***REMOVED***
-    if (this.informationButton2 == "Show Details") ***REMOVED***
-      this.informationButton2 = "Hide Details";
-    ***REMOVED*** else ***REMOVED***
-      this.informationButton2 = "Show Details";
-    ***REMOVED***
-
-  ***REMOVED***
-
-
-
-  startVM(flavor: string, image: string, servername: string, project: string,projectid:string,diskspace?: string): void ***REMOVED***
-    if (image && flavor && servername && project) ***REMOVED***
-
-
-      this.virtualmachineservice.startVM(flavor, image, servername, this.vmclient.host, this.vmclient.port, project,projectid,diskspace).subscribe(data => ***REMOVED***
-
-        this.data = data.json();
-      ***REMOVED***);
+            return false;
+        ***REMOVED***
 
     ***REMOVED***
-    else ***REMOVED***
-      this.data = "INVALID"
 
-    ***REMOVED***
-  ***REMOVED***
-
-
-  resetData(): void ***REMOVED***
-    if (this.data == 'INVALID') ***REMOVED***
-      return;
-    ***REMOVED***
-    this.data = '';
-  ***REMOVED***
-
-  resetData2(): void ***REMOVED***
-    this.data = '';
-  ***REMOVED***
-
-  onSelectFlavor(flavor: Flavor): void ***REMOVED***
-    this.selectedFlavor = flavor;
-  ***REMOVED***
-
-  onSelectImage(image: Image): void ***REMOVED***
-    this.selectedImage = image
-  ***REMOVED***
-
-  checkMetadataKeys(key: string): boolean ***REMOVED***
-    for (let metadata of this.metadatalist) ***REMOVED***
-      if (metadata.key == key) ***REMOVED***
-        return false;
-      ***REMOVED***
-    ***REMOVED***
-    return true;
-  ***REMOVED***
-
-
-  addMetadataItem(key: string, value: string): void ***REMOVED***
-    if (key && value && this.checkMetadataKeys(key)) ***REMOVED***
-      this.metadatalist.push(new Metadata(key, value));
+    getUserPublicKey() ***REMOVED***
+        this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => ***REMOVED***
+            this.userinfo.PublicKey = result.toString();
+        ***REMOVED***)
     ***REMOVED***
 
-  ***REMOVED***
+    toggleInformationButton(): void ***REMOVED***
+        if (this.informationButton == "Show Details") ***REMOVED***
+            this.informationButton = "Hide Details";
+        ***REMOVED*** else ***REMOVED***
+            this.informationButton = "Show Details";
+        ***REMOVED***
 
-  deleteMetadataItem(metadata: Metadata): void ***REMOVED***
-    this.metadatalist.splice(this.metadatalist.indexOf(metadata), 1);
-  ***REMOVED***
+    ***REMOVED***
 
-  getUserApprovedProjects() ***REMOVED***
-    this.groupsmanager.getMemberGroupsStatus().toPromise().then(membergroups => ***REMOVED***
-      for (let project of membergroups.json()) ***REMOVED***
-        this.projects.push(project);
+    toggleInformationButton2(): void ***REMOVED***
+        if (this.informationButton2 == "Show Details") ***REMOVED***
+            this.informationButton2 = "Hide Details";
+        ***REMOVED*** else ***REMOVED***
+            this.informationButton2 = "Show Details";
+        ***REMOVED***
 
-      ***REMOVED***
-    ***REMOVED***);
-  ***REMOVED***
+    ***REMOVED***
 
-  ngOnInit(): void ***REMOVED***
+    check_status_loop(id: string) ***REMOVED***
 
-    this.userinfo = new Userinfo();
-    this.getClientData();
-    this.getUserApprovedProjects();
-    this.getUserPublicKey();
+        setTimeout( () => ***REMOVED***
+            this.virtualmachineservice.checkVmStatus(id).subscribe(res => ***REMOVED***
+                res = res.json()
+                if (res['Started'] || res['Error']) ***REMOVED***
+                    this.data = res
 
 
-  ***REMOVED***
+                ***REMOVED***
+                else ***REMOVED***
+                    this.check_status_loop(id)
+                ***REMOVED***
+
+            ***REMOVED***)
+        ***REMOVED***, this.checkStatusTimeout);
+    ***REMOVED***
+
+    startVM(flavor: string, image: string, servername: string, project: string, projectid: string, diskspace?: string): void ***REMOVED***
+        if (image && flavor && servername && project) ***REMOVED***
+
+
+            this.virtualmachineservice.startVM(flavor, image, servername, this.vmclient.host, this.vmclient.port, project, projectid, diskspace).subscribe(data => ***REMOVED***
+
+                if (data.json()['Created']) ***REMOVED***
+                    this.check_status_loop(data.json()['Created']);
+                ***REMOVED***
+                else ***REMOVED***
+                    this.data = data.json()
+                ***REMOVED***
+
+
+            ***REMOVED***);
+
+        ***REMOVED***
+        else ***REMOVED***
+            this.data = "INVALID"
+
+        ***REMOVED***
+    ***REMOVED***
+
+
+    resetData(): void ***REMOVED***
+        if (this.data == 'INVALID') ***REMOVED***
+            return;
+        ***REMOVED***
+        this.data = '';
+    ***REMOVED***
+
+    resetData2(): void ***REMOVED***
+        this.data = '';
+    ***REMOVED***
+
+    onSelectFlavor(flavor: Flavor): void ***REMOVED***
+        this.selectedFlavor = flavor;
+    ***REMOVED***
+
+    onSelectImage(image: Image): void ***REMOVED***
+        this.selectedImage = image
+    ***REMOVED***
+
+    checkMetadataKeys(key: string): boolean ***REMOVED***
+        for (let metadata of this.metadatalist) ***REMOVED***
+            if (metadata.key == key) ***REMOVED***
+                return false;
+            ***REMOVED***
+        ***REMOVED***
+        return true;
+    ***REMOVED***
+
+
+    addMetadataItem(key: string, value: string): void ***REMOVED***
+        if (key && value && this.checkMetadataKeys(key)) ***REMOVED***
+            this.metadatalist.push(new Metadata(key, value));
+        ***REMOVED***
+
+    ***REMOVED***
+
+    deleteMetadataItem(metadata: Metadata): void ***REMOVED***
+        this.metadatalist.splice(this.metadatalist.indexOf(metadata), 1);
+    ***REMOVED***
+
+    getUserApprovedProjects() ***REMOVED***
+        this.groupsmanager.getMemberGroupsStatus().toPromise().then(membergroups => ***REMOVED***
+            for (let project of membergroups.json()) ***REMOVED***
+                this.projects.push(project);
+
+            ***REMOVED***
+        ***REMOVED***);
+    ***REMOVED***
+
+    ngOnInit(): void ***REMOVED***
+
+        this.userinfo = new Userinfo();
+        this.getClientData();
+        this.getUserApprovedProjects();
+        this.getUserPublicKey();
+
+
+    ***REMOVED***
 ***REMOVED***
