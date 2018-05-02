@@ -59,7 +59,7 @@ export class FullLayoutComponent implements OnInit {
   is_client_avaiable() {
     this.clientservice.getRRFirstClient().subscribe(result => {
       try {
-        if (result['status'] === 'Connected') {
+        if (result.toString() === 'true') {
           this.client_avaiable = true;
           return
         }
