@@ -20,6 +20,7 @@ import {FullLayoutComponent} from "../layouts/full-layout.component";
 export class VmOverviewComponent implements OnInit {
     vms: VirtualMachine[];
     status_changed_vm:string;
+    status_changed_vm_id:string;
     elixir_id: string;
     is_vo_admin: boolean;
     tab = 'own';
@@ -197,12 +198,21 @@ export class VmOverviewComponent implements OnInit {
     deleteVm(openstack_id: string): void {
         this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => {
 
+            this.status_changed=0;
+
+
             if (this.tab === 'own') {
                 this.getVms(this.elixir_id);
             }
             else if (this.tab === 'all') {
                 this.getAllVms();
 
+            }
+
+            if (result.text() === 'true'){
+                this.status_changed=1;}
+            else {
+                this.status_changed=2;
             }
 
 
@@ -214,7 +224,7 @@ export class VmOverviewComponent implements OnInit {
 
             this.status_changed=0;
 
-            console.log(this.status_changed_vm)
+
             if (this.tab === 'own') {
                 this.getVms(this.elixir_id);
             }
@@ -255,7 +265,7 @@ export class VmOverviewComponent implements OnInit {
 
              this.status_changed=0;
 
-            console.log(this.status_changed_vm)
+
             if (this.tab === 'own') {
                 this.getVms(this.elixir_id);
             }
