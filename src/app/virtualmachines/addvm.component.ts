@@ -24,14 +24,16 @@ import {AttributesManager} from "../perun-connector/attributes-manager";
 import {Application} from "../applications/application.model";
 import {keyService} from "../api-connector/key.service";
 import {Project} from "../projectmanagement/project.model";
+import {GroupService} from "../api-connector/group.service";
 
 @Component({
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 })
 export class VirtualMachineComponent implements OnInit {
     data: string = "";
+
     informationButton: string = "Show Details";
     informationButton2: string = "Show Details";
     images: Image[];
@@ -41,13 +43,14 @@ export class VirtualMachineComponent implements OnInit {
     selectedFlavor: Flavor;
     userinfo: Userinfo;
     vmclient: Vmclient;
+    selectedProjectDiskspaceMax: number;
     selectedProject: [string, number];
     client_avaiable: boolean;
     projects: string[] = new Array();
     private checkStatusTimeout: number = 5000;
 
 
-    constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) {
+    constructor(private groupService: GroupService, private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) {
     }
 
 
@@ -123,7 +126,7 @@ export class VirtualMachineComponent implements OnInit {
 
     check_status_loop(id: string) {
 
-        setTimeout( () => {
+        setTimeout(() => {
             this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
                 res = res.json()
                 if (res['Started'] || res['Error']) {
@@ -210,6 +213,23 @@ export class VirtualMachineComponent implements OnInit {
 
             }
         });
+    }
+
+
+    getSelectedProjectDiskspace(): void {
+        this.groupService.getGroupDiskspace(this.selectedProject[1].toString()).subscribe(result => {
+            if (result['Diskspace']) {
+
+
+                    this.selectedProjectDiskspaceMax = result['Diskspace'];
+
+            }
+            else if (result['Diskspace'] === null){
+                   this.selectedProjectDiskspaceMax = 0;
+            }
+
+        })
+
     }
 
     ngOnInit(): void {
