@@ -44,6 +44,7 @@ export class VirtualMachineComponent implements OnInit {
     userinfo: Userinfo;
     vmclient: Vmclient;
     selectedProjectDiskspaceMax: number;
+    selectedProjectDiskspaceUsed:number;
     selectedProject: [string, number];
     client_avaiable: boolean;
     projects: string[] = new Array();
@@ -217,7 +218,7 @@ export class VirtualMachineComponent implements OnInit {
 
 
     getSelectedProjectDiskspace(): void {
-        this.groupService.getGroupDiskspace(this.selectedProject[1].toString()).subscribe(result => {
+        this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe(result => {
             if (result['Diskspace']) {
 
 
@@ -227,6 +228,17 @@ export class VirtualMachineComponent implements OnInit {
             else if (result['Diskspace'] === null){
                    this.selectedProjectDiskspaceMax = 0;
             }
+
+        })
+        this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe(result => {
+              if (result['Diskspace']) {
+
+                    this.selectedProjectDiskspaceUsed = result['Diskspace'];
+            }
+            else if (result['Diskspace'] == 0 || result['Diskspace'] == null){
+                  this.selectedProjectDiskspaceUsed = 0;
+              }
+
 
         })
 

@@ -100,7 +100,7 @@
                   <input type="text" placeholder="e.g 8 " #diskspace><span class="input-group-addon"> GB
                                     </span>
                   <div class="col-md-6" *ngIf="selectedProjectDiskspaceMax || selectedProjectDiskspaceMax == 0">
-                    <h3>20 / {{selectedProjectDiskspaceMax}} GB</h3>
+                    <h3>{{selectedProjectDiskspaceUsed}} / {{selectedProjectDiskspaceMax}} GB</h3>
                   </div>
                 </div>
               </div>
