@@ -52,6 +52,7 @@ export class VirtualMachineComponent implements OnInit {
 
 
     getImages(): void {
+
         this.imageService.getImages().subscribe(images => this.images = images);
     }
 
@@ -59,6 +60,8 @@ export class VirtualMachineComponent implements OnInit {
         this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
 
     }
+
+
 
     getClientData() {
         this.clientservice.getClientsChecked().subscribe(response => {
@@ -70,6 +73,7 @@ export class VirtualMachineComponent implements OnInit {
     getRRFirstClient(): void {
         this.clientservice.isClientAvaiable().subscribe(client => {
                 if (client.toString() === "true") {
+
                     this.client_avaiable = true;
                     this.getImages();
                     this.getFlavors();
@@ -142,7 +146,9 @@ export class VirtualMachineComponent implements OnInit {
         if (image && flavor && servername && project) {
 
 
+
             this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, diskspace).subscribe(data => {
+
 
                 if (data.json()['Created']) {
                     this.check_status_loop(data.json()['Created']);
