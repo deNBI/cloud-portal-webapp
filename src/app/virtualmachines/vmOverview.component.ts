@@ -76,10 +76,14 @@ export class VmOverviewComponent implements OnInit {
         this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => {
             this.vms = vms;
             for (let vm of this.vms) {
-                vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                if (vm.stopped_at != 'ACTIVE') {
+                 if (vm.created_at!=''){
+                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();}
+                      if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
                     vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
                 }
+                else {
+                        vm.stopped_at=''
+                      }
             }
 
         })
@@ -92,10 +96,14 @@ export class VmOverviewComponent implements OnInit {
                 this.virtualmachineservice.getVm(this.elixir_id).subscribe(vms => {
                         this.vms = vms;
                         for (let vm of this.vms) {
-                            vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                            if (vm.stopped_at != 'ACTIVE') {
-                                vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                            }
+                            if (vm.created_at!=''){
+                             vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();}
+                                   if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
+                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                }
+                else {
+                        vm.stopped_at=''
+                      }
                         }
 
                     }
@@ -248,10 +256,15 @@ export class VmOverviewComponent implements OnInit {
         this.virtualmachineservice.getVm(elixir_id).subscribe(vms => {
                 this.vms = vms;
                 for (let vm of this.vms) {
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                    if (vm.stopped_at != 'ACTIVE') {
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    }
+                    if (vm.created_at!=''){
+                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();}
+
+                           if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
+                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                }
+                else {
+                        vm.stopped_at=''
+                      }
                 }
                 this.checkInactiveVms();
             }
@@ -288,11 +301,18 @@ export class VmOverviewComponent implements OnInit {
         this.virtualmachineservice.getAllVM().subscribe(vms => {
                 this.vms = vms;
                 for (let vm of this.vms) {
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                    if (vm.stopped_at != 'ACTIVE') {
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    }
+
+                    if (vm.created_at!=''){
+                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();}
+                      if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
+                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
                 }
+                else {
+                        vm.stopped_at=''
+                      }
+
+                }
+
             }
         );
     }

@@ -1,28 +1,31 @@
+
+
 <div class="card">
+
   <div class="card-header">
     <strong>Instance</strong>
     –Overview
   </div>
+      <div *ngIf="is_vo_admin">
 
-  <ng-container *ngIf="is_vo_admin">
-    <ul class="nav nav-pills">
-      <li>
-        <button class="btn btn-primary" (click)="getVms(elixir_id);toggleTab('own');">Own Machines</button>
-      </li>
-      <li>
-        <button class="btn btn-primary" (click)="getAllVms();toggleTab('all')">All Machines</button>
-      </li>
 
-    </ul>
-  </ng-container>
+        <button  style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" class="btn btn-primary" (click)="getVms(elixir_id);toggleTab('own');">Own Machines</button>
+
+        <button style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px" class="btn btn-primary" (click)="getAllVms();toggleTab('all')">All Machines</button>
+
+
+
+  </div>
+
+
    <div style="overflow-x:auto;">
+
   <table class="table table-striped col-md-12">
     <thead>
     <tr>
       <th>Name</th>
       <th>Project</th>
       <th>Status</th>
-      <th>Floating IP</th>
       <th>Created at</th>
       <th>SSH Command</th>
       <th *ngIf="is_vo_admin">Elixir ID</th>
@@ -38,7 +41,6 @@
     <td> <input  style="width: 110px;"type="text" placeholder="Filter" name="filtername" [(ngModel)]="filtername"></td>
     <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterproject" [(ngModel)]="filterproject"></td>
     <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterstatus" [(ngModel)]="filterstatus"></td>
-    <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterip" [(ngModel)]="filterip"></td>
     <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filtercreated_at" [(ngModel)]="filtercreated_at"></td>
     <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterssh" [(ngModel)]="filterssh"></td>
     <td *ngIf="is_vo_admin"><input style="width: 110px;"t type="text" placeholder="Filter" name="filterelixir_id" [(ngModel)]="filterelixir_id"></td>
@@ -47,13 +49,12 @@
     <ng-container *ngFor="let vm of vms">
 
       <tr
-        *ngIf="isFilterSSH(vm.ssh_command) && isFilterstatus(vm.status ) && isFilterProject(vm.project) && isFilterCreated_at(vm.created_at) && isFilterElixir_id(vm.elixir_id) && isFilterIP(vm.floating_ip) && isFilterName(vm.name) && isFilterStopped_at(vm.stopped_at) && isFilterUsername(vm.username)">
+        *ngIf="isFilterSSH(vm.ssh_command) && isFilterstatus(vm.status ) && isFilterProject(vm.project) && isFilterCreated_at(vm.created_at) && isFilterElixir_id(vm.elixir_id) && isFilterName(vm.name) && isFilterStopped_at(vm.stopped_at) && isFilterUsername(vm.username)">
         <td>
           {{vm.name}}
         </td>
         <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">{{vm.project}}</td>
         <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">{{vm.status}}</td>
-        <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">{{vm.floating_ip}}</td>
         <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal"> {{vm.created_at}}</td>
         <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">{{vm.ssh_command}}</td>
         <td *ngIf="is_vo_admin" style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal"> {{vm.elixir_id}}</td>
@@ -62,21 +63,21 @@
         </td>
 
         <td>
-          <button *ngIf="vm.status =='ACTIVE'" (click)="status_changed_vm=vm.name;stopVm(vm.openstackid,vm.name);stopModal.show();"
+          <button   style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" *ngIf="vm.status =='ACTIVE'" (click)="status_changed_vm=vm.name;stopVm(vm.openstackid,vm.name);stopModal.show();"
                   class="btn btn-primary">
             StopVM
           </button>
 
-          <button *ngIf="vm.status =='SUSPENDED'" (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();"
+          <button  style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" *ngIf="vm.status =='SUSPENDED'" (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();"
                   class="btn btn-primary">
             ResumeVM
           </button>
-           <button *ngIf="vm.status !='SUSPENDED' && vm.status != 'ACTIVE' && vm.status != 'DELETED'" (click)="checkStatus(vm.openstackid);"
+           <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"  *ngIf="vm.status !='SUSPENDED' && vm.status != 'ACTIVE' && vm.status != 'DELETED'" (click)="checkStatus(vm.openstackid);"
                   class="btn btn-primary">
             Check Status
           </button>
 
-         <button *ngIf="vm.status !='DELETED'" (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();"
+         <button  style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" *ngIf="vm.status !='DELETED'" (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();"
                   class="btn btn-primary">
             DeleteVM
           </button></td>
