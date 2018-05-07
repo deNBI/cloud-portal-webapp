@@ -76,10 +76,14 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => ***REMOVED***
             this.vms = vms;
             for (let vm of this.vms) ***REMOVED***
-                vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                if (vm.stopped_at != 'ACTIVE') ***REMOVED***
+                 if (vm.created_at!='')***REMOVED***
+                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();***REMOVED***
+                      if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
                     vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
                 ***REMOVED***
+                else ***REMOVED***
+                        vm.stopped_at=''
+                      ***REMOVED***
             ***REMOVED***
 
         ***REMOVED***)
@@ -92,10 +96,14 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
                 this.virtualmachineservice.getVm(this.elixir_id).subscribe(vms => ***REMOVED***
                         this.vms = vms;
                         for (let vm of this.vms) ***REMOVED***
-                            vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                            if (vm.stopped_at != 'ACTIVE') ***REMOVED***
-                                vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                            ***REMOVED***
+                            if (vm.created_at!='')***REMOVED***
+                             vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();***REMOVED***
+                                   if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
+                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                ***REMOVED***
+                else ***REMOVED***
+                        vm.stopped_at=''
+                      ***REMOVED***
                         ***REMOVED***
 
                     ***REMOVED***
@@ -248,10 +256,15 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.virtualmachineservice.getVm(elixir_id).subscribe(vms => ***REMOVED***
                 this.vms = vms;
                 for (let vm of this.vms) ***REMOVED***
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                    if (vm.stopped_at != 'ACTIVE') ***REMOVED***
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    ***REMOVED***
+                    if (vm.created_at!='')***REMOVED***
+                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();***REMOVED***
+
+                           if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
+                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                ***REMOVED***
+                else ***REMOVED***
+                        vm.stopped_at=''
+                      ***REMOVED***
                 ***REMOVED***
                 this.checkInactiveVms();
             ***REMOVED***
@@ -288,11 +301,18 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.virtualmachineservice.getAllVM().subscribe(vms => ***REMOVED***
                 this.vms = vms;
                 for (let vm of this.vms) ***REMOVED***
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                    if (vm.stopped_at != 'ACTIVE') ***REMOVED***
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    ***REMOVED***
+
+                    if (vm.created_at!='')***REMOVED***
+                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();***REMOVED***
+                      if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
+                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
                 ***REMOVED***
+                else ***REMOVED***
+                        vm.stopped_at=''
+                      ***REMOVED***
+
+                ***REMOVED***
+
             ***REMOVED***
         );
     ***REMOVED***
