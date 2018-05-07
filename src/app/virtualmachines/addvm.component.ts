@@ -24,14 +24,16 @@ import ***REMOVED***AttributesManager***REMOVED*** from "../perun-connector/attr
 import ***REMOVED***Application***REMOVED*** from "../applications/application.model";
 import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
+import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 
 @Component(***REMOVED***
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
     data: string = "";
+
     informationButton: string = "Show Details";
     informationButton2: string = "Show Details";
     images: Image[];
@@ -41,13 +43,17 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     selectedFlavor: Flavor;
     userinfo: Userinfo;
     vmclient: Vmclient;
+    selectedProjectDiskspaceMax: number;
+    selectedProjectDiskspaceUsed:number;
+    selectedProjectVmsMax: number;
+    selectedProjectVmsUsed:number;
     selectedProject: [string, number];
     client_avaiable: boolean;
     projects: string[] = new Array();
     private checkStatusTimeout: number = 5000;
 
 
-    constructor(private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) ***REMOVED***
+    constructor(private groupService: GroupService, private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) ***REMOVED***
     ***REMOVED***
 
 
@@ -123,11 +129,13 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
     check_status_loop(id: string) ***REMOVED***
 
-        setTimeout( () => ***REMOVED***
+        setTimeout(() => ***REMOVED***
             this.virtualmachineservice.checkVmStatus(id).subscribe(res => ***REMOVED***
                 res = res.json()
                 if (res['Started'] || res['Error']) ***REMOVED***
                     this.data = res
+                    this.getSelectedProjectDiskspace();
+                    this.getSelectedProjectVms();
 
 
                 ***REMOVED***
@@ -210,6 +218,62 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
             ***REMOVED***
         ***REMOVED***);
+    ***REMOVED***
+
+
+    getSelectedProjectDiskspace(): void ***REMOVED***
+        this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
+            if (result['Diskspace']) ***REMOVED***
+
+
+                    this.selectedProjectDiskspaceMax = result['Diskspace'];
+
+            ***REMOVED***
+            else if (result['Diskspace'] === null)***REMOVED***
+                   this.selectedProjectDiskspaceMax = 0;
+            ***REMOVED***
+
+        ***REMOVED***)
+        this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
+              if (result['Diskspace']) ***REMOVED***
+
+                    this.selectedProjectDiskspaceUsed = result['Diskspace'];
+            ***REMOVED***
+            else if (result['Diskspace'] == 0 || result['Diskspace'] == null)***REMOVED***
+                  this.selectedProjectDiskspaceUsed = 0;
+              ***REMOVED***
+
+
+        ***REMOVED***)
+
+    ***REMOVED***
+
+
+        getSelectedProjectVms(): void ***REMOVED***
+        this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
+            if (result['NumberVms']) ***REMOVED***
+
+
+                    this.selectedProjectVmsMax = result['NumberVms'];
+
+            ***REMOVED***
+            else if (result['NumberVms'] === null)***REMOVED***
+                   this.selectedProjectVmsMax= 0;
+            ***REMOVED***
+
+        ***REMOVED***)
+        this.groupService.getGroupUsedVms(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
+              if (result['NumberVms']) ***REMOVED***
+
+                    this.selectedProjectVmsUsed = result['NumberVms'];
+            ***REMOVED***
+            else if (result['NumberVms'] == 0 || result['NumberVms'] == null)***REMOVED***
+                  this.selectedProjectVmsUsed = 0;
+              ***REMOVED***
+
+
+        ***REMOVED***)
+
     ***REMOVED***
 
     ngOnInit(): void ***REMOVED***

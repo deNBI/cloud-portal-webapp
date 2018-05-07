@@ -19,9 +19,12 @@ import ***REMOVED***FullLayoutComponent***REMOVED*** from "../layouts/full-layou
 
 export class VmOverviewComponent implements OnInit ***REMOVED***
     vms: VirtualMachine[];
+    status_changed_vm:string;
+    status_changed_vm_id:string;
     elixir_id: string;
     is_vo_admin: boolean;
     tab = 'own';
+    status_changed:number=0;
     filterusername: string;
     filterip: string;
     filtername: string;
@@ -195,12 +198,21 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     deleteVm(openstack_id: string): void ***REMOVED***
         this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => ***REMOVED***
 
+            this.status_changed=0;
+
+
             if (this.tab === 'own') ***REMOVED***
                 this.getVms(this.elixir_id);
             ***REMOVED***
             else if (this.tab === 'all') ***REMOVED***
                 this.getAllVms();
 
+            ***REMOVED***
+
+            if (result.text() === 'true')***REMOVED***
+                this.status_changed=1;***REMOVED***
+            else ***REMOVED***
+                this.status_changed=2;
             ***REMOVED***
 
 
@@ -210,6 +222,9 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     stopVm(openstack_id: string): void ***REMOVED***
         this.virtualmachineservice.stopVM(openstack_id).subscribe(result => ***REMOVED***
 
+            this.status_changed=0;
+
+
             if (this.tab === 'own') ***REMOVED***
                 this.getVms(this.elixir_id);
             ***REMOVED***
@@ -217,6 +232,13 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
                 this.getAllVms();
 
             ***REMOVED***
+
+            if (result.text() === 'true')***REMOVED***
+                this.status_changed=1;***REMOVED***
+            else ***REMOVED***
+                this.status_changed=2;
+            ***REMOVED***
+
 
 
         ***REMOVED***)
@@ -241,12 +263,21 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => ***REMOVED***
 
 
+             this.status_changed=0;
+
+
             if (this.tab === 'own') ***REMOVED***
                 this.getVms(this.elixir_id);
             ***REMOVED***
             else if (this.tab === 'all') ***REMOVED***
                 this.getAllVms();
 
+            ***REMOVED***
+
+            if (result.text() === 'true')***REMOVED***
+                this.status_changed=1;***REMOVED***
+            else ***REMOVED***
+                this.status_changed=2;
             ***REMOVED***
 
         ***REMOVED***)
