@@ -115,6 +115,60 @@ export class GroupService {
 
     }
 
+
+         getGroupMaxDiskspace(groupid: string): Observable<any> {
+         let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        return this.http.get(this.settings.getApiBaseURL() + 'project/getApprovedDiskSpace/', {
+            withCredentials: true,
+            params:{groupid:groupid}
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+
+    getGroupUsedDiskspace(groupid: string): Observable<any> {
+         let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedDiskSpace/', {
+            withCredentials: true,
+            params:{groupid:groupid}
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+
+     getGroupApprovedVms(groupid: string): Observable<any> {
+         let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        return this.http.get(this.settings.getApiBaseURL() + 'project/getNumberApprovedVms/', {
+            withCredentials: true,
+            params:{groupid:groupid}
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+
+       getGroupUsedVms(groupid: string): Observable<any> {
+         let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedVms/', {
+            withCredentials: true,
+            params:{groupid:groupid}
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+
+
+
+
+
+
     setNumberOfVms(groupid: string, numberofVms: string): Observable<any> {
         let urlSearchParams = new URLSearchParams();
          let header = new Headers({

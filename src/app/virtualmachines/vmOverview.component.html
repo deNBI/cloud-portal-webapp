@@ -62,12 +62,12 @@
         </td>
 
         <td>
-          <button *ngIf="vm.status =='ACTIVE'" (click)="stopVm(vm.openstackid)"
+          <button *ngIf="vm.status =='ACTIVE'" (click)="status_changed_vm=vm.name;stopVm(vm.openstackid,vm.name);stopModal.show();"
                   class="btn btn-primary">
             StopVM
           </button>
 
-          <button *ngIf="vm.status =='SUSPENDED'" (click)="resumeVM(vm.openstackid);"
+          <button *ngIf="vm.status =='SUSPENDED'" (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();"
                   class="btn btn-primary">
             ResumeVM
           </button>
@@ -76,7 +76,7 @@
             Check Status
           </button>
 
-         <button *ngIf="vm.status !='DELETED'" (click)="deleteVm(vm.openstackid);"
+         <button *ngIf="vm.status !='DELETED'" (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();"
                   class="btn btn-primary">
             DeleteVM
           </button></td>
@@ -86,3 +86,125 @@
   </table>
    </div>
 </div>
+
+
+
+<div bsModal #stopModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
+        <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
+        <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+          Stopping {{status_changed_vm}}... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+        </div>
+        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
+          {{status_changed_vm}} was succesfully stopped.
+        </div>
+      </div>
+      <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
+        When stopping {{status_changed_vm}} an error occured.
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="status_changed=0;stopModal.hide()">Close</button>
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #resumeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
+        <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
+        <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+          Resuming {{status_changed_vm}}... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+        </div>
+        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
+          {{status_changed_vm}} was succesfully resumed.
+        </div>
+      </div>
+      <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
+        When resuming {{status_changed_vm}} an error occured.
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="status_changed=0;resumeModal.hide()">Close</button>
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
+        <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
+        <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+          Deleting {{status_changed_vm}}... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+        </div>
+        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
+          {{status_changed_vm}} was succesfully deleted.
+        </div>
+      </div>
+      <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
+        When resuming {{status_changed_vm}} an error occured.
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="status_changed=0;deleteModal.hide()">Close</button>
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Vm</h4>
+      </div>
+      <div class="modal-body">
+
+        <div class="alert alert-warning" role="alert">
+          Are you sure you want to delete {{status_changed_vm}}?
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                (click)="deleteVm(status_changed_vm_id);verifyModal.hide();deleteModal.show()">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="status_changed_vm_id='';verifyModal.hide();">Cancel
+        </button>
+      </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
