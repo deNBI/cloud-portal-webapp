@@ -63,12 +63,15 @@
         </td>
 
         <td>
+
           <button   style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" *ngIf="vm.status =='ACTIVE'" (click)="status_changed_vm=vm.name;stopVm(vm.openstackid,vm.name);stopModal.show();"
                   class="btn btn-primary">
             StopVM
           </button>
 
+
           <button  style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" *ngIf="vm.status =='SUSPENDED'" (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();"
+
                   class="btn btn-primary">
             ResumeVM
           </button>
@@ -78,6 +81,7 @@
           </button>
 
          <button  style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" *ngIf="vm.status !='DELETED'" (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();"
+
                   class="btn btn-primary">
             DeleteVM
           </button></td>
