@@ -37,6 +37,10 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
     public usersModalProjectID: number;
     public usersModalProjectName: string;
 
+    public emailSubject: string = '';
+    public emailText: string = '';
+    public emailStatus: number = 0;
+
     public managerFacilities: [string,number][];
     public selectedFacility: [string,number]
 
@@ -54,7 +58,6 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
                 this.getFacilityProjects(this.managerFacilities[0]['FacilityId'])
 
         ***REMOVED***)
-
     ***REMOVED***
 
 
@@ -90,6 +93,17 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
     ***REMOVED***
 
 
+    sendMailToFacility(facility: number,subject:string,message:string)***REMOVED***
+        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result =>***REMOVED***
+            if (result == 1)***REMOVED***
+                this.emailStatus = 1;
+            ***REMOVED***
+            else ***REMOVED***
+                this.emailStatus = 2;
+            ***REMOVED***
+            ***REMOVED***)
+
+    ***REMOVED***
 
     getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
         this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => ***REMOVED***
@@ -110,6 +124,13 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
     public showMembersOfTheProject(projectid: number, projectname: string, facility: [string,number]) ***REMOVED***
         this.getMembesOfTheProject(projectid, projectname);
 
+    ***REMOVED***
+
+    public resetEmailModal() ***REMOVED***
+
+      this.emailSubject = '';
+      this.emailText = '';
+      this.emailStatus = 0;
     ***REMOVED***
 
 
