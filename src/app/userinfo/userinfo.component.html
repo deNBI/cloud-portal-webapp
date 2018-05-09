@@ -61,7 +61,7 @@
                                 </div>
                                 <div *ngIf="!validatePublicKey()" class="aler alert-info">
                                     <strong>Info</strong> Insert a valid public Key!<br>
-                                    <a target="_blank" href="https://confluence.csc.fi/pages/viewpage.action?pageId=58826074">How to generate a ssh keypair?</a>
+                                    <a target="_blank" href="https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys">How to generate a ssh keypair?</a>
                                 </div>
                                 <div class="alert alert-danger" *ngIf="!validatePublicKey() && public_key?.length >0">
                                     <strong>Warning</strong> This is not a valid public key!
