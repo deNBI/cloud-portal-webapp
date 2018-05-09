@@ -37,6 +37,10 @@ export class  FacilityProjectsOverviewComponent {
     public usersModalProjectID: number;
     public usersModalProjectName: string;
 
+    public emailSubject: string = '';
+    public emailText: string = '';
+    public emailStatus: number = 0;
+
     public managerFacilities: [string,number][];
     public selectedFacility: [string,number]
 
@@ -54,7 +58,6 @@ export class  FacilityProjectsOverviewComponent {
                 this.getFacilityProjects(this.managerFacilities[0]['FacilityId'])
 
         })
-
     }
 
 
@@ -90,6 +93,17 @@ export class  FacilityProjectsOverviewComponent {
     }
 
 
+    sendMailToFacility(facility: number,subject:string,message:string){
+        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result =>{
+            if (result == 1){
+                this.emailStatus = 1;
+            }
+            else {
+                this.emailStatus = 2;
+            }
+            })
+
+    }
 
     getMembesOfTheProject(projectid: number, projectname: string) {
         this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => {
@@ -110,6 +124,13 @@ export class  FacilityProjectsOverviewComponent {
     public showMembersOfTheProject(projectid: number, projectname: string, facility: [string,number]) {
         this.getMembesOfTheProject(projectid, projectname);
 
+    }
+
+    public resetEmailModal() {
+
+      this.emailSubject = '';
+      this.emailText = '';
+      this.emailStatus = 0;
     }
 
 
