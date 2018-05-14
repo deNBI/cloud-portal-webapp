@@ -19,9 +19,12 @@ import {FullLayoutComponent} from "../layouts/full-layout.component";
 
 export class VmOverviewComponent implements OnInit {
     vms: VirtualMachine[];
+    status_changed_vm:string;
+    status_changed_vm_id:string;
     elixir_id: string;
     is_vo_admin: boolean;
     tab = 'own';
+    status_changed:number=0;
     filterusername: string;
     filterip: string;
     filtername: string;
@@ -73,10 +76,14 @@ export class VmOverviewComponent implements OnInit {
         this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => {
             this.vms = vms;
             for (let vm of this.vms) {
-                vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                if (vm.stopped_at != 'ACTIVE') {
+                 if (vm.created_at!=''){
+                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();}
+                      if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
                     vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
                 }
+                else {
+                        vm.stopped_at=''
+                      }
             }
 
         })
@@ -89,10 +96,14 @@ export class VmOverviewComponent implements OnInit {
                 this.virtualmachineservice.getVm(this.elixir_id).subscribe(vms => {
                         this.vms = vms;
                         for (let vm of this.vms) {
-                            vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                            if (vm.stopped_at != 'ACTIVE') {
-                                vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                            }
+                            if (vm.created_at!=''){
+                             vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();}
+                                   if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
+                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                }
+                else {
+                        vm.stopped_at=''
+                      }
                         }
 
                     }
@@ -195,12 +206,21 @@ export class VmOverviewComponent implements OnInit {
     deleteVm(openstack_id: string): void {
         this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => {
 
+            this.status_changed=0;
+
+
             if (this.tab === 'own') {
                 this.getVms(this.elixir_id);
             }
             else if (this.tab === 'all') {
                 this.getAllVms();
 
+            }
+
+            if (result.text() === 'true'){
+                this.status_changed=1;}
+            else {
+                this.status_changed=2;
             }
 
 
@@ -210,6 +230,9 @@ export class VmOverviewComponent implements OnInit {
     stopVm(openstack_id: string): void {
         this.virtualmachineservice.stopVM(openstack_id).subscribe(result => {
 
+            this.status_changed=0;
+
+
             if (this.tab === 'own') {
                 this.getVms(this.elixir_id);
             }
@@ -217,6 +240,13 @@ export class VmOverviewComponent implements OnInit {
                 this.getAllVms();
 
             }
+
+            if (result.text() === 'true'){
+                this.status_changed=1;}
+            else {
+                this.status_changed=2;
+            }
+
 
 
         })
@@ -226,10 +256,15 @@ export class VmOverviewComponent implements OnInit {
         this.virtualmachineservice.getVm(elixir_id).subscribe(vms => {
                 this.vms = vms;
                 for (let vm of this.vms) {
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                    if (vm.stopped_at != 'ACTIVE') {
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    }
+                    if (vm.created_at!=''){
+                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();}
+
+                           if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
+                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                }
+                else {
+                        vm.stopped_at=''
+                      }
                 }
                 this.checkInactiveVms();
             }
@@ -241,12 +276,21 @@ export class VmOverviewComponent implements OnInit {
         this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => {
 
 
+             this.status_changed=0;
+
+
             if (this.tab === 'own') {
                 this.getVms(this.elixir_id);
             }
             else if (this.tab === 'all') {
                 this.getAllVms();
 
+            }
+
+            if (result.text() === 'true'){
+                this.status_changed=1;}
+            else {
+                this.status_changed=2;
             }
 
         })
@@ -257,11 +301,18 @@ export class VmOverviewComponent implements OnInit {
         this.virtualmachineservice.getAllVM().subscribe(vms => {
                 this.vms = vms;
                 for (let vm of this.vms) {
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                    if (vm.stopped_at != 'ACTIVE') {
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    }
+
+                    if (vm.created_at!=''){
+                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();}
+                      if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
+                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
                 }
+                else {
+                        vm.stopped_at=''
+                      }
+
+                }
+
             }
         );
     }
