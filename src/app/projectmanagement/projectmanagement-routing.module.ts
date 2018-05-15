@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {FacilityProjectsOverviewComponent} from "./facilityprojectsoverview.component";
 import {OverviewComponent} from './overview.component';
+import {ImageTagComponent} from "./imagetags.component";
 
 const routes: Routes = [
     {
@@ -21,7 +22,7 @@ const routes: Routes = [
 
     }, {
         path: 'imageTags',
-        component: FacilityProjectsOverviewComponent,
+        component: ImageTagComponent,
         data: {
             title: 'Image Tags'
         }
