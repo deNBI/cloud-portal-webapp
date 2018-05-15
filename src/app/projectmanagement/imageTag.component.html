@@ -13,11 +13,24 @@
                         <tr>
                             <th>Tag</th>
                             <th>Description</th>
+                            <th>Actions</th>
                         </tr>
 
                         <tr *ngFor="let imageTag of imageTags">
                             <td>{{imageTag['name']}}</td>
                             <td>{{imageTag['description']}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" placeholder="Tag" #tag></td>
+                            <td><textarea type="text" class="form-control input-lg"
+                                          placeholder="Descrption"
+                                          #description></textarea>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary" (click)="addTag(tag.value,description.value);">Add Tag</button>
+                            </td>
+
                         </tr>
                     </table>
                 </div>

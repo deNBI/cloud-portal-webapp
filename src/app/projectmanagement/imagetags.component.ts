@@ -12,10 +12,17 @@ export class ImageTagComponent {
 
     constructor(private imageService: ImageService,) {
         this.imageService.getImageTags().subscribe(result => {
-            this.imageTags=result;
-            console.log(this.imageTags)
+            this.imageTags = result;
         })
-}
+    }
+
+    addTag(tag: string, description: string){
+        this.imageService.addImageTags(tag,description).subscribe(result =>{
+            this.imageService.getImageTags().subscribe(result=>{
+                this.imageTags=result
+            })
+        })
+    }
 
 
 }
