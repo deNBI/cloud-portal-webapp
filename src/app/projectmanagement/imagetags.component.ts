@@ -24,5 +24,14 @@ export class ImageTagComponent {
         })
     }
 
+        deleteTag(tag: string){
+        this.imageService.deleteImageTag(tag).subscribe(result =>{
+            this.imageService.getImageTags().subscribe(result=>{
+                this.imageTags=result
+            })
+        })
+    }
+
+
 
 }

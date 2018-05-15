@@ -19,7 +19,7 @@
                         <tr *ngFor="let imageTag of imageTags">
                             <td>{{imageTag['name']}}</td>
                             <td>{{imageTag['description']}}</td>
-                            <td></td>
+                            <td> <button type="button" class="btn btn-primary" (click)="deleteTag(imageTag['name']);">Delete Tag</button></td>
                         </tr>
                         <tr>
                             <td><input type="text" placeholder="Tag" #tag></td>

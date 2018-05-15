@@ -53,4 +53,22 @@ export class ImageService {
 
     }
 
+
+      deleteImageTag(imageTag:string): Observable<any> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('imageTag',imageTag)
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteImageTag/', urlSearchParams,{
+            withCredentials: true,
+            headers:header
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    }
+
+
 }
