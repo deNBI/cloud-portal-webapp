@@ -5,14 +5,18 @@ import { UserinfoComponent } from './userinfo.component';
 import { UserinfoRoutingModule } from './userinfo-routing.module';
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { AlertModule } from 'ngx-bootstrap';
 
 @NgModule({
   imports: [
     UserinfoRoutingModule,
     TabsModule,
     CommonModule,
-    FormsModule
+    FormsModule, ModalModule.forRoot(),
+      AlertModule.forRoot()
   ],
+
   declarations: [
     UserinfoComponent
   ]
