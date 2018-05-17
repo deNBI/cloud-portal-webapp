@@ -12,6 +12,7 @@
           <th>Host</th>
           <th>Port</th>
           <th>Status</th>
+          <th>Actions</th>
 
         </tr>
 
@@ -44,11 +45,11 @@
 
           <td>
             <button type="button" class="btn btn-primary navbar-inverse" (click)="checkClient(hos.value,port.value)">Check Status</button>
-          </td>
-          <td>
-            <button type="button" class="btn btn-primary navbar-inverse" (click)="postClient(hos.value,port.value,selectedComputeCenter);">Add Client
+             <button type="button" class="btn btn-primary navbar-inverse" (click)="postClient(hos.value,port.value,selectedComputeCenter);">Add Client
             </button>
           </td>
+
+
           <td></td>
         </tr>
         <tr>

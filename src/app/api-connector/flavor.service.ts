@@ -13,13 +13,10 @@ export class FlavorService ***REMOVED***
   constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
   ***REMOVED***
 
-  getFlavors(host: string, port: string): Observable<Flavor[]> ***REMOVED***
+  getFlavors(): Observable<Flavor[]> ***REMOVED***
     let urlSearchParams = new URLSearchParams();
 
-    urlSearchParams.append('host', host);
-    urlSearchParams.append('port', port);
-
-    return this.http.get(this.settings.getConnectorBaseUrl() + 'flavors/getFlavorByClient/', ***REMOVED***
+    return this.http.get(this.settings.getConnectorBaseUrl() + 'flavors/getFlavors/', ***REMOVED***
       withCredentials: true,
       search: urlSearchParams
     ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))

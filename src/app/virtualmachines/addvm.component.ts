@@ -58,13 +58,16 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
 
     getImages(): void ***REMOVED***
-        this.imageService.getImages(this.vmclient.host, this.vmclient.port).subscribe(images => this.images = images);
+
+        this.imageService.getImages().subscribe(images => this.images = images);
     ***REMOVED***
 
     getFlavors(): void ***REMOVED***
-        this.flavorService.getFlavors(this.vmclient.host, this.vmclient.port).subscribe(flavors => this.flavors = flavors);
+        this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
 
     ***REMOVED***
+
+
 
     getClientData() ***REMOVED***
         this.clientservice.getClientsChecked().subscribe(response => ***REMOVED***
@@ -74,9 +77,9 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     getRRFirstClient(): void ***REMOVED***
-        this.clientservice.getRRFirstClient().subscribe(client => ***REMOVED***
-                this.vmclient = client;
-                if (this.vmclient.status === "Connected") ***REMOVED***
+        this.clientservice.isClientAvaiable().subscribe(client => ***REMOVED***
+                if (client.toString() === "true") ***REMOVED***
+
                     this.client_avaiable = true;
                     this.getImages();
                     this.getFlavors();
@@ -151,7 +154,9 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
         if (image && flavor && servername && project) ***REMOVED***
 
 
-            this.virtualmachineservice.startVM(flavor, image, servername, this.vmclient.host, this.vmclient.port, project, projectid, diskspace).subscribe(data => ***REMOVED***
+
+            this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, diskspace).subscribe(data => ***REMOVED***
+
 
                 if (data.json()['Created']) ***REMOVED***
                     this.check_status_loop(data.json()['Created']);

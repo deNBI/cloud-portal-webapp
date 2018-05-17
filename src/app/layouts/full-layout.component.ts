@@ -57,9 +57,9 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     ***REMOVED***)
     ***REMOVED***
   is_client_avaiable() ***REMOVED***
-    this.clientservice.getRRFirstClient().subscribe(result => ***REMOVED***
+    this.clientservice.isClientAvaiable().subscribe(result => ***REMOVED***
       try ***REMOVED***
-        if (result['status'] === 'Connected') ***REMOVED***
+        if (result.toString() === 'true') ***REMOVED***
           this.client_avaiable = true;
           return
         ***REMOVED***

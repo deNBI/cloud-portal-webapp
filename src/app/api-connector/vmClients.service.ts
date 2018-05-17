@@ -24,11 +24,11 @@ export class ClientService ***REMOVED***
 
   ***REMOVED***
 
-  getRRFirstClient(): Observable<Vmclient> ***REMOVED***
+  isClientAvaiable(): Observable<Vmclient> ***REMOVED***
 
     let urlSearchParams = new URLSearchParams();
 
-    return this.http.get(this.clientURL + 'getFirstClient/', ***REMOVED***
+    return this.http.get(this.clientURL + 'isClientAvaiable/', ***REMOVED***
       withCredentials: true,
       search: urlSearchParams
     ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));

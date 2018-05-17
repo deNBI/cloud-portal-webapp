@@ -13,14 +13,12 @@ export class ImageService ***REMOVED***
   constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
   ***REMOVED***
 
-  getImages(host: string, port: string): Observable<Image[]> ***REMOVED***
+  getImages(): Observable<Image[]> ***REMOVED***
     let urlSearchParams = new URLSearchParams();
 
-    urlSearchParams.set('host', host);
-    urlSearchParams.set('port', port);
 
 
-    return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getImageByClient/', ***REMOVED***
+    return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getImages/', ***REMOVED***
       withCredentials: true,
       search: urlSearchParams
     ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
