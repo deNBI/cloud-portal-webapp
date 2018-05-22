@@ -65,6 +65,15 @@
 
                             </td>
                         </tr>
+                        <tr>
+                            <td>Newsletter</td>
+                            <td><label class="switch switch-text switch-primary-outline-alt">
+                                <input type="checkbox" class="switch-input" [(ngModel)]="newsletter_subscribed" (change)=" setNewsletterSubscription($event)" >
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label></td>
+                            <td></td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -100,16 +109,14 @@
                 <br>
 
 
-
-                    <alert *ngIf="validatePublicKey()" type="danger">
-                        <strong>Warning!</strong> If the key is changed,all your running machines may become
-                        unreachable!
-                    </alert>
+                <alert *ngIf="validatePublicKey()" type="danger">
+                    <strong>Warning!</strong> If the key is changed,all your running machines may become
+                    unreachable!
+                </alert>
             </div>
 
 
             <div class="modal-footer">
-
 
 
                 <button [disabled]="!validatePublicKey()"
