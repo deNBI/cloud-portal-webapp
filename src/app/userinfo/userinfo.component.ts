@@ -19,7 +19,7 @@ export class UserinfoComponent {
   userinfo: Userinfo;
   key: string = 'Show Public Key';
   key_visible = false;
-  public_key: string;
+  public_key: string='';
 
   constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) {
     this.userinfo = new Userinfo();
