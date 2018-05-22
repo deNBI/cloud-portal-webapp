@@ -52,34 +52,16 @@
                             </td>
                             <td>
 
-                                <div *ngIf="userinfo.PublicKey != 'None'" class="alert alert-danger">
-                                    <strong>Warning!</strong> If the key is changed, all your running machines may become
-                                    unreachable!
-                                </div>
-                                 <div *ngIf="validatePublicKey()" class="alert alert-success">
-                                    <strong>Info!</strong> This is a valid public Key!
-                                </div>
-                                <div *ngIf="!validatePublicKey()" class="aler alert-info">
-                                    <strong>Info</strong> Insert a valid public Key!<br>
-                                    <a target="_blank" href="https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys">How to generate a ssh keypair?</a>
-                                </div>
-                                <div class="alert alert-danger" *ngIf="!validatePublicKey() && public_key?.length >0">
-                                    <strong>Warning</strong> This is not a valid public key!
-                                </div>
-                                <textarea type="text" class="form-control input-lg"
-                                       placeholder="Enter a new public key." name="public_key" [(ngModel)]="public_key"
-                                          #publickey></textarea>
+                                <alert type="info">
+                                    <strong>Tutorial:</strong><a target="_blank"
+                                                                 href="https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys">
+                                    How
+                                    to generate a ssh keypair?</a>
+                                </alert>
 
-                                <button *ngIf="userinfo.PublicKey == 'None' && validatePublicKey()"
-                                        class="btn btn-primary" type="button"
-                                        (click)="importKey(publickey.value, userinfo.ElxirId);show_key();">
-                                    Add Key
+                                <button class="btn btn-primary" type="button" (click)="pubKeyModal.show()">Set pub key
                                 </button>
-                                <button *ngIf="validatePublicKey() && userinfo.PublicKey != 'None'"
-                                        class="btn btn-primary" type="button"
-                                        (click)="importKey(publickey.value, userinfo.ElxirId);show_key();">
-                                    Change Key
-                                </button>
+
 
                             </td>
                         </tr>
@@ -89,3 +71,55 @@
         </div>
     </div>
 </div>
+
+
+<div bsModal #pubKeyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Set public key</h4>
+            </div>
+            <div class="modal-body">
+                <alert type="info" *ngIf="public_key?.length ==0 ">
+                    <strong>Info: </strong> Enter a valid public key!
+
+                </alert>
+
+
+                <alert type="success" *ngIf="validatePublicKey()">
+                    <strong>Info: </strong> This is a valid public Key!
+                </alert>
+                <alert type="danger" *ngIf="!validatePublicKey() && public_key?.length >0">
+                    <strong>Warning</strong> This is not a valid public key!
+                </alert>
+                <textarea type="text" class="form-control input-lg"
+                          placeholder="Enter a new valid public key." name="public_key" [(ngModel)]="public_key"
+                          #publickey></textarea>
+
+                <br>
+
+
+
+                    <alert *ngIf="validatePublicKey()" type="danger">
+                        <strong>Warning!</strong> If the key is changed,all your running machines may become
+                        unreachable!
+                    </alert>
+            </div>
+
+
+            <div class="modal-footer">
+
+
+
+                <button [disabled]="!validatePublicKey()"
+                        class="btn btn-success col-md4" type="button"
+                        (click)="importKey(publickey.value, userinfo.ElxirId);show_key();pubKeyModal.hide();">Set
+                </button>
+                <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide();">Cancel
+                </button>
+
+            </div>
+        </div><!-- /.modal-content -->L
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
