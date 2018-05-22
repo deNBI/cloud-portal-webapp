@@ -242,14 +242,11 @@ are going to use."></i></strong></label>
 
             <br>
              <div class="form-group row">
-              <h5 class="col-md-6 form-control-label">Comment</h5>
-            </div>
-             <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Comment* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Comment"></i></strong></label>
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Comment</strong></label>
               <div class="col-md-8">
-                <input required type="text" id="id_project_application_comment"
-                       name="project_application_comment" class="form-control"
-                       placeholder='' ngModel>
+                <textarea required type="text" id="id_project_application_comment"
+                       name="project_application_comment" class="form-control" maxlength="8192"
+                          placeholder='' ngModel></textarea>
                 <span class="help-block">Additional information you want to share?</span>
               </div>
             </div>
