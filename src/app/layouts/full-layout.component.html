@@ -53,6 +53,10 @@
           <a class="nav-link" routerLinkActive="active" [routerLink]="['/facilityProjects']"><i
             class="icon-briefcase"></i> Facility Projects</a>
         </li>
+           <li *ngIf="is_facility_manager" class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/imageTags']"><i
+            class="icon-briefcase"></i> Image Tags</a>
+        </li>
 
       </ul>
     </nav>

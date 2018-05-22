@@ -6,6 +6,7 @@ import { ProjectManagementRoutingModule } from './projectmanagement-routing.modu
 import {CommonModule} from "@angular/common";
 import { ModalModule } from 'ngx-bootstrap/modal';
 import {FormsModule} from '@angular/forms';
+import {ImageTagComponent} from "./imagetags.component";
 @NgModule({
   imports: [
     ProjectManagementRoutingModule,
@@ -16,7 +17,8 @@ import {FormsModule} from '@angular/forms';
   ],
   declarations: [
     OverviewComponent,
-      FacilityProjectsOverviewComponent
+      FacilityProjectsOverviewComponent,
+      ImageTagComponent
   ]
 })
 export class ProjectManagementModule { }
