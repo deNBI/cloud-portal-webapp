@@ -10,19 +10,67 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class ImageService ***REMOVED***
-  constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
-  ***REMOVED***
+    constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
+    ***REMOVED***
 
-  getImages(): Observable<Image[]> ***REMOVED***
-    let urlSearchParams = new URLSearchParams();
+    getImages(): Observable<Image[]> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
 
 
 
-    return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getImages/', ***REMOVED***
-      withCredentials: true,
-      search: urlSearchParams
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getImages/', ***REMOVED***
+            withCredentials: true,
+            search: urlSearchParams
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
-  ***REMOVED***
+
+    ***REMOVED***
+
+
+    getImageTags(): Observable<any> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+
+
+        return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getImageTags/', ***REMOVED***
+            withCredentials: true,
+            search: urlSearchParams
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ***REMOVED***
+
+
+    addImageTags(imageTag:string, description:string): Observable<any> ***REMOVED***
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('imageTag',imageTag)
+        urlSearchParams.append('description',description)
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/addImageTag/', urlSearchParams,***REMOVED***
+            withCredentials: true,
+            headers:header
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ***REMOVED***
+
+
+      deleteImageTag(imageTag:string): Observable<any> ***REMOVED***
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('imageTag',imageTag)
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteImageTag/', urlSearchParams,***REMOVED***
+            withCredentials: true,
+            headers:header
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ***REMOVED***
+
 
 ***REMOVED***

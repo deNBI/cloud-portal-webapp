@@ -6,6 +6,7 @@ import ***REMOVED*** ProjectManagementRoutingModule ***REMOVED*** from './projec
 import ***REMOVED***CommonModule***REMOVED*** from "@angular/common";
 import ***REMOVED*** ModalModule ***REMOVED*** from 'ngx-bootstrap/modal';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
+import ***REMOVED***ImageTagComponent***REMOVED*** from "./imagetags.component";
 @NgModule(***REMOVED***
   imports: [
     ProjectManagementRoutingModule,
@@ -16,7 +17,8 @@ import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
   ],
   declarations: [
     OverviewComponent,
-      FacilityProjectsOverviewComponent
+      FacilityProjectsOverviewComponent,
+      ImageTagComponent
   ]
 ***REMOVED***)
 export class ProjectManagementModule ***REMOVED*** ***REMOVED***
