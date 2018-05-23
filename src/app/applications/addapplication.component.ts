@@ -23,6 +23,12 @@ export class AddApplicationComponent {
     public notificationModalIsClosable: boolean = false;
     public notificationModalStay: boolean = true;
 
+    public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
+      'We would highly appreciate the following citation in your next publication(s): ‘This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).';
+    public acknowledgeModalTitle: string = 'Acknowledge';
+    public acknowledgeModalType: string = 'info';
+
+
     showjustvm: boolean;
     project_application_openstack_project: boolean;
 
@@ -64,7 +70,7 @@ export class AddApplicationComponent {
 
     check_not_zero(values: {}) {
         if ('project_application_openstack_project' in values) {
-            
+
 
             if ('project_application_cores_per_vm' in values && values['project_application_cores_per_vm'] > 0 && 'project_application_ram_per_vm' in values
                 && values['project_application_ram_per_vm'] > 0 && 'project_application_disk_space' in values && values['project_application_disk_space'] > 0) {
@@ -118,7 +124,7 @@ export class AddApplicationComponent {
         this.notificationModalType = type;
     }
 
-    public resetModal() {
+    public resetNotificationModal() {
 
         this.notificationModalTitle = 'Notification';
         this.notificationModalMessage = 'Please wait...';
