@@ -25,5 +25,30 @@ export class UserService {
     });
   }
 
+     setNewsletterSubscription(subscribed: boolean): Observable<any> {
+    let header = new Headers({
+      'X-CSRFToken': this.settings.getCSRFToken(),
+    });
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('subscribed',subscribed.toString());
+
+    return this.http.post(this.settings.getApiBaseURL() + 'newsletter/setNewsletterSubscription/', urlSearchParams, {
+      withCredentials: true,
+      headers: header,
+    });
+  }
+
+   getNewsletterSubscription(): Observable<any> {
+         let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        return this.http.get(this.settings.getApiBaseURL() + 'newsletter/getNewsletterSubscription/', {
+            withCredentials: true,
+        });
+
+
+    }
+
+
 
 }
