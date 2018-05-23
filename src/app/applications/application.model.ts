@@ -12,6 +12,7 @@ export class Application ***REMOVED***
   private _ObjectStorage: number;
   private _SpecialHardware: number;
   private _Description: string;
+  private _Comment: string;
   private _DateSubmitted: string;
   private _DateStatusChanged: string;
   private _User: number;
@@ -65,6 +66,14 @@ export class Application ***REMOVED***
 
   set Name(value: string) ***REMOVED***
     this._Name = value;
+  ***REMOVED***
+
+  set Comment(value: string)***REMOVED***
+    this._Comment = value;
+  ***REMOVED***
+
+  get Comment():string ***REMOVED***
+    return this._Comment;
   ***REMOVED***
   get Shortname(): string ***REMOVED***
     return this._Shortname;

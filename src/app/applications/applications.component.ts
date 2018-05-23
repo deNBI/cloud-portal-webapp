@@ -86,6 +86,7 @@ export class ApplicationsComponent ***REMOVED***
                     a.ObjectStorage = aj["project_application_object_storage"];
                     a.SpecialHardware = aj["project_application_special_hardware"];
                     a.OpenStackProject = aj["project_application_openstack_project"];
+                    a.Comment= aj["project_application_comment"];
 
                     this.user_applications.push(a)
                 ***REMOVED***
@@ -163,6 +164,7 @@ export class ApplicationsComponent ***REMOVED***
                                 a.User = aj["project_application_user"]["username"];
                                 a.UserEmail = aj["project_application_user"]["email"];
                                 a.Status = aj["project_application_status"];
+                                a.Comment= aj["project_application_comment"];
                                 a.OpenStackProject = aj["project_application_openstack_project"];
                                 if (a.Status !== 1) ***REMOVED***
                                     if (a.Shortname)***REMOVED***
