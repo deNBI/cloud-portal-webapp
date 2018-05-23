@@ -25,5 +25,30 @@ export class UserService ***REMOVED***
     ***REMOVED***);
   ***REMOVED***
 
+     setNewsletterSubscription(subscribed: boolean): Observable<any> ***REMOVED***
+    let header = new Headers(***REMOVED***
+      'X-CSRFToken': this.settings.getCSRFToken(),
+    ***REMOVED***);
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('subscribed',subscribed.toString());
+
+    return this.http.post(this.settings.getApiBaseURL() + 'newsletter/setNewsletterSubscription/', urlSearchParams, ***REMOVED***
+      withCredentials: true,
+      headers: header,
+    ***REMOVED***);
+  ***REMOVED***
+
+   getNewsletterSubscription(): Observable<any> ***REMOVED***
+         let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        return this.http.get(this.settings.getApiBaseURL() + 'newsletter/getNewsletterSubscription/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***);
+
+
+    ***REMOVED***
+
+
 
 ***REMOVED***

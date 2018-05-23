@@ -9,25 +9,36 @@ import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings
 import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
 import ***REMOVED***AttributesManager***REMOVED*** from "../perun-connector/attributes-manager";
+import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 
 
 @Component(***REMOVED***
   templateUrl: 'userinfo.component.html',
-  providers: [AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager, AttributesManager]
+  providers: [UserService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager, AttributesManager]
 ***REMOVED***)
 export class UserinfoComponent ***REMOVED***
   userinfo: Userinfo;
   key: string = 'Show Public Key';
   key_visible = false;
+  newsletter_subscribed :boolean;
   public_key: string='';
 
-  constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) ***REMOVED***
+  constructor(private userservice: UserService,private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) ***REMOVED***
     this.userinfo = new Userinfo();
     this.getUserinfo();
+      this.userservice.getNewsletterSubscription().subscribe(result =>***REMOVED***
+      this.newsletter_subscribed=result.json();***REMOVED***)
+
 
 
   ***REMOVED***
 
+  setNewsletterSubscription(e)***REMOVED***
+     this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => ***REMOVED***
+      this.userservice.getNewsletterSubscription().subscribe(result =>***REMOVED***
+      this.newsletter_subscribed=result.json()***REMOVED***)
+    ***REMOVED***)
+  ***REMOVED***
 
   importKey(publicKey: string, keyname: string) ***REMOVED***
 
@@ -50,6 +61,10 @@ export class UserinfoComponent ***REMOVED***
       return false;
     ***REMOVED***
 
+  ***REMOVED***
+
+  changi(e)***REMOVED***
+    console.log(this.newsletter_subscribed);
   ***REMOVED***
 
   getUserPublicKey() ***REMOVED***
