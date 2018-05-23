@@ -12,6 +12,7 @@ export class Application {
   private _ObjectStorage: number;
   private _SpecialHardware: number;
   private _Description: string;
+  private _Comment: string;
   private _DateSubmitted: string;
   private _DateStatusChanged: string;
   private _User: number;
@@ -65,6 +66,14 @@ export class Application {
 
   set Name(value: string) {
     this._Name = value;
+  }
+
+  set Comment(value: string){
+    this._Comment = value;
+  }
+
+  get Comment():string {
+    return this._Comment;
   }
   get Shortname(): string {
     return this._Shortname;
