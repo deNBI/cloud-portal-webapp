@@ -5,9 +5,9 @@ import {MembersManager} from '../perun-connector/members-manager.service'
 import {UsersManager} from '../perun-connector/users-manager.service'
 import {Http} from '@angular/http';
 import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {Project} from './project.model';
+import {Project} from '../projectmanagement/project.model';
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
-import {ProjectMember} from './project_member.model'
+import {ProjectMember} from '../projectmanagement/project_member.model'
 import {ResourcesManager} from "../perun-connector/resources_manager";
 import 'rxjs/add/operator/toPromise';
 import {environment} from '../../environments/environment'
