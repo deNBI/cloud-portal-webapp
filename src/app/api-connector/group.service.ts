@@ -31,11 +31,11 @@ export class GroupService ***REMOVED***
 
     ***REMOVED***
 
-    getFacilityByGroup(groupname: string): Observable<any> ***REMOVED***
+    getFacilityByGroup(groupid: string): Observable<any> ***REMOVED***
 
         return this.http.get(this.settings.getApiBaseURL() + 'getFacilityByGroup/', ***REMOVED***
             withCredentials: true,
-            params: ***REMOVED***groupname: groupname***REMOVED***
+            params: ***REMOVED***groupid: groupid***REMOVED***
         ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
     ***REMOVED***
