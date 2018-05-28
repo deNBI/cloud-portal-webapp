@@ -49,6 +49,7 @@ export class VirtualMachineComponent implements OnInit {
     selectedProjectVmsUsed:number;
     selectedProject: [string, number];
     client_avaiable: boolean;
+    optional_params=false;
     projects: string[] = new Array();
     private checkStatusTimeout: number = 5000;
 

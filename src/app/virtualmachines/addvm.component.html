@@ -93,10 +93,17 @@
                         <div class="form-group row" *ngIf="selectedProjectVmsMax || selectedProjectVmsMax == 0">
                             <label class="col-md-3 form-control-label"><strong>Vms in use</strong></label>
                             <div class="col-md-6">
-                                <h3>{{selectedProjectVmsUsed}} / {{selectedProjectVmsMax}} Vms</h3>
+                                <strong>{{selectedProjectVmsUsed}} / {{selectedProjectVmsMax}} Vms</strong>
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-md-3 form-control-label"><strong>Optional parameters</strong></label>
+                             <div class="col-md-6">
+                            <button type="button" class="btn btn-info .btn-pill" (click)="optional_params= !optional_params">
+                                <strong *ngIf="!optional_params">Show</strong><strong *ngIf="optional_params">Hide</strong>
+                            </button></div>
+                        </div>
+                        <div class="form-group row" *ngIf="optional_params">
                             <label class="col-md-3 form-control-label">Diskspace</label>
                             <div class="col-md-9">
                                 <div class="input-group">
@@ -104,7 +111,8 @@
                                     </span>
                                     <div class="col-md-6"
                                          *ngIf="selectedProjectDiskspaceMax || selectedProjectDiskspaceMax == 0">
-                                        <h3>{{selectedProjectDiskspaceUsed}} / {{selectedProjectDiskspaceMax}} GB</h3>
+                                        <strong>{{selectedProjectDiskspaceUsed}} / {{selectedProjectDiskspaceMax}}
+                                            GB</strong>
                                     </div>
                                 </div>
                             </div>
