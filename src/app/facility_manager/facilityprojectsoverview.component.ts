@@ -131,7 +131,10 @@ export class  FacilityProjectsOverviewComponent {
       this.emailSubject = '';
       this.emailText = '';
       this.emailStatus = 0;
+
     }
+
+
 
 
     public comingSoon() {
