@@ -93,18 +93,29 @@
                         <div class="form-group row" *ngIf="selectedProjectVmsMax || selectedProjectVmsMax == 0">
                             <label class="col-md-3 form-control-label"><strong>Vms in use</strong></label>
                             <div class="col-md-6">
-                                <h3>***REMOVED******REMOVED***selectedProjectVmsUsed***REMOVED******REMOVED*** / ***REMOVED******REMOVED***selectedProjectVmsMax***REMOVED******REMOVED*** Vms</h3>
+                                <strong>***REMOVED******REMOVED***selectedProjectVmsUsed***REMOVED******REMOVED*** / ***REMOVED******REMOVED***selectedProjectVmsMax***REMOVED******REMOVED*** Vms</strong>
                             </div>
                         </div>
                         <div class="form-group row">
+
+                            <label class="col-md-3 form-control-label"><strong>Optional parameters</strong></label>
+                             <div class="col-md-6">
+                            <button type="button" class="btn btn-info .btn-pill" (click)="optional_params= !optional_params">
+                                <strong *ngIf="!optional_params">Show</strong><strong *ngIf="optional_params">Hide</strong>
+                            </button></div>
+                        </div>
+                        <div class="form-group row" *ngIf="optional_params">
+         
                             <label class="col-md-3 form-control-label">Storage</label>
+
                             <div class="col-md-9">
                                 <div class="input-group">
                                     <input type="text" placeholder="e.g 8 " #diskspace><span class="input-group-addon"> GB
                                     </span>
                                     <div class="col-md-6"
                                          *ngIf="selectedProjectDiskspaceMax || selectedProjectDiskspaceMax == 0">
-                                        <h3>***REMOVED******REMOVED***selectedProjectDiskspaceUsed***REMOVED******REMOVED*** / ***REMOVED******REMOVED***selectedProjectDiskspaceMax***REMOVED******REMOVED*** GB</h3>
+                                        <strong>***REMOVED******REMOVED***selectedProjectDiskspaceUsed***REMOVED******REMOVED*** / ***REMOVED******REMOVED***selectedProjectDiskspaceMax***REMOVED******REMOVED***
+                                            GB</strong>
                                     </div>
                                 </div>
                             </div>

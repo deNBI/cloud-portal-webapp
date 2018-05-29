@@ -63,9 +63,7 @@ export class UserinfoComponent ***REMOVED***
 
   ***REMOVED***
 
-  changi(e)***REMOVED***
-    console.log(this.newsletter_subscribed);
-  ***REMOVED***
+ 
 
   getUserPublicKey() ***REMOVED***
     this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => ***REMOVED***
