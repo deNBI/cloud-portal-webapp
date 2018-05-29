@@ -175,7 +175,7 @@ export class OverviewComponent ***REMOVED***
                 ***REMOVED*** else ***REMOVED***
                     is_pi = true;
                 ***REMOVED***
-                this.groupservice.getFacilityByGroup(group["name"]).subscribe(result => ***REMOVED***
+                this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => ***REMOVED***
 
                     let newProject = new Project(
                         group["id"],
