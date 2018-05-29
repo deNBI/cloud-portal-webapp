@@ -63,9 +63,7 @@ export class UserinfoComponent {
 
   }
 
-  changi(e){
-    console.log(this.newsletter_subscribed);
-  }
+ 
 
   getUserPublicKey() {
     this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => {
