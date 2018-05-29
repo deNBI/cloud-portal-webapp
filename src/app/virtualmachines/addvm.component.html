@@ -97,6 +97,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
+
                             <label class="col-md-3 form-control-label"><strong>Optional parameters</strong></label>
                              <div class="col-md-6">
                             <button type="button" class="btn btn-info .btn-pill" (click)="optional_params= !optional_params">
@@ -104,7 +105,9 @@
                             </button></div>
                         </div>
                         <div class="form-group row" *ngIf="optional_params">
-                            <label class="col-md-3 form-control-label">Diskspace</label>
+         
+                            <label class="col-md-3 form-control-label">Storage</label>
+
                             <div class="col-md-9">
                                 <div class="input-group">
                                     <input type="text" placeholder="e.g 8 " #diskspace><span class="input-group-addon"> GB
