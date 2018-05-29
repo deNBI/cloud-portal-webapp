@@ -58,10 +58,10 @@
             class="icon-briefcase"></i> Image Tags</a>
         </li>
 
-        <li class="nav-title">
+        <li class="nav-title" *ngIf="get_is_vo_admin()">
          Vo Manager
         </li>
-           <li class="nav-item">
+           <li class="nav-item" *ngIf="get_is_vo_admin()">
           <a class="nav-link" routerLinkActive="active" [routerLink]="['/vo-manager/overview']"><i
             class="icon-briefcase"></i> Overview</a>
         </li>

@@ -6,11 +6,21 @@ import {ApiSettings} from './api-settings.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-
 @Injectable()
-export class FacilityService {
+export class VoService{
   constructor(private http: Http, private settings: ApiSettings) {
   }
+
+
+
+  isVo(){
+
+    return this.http.get(this.settings.getApiBaseURL()+ 'vo_manager/isVoManager/', {
+      withCredentials: true,
+    })
+
+  }
+
 
 
 
@@ -22,7 +32,7 @@ export class FacilityService {
      let header = new Headers({
       'X-CSRFToken': this.settings.getCSRFToken(),
     });
-    return this.http.post(this.settings.getApiBaseURL()+ 'facilityManager/sendMailToAllMembers/',urlSearchParams, {
+    return this.http.post(this.settings.getApiBaseURL()+ 'vo_manager/sendMailToAllMembers/',urlSearchParams, {
         withCredentials: true,
         headers: header,
     }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))

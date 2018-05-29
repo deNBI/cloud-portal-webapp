@@ -26,8 +26,16 @@ export class UserinfoComponent {
   constructor(private userservice: UserService,private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) {
     this.userinfo = new Userinfo();
     this.getUserinfo();
-      this.userservice.getNewsletterSubscription().subscribe(result =>{
-      this.newsletter_subscribed=result.json();})
+      this.userservice.getNewsletterSubscription().subscribe(result => {
+          result = result.json()['subscribed']
+          if (result == 'true') {
+              this.newsletter_subscribed = true;
+          }
+          else {
+              this.newsletter_subscribed = false;
+          }
+
+      })
 
 
 
@@ -35,8 +43,6 @@ export class UserinfoComponent {
 
   setNewsletterSubscription(e){
      this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => {
-      this.userservice.getNewsletterSubscription().subscribe(result =>{
-      this.newsletter_subscribed=result.json()})
     })
   }
 
