@@ -175,7 +175,7 @@ export class OverviewComponent {
                 } else {
                     is_pi = true;
                 }
-                this.groupservice.getFacilityByGroup(group["name"]).subscribe(result => {
+                this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => {
 
                     let newProject = new Project(
                         group["id"],
