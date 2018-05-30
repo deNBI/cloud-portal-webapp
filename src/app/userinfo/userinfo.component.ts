@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component,OnInit} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 
 import {Userinfo} from './userinfo.model'
@@ -16,7 +16,7 @@ import {UserService} from "../api-connector/user.service";
   templateUrl: 'userinfo.component.html',
   providers: [UserService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager, AttributesManager]
 })
-export class UserinfoComponent {
+export class UserinfoComponent implements OnInit{
   userinfo: Userinfo;
   key: string = 'Show Public Key';
   key_visible = false;
@@ -26,9 +26,16 @@ export class UserinfoComponent {
   constructor(private userservice: UserService,private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) {
     this.userinfo = new Userinfo();
     this.getUserinfo();
-      this.userservice.getNewsletterSubscription().subscribe(result => {
+
+
+
+  }
+
+   ngOnInit(): void {
+
+            this.userservice.getNewsletterSubscription().subscribe(result => {
           result = result.json()['subscribed']
-          if (result == 'true') {
+          if (result.toString() == 'true') {
               this.newsletter_subscribed = true;
           }
           else {
@@ -38,8 +45,7 @@ export class UserinfoComponent {
       })
 
 
-
-  }
+    }
 
   setNewsletterSubscription(e){
      this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => {

@@ -11,10 +11,12 @@
                     style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i class="icon-envelope-letter"></i>
                 Send email
             </button>
-
-
-    </div>
+               </div>
 </div>
+</div>
+
+
+
 
 
 <div bsModal #emailModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
@@ -65,14 +67,14 @@
             </div>
             <div class="modal-body">
 
-                <div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
+                <div class="alert alert-warning" role="alert">
                     Are you sure you want to send this email to all members of the vo?
                 </div>
 
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
-                        (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText);verifyModal.hide();resetEmailModal();successModal.show()">
+                        (click)="sendMailToVo(emailSubject,emailText);verifyModal.hide();resetEmailModal();successModal.show()">
                     Yes
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"
@@ -97,7 +99,7 @@
                     Sending the email. <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="emailStatus == 1">
-                    The e-mail has been send successfully.
+                    The email has been send successfully.
                 </div>
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="emailStatus == 2">

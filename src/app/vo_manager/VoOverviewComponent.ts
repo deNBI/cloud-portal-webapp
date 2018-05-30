@@ -1,9 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {VoService} from "../api-connector/vo.service";
 
 
 @Component({
   selector: 'voOverview',
-  templateUrl: 'voOverview.component.html'
+  templateUrl: 'voOverview.component.html',
+    providers:[VoService]
 
 
 })
@@ -19,8 +21,20 @@ export class VoOverviewComponent {
 
 
 
-    constructor() {
+    constructor(private voserice:VoService) {
 
+
+    }
+
+     sendMailToVo(subject:string,message:string){
+        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result =>{
+            if (result == 1){
+                this.emailStatus = 1;
+            }
+            else {
+                this.emailStatus = 2;
+            }
+            })
 
     }
 
