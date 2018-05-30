@@ -5,9 +5,9 @@ import ***REMOVED***MembersManager***REMOVED*** from '../perun-connector/members
 import ***REMOVED***UsersManager***REMOVED*** from '../perun-connector/users-manager.service'
 import ***REMOVED***Http***REMOVED*** from '@angular/http';
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
-import ***REMOVED***Project***REMOVED*** from './project.model';
+import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
-import ***REMOVED***ProjectMember***REMOVED*** from './project_member.model'
+import ***REMOVED***ProjectMember***REMOVED*** from '../projectmanagement/project_member.model'
 import ***REMOVED***ResourcesManager***REMOVED*** from "../perun-connector/resources_manager";
 import 'rxjs/add/operator/toPromise';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
@@ -131,7 +131,10 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
       this.emailSubject = '';
       this.emailText = '';
       this.emailStatus = 0;
+
     ***REMOVED***
+
+
 
 
     public comingSoon() ***REMOVED***

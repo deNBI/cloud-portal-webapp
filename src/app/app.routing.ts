@@ -31,16 +31,24 @@ export const routes: Routes = [
                 loadChildren: './userinfo/userinfo.module#UserinfoModule'
             ***REMOVED***,
             ***REMOVED***
-                path: '',
+                path: 'project-management',
                 loadChildren: './projectmanagement/projectmanagement.module#ProjectManagementModule'
             ***REMOVED***,
             ***REMOVED***
-                path: '',
+                path: 'applications',
                 loadChildren: './applications/applications.module#ApplicationsModule'
             ***REMOVED***,
             ***REMOVED***
-                path: '',
+                path: 'virtualmachines',
                 loadChildren: './virtualmachines/vm.module#VmModule'
+            ***REMOVED***,
+            ***REMOVED***
+                path: 'vo-manager',
+                loadChildren: './vo_manager/VoManager.module#VoManagerModule'
+            ***REMOVED***,
+              ***REMOVED***
+                path: 'facility-manager',
+                loadChildren: './facility_manager/facilitymanager.module#FacilitymanagerModule'
             ***REMOVED***
 
         ]

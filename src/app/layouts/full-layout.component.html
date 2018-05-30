@@ -27,35 +27,43 @@
             class="icon-drawer"></i> Applications</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/newApplication']"><i
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications/newApplication']"><i
             class="icon-pencil"></i> New Application</a>
         </li>
         <li *ngIf="vm_project_member || get_is_vo_admin()" class="nav-title">
           Virtual Machines
         </li>
         <li class="nav-item" *ngIf="client_avaiable && vm_project_member">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/newVM']"><i
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/newVM']"><i
 
             class="icon-pencil"></i> New Instance</a>
         </li>
         <li class="nav-item" *ngIf="get_is_vo_admin()">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/clientOverview']"><i
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/clientOverview']"><i
             class="icon-pencil"></i> Client Overview</a>
         </li>
         <li class="nav-item" *ngIf="vm_project_member || get_is_vo_admin()">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/vmOverview']"><i
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/vmOverview']"><i
             class="icon-pencil"></i> Instance Overview</a>
         </li>
         <li *ngIf="is_facility_manager" class="nav-title">
           Facilities
         </li>
          <li *ngIf="is_facility_manager" class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/facilityProjects']"><i
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/facilityProjects']"><i
             class="icon-briefcase"></i> Facility Projects</a>
         </li>
            <li *ngIf="is_facility_manager" class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/imageTags']"><i
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/imageTags']"><i
             class="icon-briefcase"></i> Image Tags</a>
+        </li>
+
+        <li class="nav-title" *ngIf="get_is_vo_admin()">
+         Vo Manager
+        </li>
+           <li class="nav-item" *ngIf="get_is_vo_admin()">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/vo-manager/overview']"><i
+            class="icon-briefcase"></i> Overview</a>
         </li>
 
       </ul>

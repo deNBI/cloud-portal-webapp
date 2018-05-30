@@ -7,7 +7,7 @@ import ***REMOVED*** AddApplicationComponent ***REMOVED*** from './addapplicatio
 
 const routes: Routes = [
   ***REMOVED***
-    path: 'applications',
+    path: '',
     component: ApplicationsComponent,
     data: ***REMOVED***
       title: 'Application overview'
