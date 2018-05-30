@@ -7,7 +7,7 @@ import { AddApplicationComponent } from './addapplication.component';
 
 const routes: Routes = [
   {
-    path: 'applications',
+    path: '',
     component: ApplicationsComponent,
     data: {
       title: 'Application overview'
