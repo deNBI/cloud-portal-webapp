@@ -101,6 +101,37 @@ export class GroupService {
     }
 
 
+    setLifetime(groupid: string, lifetime: string): Observable<any> {
+        let urlSearchParams = new URLSearchParams();
+         let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('lifetime', lifetime);
+        urlSearchParams.append('groupid', groupid);
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setLifetime/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+        setPerunId(groupid: string,applicationId: string): Observable<any> {
+        let urlSearchParams = new URLSearchParams();
+         let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+
+        urlSearchParams.append('groupid', groupid);
+        urlSearchParams.append('applicationId',applicationId);
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setPerunId/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+
+
 
 
      getGroupMembers(groupid: string): Observable<any> {
