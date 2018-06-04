@@ -1,10 +1,6 @@
 <div class="animated fadeIn" ng-app>
     <div class="row">
         <!--/.col-->
-        <h1 *ngIf="selectedFacility">Vo Manager***REMOVED***
-
-
-        </h1>
 
         <div class="col-lg-12">
             <button (click)="emailModal.show()" type="button " class="btn btn-secondary"
@@ -24,7 +20,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" *ngIf="selectedFacility"> Send email to all members of
+                <h4 class="modal-title"> Send email to all members of
                     the vo</h4>
                 <button type="button" class="close" (click)="emailModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
