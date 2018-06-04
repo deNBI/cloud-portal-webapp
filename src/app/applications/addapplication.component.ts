@@ -22,9 +22,11 @@ export class AddApplicationComponent {
     public notificationModalType: string = 'info';
     public notificationModalIsClosable: boolean = false;
     public notificationModalStay: boolean = true;
+    public error: string[];
+
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
-      'We would highly appreciate the following citation in your next publication(s): ‘This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).';
+        'We would highly appreciate the following citation in your next publication(s): ‘This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).';
     public acknowledgeModalTitle: string = 'Acknowledge';
     public acknowledgeModalType: string = 'info';
 
@@ -86,6 +88,7 @@ export class AddApplicationComponent {
     }
 
     onSubmit(f: NgForm) {
+        this.error = null;
         if (this.wronginput == true) {
             this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
@@ -110,6 +113,14 @@ export class AddApplicationComponent {
                     this.updateNotificaitonModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 }).catch(error => {
+                var error_json = error.json()
+                this.error = []
+                for (let key of Object.keys(error_json)) {
+                    this.error.push(key.split('_',)[2])
+
+                }
+
+
                 this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
             })
