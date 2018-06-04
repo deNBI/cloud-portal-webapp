@@ -250,6 +250,12 @@ export class ApplicationsComponent {
         return s;
     }
 
+    public resetNotificationModal(){
+        this.notificationModalTitle= "Notification";
+        this.notificationModalMessage="Please wait...";
+        this.notificationModalType = "info";
+        this.notificationModalIsClosable = false;
+    }
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
         this.notificationModalTitle = title;
         this.notificationModalMessage = message;
@@ -313,7 +319,7 @@ export class ApplicationsComponent {
                 this.updateNotificaitonModal("Success", "The Application was declined", true, "success");
             })
             .catch(error => {
-                this.updateNotificaitonModal("Failed", "Application could be decilned!", true, "danger");
+                this.updateNotificaitonModal("Failed", "Application could be declined!", true, "danger");
             });
     }
 
