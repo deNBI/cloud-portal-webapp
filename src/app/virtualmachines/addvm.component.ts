@@ -50,6 +50,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     selectedProject: [string, number];
     client_avaiable: boolean;
     optional_params=false;
+    diskspace:number=0;
     projects: string[] = new Array();
     private checkStatusTimeout: number = 5000;
 
