@@ -273,9 +273,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <ng-container *ngFor="let application of all_applications">
-                            <ng-container *ngIf="application.Status != 1">
-                                <tr>
+                        <ng-container *ngFor="let application of all_applications" >
+                            <ng-container *ngIf="application.Status != 1" >
+                                <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning)}">
                                     <td>{{ application.Name }}</td>
                                     <td>{{application.Shortname}}</td>
                                     <td>{{ application.DateSubmitted }}</td>
@@ -293,7 +293,7 @@
                                         </button>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning)}">
                                     <td [class.collapse_no_margin]="getCollapseStatus('application_history-' + application.Id)"
                                         colspan="6">
                                         <div id="application_history-{{ application.Id }}"
@@ -345,6 +345,12 @@
                                                 <tr>
                                                     <td>Last status changed</td>
                                                     <td>{{ application.DateStatusChanged }}</td>
+                                                </tr>
+                                                <tr *ngIf="application.Status == 2">
+                                                    <td>DaysRunning</td>
+
+                                                    <td>{{application.DaysRunning}}</td>
+
                                                 </tr>
                                                 <tr *ngIf="application.ComputeCenterDetails">
 

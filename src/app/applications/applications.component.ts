@@ -35,6 +35,7 @@ export class ApplicationsComponent {
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
     public notificationModalIsClosable: boolean = false;
+    private APPROVED_STATUS=2;
 
 
     collapse_status: { [id: string]: boolean } = {};
@@ -164,6 +165,11 @@ export class ApplicationsComponent {
                                 a.User = aj["project_application_user"]["username"];
                                 a.UserEmail = aj["project_application_user"]["email"];
                                 a.Status = aj["project_application_status"];
+                                if (a.Status=this.APPROVED_STATUS){
+                                    a.DaysRunning=Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
+                                    
+
+                                }
                                 a.Comment= aj["project_application_comment"];
                                 a.OpenStackProject = aj["project_application_openstack_project"];
                                 if (a.Status !== 1) {
@@ -240,6 +246,10 @@ export class ApplicationsComponent {
         return s;
     }
 
+    public lifeTimeReached(lifetime:number,running:number):string{
+       return (lifetime - running) < 0 ? "red" :"black";
+    }
+
     public getIdByStatus(name: string): number {
         let s = -1;
         for (let status of this.application_status) {
@@ -290,7 +300,7 @@ export class ApplicationsComponent {
             this.groupservice.setNumberOfVms(new_group_id.toString(),numberofVms.toString()).subscribe();
             this.groupservice.setDescription(new_group_id.toString(),description).subscribe();
             this.groupservice.setLifetime(new_group_id.toString(),lifetime.toString()).subscribe();
-            this.groupservice.setPerunId(new_group_id.toString(),application_id).subscribe(result=>{console.log('dsasdas')});
+            this.groupservice.setPerunId(new_group_id.toString(),application_id).subscribe();
             this.groupsmanager.setGroupDiskSpace(new_group_id,diskspace,numberofVms).subscribe();
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");

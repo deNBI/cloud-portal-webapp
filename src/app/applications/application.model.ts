@@ -21,13 +21,20 @@ export class Application {
   private _ComputeCenter: [string,number];
   private _OpenStackProject: boolean;
   private _ComputeCenterDetails:[string,string][];
+  private _DaysRunning: number;
 
 
 
   constructor() {
   }
 
+  get DaysRunning():number{
+    return this._DaysRunning;
+  }
 
+  set DaysRunning(value:number){
+    this._DaysRunning=value;
+  }
   get OpenStackProject(): boolean {
     return this._OpenStackProject
   }
