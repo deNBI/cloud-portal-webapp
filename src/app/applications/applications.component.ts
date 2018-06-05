@@ -250,6 +250,12 @@ export class ApplicationsComponent ***REMOVED***
         return s;
     ***REMOVED***
 
+    public resetNotificationModal()***REMOVED***
+        this.notificationModalTitle= "Notification";
+        this.notificationModalMessage="Please wait...";
+        this.notificationModalType = "info";
+        this.notificationModalIsClosable = false;
+    ***REMOVED***
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
         this.notificationModalTitle = title;
         this.notificationModalMessage = message;
@@ -313,7 +319,7 @@ export class ApplicationsComponent ***REMOVED***
                 this.updateNotificaitonModal("Success", "The Application was declined", true, "success");
             ***REMOVED***)
             .catch(error => ***REMOVED***
-                this.updateNotificaitonModal("Failed", "Application could be decilned!", true, "danger");
+                this.updateNotificaitonModal("Failed", "Application could be declined!", true, "danger");
             ***REMOVED***);
     ***REMOVED***
 
