@@ -1,351 +1,402 @@
 <div class="animated fadeIn">
 
-  <div class="row">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <strong>New Application</strong>
-          – Form
-        </div>
-        <div class="card-body">
-            <div class="alert alert-info">
-  <strong>Please be aware:</strong> Only applications submitted by a principal investigator of a german university or research facility will be accepted!</div>
-          <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
-            <div class="form-group row">
-              <h5 class="col-md-6 form-control-label">General Information</h5>
-            </div>
-            <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Project
-                Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Full name of your project"></i></strong></label>
-              <div class="col-md-8">
-                <input required type="text" id="id_project_application_name"
-                       name="project_application_name"
-                       class="form-control" maxlength="128"
-                       placeholder="e.g. Assembler benchmarking based on A. thaliana genome" ngModel>
-                <span class="help-block">Name your project.</span>
-              </div>
-            </div>
-
-              <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Project
-                Short Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"></i></strong></label>
-              <div class="col-md-8">
-                <div *ngIf='wronginput'>
-                  <strong><font color="red">Umlauts and special characters are prohibited in the shortname.</font></strong>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <strong>New Application</strong>
+                    – Form
                 </div>
-                <input required type="text" id="id_project_application_shortname"
-                       name="project_application_shortname" #shortname (keyup)="checkShortname(shortname.value)"
-                       class="form-control" maxlength="15"
-                       placeholder="e.g. ThalianaBench" ngModel>
-                <span class="help-block">Enter a short name (between 5 and 15 characters).</span>
-              </div>
-            </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <strong>Please be aware:</strong> Only applications submitted by a principal investigator of a
+                        german university or research facility will be accepted!
+                    </div>
+                    <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
+                        <div class="form-group row">
+                            <h5 class="col-md-6 form-control-label">General Information</h5>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>Project
+                                Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                         title="Full name of your project"></i></strong></label>
+                            <div class="col-md-8">
+                                <input required type="text" id="id_project_application_name"
+                                       name="project_application_name"
+                                       class="form-control" maxlength="128"
+                                       placeholder="e.g. Assembler benchmarking based on A. thaliana genome" ngModel>
+                                <span class="help-block">Name your project.</span>
+                            </div>
+                        </div>
 
-            <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Project
-                Description* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Full description of your project including tools you might
+                        <div class="form-group row">
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>Project
+                                Short Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                               title="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"></i></strong></label>
+                            <div class="col-md-8">
+                                <div *ngIf='wronginput'>
+                                    <strong><font color="red">Umlauts and special characters are prohibited in the
+                                        shortname.</font></strong>
+                                </div>
+                                <input required type="text" id="id_project_application_shortname"
+                                       name="project_application_shortname" #shortname
+                                       (keyup)="checkShortname(shortname.value)"
+                                       class="form-control" maxlength="15"
+                                       placeholder="e.g. ThalianaBench" ngModel>
+                                <span class="help-block">Enter a short name (between 5 and 15 characters).</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Project
+                                Description* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                                title="Full description of your project including tools you might
 are going to use."></i></strong></label>
-              <div class="col-md-8">
+                            <div class="col-md-8">
                                 <textarea required id="id_project_application_description"
                                           name="project_application_description" rows="9"
                                           class="form-control" maxlength="8192"
                                           placeholder="Full description. Consider to name tools you want to use."
                                           ngModel></textarea>
-                <span class="help-block">Describe what would you want to do in your project.</span>
-              </div>
-            </div>
+                                <span class="help-block">Describe what would you want to do in your project.</span>
+                            </div>
+                        </div>
 
-            <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Desired
-                lifetime* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Lifetime in months of your project"></i></strong></label>
-              <div class="col-md-8">
-                <div class="input-group">
-                  <input class="form-control" id="id_project_application_lifetime"
-                         name="project_application_lifetime" placeholder="e.g 3"
-                         type="number" min="1" step="1" ngModel>
-                  <span class="input-group-addon"> months
+                        <div class="form-group row">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Desired
+                                lifetime* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                             title="Lifetime in months of your project"></i></strong></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input class="form-control" id="id_project_application_lifetime"
+                                           name="project_application_lifetime" placeholder="e.g 3"
+                                           type="number" min="1" step="1" ngModel>
+                                    <span class="input-group-addon"> months
                                     </span>
-                </div>
-                <span class="help-block">How long would you like to run this project?</span>
-              </div>
-            </div>
-            <br>
-            <br>
-            <div class="form-group row">
-              <h5 class="col-md-12 form-control-label">Choose the type of your Project</h5>
-            </div>
-            <div class="form-group row">
-              <label class="col-md-6 form-control-label"><strong>Single Virtual Machines <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i></strong><br>
-                This type of project allows you to start virtual machines with SSH access.
-              </label>
-              <div class="col-md-6">
-                <label>
-                  <input type="checkbox"
-                         [(ngModel)]="showjustvm" name="showjustvm" (change)="chosenProjectType(1)">
-                </label>
-              </div>
-            </div>
-            <div class="alert alert-info">
-              This project mode is a beta version. Virtual machines might get lost or can not be started temporarily.
-            </div>
-            <div class="form-group row">
-              <label class="col-md-6 form-control-label"><strong>Cloud Project <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i></strong>
-                <br>
-              A cloud project is represented by an OpenStack project which allows you to manage your virtual
-                machines, storage and network configurations.
-              </label>
-              <div class="col-md-6">
-                <label>
-                  <input type="checkbox"
-                         [(ngModel)]="project_application_openstack_project" name="project_application_openstack_project"
-                         (change)="chosenProjectType(0)">
-                </label>
-              </div>
-            </div>
-            <div *ngIf='project_application_openstack_project' class="form-group row">
-              <h5 class="col-md-12 form-control-label">Resources</h5>
-            </div>
+                                </div>
+                                <span class="help-block">How long would you like to run this project?</span>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="form-group row">
+                            <h5 class="col-md-12 form-control-label">Choose the type of your Project</h5>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-6 form-control-label"><strong>Single Virtual Machines <i
+                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i></strong><br>
+                                This type of project allows you to start virtual machines with SSH access.
+                            </label>
+                            <div class="col-md-6">
+                                <label>
+                                    <input type="checkbox"
+                                           [(ngModel)]="showjustvm" name="showjustvm" (change)="chosenProjectType(1)">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="alert alert-info">
+                            This project mode is a beta version. Virtual machines might get lost or can not be started
+                            temporarily.
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-6 form-control-label"><strong>Cloud Project <i class="icon-question"
+                                                                                                data-toggle="tooltip"
+                                                                                                data-placement="auto"
+                                                                                                title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i></strong>
+                                <br>
+                                A cloud project is represented by an OpenStack project which allows you to manage your
+                                virtual
+                                machines, storage and network configurations.
+                            </label>
+                            <div class="col-md-6">
+                                <label>
+                                    <input type="checkbox"
+                                           [(ngModel)]="project_application_openstack_project"
+                                           name="project_application_openstack_project"
+                                           (change)="chosenProjectType(0)">
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf='project_application_openstack_project' class="form-group row">
+                            <h5 class="col-md-12 form-control-label">Resources</h5>
+                        </div>
 
-            <div *ngIf='project_application_openstack_project' class="form-group row">
-              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of Virtual
-                Machines* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."></i></strong></label>
-              <div class="col-md-8">
-                <div class="input-group">
-                  <input required class="form-control" id="id_project_application_vms_requested"
-                         name="project_application_vms_requested"
-                         placeholder="e.g. 5"
-                         type="number" min="1" step="1" [ngModel]="3"l>
-                  <span class="input-group-addon"> VMs
+                        <div *ngIf='project_application_openstack_project' class="form-group row">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of Virtual
+                                Machines* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                             title="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."></i></strong></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input required class="form-control" id="id_project_application_vms_requested"
+                                           name="project_application_vms_requested"
+                                           placeholder="e.g. 5"
+                                           type="number" min="1" step="1" [ngModel]="3" l>
+                                    <span class="input-group-addon"> VMs
                                     </span>
-                </div>
-                <span class="help-block">How many VMs would you run simultaneously?</span>
-              </div>
-            </div>
+                                </div>
+                                <span class="help-block">How many VMs would you run simultaneously?</span>
+                            </div>
+                        </div>
 
-            <div *ngIf='project_application_openstack_project' class="form-group row">
-              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cores per VM* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="A CPU core is the processing unit of your virtual machine."></i></strong></label>
-              <div class="col-md-8">
-                <div class="input-group">
-                  <input class="form-control" id="id_project_application_cores_per_vm"
-                         name="project_application_cores_per_vm"
-                         placeholder="e.g. 2"
-                         type="number" min="1" step="1" [ngModel]="2">
-                  <span class="input-group-addon"> cores/VM
+                        <div *ngIf='project_application_openstack_project' class="form-group row">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cores per VM* <i
+                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    title="A CPU core is the processing unit of your virtual machine."></i></strong></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input class="form-control" id="id_project_application_cores_per_vm"
+                                           name="project_application_cores_per_vm"
+                                           placeholder="e.g. 2"
+                                           type="number" min="1" step="1" [ngModel]="2">
+                                    <span class="input-group-addon"> cores/VM
                                     </span>
-                </div>
-                <span class="help-block">How many cores should every VM have?</span>
-              </div>
-            </div>
+                                </div>
+                                <span class="help-block">How many cores should every VM have?</span>
+                            </div>
+                        </div>
 
-            <div *ngIf='project_application_openstack_project' class="form-group row">
-              <label class="col-md-4 form-control-label" for="textarea-input"><strong>RAM per VM* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="RAM is where data is stored that is accessed by the CPU."></i></strong></label>
-              <div class="col-md-8">
-                <div class="input-group">
-                  <input class="form-control" id="id_project_application_ram_per_vm"
-                         name="project_application_ram_per_vm"
-                         placeholder="e.g. 8"
-                         type="number" min="1" step="1" [ngModel]="8">
-                  <span class="input-group-addon"> GB
+                        <div *ngIf='project_application_openstack_project' class="form-group row">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>RAM per VM* <i
+                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    title="RAM is where data is stored that is accessed by the CPU."></i></strong></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input class="form-control" id="id_project_application_ram_per_vm"
+                                           name="project_application_ram_per_vm"
+                                           placeholder="e.g. 8"
+                                           type="number" min="1" step="1" [ngModel]="8">
+                                    <span class="input-group-addon"> GB
                                     </span>
-                </div>
-                <span class="help-block">How much RAM should every VM have?</span>
-              </div>
-            </div>
+                                </div>
+                                <span class="help-block">How much RAM should every VM have?</span>
+                            </div>
+                        </div>
 
-            <div *ngIf='project_application_openstack_project' class="form-group row">
-              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage per VM* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Disk space is the amount of bytes that is provided by a storage device."></i></strong></label>
-              <div class="col-md-8">
-                <div class="input-group">
-                  <input class="form-control" id="id_project_application_disk_space"
-                         name="project_application_disk_space"
-                         placeholder="e.g. 20"
-                         type="number" min="1" step="1" [ngModel]="20">
-                  <span class="input-group-addon"> GB
+                        <div *ngIf='project_application_openstack_project' class="form-group row">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage per VM* <i
+                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    title="Disk space is the amount of bytes that is provided by a storage device."></i></strong></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input class="form-control" id="id_project_application_disk_space"
+                                           name="project_application_disk_space"
+                                           placeholder="e.g. 20"
+                                           type="number" min="1" step="1" [ngModel]="20">
+                                    <span class="input-group-addon"> GB
                                     </span>
-                </div>
-                <span class="help-block">How many storage should every VM have?</span>
-              </div>
-            </div>
+                                </div>
+                                <span class="help-block">How many storage should every VM have?</span>
+                            </div>
+                        </div>
 
-            <div *ngIf='project_application_openstack_project' class="form-group row">
-              <label class="col-md-4 form-control-label" for="textarea-input">Object Storage <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."></i></label>
-              <div class="col-md-8">
-                <div class="input-group">
-                  <input class="form-control" id="id_project_application_object_storage"
-                         name="project_application_object_storage"
-                         placeholder="e.g. 8"
-                         type="number" min="0" step="1" ngModel>
-                  <span class="input-group-addon"> GB
+                        <div *ngIf='project_application_openstack_project' class="form-group row">
+                            <label class="col-md-4 form-control-label" for="textarea-input">Object Storage <i
+                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    title="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."></i></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input class="form-control" id="id_project_application_object_storage"
+                                           name="project_application_object_storage"
+                                           placeholder="e.g. 8"
+                                           type="number" min="0" step="1" ngModel>
+                                    <span class="input-group-addon"> GB
                                     </span>
-                </div>
-                <span class="help-block">How much object storage would you need?</span>
-              </div>
-            </div>
+                                </div>
+                                <span class="help-block">How much object storage would you need?</span>
+                            </div>
+                        </div>
 
 
-            <div *ngIf='project_application_openstack_project' class="form-group row">
-              <label class="col-md-4 form-control-label">Special Hardware <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."></i></label>
-              <div class="col-md-8">
-                <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
-                  <label>
-                    <input  type="checkbox" [checked]="( checkboxValue === true ? sh.Checked : False )" (change)="sh.Checked = $event.target.checked;" />
-                    {{sh.Name}}
-                  </label>
-                </div>
-                <span class="help-block">Which special Hardware would you need?</span>
-              </div>
-            </div>
+                        <div *ngIf='project_application_openstack_project' class="form-group row">
+                            <label class="col-md-4 form-control-label">Special Hardware <i class="icon-question"
+                                                                                           data-toggle="tooltip"
+                                                                                           data-placement="auto"
+                                                                                           title="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."></i></label>
+                            <div class="col-md-8">
+                                <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
+                                    <label>
+                                        <input type="checkbox"
+                                               [checked]="( checkboxValue === true ? sh.Checked : False )"
+                                               (change)="sh.Checked = $event.target.checked;"/>
+                                        {{sh.Name}}
+                                    </label>
+                                </div>
+                                <span class="help-block">Which special Hardware would you need?</span>
+                            </div>
+                        </div>
 
-            <div *ngIf='showjustvm' class="form-group row">
-              <h5 class="col-md-12 form-control-label">Resources</h5>
-            </div>
+                        <div *ngIf='showjustvm' class="form-group row">
+                            <h5 class="col-md-12 form-control-label">Resources</h5>
+                        </div>
 
-             <div *ngIf='showjustvm' class="form-group row">
-              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of Virtual
-                Machines* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."></i></strong></label>
-              <div class="col-md-8">
-                <div class="input-group">
-                  <input required class="form-control" id="id_project_application_vms_requested"
-                         name="project_application_vms_requested"
-                         placeholder="e.g. 5"
-                         type="number" min="1" step="1" [ngModel]="3">
-                  <span class="input-group-addon"> VMs
+                        <div *ngIf='showjustvm' class="form-group row">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of Virtual
+                                Machines* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                             title="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."></i></strong></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input required class="form-control" id="id_project_application_vms_requested"
+                                           name="project_application_vms_requested"
+                                           placeholder="e.g. 5"
+                                           type="number" min="1" step="1" [ngModel]="3">
+                                    <span class="input-group-addon"> VMs
                                     </span>
-                </div>
-                <span class="help-block">How many VMs would you run simultaneously?</span>
-              </div>
-            </div>
-            <div *ngIf='showjustvm' class="form-group row">
-              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Disk per VM*</strong></label>
-              <div class="col-md-8">
-                <div class="input-group">
-                  <input class="form-control" id="id_project_application_disk_space"
-                         name="project_application_disk_space"
-                         placeholder="e.g. 20"
-                         type="number" min="1" step="1" [ngModel]="20">
-                  <span class="input-group-addon"> GB
+                                </div>
+                                <span class="help-block">How many VMs would you run simultaneously?</span>
+                            </div>
+                        </div>
+                        <div *ngIf='showjustvm' class="form-group row">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Disk per
+                                VM*</strong></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input class="form-control" id="id_project_application_disk_space"
+                                           name="project_application_disk_space"
+                                           placeholder="e.g. 20"
+                                           type="number" min="1" step="1" [ngModel]="20">
+                                    <span class="input-group-addon"> GB
                                     </span>
-                </div>
-                <span class="help-block">How much disk space do you need per VM?</span>
-              </div>
-            </div>
-            <div *ngIf='showjustvm' class="form-group row">
-              <label class="col-md-4 form-control-label">You are able to start machines of the type:</label>
-              <div class="col-md-8">
-                <ul>
-                  <li>de.NBI Large (CPUs:32, RAM:64 GB)</li>
-                  <li>de.NBI Medium (CPUs:16, RAM:32 GB)</li>
-                  <li>de.NBI Small (CPUs:8, RAM:16 GB)</li>
-                </ul>
-              </div>
-            </div>
+                                </div>
+                                <span class="help-block">How much disk space do you need per VM?</span>
+                            </div>
+                        </div>
+                        <div *ngIf='showjustvm' class="form-group row">
+                            <label class="col-md-4 form-control-label">You are able to start machines of the
+                                type:</label>
+                            <div class="col-md-8">
+                                <ul>
+                                    <li>de.NBI Large (CPUs:32, RAM:64 GB)</li>
+                                    <li>de.NBI Medium (CPUs:16, RAM:32 GB)</li>
+                                    <li>de.NBI Small (CPUs:8, RAM:16 GB)</li>
+                                </ul>
+                            </div>
+                        </div>
 
-            <br>
-             <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Comment</strong></label>
-              <div class="col-md-8">
+                        <br>
+                        <div class="form-group row">
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>Comment</strong></label>
+                            <div class="col-md-8">
                 <textarea required type="text" id="id_project_application_comment"
-                       name="project_application_comment" class="form-control" maxlength="8192"
+                          name="project_application_comment" class="form-control" maxlength="8192"
                           placeholder='' ngModel></textarea>
-                <span class="help-block">Additional information you want to share?</span>
-              </div>
-            </div>
-            <br>
-            <div class="form-group row">
-              <h5 class="col-md-6 form-control-label">Institutional Information</h5>
-            </div>
+                                <span class="help-block">Additional information you want to share?</span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group row">
+                            <h5 class="col-md-6 form-control-label">Institutional Information</h5>
+                        </div>
 
-            <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Institute Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Your institute"></i></strong></label>
-              <div class="col-md-8">
-                <input required type="text" id="id_project_application_institute"
-                       name="project_application_institute" class="form-control"
-                       placeholder="e.g. Center for Biotechnology, Bielefeld" ngModel>
-                <span class="help-block">To which institute do you belong?</span>
-              </div>
-            </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>Institute Name* <i
+                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    title="Your institute"></i></strong></label>
+                            <div class="col-md-8">
+                                <input required type="text" id="id_project_application_institute"
+                                       name="project_application_institute" class="form-control"
+                                       placeholder="e.g. Center for Biotechnology, Bielefeld" ngModel>
+                                <span class="help-block">To which institute do you belong?</span>
+                            </div>
+                        </div>
 
-            <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Workgroup Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto" title="Your workgroup"></i></strong></label>
-              <div class="col-md-8">
-                <input required type="text" id="id_project_application_workgroup"
-                       name="project_application_workgroup" class="form-control"
-                       placeholder="e.g. Computational Metagenomics" ngModel>
-                <span class="help-block">To which workgroup do you belong?</span>
-              </div>
-            </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>Workgroup Name* <i
+                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    title="Your workgroup"></i></strong></label>
+                            <div class="col-md-8">
+                                <input required type="text" id="id_project_application_workgroup"
+                                       name="project_application_workgroup" class="form-control"
+                                       placeholder="e.g. Computational Metagenomics" ngModel>
+                                <span class="help-block">To which workgroup do you belong?</span>
+                            </div>
+                        </div>
 
-            <div class="form-group row">
-              <p class="col-md-12 form-control-label">By submitting this application you agree to the
-                cloud
-                usage policy.</p>
-            </div>
+                        <div class="form-group row">
+                            <p class="col-md-12 form-control-label">By submitting this application you agree to the
+                                cloud
+                                usage policy.</p>
+                        </div>
 
-          </form>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <button (click)="acknowledgemodal.show()"
+                            class="btn btn-sm btn-primary"><i
+                            class="fa fa-dot-circle-o"></i> Submit
+                        Application
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="card-footer">
-          <button (click)="acknowledgemodal.show()"
-                  class="btn btn-sm btn-primary"><i
-            class="fa fa-dot-circle-o"></i> Submit
-            Application
-          </button>
-        </div>
-      </div>
+        <!--/.col-->
     </div>
-    <!--/.col-->
-  </div>
 
 </div>
 
 
 <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-{{ notificationModalType }}" role="alert">
-          {{ notificationModalMessage }}
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)" type="button"
-                (click)="notificationModal.hide();resetNotificationModal()"
-                class="btn  btn-secondary"> Close
-        </button>
-        <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
-           [routerLink]="['/applications']">
-          <button type="button"
-                  (click)="notificationModal.hide();resetNotificationModal()" type="reset"
-                  class="btn  btn-secondary"> Close
-          </button>
-        </a>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-{{ notificationModalType }}" role="alert">
+                    {{ notificationModalMessage }}
+
+                    <ng-container *ngIf="error">
+                        <br>
+                        <br>
+                        <strong>Wrong inputs:</strong>
+                        <br>
+                        <div *ngFor="let err of error">
+                            <b>{{err}}</b>
+                        </div>
+                    </ng-container>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)" type="button"
+                        (click)="notificationModal.hide();resetNotificationModal()"
+                        class="btn  btn-secondary"> Close
+                </button>
+                <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
+                   [routerLink]="['/applications']">
+                    <button type="button"
+                            (click)="notificationModal.hide();resetNotificationModal()" type="reset"
+                            class="btn  btn-secondary"> Close
+                    </button>
+                </a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #acknowledgemodal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title"> {{acknowledgeModalTitle}}</h4>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-{{ acknowledgeModalType }}" role="alert">
-          {{ acknowledgeModalMessage }}
-        </div>
-      </div>
-      <div class="modal-footer">
-         <button type="button" (click)="acknowledgemodal.hide(); notificationModal.show();" type="reset" class="btn  btn-success"  type="submit" name="_save" form="application_form"> Accept </button>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> {{acknowledgeModalTitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-{{ acknowledgeModalType }}" role="alert">
+                    {{ acknowledgeModalMessage }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="acknowledgemodal.hide(); notificationModal.show();" type="reset"
+                        class="btn  btn-success" type="submit" name="_save" form="application_form"> Accept
+                </button>
 
 
-         <button type="button" (click)="acknowledgemodal.hide();" type="reset" class="btn  btn-info"> Close </button>
+                <button type="button" (click)="acknowledgemodal.hide();" type="reset" class="btn  btn-info"> Close
+                </button>
 
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

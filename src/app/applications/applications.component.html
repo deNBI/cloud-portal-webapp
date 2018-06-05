@@ -151,7 +151,8 @@
                                     <td>
                                         <button
 
-                                                (click)='createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value,application.OpenStackProject,application.VMsRequested,application.DiskSpace,application.Lifetime ); notificationModal.show();'
+                                                (click)='resetNotificationModal();createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value,application.OpenStackProject,application.VMsRequested,application.DiskSpace,application.Lifetime ); notificationModal.show();'
+
 
                                                 type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
                                             Approve
