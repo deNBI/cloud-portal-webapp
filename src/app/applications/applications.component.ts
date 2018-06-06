@@ -28,6 +28,7 @@ export class ApplicationsComponent {
     application_status: ApplicationStatus[] = [];
     special_hardware: SpecialHardware[] = [];
     computeCenters: [string,number][];
+    public deleteId: number;
 
     //notification Modal variables
     public notificationModal;
@@ -263,6 +264,7 @@ export class ApplicationsComponent {
         this.notificationModalType = type;
     }
 
+
     public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project,numberofVms,diskspace) {
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
@@ -323,6 +325,18 @@ export class ApplicationsComponent {
             });
     }
 
+    public deleteApplication(application_id){
+      this.applicataionsservice.deleteApplication(application_id).toPromise()
+          .then(result => {
+                    this.updateNotificaitonModal('Success', 'The application has been successfully removed', true, 'success');
+                }).then(  result => {
+                  this.user_applications=[];
+                  this.getUserApplications();
+      })
+        .catch(error => {
+                this.updateNotificaitonModal("Failed", "Application could not be removed!", true, "danger");
+            });
+    }
 
     public activeApplicationsAvailable(): boolean {
       for (let application of this.all_applications) {
@@ -330,6 +344,11 @@ export class ApplicationsComponent {
           return true;
         }
       }
+    }
+
+
+      public setDeleteId(applicationId) {
+        this.deleteId = applicationId;
     }
 
 
