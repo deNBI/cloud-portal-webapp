@@ -94,7 +94,7 @@ export class  FacilityProjectsOverviewComponent {
     }
 
     lifeTimeReached(lifetime:number,running:number):string{
-       return (lifetime - running) < 0 ? "red" :"black";
+       return (lifetime * 30 - running) < 0 ? "red" :"black";
     }
     sendMailToFacility(facility: number,subject:string,message:string){
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result =>{
