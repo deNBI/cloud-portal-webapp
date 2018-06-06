@@ -12,6 +12,7 @@ export class Project ***REMOVED***
   private _Description: string;
   private _DateCreated: string;
   private _DaysRunning: number;
+  private _Lifetime: number;
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
   private _ComputeCenter:[string,number];
@@ -27,11 +28,17 @@ export class Project ***REMOVED***
     this._UserIsAdmin = UserIsAdmin;
     this._UserIsPi = UserIsPi;
     this._ComputeCenter= ComputeCenter;
+
   ***REMOVED***
 
 //todo exdend with additional information
 
-
+  get Lifetime():number***REMOVED***
+    return this._Lifetime;
+  ***REMOVED***
+  set Lifetime(value:number)***REMOVED***
+    this._Lifetime=value;
+  ***REMOVED***
   get ComputeCenterDetails()***REMOVED***
     return this._ComputeCenterDetails;
   ***REMOVED***

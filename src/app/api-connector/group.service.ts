@@ -101,6 +101,37 @@ export class GroupService ***REMOVED***
     ***REMOVED***
 
 
+    setLifetime(groupid: string, lifetime: string): Observable<any> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+         let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        urlSearchParams.append('lifetime', lifetime);
+        urlSearchParams.append('groupid', groupid);
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setLifetime/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    ***REMOVED***
+        setPerunId(groupid: string,applicationId: string): Observable<any> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+         let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+
+        urlSearchParams.append('groupid', groupid);
+        urlSearchParams.append('applicationId',applicationId);
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setPerunId/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    ***REMOVED***
+
+
 
 
      getGroupMembers(groupid: string): Observable<any> ***REMOVED***
