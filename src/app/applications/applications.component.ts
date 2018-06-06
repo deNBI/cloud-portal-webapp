@@ -166,9 +166,9 @@ export class ApplicationsComponent {
                                 a.User = aj["project_application_user"]["username"];
                                 a.UserEmail = aj["project_application_user"]["email"];
                                 a.Status = aj["project_application_status"];
-                                if (a.Status=this.APPROVED_STATUS){
+                                if (a.Status==this.APPROVED_STATUS){
                                     a.DaysRunning=Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
-                                    
+
 
                                 }
                                 a.Comment= aj["project_application_comment"];
