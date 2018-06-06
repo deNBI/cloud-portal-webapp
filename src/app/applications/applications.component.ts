@@ -344,7 +344,9 @@ export class ApplicationsComponent ***REMOVED***
                     this.updateNotificaitonModal('Success', 'The application has been successfully removed', true, 'success');
                 ***REMOVED***).then(  result => ***REMOVED***
                   this.user_applications=[];
+                  this.all_applications=[];
                   this.getUserApplications();
+                  this.getAllApplications(this.usersmanager);
       ***REMOVED***)
         .catch(error => ***REMOVED***
                 this.updateNotificaitonModal("Failed", "Application could not be removed!", true, "danger");
