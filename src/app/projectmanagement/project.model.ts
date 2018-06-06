@@ -12,6 +12,7 @@ export class Project {
   private _Description: string;
   private _DateCreated: string;
   private _DaysRunning: number;
+  private _Lifetime: number;
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
   private _ComputeCenter:[string,number];
@@ -27,11 +28,17 @@ export class Project {
     this._UserIsAdmin = UserIsAdmin;
     this._UserIsPi = UserIsPi;
     this._ComputeCenter= ComputeCenter;
+
   }
 
 //todo exdend with additional information
 
-
+  get Lifetime():number{
+    return this._Lifetime;
+  }
+  set Lifetime(value:number){
+    this._Lifetime=value;
+  }
   get ComputeCenterDetails(){
     return this._ComputeCenterDetails;
   }
