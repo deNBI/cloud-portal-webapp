@@ -1,0 +1,7 @@
+[ -n "$SOURCE_BRANCH" ]  || SOURCE_BRANCH=$(git symbolic-ref -q --short HEAD)  # (1)
+ 
+if [[ $SOURCE_BRANCH = "dev" ]]; then  # (2)
+	ANGULAR_MODE="stage"
+else
+	ANGULAR_MODE="prod"
+fi
