@@ -1,4 +1,5 @@
-!/bin/bash -xe
+#!/bin/bash -xe
+
 . ./hooks/env 
 docker build \ 
 	--build-arg "ANGULAR_MODE=${ANGULAR_MODE}" \
