@@ -3,8 +3,8 @@
 # We label our stage as 'builder'
 FROM node:6-alpine as builder
 
-ARG ANGULAR_MODE="stage"
-ENV ANGULAR_MODE $ANGULAR_MODE
+ARG ANGULAR_MODE
+ENV ANGULAR_MODE=${ANGULAR_MODE}
 
 COPY package.json  ./
 
