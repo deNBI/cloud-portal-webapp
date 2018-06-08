@@ -15,6 +15,7 @@ export class VoOverviewComponent {
     public emailSubject: string = '';
     public emailText: string = '';
     public emailStatus: number = 0;
+    public newsletterSubscriptionCounter:number;
 
 
 
@@ -22,6 +23,10 @@ export class VoOverviewComponent {
 
 
     constructor(private voserice:VoService) {
+        this.voserice.getNewsletterSubscriptionCounter().subscribe(result => {
+            this.newsletterSubscriptionCounter=result['subscribed'];
+
+        })
 
 
     }
