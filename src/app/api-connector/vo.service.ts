@@ -27,7 +27,7 @@ export class VoService ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getNewsletterSubscriptionCounter/', ***REMOVED***
             withCredentials: true,
 
-        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))***REMOVED***
 
 
 
