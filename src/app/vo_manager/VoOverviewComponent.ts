@@ -43,7 +43,7 @@ export class VoOverviewComponent ***REMOVED***
     constructor(private voserice:VoService,private groupservice:GroupService) ***REMOVED***
     this.getVoProjects();
        this.voserice.getNewsletterSubscriptionCounter().subscribe(result => ***REMOVED***
-            this.newsletterSubscriptionCounter=result['subscribed'];
+            this.newsletterSubscriptionCounter=result['subscribed'];***REMOVED***
 
     ***REMOVED***
 
