@@ -37,10 +37,13 @@ export class VoService{
         headers: header,
     }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
+  }
 
+  getAllVoGroups(): Observable<any> {
 
-
-
+    return this.http.get(this.settings.getApiBaseURL()+ 'vo_manager/getAllGroups/', {
+      withCredentials: true,
+    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
   }
 
