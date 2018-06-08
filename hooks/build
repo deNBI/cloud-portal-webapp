@@ -1,4 +1,4 @@
 #!/bin/bash -xe
 
 . ./hooks/env 
-docker build --build-arg "ANGULAR_MODE=${ANGULAR_MODE}" -t $IMAGE_NAME . 
+docker build --no-cache --build-arg "ANGULAR_MODE=${ANGULAR_MODE}" -t $IMAGE_NAME . 
