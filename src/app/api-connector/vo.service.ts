@@ -30,8 +30,14 @@ export class VoService ***REMOVED***
         ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
 
-    ***REMOVED***
 
+  getAllVoGroups(): Observable<any> ***REMOVED***
+
+    return this.http.get(this.settings.getApiBaseURL()+ 'vo_manager/getAllGroups/', ***REMOVED***
+      withCredentials: true,
+    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+  ***REMOVED***
 
     sendMailToVo(subject, message): Observable<any> ***REMOVED***
         let urlSearchParams = new URLSearchParams();
@@ -47,5 +53,6 @@ export class VoService ***REMOVED***
         ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
     ***REMOVED***
+
 
 ***REMOVED***

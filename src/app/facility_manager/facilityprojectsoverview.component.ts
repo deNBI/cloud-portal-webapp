@@ -94,6 +94,10 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
     ***REMOVED***
 
     lifeTimeReached(lifetime:number,running:number):string***REMOVED***
+        console.log(lifetime)
+        if (lifetime == -1)***REMOVED***
+            return "blue";
+        ***REMOVED***
        return (lifetime * 30 - running) < 0 ? "red" :"black";
     ***REMOVED***
     sendMailToFacility(facility: number,subject:string,message:string)***REMOVED***
