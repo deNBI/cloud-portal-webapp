@@ -45,6 +45,7 @@ export class AddApplicationComponent {
     }
 
     chosenProjectType(checkbox: number) {
+      
         if (checkbox == 0) {
             if (this.project_application_openstack_project) {
                 this.showjustvm = false;

@@ -16,7 +16,11 @@
                         <div class="form-group row">
                             <h5 class="col-md-6 form-control-label">General Information</h5>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row"
+                             [ngClass]="{
+                                'has-danger': f.controls.project_application_name?.invalid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched),
+                                'has-success': f.controls.project_application_name?.valid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched)
+                                }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Project
                                 Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
                                          title="Full name of your project"></i></strong></label>
@@ -29,7 +33,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+
+
+                        <div class="form-group row  "
+                             [ngClass]="{
+                                'has-danger': f.controls.project_application_shortname?.invalid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched),
+                                'has-success': f.controls.project_application_shortname?.valid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched)
+                                }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Project
                                 Short Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
                                                title="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"></i></strong></label>
@@ -42,12 +52,18 @@
                                        name="project_application_shortname" #shortname
                                        (keyup)="checkShortname(shortname.value)"
                                        class="form-control" maxlength="15"
-                                       placeholder="e.g. ThalianaBench" ngModel>
+                                       placeholder="e.g. ThalianaBench" ngModel minlength="5"
+                                       pattern="[a-zA-Z0-9]+">
+
+
                                 <span class="help-block">Enter a short name (between 5 and 15 characters).</span>
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row" [ngClass]="{
+                                'has-danger': f.controls.project_application_description?.invalid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched),
+                                'has-success': f.controls.project_application_description?.valid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched)
+                                }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Project
                                 Description* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
                                                 title="Full description of your project including tools you might
@@ -62,7 +78,10 @@ are going to use."></i></strong></label>
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row" [ngClass]="{
+                                'has-danger': f.controls.project_application_lifetime?.invalid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched),
+                                'has-success': f.controls.project_application_lifetime?.valid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched)
+                                }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Desired
                                 lifetime* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
                                              title="Lifetime in months of your project"></i></strong></label>
@@ -70,7 +89,7 @@ are going to use."></i></strong></label>
                                 <div class="input-group">
                                     <input class="form-control" id="id_project_application_lifetime"
                                            name="project_application_lifetime" placeholder="e.g 3"
-                                           type="number" min="1" step="1" ngModel>
+                                           type="number" min="1" step="1" ngModel required>
                                     <span class="input-group-addon"> months
                                     </span>
                                 </div>
@@ -114,15 +133,20 @@ are going to use."></i></strong></label>
                                     <input type="checkbox"
                                            [(ngModel)]="project_application_openstack_project"
                                            name="project_application_openstack_project"
-                                           (change)="chosenProjectType(0)">
+                                           (change)="chosenProjectType(0)" >
                                 </label>
                             </div>
                         </div>
+
+
                         <div *ngIf='project_application_openstack_project' class="form-group row">
                             <h5 class="col-md-12 form-control-label">Resources</h5>
                         </div>
 
-                        <div *ngIf='project_application_openstack_project' class="form-group row">
+                        <div *ngIf='project_application_openstack_project' class="form-group row"  [ngClass]="{
+                                'has-danger': f.controls.project_application_vms_requested?.invalid ,
+                                'has-success': f.controls.project_application_vms_requested?.valid
+                                }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of Virtual
                                 Machines* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
                                              title="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."></i></strong></label>
@@ -131,7 +155,7 @@ are going to use."></i></strong></label>
                                     <input required class="form-control" id="id_project_application_vms_requested"
                                            name="project_application_vms_requested"
                                            placeholder="e.g. 5"
-                                           type="number" min="1" step="1" [ngModel]="3" l>
+                                           type="number" min="1" step="1" [ngModel]="3" >
                                     <span class="input-group-addon"> VMs
                                     </span>
                                 </div>
@@ -139,30 +163,39 @@ are going to use."></i></strong></label>
                             </div>
                         </div>
 
-                        <div *ngIf='project_application_openstack_project' class="form-group row">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cores per VM* <i
+                             <div *ngIf='project_application_openstack_project' class="form-group row"  [ngClass]="{
+                                'has-danger': f.controls.project_application_cores_per_vm?.invalid ,
+                                'has-success': f.controls.project_application_cores_per_vm?.valid
+                                }">
+                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cores per VM* <i
                                     class="icon-question" data-toggle="tooltip" data-placement="auto"
                                     title="A CPU core is the processing unit of your virtual machine."></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <input class="form-control" id="id_project_application_cores_per_vm"
+                                    <input required class="form-control" id="id_project_application_cores_per_vm"
                                            name="project_application_cores_per_vm"
                                            placeholder="e.g. 2"
-                                           type="number" min="1" step="1" [ngModel]="2">
-                                    <span class="input-group-addon"> cores/VM
+                                           type="number" min="1" step="1" [ngModel]="2" >
+                                    <span class="input-group-addon"> VMs
                                     </span>
                                 </div>
                                 <span class="help-block">How many cores should every VM have?</span>
                             </div>
                         </div>
 
-                        <div *ngIf='project_application_openstack_project' class="form-group row">
+
+
+                        <div *ngIf='project_application_openstack_project' class="form-group row"
+                        [ngClass]="{
+                                'has-danger': f.controls.project_application_ram_per_vm?.invalid,
+                                'has-success': f.controls.project_application_ram_per_vm?.valid
+                                }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>RAM per VM* <i
                                     class="icon-question" data-toggle="tooltip" data-placement="auto"
                                     title="RAM is where data is stored that is accessed by the CPU."></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <input class="form-control" id="id_project_application_ram_per_vm"
+                                    <input required class="form-control" id="id_project_application_ram_per_vm"
                                            name="project_application_ram_per_vm"
                                            placeholder="e.g. 8"
                                            type="number" min="1" step="1" [ngModel]="8">
@@ -173,7 +206,10 @@ are going to use."></i></strong></label>
                             </div>
                         </div>
 
-                        <div *ngIf='project_application_openstack_project' class="form-group row">
+                        <div *ngIf='project_application_openstack_project' class="form-group row" [ngClass]="{
+                                'has-danger': f.controls.project_application_disk_space?.invalid,
+                                'has-success': f.controls.project_application_disk_space?.valid
+                                }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage per VM* <i
                                     class="icon-question" data-toggle="tooltip" data-placement="auto"
                                     title="Disk space is the amount of bytes that is provided by a storage device."></i></strong></label>
@@ -190,7 +226,11 @@ are going to use."></i></strong></label>
                             </div>
                         </div>
 
-                        <div *ngIf='project_application_openstack_project' class="form-group row">
+                        <div *ngIf='project_application_openstack_project' class="form-group row"
+                        [ngClass]="{
+                                'has-danger': f.controls.project_application_object_stroage?.invalid && (f.controls.project_application_object_storage?.dirty || f.controls.project_application_object_storage?.touched),
+                                'has-success': f.controls.project_application_object_storage?.valid && (f.controls.project_application_object_storage?.dirty || f.controls.project_application_object_storage?.touched)
+                                }">
                             <label class="col-md-4 form-control-label" for="textarea-input">Object Storage <i
                                     class="icon-question" data-toggle="tooltip" data-placement="auto"
                                     title="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."></i></label>
@@ -230,7 +270,10 @@ are going to use."></i></strong></label>
                             <h5 class="col-md-12 form-control-label">Resources</h5>
                         </div>
 
-                        <div *ngIf='showjustvm' class="form-group row">
+                        <div *ngIf='showjustvm' class="form-group row" [ngClass]="{
+                                'has-danger': f.controls.project_application_vms_requested?.invalid ,
+                                'has-success': f.controls.project_application_vms_requested?.valid
+                                }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of Virtual
                                 Machines* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
                                              title="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."></i></strong></label>
@@ -246,19 +289,22 @@ are going to use."></i></strong></label>
                                 <span class="help-block">How many VMs would you run simultaneously?</span>
                             </div>
                         </div>
-                        <div *ngIf='showjustvm' class="form-group row">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Disk per
+                        <div *ngIf='showjustvm' class="form-group row" [ngClass]="{
+                                'has-danger': f.controls.project_application_disk_space?.invalid,
+                                'has-success': f.controls.project_application_disk_space?.valid
+                                }">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage per
                                 VM*</strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <input class="form-control" id="id_project_application_disk_space"
+                                    <input  class="form-control" id="id_project_application_disk_space"
                                            name="project_application_disk_space"
                                            placeholder="e.g. 20"
                                            type="number" min="1" step="1" [ngModel]="20">
                                     <span class="input-group-addon"> GB
                                     </span>
                                 </div>
-                                <span class="help-block">How much disk space do you need per VM?</span>
+                                <span class="help-block">How much storage do you need per VM?</span>
                             </div>
                         </div>
                         <div *ngIf='showjustvm' class="form-group row">
@@ -277,9 +323,9 @@ are going to use."></i></strong></label>
                         <div class="form-group row">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Comment</strong></label>
                             <div class="col-md-8">
-                <textarea required type="text" id="id_project_application_comment"
+                <textarea type="text" id="id_project_application_comment"
                           name="project_application_comment" class="form-control" maxlength="8192"
-                          placeholder='' ngModel></textarea>
+                          placeholder='' [ngModel]="''"></textarea>
                                 <span class="help-block">Additional information you want to share?</span>
                             </div>
                         </div>
@@ -288,7 +334,10 @@ are going to use."></i></strong></label>
                             <h5 class="col-md-6 form-control-label">Institutional Information</h5>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row" [ngClass]="{
+                                'has-danger': f.controls.project_application_institute?.invalid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched),
+                                'has-success': f.controls.project_application_institute?.valid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched)
+                                }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Institute Name* <i
                                     class="icon-question" data-toggle="tooltip" data-placement="auto"
                                     title="Your institute"></i></strong></label>
@@ -300,7 +349,10 @@ are going to use."></i></strong></label>
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row"  [ngClass]="{
+                                'has-danger': f.controls.project_application_workgroup?.invalid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched),
+                                'has-success': f.controls.project_application_workgroup?.valid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched)
+                                }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Workgroup Name* <i
                                     class="icon-question" data-toggle="tooltip" data-placement="auto"
                                     title="Your workgroup"></i></strong></label>
@@ -310,6 +362,7 @@ are going to use."></i></strong></label>
                                        placeholder="e.g. Computational Metagenomics" ngModel>
                                 <span class="help-block">To which workgroup do you belong?</span>
                             </div>
+
                         </div>
 
                         <div class="form-group row">
@@ -318,10 +371,13 @@ are going to use."></i></strong></label>
                                 usage policy.</p>
                         </div>
 
+
+
                     </form>
                 </div>
                 <div class="card-footer">
                     <button (click)="acknowledgemodal.show()"
+                            [disabled]="f.invalid"
                             class="btn btn-sm btn-primary"><i
                             class="fa fa-dot-circle-o"></i> Submit
                         Application
