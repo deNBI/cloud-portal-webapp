@@ -7,35 +7,28 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 @Injectable()
-export class VoService{
-  constructor(private http: Http, private settings: ApiSettings) {
-  }
+export class VoService {
+    constructor(private http: Http, private settings: ApiSettings) {
+    }
 
 
+    isVo() {
 
-  isVo(){
+        return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/isVoManager/', {
+            withCredentials: true,
+        })
 
-    return this.http.get(this.settings.getApiBaseURL()+ 'vo_manager/isVoManager/', {
-      withCredentials: true,
-    })
-
-  }
-
+    }
 
 
+    getNewsletterSubscriptionCounter():Observable<any> {
 
-  sendMailToVo(subject,message): Observable<any> {
-      let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('subject', subject);
-    urlSearchParams.append('message',message);
 
-     let header = new Headers({
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    });
-    return this.http.post(this.settings.getApiBaseURL()+ 'vo_manager/sendMailToAllMembers/',urlSearchParams, {
-        withCredentials: true,
-        headers: header,
-    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getNewsletterSubscriptionCounter/', {
+            withCredentials: true,
+
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))}
+
 
   }
 
@@ -46,5 +39,22 @@ export class VoService{
     }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
   }
+
+    sendMailToVo(subject, message): Observable<any> {
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('subject', subject);
+        urlSearchParams.append('message', message);
+
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendMailToAllMembers/', urlSearchParams, {
+            withCredentials: true,
+            headers: header,
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    }
+
+
 
 }
