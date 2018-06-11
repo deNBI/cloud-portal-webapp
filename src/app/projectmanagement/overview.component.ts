@@ -46,9 +46,8 @@ export class OverviewComponent {
     public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
-    public UserModalFacilityDetails: [string,string][];
-    public UserModalFacility: [string,number];
-
+    public UserModalFacilityDetails: [string, string][];
+    public UserModalFacility: [string, number];
 
 
     //notification Modal variables
@@ -56,14 +55,14 @@ export class OverviewComponent {
     public notificationModalTitle: string = "Notification";
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
-    public notificationModalInfoMessage: string=''
+    public notificationModalInfoMessage: string = ''
     public notificationModalIsClosable: boolean = false;
 
-    public passwordModalTitle: string= "Changing Password";
-    public passwordModalType : string='info';
-    public passwordModalPassword: string ='';
-    public passwordModalFacility: string='';
-    public passwordModalEmail: string='';
+    public passwordModalTitle: string = "Changing Password";
+    public passwordModalType: string = 'info';
+    public passwordModalPassword: string = '';
+    public passwordModalFacility: string = '';
+    public passwordModalEmail: string = '';
 
     constructor(private authzresolver: AuthzResolver,
                 private perunsettings: PerunSettings,
@@ -83,24 +82,24 @@ export class OverviewComponent {
     }
 
 
-    setUserFacilityPassword(facility: string,details:[string,string][]) {
+    setUserFacilityPassword(facility: string, details: [string, string][]) {
         this.userservice.setUserFacilityPassword(facility).subscribe(result => {
             result = result.json()
-            for(let key of details){
-                if (key[0] == 'Email'){
-                      this.passwordModalEmail=key[1];
+            for (let key of details) {
+                if (key[0] == 'Email') {
+                    this.passwordModalEmail = key[1];
                 }
             }
 
-            this.passwordModalFacility=facility;
+            this.passwordModalFacility = facility;
             if (result['Error']) {
-               this.passwordModalTitle='Set or update password'
-                this.passwordModalType='warning'
+                this.passwordModalTitle = 'Set or update password'
+                this.passwordModalType = 'warning'
             }
             else {
-                this.passwordModalTitle='Success'
-                this.passwordModalType='success'
-                this.passwordModalPassword=result.toString()
+                this.passwordModalTitle = 'Success'
+                this.passwordModalType = 'success'
+                this.passwordModalPassword = result.toString()
             }
         })
     }
@@ -185,7 +184,7 @@ export class OverviewComponent {
                         dateDayDifference,
                         is_pi,
                         is_admin,
-                        [result['Facility'],result['FacilityId']])
+                        [result['Facility'], result['FacilityId']])
                     let details = result['Details'];
                     let details_array = [];
                     for (let detail in details) {
@@ -193,8 +192,18 @@ export class OverviewComponent {
                         details_array.push(detail_tuple);
                     }
                     newProject.ComputecenterDetails = details_array;
+                    if (is_pi) {
+                        this.groupservice.getLifetime(group['id']).subscribe(result => {
+                            let lifetime = result['lifetime']
+                            console.log(lifetime)
+                            newProject.Lifetime = lifetime;
+                            this.projects.push(newProject);
+                        })
+                    }
+                    else {
+                        this.projects.push(newProject);
+                    }
 
-                    this.projects.push(newProject);
 
                 })
 
@@ -203,6 +212,15 @@ export class OverviewComponent {
 
         });
         // .then( function(){ groupsmanager.getGroupsWhereUserIsAdmin(this.userid); });
+    }
+
+
+     lifeTimeReached(lifetime:number,running:number):string{
+        console.log(lifetime)
+        if (lifetime == -1){
+            return "blue";
+        }
+       return (lifetime * 30 - running) < 0 ? "red" :"black";
     }
 
 
@@ -237,7 +255,7 @@ export class OverviewComponent {
         });
     }
 
-    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string,number]) {
+    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) {
         this.getMembesOfTheProject(projectid, projectname);
         if (facility[0] === 'None') {
             this.UserModalFacility = null;
@@ -249,11 +267,11 @@ export class OverviewComponent {
 
 
     public resetPasswordModal() {
-        this.passwordModalTitle= "Changing Password";
-        this.passwordModalType ='info';
-        this.passwordModalPassword='';
-        this.passwordModalFacility='';
-        this.passwordModalEmail='';
+        this.passwordModalTitle = "Changing Password";
+        this.passwordModalType = 'info';
+        this.passwordModalPassword = '';
+        this.passwordModalFacility = '';
+        this.passwordModalEmail = '';
 
     }
 
@@ -287,7 +305,7 @@ export class OverviewComponent {
         this.notificationModalType = type;
     }
 
-    public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string,number]) {
+    public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string, number]) {
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
         if (facility[0] === 'None') {
@@ -300,8 +318,8 @@ export class OverviewComponent {
     }
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string,facility_id:number) {
-        this.groupservice.addMember(groupid, memberid,facility_id).toPromise()
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id: number) {
+        this.groupservice.addMember(groupid, memberid, facility_id).toPromise()
             .then(result => {
 
                 if (result.status == 200) {
@@ -315,8 +333,8 @@ export class OverviewComponent {
         });
     }
 
-    public removeMember(groupid: number, memberid: number, name: string,facility_id:number) {
-        this.groupservice.removeMember(groupid, memberid,facility_id).toPromise()
+    public removeMember(groupid: number, memberid: number, name: string, facility_id: number) {
+        this.groupservice.removeMember(groupid, memberid, facility_id).toPromise()
             .then(result => {
 
                 if (result.status == 200) {
@@ -329,10 +347,12 @@ export class OverviewComponent {
             this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
         });
     }
-    public resetFacilityDetailsModal(){
-        this.UserModalFacility=null;
-        this.UserModalFacilityDetails=null;
+
+    public resetFacilityDetailsModal() {
+        this.UserModalFacility = null;
+        this.UserModalFacilityDetails = null;
     }
+
     public comingSoon() {
         alert("This function will be implemented soon.")
     }
