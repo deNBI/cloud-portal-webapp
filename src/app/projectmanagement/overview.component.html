@@ -93,7 +93,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let member of usersModalProjectMembers">
+                    <tr *ngFor="let member of usersModalProjectMembers"    [ngStyle]="{'color':isPi(member)}">
                         <td>{{ member.Id }}</td>
                         <td>{{ member.MemberId }}</td>
                         <td>{{ member.Username }}</td>
@@ -103,6 +103,12 @@
                                                 removeMemberModal.show();
                                                 " class="btn btn-secondary" type="button">
                                 <i class="fa fa-trash"></i>&nbsp; Remove member
+                            </button>
+
+                            <button  *ngIf="!member.IsPi"  (click)="usersModal.hide();promoteAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility);
+                                                notificationModal.show();
+                                               " class="btn btn-secondary" type="button">
+                                <i class="fa fa-trash"></i>&nbsp; Set Admin
                             </button>
                             <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username,UserModalFacility);
                                                 notificationModal.show();
@@ -191,6 +197,7 @@
                                 (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"><i
                                 class="fa fa-search"></i> Search
                         </button>
+
                         <br>
                         <br>
                         <strong>Please note</strong> that if you can not find the user, he is not a member of the de.NBI
@@ -222,6 +229,10 @@
                             <button
                                     (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName'],UserModalFacility);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
                                     class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
+                            </button>
+                             <button
+                                    (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName'],UserModalFacility);addAdmin(addUserModalProjectID,member['user_id'],member['firstName'],member['lastName'],UserModalFacility);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                                    class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
                             </button>
                         </td>
                         <td>{{member['firstName']}}</td>

@@ -46,9 +46,8 @@ export class OverviewComponent {
     public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
-    public UserModalFacilityDetails: [string,string][];
-    public UserModalFacility: [string,number];
-
+    public UserModalFacilityDetails: [string, string][];
+    public UserModalFacility: [string, number];
 
 
     //notification Modal variables
@@ -56,14 +55,14 @@ export class OverviewComponent {
     public notificationModalTitle: string = "Notification";
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
-    public notificationModalInfoMessage: string=''
+    public notificationModalInfoMessage: string = ''
     public notificationModalIsClosable: boolean = false;
 
-    public passwordModalTitle: string= "Changing Password";
-    public passwordModalType : string='info';
-    public passwordModalPassword: string ='';
-    public passwordModalFacility: string='';
-    public passwordModalEmail: string='';
+    public passwordModalTitle: string = "Changing Password";
+    public passwordModalType: string = 'info';
+    public passwordModalPassword: string = '';
+    public passwordModalFacility: string = '';
+    public passwordModalEmail: string = '';
 
     constructor(private authzresolver: AuthzResolver,
                 private perunsettings: PerunSettings,
@@ -74,33 +73,35 @@ export class OverviewComponent {
                 private groupservice: GroupService,
                 private userservice: UserService) {
         this.getUserProjects(groupsmanager, membersmanager, useresmanager);
+        this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
 
     }
 
     public updateUserProjects() {
         this.projects = [];
-        this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
+
+
     }
 
 
-    setUserFacilityPassword(facility: string,details:[string,string][]) {
+    setUserFacilityPassword(facility: string, details: [string, string][]) {
         this.userservice.setUserFacilityPassword(facility).subscribe(result => {
             result = result.json()
-            for(let key of details){
-                if (key[0] == 'Email'){
-                      this.passwordModalEmail=key[1];
+            for (let key of details) {
+                if (key[0] == 'Email') {
+                    this.passwordModalEmail = key[1];
                 }
             }
 
-            this.passwordModalFacility=facility;
+            this.passwordModalFacility = facility;
             if (result['Error']) {
-               this.passwordModalTitle='Set or update password'
-                this.passwordModalType='warning'
+                this.passwordModalTitle = 'Set or update password'
+                this.passwordModalType = 'warning'
             }
             else {
-                this.passwordModalTitle='Success'
-                this.passwordModalType='success'
-                this.passwordModalPassword=result.toString()
+                this.passwordModalTitle = 'Success'
+                this.passwordModalType = 'success'
+                this.passwordModalPassword = result.toString()
             }
         })
     }
@@ -185,7 +186,7 @@ export class OverviewComponent {
                         dateDayDifference,
                         is_pi,
                         is_admin,
-                        [result['Facility'],result['FacilityId']])
+                        [result['Facility'], result['FacilityId']])
                     let details = result['Details'];
                     let details_array = [];
                     for (let detail in details) {
@@ -227,17 +228,40 @@ export class OverviewComponent {
             this.usersModalProjectID = projectid;
             this.usersModalProjectName = projectname;
             this.usersModalProjectMembers = new Array();
-            for (let member of members) {
-                let member_id = member["id"];
-                let user_id = member["userId"];
-                let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
-                this.usersModalProjectMembers.push(new ProjectMember(user_id, fullName, member_id));
-            }
+            this.groupservice.getGroupAdminIds(projectid.toString()).subscribe(result => {
+                let admindIds = result['adminIds']
+                for (let member of members) {
+                    let member_id = member["id"];
+                    let user_id = member["userId"];
+                    let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
+                    let projectMember = new ProjectMember(user_id, fullName, member_id);
+                    if (admindIds.indexOf(user_id) != -1) {
+                        projectMember.IsPi = true;
+                    }
+                    else {
+                        projectMember.IsPi = false;
+                    }
+
+
+                    this.usersModalProjectMembers.push(projectMember);
+
+                }
+            })
+
 
         });
     }
 
-    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string,number]) {
+     isPi(member:ProjectMember):string{
+
+       if (member.IsPi){
+           return 'blue'
+       }
+       else{return 'black'}
+
+    }
+
+    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) {
         this.getMembesOfTheProject(projectid, projectname);
         if (facility[0] === 'None') {
             this.UserModalFacility = null;
@@ -249,11 +273,11 @@ export class OverviewComponent {
 
 
     public resetPasswordModal() {
-        this.passwordModalTitle= "Changing Password";
-        this.passwordModalType ='info';
-        this.passwordModalPassword='';
-        this.passwordModalFacility='';
-        this.passwordModalEmail='';
+        this.passwordModalTitle = "Changing Password";
+        this.passwordModalType = 'info';
+        this.passwordModalPassword = '';
+        this.passwordModalFacility = '';
+        this.passwordModalEmail = '';
 
     }
 
@@ -287,7 +311,7 @@ export class OverviewComponent {
         this.notificationModalType = type;
     }
 
-    public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string,number]) {
+    public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string, number]) {
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
         if (facility[0] === 'None') {
@@ -300,8 +324,8 @@ export class OverviewComponent {
     }
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string,facility_id:number) {
-        this.groupservice.addMember(groupid, memberid,facility_id).toPromise()
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id: number) {
+        this.groupservice.addMember(groupid, memberid, facility_id).toPromise()
             .then(result => {
 
                 if (result.status == 200) {
@@ -315,8 +339,40 @@ export class OverviewComponent {
         });
     }
 
-    public removeMember(groupid: number, memberid: number, name: string,facility_id:number) {
-        this.groupservice.removeMember(groupid, memberid,facility_id).toPromise()
+
+    public addAdmin(groupid: number, userid: number, firstName: string, lastName: string, facility_id: number) {
+        this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
+            .then(result => {
+
+                if (result.status == 200) {
+                    this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+
+                } else {
+                    this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                }
+            }).catch(error => {
+            this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+        });
+    }
+
+
+    public promoteAdmin(groupid: number, userid: number, username: string, facility_id: number) {
+        this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
+            .then(result => {
+
+                if (result.status == 200) {
+                    this.updateNotificaitonModal("Success", username + " promoted to Admin", true, "success");
+
+                } else {
+                    this.updateNotificaitonModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+                }
+            }).catch(error => {
+            this.updateNotificaitonModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+        });
+    }
+
+    public removeMember(groupid: number, memberid: number, name: string, facility_id: number) {
+        this.groupservice.removeMember(groupid, memberid, facility_id).toPromise()
             .then(result => {
 
                 if (result.status == 200) {
@@ -329,10 +385,12 @@ export class OverviewComponent {
             this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
         });
     }
-    public resetFacilityDetailsModal(){
-        this.UserModalFacility=null;
-        this.UserModalFacilityDetails=null;
+
+    public resetFacilityDetailsModal() {
+        this.UserModalFacility = null;
+        this.UserModalFacilityDetails = null;
     }
+
     public comingSoon() {
         alert("This function will be implemented soon.")
     }
