@@ -46,9 +46,8 @@ export class OverviewComponent ***REMOVED***
     public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
-    public UserModalFacilityDetails: [string,string][];
-    public UserModalFacility: [string,number];
-
+    public UserModalFacilityDetails: [string, string][];
+    public UserModalFacility: [string, number];
 
 
     //notification Modal variables
@@ -56,14 +55,14 @@ export class OverviewComponent ***REMOVED***
     public notificationModalTitle: string = "Notification";
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
-    public notificationModalInfoMessage: string=''
+    public notificationModalInfoMessage: string = ''
     public notificationModalIsClosable: boolean = false;
 
-    public passwordModalTitle: string= "Changing Password";
-    public passwordModalType : string='info';
-    public passwordModalPassword: string ='';
-    public passwordModalFacility: string='';
-    public passwordModalEmail: string='';
+    public passwordModalTitle: string = "Changing Password";
+    public passwordModalType: string = 'info';
+    public passwordModalPassword: string = '';
+    public passwordModalFacility: string = '';
+    public passwordModalEmail: string = '';
 
     constructor(private authzresolver: AuthzResolver,
                 private perunsettings: PerunSettings,
@@ -83,24 +82,24 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    setUserFacilityPassword(facility: string,details:[string,string][]) ***REMOVED***
+    setUserFacilityPassword(facility: string, details: [string, string][]) ***REMOVED***
         this.userservice.setUserFacilityPassword(facility).subscribe(result => ***REMOVED***
             result = result.json()
-            for(let key of details)***REMOVED***
-                if (key[0] == 'Email')***REMOVED***
-                      this.passwordModalEmail=key[1];
+            for (let key of details) ***REMOVED***
+                if (key[0] == 'Email') ***REMOVED***
+                    this.passwordModalEmail = key[1];
                 ***REMOVED***
             ***REMOVED***
 
-            this.passwordModalFacility=facility;
+            this.passwordModalFacility = facility;
             if (result['Error']) ***REMOVED***
-               this.passwordModalTitle='Set or update password'
-                this.passwordModalType='warning'
+                this.passwordModalTitle = 'Set or update password'
+                this.passwordModalType = 'warning'
             ***REMOVED***
             else ***REMOVED***
-                this.passwordModalTitle='Success'
-                this.passwordModalType='success'
-                this.passwordModalPassword=result.toString()
+                this.passwordModalTitle = 'Success'
+                this.passwordModalType = 'success'
+                this.passwordModalPassword = result.toString()
             ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
@@ -185,7 +184,7 @@ export class OverviewComponent ***REMOVED***
                         dateDayDifference,
                         is_pi,
                         is_admin,
-                        [result['Facility'],result['FacilityId']])
+                        [result['Facility'], result['FacilityId']])
                     let details = result['Details'];
                     let details_array = [];
                     for (let detail in details) ***REMOVED***
@@ -193,8 +192,18 @@ export class OverviewComponent ***REMOVED***
                         details_array.push(detail_tuple);
                     ***REMOVED***
                     newProject.ComputecenterDetails = details_array;
+                    if (is_pi) ***REMOVED***
+                        this.groupservice.getLifetime(group['id']).subscribe(result => ***REMOVED***
+                            let lifetime = result['lifetime']
+                            console.log(lifetime)
+                            newProject.Lifetime = lifetime;
+                            this.projects.push(newProject);
+                        ***REMOVED***)
+                    ***REMOVED***
+                    else ***REMOVED***
+                        this.projects.push(newProject);
+                    ***REMOVED***
 
-                    this.projects.push(newProject);
 
                 ***REMOVED***)
 
@@ -203,6 +212,15 @@ export class OverviewComponent ***REMOVED***
 
         ***REMOVED***);
         // .then( function()***REMOVED*** groupsmanager.getGroupsWhereUserIsAdmin(this.userid); ***REMOVED***);
+    ***REMOVED***
+
+
+     lifeTimeReached(lifetime:number,running:number):string***REMOVED***
+        console.log(lifetime)
+        if (lifetime == -1)***REMOVED***
+            return "blue";
+        ***REMOVED***
+       return (lifetime * 30 - running) < 0 ? "red" :"black";
     ***REMOVED***
 
 
@@ -237,7 +255,7 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string,number]) ***REMOVED***
+    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) ***REMOVED***
         this.getMembesOfTheProject(projectid, projectname);
         if (facility[0] === 'None') ***REMOVED***
             this.UserModalFacility = null;
@@ -249,11 +267,11 @@ export class OverviewComponent ***REMOVED***
 
 
     public resetPasswordModal() ***REMOVED***
-        this.passwordModalTitle= "Changing Password";
-        this.passwordModalType ='info';
-        this.passwordModalPassword='';
-        this.passwordModalFacility='';
-        this.passwordModalEmail='';
+        this.passwordModalTitle = "Changing Password";
+        this.passwordModalType = 'info';
+        this.passwordModalPassword = '';
+        this.passwordModalFacility = '';
+        this.passwordModalEmail = '';
 
     ***REMOVED***
 
@@ -287,7 +305,7 @@ export class OverviewComponent ***REMOVED***
         this.notificationModalType = type;
     ***REMOVED***
 
-    public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string,number]) ***REMOVED***
+    public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string, number]) ***REMOVED***
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
         if (facility[0] === 'None') ***REMOVED***
@@ -300,8 +318,8 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string,facility_id:number) ***REMOVED***
-        this.groupservice.addMember(groupid, memberid,facility_id).toPromise()
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id: number) ***REMOVED***
+        this.groupservice.addMember(groupid, memberid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
@@ -315,8 +333,8 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    public removeMember(groupid: number, memberid: number, name: string,facility_id:number) ***REMOVED***
-        this.groupservice.removeMember(groupid, memberid,facility_id).toPromise()
+    public removeMember(groupid: number, memberid: number, name: string, facility_id: number) ***REMOVED***
+        this.groupservice.removeMember(groupid, memberid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
@@ -329,10 +347,12 @@ export class OverviewComponent ***REMOVED***
             this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
         ***REMOVED***);
     ***REMOVED***
-    public resetFacilityDetailsModal()***REMOVED***
-        this.UserModalFacility=null;
-        this.UserModalFacilityDetails=null;
+
+    public resetFacilityDetailsModal() ***REMOVED***
+        this.UserModalFacility = null;
+        this.UserModalFacilityDetails = null;
     ***REMOVED***
+
     public comingSoon() ***REMOVED***
         alert("This function will be implemented soon.")
     ***REMOVED***
