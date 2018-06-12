@@ -216,8 +216,10 @@ export class OverviewComponent ***REMOVED***
 
 
      lifeTimeReached(lifetime:number,running:number):string***REMOVED***
-        console.log(lifetime)
-        if (lifetime == -1)***REMOVED***
+        if(!lifetime)***REMOVED***
+            return "black";
+        ***REMOVED***
+        else if (lifetime == -1)***REMOVED***
             return "blue";
         ***REMOVED***
        return (lifetime * 30 - running) < 0 ? "red" :"black";
