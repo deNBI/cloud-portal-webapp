@@ -216,8 +216,10 @@ export class OverviewComponent {
 
 
      lifeTimeReached(lifetime:number,running:number):string{
-        console.log(lifetime)
-        if (lifetime == -1){
+        if(!lifetime){
+            return "black";
+        }
+        else if (lifetime == -1){
             return "blue";
         }
        return (lifetime * 30 - running) < 0 ? "red" :"black";

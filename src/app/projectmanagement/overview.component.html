@@ -17,7 +17,7 @@
                             <th>Facility</th>
                             <th>Date created</th>
                             <th>Days running</th>
-                            <th *ngIf="admingroups?.length > 0">Lifetime in Days</th>
+                            <th>Lifetime in Days</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -47,8 +47,8 @@
 
                             <td>{{ project.DateCreated }}</td>
                             <td>{{ project.DaysRunning }}</td>
-                            <td *ngIf="project.Lifetime && admingroups?.length > 0">{{project.Lifetime * 30}}</td>
-                            <td *ngIf="!project.Lifetime && admingroups?.length > 0"></td>
+                            <td *ngIf="project.Lifetime > 0">{{project.Lifetime * 30}}</td>
+                            <td *ngIf="!project.Lifetime"></td>
                             <td>
                                 <button type="button" class="btn btn-secondary" data-toggle="modal"
                                         (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
