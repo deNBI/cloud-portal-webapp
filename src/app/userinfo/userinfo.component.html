@@ -67,11 +67,17 @@
                         </tr>
                         <tr>
                             <td>Newsletter</td>
-                            <td><label class="switch switch-text switch-primary-outline-alt">
-                                <input type="checkbox" class="switch-input" [(ngModel)]="newsletter_subscribed" (change)=" setNewsletterSubscription($event)" >
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label></td>
+                            <td><div class="row">
+                                <div class="col-md-1"><label class="switch switch-text switch-primary-outline-alt">
+                                    <input type="checkbox" class="switch-input" [(ngModel)]="newsletter_subscribed"
+                                           (change)=" setNewsletterSubscription($event)">
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label></div>
+                                <div class="col-md-6"> Subscribe to our newsletter and get the latest news of upcoming
+                                    events and current developments in de.NBI Cloud.
+                                </div></div>
+                            </td>
                             <td></td>
                         </tr>
                     </table>
