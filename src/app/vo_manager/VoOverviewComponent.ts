@@ -40,10 +40,12 @@ export class VoOverviewComponent {
 
 
 
+
     constructor(private voserice:VoService,private groupservice:GroupService) {
     this.getVoProjects();
        this.voserice.getNewsletterSubscriptionCounter().subscribe(result => {
             this.newsletterSubscriptionCounter=result['subscribed'];});
+
 
     }
 
