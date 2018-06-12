@@ -82,6 +82,7 @@ export class  FacilityProjectsOverviewComponent {
                     is_admin,
                     [result['Facility'], result['FacilityId']]
                     )
+                newProject.Lifetime=group['lifetime']
                  this.projects.push(newProject);
             }
 
@@ -92,7 +93,13 @@ export class  FacilityProjectsOverviewComponent {
 
     }
 
-
+    lifeTimeReached(lifetime:number,running:number):string{
+        console.log(lifetime)
+        if (lifetime == -1){
+            return "blue";
+        }
+       return (lifetime * 30 - running) < 0 ? "red" :"black";
+    }
     sendMailToFacility(facility: number,subject:string,message:string){
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result =>{
             if (result == 1){
