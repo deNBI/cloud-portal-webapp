@@ -370,8 +370,8 @@ export class OverviewComponent {
         });
     }
 
-    public removeMember(groupid: number, memberid: number, name: string, facility_id: number) {
-        this.groupservice.removeMember(groupid, memberid, facility_id).toPromise()
+    public removeMember(groupid: number, memberid: number,userid:number, name: string, facility_id: number) {
+        this.groupservice.removeMember(groupid, memberid,userid, facility_id).toPromise()
             .then(result => {
 
                 if (result.status == 200) {

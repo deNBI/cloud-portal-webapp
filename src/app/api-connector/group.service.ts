@@ -105,7 +105,7 @@ export class GroupService {
     }
 
 
-    removeMember(group_id: number, member_id: number, facility_id: number) {
+    removeMember(group_id: number, member_id: number,user_id:number, facility_id: number) {
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -113,6 +113,7 @@ export class GroupService {
         urlSearchParams.append('facility_id', facility_id.toString());
         urlSearchParams.append('group_id', group_id.toString());
         urlSearchParams.append('member_id', member_id.toString())
+         urlSearchParams.append('user_id', user_id.toString())
         return this.http.post(this.settings.getApiBaseURL() + 'group/removeMember/', urlSearchParams, {
             withCredentials: true,
             headers: header
