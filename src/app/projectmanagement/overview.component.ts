@@ -370,6 +370,24 @@ export class OverviewComponent {
         });
     }
 
+
+
+
+       public removeAdmin(groupid: number,userid:number, name: string, facility_id: number) {
+        this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
+            .then(result => {
+
+                if (result.status == 200) {
+                    this.updateNotificaitonModal("Success",   name + " was removed as Admin", true, "success");
+
+                } else {
+                    this.updateNotificaitonModal("Failed",   name + " could not be removed as Admin!", true, "danger");
+                }
+            }).catch(error => {
+            this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
+        });
+    }
+
     public removeMember(groupid: number, memberid: number,userid:number, name: string, facility_id: number) {
         this.groupservice.removeMember(groupid, memberid,userid, facility_id).toPromise()
             .then(result => {

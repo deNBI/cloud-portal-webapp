@@ -108,7 +108,12 @@
                             <button  *ngIf="!member.IsPi"  (click)="usersModal.hide();promoteAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button">
-                                <i class="fa fa-trash"></i>&nbsp; Set Admin
+                                <i class="fa fa-trash"></i>&nbsp; Set Admin state
+                            </button>
+                            <button  *ngIf="member.IsPi"  (click)="usersModal.hide();removeAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility);
+                                                notificationModal.show();
+                                               " class="btn btn-secondary" type="button">
+                                <i class="fa fa-trash"></i>&nbsp; Remove Admin state
                             </button>
                             <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Id,member.Username,UserModalFacility);
                                                 notificationModal.show();

@@ -118,9 +118,25 @@ export class GroupService {
             withCredentials: true,
             headers: header
         })
-
-
     }
+
+
+        removeAdmin(group_id: number,user_id:number, facility_id: number) {
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('facility_id', facility_id.toString());
+        urlSearchParams.append('group_id', group_id.toString());
+
+         urlSearchParams.append('user_id', user_id.toString())
+        return this.http.post(this.settings.getApiBaseURL() + 'group/removeAdmin/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
+
       setDescription(groupid: string, description: string): Observable<any> {
         let urlSearchParams = new URLSearchParams();
          let header = new Headers({
