@@ -45,6 +45,7 @@ export class AddApplicationComponent ***REMOVED***
     ***REMOVED***
 
     chosenProjectType(checkbox: number) ***REMOVED***
+      
         if (checkbox == 0) ***REMOVED***
             if (this.project_application_openstack_project) ***REMOVED***
                 this.showjustvm = false;
