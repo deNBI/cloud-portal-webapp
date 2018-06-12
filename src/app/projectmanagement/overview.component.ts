@@ -73,7 +73,6 @@ export class OverviewComponent {
                 private groupservice: GroupService,
                 private userservice: UserService) {
         this.getUserProjects(groupsmanager, membersmanager, useresmanager);
-        this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
 
     }
 
