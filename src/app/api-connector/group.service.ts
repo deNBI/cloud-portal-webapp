@@ -55,6 +55,25 @@ export class GroupService ***REMOVED***
 
 
     ***REMOVED***
+       isUserAdminOfGroup(groupid: string,userid:string): Observable<any> ***REMOVED***
+
+        return this.http.get(this.settings.getApiBaseURL() + 'group/isUserPi/', ***REMOVED***
+            withCredentials: true,
+            params: ***REMOVED***group_id:groupid,user_id:userid***REMOVED***
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ***REMOVED***
+
+
+    getGroupAdminIds(groupid: string): Observable<any> ***REMOVED***
+
+        return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupAdminsId/', ***REMOVED***
+            withCredentials: true,
+            params: ***REMOVED***group_id:groupid***REMOVED***
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ***REMOVED***
+
 
     addMember(group_id: number, member_id: number, facility_id: number) ***REMOVED***
         let urlSearchParams = new URLSearchParams();
@@ -70,7 +89,23 @@ export class GroupService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    removeMember(group_id: number, member_id: number, facility_id: number) ***REMOVED***
+
+        addAdmin(group_id: number, user_id: number, facility_id: number) ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        urlSearchParams.append('facility_id', facility_id.toString());
+        urlSearchParams.append('group_id', group_id.toString());
+        urlSearchParams.append('user_id', user_id.toString())
+        return this.http.post(this.settings.getApiBaseURL() + 'group/addAdmin/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***)
+    ***REMOVED***
+
+
+    removeMember(group_id: number, member_id: number,user_id:number, facility_id: number) ***REMOVED***
         let urlSearchParams = new URLSearchParams();
         let header = new Headers(***REMOVED***
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -78,15 +113,33 @@ export class GroupService ***REMOVED***
         urlSearchParams.append('facility_id', facility_id.toString());
         urlSearchParams.append('group_id', group_id.toString());
         urlSearchParams.append('member_id', member_id.toString())
+         urlSearchParams.append('user_id', user_id.toString())
         return this.http.post(this.settings.getApiBaseURL() + 'group/removeMember/', urlSearchParams, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
-
-
     ***REMOVED***
 
-    setDescription(groupid: string, description: string): Observable<any> ***REMOVED***
+
+        removeAdmin(group_id: number,user_id:number, facility_id: number) ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        urlSearchParams.append('facility_id', facility_id.toString());
+        urlSearchParams.append('group_id', group_id.toString());
+
+         urlSearchParams.append('user_id', user_id.toString())
+        return this.http.post(this.settings.getApiBaseURL() + 'group/removeAdmin/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***)
+    ***REMOVED***
+
+
+
+      setDescription(groupid: string, description: string): Observable<any> ***REMOVED***
+
         let urlSearchParams = new URLSearchParams();
         let header = new Headers(***REMOVED***
             'X-CSRFToken': this.settings.getCSRFToken(),

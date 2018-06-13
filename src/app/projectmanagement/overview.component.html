@@ -96,7 +96,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let member of usersModalProjectMembers">
+                    <tr *ngFor="let member of usersModalProjectMembers"    [ngStyle]="***REMOVED***'color':isPi(member)***REMOVED***">
                         <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
                         <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
                         <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
@@ -107,7 +107,18 @@
                                                 " class="btn btn-secondary" type="button">
                                 <i class="fa fa-trash"></i>&nbsp; Remove member
                             </button>
-                            <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username,UserModalFacility);
+
+                            <button  *ngIf="!member.IsPi"  (click)="usersModal.hide();promoteAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility);
+                                                notificationModal.show();
+                                               " class="btn btn-secondary" type="button">
+                                <i class="fa fa-trash"></i>&nbsp; Set Admin state
+                            </button>
+                            <button  *ngIf="member.IsPi"  (click)="usersModal.hide();removeAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility);
+                                                notificationModal.show();
+                                               " class="btn btn-secondary" type="button">
+                                <i class="fa fa-trash"></i>&nbsp; Remove Admin state
+                            </button>
+                            <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Id,member.Username,UserModalFacility);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button">
 
@@ -194,6 +205,7 @@
                                 (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"><i
                                 class="fa fa-search"></i> Search
                         </button>
+
                         <br>
                         <br>
                         <strong>Please note</strong> that if you can not find the user, he is not a member of the de.NBI
@@ -225,6 +237,10 @@
                             <button
                                     (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName'],UserModalFacility);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
                                     class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
+                            </button>
+                             <button
+                                    (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName'],UserModalFacility);addAdmin(addUserModalProjectID,member['user_id'],member['firstName'],member['lastName'],UserModalFacility);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                                    class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
                             </button>
                         </td>
                         <td>***REMOVED******REMOVED***member['firstName']***REMOVED******REMOVED***</td>

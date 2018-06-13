@@ -78,7 +78,8 @@ export class OverviewComponent ***REMOVED***
 
     public updateUserProjects() ***REMOVED***
         this.projects = [];
-        this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
+
+
     ***REMOVED***
 
 
@@ -174,6 +175,7 @@ export class OverviewComponent ***REMOVED***
                 ***REMOVED*** else ***REMOVED***
                     is_pi = true;
                 ***REMOVED***
+
                 this.groupservice.getShortame(group['id']).subscribe(name => ***REMOVED***
                     this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => ***REMOVED***
                         let shortname= name['shortname']
@@ -208,8 +210,6 @@ export class OverviewComponent ***REMOVED***
                         else ***REMOVED***
                             this.projects.push(newProject);
                         ***REMOVED***
-
-
                     ***REMOVED***)
                 ***REMOVED***)
 
@@ -253,15 +253,39 @@ export class OverviewComponent ***REMOVED***
             this.usersModalProjectID = projectid;
             this.usersModalProjectName = projectname;
             this.usersModalProjectMembers = new Array();
-            for (let member of members) ***REMOVED***
-                let member_id = member["id"];
-                let user_id = member["userId"];
-                let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
-                this.usersModalProjectMembers.push(new ProjectMember(user_id, fullName, member_id));
-            ***REMOVED***
+            this.groupservice.getGroupAdminIds(projectid.toString()).subscribe(result => ***REMOVED***
+                let admindIds = result['adminIds']
+                for (let member of members) ***REMOVED***
+                    let member_id = member["id"];
+                    let user_id = member["userId"];
+                    let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
+                    let projectMember = new ProjectMember(user_id, fullName, member_id);
+                    if (admindIds.indexOf(user_id) != -1) ***REMOVED***
+                        projectMember.IsPi = true;
+                    ***REMOVED***
+                    else ***REMOVED***
+                        projectMember.IsPi = false;
+                    ***REMOVED***
+
+
+                    this.usersModalProjectMembers.push(projectMember);
+
+                ***REMOVED***
+            ***REMOVED***)
+
 
         ***REMOVED***);
     ***REMOVED***
+
+     isPi(member:ProjectMember):string***REMOVED***
+
+       if (member.IsPi)***REMOVED***
+           return 'blue'
+       ***REMOVED***
+       else***REMOVED***return 'black'***REMOVED***
+
+    ***REMOVED***
+
 
     public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) ***REMOVED***
         this.getMembesOfTheProject(projectid, projectname);
@@ -341,8 +365,58 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    public removeMember(groupid: number, memberid: number, name: string, facility_id: number) ***REMOVED***
-        this.groupservice.removeMember(groupid, memberid, facility_id).toPromise()
+
+    public addAdmin(groupid: number, userid: number, firstName: string, lastName: string, facility_id: number) ***REMOVED***
+        this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
+            .then(result => ***REMOVED***
+
+                if (result.status == 200) ***REMOVED***
+                    this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+
+                ***REMOVED*** else ***REMOVED***
+                    this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                ***REMOVED***
+            ***REMOVED***).catch(error => ***REMOVED***
+            this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+        ***REMOVED***);
+    ***REMOVED***
+
+
+    public promoteAdmin(groupid: number, userid: number, username: string, facility_id: number) ***REMOVED***
+        this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
+            .then(result => ***REMOVED***
+
+                if (result.status == 200) ***REMOVED***
+                    this.updateNotificaitonModal("Success", username + " promoted to Admin", true, "success");
+
+                ***REMOVED*** else ***REMOVED***
+                    this.updateNotificaitonModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+                ***REMOVED***
+            ***REMOVED***).catch(error => ***REMOVED***
+            this.updateNotificaitonModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+        ***REMOVED***);
+    ***REMOVED***
+
+
+
+
+       public removeAdmin(groupid: number,userid:number, name: string, facility_id: number) ***REMOVED***
+        this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
+            .then(result => ***REMOVED***
+
+                if (result.status == 200) ***REMOVED***
+                    this.updateNotificaitonModal("Success",   name + " was removed as Admin", true, "success");
+
+                ***REMOVED*** else ***REMOVED***
+                    this.updateNotificaitonModal("Failed",   name + " could not be removed as Admin!", true, "danger");
+                ***REMOVED***
+            ***REMOVED***).catch(error => ***REMOVED***
+            this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
+        ***REMOVED***);
+    ***REMOVED***
+
+    public removeMember(groupid: number, memberid: number,userid:number, name: string, facility_id: number) ***REMOVED***
+        this.groupservice.removeMember(groupid, memberid,userid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
