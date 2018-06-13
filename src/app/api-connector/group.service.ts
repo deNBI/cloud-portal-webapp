@@ -102,6 +102,66 @@ export class GroupService {
     }
 
 
+     setName(groupid: string, name: string): Observable<any> {
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('name', name);
+        urlSearchParams.append('groupid', groupid);
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setName/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+
+
+
+    getName(groupid: string): Observable<any> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        return this.http.get(this.settings.getApiBaseURL() + 'group/getName/', {
+            withCredentials: true,
+            params: {groupid: groupid}
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+
+
+         setShortname(groupid: string, shortname: string): Observable<any> {
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('shortname', shortname);
+        urlSearchParams.append('groupid', groupid);
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setShortname/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+
+
+      getShortame(groupid: string): Observable<any> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        return this.http.get(this.settings.getApiBaseURL() + 'group/getShortname/', {
+            withCredentials: true,
+            params: {groupid: groupid}
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+
+
+
     setLifetime(groupid: string, lifetime: string): Observable<any> {
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({

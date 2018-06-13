@@ -174,37 +174,43 @@ export class OverviewComponent {
                 } else {
                     is_pi = true;
                 }
-                this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => {
+                this.groupservice.getShortame(group['id']).subscribe(name => {
+                    this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => {
+                        let shortname= name['shortname']
+                        if(!shortname){
+                            shortname=group['name']
+                        }
 
-                    let newProject = new Project(
-                        group["id"],
-                        group["name"],
-                        group["description"],
-                        dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
-                        dateDayDifference,
-                        is_pi,
-                        is_admin,
-                        [result['Facility'], result['FacilityId']])
-                    let details = result['Details'];
-                    let details_array = [];
-                    for (let detail in details) {
-                        let detail_tuple = [detail, details[detail]];
-                        details_array.push(detail_tuple);
-                    }
-                    newProject.ComputecenterDetails = details_array;
-                    if (is_pi) {
-                        this.groupservice.getLifetime(group['id']).subscribe(result => {
-                            let lifetime = result['lifetime']
-                            console.log(lifetime)
-                            newProject.Lifetime = lifetime;
+                        let newProject = new Project(
+                            group["id"],
+                            shortname,
+                            group["description"],
+                            dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
+                            dateDayDifference,
+                            is_pi,
+                            is_admin,
+                            [result['Facility'], result['FacilityId']])
+                        let details = result['Details'];
+                        let details_array = [];
+                        for (let detail in details) {
+                            let detail_tuple = [detail, details[detail]];
+                            details_array.push(detail_tuple);
+                        }
+                        newProject.ComputecenterDetails = details_array;
+                        if (is_pi) {
+                            this.groupservice.getLifetime(group['id']).subscribe(result => {
+                                let lifetime = result['lifetime']
+                                console.log(lifetime)
+                                newProject.Lifetime = lifetime;
+                                this.projects.push(newProject);
+                            })
+                        }
+                        else {
                             this.projects.push(newProject);
-                        })
-                    }
-                    else {
-                        this.projects.push(newProject);
-                    }
+                        }
 
 
+                    })
                 })
 
 
@@ -215,14 +221,14 @@ export class OverviewComponent {
     }
 
 
-     lifeTimeReached(lifetime:number,running:number):string{
-        if(!lifetime){
+    lifeTimeReached(lifetime: number, running: number): string {
+        if (!lifetime) {
             return "black";
         }
-        else if (lifetime == -1){
+        else if (lifetime == -1) {
             return "blue";
         }
-       return (lifetime * 30 - running) < 0 ? "red" :"black";
+        return (lifetime * 30 - running) < 0 ? "red" : "black";
     }
 
 

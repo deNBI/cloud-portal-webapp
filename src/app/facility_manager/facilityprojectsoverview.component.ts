@@ -68,22 +68,29 @@ export class  FacilityProjectsOverviewComponent {
 
         this.facilityservice.getFacilityAllowedGroups(facility).subscribe(result => {
             for (let group of result) {
-                let dateCreated = new Date(group["createdAt"]);
-                let dateDayDifference = Math.ceil((Math.abs(Date.now() - dateCreated.getTime())) / (1000 * 3600 * 24));
-                let is_pi = false;
-                let is_admin = false;
-                let newProject = new Project(
-                    group["id"],
-                    group["name"],
-                    group["description"],
-                    dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
-                    dateDayDifference,
-                    is_pi,
-                    is_admin,
-                    [result['Facility'], result['FacilityId']]
-                    )
-                newProject.Lifetime=group['lifetime']
-                 this.projects.push(newProject);
+                 this.groupservice.getShortame(group['id']).subscribe(name => {
+
+                     let shortname = name['shortname']
+                     if (!shortname) {
+                         shortname = group['name']
+                     }
+                     let dateCreated = new Date(group["createdAt"]);
+                     let dateDayDifference = Math.ceil((Math.abs(Date.now() - dateCreated.getTime())) / (1000 * 3600 * 24));
+                     let is_pi = false;
+                     let is_admin = false;
+                     let newProject = new Project(
+                         group["id"],
+                         shortname,
+                         group["description"],
+                         dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
+                         dateDayDifference,
+                         is_pi,
+                         is_admin,
+                         [result['Facility'], result['FacilityId']]
+                     )
+                     newProject.Lifetime = group['lifetime']
+                     this.projects.push(newProject);
+                 })
             }
 
 
