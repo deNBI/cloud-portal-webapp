@@ -78,7 +78,8 @@ export class OverviewComponent {
 
     public updateUserProjects() {
         this.projects = [];
-        this.getUserProjects(this.groupsmanager, this.membersmanager, this.useresmanager);
+
+
     }
 
 
@@ -174,6 +175,7 @@ export class OverviewComponent {
                 } else {
                     is_pi = true;
                 }
+
                 this.groupservice.getShortame(group['id']).subscribe(name => {
                     this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => {
                         let shortname= name['shortname']
@@ -208,8 +210,6 @@ export class OverviewComponent {
                         else {
                             this.projects.push(newProject);
                         }
-
-
                     })
                 })
 
@@ -253,15 +253,39 @@ export class OverviewComponent {
             this.usersModalProjectID = projectid;
             this.usersModalProjectName = projectname;
             this.usersModalProjectMembers = new Array();
-            for (let member of members) {
-                let member_id = member["id"];
-                let user_id = member["userId"];
-                let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
-                this.usersModalProjectMembers.push(new ProjectMember(user_id, fullName, member_id));
-            }
+            this.groupservice.getGroupAdminIds(projectid.toString()).subscribe(result => {
+                let admindIds = result['adminIds']
+                for (let member of members) {
+                    let member_id = member["id"];
+                    let user_id = member["userId"];
+                    let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
+                    let projectMember = new ProjectMember(user_id, fullName, member_id);
+                    if (admindIds.indexOf(user_id) != -1) {
+                        projectMember.IsPi = true;
+                    }
+                    else {
+                        projectMember.IsPi = false;
+                    }
+
+
+                    this.usersModalProjectMembers.push(projectMember);
+
+                }
+            })
+
 
         });
     }
+
+     isPi(member:ProjectMember):string{
+
+       if (member.IsPi){
+           return 'blue'
+       }
+       else{return 'black'}
+
+    }
+
 
     public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) {
         this.getMembesOfTheProject(projectid, projectname);
@@ -341,8 +365,58 @@ export class OverviewComponent {
         });
     }
 
-    public removeMember(groupid: number, memberid: number, name: string, facility_id: number) {
-        this.groupservice.removeMember(groupid, memberid, facility_id).toPromise()
+
+    public addAdmin(groupid: number, userid: number, firstName: string, lastName: string, facility_id: number) {
+        this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
+            .then(result => {
+
+                if (result.status == 200) {
+                    this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+
+                } else {
+                    this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                }
+            }).catch(error => {
+            this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+        });
+    }
+
+
+    public promoteAdmin(groupid: number, userid: number, username: string, facility_id: number) {
+        this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
+            .then(result => {
+
+                if (result.status == 200) {
+                    this.updateNotificaitonModal("Success", username + " promoted to Admin", true, "success");
+
+                } else {
+                    this.updateNotificaitonModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+                }
+            }).catch(error => {
+            this.updateNotificaitonModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+        });
+    }
+
+
+
+
+       public removeAdmin(groupid: number,userid:number, name: string, facility_id: number) {
+        this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
+            .then(result => {
+
+                if (result.status == 200) {
+                    this.updateNotificaitonModal("Success",   name + " was removed as Admin", true, "success");
+
+                } else {
+                    this.updateNotificaitonModal("Failed",   name + " could not be removed as Admin!", true, "danger");
+                }
+            }).catch(error => {
+            this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
+        });
+    }
+
+    public removeMember(groupid: number, memberid: number,userid:number, name: string, facility_id: number) {
+        this.groupservice.removeMember(groupid, memberid,userid, facility_id).toPromise()
             .then(result => {
 
                 if (result.status == 200) {

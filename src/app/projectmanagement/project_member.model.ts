@@ -2,14 +2,23 @@ export class ProjectMember {
   private _Id: number;
   private _MemberId: number;
   private _Username: string;
+  private _IsPi: boolean;
 
 
   constructor(Id: number, Username: string, MemberId: number) {
     this._Id = Id;
     this._Username = Username;
     this._MemberId = MemberId;
+
   }
 
+
+  get IsPi():boolean{
+    return this._IsPi;
+  }
+  set IsPi(value:boolean){
+    this._IsPi=value;
+  }
   get Id(): number {
     return this._Id;
   }
