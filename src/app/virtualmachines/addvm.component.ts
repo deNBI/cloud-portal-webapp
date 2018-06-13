@@ -25,6 +25,7 @@ import ***REMOVED***Application***REMOVED*** from "../applications/application.m
 import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
+import ***REMOVED***environment***REMOVED*** from "../../environments/environment";
 
 @Component(***REMOVED***
     selector: 'new-vm',
@@ -52,6 +53,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     optional_params=false;
     diskspace:number=0;
     projects: string[] = new Array();
+    FREEMIUM_ID=environment.freemium_project_id;
     private checkStatusTimeout: number = 5000;
 
 
