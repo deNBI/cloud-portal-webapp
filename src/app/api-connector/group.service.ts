@@ -102,6 +102,66 @@ export class GroupService ***REMOVED***
     ***REMOVED***
 
 
+     setName(groupid: string, name: string): Observable<any> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        urlSearchParams.append('name', name);
+        urlSearchParams.append('groupid', groupid);
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setName/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    ***REMOVED***
+
+
+
+    getName(groupid: string): Observable<any> ***REMOVED***
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        return this.http.get(this.settings.getApiBaseURL() + 'group/getName/', ***REMOVED***
+            withCredentials: true,
+            params: ***REMOVED***groupid: groupid***REMOVED***
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    ***REMOVED***
+
+
+         setShortname(groupid: string, shortname: string): Observable<any> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        urlSearchParams.append('shortname', shortname);
+        urlSearchParams.append('groupid', groupid);
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setShortname/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    ***REMOVED***
+
+
+      getShortame(groupid: string): Observable<any> ***REMOVED***
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        return this.http.get(this.settings.getApiBaseURL() + 'group/getShortname/', ***REMOVED***
+            withCredentials: true,
+            params: ***REMOVED***groupid: groupid***REMOVED***
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    ***REMOVED***
+
+
+
     setLifetime(groupid: string, lifetime: string): Observable<any> ***REMOVED***
         let urlSearchParams = new URLSearchParams();
         let header = new Headers(***REMOVED***

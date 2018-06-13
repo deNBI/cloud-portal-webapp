@@ -174,37 +174,43 @@ export class OverviewComponent ***REMOVED***
                 ***REMOVED*** else ***REMOVED***
                     is_pi = true;
                 ***REMOVED***
-                this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => ***REMOVED***
+                this.groupservice.getShortame(group['id']).subscribe(name => ***REMOVED***
+                    this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => ***REMOVED***
+                        let shortname= name['shortname']
+                        if(!shortname)***REMOVED***
+                            shortname=group['name']
+                        ***REMOVED***
 
-                    let newProject = new Project(
-                        group["id"],
-                        group["name"],
-                        group["description"],
-                        dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
-                        dateDayDifference,
-                        is_pi,
-                        is_admin,
-                        [result['Facility'], result['FacilityId']])
-                    let details = result['Details'];
-                    let details_array = [];
-                    for (let detail in details) ***REMOVED***
-                        let detail_tuple = [detail, details[detail]];
-                        details_array.push(detail_tuple);
-                    ***REMOVED***
-                    newProject.ComputecenterDetails = details_array;
-                    if (is_pi) ***REMOVED***
-                        this.groupservice.getLifetime(group['id']).subscribe(result => ***REMOVED***
-                            let lifetime = result['lifetime']
-                            console.log(lifetime)
-                            newProject.Lifetime = lifetime;
+                        let newProject = new Project(
+                            group["id"],
+                            shortname,
+                            group["description"],
+                            dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
+                            dateDayDifference,
+                            is_pi,
+                            is_admin,
+                            [result['Facility'], result['FacilityId']])
+                        let details = result['Details'];
+                        let details_array = [];
+                        for (let detail in details) ***REMOVED***
+                            let detail_tuple = [detail, details[detail]];
+                            details_array.push(detail_tuple);
+                        ***REMOVED***
+                        newProject.ComputecenterDetails = details_array;
+                        if (is_pi) ***REMOVED***
+                            this.groupservice.getLifetime(group['id']).subscribe(result => ***REMOVED***
+                                let lifetime = result['lifetime']
+                                console.log(lifetime)
+                                newProject.Lifetime = lifetime;
+                                this.projects.push(newProject);
+                            ***REMOVED***)
+                        ***REMOVED***
+                        else ***REMOVED***
                             this.projects.push(newProject);
-                        ***REMOVED***)
-                    ***REMOVED***
-                    else ***REMOVED***
-                        this.projects.push(newProject);
-                    ***REMOVED***
+                        ***REMOVED***
 
 
+                    ***REMOVED***)
                 ***REMOVED***)
 
 
@@ -215,14 +221,14 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-     lifeTimeReached(lifetime:number,running:number):string***REMOVED***
-        if(!lifetime)***REMOVED***
+    lifeTimeReached(lifetime: number, running: number): string ***REMOVED***
+        if (!lifetime) ***REMOVED***
             return "black";
         ***REMOVED***
-        else if (lifetime == -1)***REMOVED***
+        else if (lifetime == -1) ***REMOVED***
             return "blue";
         ***REMOVED***
-       return (lifetime * 30 - running) < 0 ? "red" :"black";
+        return (lifetime * 30 - running) < 0 ? "red" : "black";
     ***REMOVED***
 
 

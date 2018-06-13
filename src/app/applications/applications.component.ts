@@ -51,6 +51,7 @@ export class ApplicationsComponent ***REMOVED***
                 private membersmanager: MembersManager,
                 private resourceManager: ResourcesManager,
                 private groupservice: GroupService) ***REMOVED***
+
         this.getUserApplications();
         this.getAllApplications(usersmanager);
         this.getApplicationStatus();
@@ -248,7 +249,7 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***
 
     public lifeTimeReached(lifetime:number,running:number):string***REMOVED***
-       return (lifetime - running) < 0 ? "red" :"black";
+       return (lifetime * 30  - running) < 0 ? "red" :"black";
     ***REMOVED***
 
     public getIdByStatus(name: string): number ***REMOVED***
@@ -275,19 +276,22 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***
 
 
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project,numberofVms,diskspace,lifetime) ***REMOVED***
+    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project,numberofVms,diskspace,lifetime,longname) ***REMOVED***
 
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
+        let re = /[-:. ,]/gi
+        let  shortNameDate=name + (new Date(Date.now()).toLocaleString().replace(re,''))
         this.membersmanager.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
             .then(member_raw => ***REMOVED***
                     let member = member_raw.json();
                     manager_member_id = member["id"];
                     manager_member_user_id = member["userId"];
                     // create new group
-                    return this.groupsmanager.createGroup(name, description).toPromise();
+
+                    return this.groupsmanager.createGroup(shortNameDate, description).toPromise();
                 ***REMOVED***
             ).then(group_raw => ***REMOVED***
             let group = group_raw.json();
@@ -306,6 +310,8 @@ export class ApplicationsComponent ***REMOVED***
             this.groupsmanager.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
             if (compute_center != 'undefined')***REMOVED***
             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();***REMOVED***
+            this.groupservice.setShortname(new_group_id.toString(),name).subscribe();
+            this.groupservice.setName(new_group_id.toString(),longname).subscribe();
             this.groupservice.setNumberOfVms(new_group_id.toString(),numberofVms.toString()).subscribe();
             this.groupservice.setDescription(new_group_id.toString(),description).subscribe();
             this.groupservice.setLifetime(new_group_id.toString(),lifetime.toString()).subscribe();
