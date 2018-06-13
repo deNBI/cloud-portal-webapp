@@ -52,6 +52,7 @@ export class VirtualMachineComponent implements OnInit {
     optional_params=false;
     diskspace:number=0;
     projects: string[] = new Array();
+    FREEMIUM_ID=10392;
     private checkStatusTimeout: number = 5000;
 
 
