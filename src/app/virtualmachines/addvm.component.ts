@@ -25,6 +25,7 @@ import {Application} from "../applications/application.model";
 import {keyService} from "../api-connector/key.service";
 import {Project} from "../projectmanagement/project.model";
 import {GroupService} from "../api-connector/group.service";
+import {environment} from "../../environments/environment";
 
 @Component({
     selector: 'new-vm',
@@ -52,6 +53,7 @@ export class VirtualMachineComponent implements OnInit {
     optional_params=false;
     diskspace:number=0;
     projects: string[] = new Array();
+    FREEMIUM_ID=environment.freemium_project_id;
     private checkStatusTimeout: number = 5000;
 
 
