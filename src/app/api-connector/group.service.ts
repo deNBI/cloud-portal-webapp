@@ -123,7 +123,7 @@ export class GroupService {
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
         });
-        return this.http.get(this.settings.getApiBaseURL() + 'group/getName', {
+        return this.http.get(this.settings.getApiBaseURL() + 'group/getName/', {
             withCredentials: true,
             params: {groupid: groupid}
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
@@ -152,7 +152,7 @@ export class GroupService {
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
         });
-        return this.http.get(this.settings.getApiBaseURL() + 'group/getShortname', {
+        return this.http.get(this.settings.getApiBaseURL() + 'group/getShortname/', {
             withCredentials: true,
             params: {groupid: groupid}
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
