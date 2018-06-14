@@ -15,6 +15,8 @@ import {SpecialHardware} from "./special_hardware.model";
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {ResourcesManager} from "../perun-connector/resources_manager";
 import {GroupService} from "../api-connector/group.service";
+import  * as moment from 'moment';
+
 
 @Component({
     templateUrl: 'applications.component.html',
@@ -248,8 +250,11 @@ export class ApplicationsComponent {
         return s;
     }
 
-    public lifeTimeReached(lifetime:number,running:number):string{
-       return (lifetime * 30  - running) < 0 ? "red" :"black";
+    public lifeTimeReached(lifetime:number,running:number,status_changed_string:string):string{
+       let status_changed=new Date(status_changed_string);
+      let LifetimeDays = Math.ceil(Math.abs(moment(status_changed).add(lifetime, 'months').toDate().getTime() - status_changed.getTime())) / (1000 * 3600 * 24)
+
+       return (LifetimeDays  - running) < 0 ? "red" :"black";
     }
 
     public getIdByStatus(name: string): number {

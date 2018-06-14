@@ -41,7 +41,7 @@
                         </thead>
                         <tbody>
                         <tr *ngFor="let project of projects"
-                            [ngStyle]="{'color':lifeTimeReached(project.Lifetime,project.DaysRunning)}">
+                            [ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}">
                             <td>{{ project.Id }}</td>
                             <td>{{ project.Name }}</td>
                             <td>{{ project.Description }}</td>
@@ -49,7 +49,7 @@
 
                             <td>{{ project.DateCreated }}</td>
                             <td>{{ project.DaysRunning }}</td>
-                            <td>{{project.Lifetime * 30}}</td>
+                            <td>{{project.LifetimeDays}}</td>
                             <td>
                                 <button type="button" class="btn btn-secondary" data-toggle="modal"
                                         (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "

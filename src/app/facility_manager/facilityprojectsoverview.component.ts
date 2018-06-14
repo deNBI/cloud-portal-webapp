@@ -16,6 +16,7 @@ import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
 import {FacilityService} from "../api-connector/facility.service";
 import {FormsModule} from '@angular/forms';
+import  * as moment from 'moment';
 
 @Component({
     templateUrl: 'facilityprojectsoverview.component.html',
@@ -88,7 +89,14 @@ export class  FacilityProjectsOverviewComponent {
                          is_admin,
                          [result['Facility'], result['FacilityId']]
                      )
-                     newProject.Lifetime = group['lifetime']
+                       newProject.Lifetime = group['lifetime']
+                    if (newProject.Lifetime != -1){
+                    newProject.LifetimeDays=Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime,'months').toDate().getTime()-dateCreated.getTime()))/(1000*3600*24)
+
+                        }
+                        else{
+                        newProject.LifetimeDays=-1;
+                    }
                      this.projects.push(newProject);
                  })
             }
@@ -105,7 +113,7 @@ export class  FacilityProjectsOverviewComponent {
         if (lifetime == -1){
             return "blue";
         }
-       return (lifetime * 30 - running) < 0 ? "red" :"black";
+       return (lifetime - running) < 0 ? "red" :"black";
     }
     sendMailToFacility(facility: number,subject:string,message:string){
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result =>{
