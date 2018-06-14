@@ -101,7 +101,7 @@ export class  FacilityProjectsOverviewComponent {
     }
 
     lifeTimeReached(lifetime:number,running:number):string{
-        console.log(lifetime)
+
         if (lifetime == -1){
             return "blue";
         }

@@ -3,7 +3,7 @@ import {VoService} from "../api-connector/vo.service";
 import {Project} from "../projectmanagement/project.model";
 import {ProjectMember} from "../projectmanagement/project_member.model";
 import {GroupService} from "../api-connector/group.service";
-
+import  * as moment from 'moment';
 
 @Component({
     selector: 'voOverview',
@@ -90,8 +90,15 @@ export class VoOverviewComponent {
                         is_admin,
                         [result['Facility'], result['FacilityId']]
                     )
-                    newProject.Lifetime = group['lifetime']
-                    this.projects.push(newProject);
+                     newProject.Lifetime = group['lifetime']
+                    if (newProject.Lifetime != -1){
+                    newProject.LifetimeDays=Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime,'months').toDate().getTime()-dateCreated.getTime()))/(1000*3600*24)
+
+                        }
+                        else{
+                        newProject.LifetimeDays=-1;
+                    }
+                        this.projects.push(newProject);
                 })
             }
 
@@ -101,12 +108,12 @@ export class VoOverviewComponent {
 
     }
 
-    lifeTimeReached(lifetime: number, running: number): string {
-        console.log(lifetime)
-        if (lifetime == -1) {
+    lifeTimeReached(lifetimeDays: number, running: number): string {
+
+        if (lifetimeDays == -1) {
             return "blue";
         }
-        return (lifetime * 30 - running) < 0 ? "red" : "black";
+        return (lifetimeDays - running) < 0 ? "red" : "black";
     }
 
     getMembesOfTheProject(projectid: number, projectname: string) {

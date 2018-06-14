@@ -12,6 +12,7 @@ export class Project {
   private _Description: string;
   private _DateCreated: string;
   private _DaysRunning: number;
+  private _LifetimeDays: number;
   private _Lifetime: number;
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
@@ -33,6 +34,12 @@ export class Project {
 
 //todo exdend with additional information
 
+  get LifetimeDays():number{
+    return this._LifetimeDays
+  }
+   set LifetimeDays(value:number){
+    this._LifetimeDays=value;
+  }
   get Lifetime():number{
     return this._Lifetime;
   }

@@ -70,7 +70,7 @@ export class ClientOverviewComponent implements OnInit {
   checkClient(host: string, port: string): void {
     if (host && port) {
       this.clientservice.checkClient(host, port).subscribe(data => {
-        console.log(data.text());
+
         if (data.text() == "false") {
           this.checkStatus = 'No Connection';
         }
@@ -79,7 +79,7 @@ export class ClientOverviewComponent implements OnInit {
         }
         else {
           this.checkStatus = "check failed";
-          console.log(data.text())
+
         }
 
       });
@@ -91,14 +91,14 @@ export class ClientOverviewComponent implements OnInit {
 
     if(host &&port && location){
     this.clientservice.postClient(host, port, location).subscribe(data => {
-      console.log(data.text());
+
       this.getClientsChecked();
     });}
   }
 
   deleteClient(host: string, port: string, location: string): void {
     this.clientservice.deleteClient(host, port, location).subscribe(data => {
-      console.log(data.text());
+
       this.getClientsChecked();
     });
   }

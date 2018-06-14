@@ -202,7 +202,7 @@ export class OverviewComponent {
                         if (is_pi) {
                             this.groupservice.getLifetime(group['id']).subscribe(result => {
                                 let lifetime = result['lifetime']
-                                console.log(lifetime)
+
                                 newProject.Lifetime = lifetime;
                                 this.projects.push(newProject);
                             })
