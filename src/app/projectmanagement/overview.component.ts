@@ -87,7 +87,7 @@ export class OverviewComponent ***REMOVED***
         this.userservice.setUserFacilityPassword(facility).subscribe(result => ***REMOVED***
             result = result.json()
             for (let key of details) ***REMOVED***
-                if (key[0] == 'Email') ***REMOVED***
+                if (key[0] == 'Support') ***REMOVED***
                     this.passwordModalEmail = key[1];
                 ***REMOVED***
             ***REMOVED***
