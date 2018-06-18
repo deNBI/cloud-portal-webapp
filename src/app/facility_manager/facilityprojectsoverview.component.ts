@@ -16,6 +16,7 @@ import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.servi
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
+import  * as moment from 'moment';
 
 @Component(***REMOVED***
     templateUrl: 'facilityprojectsoverview.component.html',
@@ -88,7 +89,14 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
                          is_admin,
                          [result['Facility'], result['FacilityId']]
                      )
-                     newProject.Lifetime = group['lifetime']
+                       newProject.Lifetime = group['lifetime']
+                    if (newProject.Lifetime != -1)***REMOVED***
+                    newProject.LifetimeDays=Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime,'months').toDate().getTime()-dateCreated.getTime()))/(1000*3600*24)
+
+                        ***REMOVED***
+                        else***REMOVED***
+                        newProject.LifetimeDays=-1;
+                    ***REMOVED***
                      this.projects.push(newProject);
                  ***REMOVED***)
             ***REMOVED***
@@ -101,11 +109,11 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
     ***REMOVED***
 
     lifeTimeReached(lifetime:number,running:number):string***REMOVED***
-        console.log(lifetime)
+
         if (lifetime == -1)***REMOVED***
             return "blue";
         ***REMOVED***
-       return (lifetime * 30 - running) < 0 ? "red" :"black";
+       return (lifetime - running) < 0 ? "red" :"black";
     ***REMOVED***
     sendMailToFacility(facility: number,subject:string,message:string)***REMOVED***
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result =>***REMOVED***

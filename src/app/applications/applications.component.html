@@ -279,7 +279,7 @@
                         <tbody>
                         <ng-container *ngFor="let application of all_applications" >
                             <ng-container *ngIf="application.Status != 1" >
-                                <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning)***REMOVED***">
+                                <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)***REMOVED***">
                                     <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>

@@ -16,7 +16,7 @@ export class VoGuardService implements CanActivate ***REMOVED***
     return new Promise((resolve, reject) => ***REMOVED***
       this.voservice.isVo().toPromise()
         .then(result => ***REMOVED***
-            console.log(result)
+
           let res = result.json();
           if (res['Is_Vo_Manager'].toString() == 'true')***REMOVED***
             return resolve(true)***REMOVED***

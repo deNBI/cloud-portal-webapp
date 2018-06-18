@@ -15,6 +15,8 @@ import ***REMOVED***environment***REMOVED*** from '../../environments/environmen
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
+import  * as moment from 'moment';
+
 
 @Component(***REMOVED***
     templateUrl: 'overview.component.html',
@@ -202,8 +204,15 @@ export class OverviewComponent ***REMOVED***
                         if (is_pi) ***REMOVED***
                             this.groupservice.getLifetime(group['id']).subscribe(result => ***REMOVED***
                                 let lifetime = result['lifetime']
-                                console.log(lifetime)
+
                                 newProject.Lifetime = lifetime;
+                                if (newProject.Lifetime != -1) ***REMOVED***
+                                    newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - dateCreated.getTime())) / (1000 * 3600 * 24)
+
+                                ***REMOVED***
+                                else ***REMOVED***
+                                    newProject.LifetimeDays = -1;
+                                ***REMOVED***
                                 this.projects.push(newProject);
                             ***REMOVED***)
                         ***REMOVED***
@@ -223,12 +232,12 @@ export class OverviewComponent ***REMOVED***
 
     lifeTimeReached(lifetime: number, running: number): string ***REMOVED***
         if (!lifetime) ***REMOVED***
-            return "black";
+            return "red";
         ***REMOVED***
         else if (lifetime == -1) ***REMOVED***
             return "blue";
         ***REMOVED***
-        return (lifetime * 30 - running) < 0 ? "red" : "black";
+        return (lifetime - running) < 0 ? "red" : "black";
     ***REMOVED***
 
 

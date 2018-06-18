@@ -3,7 +3,7 @@ import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
 import ***REMOVED***ProjectMember***REMOVED*** from "../projectmanagement/project_member.model";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
-
+import  * as moment from 'moment';
 
 @Component(***REMOVED***
     selector: 'voOverview',
@@ -90,8 +90,15 @@ export class VoOverviewComponent ***REMOVED***
                         is_admin,
                         [result['Facility'], result['FacilityId']]
                     )
-                    newProject.Lifetime = group['lifetime']
-                    this.projects.push(newProject);
+                     newProject.Lifetime = group['lifetime']
+                    if (newProject.Lifetime != -1)***REMOVED***
+                    newProject.LifetimeDays=Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime,'months').toDate().getTime()-dateCreated.getTime()))/(1000*3600*24)
+
+                        ***REMOVED***
+                        else***REMOVED***
+                        newProject.LifetimeDays=-1;
+                    ***REMOVED***
+                        this.projects.push(newProject);
                 ***REMOVED***)
             ***REMOVED***
 
@@ -101,12 +108,12 @@ export class VoOverviewComponent ***REMOVED***
 
     ***REMOVED***
 
-    lifeTimeReached(lifetime: number, running: number): string ***REMOVED***
-        console.log(lifetime)
-        if (lifetime == -1) ***REMOVED***
+    lifeTimeReached(lifetimeDays: number, running: number): string ***REMOVED***
+
+        if (lifetimeDays == -1) ***REMOVED***
             return "blue";
         ***REMOVED***
-        return (lifetime * 30 - running) < 0 ? "red" : "black";
+        return (lifetimeDays - running) < 0 ? "red" : "black";
     ***REMOVED***
 
     getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***

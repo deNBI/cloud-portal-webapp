@@ -70,7 +70,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
   checkClient(host: string, port: string): void ***REMOVED***
     if (host && port) ***REMOVED***
       this.clientservice.checkClient(host, port).subscribe(data => ***REMOVED***
-        console.log(data.text());
+
         if (data.text() == "false") ***REMOVED***
           this.checkStatus = 'No Connection';
         ***REMOVED***
@@ -79,7 +79,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***
         else ***REMOVED***
           this.checkStatus = "check failed";
-          console.log(data.text())
+
         ***REMOVED***
 
       ***REMOVED***);
@@ -91,14 +91,14 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
 
     if(host &&port && location)***REMOVED***
     this.clientservice.postClient(host, port, location).subscribe(data => ***REMOVED***
-      console.log(data.text());
+
       this.getClientsChecked();
     ***REMOVED***);***REMOVED***
   ***REMOVED***
 
   deleteClient(host: string, port: string, location: string): void ***REMOVED***
     this.clientservice.deleteClient(host, port, location).subscribe(data => ***REMOVED***
-      console.log(data.text());
+
       this.getClientsChecked();
     ***REMOVED***);
   ***REMOVED***

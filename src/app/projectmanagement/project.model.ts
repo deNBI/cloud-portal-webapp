@@ -12,6 +12,7 @@ export class Project ***REMOVED***
   private _Description: string;
   private _DateCreated: string;
   private _DaysRunning: number;
+  private _LifetimeDays: number;
   private _Lifetime: number;
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
@@ -33,6 +34,12 @@ export class Project ***REMOVED***
 
 //todo exdend with additional information
 
+  get LifetimeDays():number***REMOVED***
+    return this._LifetimeDays
+  ***REMOVED***
+   set LifetimeDays(value:number)***REMOVED***
+    this._LifetimeDays=value;
+  ***REMOVED***
   get Lifetime():number***REMOVED***
     return this._Lifetime;
   ***REMOVED***
