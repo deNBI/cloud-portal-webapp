@@ -279,7 +279,7 @@
                         <tbody>
                         <ng-container *ngFor="let application of all_applications" >
                             <ng-container *ngIf="application.Status != 1" >
-                                <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning)}">
+                                <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)}">
                                     <td>{{ application.Name }}</td>
                                     <td>{{application.Shortname}}</td>
                                     <td>{{ application.DateSubmitted }}</td>
