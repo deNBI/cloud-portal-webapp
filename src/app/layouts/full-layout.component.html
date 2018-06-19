@@ -27,19 +27,22 @@
                     <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications']"><i
                             class="icon-drawer"></i> Applications</a>
                 </li>
-                <li class="nav-item nav-dropdown {{navbar_state}}" >
-                    <a class="nav-link nav-dropdown-toggle" type="button" (click)="toggle_new_application();" ><i
-                                    class="icon-pencil"></i> New Application</a>
+                <li class="nav-item nav-dropdown {{navbar_state}}">
+                    <a class="nav-link nav-dropdown-toggle" type="button" (click)="toggle_new_application();"><i
+                            class="icon-pencil"></i> New Application</a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a class="nav-link" routerLinkActive="active"
-                               [routerLink]="['/applications/newApplication']"><i
-                                    class="icon-pencil"></i> Cloud Project </a></li>
+                               [routerLink]="['/applications/newCloudApplication']">
+                                <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                   title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i>
+                                Cloud Project </a></li>
                         <li class="nav-item">
                             <a class="nav-link" routerLinkActive="active"
                                [routerLink]="['/applications/newSingleVmApplication']"><i
-                                        class="icon-question" data-toggle="tooltip" data-placement="auto"
-                                        title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i> Single VMs </a></li>
+                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i>
+                                Single VMs </a></li>
 
                     </ul>
 

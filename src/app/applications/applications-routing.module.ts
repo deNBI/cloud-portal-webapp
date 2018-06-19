@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ApplicationsComponent } from './applications.component';
-import { AddApplicationComponent } from './addapplication.component';
+
 import {AddsinglevmComponent} from "./addsinglevm.component";
+import {AddcloudapplicationComponent} from "./addcloudapplication.component";
 
 
 const routes: Routes = [
@@ -16,8 +17,8 @@ const routes: Routes = [
 
   },
   {
-    path: 'newApplication',
-    component: AddApplicationComponent,
+    path: 'newCloudApplication',
+    component: AddcloudapplicationComponent,
     data: {
       title: 'New Application'
     }
