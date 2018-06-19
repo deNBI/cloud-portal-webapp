@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ApplicationsComponent } from './applications.component';
 import { AddApplicationComponent } from './addapplication.component';
+import {AddsinglevmComponent} from "./addsinglevm.component";
 
 
 const routes: Routes = [
@@ -22,6 +23,15 @@ const routes: Routes = [
     }
 
   },
+    {
+        path: 'newSingleVmApplication',
+    component: AddsinglevmComponent,
+    data: {
+      title: 'New Application'
+    }
+
+
+    }
 
 ];
 

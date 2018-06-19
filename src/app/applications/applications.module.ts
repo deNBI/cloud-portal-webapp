@@ -13,6 +13,7 @@ import {FlavorDetailComponent} from '../virtualmachines/flavordetail.component';
 import {ClientOverviewComponent} from "../virtualmachines/vmClients.component";
 import {UserinfoComponent} from "../userinfo/userinfo.component";
 import {VmOverviewComponent} from "../virtualmachines/vmOverview.component";
+import {AddsinglevmComponent} from "./addsinglevm.component";
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import {VmOverviewComponent} from "../virtualmachines/vmOverview.component";
   declarations: [
     ApplicationsComponent,
     AddApplicationComponent,
+      AddsinglevmComponent,
   ]
 })
 export class ApplicationsModule { }
