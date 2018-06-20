@@ -15,7 +15,7 @@ import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
-import  * as moment from 'moment';
+import * as moment from 'moment';
 
 
 @Component({
@@ -180,9 +180,9 @@ export class OverviewComponent {
 
                 this.groupservice.getShortame(group['id']).subscribe(name => {
                     this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => {
-                        let shortname= name['shortname']
-                        if(!shortname){
-                            shortname=group['name']
+                        let shortname = name['shortname']
+                        if (!shortname) {
+                            shortname = group['name']
                         }
 
                         let newProject = new Project(
@@ -286,12 +286,14 @@ export class OverviewComponent {
         });
     }
 
-     isPi(member:ProjectMember):string{
+    isPi(member: ProjectMember): string {
 
-       if (member.IsPi){
-           return 'blue'
-       }
-       else{return 'black'}
+        if (member.IsPi) {
+            return 'blue'
+        }
+        else {
+            return 'black'
+        }
 
     }
 
@@ -367,27 +369,62 @@ export class OverviewComponent {
                     this.updateNotificaitonModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
 
                 } else {
+                    console.log(result.json())
+
                     this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
                 }
             }).catch(error => {
-            this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+            if (error.json()['name'] == 'AlreadyMemberException') {
+                this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
+            }
+
+            else {
+                this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+            }
         });
     }
 
 
-    public addAdmin(groupid: number, userid: number, firstName: string, lastName: string, facility_id: number) {
-        this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
-            .then(result => {
+    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id: number) {
+        this.groupservice.addMember(groupid, memberid, facility_id).toPromise().then(result => {
+            this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
+                .then(result => {
 
-                if (result.status == 200) {
-                    this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+                    if (result.status == 200) {
+                        this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
 
-                } else {
+                    } else {
+                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                    }
+                }).catch(error => {
+                if (error.json()['name'] == 'AlreadyAdminException') {
+                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                }
+                else {
                     this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                 }
-            }).catch(error => {
-            this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
-        });
+            })
+        }).catch(error => {
+            this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
+                .then(result => {
+
+                    if (result.status == 200) {
+                        this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+
+                    } else {
+                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                    }
+                }).catch(error => {
+                if (error.json()['name'] == 'AlreadyAdminException') {
+                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                }
+                else {
+                    this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                }
+            })
+
+
+        })
     }
 
 
@@ -407,25 +444,23 @@ export class OverviewComponent {
     }
 
 
-
-
-       public removeAdmin(groupid: number,userid:number, name: string, facility_id: number) {
+    public removeAdmin(groupid: number, userid: number, name: string, facility_id: number) {
         this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
             .then(result => {
 
                 if (result.status == 200) {
-                    this.updateNotificaitonModal("Success",   name + " was removed as Admin", true, "success");
+                    this.updateNotificaitonModal("Success", name + " was removed as Admin", true, "success");
 
                 } else {
-                    this.updateNotificaitonModal("Failed",   name + " could not be removed as Admin!", true, "danger");
+                    this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
                 }
             }).catch(error => {
             this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
         });
     }
 
-    public removeMember(groupid: number, memberid: number,userid:number, name: string, facility_id: number) {
-        this.groupservice.removeMember(groupid, memberid,userid, facility_id).toPromise()
+    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id: number) {
+        this.groupservice.removeMember(groupid, memberid, userid, facility_id).toPromise()
             .then(result => {
 
                 if (result.status == 200) {
