@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ApplicationsComponent } from './applications.component';
-import { AddApplicationComponent } from './addapplication.component';
 import { ApplicationsRoutingModule } from './applications-routing.module';
 import {CommonModule} from "@angular/common";
 import {FormsModule} from '@angular/forms';
@@ -13,6 +12,8 @@ import {FlavorDetailComponent} from '../virtualmachines/flavordetail.component';
 import {ClientOverviewComponent} from "../virtualmachines/vmClients.component";
 import {UserinfoComponent} from "../userinfo/userinfo.component";
 import {VmOverviewComponent} from "../virtualmachines/vmOverview.component";
+import {AddsinglevmComponent} from "./addsinglevm.component";
+import {AddcloudapplicationComponent} from "./addcloudapplication.component";
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import {VmOverviewComponent} from "../virtualmachines/vmOverview.component";
   ],
   declarations: [
     ApplicationsComponent,
-    AddApplicationComponent,
+      AddsinglevmComponent,
+      AddcloudapplicationComponent,
   ]
 })
 export class ApplicationsModule { }
