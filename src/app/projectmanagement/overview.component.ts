@@ -89,7 +89,7 @@ export class OverviewComponent {
         this.userservice.setUserFacilityPassword(facility).subscribe(result => {
             result = result.json()
             for (let key of details) {
-                if (key[0] == 'Email') {
+                if (key[0] == 'Support') {
                     this.passwordModalEmail = key[1];
                 }
             }

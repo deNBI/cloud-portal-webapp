@@ -90,13 +90,13 @@
                             </div>
 
                         </div>
-                        <div class="form-group row" *ngIf="selectedProjectVmsMax || selectedProjectVmsMax == 0">
+                        <div class="form-group row" *ngIf="(selectedProjectVmsMax || selectedProjectVmsMax == 0) && selectedProject && selectedProject[1] != FREEMIUM_ID">
                             <label class="col-md-3 form-control-label"><strong>Vms in use</strong></label>
                             <div class="col-md-6">
                                 <strong>{{selectedProjectVmsUsed}} / {{selectedProjectVmsMax}} Vms</strong>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID" class="form-group row">
 
                             <label class="col-md-3 form-control-label"><strong>Optional parameters</strong></label>
                              <div class="col-md-6">
@@ -104,7 +104,7 @@
                                 <strong *ngIf="!optional_params">Show</strong><strong *ngIf="optional_params">Hide</strong>
                             </button></div>
                         </div>
-                        <div class="form-group row" *ngIf="optional_params">
+                        <div  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params"  class="form-group row" >
 
                             <label class="col-md-3 form-control-label">Storage</label>
 
