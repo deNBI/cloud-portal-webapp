@@ -4,7 +4,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <strong>New Application</strong>
+                    <strong>New Single Vm Application</strong>
                     – Form
                 </div>
                 <div class="card-body">
@@ -12,9 +12,32 @@
                         <strong>Please be aware:</strong> Only applications submitted by a principal investigator of a
                         german university or research facility will be accepted!
                     </div>
+                    <div class="alert alert-info">
+                        This project mode is a beta version. Virtual machines might get lost or can not be
+                        started
+                        temporarily.
+                    </div>
+
                     <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
                         <div class="form-group row">
                             <h5 class="col-md-6 form-control-label">General Information</h5>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4">
+                                <strong>Single Virtual Machines Project
+                                     <i
+                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    title="You will be able to start virtual machines through the portal with minimal
+                                    effort and access them via ssh. This project type does not demand knowlegde in cloud
+                                    computing."></i>
+                                </strong>
+
+                            </label>
+                            <div class="col-md-8">
+                                This type of project allows you to start virtual machines with SSH access.
+
+
+                            </div>
                         </div>
                         <div class="form-group row"
                              [ngClass]="***REMOVED***
@@ -32,7 +55,6 @@
                                 <span class="help-block">Name your project.</span>
                             </div>
                         </div>
-
 
 
                         <div class="form-group row  "
@@ -96,181 +118,13 @@ are going to use."></i></strong></label>
                                 <span class="help-block">How long would you like to run this project?</span>
                             </div>
                         </div>
-                        <br>
-                        <br>
-                        <div class="form-group row">
-                            <h5 class="col-md-12 form-control-label">Choose the type of your Project</h5>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-6 form-control-label"><strong>Single Virtual Machines <i
-                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
-                                    title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i></strong><br>
-                                This type of project allows you to start virtual machines with SSH access.
-                            </label>
-                            <div class="col-md-6">
-                                <label>
-                                    <input type="checkbox"
-                                           [(ngModel)]="showjustvm" name="showjustvm" (change)="chosenProjectType(1)">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="alert alert-info">
-                            This project mode is a beta version. Virtual machines might get lost or can not be started
-                            temporarily.
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-6 form-control-label"><strong>Cloud Project <i class="icon-question"
-                                                                                                data-toggle="tooltip"
-                                                                                                data-placement="auto"
-                                                                                                title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i></strong>
-                                <br>
-                                A cloud project is represented by an OpenStack project which allows you to manage your
-                                virtual
-                                machines, storage and network configurations.
-                            </label>
-                            <div class="col-md-6">
-                                <label>
-                                    <input type="checkbox"
-                                           [(ngModel)]="project_application_openstack_project"
-                                           name="project_application_openstack_project"
-                                           (change)="chosenProjectType(0)" >
-                                </label>
-                            </div>
-                        </div>
 
 
-                        <div *ngIf='project_application_openstack_project' class="form-group row">
+                        <div class="form-group row">
                             <h5 class="col-md-12 form-control-label">Resources</h5>
                         </div>
 
-                        <div *ngIf='project_application_openstack_project' class="form-group row"  [ngClass]="***REMOVED***
-                                'has-danger': f.controls.project_application_vms_requested?.invalid ,
-                                'has-success': f.controls.project_application_vms_requested?.valid
-                                ***REMOVED***">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of Virtual
-                                Machines* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
-                                             title="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."></i></strong></label>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input required class="form-control" id="id_project_application_vms_requested"
-                                           name="project_application_vms_requested"
-                                           placeholder="e.g. 5"
-                                           type="number" min="1" step="1" [ngModel]="3" >
-                                    <span class="input-group-addon"> VMs
-                                    </span>
-                                </div>
-                                <span class="help-block">How many VMs would you run simultaneously?</span>
-                            </div>
-                        </div>
-
-                             <div *ngIf='project_application_openstack_project' class="form-group row"  [ngClass]="***REMOVED***
-                                'has-danger': f.controls.project_application_cores_per_vm?.invalid ,
-                                'has-success': f.controls.project_application_cores_per_vm?.valid
-                                ***REMOVED***">
-                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cores per VM* <i
-                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
-                                    title="A CPU core is the processing unit of your virtual machine."></i></strong></label>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input required class="form-control" id="id_project_application_cores_per_vm"
-                                           name="project_application_cores_per_vm"
-                                           placeholder="e.g. 2"
-                                           type="number" min="1" step="1" [ngModel]="2" >
-                                    <span class="input-group-addon"> VMs
-                                    </span>
-                                </div>
-                                <span class="help-block">How many cores should every VM have?</span>
-                            </div>
-                        </div>
-
-
-
-                        <div *ngIf='project_application_openstack_project' class="form-group row"
-                        [ngClass]="***REMOVED***
-                                'has-danger': f.controls.project_application_ram_per_vm?.invalid,
-                                'has-success': f.controls.project_application_ram_per_vm?.valid
-                                ***REMOVED***">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>RAM per VM* <i
-                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
-                                    title="RAM is where data is stored that is accessed by the CPU."></i></strong></label>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input required class="form-control" id="id_project_application_ram_per_vm"
-                                           name="project_application_ram_per_vm"
-                                           placeholder="e.g. 8"
-                                           type="number" min="1" step="1" [ngModel]="8">
-                                    <span class="input-group-addon"> GB
-                                    </span>
-                                </div>
-                                <span class="help-block">How much RAM should every VM have?</span>
-                            </div>
-                        </div>
-
-                        <div *ngIf='project_application_openstack_project' class="form-group row" [ngClass]="***REMOVED***
-                                'has-danger': f.controls.project_application_disk_space?.invalid,
-                                'has-success': f.controls.project_application_disk_space?.valid
-                                ***REMOVED***">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage per VM* <i
-                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
-                                    title="Disk space is the amount of bytes that is provided by a storage device."></i></strong></label>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input class="form-control" id="id_project_application_disk_space"
-                                           name="project_application_disk_space"
-                                           placeholder="e.g. 20"
-                                           type="number" min="1" step="1" [ngModel]="20">
-                                    <span class="input-group-addon"> GB
-                                    </span>
-                                </div>
-                                <span class="help-block">How many storage should every VM have?</span>
-                            </div>
-                        </div>
-
-                        <div *ngIf='project_application_openstack_project' class="form-group row"
-                        [ngClass]="***REMOVED***
-                                'has-danger': f.controls.project_application_object_stroage?.invalid && (f.controls.project_application_object_storage?.dirty || f.controls.project_application_object_storage?.touched),
-                                'has-success': f.controls.project_application_object_storage?.valid && (f.controls.project_application_object_storage?.dirty || f.controls.project_application_object_storage?.touched)
-                                ***REMOVED***">
-                            <label class="col-md-4 form-control-label" for="textarea-input">Object Storage <i
-                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
-                                    title="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."></i></label>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input class="form-control" id="id_project_application_object_storage"
-                                           name="project_application_object_storage"
-                                           placeholder="e.g. 8"
-                                           type="number" min="0" step="1" ngModel>
-                                    <span class="input-group-addon"> GB
-                                    </span>
-                                </div>
-                                <span class="help-block">How much object storage would you need?</span>
-                            </div>
-                        </div>
-
-
-                        <div *ngIf='project_application_openstack_project' class="form-group row">
-                            <label class="col-md-4 form-control-label">Special Hardware <i class="icon-question"
-                                                                                           data-toggle="tooltip"
-                                                                                           data-placement="auto"
-                                                                                           title="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."></i></label>
-                            <div class="col-md-8">
-                                <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
-                                    <label>
-                                        <input type="checkbox"
-                                               [checked]="( checkboxValue === true ? sh.Checked : False )"
-                                               (change)="sh.Checked = $event.target.checked;"/>
-                                        ***REMOVED******REMOVED***sh.Name***REMOVED******REMOVED***
-                                    </label>
-                                </div>
-                                <span class="help-block">Which special Hardware would you need?</span>
-                            </div>
-                        </div>
-
-                        <div *ngIf='showjustvm' class="form-group row">
-                            <h5 class="col-md-12 form-control-label">Resources</h5>
-                        </div>
-
-                        <div *ngIf='showjustvm' class="form-group row" [ngClass]="***REMOVED***
+                        <div class="form-group row" [ngClass]="***REMOVED***
                                 'has-danger': f.controls.project_application_vms_requested?.invalid ,
                                 'has-success': f.controls.project_application_vms_requested?.valid
                                 ***REMOVED***">
@@ -289,7 +143,7 @@ are going to use."></i></strong></label>
                                 <span class="help-block">How many VMs would you run simultaneously?</span>
                             </div>
                         </div>
-                        <div *ngIf='showjustvm' class="form-group row" [ngClass]="***REMOVED***
+                        <div class="form-group row" [ngClass]="***REMOVED***
                                 'has-danger': f.controls.project_application_disk_space?.invalid,
                                 'has-success': f.controls.project_application_disk_space?.valid
                                 ***REMOVED***">
@@ -297,7 +151,7 @@ are going to use."></i></strong></label>
                                 VM*</strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <input  class="form-control" id="id_project_application_disk_space"
+                                    <input class="form-control" id="id_project_application_disk_space"
                                            name="project_application_disk_space"
                                            placeholder="e.g. 20"
                                            type="number" min="1" step="1" [ngModel]="20">
@@ -307,7 +161,7 @@ are going to use."></i></strong></label>
                                 <span class="help-block">How much storage do you need per VM?</span>
                             </div>
                         </div>
-                        <div *ngIf='showjustvm' class="form-group row">
+                        <div class="form-group row">
                             <label class="col-md-4 form-control-label">You are able to start machines of the
                                 type:</label>
                             <div class="col-md-8">
@@ -349,7 +203,7 @@ are going to use."></i></strong></label>
                             </div>
                         </div>
 
-                        <div class="form-group row"  [ngClass]="***REMOVED***
+                        <div class="form-group row" [ngClass]="***REMOVED***
                                 'has-danger': f.controls.project_application_workgroup?.invalid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched),
                                 'has-success': f.controls.project_application_workgroup?.valid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched)
                                 ***REMOVED***">
@@ -370,7 +224,6 @@ are going to use."></i></strong></label>
                                 cloud
                                 usage policy.</p>
                         </div>
-
 
 
                     </form>

@@ -2,7 +2,6 @@ import ***REMOVED*** NgModule ***REMOVED*** from '@angular/core';
 
 import ***REMOVED*** TabsModule ***REMOVED*** from 'ngx-bootstrap/tabs';
 import ***REMOVED*** ApplicationsComponent ***REMOVED*** from './applications.component';
-import ***REMOVED*** AddApplicationComponent ***REMOVED*** from './addapplication.component';
 import ***REMOVED*** ApplicationsRoutingModule ***REMOVED*** from './applications-routing.module';
 import ***REMOVED***CommonModule***REMOVED*** from "@angular/common";
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
@@ -13,6 +12,8 @@ import ***REMOVED***FlavorDetailComponent***REMOVED*** from '../virtualmachines/
 import ***REMOVED***ClientOverviewComponent***REMOVED*** from "../virtualmachines/vmClients.component";
 import ***REMOVED***UserinfoComponent***REMOVED*** from "../userinfo/userinfo.component";
 import ***REMOVED***VmOverviewComponent***REMOVED*** from "../virtualmachines/vmOverview.component";
+import ***REMOVED***AddsinglevmComponent***REMOVED*** from "./addsinglevm.component";
+import ***REMOVED***AddcloudapplicationComponent***REMOVED*** from "./addcloudapplication.component";
 
 
 @NgModule(***REMOVED***
@@ -27,7 +28,8 @@ import ***REMOVED***VmOverviewComponent***REMOVED*** from "../virtualmachines/vm
   ],
   declarations: [
     ApplicationsComponent,
-    AddApplicationComponent,
+      AddsinglevmComponent,
+      AddcloudapplicationComponent,
   ]
 ***REMOVED***)
 export class ApplicationsModule ***REMOVED*** ***REMOVED***

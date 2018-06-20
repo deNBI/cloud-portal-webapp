@@ -2,7 +2,9 @@ import ***REMOVED*** NgModule ***REMOVED*** from '@angular/core';
 import ***REMOVED*** Routes, RouterModule ***REMOVED*** from '@angular/router';
 
 import ***REMOVED*** ApplicationsComponent ***REMOVED*** from './applications.component';
-import ***REMOVED*** AddApplicationComponent ***REMOVED*** from './addapplication.component';
+
+import ***REMOVED***AddsinglevmComponent***REMOVED*** from "./addsinglevm.component";
+import ***REMOVED***AddcloudapplicationComponent***REMOVED*** from "./addcloudapplication.component";
 
 
 const routes: Routes = [
@@ -15,13 +17,22 @@ const routes: Routes = [
 
   ***REMOVED***,
   ***REMOVED***
-    path: 'newApplication',
-    component: AddApplicationComponent,
+    path: 'newCloudApplication',
+    component: AddcloudapplicationComponent,
     data: ***REMOVED***
       title: 'New Application'
     ***REMOVED***
 
   ***REMOVED***,
+    ***REMOVED***
+        path: 'newSingleVmApplication',
+    component: AddsinglevmComponent,
+    data: ***REMOVED***
+      title: 'New Application'
+    ***REMOVED***
+
+
+    ***REMOVED***
 
 ];
 

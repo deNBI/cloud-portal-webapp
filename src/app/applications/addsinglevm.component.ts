@@ -8,11 +8,11 @@ import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 
 @Component(***REMOVED***
-    templateUrl: 'addapplication.component.html',
+    templateUrl: 'addsinglevm.component.html',
     providers: [SpecialHardwareService, ApiSettings, ApplicationsService]
 ***REMOVED***)
 
-export class AddApplicationComponent ***REMOVED***
+export class AddsinglevmComponent ***REMOVED***
 
     public wronginput: boolean = false;
 
@@ -45,7 +45,7 @@ export class AddApplicationComponent ***REMOVED***
     ***REMOVED***
 
     chosenProjectType(checkbox: number) ***REMOVED***
-      
+
         if (checkbox == 0) ***REMOVED***
             if (this.project_application_openstack_project) ***REMOVED***
                 this.showjustvm = false;
