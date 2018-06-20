@@ -15,7 +15,7 @@ import ***REMOVED***environment***REMOVED*** from '../../environments/environmen
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
-import  * as moment from 'moment';
+import * as moment from 'moment';
 
 
 @Component(***REMOVED***
@@ -180,9 +180,9 @@ export class OverviewComponent ***REMOVED***
 
                 this.groupservice.getShortame(group['id']).subscribe(name => ***REMOVED***
                     this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => ***REMOVED***
-                        let shortname= name['shortname']
-                        if(!shortname)***REMOVED***
-                            shortname=group['name']
+                        let shortname = name['shortname']
+                        if (!shortname) ***REMOVED***
+                            shortname = group['name']
                         ***REMOVED***
 
                         let newProject = new Project(
@@ -286,12 +286,14 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-     isPi(member:ProjectMember):string***REMOVED***
+    isPi(member: ProjectMember): string ***REMOVED***
 
-       if (member.IsPi)***REMOVED***
-           return 'blue'
-       ***REMOVED***
-       else***REMOVED***return 'black'***REMOVED***
+        if (member.IsPi) ***REMOVED***
+            return 'blue'
+        ***REMOVED***
+        else ***REMOVED***
+            return 'black'
+        ***REMOVED***
 
     ***REMOVED***
 
@@ -367,27 +369,62 @@ export class OverviewComponent ***REMOVED***
                     this.updateNotificaitonModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
+                    console.log(result.json())
+
                     this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
                 ***REMOVED***
             ***REMOVED***).catch(error => ***REMOVED***
-            this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+            if (error.json()['name'] == 'AlreadyMemberException') ***REMOVED***
+                this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
+            ***REMOVED***
+
+            else ***REMOVED***
+                this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+            ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
 
-    public addAdmin(groupid: number, userid: number, firstName: string, lastName: string, facility_id: number) ***REMOVED***
-        this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
-            .then(result => ***REMOVED***
+    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id: number) ***REMOVED***
+        this.groupservice.addMember(groupid, memberid, facility_id).toPromise().then(result => ***REMOVED***
+            this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
+                .then(result => ***REMOVED***
 
-                if (result.status == 200) ***REMOVED***
-                    this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+                    if (result.status == 200) ***REMOVED***
+                        this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
 
-                ***REMOVED*** else ***REMOVED***
+                    ***REMOVED*** else ***REMOVED***
+                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                    ***REMOVED***
+                ***REMOVED***).catch(error => ***REMOVED***
+                if (error.json()['name'] == 'AlreadyAdminException') ***REMOVED***
+                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                ***REMOVED***
+                else ***REMOVED***
                     this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                 ***REMOVED***
-            ***REMOVED***).catch(error => ***REMOVED***
-            this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
-        ***REMOVED***);
+            ***REMOVED***)
+        ***REMOVED***).catch(error => ***REMOVED***
+            this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
+                .then(result => ***REMOVED***
+
+                    if (result.status == 200) ***REMOVED***
+                        this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+
+                    ***REMOVED*** else ***REMOVED***
+                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                    ***REMOVED***
+                ***REMOVED***).catch(error => ***REMOVED***
+                if (error.json()['name'] == 'AlreadyAdminException') ***REMOVED***
+                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                ***REMOVED***
+                else ***REMOVED***
+                    this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                ***REMOVED***
+            ***REMOVED***)
+
+
+        ***REMOVED***)
     ***REMOVED***
 
 
@@ -407,25 +444,23 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-
-
-       public removeAdmin(groupid: number,userid:number, name: string, facility_id: number) ***REMOVED***
+    public removeAdmin(groupid: number, userid: number, name: string, facility_id: number) ***REMOVED***
         this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
-                    this.updateNotificaitonModal("Success",   name + " was removed as Admin", true, "success");
+                    this.updateNotificaitonModal("Success", name + " was removed as Admin", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
-                    this.updateNotificaitonModal("Failed",   name + " could not be removed as Admin!", true, "danger");
+                    this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
                 ***REMOVED***
             ***REMOVED***).catch(error => ***REMOVED***
             this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
         ***REMOVED***);
     ***REMOVED***
 
-    public removeMember(groupid: number, memberid: number,userid:number, name: string, facility_id: number) ***REMOVED***
-        this.groupservice.removeMember(groupid, memberid,userid, facility_id).toPromise()
+    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id: number) ***REMOVED***
+        this.groupservice.removeMember(groupid, memberid, userid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
