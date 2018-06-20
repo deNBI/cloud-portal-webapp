@@ -8,11 +8,11 @@ import {ApiSettings} from '../api-connector/api-settings.service'
 import {ApplicationsService} from '../api-connector/applications.service'
 
 @Component({
-    templateUrl: 'addapplication.component.html',
+    templateUrl: 'addcloudapplication.component.html',
     providers: [SpecialHardwareService, ApiSettings, ApplicationsService]
 })
 
-export class AddApplicationComponent {
+export class AddcloudapplicationComponent {
 
     public wronginput: boolean = false;
 
@@ -32,7 +32,7 @@ export class AddApplicationComponent {
 
 
     showjustvm: boolean;
-    project_application_openstack_project: boolean;
+    project_application_openstack_project: boolean=true;
 
 
     csrf: Object = Cookie.get('csrftoken');
@@ -44,20 +44,7 @@ export class AddApplicationComponent {
 
     }
 
-    chosenProjectType(checkbox: number) {
-      
-        if (checkbox == 0) {
-            if (this.project_application_openstack_project) {
-                this.showjustvm = false;
-            }
-        }
 
-        else if (checkbox == 1) {
-            if (this.showjustvm) {
-                this.project_application_openstack_project = false;
-            }
-        }
-    }
 
     getSpecialHardware() {
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
@@ -97,6 +84,7 @@ export class AddApplicationComponent {
         else {
             let values = {};
             values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
+            values['project_application_openstack_project']=this.project_application_openstack_project;
             for (let v in f.controls) {
                 if (f.controls[v].value) {
                     values[v] = f.controls[v].value;
@@ -107,6 +95,7 @@ export class AddApplicationComponent {
                 this.notificationModalStay = true;
                 return;
             }
+
 
 
             this.applicationsservice.addNewApplication(values).toPromise()
