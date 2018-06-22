@@ -109,44 +109,10 @@ export class GroupsManager {
       });
   }
 
-  getGroupRichMembers(group_id: number) {
-    return this.http.get(this.settings.getPerunBaseURL() + 'groupsManager/getGroupRichMembers', {
-      headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-      params: {group: group_id}
-    });
-  }
+  
 
-  addMember(group_id: number, member_id: number) {
-    var parameter = JSON.stringify({
-      group: group_id,
-      member: member_id
-    });
-    return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/addMember', parameter,
-      {
-        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-      });
-  }
 
-  addAdmin(group_id: number, user_id: number) {
-    var parameter = JSON.stringify({
-      group: group_id,
-      user: user_id
-    });
-    return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/addAdmin', parameter,
-      {
-        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-      });
-  }
 
-  removeMember(group_id: number, member_id: number) {
-    var parameter = JSON.stringify({
-      group: group_id,
-      member: member_id
-    });
-    return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/removeMember', parameter,
-      {
-        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-      });
-  }
+
 
 }

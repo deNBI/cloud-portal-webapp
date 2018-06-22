@@ -252,9 +252,9 @@ export class OverviewComponent {
 
 
     getMembesOfTheProject(projectid: number, projectname: string) {
-        this.groupsmanager.getGroupRichMembers(projectid).toPromise()
+        this.groupservice.getGroupRichMembers(projectid).toPromise()
             .then(function (members_raw) {
-                return members_raw.json();
+                return members_raw;
             }).then(members => {
             this.usersModalProjectID = projectid;
             this.usersModalProjectName = projectname;

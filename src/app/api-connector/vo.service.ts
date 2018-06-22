@@ -57,7 +57,7 @@ export class VoService {
 
       getMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string) {
 
-    return this.http.get(this.apiSettings.getApiBaseURL() + 'filter_deNBIMembers/', {
+    return this.http.get(this.settings.getApiBaseURL() + 'filter_deNBIMembers/', {
       withCredentials: true,
       params: {
         firstName: firstname,

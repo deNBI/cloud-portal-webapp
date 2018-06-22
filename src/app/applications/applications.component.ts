@@ -299,10 +299,10 @@ export class ApplicationsComponent {
             new_group_id = group["id"];
 
             //add the application user to the group
-            return this.groupsmanager.addMember(new_group_id, manager_member_id).toPromise();
+            return this.groupservice.addMember(new_group_id, manager_member_id,compute_center).toPromise();
 
         }).then(null_result => {
-            return this.groupsmanager.addAdmin(new_group_id, manager_member_user_id).toPromise();
+            return this.groupservice.addAdmin(new_group_id, manager_member_user_id,compute_center).toPromise();
         }).then(null_result => {
             return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).toPromise();
         }).then(null_result => {
