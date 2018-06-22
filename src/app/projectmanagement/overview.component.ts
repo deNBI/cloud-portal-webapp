@@ -7,7 +7,6 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Project} from './project.model';
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {ProjectMember} from './project_member.model'
-import {ResourcesManager} from "../perun-connector/resources_manager";
 import 'rxjs/add/operator/toPromise';
 import {isNumber} from "util";
 import {environment} from '../../environments/environment'
@@ -19,7 +18,7 @@ import  * as moment from 'moment';
 
 @Component({
     templateUrl: 'overview.component.html',
-    providers: [UserService, GroupService, ResourcesManager, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [UserService, GroupService, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 
@@ -70,7 +69,6 @@ export class OverviewComponent {
                 private useresmanager: UsersManager,
                 private groupsmanager: GroupsManager,
                 private membersmanager: MembersManager,
-                private  resourceManager: ResourcesManager,
                 private groupservice: GroupService,
                 private userservice: UserService) {
         this.getUserProjects(groupsmanager, membersmanager, useresmanager);

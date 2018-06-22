@@ -12,7 +12,6 @@ import {Application} from "./application.model";
 import {ApplicationStatus} from "./application_status.model";
 import {SpecialHardware} from "./special_hardware.model";
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
-import {ResourcesManager} from "../perun-connector/resources_manager";
 import {GroupService} from "../api-connector/group.service";
 import  * as moment from 'moment';
 import {UserService} from "../api-connector/user.service";
@@ -20,7 +19,7 @@ import {UserService} from "../api-connector/user.service";
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [UserService,GroupService, ResourcesManager, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+    providers: [UserService,GroupService, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -50,7 +49,6 @@ export class ApplicationsComponent {
                 private groupsmanager: GroupsManager,
                 private usersmanager: UsersManager,
                 private membersmanager: MembersManager,
-                private resourceManager: ResourcesManager,
                 private userservice:UserService,
                 private groupservice: GroupService) {
 

@@ -7,7 +7,6 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Project} from '../projectmanagement/project.model';
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {ProjectMember} from '../projectmanagement/project_member.model'
-import {ResourcesManager} from "../perun-connector/resources_manager";
 import 'rxjs/add/operator/toPromise';
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
@@ -19,7 +18,7 @@ import  * as moment from 'moment';
 
 @Component({
     templateUrl: 'facilityprojectsoverview.component.html',
-    providers: [FacilityService,UserService, GroupService, ResourcesManager, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [FacilityService,UserService, GroupService, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 })
 export class  FacilityProjectsOverviewComponent {
 
