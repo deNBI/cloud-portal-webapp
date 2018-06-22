@@ -13,11 +13,12 @@ import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
 import  * as moment from 'moment';
+import {VoService} from "../api-connector/vo.service";
 
 
 @Component({
     templateUrl: 'overview.component.html',
-    providers: [UserService, GroupService, GroupsManager, MembersManager, PerunSettings, ApiSettings]
+    providers: [VoService,UserService, GroupService, GroupsManager, MembersManager, PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 
@@ -68,7 +69,8 @@ export class OverviewComponent {
                 private groupsmanager: GroupsManager,
                 private membersmanager: MembersManager,
                 private groupservice: GroupService,
-                private userservice: UserService) {
+                private userservice: UserService,
+                private voservice:VoService) {
         this.getUserProjects(groupsmanager, userservice);
 
     }
@@ -243,7 +245,7 @@ export class OverviewComponent {
     }
 
     filterMembers(firstName: string, lastName: string, groupid: number) {
-        this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
+        this.voservice.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
             this.filteredMembers = result;
         })
     }
