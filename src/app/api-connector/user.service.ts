@@ -41,13 +41,27 @@ export class UserService {
 
             });
     }
-      getMemberByUser(user_id: number) {
 
-    return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByUser/`, {
-      withCredentials: true,
-      params: {user: user_id}
-    });
-  }
+    getMemberByUser(user_id: number) {
+
+        return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByUser/`, {
+            withCredentials: true,
+            params: {user: user_id}
+        });
+    }
+
+
+    getMemberByExtSourceNameAndExtLogin(ext_login: string) {
+
+        return this.http.get(this.settings.getApiBaseURL() + `muser/getMemberByExtSourceNameAndExtLogin`, {
+            withCredentials: true,
+            params: {
+
+                extLogin: ext_login,
+
+            }
+        });
+    }
 
 
     getVosWhereUserIsAdmin(user_id: number) {
@@ -57,7 +71,7 @@ export class UserService {
         });
     }
 
-      getGroupsWhereUserIsAdmin(user_id: number) {
+    getGroupsWhereUserIsAdmin(user_id: number) {
         return this.http.get(this.settings.getApiBaseURL() + 'user/getGroupsWhereUserIsAdmin/', {
             withCredentials: true,
             params: {userid: user_id}

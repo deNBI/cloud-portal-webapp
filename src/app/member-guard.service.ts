@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot} from "@angular/router";
-import {MembersManager} from "./perun-connector/members-manager.service";
 import {environment} from "../environments/environment";
 import {UserService} from "./api-connector/user.service";
 
@@ -9,7 +8,7 @@ import {UserService} from "./api-connector/user.service";
 export class MemberGuardService implements CanActivate {
 
 
-    constructor(private router: Router, private  userservice: UserService, private memberssmanager: MembersManager) {
+    constructor(private router: Router, private  userservice: UserService) {
     }
 
 

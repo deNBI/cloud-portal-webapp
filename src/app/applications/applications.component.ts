@@ -4,7 +4,6 @@ import {ApplicationsService} from '../api-connector/applications.service'
 import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {ApplicationStatusService} from '../api-connector/application-status.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
-import {MembersManager} from '../perun-connector/members-manager.service'
 import {GroupsManager} from '../perun-connector/groups-manager.service'
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Application} from "./application.model";
@@ -18,7 +17,7 @@ import {UserService} from "../api-connector/user.service";
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [UserService,GroupService, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+    providers: [UserService,GroupService, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -46,7 +45,6 @@ export class ApplicationsComponent {
                 private specialhardwareservice: SpecialHardwareService,
                 private perunsettings: PerunSettings,
                 private groupsmanager: GroupsManager,
-                private membersmanager: MembersManager,
                 private userservice:UserService,
                 private groupservice: GroupService) {
 
@@ -285,7 +283,7 @@ export class ApplicationsComponent {
         let new_group_id: number;
         let re = /[-:. ,]/gi
         let  shortNameDate=name + (new Date(Date.now()).toLocaleString().replace(re,''))
-        this.membersmanager.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
+        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
             .then(member_raw => {
                     let member = member_raw.json();
                     manager_member_id = member["id"];

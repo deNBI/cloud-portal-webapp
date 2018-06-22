@@ -12,7 +12,6 @@ import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
 import {AsideToggleDirective} from './shared/aside.directive';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {HttpModule} from '@angular/http';
-import {MembersManager} from "./perun-connector/members-manager.service";
 import {PerunSettings} from "./perun-connector/connector-settings.service";
 import {ApiSettings} from "./api-connector/api-settings.service";
 // Routing Module
@@ -48,7 +47,7 @@ import {UserService} from "./api-connector/user.service";
   providers: [{
     provide: LocationStrategy,
     useClass: HashLocationStrategy
-  }, MembersManager,
+  },
 
     PerunSettings,
     ApiSettings,

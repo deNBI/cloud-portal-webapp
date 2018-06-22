@@ -1,6 +1,5 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {GroupsManager} from '../perun-connector/groups-manager.service'
-import {MembersManager} from '../perun-connector/members-manager.service'
 import {Http} from '@angular/http';
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Project} from '../projectmanagement/project.model';
@@ -17,7 +16,7 @@ import  * as moment from 'moment';
 
 @Component({
     templateUrl: 'facilityprojectsoverview.component.html',
-    providers: [FacilityService,UserService, GroupService, GroupsManager, MembersManager, PerunSettings, ApiSettings]
+    providers: [FacilityService,UserService, GroupService, GroupsManager,  PerunSettings, ApiSettings]
 })
 export class  FacilityProjectsOverviewComponent {
 
