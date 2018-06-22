@@ -9,37 +9,46 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class UserService {
-  constructor(private http: Http, private settings: ApiSettings) {
-  }
+    constructor(private http: Http, private settings: ApiSettings) {
+    }
 
-   setUserFacilityPassword(facility: string): Observable<Response> {
-    let header = new Headers({
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    });
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('facility',facility);
+    setUserFacilityPassword(facility: string): Observable<Response> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('facility', facility);
 
-    return this.http.post(this.settings.getConnectorBaseUrl() + 'user/setUserPassword/', urlSearchParams, {
-      withCredentials: true,
-      headers: header,
-    });
-  }
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'user/setUserPassword/', urlSearchParams, {
+            withCredentials: true,
+            headers: header,
+        });
+    }
 
-     setNewsletterSubscription(subscribed: boolean): Observable<any> {
-    let header = new Headers({
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    });
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('subscribed',subscribed.toString());
+    getLogins(user: number): Observable<Response> {
 
-    return this.http.post(this.settings.getApiBaseURL() + 'newsletter/setNewsletterSubscription/', urlSearchParams, {
-      withCredentials: true,
-      headers: header,
-    });
-  }
+        return this.http.get(this.settings.getApiBaseURL() + 'user/getLogins/',
+            {
+                withCredentials: true,
+                params: {user: user}
+            });
+    }
 
-   getNewsletterSubscription(): Observable<any> {
-         let header = new Headers({
+    setNewsletterSubscription(subscribed: boolean): Observable<any> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('subscribed', subscribed.toString());
+
+        return this.http.post(this.settings.getApiBaseURL() + 'newsletter/setNewsletterSubscription/', urlSearchParams, {
+            withCredentials: true,
+            headers: header,
+        });
+    }
+
+    getNewsletterSubscription(): Observable<any> {
+        let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
         });
         return this.http.get(this.settings.getApiBaseURL() + 'newsletter/getNewsletterSubscription/', {
@@ -48,7 +57,6 @@ export class UserService {
 
 
     }
-
 
 
 }

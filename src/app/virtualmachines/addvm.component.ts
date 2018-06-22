@@ -20,7 +20,6 @@ import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 import {ClientService} from "../api-connector/vmClients.service";
 import {Vmclient} from "./virtualmachinemodels/vmclient";
 import {GroupsManager} from "../perun-connector/groups-manager.service";
-import {AttributesManager} from "../perun-connector/attributes-manager";
 import {Application} from "../applications/application.model";
 import {keyService} from "../api-connector/key.service";
 import {Project} from "../projectmanagement/project.model";
@@ -30,7 +29,7 @@ import {environment} from "../../environments/environment";
 @Component({
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 })
 export class VirtualMachineComponent implements OnInit {
     data: string = "";
@@ -57,7 +56,7 @@ export class VirtualMachineComponent implements OnInit {
     private checkStatusTimeout: number = 5000;
 
 
-    constructor(private groupService: GroupService, private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) {
+    constructor(private groupService: GroupService, private imageService: ImageService,  private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) {
     }
 
 

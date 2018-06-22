@@ -8,13 +8,12 @@ import {MembersManager} from '../perun-connector/members-manager.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {keyService} from "../api-connector/key.service";
 import {UsersManager} from "../perun-connector/users-manager.service";
-import {AttributesManager} from "../perun-connector/attributes-manager";
 import {UserService} from "../api-connector/user.service";
 
 
 @Component({
   templateUrl: 'userinfo.component.html',
-  providers: [UserService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager, AttributesManager]
+  providers: [UserService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager]
 })
 export class UserinfoComponent implements OnInit{
   userinfo: Userinfo;
@@ -23,7 +22,7 @@ export class UserinfoComponent implements OnInit{
   newsletter_subscribed :boolean;
   public_key: string='';
 
-  constructor(private userservice: UserService,private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) {
+  constructor(private userservice: UserService,private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager) {
     this.userinfo = new Userinfo();
     this.getUserinfo();
 
@@ -75,7 +74,7 @@ export class UserinfoComponent implements OnInit{
 
   }
 
- 
+
 
   getUserPublicKey() {
     this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => {
@@ -96,7 +95,7 @@ export class UserinfoComponent implements OnInit{
 
       }).then(memberinfo => {
       this.userinfo.MemberId = memberinfo.json()["id"];
-      this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => {
+      this.userservice.getLogins(this.userinfo.Id).toPromise().then(result => {
         let logins = result.json()
         for (let login of logins) {
           if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
