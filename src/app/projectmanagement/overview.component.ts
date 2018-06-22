@@ -117,7 +117,7 @@ export class OverviewComponent {
         let admin_groups: {};
         let admin_vos: {};
 
-        this.authzresolver
+        this.userservice
             .getLoggedUser().toPromise()
             .then(function (userdata) {
                 //TODO catch errors

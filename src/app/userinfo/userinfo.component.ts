@@ -83,7 +83,7 @@ export class UserinfoComponent implements OnInit{
   }
 
   getUserinfo() {
-    this.authzresolver.getLoggedUser().toPromise()
+    this.userservice.getLoggedUser().toPromise()
       .then(result => {
         let res = result.json();
 

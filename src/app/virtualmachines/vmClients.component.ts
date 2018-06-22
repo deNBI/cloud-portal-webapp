@@ -9,12 +9,13 @@ import {UsersManager} from "../perun-connector/users-manager.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupsManager} from "../perun-connector/groups-manager.service";
 import {GroupService} from "../api-connector/group.service";
+import {UserService} from "../api-connector/user.service";
 
 
 @Component({
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [GroupService,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
+  providers: [UserService,GroupService,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
 })
 
 export class ClientOverviewComponent implements OnInit {
@@ -24,14 +25,14 @@ export class ClientOverviewComponent implements OnInit {
    computeCenters: [string,number][];
    selectedComputeCenter:string;
 
-  constructor(private groupservice : GroupService,private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
+  constructor(private userservice:UserService,private groupservice : GroupService,private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
 
   }
 
   checkVOstatus(usersmanager: UsersManager) {
     let user_id: number;
     let admin_vos: {};
-    this.authzresolver
+    this.userservice
       .getLoggedUser().toPromise()
       .then(function (userdata) {
         //TODO catch errors

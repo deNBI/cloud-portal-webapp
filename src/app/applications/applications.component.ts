@@ -16,11 +16,12 @@ import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {ResourcesManager} from "../perun-connector/resources_manager";
 import {GroupService} from "../api-connector/group.service";
 import  * as moment from 'moment';
+import {UserService} from "../api-connector/user.service";
 
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [GroupService, ResourcesManager, AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+    providers: [UserService,GroupService, ResourcesManager, AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -52,6 +53,7 @@ export class ApplicationsComponent {
                 private usersmanager: UsersManager,
                 private membersmanager: MembersManager,
                 private resourceManager: ResourcesManager,
+                private userservice:UserService,
                 private groupservice: GroupService) {
 
         this.getUserApplications();
@@ -127,7 +129,7 @@ export class ApplicationsComponent {
         let user_id: number;
         let admin_vos: {};
 
-        this.authzresolver
+        this.userservice
             .getLoggedUser().toPromise()
             .then(function (userdata) {
                 //TODO catch errors

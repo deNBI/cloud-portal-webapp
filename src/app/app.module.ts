@@ -24,6 +24,7 @@ import {FullLayoutComponent} from './layouts/full-layout.component';
 import {SimpleLayoutComponent} from './layouts/simple-layout.component';
 import {ModalModule} from "ngx-bootstrap";
 import {RegistrationInfoComponent} from "./registration-info.component";
+import {UserService} from "./api-connector/user.service";
 
 @NgModule({
   imports: [
@@ -51,7 +52,8 @@ import {RegistrationInfoComponent} from "./registration-info.component";
   }, MembersManager,
      AuthzResolver,
     PerunSettings,
-    ApiSettings
+    ApiSettings,
+      UserService
   ],
   bootstrap: [AppComponent]
 })

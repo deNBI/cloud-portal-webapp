@@ -34,6 +34,14 @@ export class UserService {
             });
     }
 
+     getLoggedUser() {
+    return this.http.get(this.settings.getApiBaseURL()+ 'user/getLoggedUser/',
+      {
+          withCredentials: true,
+
+      });
+  }
+
     setNewsletterSubscription(subscribed: boolean): Observable<any> {
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
