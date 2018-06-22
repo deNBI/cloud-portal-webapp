@@ -12,13 +12,7 @@ export class MembersManager {
   constructor(private http: Http, private settings: PerunSettings, private apiSettings: ApiSettings) {
   }
 
-  getMemberByUser(user_id: number) {
-    var vo = this.settings.getPerunVO();
-    return this.http.get(this.settings.getPerunBaseURL() + `membersManager/getMemberByUser`, {
-      headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-      params: {user: user_id, vo: vo}
-    });
-  }
+
 
   getMemberByExtSourceNameAndExtLogin(ext_login: string) {
     let vo = this.settings.getPerunVO(),

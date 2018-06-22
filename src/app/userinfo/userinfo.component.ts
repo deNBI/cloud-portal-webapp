@@ -89,7 +89,7 @@ export class UserinfoComponent implements OnInit{
         this.userinfo.LastName = res["lastName"];
         this.userinfo.Id = res["id"];
 
-        return this.memberssmanager.getMemberByUser(res["id"]).toPromise();
+        return this.userservice.getMemberByUser(res["id"]).toPromise();
 
       }).then(memberinfo => {
       this.userinfo.MemberId = memberinfo.json()["id"];

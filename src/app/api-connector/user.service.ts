@@ -41,6 +41,14 @@ export class UserService {
 
             });
     }
+      getMemberByUser(user_id: number) {
+
+    return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByUser/`, {
+      withCredentials: true,
+      params: {user: user_id}
+    });
+  }
+
 
     getVosWhereUserIsAdmin(user_id: number) {
         return this.http.get(this.settings.getApiBaseURL() + 'user/getVosWhereUserIsAdmin/', {

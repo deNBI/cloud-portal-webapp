@@ -24,7 +24,7 @@ export class MemberGuardService implements CanActivate {
 
                 }).then(res => {
 
-                this.memberssmanager.getMemberByUser(res['id']).toPromise().then(memberinfo => {
+                this.userservice.getMemberByUser(res['id']).toPromise().then(memberinfo => {
                     return resolve(true);
 
                 }).catch(rejection => {
