@@ -6,13 +6,12 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {MembersManager} from '../perun-connector/members-manager.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {keyService} from "../api-connector/key.service";
-import {UsersManager} from "../perun-connector/users-manager.service";
 import {UserService} from "../api-connector/user.service";
 
 
 @Component({
   templateUrl: 'userinfo.component.html',
-  providers: [UserService, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager]
+  providers: [UserService, PerunSettings, MembersManager, ApiSettings, keyService]
 })
 export class UserinfoComponent implements OnInit{
   userinfo: Userinfo;
@@ -21,7 +20,7 @@ export class UserinfoComponent implements OnInit{
   newsletter_subscribed :boolean;
   public_key: string='';
 
-  constructor(private userservice: UserService, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager) {
+  constructor(private userservice: UserService, private memberssmanager: MembersManager, private keyService: keyService) {
     this.userinfo = new Userinfo();
     this.getUserinfo();
 

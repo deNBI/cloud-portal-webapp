@@ -4,7 +4,6 @@ import {ApplicationsService} from '../api-connector/applications.service'
 import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {ApplicationStatusService} from '../api-connector/application-status.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
-import {UsersManager} from '../perun-connector/users-manager.service'
 import {MembersManager} from '../perun-connector/members-manager.service'
 import {GroupsManager} from '../perun-connector/groups-manager.service'
 import {PerunSettings} from "../perun-connector/connector-settings.service";
@@ -19,7 +18,7 @@ import {UserService} from "../api-connector/user.service";
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [UserService,GroupService, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+    providers: [UserService,GroupService, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -47,13 +46,12 @@ export class ApplicationsComponent {
                 private specialhardwareservice: SpecialHardwareService,
                 private perunsettings: PerunSettings,
                 private groupsmanager: GroupsManager,
-                private usersmanager: UsersManager,
                 private membersmanager: MembersManager,
                 private userservice:UserService,
                 private groupservice: GroupService) {
 
         this.getUserApplications();
-        this.getAllApplications(usersmanager);
+        this.getAllApplications();
         this.getApplicationStatus();
         this.getSpecialHardware();
         this.getComputeCenters();
@@ -120,7 +118,7 @@ export class ApplicationsComponent {
             });
     }
 
-    getAllApplications(usersmanager: UsersManager) {
+    getAllApplications() {
         //todo check if user is VO Admin
         let user_id: number;
         let admin_vos: {};
@@ -326,7 +324,7 @@ export class ApplicationsComponent {
             this.all_applications = [];
             this.user_applications = [];
             this.getUserApplications();
-            this.getAllApplications(this.usersmanager);
+            this.getAllApplications();
         }).catch(error => {
             this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
         });
@@ -339,7 +337,7 @@ export class ApplicationsComponent {
                 this.all_applications = [];
                 this.user_applications = [];
                 this.getUserApplications();
-                this.getAllApplications(this.usersmanager);
+                this.getAllApplications();
                 this.updateNotificaitonModal("Success", "The Application was declined", true, "success");
             })
             .catch(error => {
@@ -355,7 +353,7 @@ export class ApplicationsComponent {
                   this.user_applications=[];
                   this.all_applications=[];
                   this.getUserApplications();
-                  this.getAllApplications(this.usersmanager);
+                  this.getAllApplications();
       })
         .catch(error => {
                 this.updateNotificaitonModal("Failed", "Application could not be removed!", true, "danger");

@@ -3,7 +3,6 @@ import {FormsModule} from '@angular/forms';
 import 'rxjs/Rx'
 
 import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {UsersManager} from "../perun-connector/users-manager.service";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 import {FullLayoutComponent} from "../layouts/full-layout.component";
@@ -13,7 +12,7 @@ import {UserService} from "../api-connector/user.service";
 @Component({
     selector: 'vm-overview',
     templateUrl: 'vmOverview.component.html',
-    providers: [UserService, VirtualmachineService, FullLayoutComponent,  UsersManager, PerunSettings]
+    providers: [UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 })
 
 
@@ -36,7 +35,7 @@ export class VmOverviewComponent implements OnInit {
     filterssh: string;
 
 
-    constructor(private userservice: UserService, private virtualmachineservice: VirtualmachineService,  private  usersmanager: UsersManager, private perunsettings: PerunSettings) {
+    constructor(private userservice: UserService, private virtualmachineservice: VirtualmachineService,  private perunsettings: PerunSettings) {
 
     }
 
