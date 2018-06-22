@@ -4,7 +4,6 @@ import 'rxjs/Rx'
 import {Vmclient} from "./virtualmachinemodels/vmclient";
 import {ClientService} from "../api-connector/vmClients.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 import {UsersManager} from "../perun-connector/users-manager.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupsManager} from "../perun-connector/groups-manager.service";
@@ -15,7 +14,7 @@ import {UserService} from "../api-connector/user.service";
 @Component({
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [UserService,GroupService,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
+  providers: [UserService,GroupService,ClientService,  UsersManager, PerunSettings, ApiSettings, GroupsManager]
 })
 
 export class ClientOverviewComponent implements OnInit {
@@ -25,7 +24,7 @@ export class ClientOverviewComponent implements OnInit {
    computeCenters: [string,number][];
    selectedComputeCenter:string;
 
-  constructor(private userservice:UserService,private groupservice : GroupService,private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
+  constructor(private userservice:UserService,private groupservice : GroupService,private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager) {
 
   }
 

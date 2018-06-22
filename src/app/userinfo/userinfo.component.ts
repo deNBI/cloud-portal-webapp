@@ -2,7 +2,6 @@ import {Component,OnInit} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 
 import {Userinfo} from './userinfo.model'
-import {AuthzResolver} from '../perun-connector/authz-resolver.service'
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {MembersManager} from '../perun-connector/members-manager.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
@@ -13,7 +12,7 @@ import {UserService} from "../api-connector/user.service";
 
 @Component({
   templateUrl: 'userinfo.component.html',
-  providers: [UserService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager]
+  providers: [UserService, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager]
 })
 export class UserinfoComponent implements OnInit{
   userinfo: Userinfo;
@@ -22,7 +21,7 @@ export class UserinfoComponent implements OnInit{
   newsletter_subscribed :boolean;
   public_key: string='';
 
-  constructor(private userservice: UserService,private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager) {
+  constructor(private userservice: UserService, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager) {
     this.userinfo = new Userinfo();
     this.getUserinfo();
 

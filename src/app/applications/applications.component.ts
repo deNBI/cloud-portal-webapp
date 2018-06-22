@@ -4,7 +4,6 @@ import {ApplicationsService} from '../api-connector/applications.service'
 import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {ApplicationStatusService} from '../api-connector/application-status.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
-import {AuthzResolver} from '../perun-connector/authz-resolver.service'
 import {UsersManager} from '../perun-connector/users-manager.service'
 import {MembersManager} from '../perun-connector/members-manager.service'
 import {GroupsManager} from '../perun-connector/groups-manager.service'
@@ -21,7 +20,7 @@ import {UserService} from "../api-connector/user.service";
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [UserService,GroupService, ResourcesManager, AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+    providers: [UserService,GroupService, ResourcesManager, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -47,7 +46,6 @@ export class ApplicationsComponent {
     constructor(private applicataionsservice: ApplicationsService,
                 private applicationstatusservice: ApplicationStatusService,
                 private specialhardwareservice: SpecialHardwareService,
-                private authzresolver: AuthzResolver,
                 private perunsettings: PerunSettings,
                 private groupsmanager: GroupsManager,
                 private usersmanager: UsersManager,

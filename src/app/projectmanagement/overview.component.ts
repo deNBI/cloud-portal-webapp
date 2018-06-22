@@ -1,5 +1,4 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {AuthzResolver} from '../perun-connector/authz-resolver.service'
 import {GroupsManager} from '../perun-connector/groups-manager.service'
 import {MembersManager} from '../perun-connector/members-manager.service'
 import {UsersManager} from '../perun-connector/users-manager.service'
@@ -20,7 +19,7 @@ import  * as moment from 'moment';
 
 @Component({
     templateUrl: 'overview.component.html',
-    providers: [UserService, GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [UserService, GroupService, ResourcesManager, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 
@@ -66,7 +65,7 @@ export class OverviewComponent {
     public passwordModalFacility: string = '';
     public passwordModalEmail: string = '';
 
-    constructor(private authzresolver: AuthzResolver,
+    constructor(
                 private perunsettings: PerunSettings,
                 private useresmanager: UsersManager,
                 private groupsmanager: GroupsManager,

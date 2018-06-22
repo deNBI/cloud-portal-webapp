@@ -15,7 +15,6 @@ import {Userinfo} from "../userinfo/userinfo.model";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {MembersManager} from "../perun-connector/members-manager.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 
 import {ClientService} from "../api-connector/vmClients.service";
 import {Vmclient} from "./virtualmachinemodels/vmclient";
@@ -29,7 +28,7 @@ import {environment} from "../../environments/environment";
 @Component({
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 })
 export class VirtualMachineComponent implements OnInit {
     data: string = "";
@@ -56,7 +55,7 @@ export class VirtualMachineComponent implements OnInit {
     private checkStatusTimeout: number = 5000;
 
 
-    constructor(private groupService: GroupService, private imageService: ImageService,  private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) {
+    constructor(private groupService: GroupService, private imageService: ImageService,  private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) {
     }
 
 

@@ -1,5 +1,4 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {AuthzResolver} from '../perun-connector/authz-resolver.service'
 import {GroupsManager} from '../perun-connector/groups-manager.service'
 import {MembersManager} from '../perun-connector/members-manager.service'
 import {UsersManager} from '../perun-connector/users-manager.service'
@@ -20,7 +19,7 @@ import  * as moment from 'moment';
 
 @Component({
     templateUrl: 'facilityprojectsoverview.component.html',
-    providers: [FacilityService,UserService, GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [FacilityService,UserService, GroupService, ResourcesManager, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 })
 export class  FacilityProjectsOverviewComponent {
 
