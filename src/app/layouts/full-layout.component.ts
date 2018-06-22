@@ -89,15 +89,18 @@ export class FullLayoutComponent implements OnInit {
         }
     }
 
-    checkVOstatus(usersmanager: UsersManager) {
+    checkVOstatus(userservice:UserService) {
         let user_id: number;
         let admin_vos: {};
+
         this.userservice
             .getLoggedUser().toPromise()
             .then(function (userdata) {
                 //TODO catch errors
                 user_id = userdata.json()["id"];
-                return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+
+
+                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
             }).then(function (adminvos) {
             admin_vos = adminvos.json();
         }).then(result => {
@@ -112,6 +115,7 @@ export class FullLayoutComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.checkVOstatus(this.usersmanager);
+
+        this.checkVOstatus(this.userservice);
     }
 }

@@ -130,7 +130,7 @@ export class ApplicationsComponent {
             .then(function (userdata) {
                 //TODO catch errors
                 user_id = userdata.json()["id"];
-                return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+                return this.userservice.getVosWhereUserIsAdmin(user_id).toPromise();
             }).then(function (adminvos) {
             admin_vos = adminvos.json();
         }).then(result => {

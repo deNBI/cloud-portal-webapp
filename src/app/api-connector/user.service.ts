@@ -34,13 +34,27 @@ export class UserService {
             });
     }
 
-     getLoggedUser() {
-    return this.http.get(this.settings.getApiBaseURL()+ 'user/getLoggedUser/',
-      {
-          withCredentials: true,
+    getLoggedUser() {
+        return this.http.get(this.settings.getApiBaseURL() + 'user/getLoggedUser/',
+            {
+                withCredentials: true,
 
-      });
-  }
+            });
+    }
+
+    getVosWhereUserIsAdmin(user_id: number) {
+        return this.http.get(this.settings.getApiBaseURL() + 'user/getVosWhereUserIsAdmin/', {
+            withCredentials: true,
+            params: {userid: user_id}
+        });
+    }
+
+      getGroupsWhereUserIsAdmin(user_id: number) {
+        return this.http.get(this.settings.getApiBaseURL() + 'user/getGroupsWhereUserIsAdmin/', {
+            withCredentials: true,
+            params: {userid: user_id}
+        });
+    }
 
     setNewsletterSubscription(subscribed: boolean): Observable<any> {
         let header = new Headers({
