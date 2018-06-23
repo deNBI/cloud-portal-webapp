@@ -5,12 +5,13 @@ import {ClientService} from "../api-connector/vmClients.service";
 import {GroupsManager} from "../perun-connector/groups-manager.service";
 import {FacilityService} from "../api-connector/facility.service";
 import {UserService} from "../api-connector/user.service";
+import {GroupService} from "../api-connector/group.service";
 
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './full-layout.component.html',
-    providers: [UserService,FacilityService, GroupsManager, ClientService,  PerunSettings, ApiSettings]
+    providers: [GroupService,UserService,FacilityService, GroupsManager, ClientService,  PerunSettings, ApiSettings]
 })
 export class FullLayoutComponent implements OnInit {
 
@@ -23,7 +24,7 @@ export class FullLayoutComponent implements OnInit {
     navbar_state = 'closed'
     client_avaiable;
 
-    constructor(private userservice:UserService,private facilityservice: FacilityService, private groupsManager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings) {
+    constructor(private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private groupsManager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings) {
         this.is_client_avaiable();
         this.is_vm_project_member();
         this.get_is_facility_manager();
@@ -53,7 +54,7 @@ export class FullLayoutComponent implements OnInit {
     }
 
     is_vm_project_member() {
-        this.groupsManager.getMemberGroupsStatus().subscribe(result => {
+        this.groupService.getMemberGroupsStatus().subscribe(result => {
             if (result.json().length > 0) {
                 this.vm_project_member = true
             }

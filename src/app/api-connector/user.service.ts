@@ -53,7 +53,7 @@ export class UserService {
 
     getMemberByExtSourceNameAndExtLogin(ext_login: string) {
 
-        return this.http.get(this.settings.getApiBaseURL() + `muser/getMemberByExtSourceNameAndExtLogin`, {
+        return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByExtSourceNameAndExtLogin/`, {
             withCredentials: true,
             params: {
 

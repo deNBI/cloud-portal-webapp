@@ -120,10 +120,10 @@ export class ApplicationsComponent {
         //todo check if user is VO Admin
         let user_id: number;
         let admin_vos: {};
-
+        console.log(this.userservice)
         this.userservice
             .getLoggedUser().toPromise()
-            .then(function (userdata) {
+            .then(userdata =>{
                 //TODO catch errors
                 user_id = userdata.json()["id"];
                 return this.userservice.getVosWhereUserIsAdmin(user_id).toPromise();
@@ -282,7 +282,7 @@ export class ApplicationsComponent {
         let manager_member_user_id: number;
         let new_group_id: number;
         let re = /[-:. ,]/gi
-        let  shortNameDate=name + (new Date(Date.now()).toLocaleString().replace(re,''))
+        let  shortNameDate=name + (new Date(Date.now()).toLocaleString().replace(re,''));
         this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
             .then(member_raw => {
                     let member = member_raw.json();
@@ -290,7 +290,7 @@ export class ApplicationsComponent {
                     manager_member_user_id = member["userId"];
                     // create new group
 
-                    return this.groupsmanager.createGroup(shortNameDate, description).toPromise();
+                    return this.groupservice.createGroup(shortNameDate, description).toPromise();
                 }
             ).then(group_raw => {
             let group = group_raw.json();
@@ -306,7 +306,7 @@ export class ApplicationsComponent {
         }).then(null_result => {
             //setting approved status for Perun Group
             this.groupservice.setPerunGroupStatus(new_group_id, 2).toPromise();
-            this.groupsmanager.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
+            this.groupservice.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
             if (compute_center != 'undefined'){
             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();}
             this.groupservice.setShortname(new_group_id.toString(),name).subscribe();

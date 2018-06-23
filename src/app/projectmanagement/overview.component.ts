@@ -69,7 +69,7 @@ export class OverviewComponent {
                 private groupservice: GroupService,
                 private userservice: UserService,
                 private voservice:VoService) {
-        this.getUserProjects(groupsmanager, userservice);
+        this.getUserProjects(groupservice, userservice);
 
     }
 
@@ -102,7 +102,7 @@ export class OverviewComponent {
         })
     }
 
-    getUserProjects(groupsmanager: GroupsManager,
+    getUserProjects(groupservice: GroupService,
                     userservice: UserService) {
         let user_id: number;
         let member_id: number;
@@ -123,7 +123,7 @@ export class OverviewComponent {
             .then(function (memberdata) {
                 let memberid = memberdata.json()["id"];
                 member_id = memberid;
-                return groupsmanager.getMemberGroups(memberid).toPromise();
+                return groupservice.getMemberGroups(memberid).toPromise();
             }).then(function (groupsdata) {
             user_projects = groupsdata.json();
         }).then(function () {

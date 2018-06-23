@@ -16,52 +16,9 @@ export class GroupsManager {
   constructor(private http: Http, private settings: PerunSettings, private apiSettings: ApiSettings) {
   }
 
-  getMemberGroups(member_id: number) {
-    return this.http.get(this.settings.getPerunBaseURL() + 'groupsManager/getMemberGroups', {
-      headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-      params: {member: member_id}
-    });
-  }
-
-
-  getMemberGroupsStatus() {
-    return this.http.get(this.apiSettings.getApiBaseURL() + 'approved_projects/', {
-      withCredentials: true,
-      headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-    });
-
-  }
 
 
 
-
-  createGroup(group_name: string, group_description: string) {
-    var parameter = JSON.stringify({
-      vo: this.settings.getPerunVO(),
-      group: {name: group_name, description: group_description.substring(0,512)}
-    });
-    return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/createGroup', parameter,
-      {
-        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-      });
-  }
-
-  setdeNBIDirectAcces(group_id: number, value: boolean) {
-    var parameter = JSON.stringify({
-      group: group_id,
-      attribute: {id: 3279,
-        namespace: 'urn:perun:group:attribute-def:opt',
-        friendlyName: 'denbiDirectAccess', type: 'java.lang.Boolean',
-        value: value
-      }
-    });
-    return this.http.post(this.settings.getPerunBaseURL() + 'attributesManager/setAttribute', parameter,
-      {
-        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-      });
-  }
-
-  
 
 
 }

@@ -218,7 +218,7 @@ export class VirtualMachineComponent implements OnInit {
     }
 
     getUserApprovedProjects() {
-        this.groupsmanager.getMemberGroupsStatus().toPromise().then(membergroups => {
+        this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => {
             for (let project of membergroups.json()) {
                 this.projects.push(project);
 
