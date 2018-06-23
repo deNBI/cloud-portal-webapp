@@ -167,6 +167,35 @@ export class GroupService {
     }
 
 
+    setPerunGroupStatus(group_id: number, status: number) {
+          let urlSearchParams = new URLSearchParams();
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('groupid', group_id.toString());
+        urlSearchParams.append('status', status.toString());
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setStatus/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
+     setGroupDiskSpace(group_id: number, value :number ,numberofVms:number){
+           let urlSearchParams = new URLSearchParams();
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('groupid', group_id.toString());
+        urlSearchParams.append('value', value.toString());
+          urlSearchParams.append('numberofVms', numberofVms.toString());
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setGroupDiskSpace/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
+
+
      setName(groupid: string, name: string): Observable<any> {
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({

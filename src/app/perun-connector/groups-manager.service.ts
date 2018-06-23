@@ -33,15 +33,7 @@ export class GroupsManager {
   }
 
 
-  getGroupByVoandName(groupname: string) {
 
-    return this.http.get(this.settings.getPerunBaseURL() + 'groupsManager/getGroupByName', {
-
-      headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-      params: {vo: this.settings.getPerunVO(), name: groupname}
-    });
-
-  }
 
   createGroup(group_name: string, group_description: string) {
     var parameter = JSON.stringify({
@@ -69,50 +61,7 @@ export class GroupsManager {
       });
   }
 
-
-  setGroupDiskSpace(group_id: number, value :number ,numberofVms:number){
-    value=value * numberofVms;
-    var parameter = JSON.stringify({
-      group: group_id,
-      attribute: {id: this.denbiProjectDiskSpace_ID,
-        namespace: 'urn:perun:group:attribute-def:opt',
-        friendlyName: 'denbiProjectDiskSpace', type: 'java.lang.Integer',
-        value: value
-      }
-    });
-    return this.http.post(this.settings.getPerunBaseURL() + 'attributesManager/setAttribute', parameter,
-      {
-        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-      });
-
-  }
-
-
-
-  setPerunGroupStatus(group_id: number, status: number) {
-    /* 1:submitted
-       2: approved
-       3: declined
-     */
-
-    var parameter = JSON.stringify({
-      group: group_id,
-      attribute: {
-        id: 3291, namespace: 'urn:perun:group:attribute-def:opt',
-        friendlyName: 'denbiProjectStatus', type: 'java.lang.Integer',
-        value: status,
-      }
-    });
-    return this.http.post(this.settings.getPerunBaseURL() + 'attributesManager/setAttribute', parameter,
-      {
-        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
-      });
-  }
-
-
-
-
-
+  
 
 
 }

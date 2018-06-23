@@ -305,7 +305,7 @@ export class ApplicationsComponent {
             return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).toPromise();
         }).then(null_result => {
             //setting approved status for Perun Group
-            this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
+            this.groupservice.setPerunGroupStatus(new_group_id, 2).toPromise();
             this.groupsmanager.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
             if (compute_center != 'undefined'){
             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();}
@@ -315,7 +315,7 @@ export class ApplicationsComponent {
             this.groupservice.setDescription(new_group_id.toString(),description).subscribe();
             this.groupservice.setLifetime(new_group_id.toString(),lifetime.toString()).subscribe();
             this.groupservice.setPerunId(new_group_id.toString(),application_id).subscribe();
-            this.groupsmanager.setGroupDiskSpace(new_group_id,diskspace,numberofVms).subscribe();
+            this.groupservice.setGroupDiskSpace(new_group_id,diskspace,numberofVms).subscribe();
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications
