@@ -3,28 +3,27 @@ import {FormsModule} from '@angular/forms';
 import 'rxjs/Rx'
 
 import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {AuthzResolver} from "../perun-connector/authz-resolver.service";
-import {UsersManager} from "../perun-connector/users-manager.service";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 import {FullLayoutComponent} from "../layouts/full-layout.component";
+import {UserService} from "../api-connector/user.service";
 
 
 @Component({
     selector: 'vm-overview',
     templateUrl: 'vmOverview.component.html',
-    providers: [VirtualmachineService, FullLayoutComponent, AuthzResolver, UsersManager, PerunSettings]
+    providers: [UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 })
 
 
 export class VmOverviewComponent implements OnInit {
     vms: VirtualMachine[];
-    status_changed_vm:string;
-    status_changed_vm_id:string;
+    status_changed_vm: string;
+    status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
     tab = 'own';
-    status_changed:number=0;
+    status_changed: number = 0;
     filterusername: string;
     filterip: string;
     filtername: string;
@@ -36,7 +35,7 @@ export class VmOverviewComponent implements OnInit {
     filterssh: string;
 
 
-    constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  usersmanager: UsersManager, private perunsettings: PerunSettings) {
+    constructor(private userservice: UserService, private virtualmachineservice: VirtualmachineService,  private perunsettings: PerunSettings) {
 
     }
 
@@ -76,14 +75,15 @@ export class VmOverviewComponent implements OnInit {
         this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => {
             this.vms = vms;
             for (let vm of this.vms) {
-                 if (vm.created_at!=''){
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();}
-                      if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
+                if (vm.created_at != '') {
+                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                }
+                if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
                     vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
                 }
                 else {
-                        vm.stopped_at=''
-                      }
+                    vm.stopped_at = ''
+                }
             }
 
         })
@@ -96,14 +96,15 @@ export class VmOverviewComponent implements OnInit {
                 this.virtualmachineservice.getVm(this.elixir_id).subscribe(vms => {
                         this.vms = vms;
                         for (let vm of this.vms) {
-                            if (vm.created_at!=''){
-                             vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();}
-                                   if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
-                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                }
-                else {
-                        vm.stopped_at=''
-                      }
+                            if (vm.created_at != '') {
+                                vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                            }
+                            if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
+                                vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                            }
+                            else {
+                                vm.stopped_at = ''
+                            }
                         }
 
                     }
@@ -206,7 +207,7 @@ export class VmOverviewComponent implements OnInit {
     deleteVm(openstack_id: string): void {
         this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => {
 
-            this.status_changed=0;
+            this.status_changed = 0;
 
 
             if (this.tab === 'own') {
@@ -217,10 +218,11 @@ export class VmOverviewComponent implements OnInit {
 
             }
 
-            if (result.text() === 'true'){
-                this.status_changed=1;}
+            if (result.text() === 'true') {
+                this.status_changed = 1;
+            }
             else {
-                this.status_changed=2;
+                this.status_changed = 2;
             }
 
 
@@ -230,7 +232,7 @@ export class VmOverviewComponent implements OnInit {
     stopVm(openstack_id: string): void {
         this.virtualmachineservice.stopVM(openstack_id).subscribe(result => {
 
-            this.status_changed=0;
+            this.status_changed = 0;
 
 
             if (this.tab === 'own') {
@@ -241,12 +243,12 @@ export class VmOverviewComponent implements OnInit {
 
             }
 
-            if (result.text() === 'true'){
-                this.status_changed=1;}
-            else {
-                this.status_changed=2;
+            if (result.text() === 'true') {
+                this.status_changed = 1;
             }
-
+            else {
+                this.status_changed = 2;
+            }
 
 
         })
@@ -256,15 +258,16 @@ export class VmOverviewComponent implements OnInit {
         this.virtualmachineservice.getVm(elixir_id).subscribe(vms => {
                 this.vms = vms;
                 for (let vm of this.vms) {
-                    if (vm.created_at!=''){
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();}
+                    if (vm.created_at != '') {
+                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                    }
 
-                           if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
-                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                }
-                else {
-                        vm.stopped_at=''
-                      }
+                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
+                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                    }
+                    else {
+                        vm.stopped_at = ''
+                    }
                 }
                 this.checkInactiveVms();
             }
@@ -276,7 +279,7 @@ export class VmOverviewComponent implements OnInit {
         this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => {
 
 
-             this.status_changed=0;
+            this.status_changed = 0;
 
 
             if (this.tab === 'own') {
@@ -287,10 +290,11 @@ export class VmOverviewComponent implements OnInit {
 
             }
 
-            if (result.text() === 'true'){
-                this.status_changed=1;}
+            if (result.text() === 'true') {
+                this.status_changed = 1;
+            }
             else {
-                this.status_changed=2;
+                this.status_changed = 2;
             }
 
         })
@@ -302,14 +306,15 @@ export class VmOverviewComponent implements OnInit {
                 this.vms = vms;
                 for (let vm of this.vms) {
 
-                    if (vm.created_at!=''){
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();}
-                      if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
-                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                }
-                else {
-                        vm.stopped_at=''
-                      }
+                    if (vm.created_at != '') {
+                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                    }
+                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
+                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                    }
+                    else {
+                        vm.stopped_at = ''
+                    }
 
                 }
 
@@ -319,18 +324,18 @@ export class VmOverviewComponent implements OnInit {
 
     ngOnInit(): void {
         this.getElixirId();
-        this.checkVOstatus(this.usersmanager)
+        this.checkVOstatus(this.userservice)
     }
 
-    checkVOstatus(usersmanager: UsersManager) {
+    checkVOstatus(userservice: UserService) {
         let user_id: number;
         let admin_vos: {};
-        this.authzresolver
+        this.userservice
             .getLoggedUser().toPromise()
             .then(function (userdata) {
                 //TODO catch errors
                 user_id = userdata.json()["id"];
-                return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
             }).then(function (adminvos) {
             admin_vos = adminvos.json();
         }).then(result => {
@@ -345,11 +350,30 @@ export class VmOverviewComponent implements OnInit {
 
 
     getElixirId() {
-        this.authzresolver.getPerunPrincipal().toPromise().then(result => {
-            this.elixir_id = result.json()['actor'];
-        }).then(result => {
-            this.getVms(this.elixir_id)
-        });
-    }
+        console.log('test')
+        this.userservice.getLoggedUser().toPromise()
+            .then(result => {
+                let res = result.json();
 
+                let userid = res["id"];
+                this.userservice.getLogins(userid).toPromise().then(result => {
+                    let logins = result.json()
+                    for (let login of logins) {
+                        if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
+
+                            this.elixir_id = login['value'];
+
+                            break
+
+                        }
+
+
+                    }
+                }).then(result => {
+                    this.getVms(this.elixir_id)
+
+                });
+            })
+
+    }
 }

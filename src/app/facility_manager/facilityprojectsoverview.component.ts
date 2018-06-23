@@ -1,14 +1,9 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {AuthzResolver} from '../perun-connector/authz-resolver.service'
-import {GroupsManager} from '../perun-connector/groups-manager.service'
-import {MembersManager} from '../perun-connector/members-manager.service'
-import {UsersManager} from '../perun-connector/users-manager.service'
 import {Http} from '@angular/http';
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Project} from '../projectmanagement/project.model';
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {ProjectMember} from '../projectmanagement/project_member.model'
-import {ResourcesManager} from "../perun-connector/resources_manager";
 import 'rxjs/add/operator/toPromise';
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
@@ -20,7 +15,7 @@ import  * as moment from 'moment';
 
 @Component({
     templateUrl: 'facilityprojectsoverview.component.html',
-    providers: [FacilityService,UserService, GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [FacilityService,UserService, GroupService,  PerunSettings, ApiSettings]
 })
 export class  FacilityProjectsOverviewComponent {
 

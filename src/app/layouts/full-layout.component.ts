@@ -1,17 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {UsersManager} from "../perun-connector/users-manager.service";
-import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {ClientService} from "../api-connector/vmClients.service";
-import {GroupsManager} from "../perun-connector/groups-manager.service";
 import {FacilityService} from "../api-connector/facility.service";
+import {UserService} from "../api-connector/user.service";
+import {GroupService} from "../api-connector/group.service";
 
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './full-layout.component.html',
-    providers: [FacilityService, GroupsManager, ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
+    providers: [GroupService,UserService,FacilityService, ClientService,  PerunSettings, ApiSettings]
 })
 export class FullLayoutComponent implements OnInit {
 
@@ -24,7 +23,7 @@ export class FullLayoutComponent implements OnInit {
     navbar_state = 'closed'
     client_avaiable;
 
-    constructor(private facilityservice: FacilityService, private groupsManager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
+    constructor(private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) {
         this.is_client_avaiable();
         this.is_vm_project_member();
         this.get_is_facility_manager();
@@ -54,7 +53,7 @@ export class FullLayoutComponent implements OnInit {
     }
 
     is_vm_project_member() {
-        this.groupsManager.getMemberGroupsStatus().subscribe(result => {
+        this.groupService.getMemberGroupsStatus().subscribe(result => {
             if (result.json().length > 0) {
                 this.vm_project_member = true
             }
@@ -89,15 +88,18 @@ export class FullLayoutComponent implements OnInit {
         }
     }
 
-    checkVOstatus(usersmanager: UsersManager) {
+    checkVOstatus(userservice:UserService) {
         let user_id: number;
         let admin_vos: {};
-        this.authzresolver
+
+        this.userservice
             .getLoggedUser().toPromise()
             .then(function (userdata) {
                 //TODO catch errors
                 user_id = userdata.json()["id"];
-                return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+
+
+                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
             }).then(function (adminvos) {
             admin_vos = adminvos.json();
         }).then(result => {
@@ -112,6 +114,7 @@ export class FullLayoutComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.checkVOstatus(this.usersmanager);
+
+        this.checkVOstatus(this.userservice);
     }
 }

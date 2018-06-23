@@ -1,26 +1,23 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {AuthzResolver} from '../perun-connector/authz-resolver.service'
-import {GroupsManager} from '../perun-connector/groups-manager.service'
-import {MembersManager} from '../perun-connector/members-manager.service'
-import {UsersManager} from '../perun-connector/users-manager.service'
 import {Http} from '@angular/http';
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Project} from './project.model';
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {ProjectMember} from './project_member.model'
-import {ResourcesManager} from "../perun-connector/resources_manager";
 import 'rxjs/add/operator/toPromise';
 import {isNumber} from "util";
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
-import * as moment from 'moment';
+import  * as moment from 'moment';
+import {VoService} from "../api-connector/vo.service";
+
 
 
 @Component({
     templateUrl: 'overview.component.html',
-    providers: [UserService, GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [VoService,UserService, GroupService,  PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 
@@ -66,15 +63,12 @@ export class OverviewComponent {
     public passwordModalFacility: string = '';
     public passwordModalEmail: string = '';
 
-    constructor(private authzresolver: AuthzResolver,
+    constructor(
                 private perunsettings: PerunSettings,
-                private useresmanager: UsersManager,
-                private groupsmanager: GroupsManager,
-                private membersmanager: MembersManager,
-                private  resourceManager: ResourcesManager,
                 private groupservice: GroupService,
-                private userservice: UserService) {
-        this.getUserProjects(groupsmanager, membersmanager, useresmanager);
+                private userservice: UserService,
+                private voservice:VoService) {
+        this.getUserProjects(groupservice, userservice);
 
     }
 
@@ -107,9 +101,8 @@ export class OverviewComponent {
         })
     }
 
-    getUserProjects(groupsmanager: GroupsManager,
-                    membersmanager: MembersManager,
-                    usersmanager: UsersManager) {
+    getUserProjects(groupservice: GroupService,
+                    userservice: UserService) {
         let user_id: number;
         let member_id: number;
         let user_projects: {};
@@ -117,27 +110,28 @@ export class OverviewComponent {
         let admin_groups: {};
         let admin_vos: {};
 
-        this.authzresolver
+        this.userservice
             .getLoggedUser().toPromise()
             .then(function (userdata) {
                 //TODO catch errors
                 let userid = userdata.json()["id"];
                 user_id = userid;
                 user_data = userdata.json();
-                return membersmanager.getMemberByUser(userid).toPromise();
+                return userservice.getMemberByUser(userid).toPromise();
             })
             .then(function (memberdata) {
                 let memberid = memberdata.json()["id"];
                 member_id = memberid;
-                return groupsmanager.getMemberGroups(memberid).toPromise();
+                return groupservice.getMemberGroups(memberid).toPromise();
             }).then(function (groupsdata) {
             user_projects = groupsdata.json();
         }).then(function () {
-            return usersmanager.getGroupsWhereUserIsAdmin(user_id).toPromise();
+            return userservice.getGroupsWhereUserIsAdmin(user_id).toPromise();
         }).then(function (admingroups) {
             admin_groups = admingroups.json();
         }).then(function () {
-            return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+
+            return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
         }).then(function (adminvos) {
             admin_vos = adminvos.json();
         }).then(result => {
@@ -248,16 +242,16 @@ export class OverviewComponent {
     }
 
     filterMembers(firstName: string, lastName: string, groupid: number) {
-        this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
+        this.voservice.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
             this.filteredMembers = result;
         })
     }
 
 
     getMembesOfTheProject(projectid: number, projectname: string) {
-        this.groupsmanager.getGroupRichMembers(projectid).toPromise()
+        this.groupservice.getGroupRichMembers(projectid).toPromise()
             .then(function (members_raw) {
-                return members_raw.json();
+                return members_raw;
             }).then(members => {
             this.usersModalProjectID = projectid;
             this.usersModalProjectName = projectname;
