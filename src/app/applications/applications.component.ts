@@ -4,7 +4,6 @@ import {ApplicationsService} from '../api-connector/applications.service'
 import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {ApplicationStatusService} from '../api-connector/application-status.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
-import {GroupsManager} from '../perun-connector/groups-manager.service'
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Application} from "./application.model";
 import {ApplicationStatus} from "./application_status.model";
@@ -17,7 +16,7 @@ import {UserService} from "../api-connector/user.service";
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [UserService,GroupService, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+    providers: [UserService,GroupService, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -44,7 +43,6 @@ export class ApplicationsComponent {
                 private applicationstatusservice: ApplicationStatusService,
                 private specialhardwareservice: SpecialHardwareService,
                 private perunsettings: PerunSettings,
-                private groupsmanager: GroupsManager,
                 private userservice:UserService,
                 private groupservice: GroupService) {
 

@@ -5,7 +5,6 @@ import {Vmclient} from "./virtualmachinemodels/vmclient";
 import {ClientService} from "../api-connector/vmClients.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
-import {GroupsManager} from "../perun-connector/groups-manager.service";
 import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
 
@@ -13,7 +12,7 @@ import {UserService} from "../api-connector/user.service";
 @Component({
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [UserService,GroupService,ClientService,   PerunSettings, ApiSettings, GroupsManager]
+  providers: [UserService,GroupService,ClientService,   PerunSettings, ApiSettings]
 })
 
 export class ClientOverviewComponent implements OnInit {

@@ -1,5 +1,4 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {GroupsManager} from '../perun-connector/groups-manager.service'
 import {Http} from '@angular/http';
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Project} from './project.model';
@@ -17,7 +16,7 @@ import {VoService} from "../api-connector/vo.service";
 
 @Component({
     templateUrl: 'overview.component.html',
-    providers: [VoService,UserService, GroupService, GroupsManager,  PerunSettings, ApiSettings]
+    providers: [VoService,UserService, GroupService,  PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 
@@ -65,7 +64,6 @@ export class OverviewComponent {
 
     constructor(
                 private perunsettings: PerunSettings,
-                private groupsmanager: GroupsManager,
                 private groupservice: GroupService,
                 private userservice: UserService,
                 private voservice:VoService) {

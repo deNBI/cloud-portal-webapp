@@ -17,7 +17,6 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 
 import {ClientService} from "../api-connector/vmClients.service";
 import {Vmclient} from "./virtualmachinemodels/vmclient";
-import {GroupsManager} from "../perun-connector/groups-manager.service";
 import {Application} from "../applications/application.model";
 import {keyService} from "../api-connector/key.service";
 import {Project} from "../projectmanagement/project.model";
@@ -27,7 +26,7 @@ import {environment} from "../../environments/environment";
 @Component({
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService, GroupsManager]
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService]
 })
 export class VirtualMachineComponent implements OnInit {
     data: string = "";
@@ -54,7 +53,7 @@ export class VirtualMachineComponent implements OnInit {
     private checkStatusTimeout: number = 5000;
 
 
-    constructor(private groupService: GroupService, private imageService: ImageService,  private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService,private  keyService: keyService, private clientservice: ClientService) {
+    constructor(private groupService: GroupService, private imageService: ImageService,  private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,private  keyService: keyService, private clientservice: ClientService) {
     }
 
 

@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {ClientService} from "../api-connector/vmClients.service";
-import {GroupsManager} from "../perun-connector/groups-manager.service";
 import {FacilityService} from "../api-connector/facility.service";
 import {UserService} from "../api-connector/user.service";
 import {GroupService} from "../api-connector/group.service";
@@ -11,7 +10,7 @@ import {GroupService} from "../api-connector/group.service";
 @Component({
     selector: 'app-dashboard',
     templateUrl: './full-layout.component.html',
-    providers: [GroupService,UserService,FacilityService, GroupsManager, ClientService,  PerunSettings, ApiSettings]
+    providers: [GroupService,UserService,FacilityService, ClientService,  PerunSettings, ApiSettings]
 })
 export class FullLayoutComponent implements OnInit {
 
@@ -24,7 +23,7 @@ export class FullLayoutComponent implements OnInit {
     navbar_state = 'closed'
     client_avaiable;
 
-    constructor(private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private groupsManager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings) {
+    constructor(private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) {
         this.is_client_avaiable();
         this.is_vm_project_member();
         this.get_is_facility_manager();
