@@ -125,7 +125,7 @@ are going to use."></i></strong></label>
                                     <input required class="form-control" id="id_project_application_vms_requested"
                                            name="project_application_vms_requested"
                                            placeholder="e.g. 5"
-                                           type="number" min="1" step="1" [ngModel]="3">
+                                           type="number" min="1" step="1" [(ngModel)]="project_application_vms_requested">
                                     <span class="input-group-addon"> VMs
                                     </span>
                                 </div>
@@ -179,10 +179,10 @@ are going to use."></i></strong></label>
                                 'has-danger': f.controls.project_application_disk_space?.invalid,
                                 'has-success': f.controls.project_application_disk_space?.valid
                                 }">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage per VM*
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage Limit*
                                 <i
                                         class="icon-question" data-toggle="tooltip" data-placement="auto"
-                                        title="Disk space is the amount of bytes that is provided by a storage device."></i></strong></label>
+                                        title="Storage limit is the sum of extra storage provided by volumes."></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
                                     <input class="form-control" id="id_project_application_disk_space"
@@ -192,14 +192,35 @@ are going to use."></i></strong></label>
                                     <span class="input-group-addon"> GB
                                     </span>
                                 </div>
-                                <span class="help-block">How many storage should every VM have?</span>
+                                <span class="help-block">How many extra storage do you need for your Vms?</span>
+                            </div>
+                        </div>
+
+                         <div class="form-group row" [ngClass]="{
+                                'has-danger': f.controls.project_application_volume_counter?.invalid,
+                                'has-success': f.controls.project_application_volume_counter?.valid
+                                }">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Volume Counter*
+                                <i
+                                        class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                        title="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."></i></strong></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input  required class="form-control" id="id_project_application_volume_counter"
+                                           name="project_application_volume_counter"
+                                           placeholder="e.g. 20"
+                                           type="number" min="0" step="1" [ngModel]="project_application_vms_requested">
+                                    <span class="input-group-addon"> GB
+                                    </span>
+                                </div>
+                                <span class="help-block">How many storage volumes do you want to use?</span>
                             </div>
                         </div>
 
                         <div class="form-group row"
                              [ngClass]="{
-                                'has-danger': f.controls.project_application_object_stroage?.invalid && (f.controls.project_application_object_storage?.dirty || f.controls.project_application_object_storage?.touched),
-                                'has-success': f.controls.project_application_object_storage?.valid && (f.controls.project_application_object_storage?.dirty || f.controls.project_application_object_storage?.touched)
+                                'has-danger': f.controls.project_application_object_storage?.invalid ,
+                                'has-success': f.controls.project_application_object_storage?.valid
                                 }">
                             <label class="col-md-4 form-control-label" for="textarea-input">Object Storage <i
                                     class="icon-question" data-toggle="tooltip" data-placement="auto"
@@ -209,7 +230,7 @@ are going to use."></i></strong></label>
                                     <input class="form-control" id="id_project_application_object_storage"
                                            name="project_application_object_storage"
                                            placeholder="e.g. 8"
-                                           type="number" min="0" step="1" ngModel>
+                                           type="number" min="0" step="1" [ngModel]="0">
                                     <span class="input-group-addon"> GB
                                     </span>
                                 </div>
