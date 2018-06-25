@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component,OnInit} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 
 import {Userinfo} from './userinfo.model'
@@ -9,23 +9,47 @@ import {ApiSettings} from '../api-connector/api-settings.service'
 import {keyService} from "../api-connector/key.service";
 import {UsersManager} from "../perun-connector/users-manager.service";
 import {AttributesManager} from "../perun-connector/attributes-manager";
+import {UserService} from "../api-connector/user.service";
 
 
 @Component({
   templateUrl: 'userinfo.component.html',
-  providers: [AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager, AttributesManager]
+  providers: [UserService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager, AttributesManager]
 })
-export class UserinfoComponent {
+export class UserinfoComponent implements OnInit{
   userinfo: Userinfo;
   key: string = 'Show Public Key';
   key_visible = false;
-  public_key: string;
+  newsletter_subscribed :boolean;
+  public_key: string='';
 
-  constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) {
+  constructor(private userservice: UserService,private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) {
     this.userinfo = new Userinfo();
     this.getUserinfo();
 
 
+
+  }
+
+   ngOnInit(): void {
+
+            this.userservice.getNewsletterSubscription().subscribe(result => {
+          result = result.json()['subscribed']
+          if (result.toString() == 'true') {
+              this.newsletter_subscribed = true;
+          }
+          else {
+              this.newsletter_subscribed = false;
+          }
+
+      })
+
+
+    }
+
+  setNewsletterSubscription(e){
+     this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => {
+    })
   }
 
   importKey(publicKey: string, keyname: string) {
@@ -50,6 +74,8 @@ export class UserinfoComponent {
     }
 
   }
+
+ 
 
   getUserPublicKey() {
     this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => {
@@ -90,7 +116,11 @@ export class UserinfoComponent {
 
     })
   }
-
+  show_key(){
+    if(this.key_visible ==false){
+      this.toggleKey();
+    }
+  }
   toggleKey() {
     if (this.key == 'Show Public Key') {
       this.key = 'Hide Public Key';

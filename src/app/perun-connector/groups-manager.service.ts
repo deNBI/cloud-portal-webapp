@@ -11,6 +11,7 @@ import {Project} from "../projectmanagement/project.model";
 @Injectable()
 export class GroupsManager {
   baseConnectorUrl = 'https://portal-dev.denbi.de/connector/'
+  denbiProjectDiskSpace_ID=3288
 
   constructor(private http: Http, private settings: PerunSettings, private apiSettings: ApiSettings) {
   }
@@ -23,11 +24,21 @@ export class GroupsManager {
   }
 
 
-
   getMemberGroupsStatus() {
     return this.http.get(this.apiSettings.getApiBaseURL() + 'approved_projects/', {
-       withCredentials: true,
+      withCredentials: true,
       headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+    });
+
+  }
+
+
+  getGroupByVoandName(groupname: string) {
+
+    return this.http.get(this.settings.getPerunBaseURL() + 'groupsManager/getGroupByName', {
+
+      headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      params: {vo: this.settings.getPerunVO(), name: groupname}
     });
 
   }
@@ -35,13 +46,48 @@ export class GroupsManager {
   createGroup(group_name: string, group_description: string) {
     var parameter = JSON.stringify({
       vo: this.settings.getPerunVO(),
-      group: {name: group_name, description: group_description}
+      group: {name: group_name, description: group_description.substring(0,512)}
     });
     return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/createGroup', parameter,
       {
         headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
       });
   }
+
+  setdeNBIDirectAcces(group_id: number, value: boolean) {
+    var parameter = JSON.stringify({
+      group: group_id,
+      attribute: {id: 3279,
+        namespace: 'urn:perun:group:attribute-def:opt',
+        friendlyName: 'denbiDirectAccess', type: 'java.lang.Boolean',
+        value: value
+      }
+    });
+    return this.http.post(this.settings.getPerunBaseURL() + 'attributesManager/setAttribute', parameter,
+      {
+        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      });
+  }
+
+
+  setGroupDiskSpace(group_id: number, value :number ,numberofVms:number){
+    value=value * numberofVms;
+    var parameter = JSON.stringify({
+      group: group_id,
+      attribute: {id: this.denbiProjectDiskSpace_ID,
+        namespace: 'urn:perun:group:attribute-def:opt',
+        friendlyName: 'denbiProjectDiskSpace', type: 'java.lang.Integer',
+        value: value
+      }
+    });
+    return this.http.post(this.settings.getPerunBaseURL() + 'attributesManager/setAttribute', parameter,
+      {
+        headers: new Headers({'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()}),
+      });
+
+  }
+
+
 
   setPerunGroupStatus(group_id: number, status: number) {
     /* 1:submitted

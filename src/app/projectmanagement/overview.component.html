@@ -14,25 +14,49 @@
                             <th>Project ID</th>
                             <th>Project Name</th>
                             <th>Description</th>
+                            <th>Facility</th>
                             <th>Date created</th>
                             <th>Days running</th>
+                            <th>Lifetime in Days</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let project of projects">
+                        <tr *ngFor="let project of projects"   [ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}">
                             <td>{{ project.Id }}</td>
                             <td>{{ project.Name }}</td>
                             <td>{{ project.Description }}</td>
+
+                            <td>
+                                <p *ngIf="project.ComputeCenter[0] == 'None'">None</p>
+                                <p *ngIf="project.ComputeCenter[0] != 'None'">{{project.ComputeCenter[0]}}</p>
+                                <ul *ngIf="project.ComputeCenter[0] != 'None'">
+
+                                    <button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
+                                            class="btn btn-primary">Set your OpenStack API password
+                                    </button>
+                                    <li *ngFor="let details of project.ComputeCenterDetails">{{details[0]}}: <a
+                                            target="_blank"
+                                            *ngIf="details[0] == 'Login'"
+                                            href="{{details[1]}}">{{details[1]}}</a>
+                                        <span *ngIf="details[0] != 'Login'">{{details[1]}}</span>
+                                    </li>
+                                </ul>
+
+                            </td>
+
                             <td>{{ project.DateCreated }}</td>
                             <td>{{ project.DaysRunning }}</td>
+                            <td >{{project.LifetimeDays}}</td>
                             <td>
                                 <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                        (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
+                                        (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
+
                                         *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
                                     <i class="fa fa-users"></i>&nbsp;Show Members
                                 </button>
-                                <button (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name); addUserModal.show();"
+                                <button
+                                        (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.ComputeCenter[0]); addUserModal.show();"
                                         *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
                                         type="button"
                                         class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
@@ -71,14 +95,32 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let member of usersModalProjectMembers">
+                    <tr *ngFor="let member of usersModalProjectMembers"    [ngStyle]="{'color':isPi(member)}">
                         <td>{{ member.Id }}</td>
                         <td>{{ member.MemberId }}</td>
                         <td>{{ member.Username }}</td>
                         <td>
-                            <button (click)="usersModal.hide();
+
+                            <button *ngIf="UserModalFacility === null" (click)="usersModal.hide();
                                                 removeMemberModal.show();
-                                                updateUserProjects();" class="btn btn-secondary" type="button">
+                                                " class="btn btn-secondary" type="button">
+                                <i class="fa fa-trash"></i>&nbsp; Remove member
+                            </button>
+
+                            <button  *ngIf="!member.IsPi"  (click)="usersModal.hide();promoteAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility);
+                                                notificationModal.show();
+                                               " class="btn btn-secondary" type="button">
+                                <i class="fa fa-trash"></i>&nbsp; Set Admin state
+                            </button>
+                            <button  *ngIf="member.IsPi"  (click)="usersModal.hide();removeAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility);
+                                                notificationModal.show();
+                                               " class="btn btn-secondary" type="button">
+                                <i class="fa fa-trash"></i>&nbsp; Remove Admin state
+                            </button>
+                            <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Id,member.Username,UserModalFacility);
+                                                notificationModal.show();
+                                               " class="btn btn-secondary" type="button">
+
                                 <i class="fa fa-trash"></i>&nbsp; Remove member
                             </button>
                         </td>
@@ -97,80 +139,157 @@
 
 <div bsModal #addUserModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-  <div class="modal-dialog " role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Add member to the project {{ addUserModalProjectID }}
-          ({{ addUserModalProjectName }})</h4>
-      </div>
-      <div class="modal-body">
-        <p>In order to add a new user to the project please do the following</p>
-        <ol>
-          <li>Send one of the following links to the user you would like to add:
-            <ul>
-              <li>If the user does have an elixir account, please send him the following link:
-                <pre>{{voRegistrationLink}}</pre>
-              </li>
-              <li>If the user does not have an elixir account, please send him the following link:
-                <pre>https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew={{voRegistrationLink}}</pre>
-              </li>
-            </ul>
-          </li>
-          <li>As soon as the user went through the registration process, he can enter https://cloud.denbi.de/portal/ and report you his user id (User Information tab).</li>
-          <li>Please send the following information to cloud@denbi.de
-              <ul>
-                <li>Your User Id and the user id of the user you would like to add.</li>
-                <li>Project name and project description.</li>
-              </ul>
-          </li>
-          <li>You will be notified when the user is member of your project.</li>
-        </ol>
-          <!--
-          <div class="input-group">
-                                      <span class="input-group-addon">UserID
-                                      </span>
-            <input #addMemberID type="number" id="addMemberID" name="addMemberID" class="form-control"
-                   placeholder="UserID">
-          </div>
-          -->
-      </div>
-       <div class="modal-footer">
-         <!--  <button type="button" (click)="addUserModal.hide();
-                                           notificationModal.show();
-                                           addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
-               Add User
-           </button> -->
-        <button type="button" (click)="addUserModalProjectID = -1; addUserModal.hide();" type="reset"
-                class="btn  btn-danger"><i class="fa fa-ban"></i> Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h4 class="modal-title">Add member to the project {{ addUserModalProjectID }}
+                    ({{ addUserModalProjectName }})</h4>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="UserModalFacility === null"><p>In order to add a new user to the project please do the
+
+                    following</p>
+
+                    <ol>
+
+                        <li>Send one of the following links to the user you would like to add:
+
+                            <ul>
+
+                                <li>If the user does have an elixir account, please send him the following link:
+
+                                    <pre>{{voRegistrationLink}}</pre>
+
+                                </li>
+
+                                <li>If the user does not have an elixir account, please send him the following link:
+
+                                    <pre>https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew={{voRegistrationLink}}</pre>
+
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                        <li>As soon as the user went through the registration process, he can enter
+                            https://cloud.denbi.de/portal/
+                            and report you his user id (User Information tab).
+                        </li>
+
+                        <li>Please send the following information to cloud@denbi.de
+
+                            <ul>
+
+                                <li>Your User Id and the user id of the user you would like to add.</li>
+
+                                <li>Project name and project description.</li>
+
+                            </ul>
+
+                        </li>
+
+                        <li>You will be notified when the user is member of your project.</li>
+
+                    </ol>
+                </div>
+                <div *ngIf="UserModalFacility !== null">
+
+                    <div>
+                        <p style=" margin-bottom: 15px;">Search and add a user to your project by providing his exact
+                            name:</p>
+
+                        <input placeholder="first name" #firstName> <input placeholder="last name" #lastName>
+                        <button type="button" class="btn btn-primary"
+                                (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"><i
+                                class="fa fa-search"></i> Search
+                        </button>
+
+                        <br>
+                        <br>
+                        <strong>Please note</strong> that if you can not find the user, he is not a member of the de.NBI
+                        vo. In that case you can invite him by sending him
+                        one of the following links:
+                        <br>
+                        <br>
+                        <ul>
+                            <li>If the user does have an elixir account:
+                                <pre>{{voRegistrationLink}}</pre>
+                            </li>
+                            <li>If the user does not have an elixir account:
+                                <pre>https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew={{voRegistrationLink}}</pre>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
+                        <thead>
+
+                        <th></th>
+                        <th>first name</th>
+                        <th>last name</th>
+                        <th>Email</th>
+                        </thead>
+                        <tbody *ngFor="  let member of filteredMembers">
+                        <td>
+                            <button
+                                    (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName'],UserModalFacility);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                                    class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
+                            </button>
+                             <button
+                                    (click)="addAdmin(addUserModalProjectID,member['member_id'],member['user_id'],member['firstName'],member['lastName'],UserModalFacility);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                                    class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
+                            </button>
+                        </td>
+                        <td>{{member['firstName']}}</td>
+                        <td>{{member['lastName']}}</td>
+                        <td>{{member['mail']}}</td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!--  <button type="button" (click)="addUserModal.hide();
+                                                  notificationModal.show();
+                                                  addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
+                      Add User
+                  </button> -->
+                <button type="button" (click)="addUserModalProjectID = -1;filteredMembers=null; addUserModal.hide();"
+                        type="reset"
+                        class="btn  btn-danger"><i class="fa fa-ban"></i> Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #removeMemberModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title"></h4>
-      </div>
-      <div class="modal-body">
-        In order to remove a user of your project please send the following information to cloud@denbi.de:
-        <ul>
-          <li>Projekt name</li>
-          <li>Projekt description</li>
-          <li>You user id</li>
-          <li>The user id of the project member you would like to remove</li>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button type="button" (click)="removeMemberModal.hide();" type="reset"
-                class="btn  btn-secondary"> Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="UserModalFacility == null ">
+                    In order to remove a user of your project please send the following information to cloud@denbi.de:
+                    <ul>
+                        <li>Projekt name</li>
+                        <li>Projekt description</li>
+                        <li>Your user id</li>
+                        <li>The user id of the project member you would like to remove</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="removeMemberModal.hide();" type="reset"
+                            class="btn  btn-secondary"> Close
+                    </button>
+                </div>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
@@ -186,10 +305,74 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button *ngIf="notificationModalIsClosable == true" type="button" (click)="resetNotificaitonModal(); notificationModal.hide();" type="reset"
+                <button *ngIf="notificationModalIsClosable == true" type="button"
+                        (click)="resetNotificaitonModal(); notificationModal.hide();" type="reset"
                         class="btn  btn-secondary"> Close
                 </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Change Password</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="alert alert-warning" role="alert">
+                    Are you sure you want to change your password?
+                </div>
+            </div>
+          <div class="modal-footer">
+                <button class="btn  btn-success mr-auto col-md-4"
+                        (click)="verifyModal.hide();setUserFacilityPassword(UserModalFacility[0],UserModalFacilityDetails);passwordModal.show(); resetFacilityDetailsModal();">
+                    Yes
+                </button>
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="verifyModal.hide()">Cancel
+                </button>
+        </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+<div bsModal #passwordModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ passwordModalTitle }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-{{ passwordModalType }}" role="alert">
+                    <div *ngIf="passwordModalType=='info'">
+                        Please wait...
+                    </div>
+                    <div *ngIf="passwordModalType=='success'">
+                        <h5>Password successfully set!</h5>
+                        <p> Your new password for the {{passwordModalFacility}} facility is:</p>
+                        <pre>{{passwordModalPassword}}</pre>
+                        <p>Please be aware that you have to remember this password.</p>
+                        <p>However you can always request a new one.</p>
+                    </div>
+                    <div *ngIf="passwordModalType=='warning'">
+                        <p>Please contact {{passwordModalEmail}} in order to set or change your password.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        (click)="resetPasswordModal(); passwordModal.hide();" type="reset"
+                        class="btn  btn-secondary"> Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+

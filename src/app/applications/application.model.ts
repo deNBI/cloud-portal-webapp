@@ -1,6 +1,7 @@
-export class Application{
+export class Application {
   private _Id: number;
   private _Name: string;
+  private _Shortname: string;
   private _Institute: string;
   private _Workgroup: string;
   private _Lifetime: number;
@@ -11,13 +12,52 @@ export class Application{
   private _ObjectStorage: number;
   private _SpecialHardware: number;
   private _Description: string;
+  private _Comment: string;
   private _DateSubmitted: string;
   private _DateStatusChanged: string;
   private _User: number;
   private _UserEmail: number;
   private _Status: number;
+  private _ComputeCenter: [string,number];
+  private _OpenStackProject: boolean;
+  private _ComputeCenterDetails:[string,string][];
+  private _DaysRunning: number;
 
-  constructor(){}
+
+
+  constructor() {
+  }
+
+  get DaysRunning():number{
+    return this._DaysRunning;
+  }
+
+  set DaysRunning(value:number){
+    this._DaysRunning=value;
+  }
+  get OpenStackProject(): boolean {
+    return this._OpenStackProject
+  }
+
+  set OpenStackProject(value: boolean) {
+    this._OpenStackProject = value;
+  }
+
+
+    get ComputeCenterDetails(){
+    return this._ComputeCenterDetails;
+  }
+  set ComputecenterDetails(value:[string,string][]){
+    this._ComputeCenterDetails=value;
+  }
+
+  get ComputeCenter(): [string,number] {
+    return this._ComputeCenter
+  }
+
+  set ComputeCenter(value: [string,number]) {
+    this._ComputeCenter = value;
+  }
 
   get Id(): number {
     return this._Id;
@@ -33,6 +73,21 @@ export class Application{
 
   set Name(value: string) {
     this._Name = value;
+  }
+
+  set Comment(value: string){
+    this._Comment = value;
+  }
+
+  get Comment():string {
+    return this._Comment;
+  }
+  get Shortname(): string {
+    return this._Shortname;
+  }
+
+  set Shortname(value: string) {
+    this._Shortname = value;
   }
 
   get Institute(): string {

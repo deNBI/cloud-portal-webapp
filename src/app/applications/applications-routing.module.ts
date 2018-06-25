@@ -2,11 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ApplicationsComponent } from './applications.component';
-import { AddApplicationComponent } from './addapplication.component';
-import  { ImageDetailComponent} from './imagedetail.component';
-import { VirtualMachineComponent} from './addvm.component';
-import {ClientOverviewComponent} from "./vmClients.component";
-import {VmOverviewComponent} from "./vmOverview.component";
+
+import {AddsinglevmComponent} from "./addsinglevm.component";
+import {AddcloudapplicationComponent} from "./addcloudapplication.component";
+
 
 const routes: Routes = [
   {
@@ -18,37 +17,23 @@ const routes: Routes = [
 
   },
   {
-    path: 'new',
-    component: AddApplicationComponent,
+    path: 'newCloudApplication',
+    component: AddcloudapplicationComponent,
     data: {
       title: 'New Application'
     }
 
   },
-  {
-    path: 'newVM',
-    component: VirtualMachineComponent,
-       data: {
-      title: 'New Server'
-    }
-
-  },
-  {
-    path:'clientOverview',
-    component:ClientOverviewComponent,
+    {
+        path: 'newSingleVmApplication',
+    component: AddsinglevmComponent,
     data: {
-      title: 'Client Overview'
+      title: 'New Application'
     }
 
-  },
-  {
-    path:'vmOverview',
-    component:VmOverviewComponent,
-    data: {
-      title: 'VM Overview'
+
     }
 
-  },
 ];
 
 @NgModule({

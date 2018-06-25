@@ -6,8 +6,9 @@
 export const environment = {
   production: false,
   vo: 3334,
-
+  freemium_project_id:10392,
   apiBaseUrl: 'https://portal-dev.denbi.de/api/v0/',
   voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev',
-  connectorBaseUrl : 'https://portal-dev.denbi.de/connector/'
+  connectorBaseUrl : 'https://portal-dev.denbi.de/connector/',
+     login: 'https://portal-dev.denbi.de/portal/'
 };
