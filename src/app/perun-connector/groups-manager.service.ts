@@ -11,6 +11,7 @@ import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.mode
 @Injectable()
 export class GroupsManager ***REMOVED***
   baseConnectorUrl = 'https://portal-dev.denbi.de/connector/'
+  denbiProjectDiskSpace_ID=3288
 
   constructor(private http: Http, private settings: PerunSettings, private apiSettings: ApiSettings) ***REMOVED***
   ***REMOVED***
@@ -23,11 +24,21 @@ export class GroupsManager ***REMOVED***
   ***REMOVED***
 
 
-
   getMemberGroupsStatus() ***REMOVED***
     return this.http.get(this.apiSettings.getApiBaseURL() + 'approved_projects/', ***REMOVED***
-       withCredentials: true,
+      withCredentials: true,
       headers: new Headers(***REMOVED***'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()***REMOVED***),
+    ***REMOVED***);
+
+  ***REMOVED***
+
+
+  getGroupByVoandName(groupname: string) ***REMOVED***
+
+    return this.http.get(this.settings.getPerunBaseURL() + 'groupsManager/getGroupByName', ***REMOVED***
+
+      headers: new Headers(***REMOVED***'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()***REMOVED***),
+      params: ***REMOVED***vo: this.settings.getPerunVO(), name: groupname***REMOVED***
     ***REMOVED***);
 
   ***REMOVED***
@@ -35,13 +46,48 @@ export class GroupsManager ***REMOVED***
   createGroup(group_name: string, group_description: string) ***REMOVED***
     var parameter = JSON.stringify(***REMOVED***
       vo: this.settings.getPerunVO(),
-      group: ***REMOVED***name: group_name, description: group_description***REMOVED***
+      group: ***REMOVED***name: group_name, description: group_description.substring(0,512)***REMOVED***
     ***REMOVED***);
     return this.http.post(this.settings.getPerunBaseURL() + 'groupsManager/createGroup', parameter,
       ***REMOVED***
         headers: new Headers(***REMOVED***'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()***REMOVED***),
       ***REMOVED***);
   ***REMOVED***
+
+  setdeNBIDirectAcces(group_id: number, value: boolean) ***REMOVED***
+    var parameter = JSON.stringify(***REMOVED***
+      group: group_id,
+      attribute: ***REMOVED***id: 3279,
+        namespace: 'urn:perun:group:attribute-def:opt',
+        friendlyName: 'denbiDirectAccess', type: 'java.lang.Boolean',
+        value: value
+      ***REMOVED***
+    ***REMOVED***);
+    return this.http.post(this.settings.getPerunBaseURL() + 'attributesManager/setAttribute', parameter,
+      ***REMOVED***
+        headers: new Headers(***REMOVED***'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()***REMOVED***),
+      ***REMOVED***);
+  ***REMOVED***
+
+
+  setGroupDiskSpace(group_id: number, value :number ,numberofVms:number)***REMOVED***
+    value=value * numberofVms;
+    var parameter = JSON.stringify(***REMOVED***
+      group: group_id,
+      attribute: ***REMOVED***id: this.denbiProjectDiskSpace_ID,
+        namespace: 'urn:perun:group:attribute-def:opt',
+        friendlyName: 'denbiProjectDiskSpace', type: 'java.lang.Integer',
+        value: value
+      ***REMOVED***
+    ***REMOVED***);
+    return this.http.post(this.settings.getPerunBaseURL() + 'attributesManager/setAttribute', parameter,
+      ***REMOVED***
+        headers: new Headers(***REMOVED***'Authorization': 'Bearer ' + this.apiSettings.getAccessToken()***REMOVED***),
+      ***REMOVED***);
+
+  ***REMOVED***
+
+
 
   setPerunGroupStatus(group_id: number, status: number) ***REMOVED***
     /* 1:submitted

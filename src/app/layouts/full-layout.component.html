@@ -1,68 +1,106 @@
 <header class="app-header navbar">
     <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>&#9776;</button>
     <a class="navbar-brand" href="#"></a>
-  <div id="header-help">If you experience any problems, please contact cloud@denbi.de</div>
+    <div id="header-help">If you experience any problems, please contact cloud@denbi.de</div>
 </header>
 <div class="app-body">
-  <div class="sidebar">
-    <nav class="sidebar-nav">
-      <ul class="nav">
-        <li class="nav-title">
-          Profile
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/userinfo']"><i class="icon-user"></i>
-            User Information </a>
-        </li>
-        <li class="divider"></li>
-        <li class="nav-title">
-          Project management
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/project-management']"><i
-            class="icon-briefcase"></i> Project Overview</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications']"><i
-            class="icon-drawer"></i> Applications</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications/new']"><i
-            class="icon-pencil"></i> New Application</a>
-        </li>
-        <li class="nav-title">
-          Virtual Machines
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications/newVM']"><i
-            class="icon-pencil"></i> New Server</a>
-        </li>
-        <li class="nav-item" *ngIf="get_is_vo_admin()">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications/clientOverview']"><i
-            class="icon-pencil"></i> Client Overview</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications/vmOverview']"><i
-            class="icon-pencil"></i> Instance Overview</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
+    <div class="sidebar">
+        <nav class="sidebar-nav">
+            <ul class="nav">
+                <li class="nav-title">
+                    Profile
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/userinfo']"><i class="icon-user"></i>
+                        User Information </a>
+                </li>
+                <li class="divider"></li>
+                <li class="nav-title">
+                    Project management
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/project-management']"><i
+                            class="icon-briefcase"></i> Project Overview</a>
+                </li>
+                <li class="nav-item">
 
-  <!-- Main content -->
-  <main class="main">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications']"><i
+                            class="icon-drawer"></i> Applications</a>
+                </li>
+                <li class="nav-item nav-dropdown ***REMOVED******REMOVED***navbar_state***REMOVED******REMOVED***">
+                    <a class="nav-link nav-dropdown-toggle" type="button" (click)="toggle_new_application();"><i
+                            class="icon-pencil"></i> New Application</a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link" routerLinkActive="active"
+                               [routerLink]="['/applications/newCloudApplication']">
+                                <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                   title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i>
+                                Cloud Project </a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLinkActive="active"
+                               [routerLink]="['/applications/newSingleVmApplication']"><i
+                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i>
+                                Simple VM Project </a></li>
 
-    <!-- Breadcrumb -->
-    <ol class="breadcrumb">
-      <app-breadcrumbs></app-breadcrumbs>
-    </ol>
+                    </ul>
 
-    <div class="container-fluid">
-      <router-outlet></router-outlet>
-    </div><!-- /.conainer-fluid -->
-  </main>
+                </li>
+                <li *ngIf="vm_project_member || get_is_vo_admin()" class="nav-title">
+                    Virtual Machines
+                </li>
+                <li class="nav-item" *ngIf="client_avaiable && vm_project_member">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/newVM']"><i
+
+                            class="icon-pencil"></i> New Instance</a>
+                </li>
+                <li class="nav-item" *ngIf="get_is_vo_admin()">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/clientOverview']"><i
+                            class="icon-pencil"></i> Client Overview</a>
+                </li>
+                <li class="nav-item" *ngIf="vm_project_member || get_is_vo_admin()">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/vmOverview']"><i
+                            class="icon-pencil"></i> Instance Overview</a>
+                </li>
+                <li *ngIf="is_facility_manager" class="nav-title">
+                    Facilities
+                </li>
+                <li *ngIf="is_facility_manager" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/facilityProjects']"><i
+                            class="icon-briefcase"></i> Facility Projects</a>
+                </li>
+                <li *ngIf="is_facility_manager" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/imageTags']"><i
+                            class="icon-briefcase"></i> Image Tags</a>
+                </li>
+
+                <li class="nav-title" *ngIf="get_is_vo_admin()">
+                    Vo Manager
+                </li>
+                <li class="nav-item" *ngIf="get_is_vo_admin()">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/vo-manager/overview']"><i
+                            class="icon-briefcase"></i> Overview</a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main content -->
+    <main class="main">
+
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb">
+            <app-breadcrumbs></app-breadcrumbs>
+        </ol>
+
+        <div class="container-fluid">
+            <router-outlet></router-outlet>
+        </div><!-- /.conainer-fluid -->
+    </main>
 </div>
 
 <footer class="app-footer">
-  <a href="http://denbi.de">de.NBI</a> &copy; ***REMOVED******REMOVED*** year ***REMOVED******REMOVED***
+  <a href="https://cloud.denbi.de">de.NBI</a> &copy; ***REMOVED******REMOVED*** year ***REMOVED******REMOVED***
 </footer>

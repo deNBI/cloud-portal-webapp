@@ -1,27 +1,30 @@
 import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import 'rxjs/Rx'
-import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachinemodels/vmclient";
+import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
 import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
 import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
+import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 
 
 @Component(***REMOVED***
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
+  providers: [GroupService,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
 ***REMOVED***)
 
 export class ClientOverviewComponent implements OnInit ***REMOVED***
   clients: Vmclient[];
   is_vo_admin = false;
   checkStatus: string = 'Not checked';
+   computeCenters: [string,number][];
+   selectedComputeCenter:string;
 
-  constructor(private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
+  constructor(private groupservice : GroupService,private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
 
   ***REMOVED***
 
@@ -58,10 +61,16 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
 
   ***REMOVED***
 
+   getComputeCenters() ***REMOVED***
+        this.groupservice.getComputeCenters().subscribe(result => ***REMOVED***
+            this.computeCenters = result;
+
+        ***REMOVED***)***REMOVED***
+
   checkClient(host: string, port: string): void ***REMOVED***
     if (host && port) ***REMOVED***
       this.clientservice.checkClient(host, port).subscribe(data => ***REMOVED***
-        console.log(data.text());
+
         if (data.text() == "false") ***REMOVED***
           this.checkStatus = 'No Connection';
         ***REMOVED***
@@ -70,7 +79,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***
         else ***REMOVED***
           this.checkStatus = "check failed";
-          console.log(data.text())
+
         ***REMOVED***
 
       ***REMOVED***);
@@ -80,15 +89,16 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
   postClient(host: string, port: string, location: string): void ***REMOVED***
 
 
+    if(host &&port && location)***REMOVED***
     this.clientservice.postClient(host, port, location).subscribe(data => ***REMOVED***
-      console.log(data.text());
+
       this.getClientsChecked();
-    ***REMOVED***);
+    ***REMOVED***);***REMOVED***
   ***REMOVED***
 
   deleteClient(host: string, port: string, location: string): void ***REMOVED***
     this.clientservice.deleteClient(host, port, location).subscribe(data => ***REMOVED***
-      console.log(data.text());
+
       this.getClientsChecked();
     ***REMOVED***);
   ***REMOVED***
@@ -97,6 +107,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
   ngOnInit(): void ***REMOVED***
     this.checkVOstatus(this.usersmanager);
     this.getClientsChecked();
+    this.getComputeCenters();
 
   ***REMOVED***
 

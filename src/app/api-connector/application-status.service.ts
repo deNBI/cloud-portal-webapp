@@ -18,9 +18,10 @@ export class ApplicationStatusService ***REMOVED***
     ***REMOVED***);
   ***REMOVED***
 
-  setApplicationStatus(application_id: number, status_id: number) ***REMOVED***
+  setApplicationStatus(application_id: number, status_id: number,compute_center:string) ***REMOVED***
     let parameter = JSON.stringify(***REMOVED***
-      "project_application_status": status_id
+      "project_application_status": status_id,
+      'compute_center': compute_center
     ***REMOVED***);
     let header = new Headers(***REMOVED***
       'X-CSRFToken': this.settings.getCSRFToken(),

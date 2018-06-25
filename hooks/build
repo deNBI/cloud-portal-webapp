@@ -1,0 +1,4 @@
+#!/bin/bash -xe
+
+. ./hooks/env 
+docker build --no-cache --build-arg "ANGULAR_MODE=$***REMOVED***ANGULAR_MODE***REMOVED***" -t $IMAGE_NAME . 

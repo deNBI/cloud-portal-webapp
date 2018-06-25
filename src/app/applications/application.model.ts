@@ -1,6 +1,7 @@
-export class Application***REMOVED***
+export class Application ***REMOVED***
   private _Id: number;
   private _Name: string;
+  private _Shortname: string;
   private _Institute: string;
   private _Workgroup: string;
   private _Lifetime: number;
@@ -11,13 +12,52 @@ export class Application***REMOVED***
   private _ObjectStorage: number;
   private _SpecialHardware: number;
   private _Description: string;
+  private _Comment: string;
   private _DateSubmitted: string;
   private _DateStatusChanged: string;
   private _User: number;
   private _UserEmail: number;
   private _Status: number;
+  private _ComputeCenter: [string,number];
+  private _OpenStackProject: boolean;
+  private _ComputeCenterDetails:[string,string][];
+  private _DaysRunning: number;
 
-  constructor()***REMOVED******REMOVED***
+
+
+  constructor() ***REMOVED***
+  ***REMOVED***
+
+  get DaysRunning():number***REMOVED***
+    return this._DaysRunning;
+  ***REMOVED***
+
+  set DaysRunning(value:number)***REMOVED***
+    this._DaysRunning=value;
+  ***REMOVED***
+  get OpenStackProject(): boolean ***REMOVED***
+    return this._OpenStackProject
+  ***REMOVED***
+
+  set OpenStackProject(value: boolean) ***REMOVED***
+    this._OpenStackProject = value;
+  ***REMOVED***
+
+
+    get ComputeCenterDetails()***REMOVED***
+    return this._ComputeCenterDetails;
+  ***REMOVED***
+  set ComputecenterDetails(value:[string,string][])***REMOVED***
+    this._ComputeCenterDetails=value;
+  ***REMOVED***
+
+  get ComputeCenter(): [string,number] ***REMOVED***
+    return this._ComputeCenter
+  ***REMOVED***
+
+  set ComputeCenter(value: [string,number]) ***REMOVED***
+    this._ComputeCenter = value;
+  ***REMOVED***
 
   get Id(): number ***REMOVED***
     return this._Id;
@@ -33,6 +73,21 @@ export class Application***REMOVED***
 
   set Name(value: string) ***REMOVED***
     this._Name = value;
+  ***REMOVED***
+
+  set Comment(value: string)***REMOVED***
+    this._Comment = value;
+  ***REMOVED***
+
+  get Comment():string ***REMOVED***
+    return this._Comment;
+  ***REMOVED***
+  get Shortname(): string ***REMOVED***
+    return this._Shortname;
+  ***REMOVED***
+
+  set Shortname(value: string) ***REMOVED***
+    this._Shortname = value;
   ***REMOVED***
 
   get Institute(): string ***REMOVED***

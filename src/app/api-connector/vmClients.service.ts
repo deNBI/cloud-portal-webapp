@@ -3,7 +3,7 @@ import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@
 import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
 import ***REMOVED***ApiSettings***REMOVED***  from './api-settings.service'
 import ***REMOVED***URLSearchParams***REMOVED*** from "@angular/http";
-import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachinemodels/vmclient";
+import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachines/virtualmachinemodels/vmclient";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
@@ -24,11 +24,11 @@ export class ClientService ***REMOVED***
 
   ***REMOVED***
 
-  getRRFirstClient(): Observable<Vmclient> ***REMOVED***
+  isClientAvaiable(): Observable<Vmclient> ***REMOVED***
 
     let urlSearchParams = new URLSearchParams();
 
-    return this.http.get(this.clientURL + 'getFirstClient/', ***REMOVED***
+    return this.http.get(this.clientURL + 'isClientAvaiable/', ***REMOVED***
       withCredentials: true,
       search: urlSearchParams
     ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));

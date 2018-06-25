@@ -2,11 +2,10 @@ import ***REMOVED*** NgModule ***REMOVED*** from '@angular/core';
 import ***REMOVED*** Routes, RouterModule ***REMOVED*** from '@angular/router';
 
 import ***REMOVED*** ApplicationsComponent ***REMOVED*** from './applications.component';
-import ***REMOVED*** AddApplicationComponent ***REMOVED*** from './addapplication.component';
-import  ***REMOVED*** ImageDetailComponent***REMOVED*** from './imagedetail.component';
-import ***REMOVED*** VirtualMachineComponent***REMOVED*** from './addvm.component';
-import ***REMOVED***ClientOverviewComponent***REMOVED*** from "./vmClients.component";
-import ***REMOVED***VmOverviewComponent***REMOVED*** from "./vmOverview.component";
+
+import ***REMOVED***AddsinglevmComponent***REMOVED*** from "./addsinglevm.component";
+import ***REMOVED***AddcloudapplicationComponent***REMOVED*** from "./addcloudapplication.component";
+
 
 const routes: Routes = [
   ***REMOVED***
@@ -18,37 +17,23 @@ const routes: Routes = [
 
   ***REMOVED***,
   ***REMOVED***
-    path: 'new',
-    component: AddApplicationComponent,
+    path: 'newCloudApplication',
+    component: AddcloudapplicationComponent,
     data: ***REMOVED***
       title: 'New Application'
     ***REMOVED***
 
   ***REMOVED***,
-  ***REMOVED***
-    path: 'newVM',
-    component: VirtualMachineComponent,
-       data: ***REMOVED***
-      title: 'New Server'
     ***REMOVED***
-
-  ***REMOVED***,
-  ***REMOVED***
-    path:'clientOverview',
-    component:ClientOverviewComponent,
+        path: 'newSingleVmApplication',
+    component: AddsinglevmComponent,
     data: ***REMOVED***
-      title: 'Client Overview'
+      title: 'New Application'
     ***REMOVED***
 
-  ***REMOVED***,
-  ***REMOVED***
-    path:'vmOverview',
-    component:VmOverviewComponent,
-    data: ***REMOVED***
-      title: 'VM Overview'
+
     ***REMOVED***
 
-  ***REMOVED***,
 ];
 
 @NgModule(***REMOVED***

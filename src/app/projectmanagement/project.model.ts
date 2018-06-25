@@ -12,11 +12,15 @@ export class Project ***REMOVED***
   private _Description: string;
   private _DateCreated: string;
   private _DaysRunning: number;
+  private _LifetimeDays: number;
+  private _Lifetime: number;
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
+  private _ComputeCenter:[string,number];
+  private _ComputeCenterDetails:[string,string][];
 
 
-  constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean) ***REMOVED***
+  constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: [string,number]) ***REMOVED***
     this._Id = Id;
     this._Name = Name;
     this._Description = Description;
@@ -24,9 +28,37 @@ export class Project ***REMOVED***
     this._DaysRunning = DaysRunning;
     this._UserIsAdmin = UserIsAdmin;
     this._UserIsPi = UserIsPi;
+    this._ComputeCenter= ComputeCenter;
+
   ***REMOVED***
 
 //todo exdend with additional information
+
+  get LifetimeDays():number***REMOVED***
+    return this._LifetimeDays
+  ***REMOVED***
+   set LifetimeDays(value:number)***REMOVED***
+    this._LifetimeDays=value;
+  ***REMOVED***
+  get Lifetime():number***REMOVED***
+    return this._Lifetime;
+  ***REMOVED***
+  set Lifetime(value:number)***REMOVED***
+    this._Lifetime=value;
+  ***REMOVED***
+  get ComputeCenterDetails()***REMOVED***
+    return this._ComputeCenterDetails;
+  ***REMOVED***
+  set ComputecenterDetails(value:[string,string][])***REMOVED***
+    this._ComputeCenterDetails=value;
+  ***REMOVED***
+  get ComputeCenter(): [string,number] ***REMOVED***
+    return this._ComputeCenter
+  ***REMOVED***
+
+  set ComputeCenter(value: [string,number]) ***REMOVED***
+    this._ComputeCenter = value;
+  ***REMOVED***
 
   get Id(): number ***REMOVED***
     return this._Id;
