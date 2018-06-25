@@ -113,8 +113,7 @@
                                     <input min="0" step="1" [value]="diskspace" (input)="diskspace = $event.target.value" type="number" placeholder="e.g 8 " ngModel><span class="input-group-addon"> GB
                                     </span>
 
-                                    <div class="col-md-6"
-                                         *ngIf="selectedProjectDiskspaceMax || selectedProjectDiskspaceMax == 0">
+                                    <div class="col-md-6">
                                         <strong>{{selectedProjectDiskspaceUsed}} / {{selectedProjectDiskspaceMax}}
                                             GB</strong>
                                     </div>
