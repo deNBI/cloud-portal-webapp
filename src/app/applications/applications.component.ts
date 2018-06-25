@@ -306,7 +306,8 @@ export class ApplicationsComponent {
             return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).toPromise();
         }).then(null_result => {
             //setting approved status for Perun Group
-            this.groupservice.setPerunGroupStatus(new_group_id, 2).toPromise();
+            let APPRVOVED=2;
+            this.groupservice.setPerunGroupStatus(new_group_id, APPRVOVED).toPromise();
             this.groupservice.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
             if (compute_center != 'undefined'){
             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();}
