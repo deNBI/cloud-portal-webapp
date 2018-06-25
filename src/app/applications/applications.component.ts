@@ -87,7 +87,8 @@ export class ApplicationsComponent {
                     a.VMsRequested = aj["project_application_vms_requested"];
                     a.RamPerVM = aj["project_application_ram_per_vm"];
                     a.CoresPerVM = aj["project_application_cores_per_vm"];
-                    a.DiskSpace = aj["project_application_disk_space"];
+                    a.VolumeLimit = aj["project_application_volume_limit"];
+                    a.VolumeCounter = aj["project_application_volume_counter"];
                     a.ObjectStorage = aj["project_application_object_storage"];
                     a.SpecialHardware = aj["project_application_special_hardware"];
                     a.OpenStackProject = aj["project_application_openstack_project"];
@@ -157,7 +158,9 @@ export class ApplicationsComponent {
                                 a.VMsRequested = aj["project_application_vms_requested"];
                                 a.RamPerVM = aj["project_application_ram_per_vm"];
                                 a.CoresPerVM = aj["project_application_cores_per_vm"];
-                                a.DiskSpace = aj["project_application_disk_space"];
+                                a.VolumeLimit = aj["project_application_volume_limit"];
+                                a.VolumeCounter = aj["project_application_volume_counter"];
+
                                 a.ObjectStorage = aj["project_application_object_storage"];
                                 a.SpecialHardware = aj["project_application_special_hardware"];
 
