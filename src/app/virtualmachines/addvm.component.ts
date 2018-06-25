@@ -237,7 +237,7 @@ export class VirtualMachineComponent implements OnInit {
                     this.selectedProjectDiskspaceMax = result['Diskspace'];
 
             }
-            else if (result['Diskspace'] === null){
+            else if (result['Diskspace'] === null || result['Diskspace'] === 0){
                    this.selectedProjectDiskspaceMax = 0;
             }
 
@@ -261,7 +261,7 @@ export class VirtualMachineComponent implements OnInit {
             if (result['VolumeCounter']){
                 this.selectedProjectVolumesMax=result['VolumeCounter'];
             }
-            else if (result['VolumeCounter'] === null){
+            else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0){
                 this.selectedProjectVolumesMax=0;
             }
         })
@@ -271,11 +271,11 @@ export class VirtualMachineComponent implements OnInit {
                 this.selectedProjectVolumesUsed=result['UsedVolumes'];
                 console.log(this.selectedProjectVolumesUsed)
             }
-            else if(result['UsedVolumes'] === null){
+            else if(result['UsedVolumes'] === null || result['UsedVolumes'] === 0){
 
                 this.selectedProjectVolumesUsed=0;
             }
-            else{}
+
         })
         }
 
@@ -288,7 +288,7 @@ export class VirtualMachineComponent implements OnInit {
                     this.selectedProjectVmsMax = result['NumberVms'];
 
             }
-            else if (result['NumberVms'] === null){
+            else if (result['NumberVms'] === null || result['NumberVms'] === 0){
                    this.selectedProjectVmsMax= 0;
             }
 
