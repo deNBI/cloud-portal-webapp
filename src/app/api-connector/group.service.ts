@@ -177,20 +177,32 @@ export class GroupService {
         })
     }
 
-    setGroupDiskSpace(group_id: number, value: number, numberofVms: number) {
+    setGroupVolumeLimit(group_id: number, value: number) {
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
         });
         urlSearchParams.append('groupid', group_id.toString());
         urlSearchParams.append('value', value.toString());
-        urlSearchParams.append('numberofVms', numberofVms.toString());
-        return this.http.post(this.settings.getApiBaseURL() + 'group/setGroupDiskSpace/', urlSearchParams, {
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setGroupVolumeLimit/', urlSearchParams, {
             withCredentials: true,
             headers: header
         })
     }
 
+
+     setGroupVolumeCounter(group_id: number, value: number) {
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('groupid', group_id.toString());
+        urlSearchParams.append('value', value.toString());
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setGroupVolumeCounter/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        })
+    }
 
     setdeNBIDirectAcces(group_id: number, value: boolean) {
         let urlSearchParams = new URLSearchParams();
