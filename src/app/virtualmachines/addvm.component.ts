@@ -42,6 +42,8 @@ export class VirtualMachineComponent implements OnInit {
     vmclient: Vmclient;
     selectedProjectDiskspaceMax: number;
     selectedProjectDiskspaceUsed:number;
+    selectedProjectVolumesMax:number;
+    selectedProjectVolumesUsed:number;
     selectedProjectVmsMax: number;
     selectedProjectVmsUsed:number;
     selectedProject: [string, number];
@@ -139,6 +141,7 @@ export class VirtualMachineComponent implements OnInit {
                     this.data = res
                     this.getSelectedProjectDiskspace();
                     this.getSelectedProjectVms();
+                    this.getSelectedProjectVolumes();
 
 
                 }
@@ -252,6 +255,29 @@ export class VirtualMachineComponent implements OnInit {
         })
 
     }
+
+        getSelectedProjectVolumes(): void{
+        this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe( result =>{
+            if (result['VolumeCounter']){
+                this.selectedProjectVolumesMax=result['VolumeCounter'];
+            }
+            else if (result['VolumeCounter'] === null){
+                this.selectedProjectVolumesMax=0;
+            }
+        })
+        this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
+            console.log(result)
+            if(result['UsedVolumes']){
+                this.selectedProjectVolumesUsed=result['UsedVolumes'];
+                console.log(this.selectedProjectVolumesUsed)
+            }
+            else if(result['UsedVolumes'] === null){
+
+                this.selectedProjectVolumesUsed=0;
+            }
+            else{}
+        })
+        }
 
 
         getSelectedProjectVms(): void {

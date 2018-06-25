@@ -79,7 +79,7 @@
                             <div class="col-md-6">
 
                                 <select class="form-control" name="selectedProject" [(ngModel)]="selectedProject"
-                                        (ngModelChange)="getSelectedProjectDiskspace();getSelectedProjectVms();">
+                                        (ngModelChange)="getSelectedProjectDiskspace();getSelectedProjectVms();getSelectedProjectVolumes();">
                                     <option value="undefined" disabled selected hidden> Please Select</option>
                                     <option *ngFor="let project of projects" [ngValue]="project"> {{project[0]}}
                                     </option>
@@ -96,6 +96,7 @@
                                 <strong>{{selectedProjectVmsUsed}} / {{selectedProjectVmsMax}} Vms</strong>
                             </div>
                         </div>
+
                         <div  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID" class="form-group row">
 
                             <label class="col-md-3 form-control-label"><strong>Optional parameters</strong></label>
@@ -110,18 +111,33 @@
 
                             <div class="col-md-9">
                                 <div class="input-group">
-                                    <input min="0" step="1" [value]="diskspace" (input)="diskspace = $event.target.value" type="number" placeholder="e.g 8 " ngModel><span class="input-group-addon"> GB
+                                    <input min="0" step="1" [value]="diskspace" (input)="diskspace = $event.target.value" type="number" placeholder="e.g 8 "><span class="input-group-addon"> GB
                                     </span>
 
                                     <div class="col-md-6">
                                         <strong>{{selectedProjectDiskspaceUsed}} / {{selectedProjectDiskspaceMax}}
                                             GB</strong>
                                     </div>
+
                                 </div>
                             </div>
 
 
                         </div>
+                        <div  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params"  class="form-group row" >
+
+                            <label class="col-md-3 form-control-label">Storage volumes</label>
+
+                            <div class="col-md-9">
+                                <div class="col-md-6">
+                                        <strong>{{selectedProjectVolumesUsed}} / {{selectedProjectVolumesMax}}
+                                            </strong>
+                                    </div>
+                            </div>
+
+
+                        </div>
+
 
 
                         <!-- <div class="form-group row">

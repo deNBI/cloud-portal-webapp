@@ -363,9 +363,6 @@ export class GroupService {
 
 
     getGroupMaxDiskspace(groupid: string): Observable<any> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
         return this.http.get(this.settings.getApiBaseURL() + 'project/getApprovedDiskSpace/', {
             withCredentials: true,
             params: {groupid: groupid}
@@ -375,9 +372,6 @@ export class GroupService {
     }
 
     getGroupUsedDiskspace(groupid: string): Observable<any> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
         return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedDiskSpace/', {
             withCredentials: true,
             params: {groupid: groupid}
@@ -386,10 +380,29 @@ export class GroupService {
 
     }
 
+
+
+
+        getVolumesUsed(groupid: string): Observable<any> {
+        return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedVolumes/', {
+            withCredentials: true,
+            params: {groupid: groupid}
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+
+      getVolumeCounter(groupid: string): Observable<any> {
+        return this.http.get(this.settings.getApiBaseURL() + 'project/getVolumesCounter/', {
+            withCredentials: true,
+            params: {groupid: groupid}
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+
     getGroupApprovedVms(groupid: string): Observable<any> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
+
         return this.http.get(this.settings.getApiBaseURL() + 'project/getNumberApprovedVms/', {
             withCredentials: true,
             params: {groupid: groupid}
@@ -399,9 +412,7 @@ export class GroupService {
     }
 
     getGroupUsedVms(groupid: string): Observable<any> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
+
         return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedVms/', {
             withCredentials: true,
             params: {groupid: groupid}
