@@ -55,11 +55,12 @@ export class GroupService {
 
 
     }
-       isUserAdminOfGroup(groupid: string,userid:string): Observable<any> {
+
+    isUserAdminOfGroup(groupid: string, userid: string): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'group/isUserPi/', {
             withCredentials: true,
-            params: {group_id:groupid,user_id:userid}
+            params: {group_id: groupid, user_id: userid}
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
     }
@@ -69,7 +70,16 @@ export class GroupService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupAdminsId/', {
             withCredentials: true,
-            params: {group_id:groupid}
+            params: {group_id: groupid}
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    }
+
+    getGroupRichMembers(groupid: number): Observable<any> {
+
+        return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupRichMembers/', {
+            withCredentials: true,
+            params: {groupid: groupid}
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
     }
@@ -90,7 +100,7 @@ export class GroupService {
     }
 
 
-        addAdmin(group_id: number, user_id: number, facility_id: number) {
+    addAdmin(group_id: number, user_id: number, facility_id: number) {
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -105,7 +115,7 @@ export class GroupService {
     }
 
 
-    removeMember(group_id: number, member_id: number,user_id:number, facility_id: number) {
+    removeMember(group_id: number, member_id: number, user_id: number, facility_id: number) {
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -113,7 +123,7 @@ export class GroupService {
         urlSearchParams.append('facility_id', facility_id.toString());
         urlSearchParams.append('group_id', group_id.toString());
         urlSearchParams.append('member_id', member_id.toString())
-         urlSearchParams.append('user_id', user_id.toString())
+        urlSearchParams.append('user_id', user_id.toString())
         return this.http.post(this.settings.getApiBaseURL() + 'group/removeMember/', urlSearchParams, {
             withCredentials: true,
             headers: header
@@ -121,7 +131,7 @@ export class GroupService {
     }
 
 
-        removeAdmin(group_id: number,user_id:number, facility_id: number) {
+    removeAdmin(group_id: number, user_id: number, facility_id: number) {
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -129,7 +139,7 @@ export class GroupService {
         urlSearchParams.append('facility_id', facility_id.toString());
         urlSearchParams.append('group_id', group_id.toString());
 
-         urlSearchParams.append('user_id', user_id.toString())
+        urlSearchParams.append('user_id', user_id.toString())
         return this.http.post(this.settings.getApiBaseURL() + 'group/removeAdmin/', urlSearchParams, {
             withCredentials: true,
             headers: header
@@ -137,8 +147,7 @@ export class GroupService {
     }
 
 
-
-      setDescription(groupid: string, description: string): Observable<any> {
+    setDescription(groupid: string, description: string): Observable<any> {
 
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({
@@ -155,7 +164,49 @@ export class GroupService {
     }
 
 
-     setName(groupid: string, name: string): Observable<any> {
+    setPerunGroupStatus(group_id: number, status: number) {
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('groupid', group_id.toString());
+        urlSearchParams.append('status', status.toString());
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setStatus/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
+    setGroupDiskSpace(group_id: number, value: number, numberofVms: number) {
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('groupid', group_id.toString());
+        urlSearchParams.append('value', value.toString());
+        urlSearchParams.append('numberofVms', numberofVms.toString());
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setGroupDiskSpace/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
+
+    setdeNBIDirectAcces(group_id: number, value: boolean) {
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('groupid', group_id.toString());
+        urlSearchParams.append('value', value.toString());
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setdeNBIDirectAccess/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
+
+    setName(groupid: string, name: string): Observable<any> {
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -171,7 +222,6 @@ export class GroupService {
     }
 
 
-
     getName(groupid: string): Observable<any> {
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -185,7 +235,7 @@ export class GroupService {
     }
 
 
-         setShortname(groupid: string, shortname: string): Observable<any> {
+    setShortname(groupid: string, shortname: string): Observable<any> {
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -201,10 +251,8 @@ export class GroupService {
     }
 
 
-      getShortame(groupid: string): Observable<any> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
+    getShortame(groupid: string): Observable<any> {
+
         return this.http.get(this.settings.getApiBaseURL() + 'group/getShortname/', {
             withCredentials: true,
             params: {groupid: groupid}
@@ -213,6 +261,20 @@ export class GroupService {
 
     }
 
+    getMemberGroupsStatus() {
+
+        return this.http.get(this.settings.getApiBaseURL() + 'group/getMemberGroupsStatus/', {
+            withCredentials: true,
+        });
+
+    }
+
+    getMemberGroups(member_id: number) {
+        return this.http.get(this.settings.getApiBaseURL() + 'group/getMemberGroups/', {
+            withCredentials: true,
+            params: {memberid: member_id}
+        });
+    }
 
 
     setLifetime(groupid: string, lifetime: string): Observable<any> {
@@ -228,6 +290,21 @@ export class GroupService {
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
 
+    }
+
+    createGroup(group_name: string, group_description: string) {
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('group_name', group_name);
+        urlSearchParams.append('group_description', group_description.substring(0, 512));
+
+        return this.http.post(this.settings.getApiBaseURL() + 'group/createGroup/', urlSearchParams,
+            {
+                withCredentials: true,
+                headers: header
+            });
     }
 
 
