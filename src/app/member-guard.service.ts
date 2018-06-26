@@ -24,6 +24,11 @@ export class MemberGuardService implements CanActivate {
                 }).then(res => {
 
                 this.userservice.getMemberByUser(res['id']).toPromise().then(memberinfo => {
+                    if (memberinfo.json()['name'] === 'MemberNotExistsException') {
+                        this.router.navigate(['/registration-info']);
+                        resolve(false);
+
+                    }
                     return resolve(true);
 
                 }).catch(rejection => {
@@ -35,7 +40,7 @@ export class MemberGuardService implements CanActivate {
             }).catch(rejection => {
 
                 //this.router.navigate(['/portal']);
-                window.location.href=environment.login
+                window.location.href = environment.login
                 resolve(false);
 
             });
