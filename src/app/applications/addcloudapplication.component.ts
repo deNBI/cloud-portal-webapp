@@ -23,6 +23,7 @@ export class AddcloudapplicationComponent ***REMOVED***
     public notificationModalIsClosable: boolean = false;
     public notificationModalStay: boolean = true;
     public error: string[];
+    public project_application_vms_requested=5;
 
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
@@ -63,7 +64,7 @@ export class AddcloudapplicationComponent ***REMOVED***
 
 
             if ('project_application_cores_per_vm' in values && values['project_application_cores_per_vm'] > 0 && 'project_application_ram_per_vm' in values
-                && values['project_application_ram_per_vm'] > 0 && 'project_application_disk_space' in values && values['project_application_disk_space'] > 0) ***REMOVED***
+                && values['project_application_ram_per_vm'] > 0 && 'project_application_volume_limit' in values && values['project_application_volume_limit'] > 0) ***REMOVED***
                 return true;
             ***REMOVED***
 
@@ -78,6 +79,7 @@ export class AddcloudapplicationComponent ***REMOVED***
     onSubmit(f: NgForm) ***REMOVED***
         this.error = null;
         if (this.wronginput == true) ***REMOVED***
+
             this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
         ***REMOVED***
@@ -91,6 +93,7 @@ export class AddcloudapplicationComponent ***REMOVED***
                 ***REMOVED***
             ***REMOVED***
             if (this.check_not_zero(values) == false) ***REMOVED***
+                console.log('error')
                 this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
                 return;

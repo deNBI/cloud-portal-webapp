@@ -2,19 +2,15 @@ import ***REMOVED***Component,OnInit***REMOVED*** from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 
 import ***REMOVED***Userinfo***REMOVED*** from './userinfo.model'
-import ***REMOVED***AuthzResolver***REMOVED*** from '../perun-connector/authz-resolver.service'
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
-import ***REMOVED***MembersManager***REMOVED*** from '../perun-connector/members-manager.service'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
-import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
-import ***REMOVED***AttributesManager***REMOVED*** from "../perun-connector/attributes-manager";
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 
 
 @Component(***REMOVED***
   templateUrl: 'userinfo.component.html',
-  providers: [UserService, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager, AttributesManager]
+  providers: [UserService, PerunSettings,  ApiSettings, keyService]
 ***REMOVED***)
 export class UserinfoComponent implements OnInit***REMOVED***
   userinfo: Userinfo;
@@ -23,7 +19,7 @@ export class UserinfoComponent implements OnInit***REMOVED***
   newsletter_subscribed :boolean;
   public_key: string='';
 
-  constructor(private userservice: UserService,private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) ***REMOVED***
+  constructor(private userservice: UserService, private keyService: keyService) ***REMOVED***
     this.userinfo = new Userinfo();
     this.getUserinfo();
 
@@ -75,7 +71,7 @@ export class UserinfoComponent implements OnInit***REMOVED***
 
   ***REMOVED***
 
- 
+
 
   getUserPublicKey() ***REMOVED***
     this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => ***REMOVED***
@@ -84,7 +80,7 @@ export class UserinfoComponent implements OnInit***REMOVED***
   ***REMOVED***
 
   getUserinfo() ***REMOVED***
-    this.authzresolver.getLoggedUser().toPromise()
+    this.userservice.getLoggedUser().toPromise()
       .then(result => ***REMOVED***
         let res = result.json();
 
@@ -92,11 +88,11 @@ export class UserinfoComponent implements OnInit***REMOVED***
         this.userinfo.LastName = res["lastName"];
         this.userinfo.Id = res["id"];
 
-        return this.memberssmanager.getMemberByUser(res["id"]).toPromise();
+        return this.userservice.getMemberByUser(res["id"]).toPromise();
 
       ***REMOVED***).then(memberinfo => ***REMOVED***
       this.userinfo.MemberId = memberinfo.json()["id"];
-      this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => ***REMOVED***
+      this.userservice.getLogins(this.userinfo.Id).toPromise().then(result => ***REMOVED***
         let logins = result.json()
         for (let login of logins) ***REMOVED***
           if (login['friendlyName'] === 'login-namespace:elixir-persistent') ***REMOVED***

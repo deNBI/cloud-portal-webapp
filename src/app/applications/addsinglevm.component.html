@@ -25,9 +25,9 @@
                         <div class="form-group row">
                             <label class="col-md-4">
                                 <strong>Single Virtual Machines Project
-                                     <i
-                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
-                                    title="You will be able to start virtual machines through the portal with minimal
+                                    <i
+                                            class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                            title="You will be able to start virtual machines through the portal with minimal
                                     effort and access them via ssh. This project type does not demand knowlegde in cloud
                                     computing."></i>
                                 </strong>
@@ -136,7 +136,8 @@ are going to use."></i></strong></label>
                                     <input required class="form-control" id="id_project_application_vms_requested"
                                            name="project_application_vms_requested"
                                            placeholder="e.g. 5"
-                                           type="number" min="1" step="1" [ngModel]="3">
+                                           type="number" min="1" step="1"
+                                           [(ngModel)]="project_application_vms_requested">
                                     <span class="input-group-addon"> VMs
                                     </span>
                                 </div>
@@ -144,23 +145,48 @@ are going to use."></i></strong></label>
                             </div>
                         </div>
                         <div class="form-group row" [ngClass]="***REMOVED***
-                                'has-danger': f.controls.project_application_disk_space?.invalid,
-                                'has-success': f.controls.project_application_disk_space?.valid
+                                'has-danger': f.controls.project_application_volume_limit?.invalid,
+                                'has-success': f.controls.project_application_volume_limit?.valid
                                 ***REMOVED***">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage per
-                                VM*</strong></label>
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage Limit*
+                                <i
+                                        class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                        title="Storage limit is the sum of extra storage provided by volumes."></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <input class="form-control" id="id_project_application_disk_space"
-                                           name="project_application_disk_space"
+                                    <input required class="form-control" id="id_project_application_volume_limit"
+                                           name="project_application_volume_limit"
                                            placeholder="e.g. 20"
                                            type="number" min="1" step="1" [ngModel]="20">
                                     <span class="input-group-addon"> GB
                                     </span>
                                 </div>
-                                <span class="help-block">How much storage do you need per VM?</span>
+                                <span class="help-block">How many extra storage do you need for your Vms?</span>
                             </div>
                         </div>
+
+                        <div class="form-group row" [ngClass]="***REMOVED***
+                                'has-danger': f.controls.project_application_volume_counter?.invalid,
+                                'has-success': f.controls.project_application_volume_counter?.valid
+                                ***REMOVED***">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Volume Counter*
+                                <i
+                                        class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                        title="The number of storage volumes allowed to create. Each vm is allowed to mount only one storage volume. The sum of the volumes size equals the value provided in the sotrage limit field"></i></strong></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input required class="form-control" id="id_project_application_volume_counter"
+                                           name="project_application_volume_counter"
+                                           placeholder="e.g. 20"
+                                           type="number" min="0" step="1" [ngModel]="project_application_vms_requested">
+                                    <span class="input-group-addon"> GB
+                                    </span>
+                                </div>
+                                <span class="help-block">How many storage volumes do you want to use?</span>
+                            </div>
+                        </div>
+
+
                         <div class="form-group row">
                             <label class="col-md-4 form-control-label">You are able to start machines of the
                                 type:</label>

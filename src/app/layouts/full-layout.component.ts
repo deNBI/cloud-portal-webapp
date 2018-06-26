@@ -1,17 +1,16 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
-import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
-import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
 import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
+import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
+import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 
 
 @Component(***REMOVED***
     selector: 'app-dashboard',
     templateUrl: './full-layout.component.html',
-    providers: [FacilityService, GroupsManager, ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
+    providers: [GroupService,UserService,FacilityService, ClientService,  PerunSettings, ApiSettings]
 ***REMOVED***)
 export class FullLayoutComponent implements OnInit ***REMOVED***
 
@@ -24,7 +23,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     navbar_state = 'closed'
     client_avaiable;
 
-    constructor(private facilityservice: FacilityService, private groupsManager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
+    constructor(private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
         this.is_client_avaiable();
         this.is_vm_project_member();
         this.get_is_facility_manager();
@@ -54,7 +53,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     is_vm_project_member() ***REMOVED***
-        this.groupsManager.getMemberGroupsStatus().subscribe(result => ***REMOVED***
+        this.groupService.getMemberGroupsStatus().subscribe(result => ***REMOVED***
             if (result.json().length > 0) ***REMOVED***
                 this.vm_project_member = true
             ***REMOVED***
@@ -89,15 +88,18 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
-    checkVOstatus(usersmanager: UsersManager) ***REMOVED***
+    checkVOstatus(userservice:UserService) ***REMOVED***
         let user_id: number;
         let admin_vos: ***REMOVED******REMOVED***;
-        this.authzresolver
+
+        this.userservice
             .getLoggedUser().toPromise()
             .then(function (userdata) ***REMOVED***
                 //TODO catch errors
                 user_id = userdata.json()["id"];
-                return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+
+
+                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
             ***REMOVED***).then(function (adminvos) ***REMOVED***
             admin_vos = adminvos.json();
         ***REMOVED***).then(result => ***REMOVED***
@@ -112,6 +114,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     ngOnInit(): void ***REMOVED***
-        this.checkVOstatus(this.usersmanager);
+
+        this.checkVOstatus(this.userservice);
     ***REMOVED***
 ***REMOVED***

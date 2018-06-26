@@ -3,28 +3,27 @@ import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import 'rxjs/Rx'
 
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
-import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
-import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
 import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
 import ***REMOVED***VirtualMachine***REMOVED*** from "./virtualmachinemodels/virtualmachine";
 import ***REMOVED***FullLayoutComponent***REMOVED*** from "../layouts/full-layout.component";
+import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 
 
 @Component(***REMOVED***
     selector: 'vm-overview',
     templateUrl: 'vmOverview.component.html',
-    providers: [VirtualmachineService, FullLayoutComponent, AuthzResolver, UsersManager, PerunSettings]
+    providers: [UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 ***REMOVED***)
 
 
 export class VmOverviewComponent implements OnInit ***REMOVED***
     vms: VirtualMachine[];
-    status_changed_vm:string;
-    status_changed_vm_id:string;
+    status_changed_vm: string;
+    status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
     tab = 'own';
-    status_changed:number=0;
+    status_changed: number = 0;
     filterusername: string;
     filterip: string;
     filtername: string;
@@ -36,7 +35,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     filterssh: string;
 
 
-    constructor(private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private  usersmanager: UsersManager, private perunsettings: PerunSettings) ***REMOVED***
+    constructor(private userservice: UserService, private virtualmachineservice: VirtualmachineService,  private perunsettings: PerunSettings) ***REMOVED***
 
     ***REMOVED***
 
@@ -76,14 +75,15 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => ***REMOVED***
             this.vms = vms;
             for (let vm of this.vms) ***REMOVED***
-                 if (vm.created_at!='')***REMOVED***
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();***REMOVED***
-                      if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
+                if (vm.created_at != '') ***REMOVED***
+                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                ***REMOVED***
+                if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
                     vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
                 ***REMOVED***
                 else ***REMOVED***
-                        vm.stopped_at=''
-                      ***REMOVED***
+                    vm.stopped_at = ''
+                ***REMOVED***
             ***REMOVED***
 
         ***REMOVED***)
@@ -96,14 +96,15 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
                 this.virtualmachineservice.getVm(this.elixir_id).subscribe(vms => ***REMOVED***
                         this.vms = vms;
                         for (let vm of this.vms) ***REMOVED***
-                            if (vm.created_at!='')***REMOVED***
-                             vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();***REMOVED***
-                                   if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
-                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                ***REMOVED***
-                else ***REMOVED***
-                        vm.stopped_at=''
-                      ***REMOVED***
+                            if (vm.created_at != '') ***REMOVED***
+                                vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                            ***REMOVED***
+                            if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
+                                vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                            ***REMOVED***
+                            else ***REMOVED***
+                                vm.stopped_at = ''
+                            ***REMOVED***
                         ***REMOVED***
 
                     ***REMOVED***
@@ -206,7 +207,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     deleteVm(openstack_id: string): void ***REMOVED***
         this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => ***REMOVED***
 
-            this.status_changed=0;
+            this.status_changed = 0;
 
 
             if (this.tab === 'own') ***REMOVED***
@@ -217,10 +218,11 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
             ***REMOVED***
 
-            if (result.text() === 'true')***REMOVED***
-                this.status_changed=1;***REMOVED***
+            if (result.text() === 'true') ***REMOVED***
+                this.status_changed = 1;
+            ***REMOVED***
             else ***REMOVED***
-                this.status_changed=2;
+                this.status_changed = 2;
             ***REMOVED***
 
 
@@ -230,7 +232,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     stopVm(openstack_id: string): void ***REMOVED***
         this.virtualmachineservice.stopVM(openstack_id).subscribe(result => ***REMOVED***
 
-            this.status_changed=0;
+            this.status_changed = 0;
 
 
             if (this.tab === 'own') ***REMOVED***
@@ -241,12 +243,12 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
             ***REMOVED***
 
-            if (result.text() === 'true')***REMOVED***
-                this.status_changed=1;***REMOVED***
-            else ***REMOVED***
-                this.status_changed=2;
+            if (result.text() === 'true') ***REMOVED***
+                this.status_changed = 1;
             ***REMOVED***
-
+            else ***REMOVED***
+                this.status_changed = 2;
+            ***REMOVED***
 
 
         ***REMOVED***)
@@ -256,15 +258,16 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.virtualmachineservice.getVm(elixir_id).subscribe(vms => ***REMOVED***
                 this.vms = vms;
                 for (let vm of this.vms) ***REMOVED***
-                    if (vm.created_at!='')***REMOVED***
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();***REMOVED***
+                    if (vm.created_at != '') ***REMOVED***
+                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                    ***REMOVED***
 
-                           if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
-                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                ***REMOVED***
-                else ***REMOVED***
-                        vm.stopped_at=''
-                      ***REMOVED***
+                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
+                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                    ***REMOVED***
+                    else ***REMOVED***
+                        vm.stopped_at = ''
+                    ***REMOVED***
                 ***REMOVED***
                 this.checkInactiveVms();
             ***REMOVED***
@@ -276,7 +279,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => ***REMOVED***
 
 
-             this.status_changed=0;
+            this.status_changed = 0;
 
 
             if (this.tab === 'own') ***REMOVED***
@@ -287,10 +290,11 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
             ***REMOVED***
 
-            if (result.text() === 'true')***REMOVED***
-                this.status_changed=1;***REMOVED***
+            if (result.text() === 'true') ***REMOVED***
+                this.status_changed = 1;
+            ***REMOVED***
             else ***REMOVED***
-                this.status_changed=2;
+                this.status_changed = 2;
             ***REMOVED***
 
         ***REMOVED***)
@@ -302,14 +306,15 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
                 this.vms = vms;
                 for (let vm of this.vms) ***REMOVED***
 
-                    if (vm.created_at!='')***REMOVED***
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();***REMOVED***
-                      if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
-                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                ***REMOVED***
-                else ***REMOVED***
-                        vm.stopped_at=''
-                      ***REMOVED***
+                    if (vm.created_at != '') ***REMOVED***
+                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                    ***REMOVED***
+                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
+                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                    ***REMOVED***
+                    else ***REMOVED***
+                        vm.stopped_at = ''
+                    ***REMOVED***
 
                 ***REMOVED***
 
@@ -319,18 +324,18 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
     ngOnInit(): void ***REMOVED***
         this.getElixirId();
-        this.checkVOstatus(this.usersmanager)
+        this.checkVOstatus(this.userservice)
     ***REMOVED***
 
-    checkVOstatus(usersmanager: UsersManager) ***REMOVED***
+    checkVOstatus(userservice: UserService) ***REMOVED***
         let user_id: number;
         let admin_vos: ***REMOVED******REMOVED***;
-        this.authzresolver
+        this.userservice
             .getLoggedUser().toPromise()
             .then(function (userdata) ***REMOVED***
                 //TODO catch errors
                 user_id = userdata.json()["id"];
-                return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
             ***REMOVED***).then(function (adminvos) ***REMOVED***
             admin_vos = adminvos.json();
         ***REMOVED***).then(result => ***REMOVED***
@@ -345,11 +350,30 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
 
     getElixirId() ***REMOVED***
-        this.authzresolver.getPerunPrincipal().toPromise().then(result => ***REMOVED***
-            this.elixir_id = result.json()['actor'];
-        ***REMOVED***).then(result => ***REMOVED***
-            this.getVms(this.elixir_id)
-        ***REMOVED***);
-    ***REMOVED***
+        console.log('test')
+        this.userservice.getLoggedUser().toPromise()
+            .then(result => ***REMOVED***
+                let res = result.json();
 
+                let userid = res["id"];
+                this.userservice.getLogins(userid).toPromise().then(result => ***REMOVED***
+                    let logins = result.json()
+                    for (let login of logins) ***REMOVED***
+                        if (login['friendlyName'] === 'login-namespace:elixir-persistent') ***REMOVED***
+
+                            this.elixir_id = login['value'];
+
+                            break
+
+                        ***REMOVED***
+
+
+                    ***REMOVED***
+                ***REMOVED***).then(result => ***REMOVED***
+                    this.getVms(this.elixir_id)
+
+                ***REMOVED***);
+            ***REMOVED***)
+
+    ***REMOVED***
 ***REMOVED***

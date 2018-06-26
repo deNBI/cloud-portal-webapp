@@ -12,8 +12,6 @@ import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sideba
 import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.directive';
 import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
 import ***REMOVED***HttpModule***REMOVED*** from '@angular/http';
-import ***REMOVED***AuthzResolver***REMOVED*** from "./perun-connector/authz-resolver.service";
-import ***REMOVED***MembersManager***REMOVED*** from "./perun-connector/members-manager.service";
 import ***REMOVED***PerunSettings***REMOVED*** from "./perun-connector/connector-settings.service";
 import ***REMOVED***ApiSettings***REMOVED*** from "./api-connector/api-settings.service";
 // Routing Module
@@ -24,6 +22,7 @@ import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout
 import ***REMOVED***SimpleLayoutComponent***REMOVED*** from './layouts/simple-layout.component';
 import ***REMOVED***ModalModule***REMOVED*** from "ngx-bootstrap";
 import ***REMOVED***RegistrationInfoComponent***REMOVED*** from "./registration-info.component";
+import ***REMOVED***UserService***REMOVED*** from "./api-connector/user.service";
 
 @NgModule(***REMOVED***
   imports: [
@@ -48,10 +47,11 @@ import ***REMOVED***RegistrationInfoComponent***REMOVED*** from "./registration-
   providers: [***REMOVED***
     provide: LocationStrategy,
     useClass: HashLocationStrategy
-  ***REMOVED***, MembersManager,
-     AuthzResolver,
+  ***REMOVED***,
+
     PerunSettings,
-    ApiSettings
+    ApiSettings,
+      UserService
   ],
   bootstrap: [AppComponent]
 ***REMOVED***)

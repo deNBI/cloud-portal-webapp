@@ -13,14 +13,10 @@ import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/vi
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***Userinfo***REMOVED*** from "../userinfo/userinfo.model";
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
-import ***REMOVED***MembersManager***REMOVED*** from "../perun-connector/members-manager.service";
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
-import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
 
 import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
 import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
-import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
-import ***REMOVED***AttributesManager***REMOVED*** from "../perun-connector/attributes-manager";
 import ***REMOVED***Application***REMOVED*** from "../applications/application.model";
 import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
@@ -30,7 +26,7 @@ import ***REMOVED***environment***REMOVED*** from "../../environments/environmen
 @Component(***REMOVED***
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService]
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
     data: string = "";
@@ -46,6 +42,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     vmclient: Vmclient;
     selectedProjectDiskspaceMax: number;
     selectedProjectDiskspaceUsed:number;
+    selectedProjectVolumesMax:number;
+    selectedProjectVolumesUsed:number;
     selectedProjectVmsMax: number;
     selectedProjectVmsUsed:number;
     selectedProject: [string, number];
@@ -57,7 +55,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     private checkStatusTimeout: number = 5000;
 
 
-    constructor(private groupService: GroupService, private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) ***REMOVED***
+    constructor(private groupService: GroupService, private imageService: ImageService,  private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,private  keyService: keyService, private clientservice: ClientService) ***REMOVED***
     ***REMOVED***
 
 
@@ -143,6 +141,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
                     this.data = res
                     this.getSelectedProjectDiskspace();
                     this.getSelectedProjectVms();
+                    this.getSelectedProjectVolumes();
 
 
                 ***REMOVED***
@@ -221,7 +220,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     getUserApprovedProjects() ***REMOVED***
-        this.groupsmanager.getMemberGroupsStatus().toPromise().then(membergroups => ***REMOVED***
+        this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => ***REMOVED***
             for (let project of membergroups.json()) ***REMOVED***
                 this.projects.push(project);
 
@@ -238,7 +237,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
                     this.selectedProjectDiskspaceMax = result['Diskspace'];
 
             ***REMOVED***
-            else if (result['Diskspace'] === null)***REMOVED***
+            else if (result['Diskspace'] === null || result['Diskspace'] === 0)***REMOVED***
                    this.selectedProjectDiskspaceMax = 0;
             ***REMOVED***
 
@@ -257,6 +256,29 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
+        getSelectedProjectVolumes(): void***REMOVED***
+        this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe( result =>***REMOVED***
+            if (result['VolumeCounter'])***REMOVED***
+                this.selectedProjectVolumesMax=result['VolumeCounter'];
+            ***REMOVED***
+            else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0)***REMOVED***
+                this.selectedProjectVolumesMax=0;
+            ***REMOVED***
+        ***REMOVED***)
+        this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
+            console.log(result)
+            if(result['UsedVolumes'])***REMOVED***
+                this.selectedProjectVolumesUsed=result['UsedVolumes'];
+                console.log(this.selectedProjectVolumesUsed)
+            ***REMOVED***
+            else if(result['UsedVolumes'] === null || result['UsedVolumes'] === 0)***REMOVED***
+
+                this.selectedProjectVolumesUsed=0;
+            ***REMOVED***
+
+        ***REMOVED***)
+        ***REMOVED***
+
 
         getSelectedProjectVms(): void ***REMOVED***
         this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
@@ -266,7 +288,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
                     this.selectedProjectVmsMax = result['NumberVms'];
 
             ***REMOVED***
-            else if (result['NumberVms'] === null)***REMOVED***
+            else if (result['NumberVms'] === null || result['NumberVms'] === 0)***REMOVED***
                    this.selectedProjectVmsMax= 0;
             ***REMOVED***
 
