@@ -172,7 +172,25 @@ export class ApplicationsComponent {
                                 a.Comment= aj["project_application_comment"];
                                 a.OpenStackProject = aj["project_application_openstack_project"];
                                 if (a.Status !== 1) {
-                                    if (a.Shortname){
+                                    if (aj['project_application_perun_id']){
+                                         this.groupservice.getFacilityByGroup(aj['project_application_perun_id']).subscribe(result => {
+
+                                        let details = result['Details'];
+                                        let details_array = [];
+                                        for (let detail in details) {
+                                            let detail_tuple = [detail, details[detail]];
+                                            details_array.push(detail_tuple);
+                                        }
+
+                                        a.ComputecenterDetails = details_array;
+                                        a.ComputeCenter = [result['Facility'],result['FacilityID']];
+
+                                        this.all_applications.push(a)
+
+                                    })
+
+                                    }
+                                    else if (a.Shortname){
                                     this.groupservice.getFacilityByGroup(a.Shortname).subscribe(result => {
 
                                         let details = result['Details'];
