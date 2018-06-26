@@ -8,7 +8,8 @@ export class Application {
   private _VMsRequested: number;
   private _CoresPerVM: number;
   private _RamPerVM: number;
-  private _DiskSpace: number;
+  private _VolumeLimit: number;
+  private _VolumeCounter: number;
   private _ObjectStorage: number;
   private _SpecialHardware: number;
   private _Description: string;
@@ -138,12 +139,21 @@ export class Application {
     this._RamPerVM = value;
   }
 
-  get DiskSpace(): number {
-    return this._DiskSpace;
+  get VolumeLimit(): number {
+    return this._VolumeLimit;
   }
 
-  set DiskSpace(value: number) {
-    this._DiskSpace = value;
+  set VolumeLimit(value: number) {
+    this._VolumeLimit = value;
+  }
+
+
+    get VolumeCounter(): number {
+    return this._VolumeCounter;
+  }
+
+  set VolumeCounter(value: number) {
+    this._VolumeCounter = value;
   }
 
   get ObjectStorage(): number {

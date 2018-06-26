@@ -4,17 +4,15 @@ import 'rxjs/Rx'
 import {Vmclient} from "./virtualmachinemodels/vmclient";
 import {ClientService} from "../api-connector/vmClients.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {AuthzResolver} from "../perun-connector/authz-resolver.service";
-import {UsersManager} from "../perun-connector/users-manager.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
-import {GroupsManager} from "../perun-connector/groups-manager.service";
 import {GroupService} from "../api-connector/group.service";
+import {UserService} from "../api-connector/user.service";
 
 
 @Component({
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [GroupService,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
+  providers: [UserService,GroupService,ClientService,   PerunSettings, ApiSettings]
 })
 
 export class ClientOverviewComponent implements OnInit {
@@ -24,19 +22,19 @@ export class ClientOverviewComponent implements OnInit {
    computeCenters: [string,number][];
    selectedComputeCenter:string;
 
-  constructor(private groupservice : GroupService,private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) {
+  constructor(private userservice:UserService,private groupservice : GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) {
 
   }
 
-  checkVOstatus(usersmanager: UsersManager) {
+  checkVOstatus(userservice: UserService) {
     let user_id: number;
     let admin_vos: {};
-    this.authzresolver
+    this.userservice
       .getLoggedUser().toPromise()
       .then(function (userdata) {
         //TODO catch errors
         user_id = userdata.json()["id"];
-        return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+        return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
       }).then(function (adminvos) {
       admin_vos = adminvos.json();
     }).then(result => {
@@ -105,7 +103,7 @@ export class ClientOverviewComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.checkVOstatus(this.usersmanager);
+    this.checkVOstatus(this.userservice);
     this.getClientsChecked();
     this.getComputeCenters();
 

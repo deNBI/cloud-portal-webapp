@@ -13,14 +13,10 @@ import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {ApplicationsService} from '../api-connector/applications.service'
 import {Userinfo} from "../userinfo/userinfo.model";
 import {ApiSettings} from "../api-connector/api-settings.service";
-import {MembersManager} from "../perun-connector/members-manager.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {AuthzResolver} from "../perun-connector/authz-resolver.service";
 
 import {ClientService} from "../api-connector/vmClients.service";
 import {Vmclient} from "./virtualmachinemodels/vmclient";
-import {GroupsManager} from "../perun-connector/groups-manager.service";
-import {AttributesManager} from "../perun-connector/attributes-manager";
 import {Application} from "../applications/application.model";
 import {keyService} from "../api-connector/key.service";
 import {Project} from "../projectmanagement/project.model";
@@ -30,7 +26,7 @@ import {environment} from "../../environments/environment";
 @Component({
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService]
 })
 export class VirtualMachineComponent implements OnInit {
     data: string = "";
@@ -46,6 +42,8 @@ export class VirtualMachineComponent implements OnInit {
     vmclient: Vmclient;
     selectedProjectDiskspaceMax: number;
     selectedProjectDiskspaceUsed:number;
+    selectedProjectVolumesMax:number;
+    selectedProjectVolumesUsed:number;
     selectedProjectVmsMax: number;
     selectedProjectVmsUsed:number;
     selectedProject: [string, number];
@@ -57,7 +55,7 @@ export class VirtualMachineComponent implements OnInit {
     private checkStatusTimeout: number = 5000;
 
 
-    constructor(private groupService: GroupService, private imageService: ImageService, private attributemanager: AttributesManager, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private groupsmanager: GroupsManager, private virtualmachineservice: VirtualmachineService, private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private  keyService: keyService, private clientservice: ClientService) {
+    constructor(private groupService: GroupService, private imageService: ImageService,  private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,private  keyService: keyService, private clientservice: ClientService) {
     }
 
 
@@ -143,6 +141,7 @@ export class VirtualMachineComponent implements OnInit {
                     this.data = res
                     this.getSelectedProjectDiskspace();
                     this.getSelectedProjectVms();
+                    this.getSelectedProjectVolumes();
 
 
                 }
@@ -221,7 +220,7 @@ export class VirtualMachineComponent implements OnInit {
     }
 
     getUserApprovedProjects() {
-        this.groupsmanager.getMemberGroupsStatus().toPromise().then(membergroups => {
+        this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => {
             for (let project of membergroups.json()) {
                 this.projects.push(project);
 
@@ -238,7 +237,7 @@ export class VirtualMachineComponent implements OnInit {
                     this.selectedProjectDiskspaceMax = result['Diskspace'];
 
             }
-            else if (result['Diskspace'] === null){
+            else if (result['Diskspace'] === null || result['Diskspace'] === 0){
                    this.selectedProjectDiskspaceMax = 0;
             }
 
@@ -257,6 +256,29 @@ export class VirtualMachineComponent implements OnInit {
 
     }
 
+        getSelectedProjectVolumes(): void{
+        this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe( result =>{
+            if (result['VolumeCounter']){
+                this.selectedProjectVolumesMax=result['VolumeCounter'];
+            }
+            else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0){
+                this.selectedProjectVolumesMax=0;
+            }
+        })
+        this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
+            console.log(result)
+            if(result['UsedVolumes']){
+                this.selectedProjectVolumesUsed=result['UsedVolumes'];
+                console.log(this.selectedProjectVolumesUsed)
+            }
+            else if(result['UsedVolumes'] === null || result['UsedVolumes'] === 0){
+
+                this.selectedProjectVolumesUsed=0;
+            }
+
+        })
+        }
+
 
         getSelectedProjectVms(): void {
         this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()).subscribe(result => {
@@ -266,7 +288,7 @@ export class VirtualMachineComponent implements OnInit {
                     this.selectedProjectVmsMax = result['NumberVms'];
 
             }
-            else if (result['NumberVms'] === null){
+            else if (result['NumberVms'] === null || result['NumberVms'] === 0){
                    this.selectedProjectVmsMax= 0;
             }
 

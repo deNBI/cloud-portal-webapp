@@ -23,6 +23,7 @@ export class AddsinglevmComponent {
     public notificationModalIsClosable: boolean = false;
     public notificationModalStay: boolean = true;
     public error: string[];
+    public project_application_vms_requested=3;
 
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
