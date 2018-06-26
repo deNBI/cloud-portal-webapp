@@ -64,7 +64,7 @@ export class AddcloudapplicationComponent {
 
 
             if ('project_application_cores_per_vm' in values && values['project_application_cores_per_vm'] > 0 && 'project_application_ram_per_vm' in values
-                && values['project_application_ram_per_vm'] > 0 && 'project_application_disk_space' in values && values['project_application_disk_space'] > 0) {
+                && values['project_application_ram_per_vm'] > 0 && 'project_application_volume_limit' in values && values['project_application_volume_limit'] > 0) {
                 return true;
             }
 
@@ -79,6 +79,7 @@ export class AddcloudapplicationComponent {
     onSubmit(f: NgForm) {
         this.error = null;
         if (this.wronginput == true) {
+
             this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
         }
@@ -92,6 +93,7 @@ export class AddcloudapplicationComponent {
                 }
             }
             if (this.check_not_zero(values) == false) {
+                console.log('error')
                 this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
                 return;
