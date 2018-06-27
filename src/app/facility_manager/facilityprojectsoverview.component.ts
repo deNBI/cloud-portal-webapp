@@ -33,10 +33,10 @@ export class  FacilityProjectsOverviewComponent {
     public usersModalProjectID: number;
     public usersModalProjectName: string;
 
-    public emailSubject: string = '';
-    public emailText: string = '';
+    public emailSubject: string ;
+    public emailText: string;
     public emailStatus: number = 0;
-    public emailReply:string;
+    public emailReply:string='';
 
     public managerFacilities: [string,number][];
     public selectedFacility: [string,number]
@@ -146,8 +146,9 @@ export class  FacilityProjectsOverviewComponent {
 
     public resetEmailModal() {
 
-      this.emailSubject = '';
-      this.emailText = '';
+      this.emailSubject=null ;
+      this.emailText=null ;
+      this.emailReply=null
       this.emailStatus = 0;
 
     }
