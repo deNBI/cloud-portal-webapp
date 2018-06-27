@@ -10,6 +10,7 @@ import {NAV_DROPDOWN_DIRECTIVES} from './shared/nav-dropdown.directive';
 import {ChartsModule} from 'ng2-charts/ng2-charts';
 import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
 import {AsideToggleDirective} from './shared/aside.directive';
+import {PopoverModule} from 'ngx-popover';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {HttpModule} from '@angular/http';
 import {PerunSettings} from "./perun-connector/connector-settings.service";
@@ -33,6 +34,7 @@ import {UserService} from "./api-connector/user.service";
     TabsModule.forRoot(),
     ChartsModule,
     ModalModule.forRoot(),
+    PopoverModule
   ],
   declarations: [
     AppComponent,
