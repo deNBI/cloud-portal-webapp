@@ -128,6 +128,14 @@
 
                     </div>
                 </div>
+                 <div class="form-group">
+                    <label class="col-md-12 control-label" for="Reply to">Reply to</label>
+                    <div class="col-md-12">
+                        <input id="Reply to" name="Reply to" placeholder="" class="form-control input-md"
+                               [(ngModel)]="emailReply" type="text">
+
+                    </div>
+                </div>
 
                 <!-- Textarea -->
                 <div class="form-group">
@@ -163,7 +171,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
-                        (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText);verifyModal.hide();resetEmailModal();successModal.show()">
+                        (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText,emailReply);verifyModal.hide();resetEmailModal();successModal.show()">
                     Yes
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"

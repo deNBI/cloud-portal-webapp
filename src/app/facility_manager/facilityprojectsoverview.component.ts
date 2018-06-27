@@ -36,6 +36,7 @@ export class  FacilityProjectsOverviewComponent {
     public emailSubject: string = '';
     public emailText: string = '';
     public emailStatus: number = 0;
+    public emailReply:string;
 
     public managerFacilities: [string,number][];
     public selectedFacility: [string,number]
@@ -110,8 +111,8 @@ export class  FacilityProjectsOverviewComponent {
         }
        return (lifetime - running) < 0 ? "red" :"black";
     }
-    sendMailToFacility(facility: number,subject:string,message:string){
-        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result =>{
+    sendMailToFacility(facility: number,subject:string,message:string,reply?:string){
+        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message),encodeURIComponent(reply)).subscribe(result =>{
             if (result == 1){
                 this.emailStatus = 1;
             }
