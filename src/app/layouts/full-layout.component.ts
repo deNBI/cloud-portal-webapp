@@ -5,6 +5,7 @@ import {ClientService} from "../api-connector/vmClients.service";
 import {FacilityService} from "../api-connector/facility.service";
 import {UserService} from "../api-connector/user.service";
 import {GroupService} from "../api-connector/group.service";
+import {PopoverModule } from 'ngx-popover';
 
 
 @Component({
