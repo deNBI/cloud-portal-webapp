@@ -15,9 +15,9 @@ import  * as moment from 'moment';
 
 export class VoOverviewComponent ***REMOVED***
 
-    public emailSubject: string = '';
-    public emailReply:string;
-    public emailText: string = '';
+    public emailSubject: string;
+    public emailReply:string='';
+    public emailText: string;
     public emailStatus: number = 0;
     public newsletterSubscriptionCounter: number;
 
@@ -60,9 +60,9 @@ export class VoOverviewComponent ***REMOVED***
 
     public resetEmailModal() ***REMOVED***
 
-        this.emailSubject = '';
-        this.emailText = '';
-        this.emailReply=null;
+        this.emailSubject=null;
+        this.emailText=null;
+        this.emailReply='';
         this.emailStatus = 0;
 
     ***REMOVED***
