@@ -16,6 +16,7 @@ import  * as moment from 'moment';
 export class VoOverviewComponent ***REMOVED***
 
     public emailSubject: string = '';
+    public emailReply:string;
     public emailText: string = '';
     public emailStatus: number = 0;
     public newsletterSubscriptionCounter: number;
@@ -44,8 +45,8 @@ export class VoOverviewComponent ***REMOVED***
 
     ***REMOVED***
 
-    sendMailToVo(subject: string, message: string) ***REMOVED***
-        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result => ***REMOVED***
+    sendMailToVo(subject: string, message: string,reply?:string) ***REMOVED***
+        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message),encodeURIComponent(reply)).subscribe(result => ***REMOVED***
             if (result == 1) ***REMOVED***
                 this.emailStatus = 1;
             ***REMOVED***
@@ -61,6 +62,7 @@ export class VoOverviewComponent ***REMOVED***
 
         this.emailSubject = '';
         this.emailText = '';
+        this.emailReply=null;
         this.emailStatus = 0;
 
     ***REMOVED***
