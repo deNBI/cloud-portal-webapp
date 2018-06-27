@@ -5,6 +5,7 @@ import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.
 import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
+import ***REMOVED***PopoverModule ***REMOVED*** from 'ngx-popover';
 
 
 @Component(***REMOVED***
