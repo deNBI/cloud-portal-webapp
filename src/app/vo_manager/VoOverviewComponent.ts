@@ -15,8 +15,9 @@ import  * as moment from 'moment';
 
 export class VoOverviewComponent {
 
-    public emailSubject: string = '';
-    public emailText: string = '';
+    public emailSubject: string;
+    public emailReply:string='';
+    public emailText: string;
     public emailStatus: number = 0;
     public newsletterSubscriptionCounter: number;
 
@@ -44,8 +45,8 @@ export class VoOverviewComponent {
 
     }
 
-    sendMailToVo(subject: string, message: string) {
-        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result => {
+    sendMailToVo(subject: string, message: string,reply?:string) {
+        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message),encodeURIComponent(reply)).subscribe(result => {
             if (result == 1) {
                 this.emailStatus = 1;
             }
@@ -59,8 +60,9 @@ export class VoOverviewComponent {
 
     public resetEmailModal() {
 
-        this.emailSubject = '';
-        this.emailText = '';
+        this.emailSubject=null;
+        this.emailText=null;
+        this.emailReply='';
         this.emailStatus = 0;
 
     }
