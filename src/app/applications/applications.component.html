@@ -42,9 +42,13 @@
                                         Information
                                     </button>
 
-                                    <button (click)="deleteModal.show();setDeleteId(application.Id)" type="button"
+                                    <button *ngIf="application.Status == 'submitted'" (click)="deleteModal.show();setDeleteId(application.Id)" type="button"
                                             class="btn btn-secondary">
                                         Remove Application
+                                    </button>
+                                    <button *ngIf="application.Status == 'approved'" (click)="requestExtension(application.Id)" type="button"
+                                            class="btn btn-secondary">
+                                        Request Extension
                                     </button>
                                 </td>
                             </tr>

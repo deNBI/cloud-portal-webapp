@@ -10,13 +10,13 @@ import {ApplicationStatus} from "./application_status.model";
 import {SpecialHardware} from "./special_hardware.model";
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {GroupService} from "../api-connector/group.service";
-import  * as moment from 'moment';
+import * as moment from 'moment';
 import {UserService} from "../api-connector/user.service";
 
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [UserService,GroupService, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+    providers: [UserService, GroupService, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -25,7 +25,7 @@ export class ApplicationsComponent {
     all_applications: Application[] = [];
     application_status: ApplicationStatus[] = [];
     special_hardware: SpecialHardware[] = [];
-    computeCenters: [string,number][];
+    computeCenters: [string, number][];
     public deleteId: number;
 
     //notification Modal variables
@@ -34,7 +34,7 @@ export class ApplicationsComponent {
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
     public notificationModalIsClosable: boolean = false;
-    private APPROVED_STATUS=2;
+    private APPROVED_STATUS = 2;
 
 
     collapse_status: { [id: string]: boolean } = {};
@@ -43,7 +43,7 @@ export class ApplicationsComponent {
                 private applicationstatusservice: ApplicationStatusService,
                 private specialhardwareservice: SpecialHardwareService,
                 private perunsettings: PerunSettings,
-                private userservice:UserService,
+                private userservice: UserService,
                 private groupservice: GroupService) {
 
         this.getUserApplications();
@@ -71,7 +71,7 @@ export class ApplicationsComponent {
                     let a = new Application();
                     a.Id = aj["project_application_id"];
                     a.Name = aj["project_application_name"];
-                    a.Shortname=aj["project_application_shortname"];
+                    a.Shortname = aj["project_application_shortname"];
                     a.Lifetime = aj["project_application_lifetime"];
                     a.DateSubmitted = aj["project_application_date_submitted"];
                     a.Status = aj["project_application_status"]["application_status_name"];
@@ -84,9 +84,10 @@ export class ApplicationsComponent {
                     a.ObjectStorage = aj["project_application_object_storage"];
                     a.SpecialHardware = aj["project_application_special_hardware"];
                     a.OpenStackProject = aj["project_application_openstack_project"];
-                    a.Comment= aj["project_application_comment"];
+                    a.Comment = aj["project_application_comment"];
 
                     this.user_applications.push(a)
+
                 }
             });
     }
@@ -122,7 +123,7 @@ export class ApplicationsComponent {
         console.log(this.userservice)
         this.userservice
             .getLoggedUser().toPromise()
-            .then(userdata =>{
+            .then(userdata => {
                 //TODO catch errors
                 user_id = userdata.json()["id"];
                 return this.userservice.getVosWhereUserIsAdmin(user_id).toPromise();
@@ -143,7 +144,7 @@ export class ApplicationsComponent {
                                 a.Id = aj["project_application_id"];
 
                                 a.Name = aj["project_application_name"];
-                                a.Shortname=aj["project_application_shortname"];
+                                a.Shortname = aj["project_application_shortname"];
                                 a.Description = aj["project_application_description"];
                                 a.Lifetime = aj["project_application_lifetime"];
 
@@ -164,69 +165,70 @@ export class ApplicationsComponent {
                                 a.User = aj["project_application_user"]["username"];
                                 a.UserEmail = aj["project_application_user"]["email"];
                                 a.Status = aj["project_application_status"];
-                                if (a.Status==this.APPROVED_STATUS){
-                                    a.DaysRunning=Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
+                                if (a.Status == this.APPROVED_STATUS) {
+                                    a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
 
                                 }
-                                a.Comment= aj["project_application_comment"];
+                                a.Comment = aj["project_application_comment"];
                                 a.OpenStackProject = aj["project_application_openstack_project"];
                                 if (a.Status !== 1) {
-                                    if (aj['project_application_perun_id']){
-                                         this.groupservice.getFacilityByGroup(aj['project_application_perun_id']).subscribe(result => {
+                                    if (aj['project_application_perun_id']) {
+                                        this.groupservice.getFacilityByGroup(aj['project_application_perun_id']).subscribe(result => {
 
-                                        let details = result['Details'];
-                                        let details_array = [];
-                                        for (let detail in details) {
-                                            let detail_tuple = [detail, details[detail]];
-                                            details_array.push(detail_tuple);
-                                        }
+                                            let details = result['Details'];
+                                            let details_array = [];
+                                            for (let detail in details) {
+                                                let detail_tuple = [detail, details[detail]];
+                                                details_array.push(detail_tuple);
+                                            }
 
-                                        a.ComputecenterDetails = details_array;
-                                        a.ComputeCenter = [result['Facility'],result['FacilityID']];
+                                            a.ComputecenterDetails = details_array;
+                                            a.ComputeCenter = [result['Facility'], result['FacilityID']];
 
-                                        this.all_applications.push(a)
+                                            this.all_applications.push(a)
 
-                                    })
+                                        })
 
                                     }
-                                    else if (a.Shortname){
-                                    this.groupservice.getFacilityByGroup(a.Shortname).subscribe(result => {
+                                    else if (a.Shortname) {
+                                        this.groupservice.getFacilityByGroup(a.Shortname).subscribe(result => {
 
-                                        let details = result['Details'];
-                                        let details_array = [];
-                                        for (let detail in details) {
-                                            let detail_tuple = [detail, details[detail]];
-                                            details_array.push(detail_tuple);
-                                        }
+                                            let details = result['Details'];
+                                            let details_array = [];
+                                            for (let detail in details) {
+                                                let detail_tuple = [detail, details[detail]];
+                                                details_array.push(detail_tuple);
+                                            }
 
-                                        a.ComputecenterDetails = details_array;
-                                        a.ComputeCenter = [result['Facility'],result['FacilityID']];
+                                            a.ComputecenterDetails = details_array;
+                                            a.ComputeCenter = [result['Facility'], result['FacilityID']];
 
-                                        this.all_applications.push(a)
+                                            this.all_applications.push(a)
 
-                                    })}
+                                        })
+                                    }
                                     else {
-                                         this.groupservice.getFacilityByGroup(a.Name).subscribe(result => {
+                                        this.groupservice.getFacilityByGroup(a.Name).subscribe(result => {
 
-                                        let details = result['Details'];
-                                        let details_array = [];
-                                        for (let detail in details) {
-                                            let detail_tuple = [detail, details[detail]];
-                                            details_array.push(detail_tuple);
-                                        }
+                                            let details = result['Details'];
+                                            let details_array = [];
+                                            for (let detail in details) {
+                                                let detail_tuple = [detail, details[detail]];
+                                                details_array.push(detail_tuple);
+                                            }
 
-                                        a.ComputecenterDetails = details_array;
-                                        a.ComputeCenter = [result['Facility'],result['FacilityID']];
+                                            a.ComputecenterDetails = details_array;
+                                            a.ComputeCenter = [result['Facility'], result['FacilityID']];
 
-                                        this.all_applications.push(a)
+                                            this.all_applications.push(a)
 
-                                    })
+                                        })
 
                                     }
                                 }
                                 else {
-                                    a.ComputeCenter = ['None',-1]
+                                    a.ComputeCenter = ['None', -1]
 
                                     this.all_applications.push(a)
 
@@ -236,6 +238,16 @@ export class ApplicationsComponent {
                     break;
                 }
             }
+        });
+    }
+
+    public requestExtension(application_id: number) {
+        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("extension requested"), null).toPromise().then(result => {
+            console.log('doone')
+            this.user_applications = [];
+            this.all_applications = [];
+            this.getUserApplications();
+            this.getAllApplications();
         });
     }
 
@@ -263,11 +275,11 @@ export class ApplicationsComponent {
         return s;
     }
 
-    public lifeTimeReached(lifetime:number,running:number,status_changed_string:string):string{
-       let status_changed=new Date(status_changed_string);
-      let LifetimeDays = Math.ceil(Math.abs(moment(status_changed).add(lifetime, 'months').toDate().getTime() - status_changed.getTime())) / (1000 * 3600 * 24)
+    public lifeTimeReached(lifetime: number, running: number, status_changed_string: string): string {
+        let status_changed = new Date(status_changed_string);
+        let LifetimeDays = Math.ceil(Math.abs(moment(status_changed).add(lifetime, 'months').toDate().getTime() - status_changed.getTime())) / (1000 * 3600 * 24)
 
-       return (LifetimeDays  - running) < 0 ? "red" :"black";
+        return (LifetimeDays - running) < 0 ? "red" : "black";
     }
 
     public getIdByStatus(name: string): number {
@@ -280,12 +292,13 @@ export class ApplicationsComponent {
         return s;
     }
 
-    public resetNotificationModal(){
-        this.notificationModalTitle= "Notification";
-        this.notificationModalMessage="Please wait...";
+    public resetNotificationModal() {
+        this.notificationModalTitle = "Notification";
+        this.notificationModalMessage = "Please wait...";
         this.notificationModalType = "info";
         this.notificationModalIsClosable = false;
     }
+
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
         this.notificationModalTitle = title;
         this.notificationModalMessage = message;
@@ -294,14 +307,14 @@ export class ApplicationsComponent {
     }
 
 
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project,numberofVms,volumelimit,lifetime,longname,volumecounter) {
+    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project, numberofVms, volumelimit, lifetime, longname, volumecounter) {
 
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
         let re = /[-:. ,]/gi
-        let  shortNameDate=name + (new Date(Date.now()).toLocaleString().replace(re,''));
+        let shortNameDate = name + (new Date(Date.now()).toLocaleString().replace(re, ''));
         this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
             .then(member_raw => {
                     let member = member_raw.json();
@@ -316,27 +329,28 @@ export class ApplicationsComponent {
             new_group_id = group["id"];
 
             //add the application user to the group
-            return this.groupservice.addMember(new_group_id, manager_member_id,compute_center).toPromise();
+            return this.groupservice.addMember(new_group_id, manager_member_id, compute_center).toPromise();
 
         }).then(null_result => {
-            return this.groupservice.addAdmin(new_group_id, manager_member_user_id,compute_center).toPromise();
+            return this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).toPromise();
         }).then(null_result => {
             return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).toPromise();
         }).then(null_result => {
             //setting approved status for Perun Group
-            let APPRVOVED=2;
+            let APPRVOVED = 2;
             this.groupservice.setPerunGroupStatus(new_group_id, APPRVOVED).toPromise();
             this.groupservice.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
-            if (compute_center != 'undefined'){
-            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();}
-            this.groupservice.setShortname(new_group_id.toString(),name).subscribe();
-            this.groupservice.setName(new_group_id.toString(),longname).subscribe();
-            this.groupservice.setNumberOfVms(new_group_id.toString(),numberofVms.toString()).subscribe();
-            this.groupservice.setDescription(new_group_id.toString(),description).subscribe();
-            this.groupservice.setLifetime(new_group_id.toString(),lifetime.toString()).subscribe();
-            this.groupservice.setPerunId(new_group_id.toString(),application_id).subscribe();
-            this.groupservice.setGroupVolumeLimit(new_group_id,volumelimit).subscribe();
-            this.groupservice.setGroupVolumeCounter(new_group_id,volumecounter).subscribe();
+            if (compute_center != 'undefined') {
+                this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
+            }
+            this.groupservice.setShortname(new_group_id.toString(), name).subscribe();
+            this.groupservice.setName(new_group_id.toString(), longname).subscribe();
+            this.groupservice.setNumberOfVms(new_group_id.toString(), numberofVms.toString()).subscribe();
+            this.groupservice.setDescription(new_group_id.toString(), description).subscribe();
+            this.groupservice.setLifetime(new_group_id.toString(), lifetime.toString()).subscribe();
+            this.groupservice.setPerunId(new_group_id.toString(), application_id).subscribe();
+            this.groupservice.setGroupVolumeLimit(new_group_id, volumelimit).subscribe();
+            this.groupservice.setGroupVolumeCounter(new_group_id, volumecounter).subscribe();
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications
@@ -364,36 +378,33 @@ export class ApplicationsComponent {
             });
     }
 
-    public deleteApplication(application_id){
-      this.applicataionsservice.deleteApplication(application_id).toPromise()
-          .then(result => {
-                    this.updateNotificaitonModal('Success', 'The application has been successfully removed', true, 'success');
-                }).then(  result => {
-                  this.user_applications=[];
-                  this.all_applications=[];
-                  this.getUserApplications();
-                  this.getAllApplications();
-      })
-        .catch(error => {
+    public deleteApplication(application_id) {
+        this.applicataionsservice.deleteApplication(application_id).toPromise()
+            .then(result => {
+                this.updateNotificaitonModal('Success', 'The application has been successfully removed', true, 'success');
+            }).then(result => {
+            this.user_applications = [];
+            this.all_applications = [];
+            this.getUserApplications();
+            this.getAllApplications();
+        })
+            .catch(error => {
                 this.updateNotificaitonModal("Failed", "Application could not be removed!", true, "danger");
             });
     }
 
     public activeApplicationsAvailable(): boolean {
-      for (let application of this.all_applications) {
-        if (application.Status == 1) {
-          return true;
+        for (let application of this.all_applications) {
+            if (application.Status == 1) {
+                return true;
+            }
         }
-      }
     }
 
 
-      public setDeleteId(applicationId) {
+    public setDeleteId(applicationId) {
         this.deleteId = applicationId;
     }
-
-
-
 
 
     public comingSoon() {
