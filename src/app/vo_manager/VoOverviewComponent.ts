@@ -3,7 +3,7 @@ import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
 import ***REMOVED***ProjectMember***REMOVED*** from "../projectmanagement/project_member.model";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
-import  * as moment from 'moment';
+import * as moment from 'moment';
 
 @Component(***REMOVED***
     selector: 'voOverview',
@@ -16,9 +16,12 @@ import  * as moment from 'moment';
 export class VoOverviewComponent ***REMOVED***
 
     public emailSubject: string;
-    public emailReply:string='';
+    public emailReply: string = '';
     public emailText: string;
     public emailStatus: number = 0;
+    public emailHeader: string;
+    public emailVerify: string;
+    public emailType: number;
     public newsletterSubscriptionCounter: number;
 
     member_id: number;
@@ -45,8 +48,22 @@ export class VoOverviewComponent ***REMOVED***
 
     ***REMOVED***
 
-    sendMailToVo(subject: string, message: string,reply?:string) ***REMOVED***
-        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message),encodeURIComponent(reply)).subscribe(result => ***REMOVED***
+
+    sendEmail(subject: string, message: string, reply?: string) ***REMOVED***
+        switch (this.emailType) ***REMOVED***
+            case 0: ***REMOVED***
+                this.sendMailToVo(subject, message, reply);
+                break;
+            ***REMOVED***
+            case 1: ***REMOVED***
+                this.sendNewsletterToVo(subject, message, reply);
+                break;
+            ***REMOVED***
+        ***REMOVED***
+    ***REMOVED***
+
+    sendNewsletterToVo(subject: string, message: string, reply?: string) ***REMOVED***
+        this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => ***REMOVED***
             if (result == 1) ***REMOVED***
                 this.emailStatus = 1;
             ***REMOVED***
@@ -58,11 +75,45 @@ export class VoOverviewComponent ***REMOVED***
     ***REMOVED***
 
 
+    sendMailToVo(subject: string, message: string, reply?: string) ***REMOVED***
+        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => ***REMOVED***
+            if (result == 1) ***REMOVED***
+                this.emailStatus = 1;
+            ***REMOVED***
+            else ***REMOVED***
+                this.emailStatus = 2;
+            ***REMOVED***
+        ***REMOVED***)
+
+    ***REMOVED***
+
+    setEmailType(type: number) ***REMOVED***
+        this.emailType = type;
+        switch (this.emailType) ***REMOVED***
+            case 0: ***REMOVED***
+                this.emailHeader = 'Send email to all members of\n' +
+                    '                    the vo';
+                this.emailVerify = 'Are you sure you want to send this email to all members of the vo?';
+                break;
+            ***REMOVED***
+            case 1: ***REMOVED***
+                this.emailHeader = 'Send newsletter to vo';
+                this.emailVerify = 'Are you sure you want to send this newsletter?'
+                break;
+            ***REMOVED***
+
+        ***REMOVED***
+
+    ***REMOVED***
+
     public resetEmailModal() ***REMOVED***
 
-        this.emailSubject=null;
-        this.emailText=null;
-        this.emailReply='';
+        this.emailHeader = null;
+        this.emailSubject = null;
+        this.emailText = null;
+        this.emailType=null;
+        this.emailVerify=null;
+        this.emailReply = '';
         this.emailStatus = 0;
 
     ***REMOVED***
@@ -92,15 +143,15 @@ export class VoOverviewComponent ***REMOVED***
                         is_admin,
                         [result['Facility'], result['FacilityId']]
                     )
-                     newProject.Lifetime = group['lifetime']
-                    if (newProject.Lifetime != -1)***REMOVED***
-                    newProject.LifetimeDays=Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime,'months').toDate().getTime()-dateCreated.getTime()))/(1000*3600*24)
+                    newProject.Lifetime = group['lifetime']
+                    if (newProject.Lifetime != -1) ***REMOVED***
+                        newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - dateCreated.getTime())) / (1000 * 3600 * 24)
 
-                        ***REMOVED***
-                        else***REMOVED***
-                        newProject.LifetimeDays=-1;
                     ***REMOVED***
-                        this.projects.push(newProject);
+                    else ***REMOVED***
+                        newProject.LifetimeDays = -1;
+                    ***REMOVED***
+                    this.projects.push(newProject);
                 ***REMOVED***)
             ***REMOVED***
 

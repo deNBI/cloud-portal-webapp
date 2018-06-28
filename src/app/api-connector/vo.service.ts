@@ -40,7 +40,24 @@ export class VoService ***REMOVED***
 
   ***REMOVED***
 
-    sendMailToVo(subject, message,reply?): Observable<any> ***REMOVED***
+    sendNewsletterToVo(subject, message,reply?): Observable<any> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('subject', subject);
+        urlSearchParams.append('message', message);
+        urlSearchParams.append('reply',reply)
+
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendNewsletterToMembers/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ***REMOVED***
+
+
+        sendMailToVo(subject, message,reply?): Observable<any> ***REMOVED***
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('subject', subject);
         urlSearchParams.append('message', message);
