@@ -11,6 +11,7 @@ export class Project {
   private _Name: string;
   private _Description: string;
   private _DateCreated: string;
+  private _DateEnd: string;
   private _DaysRunning: number;
   private _LifetimeDays: number;
   private _Lifetime: number;
@@ -90,6 +91,14 @@ export class Project {
 
   set DateCreated(value: string) {
     this._DateCreated = value;
+  }
+
+   get DateEnd(): string {
+    return this._DateEnd;
+  }
+
+  set DateEnd(value: string) {
+    this._DateEnd = value;
   }
 
   get DaysRunning(): number {
