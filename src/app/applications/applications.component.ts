@@ -241,14 +241,16 @@ export class ApplicationsComponent {
         });
     }
 
-    public requestExtension(application_id: number) {
-        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("extension requested"), null).toPromise().then(result => {
+    public requestExtension(application_id: number,lifetime:number) {
+        this.applicataionsservice.requestRenewal(application_id,lifetime).subscribe(result =>(console.log(result)))
+
+        /*this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("extension requested"), null).toPromise().then(result => {
             console.log('doone')
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
             this.getAllApplications();
-        });
+        });*/
     }
 
     public getCollapseStatus(id: string) {

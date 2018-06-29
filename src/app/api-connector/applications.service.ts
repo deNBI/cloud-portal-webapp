@@ -39,6 +39,24 @@ export class ApplicationsService {
       });
   }
 
+
+
+  requestRenewal(application_id: number,lifetime:number) {
+
+
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('project_application_id', application_id.toString());
+     urlSearchParams.append('project_application_renewal_lifetime_extension', lifetime.toString());
+    let header = new Headers({
+      'X-CSRFToken': this.settings.getCSRFToken(),
+    });
+    return this.http.post(this.settings.getApiBaseURL() + 'application/requestRenewal/', urlSearchParams,
+      {
+        headers: header,
+        withCredentials: true
+      });
+  }
+
   deleteApplication(application_id: number) {
 
 
