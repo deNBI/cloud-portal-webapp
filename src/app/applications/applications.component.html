@@ -152,7 +152,7 @@
                                     </td>
                                     <td>{{application.Institute}}</td>
 
-                                    <td *ngIf="application.Status == 1">
+                                    <td >
                                         <select class="form-control" #selectedComputeCenter>
                                             <option value="undefined" selected> no center</option>
                                             <option *ngFor="let computeCenter of computeCenters"
@@ -160,11 +160,12 @@
                                             </option>
                                         </select>
                                     </td>
+                                    <td *ngIf="application.Status == 1"></td>
                                     <td *ngIf="application.Status == 4 "> {{application.ComputeCenter[0]}}</td>
 
 
                                     <td>
-                                        <button *ngIf="application.Status == 2"
+                                        <button *ngIf="application.Status == 1"
 
                                                 (click)='resetNotificationModal();createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value,application.OpenStackProject,application.VMsRequested,application.VolumeLimit,application.Lifetime,application.Name,application.VolumeCounter ); notificationModal.show();'
 
@@ -181,7 +182,7 @@
                                             Extension
                                         </button>
 
-                                        <button *ngIf="application.Status == 2"
+                                        <button *ngIf="application.Status == 1"
                                                 (click)='declineApplication(application.Id)'
                                                 type="button" class="btn btn-secondary"><i class="fa fa-close"></i>&nbsp;
                                             Decline
@@ -224,6 +225,7 @@
                                                 <tr>
                                                     <td>Lifetime</td>
                                                     <td>{{ application.Lifetime }} months</td>
+                                                    <td *ngIf="application.Status == 4"> {{application.ApplicationExtension?.Lifetime}} months</td>
                                                 </tr>
                                                 <tr>
                                                     <td>VMs</td>

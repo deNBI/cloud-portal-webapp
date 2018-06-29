@@ -12,6 +12,7 @@ import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {GroupService} from "../api-connector/group.service";
 import * as moment from 'moment';
 import {UserService} from "../api-connector/user.service";
+import {ApplicationExtension} from "./application_extension.model";
 
 
 @Component({
@@ -24,6 +25,7 @@ export class ApplicationsComponent {
     is_vo_admin = false;
     all_applications: Application[] = [];
     application_status: ApplicationStatus[] = [];
+    all_applications_renewal: ApplicationExtension[] = [];
     special_hardware: SpecialHardware[] = [];
     computeCenters: [string, number][];
     public deleteId: number;
@@ -35,6 +37,7 @@ export class ApplicationsComponent {
     public notificationModalType: string = "info";
     public notificationModalIsClosable: boolean = false;
     private APPROVED_STATUS = 2;
+    private EXTENSION_STATUS = 4;
 
 
     collapse_status: { [id: string]: boolean } = {};
@@ -59,6 +62,23 @@ export class ApplicationsComponent {
         this.groupservice.getComputeCenters().subscribe(result => {
             this.computeCenters = result;
         })
+    }
+
+    getAllApplicationsRenewalRequests() {
+        this.applicataionsservice.getAllApplicationsRenewalRequests().subscribe(result => {
+
+
+            for (let res of result.json()) {
+                let r = new ApplicationExtension();
+
+                r.Id = res['project_application'];
+                r.Lifetime = res['project_application_renewal_lifetime_extension'];
+
+                this.all_applications_renewal.push(r)
+            }
+        })
+
+
     }
 
     getUserApplications() {
@@ -116,11 +136,14 @@ export class ApplicationsComponent {
             });
     }
 
+    getAllApplicationsExtensions() {
+
+    }
+
     getAllApplications() {
         //todo check if user is VO Admin
         let user_id: number;
         let admin_vos: {};
-        console.log(this.userservice)
         this.userservice
             .getLoggedUser().toPromise()
             .then(userdata => {
@@ -130,116 +153,181 @@ export class ApplicationsComponent {
             }).then(function (adminvos) {
             admin_vos = adminvos.json();
         }).then(result => {
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in admin_vos) {
-                if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
-                    this.is_vo_admin = true;
-                    this.applicataionsservice
-                        .getAllApplications().toPromise()
-                        .then(result => {
-                            let res = result.json();
-                            for (let key in res) {
-                                let aj = res[key];
-                                let a = new Application();
-                                a.Id = aj["project_application_id"];
+                //check if user is a Vo admin so we can serv according buttons
+                for (let vkey in admin_vos) {
+                    if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
+                        this.is_vo_admin = true;
+                        this.applicataionsservice
+                            .getAllApplications().toPromise()
+                            .then(result => {
+                                let res = result.json();
 
-                                a.Name = aj["project_application_name"];
-                                a.Shortname = aj["project_application_shortname"];
-                                a.Description = aj["project_application_description"];
-                                a.Lifetime = aj["project_application_lifetime"];
+                                for (let key in res) {
 
-                                a.VMsRequested = aj["project_application_vms_requested"];
-                                a.RamPerVM = aj["project_application_ram_per_vm"];
-                                a.CoresPerVM = aj["project_application_cores_per_vm"];
-                                a.VolumeLimit = aj["project_application_volume_limit"];
-                                a.VolumeCounter = aj["project_application_volume_counter"];
+                                    let aj = res[key];
+                                    let a = new Application();
+                                    a.Id = aj["project_application_id"];
 
-                                a.ObjectStorage = aj["project_application_object_storage"];
-                                a.SpecialHardware = aj["project_application_special_hardware"];
+                                    a.Name = aj["project_application_name"];
+                                    a.Shortname = aj["project_application_shortname"];
+                                    a.Description = aj["project_application_description"];
+                                    a.Lifetime = aj["project_application_lifetime"];
 
-                                a.Institute = aj["project_application_institute"];
-                                a.Workgroup = aj["project_application_workgroup"];
+                                    a.VMsRequested = aj["project_application_vms_requested"];
+                                    a.RamPerVM = aj["project_application_ram_per_vm"];
+                                    a.CoresPerVM = aj["project_application_cores_per_vm"];
+                                    a.VolumeLimit = aj["project_application_volume_limit"];
+                                    a.VolumeCounter = aj["project_application_volume_counter"];
 
-                                a.DateSubmitted = aj["project_application_date_submitted"];
-                                a.DateStatusChanged = aj["project_application_date_status_changed"];
-                                a.User = aj["project_application_user"]["username"];
-                                a.UserEmail = aj["project_application_user"]["email"];
-                                a.Status = aj["project_application_status"];
-                                if (a.Status == this.APPROVED_STATUS) {
-                                    a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
+                                    a.ObjectStorage = aj["project_application_object_storage"];
+                                    a.SpecialHardware = aj["project_application_special_hardware"];
 
+                                    a.Institute = aj["project_application_institute"];
+                                    a.Workgroup = aj["project_application_workgroup"];
 
-                                }
-                                a.Comment = aj["project_application_comment"];
-                                a.OpenStackProject = aj["project_application_openstack_project"];
-                                if (a.Status !== 1) {
-                                    if (aj['project_application_perun_id']) {
-                                        this.groupservice.getFacilityByGroup(aj['project_application_perun_id']).subscribe(result => {
+                                    a.DateSubmitted = aj["project_application_date_submitted"];
+                                    a.DateStatusChanged = aj["project_application_date_status_changed"];
+                                    a.User = aj["project_application_user"]["username"];
+                                    a.UserEmail = aj["project_application_user"]["email"];
+                                    a.Status = aj["project_application_status"];
+                                    if (a.Status == this.APPROVED_STATUS) {
+                                        a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
-                                            let details = result['Details'];
-                                            let details_array = [];
-                                            for (let detail in details) {
-                                                let detail_tuple = [detail, details[detail]];
-                                                details_array.push(detail_tuple);
-                                            }
-
-                                            a.ComputecenterDetails = details_array;
-                                            a.ComputeCenter = [result['Facility'], result['FacilityID']];
-
-                                            this.all_applications.push(a)
-
-                                        })
 
                                     }
-                                    else if (a.Shortname) {
-                                        this.groupservice.getFacilityByGroup(a.Shortname).subscribe(result => {
 
-                                            let details = result['Details'];
-                                            let details_array = [];
-                                            for (let detail in details) {
-                                                let detail_tuple = [detail, details[detail]];
-                                                details_array.push(detail_tuple);
-                                            }
+                                    a.Comment = aj["project_application_comment"];
+                                    a.OpenStackProject = aj["project_application_openstack_project"];
+                                    if (a.Status !== 1) {
+                                        if (aj['project_application_perun_id']) {
+                                            this.groupservice.getFacilityByGroup(aj['project_application_perun_id']).subscribe(result => {
 
-                                            a.ComputecenterDetails = details_array;
-                                            a.ComputeCenter = [result['Facility'], result['FacilityID']];
+                                                let details = result['Details'];
+                                                let details_array = [];
+                                                for (let detail in details) {
+                                                    let detail_tuple = [detail, details[detail]];
+                                                    details_array.push(detail_tuple);
+                                                }
 
-                                            this.all_applications.push(a)
+                                                a.ComputecenterDetails = details_array;
+                                                a.ComputeCenter = [result['Facility'], result['FacilityID']];
 
-                                        })
+                                                if (a.Status == this.EXTENSION_STATUS) {
+                                                    this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => {
+                                                        res = result.json()
+                                                        let r = new ApplicationExtension();
+
+                                                        r.Id = res['project_application'];
+                                                        r.Lifetime = res['project_application_renewal_lifetime_extension'];
+                                                        a.ApplicationExtension = r
+                                                        this.all_applications.push(a)
+                                                    })
+
+                                                }
+                                                else {
+                                                    this.all_applications.push((a))
+                                                }
+
+                                            })
+
+                                        }
+                                        else if (a.Shortname) {
+                                            this.groupservice.getFacilityByGroup(a.Shortname).subscribe(result => {
+
+                                                let details = result['Details'];
+                                                let details_array = [];
+                                                for (let detail in details) {
+                                                    let detail_tuple = [detail, details[detail]];
+                                                    details_array.push(detail_tuple);
+                                                }
+
+                                                a.ComputecenterDetails = details_array;
+                                                a.ComputeCenter = [result['Facility'], result['FacilityID']];
+
+                                                if (a.Status == this.EXTENSION_STATUS) {
+                                                    this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => {
+                                                        res = result.json()
+                                                        let r = new ApplicationExtension();
+
+                                                        r.Id = res['project_application'];
+                                                        r.Lifetime = res['project_application_renewal_lifetime_extension'];
+                                                        a.ApplicationExtension = r
+                                                        this.all_applications.push(a)
+                                                    })
+
+                                                }
+                                                else {
+                                                    this.all_applications.push((a))
+                                                }
+
+                                            })
+                                        }
+                                        else {
+                                            this.groupservice.getFacilityByGroup(a.Name).subscribe(result => {
+
+                                                let details = result['Details'];
+                                                let details_array = [];
+                                                for (let detail in details) {
+                                                    let detail_tuple = [detail, details[detail]];
+                                                    details_array.push(detail_tuple);
+                                                }
+
+                                                a.ComputecenterDetails = details_array;
+                                                a.ComputeCenter = [result['Facility'], result['FacilityID']];
+
+                                                if (a.Status == this.EXTENSION_STATUS) {
+                                                    this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => {
+                                                        res = result.json()
+                                                        let r = new ApplicationExtension();
+
+                                                        r.Id = res['project_application'];
+                                                        r.Lifetime = res['project_application_renewal_lifetime_extension'];
+                                                        a.ApplicationExtension = r
+                                                        this.all_applications.push(a)
+                                                    })
+
+                                                }
+                                                else {
+                                                    this.all_applications.push((a))
+                                                }
+
+                                            })
+
+                                        }
                                     }
                                     else {
-                                        this.groupservice.getFacilityByGroup(a.Name).subscribe(result => {
+                                        a.ComputeCenter = ['None', -1]
 
-                                            let details = result['Details'];
-                                            let details_array = [];
-                                            for (let detail in details) {
-                                                let detail_tuple = [detail, details[detail]];
-                                                details_array.push(detail_tuple);
-                                            }
+                                        if (a.Status == this.EXTENSION_STATUS) {
+                                            this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => {
+                                                res = result.json()
+                                                let r = new ApplicationExtension();
 
-                                            a.ComputecenterDetails = details_array;
-                                            a.ComputeCenter = [result['Facility'], result['FacilityID']];
+                                                r.Id = res['project_application'];
+                                                r.Lifetime = res['project_application_renewal_lifetime_extension'];
+                                                a.ApplicationExtension = r
+                                                this.all_applications.push(a)
+                                            })
 
-                                            this.all_applications.push(a)
+                                        }
+                                        else {
+                                            this.all_applications.push((a))
+                                        }
 
-                                        })
 
                                     }
-                                }
-                                else {
-                                    a.ComputeCenter = ['None', -1]
-
-                                    this.all_applications.push(a)
 
                                 }
-                            }
-                        });
-                    break;
+                            });
+                        break;
+                    }
                 }
+                console.log(this.all_applications)
+                this.getAllApplicationsRenewalRequests();
             }
-        });
+        )
     }
+
 
     public requestExtension(application_id: number, lifetime: number) {
         this.applicataionsservice.requestRenewal(application_id, lifetime).subscribe(result => {

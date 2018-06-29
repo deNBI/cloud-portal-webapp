@@ -72,6 +72,21 @@ export class ApplicationsService {
   }
 
 
+   getAllApplicationsRenewalRequests() {
+    return this.http.get(this.settings.getApiBaseURL() + 'application/applicationRenewalRequests/', {
+      withCredentials: true,
+      params: {format: this.settings.getApiFormat()}
+    });
+  }
+
+     getApplicationsRenewalRequest(application_id: number) {
+    return this.http.get(this.settings.getApiBaseURL() + 'application/getApplicationRenewalRequestById/', {
+      withCredentials: true,
+      params: {format: this.settings.getApiFormat(),'project_application_id':application_id}
+    });
+  }
+
+
   deleteApplication(application_id: number) {
 
 
