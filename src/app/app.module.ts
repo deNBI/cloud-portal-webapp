@@ -10,10 +10,9 @@ import {NAV_DROPDOWN_DIRECTIVES} from './shared/nav-dropdown.directive';
 import {ChartsModule} from 'ng2-charts/ng2-charts';
 import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
 import {AsideToggleDirective} from './shared/aside.directive';
+import {PopoverModule} from 'ngx-popover';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {HttpModule} from '@angular/http';
-import {AuthzResolver} from "./perun-connector/authz-resolver.service";
-import {MembersManager} from "./perun-connector/members-manager.service";
 import {PerunSettings} from "./perun-connector/connector-settings.service";
 import {ApiSettings} from "./api-connector/api-settings.service";
 // Routing Module
@@ -24,6 +23,7 @@ import {FullLayoutComponent} from './layouts/full-layout.component';
 import {SimpleLayoutComponent} from './layouts/simple-layout.component';
 import {ModalModule} from "ngx-bootstrap";
 import {RegistrationInfoComponent} from "./registration-info.component";
+import {UserService} from "./api-connector/user.service";
 
 @NgModule({
   imports: [
@@ -34,6 +34,7 @@ import {RegistrationInfoComponent} from "./registration-info.component";
     TabsModule.forRoot(),
     ChartsModule,
     ModalModule.forRoot(),
+    PopoverModule
   ],
   declarations: [
     AppComponent,
@@ -48,10 +49,11 @@ import {RegistrationInfoComponent} from "./registration-info.component";
   providers: [{
     provide: LocationStrategy,
     useClass: HashLocationStrategy
-  }, MembersManager,
-     AuthzResolver,
+  },
+
     PerunSettings,
-    ApiSettings
+    ApiSettings,
+      UserService
   ],
   bootstrap: [AppComponent]
 })

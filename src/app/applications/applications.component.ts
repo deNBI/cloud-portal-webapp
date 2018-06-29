@@ -4,10 +4,6 @@ import {ApplicationsService} from '../api-connector/applications.service'
 import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {ApplicationStatusService} from '../api-connector/application-status.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
-import {AuthzResolver} from '../perun-connector/authz-resolver.service'
-import {UsersManager} from '../perun-connector/users-manager.service'
-import {MembersManager} from '../perun-connector/members-manager.service'
-import {GroupsManager} from '../perun-connector/groups-manager.service'
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Application} from "./application.model";
 import {ApplicationStatus} from "./application_status.model";
@@ -16,11 +12,12 @@ import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {ResourcesManager} from "../perun-connector/resources_manager";
 import {GroupService} from "../api-connector/group.service";
 import  * as moment from 'moment';
+import {UserService} from "../api-connector/user.service";
 
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [GroupService, ResourcesManager, AuthzResolver, UsersManager, MembersManager, GroupsManager, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+    providers: [UserService,GroupService, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -46,16 +43,12 @@ export class ApplicationsComponent {
     constructor(private applicataionsservice: ApplicationsService,
                 private applicationstatusservice: ApplicationStatusService,
                 private specialhardwareservice: SpecialHardwareService,
-                private authzresolver: AuthzResolver,
                 private perunsettings: PerunSettings,
-                private groupsmanager: GroupsManager,
-                private usersmanager: UsersManager,
-                private membersmanager: MembersManager,
-                private resourceManager: ResourcesManager,
+                private userservice:UserService,
                 private groupservice: GroupService) {
 
         this.getUserApplications();
-        this.getAllApplications(usersmanager);
+        this.getAllApplications();
         this.getApplicationStatus();
         this.getSpecialHardware();
         this.getComputeCenters();
@@ -87,7 +80,8 @@ export class ApplicationsComponent {
                     a.VMsRequested = aj["project_application_vms_requested"];
                     a.RamPerVM = aj["project_application_ram_per_vm"];
                     a.CoresPerVM = aj["project_application_cores_per_vm"];
-                    a.DiskSpace = aj["project_application_disk_space"];
+                    a.VolumeLimit = aj["project_application_volume_limit"];
+                    a.VolumeCounter = aj["project_application_volume_counter"];
                     a.ObjectStorage = aj["project_application_object_storage"];
                     a.SpecialHardware = aj["project_application_special_hardware"];
                     a.OpenStackProject = aj["project_application_openstack_project"];
@@ -122,17 +116,17 @@ export class ApplicationsComponent {
             });
     }
 
-    getAllApplications(usersmanager: UsersManager) {
+    getAllApplications() {
         //todo check if user is VO Admin
         let user_id: number;
         let admin_vos: {};
-
-        this.authzresolver
+        console.log(this.userservice)
+        this.userservice
             .getLoggedUser().toPromise()
-            .then(function (userdata) {
+            .then(userdata =>{
                 //TODO catch errors
                 user_id = userdata.json()["id"];
-                return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+                return this.userservice.getVosWhereUserIsAdmin(user_id).toPromise();
             }).then(function (adminvos) {
             admin_vos = adminvos.json();
         }).then(result => {
@@ -157,7 +151,9 @@ export class ApplicationsComponent {
                                 a.VMsRequested = aj["project_application_vms_requested"];
                                 a.RamPerVM = aj["project_application_ram_per_vm"];
                                 a.CoresPerVM = aj["project_application_cores_per_vm"];
-                                a.DiskSpace = aj["project_application_disk_space"];
+                                a.VolumeLimit = aj["project_application_volume_limit"];
+                                a.VolumeCounter = aj["project_application_volume_counter"];
+
                                 a.ObjectStorage = aj["project_application_object_storage"];
                                 a.SpecialHardware = aj["project_application_special_hardware"];
 
@@ -177,7 +173,25 @@ export class ApplicationsComponent {
                                 a.Comment= aj["project_application_comment"];
                                 a.OpenStackProject = aj["project_application_openstack_project"];
                                 if (a.Status !== 1) {
-                                    if (a.Shortname){
+                                    if (aj['project_application_perun_id']){
+                                         this.groupservice.getFacilityByGroup(aj['project_application_perun_id']).subscribe(result => {
+
+                                        let details = result['Details'];
+                                        let details_array = [];
+                                        for (let detail in details) {
+                                            let detail_tuple = [detail, details[detail]];
+                                            details_array.push(detail_tuple);
+                                        }
+
+                                        a.ComputecenterDetails = details_array;
+                                        a.ComputeCenter = [result['Facility'],result['FacilityID']];
+
+                                        this.all_applications.push(a)
+
+                                    })
+
+                                    }
+                                    else if (a.Shortname){
                                     this.groupservice.getFacilityByGroup(a.Shortname).subscribe(result => {
 
                                         let details = result['Details'];
@@ -281,38 +295,39 @@ export class ApplicationsComponent {
     }
 
 
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project,numberofVms,diskspace,lifetime,longname) {
+    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project,numberofVms,volumelimit,lifetime,longname,volumecounter) {
 
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
         let re = /[-:. ,]/gi
-        let  shortNameDate=name + (new Date(Date.now()).toLocaleString().replace(re,''))
-        this.membersmanager.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
+        let  shortNameDate=name + (new Date(Date.now()).toLocaleString().replace(re,''));
+        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
             .then(member_raw => {
                     let member = member_raw.json();
                     manager_member_id = member["id"];
                     manager_member_user_id = member["userId"];
                     // create new group
 
-                    return this.groupsmanager.createGroup(shortNameDate, description).toPromise();
+                    return this.groupservice.createGroup(shortNameDate, description).toPromise();
                 }
             ).then(group_raw => {
             let group = group_raw.json();
             new_group_id = group["id"];
 
             //add the application user to the group
-            return this.groupsmanager.addMember(new_group_id, manager_member_id).toPromise();
+            return this.groupservice.addMember(new_group_id, manager_member_id,compute_center).toPromise();
 
         }).then(null_result => {
-            return this.groupsmanager.addAdmin(new_group_id, manager_member_user_id).toPromise();
+            return this.groupservice.addAdmin(new_group_id, manager_member_user_id,compute_center).toPromise();
         }).then(null_result => {
             return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).toPromise();
         }).then(null_result => {
             //setting approved status for Perun Group
-            this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
-            this.groupsmanager.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
+            let APPRVOVED=2;
+            this.groupservice.setPerunGroupStatus(new_group_id, APPRVOVED).toPromise();
+            this.groupservice.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
             if (compute_center != 'undefined'){
             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();}
             this.groupservice.setShortname(new_group_id.toString(),name).subscribe();
@@ -321,14 +336,15 @@ export class ApplicationsComponent {
             this.groupservice.setDescription(new_group_id.toString(),description).subscribe();
             this.groupservice.setLifetime(new_group_id.toString(),lifetime.toString()).subscribe();
             this.groupservice.setPerunId(new_group_id.toString(),application_id).subscribe();
-            this.groupsmanager.setGroupDiskSpace(new_group_id,diskspace,numberofVms).subscribe();
+            this.groupservice.setGroupVolumeLimit(new_group_id,volumelimit).subscribe();
+            this.groupservice.setGroupVolumeCounter(new_group_id,volumecounter).subscribe();
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications
             this.all_applications = [];
             this.user_applications = [];
             this.getUserApplications();
-            this.getAllApplications(this.usersmanager);
+            this.getAllApplications();
         }).catch(error => {
             this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
         });
@@ -341,7 +357,7 @@ export class ApplicationsComponent {
                 this.all_applications = [];
                 this.user_applications = [];
                 this.getUserApplications();
-                this.getAllApplications(this.usersmanager);
+                this.getAllApplications();
                 this.updateNotificaitonModal("Success", "The Application was declined", true, "success");
             })
             .catch(error => {
@@ -357,7 +373,7 @@ export class ApplicationsComponent {
                   this.user_applications=[];
                   this.all_applications=[];
                   this.getUserApplications();
-                  this.getAllApplications(this.usersmanager);
+                  this.getAllApplications();
       })
         .catch(error => {
                 this.updateNotificaitonModal("Failed", "Application could not be removed!", true, "danger");

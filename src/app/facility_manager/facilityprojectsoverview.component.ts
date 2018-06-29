@@ -1,14 +1,9 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {AuthzResolver} from '../perun-connector/authz-resolver.service'
-import {GroupsManager} from '../perun-connector/groups-manager.service'
-import {MembersManager} from '../perun-connector/members-manager.service'
-import {UsersManager} from '../perun-connector/users-manager.service'
 import {Http} from '@angular/http';
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Project} from '../projectmanagement/project.model';
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {ProjectMember} from '../projectmanagement/project_member.model'
-import {ResourcesManager} from "../perun-connector/resources_manager";
 import 'rxjs/add/operator/toPromise';
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
@@ -20,7 +15,7 @@ import  * as moment from 'moment';
 
 @Component({
     templateUrl: 'facilityprojectsoverview.component.html',
-    providers: [FacilityService,UserService, GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [FacilityService,UserService, GroupService,  PerunSettings, ApiSettings]
 })
 export class  FacilityProjectsOverviewComponent {
 
@@ -38,9 +33,10 @@ export class  FacilityProjectsOverviewComponent {
     public usersModalProjectID: number;
     public usersModalProjectName: string;
 
-    public emailSubject: string = '';
-    public emailText: string = '';
+    public emailSubject: string ;
+    public emailText: string;
     public emailStatus: number = 0;
+    public emailReply:string='';
 
     public managerFacilities: [string,number][];
     public selectedFacility: [string,number]
@@ -115,8 +111,8 @@ export class  FacilityProjectsOverviewComponent {
         }
        return (lifetime - running) < 0 ? "red" :"black";
     }
-    sendMailToFacility(facility: number,subject:string,message:string){
-        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result =>{
+    sendMailToFacility(facility: number,subject:string,message:string,reply?:string){
+        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message),encodeURIComponent(reply)).subscribe(result =>{
             if (result == 1){
                 this.emailStatus = 1;
             }
@@ -150,8 +146,9 @@ export class  FacilityProjectsOverviewComponent {
 
     public resetEmailModal() {
 
-      this.emailSubject = '';
-      this.emailText = '';
+      this.emailSubject=null ;
+      this.emailText=null ;
+      this.emailReply=null
       this.emailStatus = 0;
 
     }

@@ -1,22 +1,20 @@
 import {Injectable} from "@angular/core";
 import {CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot} from "@angular/router";
-import {MembersManager} from "./perun-connector/members-manager.service";
-import {AuthzResolver} from "./perun-connector/authz-resolver.service";
-import {Observable} from "rxjs/Observable";
 import {environment} from "../environments/environment";
+import {UserService} from "./api-connector/user.service";
 
 
 @Injectable()
 export class MemberGuardService implements CanActivate {
 
 
-    constructor(private router: Router, private  authzresolver: AuthzResolver, private memberssmanager: MembersManager) {
+    constructor(private router: Router, private  userservice: UserService) {
     }
 
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         return new Promise((resolve, reject) => {
-            this.authzresolver.getLoggedUser().toPromise()
+            this.userservice.getLoggedUser().toPromise()
                 .then(result => {
 
                     let res = result.json();
@@ -25,7 +23,12 @@ export class MemberGuardService implements CanActivate {
 
                 }).then(res => {
 
-                this.memberssmanager.getMemberByUser(res['id']).toPromise().then(memberinfo => {
+                this.userservice.getMemberByUser(res['id']).toPromise().then(memberinfo => {
+                    if (memberinfo.json()['name'] === 'MemberNotExistsException') {
+                        this.router.navigate(['/registration-info']);
+                        resolve(false);
+
+                    }
                     return resolve(true);
 
                 }).catch(rejection => {
@@ -37,7 +40,7 @@ export class MemberGuardService implements CanActivate {
             }).catch(rejection => {
 
                 //this.router.navigate(['/portal']);
-                window.location.href=environment.login
+                window.location.href = environment.login
                 resolve(false);
 
             });

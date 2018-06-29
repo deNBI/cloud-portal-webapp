@@ -30,7 +30,7 @@ export class VoService {
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))}
 
 
-  
+
 
   getAllVoGroups(): Observable<any> {
 
@@ -40,10 +40,28 @@ export class VoService {
 
   }
 
-    sendMailToVo(subject, message): Observable<any> {
+    sendNewsletterToVo(subject, message,reply?): Observable<any> {
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('subject', subject);
         urlSearchParams.append('message', message);
+        urlSearchParams.append('reply',reply)
+
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendNewsletterToMembers/', urlSearchParams, {
+            withCredentials: true,
+            headers: header,
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    }
+
+
+        sendMailToVo(subject, message,reply?): Observable<any> {
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('subject', subject);
+        urlSearchParams.append('message', message);
+        urlSearchParams.append('reply',reply)
 
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -54,6 +72,20 @@ export class VoService {
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
     }
+
+      getMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string) {
+
+    return this.http.get(this.settings.getApiBaseURL() + 'filter_deNBIMembers/', {
+      withCredentials: true,
+      params: {
+        firstName: firstname,
+        lastName: lastName,
+        groupid: groupid
+      }
+    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+  }
 
 
 

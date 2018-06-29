@@ -33,11 +33,12 @@ export class FacilityService {
 
   }
 
-  sendMailToFacility(facility,subject,message): Observable<any> {
+  sendMailToFacility(facility,subject,message,reply?): Observable<any> {
       let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('subject', subject);
     urlSearchParams.append('facility_id', facility);
     urlSearchParams.append('message',message);
+    urlSearchParams.append('reply',reply)
 
      let header = new Headers({
       'X-CSRFToken': this.settings.getCSRFToken(),
