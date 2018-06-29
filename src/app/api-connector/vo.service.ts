@@ -30,7 +30,7 @@ export class VoService ***REMOVED***
         ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))***REMOVED***
 
 
-  
+
 
   getAllVoGroups(): Observable<any> ***REMOVED***
 
@@ -40,10 +40,28 @@ export class VoService ***REMOVED***
 
   ***REMOVED***
 
-    sendMailToVo(subject, message): Observable<any> ***REMOVED***
+    sendNewsletterToVo(subject, message,reply?): Observable<any> ***REMOVED***
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('subject', subject);
         urlSearchParams.append('message', message);
+        urlSearchParams.append('reply',reply)
+
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendNewsletterToMembers/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ***REMOVED***
+
+
+        sendMailToVo(subject, message,reply?): Observable<any> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('subject', subject);
+        urlSearchParams.append('message', message);
+        urlSearchParams.append('reply',reply)
 
         let header = new Headers(***REMOVED***
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -54,6 +72,20 @@ export class VoService ***REMOVED***
         ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
     ***REMOVED***
+
+      getMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string) ***REMOVED***
+
+    return this.http.get(this.settings.getApiBaseURL() + 'filter_deNBIMembers/', ***REMOVED***
+      withCredentials: true,
+      params: ***REMOVED***
+        firstName: firstname,
+        lastName: lastName,
+        groupid: groupid
+      ***REMOVED***
+    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+  ***REMOVED***
 
 
 

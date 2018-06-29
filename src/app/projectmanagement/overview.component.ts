@@ -1,26 +1,22 @@
 import ***REMOVED***Component, Input, ViewChild***REMOVED*** from '@angular/core';
-import ***REMOVED***AuthzResolver***REMOVED*** from '../perun-connector/authz-resolver.service'
-import ***REMOVED***GroupsManager***REMOVED*** from '../perun-connector/groups-manager.service'
-import ***REMOVED***MembersManager***REMOVED*** from '../perun-connector/members-manager.service'
-import ***REMOVED***UsersManager***REMOVED*** from '../perun-connector/users-manager.service'
 import ***REMOVED***Http***REMOVED*** from '@angular/http';
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***Project***REMOVED*** from './project.model';
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
 import ***REMOVED***ProjectMember***REMOVED*** from './project_member.model'
-import ***REMOVED***ResourcesManager***REMOVED*** from "../perun-connector/resources_manager";
 import 'rxjs/add/operator/toPromise';
 import ***REMOVED***isNumber***REMOVED*** from "util";
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
-import * as moment from 'moment';
+import  * as moment from 'moment';
+import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 
 
 @Component(***REMOVED***
     templateUrl: 'overview.component.html',
-    providers: [UserService, GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [VoService,UserService, GroupService,  PerunSettings, ApiSettings]
 ***REMOVED***)
 export class OverviewComponent ***REMOVED***
 
@@ -66,15 +62,12 @@ export class OverviewComponent ***REMOVED***
     public passwordModalFacility: string = '';
     public passwordModalEmail: string = '';
 
-    constructor(private authzresolver: AuthzResolver,
+    constructor(
                 private perunsettings: PerunSettings,
-                private useresmanager: UsersManager,
-                private groupsmanager: GroupsManager,
-                private membersmanager: MembersManager,
-                private  resourceManager: ResourcesManager,
                 private groupservice: GroupService,
-                private userservice: UserService) ***REMOVED***
-        this.getUserProjects(groupsmanager, membersmanager, useresmanager);
+                private userservice: UserService,
+                private voservice:VoService) ***REMOVED***
+        this.getUserProjects(groupservice, userservice);
 
     ***REMOVED***
 
@@ -107,9 +100,8 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    getUserProjects(groupsmanager: GroupsManager,
-                    membersmanager: MembersManager,
-                    usersmanager: UsersManager) ***REMOVED***
+    getUserProjects(groupservice: GroupService,
+                    userservice: UserService) ***REMOVED***
         let user_id: number;
         let member_id: number;
         let user_projects: ***REMOVED******REMOVED***;
@@ -117,27 +109,28 @@ export class OverviewComponent ***REMOVED***
         let admin_groups: ***REMOVED******REMOVED***;
         let admin_vos: ***REMOVED******REMOVED***;
 
-        this.authzresolver
+        this.userservice
             .getLoggedUser().toPromise()
             .then(function (userdata) ***REMOVED***
                 //TODO catch errors
                 let userid = userdata.json()["id"];
                 user_id = userid;
                 user_data = userdata.json();
-                return membersmanager.getMemberByUser(userid).toPromise();
+                return userservice.getMemberByUser(userid).toPromise();
             ***REMOVED***)
             .then(function (memberdata) ***REMOVED***
                 let memberid = memberdata.json()["id"];
                 member_id = memberid;
-                return groupsmanager.getMemberGroups(memberid).toPromise();
+                return groupservice.getMemberGroups(memberid).toPromise();
             ***REMOVED***).then(function (groupsdata) ***REMOVED***
             user_projects = groupsdata.json();
         ***REMOVED***).then(function () ***REMOVED***
-            return usersmanager.getGroupsWhereUserIsAdmin(user_id).toPromise();
+            return userservice.getGroupsWhereUserIsAdmin(user_id).toPromise();
         ***REMOVED***).then(function (admingroups) ***REMOVED***
             admin_groups = admingroups.json();
         ***REMOVED***).then(function () ***REMOVED***
-            return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+
+            return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
         ***REMOVED***).then(function (adminvos) ***REMOVED***
             admin_vos = adminvos.json();
         ***REMOVED***).then(result => ***REMOVED***
@@ -248,16 +241,16 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
     filterMembers(firstName: string, lastName: string, groupid: number) ***REMOVED***
-        this.membersmanager.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => ***REMOVED***
+        this.voservice.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => ***REMOVED***
             this.filteredMembers = result;
         ***REMOVED***)
     ***REMOVED***
 
 
     getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
-        this.groupsmanager.getGroupRichMembers(projectid).toPromise()
+        this.groupservice.getGroupRichMembers(projectid).toPromise()
             .then(function (members_raw) ***REMOVED***
-                return members_raw.json();
+                return members_raw;
             ***REMOVED***).then(members => ***REMOVED***
             this.usersModalProjectID = projectid;
             this.usersModalProjectName = projectname;

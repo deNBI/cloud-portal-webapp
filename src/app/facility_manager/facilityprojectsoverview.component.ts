@@ -1,14 +1,9 @@
 import ***REMOVED***Component, Input, ViewChild***REMOVED*** from '@angular/core';
-import ***REMOVED***AuthzResolver***REMOVED*** from '../perun-connector/authz-resolver.service'
-import ***REMOVED***GroupsManager***REMOVED*** from '../perun-connector/groups-manager.service'
-import ***REMOVED***MembersManager***REMOVED*** from '../perun-connector/members-manager.service'
-import ***REMOVED***UsersManager***REMOVED*** from '../perun-connector/users-manager.service'
 import ***REMOVED***Http***REMOVED*** from '@angular/http';
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
 import ***REMOVED***ProjectMember***REMOVED*** from '../projectmanagement/project_member.model'
-import ***REMOVED***ResourcesManager***REMOVED*** from "../perun-connector/resources_manager";
 import 'rxjs/add/operator/toPromise';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
@@ -20,7 +15,7 @@ import  * as moment from 'moment';
 
 @Component(***REMOVED***
     templateUrl: 'facilityprojectsoverview.component.html',
-    providers: [FacilityService,UserService, GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    providers: [FacilityService,UserService, GroupService,  PerunSettings, ApiSettings]
 ***REMOVED***)
 export class  FacilityProjectsOverviewComponent ***REMOVED***
 
@@ -38,9 +33,10 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
     public usersModalProjectID: number;
     public usersModalProjectName: string;
 
-    public emailSubject: string = '';
-    public emailText: string = '';
+    public emailSubject: string ;
+    public emailText: string;
     public emailStatus: number = 0;
+    public emailReply:string='';
 
     public managerFacilities: [string,number][];
     public selectedFacility: [string,number]
@@ -115,8 +111,8 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
         ***REMOVED***
        return (lifetime - running) < 0 ? "red" :"black";
     ***REMOVED***
-    sendMailToFacility(facility: number,subject:string,message:string)***REMOVED***
-        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result =>***REMOVED***
+    sendMailToFacility(facility: number,subject:string,message:string,reply?:string)***REMOVED***
+        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message),encodeURIComponent(reply)).subscribe(result =>***REMOVED***
             if (result == 1)***REMOVED***
                 this.emailStatus = 1;
             ***REMOVED***
@@ -150,8 +146,9 @@ export class  FacilityProjectsOverviewComponent ***REMOVED***
 
     public resetEmailModal() ***REMOVED***
 
-      this.emailSubject = '';
-      this.emailText = '';
+      this.emailSubject=null ;
+      this.emailText=null ;
+      this.emailReply=null
       this.emailStatus = 0;
 
     ***REMOVED***

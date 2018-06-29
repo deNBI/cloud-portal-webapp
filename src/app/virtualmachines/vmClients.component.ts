@@ -4,17 +4,15 @@ import 'rxjs/Rx'
 import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
 import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
-import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
-import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
-import ***REMOVED***GroupsManager***REMOVED*** from "../perun-connector/groups-manager.service";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
+import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 
 
 @Component(***REMOVED***
   selector: 'client-overview',
   templateUrl: 'vmClients.component.html',
-  providers: [GroupService,ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings, GroupsManager]
+  providers: [UserService,GroupService,ClientService,   PerunSettings, ApiSettings]
 ***REMOVED***)
 
 export class ClientOverviewComponent implements OnInit ***REMOVED***
@@ -24,19 +22,19 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
    computeCenters: [string,number][];
    selectedComputeCenter:string;
 
-  constructor(private groupservice : GroupService,private groupsmanager: GroupsManager, private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
+  constructor(private userservice:UserService,private groupservice : GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
 
   ***REMOVED***
 
-  checkVOstatus(usersmanager: UsersManager) ***REMOVED***
+  checkVOstatus(userservice: UserService) ***REMOVED***
     let user_id: number;
     let admin_vos: ***REMOVED******REMOVED***;
-    this.authzresolver
+    this.userservice
       .getLoggedUser().toPromise()
       .then(function (userdata) ***REMOVED***
         //TODO catch errors
         user_id = userdata.json()["id"];
-        return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
+        return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
       ***REMOVED***).then(function (adminvos) ***REMOVED***
       admin_vos = adminvos.json();
     ***REMOVED***).then(result => ***REMOVED***
@@ -105,7 +103,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
 
 
   ngOnInit(): void ***REMOVED***
-    this.checkVOstatus(this.usersmanager);
+    this.checkVOstatus(this.userservice);
     this.getClientsChecked();
     this.getComputeCenters();
 

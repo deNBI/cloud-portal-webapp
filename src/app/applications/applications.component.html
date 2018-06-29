@@ -42,8 +42,9 @@
                                         Information
                                     </button>
 
-                                    <button (click)="deleteModal.show();setDeleteId(application.Id)" type="button" class="btn btn-secondary">
-                                      Remove Application
+                                    <button (click)="deleteModal.show();setDeleteId(application.Id)" type="button"
+                                            class="btn btn-secondary">
+                                        Remove Application
                                     </button>
                                 </td>
                             </tr>
@@ -67,23 +68,27 @@
                                                 <td>VMs</td>
                                                 <td>***REMOVED******REMOVED*** application.VMsRequested ***REMOVED******REMOVED*** VMs</td>
                                             </tr>
-                                            <tr>
+                                            <tr *ngIf="application.OpenStackProject">
                                                 <td>Cores/VM</td>
                                                 <td>***REMOVED******REMOVED*** application.CoresPerVM ***REMOVED******REMOVED*** Cores per VM</td>
                                             </tr>
-                                            <tr>
+                                            <tr  *ngIf="application.OpenStackProject">
                                                 <td>RAM</td>
                                                 <td>***REMOVED******REMOVED*** application.RamPerVM ***REMOVED******REMOVED*** GB</td>
                                             </tr>
                                             <tr>
-                                                <td>Storage</td>
-                                                <td>***REMOVED******REMOVED*** application.DiskSpace ***REMOVED******REMOVED*** GB</td>
+                                                <td>Storage Limit</td>
+                                                <td>***REMOVED******REMOVED*** application.VolumeLimit ***REMOVED******REMOVED*** GB</td>
                                             </tr>
                                             <tr>
+                                                <td>Volume Counter</td>
+                                                <td>***REMOVED******REMOVED*** application.VolumeCounter ***REMOVED******REMOVED*** GB</td>
+                                            </tr>
+                                            <tr  *ngIf="application.OpenStackProject">
                                                 <td>ObjectStorage</td>
                                                 <td>***REMOVED******REMOVED*** application.ObjectStorage ***REMOVED******REMOVED*** GB</td>
                                             </tr>
-                                            <tr>
+                                            <tr  *ngIf="application.OpenStackProject">
                                                 <td>Special Hardware</td>
                                                 <td><span style="margin-right: 5px;" class="badge badge-primary"
                                                           *ngFor="let sh of application.SpecialHardware">***REMOVED******REMOVED*** sh["special_hardware_name"] ***REMOVED******REMOVED***</span>
@@ -134,7 +139,7 @@
                             <ng-container *ngIf="application.Status == 1">
                                 <tr>
                                     <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
-                                    <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td >
+                                    <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>
                                     <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
                                         ***REMOVED******REMOVED*** application.User ***REMOVED******REMOVED***
@@ -154,7 +159,7 @@
                                     <td>
                                         <button
 
-                                                (click)='resetNotificationModal();createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value,application.OpenStackProject,application.VMsRequested,application.DiskSpace,application.Lifetime,application.Name ); notificationModal.show();'
+                                                (click)='resetNotificationModal();createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value,application.OpenStackProject,application.VMsRequested,application.VolumeLimit,application.Lifetime,application.Name,application.VolumeCounter ); notificationModal.show();'
 
 
                                                 type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
@@ -205,23 +210,27 @@
                                                     <td>VMs</td>
                                                     <td>***REMOVED******REMOVED*** application.VMsRequested ***REMOVED******REMOVED*** VMs</td>
                                                 </tr>
-                                                <tr>
+                                                <tr  *ngIf="application.OpenStackProject">
                                                     <td>Cores/VM</td>
                                                     <td>***REMOVED******REMOVED*** application.CoresPerVM ***REMOVED******REMOVED*** Cores per VM</td>
                                                 </tr>
-                                                <tr>
+                                                <tr  *ngIf="application.OpenStackProject">
                                                     <td>RAM</td>
                                                     <td>***REMOVED******REMOVED*** application.RamPerVM ***REMOVED******REMOVED*** GB</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Storage</td>
-                                                    <td>***REMOVED******REMOVED*** application.DiskSpace ***REMOVED******REMOVED*** GB</td>
+                                                    <td>Storage Limit</td>
+                                                    <td>***REMOVED******REMOVED*** application.VolumeLimit ***REMOVED******REMOVED*** GB</td>
                                                 </tr>
                                                 <tr>
+                                                    <td>Volume Counter</td>
+                                                    <td>***REMOVED******REMOVED*** application.VolumeCounter ***REMOVED******REMOVED*** GB</td>
+                                                </tr>
+                                                <tr  *ngIf="application.OpenStackProject">
                                                     <td>ObjectStorage</td>
                                                     <td>***REMOVED******REMOVED*** application.ObjectStorage ***REMOVED******REMOVED*** GB</td>
                                                 </tr>
-                                                <tr>
+                                                <tr  *ngIf="application.OpenStackProject">
                                                     <td>Special Hardware</td>
                                                     <td><span style="margin-right: 5px;" class="badge badge-primary"
                                                               *ngFor="let sh of application.SpecialHardware">***REMOVED******REMOVED*** sh["special_hardware_name"] ***REMOVED******REMOVED***</span>
@@ -277,8 +286,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <ng-container *ngFor="let application of all_applications" >
-                            <ng-container *ngIf="application.Status != 1" >
+                        <ng-container *ngFor="let application of all_applications">
+                            <ng-container *ngIf="application.Status != 1">
                                 <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)***REMOVED***">
                                     <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
@@ -324,23 +333,28 @@
                                                     <td>VMs</td>
                                                     <td>***REMOVED******REMOVED*** application.VMsRequested ***REMOVED******REMOVED***</td>
                                                 </tr>
-                                                <tr>
+                                                <tr  *ngIf="application.OpenStackProject">
                                                     <td>Cores/VM</td>
                                                     <td>***REMOVED******REMOVED*** application.CoresPerVM ***REMOVED******REMOVED***</td>
                                                 </tr>
-                                                <tr>
+                                                <tr  *ngIf="application.OpenStackProject">
                                                     <td>RAM</td>
                                                     <td>***REMOVED******REMOVED*** application.RamPerVM ***REMOVED******REMOVED***</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Storage</td>
-                                                    <td>***REMOVED******REMOVED*** application.DiskSpace ***REMOVED******REMOVED***</td>
+                                                    <td>Storage Limit</td>
+                                                    <td>***REMOVED******REMOVED*** application.VolumeLimit ***REMOVED******REMOVED***</td>
                                                 </tr>
                                                 <tr>
+                                                    <td>Volume Counter</td>
+                                                    <td>***REMOVED******REMOVED*** application.VolumeCounter ***REMOVED******REMOVED*** GB</td>
+                                                </tr>
+                                                <tr  *ngIf="application.OpenStackProject">
                                                     <td>ObjectStorage</td>
                                                     <td>***REMOVED******REMOVED*** application.ObjectStorage ***REMOVED******REMOVED***</td>
                                                 </tr>
-                                                <tr>
+
+                                                <tr  *ngIf="application.OpenStackProject">
                                                     <td>Special Hardware</td>
                                                     <td><span style="margin-right: 5px;" class="badge badge-primary"
                                                               *ngFor="let sh of application.SpecialHardware">***REMOVED******REMOVED*** sh["special_hardware_name"] ***REMOVED******REMOVED***</span>
@@ -417,27 +431,27 @@
 
 <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Delete Application</h4>
-      </div>
-      <div class="modal-body">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Application</h4>
+            </div>
+            <div class="modal-body">
 
-        <div class="alert alert-warning" role="alert">
-          Are you sure you want to remove this application?
-        </div>
+                <div class="alert alert-warning" role="alert">
+                    Are you sure you want to remove this application?
+                </div>
 
-      </div>
-      <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
-                (click)="deleteApplication(deleteId);deleteModal.hide();notificationModal.show()">
-          Yes
-        </button>
-        <button class="btn  btn-danger col-md-4" type="reset"
-                (click)="deleteModal.hide()">Cancel
-        </button>
-      </div>
-      </div><!-- /.modal-content -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-4"
+                        (click)="deleteApplication(deleteId);deleteModal.hide();notificationModal.show()">
+                    Yes
+                </button>
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="deleteModal.hide()">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+</div><!-- /.modal -->
