@@ -45,8 +45,7 @@ export class ApplicationsService {
 
 
     let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('project_application_id', application_id.toString());
-     urlSearchParams.append('project_application_renewal_lifetime_extension', lifetime.toString());
+    urlSearchParams.append('project_application_id', application_id.toString());urlSearchParams.append('project_application_renewal_lifetime_extension', lifetime.toString());
     let header = new Headers({
       'X-CSRFToken': this.settings.getCSRFToken(),
     });
