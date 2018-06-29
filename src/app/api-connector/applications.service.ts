@@ -56,6 +56,22 @@ export class ApplicationsService {
       });
   }
 
+    approveRenewal(application_id: number) {
+
+
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('project_application_id', application_id.toString());
+    let header = new Headers({
+      'X-CSRFToken': this.settings.getCSRFToken(),
+    });
+    return this.http.post(this.settings.getApiBaseURL() + 'application/approveRenewal/', urlSearchParams,
+      {
+        headers: header,
+        withCredentials: true
+      });
+  }
+
+
   deleteApplication(application_id: number) {
 
 

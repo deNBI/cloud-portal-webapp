@@ -42,11 +42,13 @@
                                         Information
                                     </button>
 
-                                    <button *ngIf="application.Status == 'submitted'" (click)="deleteModal.show();setDeleteId(application.Id)" type="button"
+                                    <button *ngIf="application.Status == 'submitted'"
+                                            (click)="deleteModal.show();setDeleteId(application.Id)" type="button"
                                             class="btn btn-secondary">
                                         Remove Application
                                     </button>
-                                    <button *ngIf="application.Status == 'approved'" (click)="requestExtension(application.Id,8)" type="button"
+                                    <button *ngIf="application.Status == 'approved'"
+                                            (click)="requestExtension(application.Id,8)" type="button"
                                             class="btn btn-secondary">
                                         Request Extension
                                     </button>
@@ -76,7 +78,7 @@
                                                 <td>Cores/VM</td>
                                                 <td>{{ application.CoresPerVM }} Cores per VM</td>
                                             </tr>
-                                            <tr  *ngIf="application.OpenStackProject">
+                                            <tr *ngIf="application.OpenStackProject">
                                                 <td>RAM</td>
                                                 <td>{{ application.RamPerVM }} GB</td>
                                             </tr>
@@ -88,11 +90,11 @@
                                                 <td>Volume Counter</td>
                                                 <td>{{ application.VolumeCounter }} GB</td>
                                             </tr>
-                                            <tr  *ngIf="application.OpenStackProject">
+                                            <tr *ngIf="application.OpenStackProject">
                                                 <td>ObjectStorage</td>
                                                 <td>{{ application.ObjectStorage }} GB</td>
                                             </tr>
-                                            <tr  *ngIf="application.OpenStackProject">
+                                            <tr *ngIf="application.OpenStackProject">
                                                 <td>Special Hardware</td>
                                                 <td><span style="margin-right: 5px;" class="badge badge-primary"
                                                           *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
@@ -140,7 +142,7 @@
                         </thead>
                         <tbody>
                         <ng-container *ngFor="let application of all_applications">
-                            <ng-container *ngIf="application.Status == 1">
+                            <ng-container *ngIf="application.Status == 1 || application.Status == 4">
                                 <tr>
                                     <td>{{ application.Name }}</td>
                                     <td>{{application.Shortname}}</td>
@@ -150,7 +152,7 @@
                                     </td>
                                     <td>{{application.Institute}}</td>
 
-                                    <td>
+                                    <td *ngIf="application.Status == 1">
                                         <select class="form-control" #selectedComputeCenter>
                                             <option value="undefined" selected> no center</option>
                                             <option *ngFor="let computeCenter of computeCenters"
@@ -158,10 +160,11 @@
                                             </option>
                                         </select>
                                     </td>
+                                    <td *ngIf="application.Status == 4 "> {{application.ComputeCenter[0]}}</td>
 
 
                                     <td>
-                                        <button
+                                        <button *ngIf="application.Status == 2"
 
                                                 (click)='resetNotificationModal();createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value,application.OpenStackProject,application.VMsRequested,application.VolumeLimit,application.Lifetime,application.Name,application.VolumeCounter ); notificationModal.show();'
 
@@ -170,10 +173,22 @@
                                             Approve
                                             & Create
                                         </button>
+                                        <button *ngIf="application.Status == 4"
 
-                                        <button (click)='declineApplication(application.Id)'
+                                                (click)="approveExtension(application.Id);"
+                                                type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
+                                            Approve
+                                            Extension
+                                        </button>
+
+                                        <button *ngIf="application.Status == 2"
+                                                (click)='declineApplication(application.Id)'
                                                 type="button" class="btn btn-secondary"><i class="fa fa-close"></i>&nbsp;
                                             Decline
+                                        </button>
+                                        <button *ngIf="application.Status == 4"
+                                                type="button" class="btn btn-secondary"><i class="fa fa-close"></i>&nbsp;
+                                            Decline Extension
                                         </button>
 
 
@@ -214,11 +229,11 @@
                                                     <td>VMs</td>
                                                     <td>{{ application.VMsRequested }} VMs</td>
                                                 </tr>
-                                                <tr  *ngIf="application.OpenStackProject">
+                                                <tr *ngIf="application.OpenStackProject">
                                                     <td>Cores/VM</td>
                                                     <td>{{ application.CoresPerVM }} Cores per VM</td>
                                                 </tr>
-                                                <tr  *ngIf="application.OpenStackProject">
+                                                <tr *ngIf="application.OpenStackProject">
                                                     <td>RAM</td>
                                                     <td>{{ application.RamPerVM }} GB</td>
                                                 </tr>
@@ -230,11 +245,11 @@
                                                     <td>Volume Counter</td>
                                                     <td>{{ application.VolumeCounter }} GB</td>
                                                 </tr>
-                                                <tr  *ngIf="application.OpenStackProject">
+                                                <tr *ngIf="application.OpenStackProject">
                                                     <td>ObjectStorage</td>
                                                     <td>{{ application.ObjectStorage }} GB</td>
                                                 </tr>
-                                                <tr  *ngIf="application.OpenStackProject">
+                                                <tr *ngIf="application.OpenStackProject">
                                                     <td>Special Hardware</td>
                                                     <td><span style="margin-right: 5px;" class="badge badge-primary"
                                                               *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
@@ -337,11 +352,11 @@
                                                     <td>VMs</td>
                                                     <td>{{ application.VMsRequested }}</td>
                                                 </tr>
-                                                <tr  *ngIf="application.OpenStackProject">
+                                                <tr *ngIf="application.OpenStackProject">
                                                     <td>Cores/VM</td>
                                                     <td>{{ application.CoresPerVM }}</td>
                                                 </tr>
-                                                <tr  *ngIf="application.OpenStackProject">
+                                                <tr *ngIf="application.OpenStackProject">
                                                     <td>RAM</td>
                                                     <td>{{ application.RamPerVM }}</td>
                                                 </tr>
@@ -353,12 +368,12 @@
                                                     <td>Volume Counter</td>
                                                     <td>{{ application.VolumeCounter }} GB</td>
                                                 </tr>
-                                                <tr  *ngIf="application.OpenStackProject">
+                                                <tr *ngIf="application.OpenStackProject">
                                                     <td>ObjectStorage</td>
                                                     <td>{{ application.ObjectStorage }}</td>
                                                 </tr>
 
-                                                <tr  *ngIf="application.OpenStackProject">
+                                                <tr *ngIf="application.OpenStackProject">
                                                     <td>Special Hardware</td>
                                                     <td><span style="margin-right: 5px;" class="badge badge-primary"
                                                               *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
