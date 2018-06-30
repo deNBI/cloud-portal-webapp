@@ -91,7 +91,7 @@ export class ApplicationsComponent {
 
     onSubmit(f: NgForm ){
          let values = {};
-            values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
+            values['project_application_renewal_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
             for (let v in f.controls) {
                 if (f.controls[v].value) {
                     values[v] = f.controls[v].value;
