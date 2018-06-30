@@ -41,15 +41,14 @@ export class ApplicationsService {
 
 
 
-  requestRenewal(application_id: number,lifetime:number) {
+  requestRenewal(data) {
+     let parameter = data;
 
 
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('project_application_id', application_id.toString());urlSearchParams.append('project_application_renewal_lifetime_extension', lifetime.toString());
     let header = new Headers({
       'X-CSRFToken': this.settings.getCSRFToken(),
     });
-    return this.http.post(this.settings.getApiBaseURL() + 'application/requestRenewal/', urlSearchParams,
+    return this.http.post(this.settings.getApiBaseURL() + 'application/requestRenewal/',parameter,
       {
         headers: header,
         withCredentials: true

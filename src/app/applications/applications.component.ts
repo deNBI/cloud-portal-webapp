@@ -13,6 +13,8 @@ import {GroupService} from "../api-connector/group.service";
 import * as moment from 'moment';
 import {UserService} from "../api-connector/user.service";
 import {ApplicationExtension} from "./application_extension.model";
+import {NgForm} from '@angular/forms';
+
 
 
 @Component({
@@ -28,6 +30,7 @@ export class ApplicationsComponent {
     all_applications_renewal: ApplicationExtension[] = [];
     special_hardware: SpecialHardware[] = [];
     computeCenters: [string, number][];
+    selectedApplication:  Application;
     public deleteId: number;
 
     //notification Modal variables
@@ -72,12 +75,30 @@ export class ApplicationsComponent {
                 let r = new ApplicationExtension();
 
                 r.Id = res['project_application'];
-                r.Lifetime = res['project_application_renewal_lifetime_extension'];
+                r.Lifetime = res['project_application_renewal_lifetime'];
 
                 this.all_applications_renewal.push(r)
             }
         })
 
+
+    }
+    setSelectedApplication(application:any){
+        console.log('hier')
+        this.selectedApplication=application;
+        console.log(this.selectedApplication)
+    }
+
+    onSubmit(f: NgForm ){
+         let values = {};
+            values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
+            for (let v in f.controls) {
+                if (f.controls[v].value) {
+                    values[v] = f.controls[v].value;
+                }
+            }
+            values['project_application_id']=this.selectedApplication.Id;
+        this.requestExtension(values);
 
     }
 
@@ -218,7 +239,7 @@ export class ApplicationsComponent {
                                                         let r = new ApplicationExtension();
 
                                                         r.Id = res['project_application'];
-                                                        r.Lifetime = res['project_application_renewal_lifetime_extension'];
+                                                        r.Lifetime = res['project_application_renewal_lifetime'];
                                                         a.ApplicationExtension = r
                                                         this.all_applications.push(a)
                                                     })
@@ -250,7 +271,7 @@ export class ApplicationsComponent {
                                                         let r = new ApplicationExtension();
 
                                                         r.Id = res['project_application'];
-                                                        r.Lifetime = res['project_application_renewal_lifetime_extension'];
+                                                        r.Lifetime = res['project_application_renewal_lifetime'];
                                                         a.ApplicationExtension = r
                                                         this.all_applications.push(a)
                                                     })
@@ -281,7 +302,7 @@ export class ApplicationsComponent {
                                                         let r = new ApplicationExtension();
 
                                                         r.Id = res['project_application'];
-                                                        r.Lifetime = res['project_application_renewal_lifetime_extension'];
+                                                        r.Lifetime = res['project_application_renewal_lifetime'];
                                                         a.ApplicationExtension = r
                                                         this.all_applications.push(a)
                                                     })
@@ -329,8 +350,9 @@ export class ApplicationsComponent {
     }
 
 
-    public requestExtension(application_id: number, lifetime: number) {
-        this.applicataionsservice.requestRenewal(application_id, lifetime).subscribe(result => {
+    public requestExtension(data) {
+
+        this.applicataionsservice.requestRenewal(data).subscribe(result => {
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
