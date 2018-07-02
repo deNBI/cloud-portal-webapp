@@ -180,7 +180,7 @@
                                     </td>
                                     <td>{{application.Institute}}</td>
 
-                                    <td *ngIf="application.Status == 1 ">
+                                    <td [style.display]="application.Status == 1 ? 'inherit' :'none' ">
                                         <select class="form-control" #selectedComputeCenter>
                                             <option value="undefined" selected> no center</option>
                                             <option *ngFor="let computeCenter of computeCenters"
