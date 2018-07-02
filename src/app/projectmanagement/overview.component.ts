@@ -155,7 +155,10 @@ export class OverviewComponent {
 
             for (let key in this.userprojects) {
                 let group = this.userprojects[key];
-                let dateCreated = new Date(group["createdAt"]);
+                let newDate = group['createdAt'];
+                let reorderDate = newDate.split("-",3);
+                let browserDate = reorderDate[1]+'/'+reorderDate[2].substring(0,2)+'/'+reorderDate[0];
+                let dateCreated = new Date(browserDate);
                 let dateDayDifference = Math.ceil((Math.abs(Date.now() - dateCreated.getTime())) / (1000 * 3600 * 24));
                 let is_pi = false;
 

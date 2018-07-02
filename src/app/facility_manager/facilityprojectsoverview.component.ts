@@ -71,6 +71,7 @@ export class  FacilityProjectsOverviewComponent {
                      if (!shortname) {
                          shortname = group['name']
                      }
+
                      let dateCreated = new Date(group["createdAt"]);
                      let dateDayDifference = Math.ceil((Math.abs(Date.now() - dateCreated.getTime())) / (1000 * 3600 * 24));
                      let is_pi = false;

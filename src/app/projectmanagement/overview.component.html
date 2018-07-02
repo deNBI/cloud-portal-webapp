@@ -8,6 +8,7 @@
                     <i class="fa fa-align-justify"></i> Projects
                 </div>
                 <div class="card-block">
+                  <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -47,7 +48,7 @@
 
                             <td>{{ project.DateCreated }}</td>
                             <td>{{ project.DaysRunning }}</td>
-                            <td >{{project.LifetimeDays}}</td>
+                            <td>{{project.LifetimeDays}}</td>
                             <td>
                                 <button type="button" class="btn btn-secondary" data-toggle="modal"
                                         (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
@@ -65,6 +66,7 @@
                         </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,6 +87,7 @@
                 </button>
             </div>
             <div class="modal-body">
+              <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -128,6 +131,7 @@
 
                     </tbody>
                 </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close</button>
@@ -222,7 +226,7 @@
                         </ul>
                     </div>
 
-
+                    <div class="table-responsive">
                     <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
                         <thead>
 
@@ -247,6 +251,7 @@
                         <td>{{member['mail']}}</td>
                         </tbody>
                     </table>
+                      </div>
                 </div>
             </div>
             <div class="modal-footer">
