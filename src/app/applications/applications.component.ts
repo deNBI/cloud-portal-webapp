@@ -16,7 +16,6 @@ import {ApplicationExtension} from "./application_extension.model";
 import {NgForm} from '@angular/forms';
 
 
-
 @Component({
     templateUrl: 'applications.component.html',
     providers: [UserService, GroupService, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
@@ -30,7 +29,7 @@ export class ApplicationsComponent {
     all_applications_renewal: ApplicationExtension[] = [];
     special_hardware: SpecialHardware[] = [];
     computeCenters: [string, number][];
-    selectedApplication:  Application;
+    selectedApplication: Application;
     public deleteId: number;
 
     //notification Modal variables
@@ -41,6 +40,9 @@ export class ApplicationsComponent {
     public notificationModalIsClosable: boolean = false;
     private APPROVED_STATUS = 2;
     private EXTENSION_STATUS = 4;
+    private EXTENSTION_STATUS_STRING='extension requested'
+    public FPGA = 1;
+    public GPU = 2;
 
 
     collapse_status: { [id: string]: boolean } = {};
@@ -67,37 +69,22 @@ export class ApplicationsComponent {
         })
     }
 
-    getAllApplicationsRenewalRequests() {
-        this.applicataionsservice.getAllApplicationsRenewalRequests().subscribe(result => {
 
-
-            for (let res of result.json()) {
-                let r = new ApplicationExtension();
-
-                r.Id = res['project_application'];
-                r.Lifetime = res['project_application_renewal_lifetime'];
-
-                this.all_applications_renewal.push(r)
-            }
-        })
-
-
-    }
-    setSelectedApplication(application:any){
+    setSelectedApplication(application: any) {
         console.log('hier')
-        this.selectedApplication=application;
+        this.selectedApplication = application;
         console.log(this.selectedApplication)
     }
 
-    onSubmit(f: NgForm ){
-         let values = {};
-            values['project_application_renewal_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
-            for (let v in f.controls) {
-                if (f.controls[v].value) {
-                    values[v] = f.controls[v].value;
-                }
+    onSubmit(f: NgForm) {
+        let values = {};
+        values['project_application_renewal_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
+        for (let v in f.controls) {
+            if (f.controls[v].value) {
+                values[v] = f.controls[v].value;
             }
-            values['project_application_id']=this.selectedApplication.Id;
+        }
+        values['project_application_id'] = this.selectedApplication.Id;
         this.requestExtension(values);
 
     }
@@ -126,8 +113,43 @@ export class ApplicationsComponent {
                     a.SpecialHardware = aj["project_application_special_hardware"];
                     a.OpenStackProject = aj["project_application_openstack_project"];
                     a.Comment = aj["project_application_comment"];
+                    if (a.Status.toString() == this.EXTENSTION_STATUS_STRING) {
+                        this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => {
+                            res = result.json();
+                            let r = new ApplicationExtension();
 
-                    this.user_applications.push(a)
+
+                            r.Id = res['project_application'];
+                            r.Lifetime = res['project_application_renewal_lifetime'];
+                            r.VolumeLimit = res['project_application_renewal_volume_limit'];
+                            r.VolumeCounter = res['project_application_renewal_volume_counter'];
+                            r.VMsRequested = res['project_application_renewal_vms_requested'];
+                            r.Comment = res['project_application_renewal_comment'];
+                            r.CoresPerVM = res['project_application_renewal_cores_per_vm'];
+                            r.ObjectStorage = res['project_application_renewal_object_storage'];
+                            r.RamPerVM = res['project_application_renewal_ram_per_vm'];
+                            r.Comment = res['project_application_renewal_comment'];
+                            let special_hardware = [];
+                            if (res['project_application_renewal_special_hardware'] != null) {
+                                let special_hardware_string = res['project_application_renewal_special_hardware'].toString();
+
+                                for (let c = 0; c < special_hardware_string.length; c++) {
+                                    let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                                    special_hardware.push(sh)
+
+                                }
+
+                                r.SpecialHardware = special_hardware;
+                            }
+                            a.ApplicationExtension = r;
+                            this.user_applications.push(a)
+                        })
+
+                    }
+                    else {
+                        this.user_applications.push(a)
+                    }
+
 
                 }
             });
@@ -240,69 +262,26 @@ export class ApplicationsComponent {
 
                                                         r.Id = res['project_application'];
                                                         r.Lifetime = res['project_application_renewal_lifetime'];
-                                                        a.ApplicationExtension = r
-                                                        this.all_applications.push(a)
-                                                    })
+                                                        r.VolumeLimit = res['project_application_renewal_volume_limit'];
+                                                        r.VolumeCounter = res['project_application_renewal_volume_counter'];
+                                                        r.VMsRequested = res['project_application_renewal_vms_requested'];
+                                                        r.Comment = res['project_application_renewal_comment'];
+                                                        r.CoresPerVM = res['project_application_renewal_cores_per_vm'];
+                                                        r.ObjectStorage = res['project_application_renewal_object_storage'];
+                                                        r.RamPerVM = res['project_application_renewal_ram_per_vm'];
+                                                        r.Comment = res['project_application_renewal_comment'];
+                                                        let special_hardware = [];
+                                                        if (res['project_application_renewal_special_hardware'] != null) {
+                                                            let special_hardware_string = res['project_application_renewal_special_hardware'].toString();
 
-                                                }
-                                                else {
-                                                    this.all_applications.push((a))
-                                                }
+                                                            for (let c = 0; c < special_hardware_string.length; c++) {
+                                                                let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                                                                special_hardware.push(sh)
 
-                                            })
+                                                            }
 
-                                        }
-                                        else if (a.Shortname) {
-                                            this.groupservice.getFacilityByGroup(a.Shortname).subscribe(result => {
-
-                                                let details = result['Details'];
-                                                let details_array = [];
-                                                for (let detail in details) {
-                                                    let detail_tuple = [detail, details[detail]];
-                                                    details_array.push(detail_tuple);
-                                                }
-
-                                                a.ComputecenterDetails = details_array;
-                                                a.ComputeCenter = [result['Facility'], result['FacilityID']];
-
-                                                if (a.Status == this.EXTENSION_STATUS) {
-                                                    this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => {
-                                                        res = result.json()
-                                                        let r = new ApplicationExtension();
-
-                                                        r.Id = res['project_application'];
-                                                        r.Lifetime = res['project_application_renewal_lifetime'];
-                                                        a.ApplicationExtension = r
-                                                        this.all_applications.push(a)
-                                                    })
-
-                                                }
-                                                else {
-                                                    this.all_applications.push((a))
-                                                }
-
-                                            })
-                                        }
-                                        else {
-                                            this.groupservice.getFacilityByGroup(a.Name).subscribe(result => {
-
-                                                let details = result['Details'];
-                                                let details_array = [];
-                                                for (let detail in details) {
-                                                    let detail_tuple = [detail, details[detail]];
-                                                    details_array.push(detail_tuple);
-                                                }
-
-                                                a.ComputecenterDetails = details_array;
-                                                a.ComputeCenter = [result['Facility'], result['FacilityID']];
-
-                                                if (a.Status == this.EXTENSION_STATUS) {
-                                                    this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => {
-                                                        res = result.json()
-                                                        let r = new ApplicationExtension();
-
-                                                        r.Id = res['project_application'];
-                                                        r.Lifetime = res['project_application_renewal_lifetime'];
+                                                            r.SpecialHardware = special_hardware;
+                                                        }
                                                         a.ApplicationExtension = r
                                                         this.all_applications.push(a)
                                                     })
@@ -325,7 +304,28 @@ export class ApplicationsComponent {
                                                 let r = new ApplicationExtension();
 
                                                 r.Id = res['project_application'];
-                                                r.Lifetime = res['project_application_renewal_lifetime_extension'];
+                                                r.Lifetime = res['project_application_renewal_lifetime'];
+                                                r.VolumeLimit = res['project_application_renewal_volume_limit'];
+                                                r.VolumeCounter = res['project_application_renewal_volume_counter'];
+                                                r.VMsRequested = res['project_application_renewal_vms_requested'];
+                                                r.Comment = res['project_application_renewal_comment'];
+                                                r.CoresPerVM = res['project_application_renewal_cores_per_vm'];
+                                                r.ObjectStorage = res['project_application_renewal_object_storage'];
+                                                r.RamPerVM = res['project_application_renewal_ram_per_vm'];
+                                                r.Comment = res['project_application_renewal_comment'];
+                                                let special_hardware = [];
+                                                if (res['project_application_renewal_special_hardware'] != null) {
+                                                    let special_hardware_string = res['project_application_renewal_special_hardware'].toString();
+
+                                                    for (let c = 0; c < special_hardware_string.length; c++) {
+                                                        let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                                                        special_hardware.push(sh)
+
+                                                    }
+
+                                                    r.SpecialHardware = special_hardware;
+                                                }
+
                                                 a.ApplicationExtension = r
                                                 this.all_applications.push(a)
                                             })
@@ -343,8 +343,7 @@ export class ApplicationsComponent {
                         break;
                     }
                 }
-                console.log(this.all_applications)
-                this.getAllApplicationsRenewalRequests();
+
             }
         )
     }
