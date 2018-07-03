@@ -75,6 +75,7 @@ export class VoOverviewComponent ***REMOVED***
     ***REMOVED***
 
 
+
     sendMailToVo(subject: string, message: string, reply?: string) ***REMOVED***
         this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => ***REMOVED***
             if (result == 1) ***REMOVED***
@@ -107,6 +108,7 @@ export class VoOverviewComponent ***REMOVED***
     ***REMOVED***
 
     public resetEmailModal() ***REMOVED***
+
 
         this.emailHeader = null;
         this.emailSubject = null;
@@ -146,11 +148,17 @@ export class VoOverviewComponent ***REMOVED***
                     newProject.Lifetime = group['lifetime']
                     if (newProject.Lifetime != -1) ***REMOVED***
                         newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24)
-
+                        let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
+                        newProject.DateEnd = expirationDate.date() + "." + (expirationDate.month() + 1) + "." + expirationDate.year();
                     ***REMOVED***
+
                     else ***REMOVED***
                         newProject.LifetimeDays = -1;
                     ***REMOVED***
+
+
+                    
+
                     this.projects.push(newProject);
                 ***REMOVED***)
             ***REMOVED***

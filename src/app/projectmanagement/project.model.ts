@@ -11,6 +11,7 @@ export class Project ***REMOVED***
   private _Name: string;
   private _Description: string;
   private _DateCreated: string;
+  private _DateEnd: string;
   private _DaysRunning: number;
   private _LifetimeDays: number;
   private _Lifetime: number;
@@ -90,6 +91,14 @@ export class Project ***REMOVED***
 
   set DateCreated(value: string) ***REMOVED***
     this._DateCreated = value;
+  ***REMOVED***
+
+   get DateEnd(): string ***REMOVED***
+    return this._DateEnd;
+  ***REMOVED***
+
+  set DateEnd(value: string) ***REMOVED***
+    this._DateEnd = value;
   ***REMOVED***
 
   get DaysRunning(): number ***REMOVED***
