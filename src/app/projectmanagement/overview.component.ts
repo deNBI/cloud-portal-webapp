@@ -155,11 +155,8 @@ export class OverviewComponent {
 
             for (let key in this.userprojects) {
                 let group = this.userprojects[key];
-                let newDate = group['createdAt'];
-                let reorderDate = newDate.split("-",3);
-                let browserDate = reorderDate[1]+'/'+reorderDate[2].substring(0,2)+'/'+reorderDate[0];
-                let dateCreated = new Date(browserDate);
-                let dateDayDifference = Math.ceil((Math.abs(Date.now() - dateCreated.getTime())) / (1000 * 3600 * 24));
+                let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
                 let is_pi = false;
 
                 //check if user is a PI (group manager)
@@ -185,7 +182,7 @@ export class OverviewComponent {
                             group["id"],
                             shortname,
                             group["description"],
-                            dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
+                            dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
                             dateDayDifference,
                             is_pi,
                             is_admin,
@@ -203,7 +200,7 @@ export class OverviewComponent {
 
                                 newProject.Lifetime = lifetime;
                                 if (newProject.Lifetime != -1) {
-                                    newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - dateCreated.getTime())) / (1000 * 3600 * 24)
+                                    newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24)
 
                                 }
                                 else {
