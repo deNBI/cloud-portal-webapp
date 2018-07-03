@@ -19,6 +19,9 @@ export class VoOverviewComponent {
     public emailReply: string = '';
     public emailText: string;
     public emailStatus: number = 0;
+    public emailHeader: string;
+    public emailVerify: string;
+    public emailType: number;
     public newsletterSubscriptionCounter: number;
 
     member_id: number;
@@ -45,6 +48,34 @@ export class VoOverviewComponent {
 
     }
 
+
+    sendEmail(subject: string, message: string, reply?: string) {
+        switch (this.emailType) {
+            case 0: {
+                this.sendMailToVo(subject, message, reply);
+                break;
+            }
+            case 1: {
+                this.sendNewsletterToVo(subject, message, reply);
+                break;
+            }
+        }
+    }
+
+    sendNewsletterToVo(subject: string, message: string, reply?: string) {
+        this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => {
+            if (result == 1) {
+                this.emailStatus = 1;
+            }
+            else {
+                this.emailStatus = 2;
+            }
+        })
+
+    }
+
+
+
     sendMailToVo(subject: string, message: string, reply?: string) {
         this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => {
             if (result == 1) {
@@ -57,11 +88,33 @@ export class VoOverviewComponent {
 
     }
 
+    setEmailType(type: number) {
+        this.emailType = type;
+        switch (this.emailType) {
+            case 0: {
+                this.emailHeader = 'Send email to all members of\n' +
+                    '                    the vo';
+                this.emailVerify = 'Are you sure you want to send this email to all members of the vo?';
+                break;
+            }
+            case 1: {
+                this.emailHeader = 'Send newsletter to vo';
+                this.emailVerify = 'Are you sure you want to send this newsletter?'
+                break;
+            }
+
+        }
+
+    }
 
     public resetEmailModal() {
 
+
+        this.emailHeader = null;
         this.emailSubject = null;
         this.emailText = null;
+        this.emailType=null;
+        this.emailVerify=null;
         this.emailReply = '';
         this.emailStatus = 0;
 
@@ -102,6 +155,10 @@ export class VoOverviewComponent {
                     else {
                         newProject.LifetimeDays = -1;
                     }
+
+
+                    }
+
                     this.projects.push(newProject);
                 })
             }
