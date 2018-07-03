@@ -13,6 +13,7 @@
                     <i class="fa fa-align-justify"></i> Personal Information
                 </div>
                 <div class="card-block">
+                  <div class="table-responsive">
                     <table class="table table-striped">
                         <tr>
                             <td>Full name</td>
@@ -68,9 +69,9 @@
                         <tr>
                             <td>Newsletter</td>
                             <td><div class="row">
-                                <div class="col-md-1"><label class="switch switch-text switch-primary-outline-alt">
+                                <div class="col-md-2"><label class="switch switch-text switch-primary-outline-alt">
                                     <input type="checkbox" class="switch-input" [(ngModel)]="newsletter_subscribed"
-                                           (change)=" setNewsletterSubscription($event)">
+                                           (change)="setNewsletterSubscription($event)">
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
                                 </label></div>
@@ -81,6 +82,7 @@
                             <td></td>
                         </tr>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>
