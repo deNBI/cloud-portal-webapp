@@ -157,7 +157,7 @@ export class VoOverviewComponent {
                     }
 
 
-                    }
+                    
 
                     this.projects.push(newProject);
                 })
