@@ -202,8 +202,8 @@ export class OverviewComponent ***REMOVED***
                                 if (newProject.Lifetime != -1) ***REMOVED***
 
                                     newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24)
-                                    let  expirationDate=moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                                    newProject.DateEnd=expirationDate.date() + "." +(expirationDate.month() + 1) + "." + expirationDate.year();
+                                    let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
+                                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() +1) + "." + moment(expirationDate).year();
                                 ***REMOVED***
                                 else ***REMOVED***
                                     newProject.LifetimeDays = -1;
