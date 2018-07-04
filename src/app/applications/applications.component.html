@@ -151,7 +151,7 @@
                                     <td>{{application.Institute}}</td>
 
                                     <td>
-                                        <select class="form-control" #selectedComputeCenter>
+                                        <select [style.display]="application.OpenStackProject? 'inherit' :'none'" class="form-control" #selectedComputeCenter>
                                             <option value="undefined" selected> no center</option>
                                             <option *ngFor="let computeCenter of computeCenters"
                                                     value="{{computeCenter[1]}}"> {{computeCenter[0]}}

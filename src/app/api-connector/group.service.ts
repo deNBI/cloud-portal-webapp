@@ -343,7 +343,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setPerunId/', urlSearchParams, {
             withCredentials: true,
             headers: header
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        })
 
 
     }
