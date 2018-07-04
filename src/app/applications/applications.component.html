@@ -151,7 +151,7 @@
                                     <td>***REMOVED******REMOVED***application.Institute***REMOVED******REMOVED***</td>
 
                                     <td>
-                                        <select class="form-control" #selectedComputeCenter>
+                                        <select [style.display]="application.OpenStackProject? 'inherit' :'none'" class="form-control" #selectedComputeCenter>
                                             <option value="undefined" selected> no center</option>
                                             <option *ngFor="let computeCenter of computeCenters"
                                                     value="***REMOVED******REMOVED***computeCenter[1]***REMOVED******REMOVED***"> ***REMOVED******REMOVED***computeCenter[0]***REMOVED******REMOVED***
