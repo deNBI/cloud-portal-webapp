@@ -7,12 +7,13 @@ import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 import {FullLayoutComponent} from "../layouts/full-layout.component";
 import {UserService} from "../api-connector/user.service";
+import {ImageService} from "../api-connector/image.service";
 
 
 @Component({
     selector: 'vm-overview',
     templateUrl: 'vmOverview.component.html',
-    providers: [UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
+    providers: [ImageService,UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 })
 
 
@@ -35,7 +36,7 @@ export class VmOverviewComponent implements OnInit {
     filterssh: string;
 
 
-    constructor(private userservice: UserService, private virtualmachineservice: VirtualmachineService,  private perunsettings: PerunSettings) {
+    constructor(private imageService:ImageService,private userservice: UserService, private virtualmachineservice: VirtualmachineService,  private perunsettings: PerunSettings) {
 
     }
 
@@ -348,9 +349,12 @@ export class VmOverviewComponent implements OnInit {
         });
     }
 
+    createSnapshot(snapshot_instance:string,snapshot_name:string){
+        this.imageService.createSnapshot(snapshot_instance,snapshot_name).subscribe()
+    }
+
 
     getElixirId() {
-        console.log('test')
         this.userservice.getLoggedUser().toPromise()
             .then(result => {
                 let res = result.json();

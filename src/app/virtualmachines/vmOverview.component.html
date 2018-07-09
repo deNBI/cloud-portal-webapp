@@ -80,6 +80,12 @@
             Check Status
           </button>
 
+         <button  style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" *ngIf="vm.status !='DELETED'" (click)="createSnapshot(vm.openstackid,'Webapp');"
+
+                  class="btn btn-primary">
+            Create Snapshot
+          </button>
+
          <button  style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" *ngIf="vm.status !='DELETED'" (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();"
 
                   class="btn btn-primary">
