@@ -24,8 +24,9 @@ export class VmOverviewComponent implements OnInit {
     elixir_id: string;
     is_vo_admin: boolean;
     snapshot_vm: string;
-    validSnapshotNameBool:boolean;
-    snapshotName:string;
+    validSnapshotNameBool: boolean;
+    snapshotDone: string='Waiting';
+    snapshotName: string;
     tab = 'own';
     status_changed: number = 0;
     filterusername: string;
@@ -95,8 +96,11 @@ export class VmOverviewComponent implements OnInit {
 
     validSnapshotName(e) {
         this.validSnapshotNameBool = this.snapshotName.length > 0 ? true : false;
-        
 
+
+    }
+    resetSnapshotResult(){
+        this,this.snapshotDone='Waiting';
     }
 
     checkStatus(openstackid: string) {
@@ -359,7 +363,15 @@ export class VmOverviewComponent implements OnInit {
     }
 
     createSnapshot(snapshot_instance: string, snapshot_name: string) {
-        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe()
+        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => {
+            if (result['Error']){
+                this.snapshotDone=result['Error'].toString();
+            }
+            else if (result['Created'])
+                this.snapshotDone=result['Created'].toString();
+
+
+        })
     }
 
 

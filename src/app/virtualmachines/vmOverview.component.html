@@ -105,7 +105,8 @@
                         </button>
 
                         <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
-                                *ngIf="vm.status !='DELETED'" (click)="snapshot_vm=vm.openstackid;snapshotModal.show();"
+                                *ngIf="vm.status !='DELETED'"
+                                (click)="snapshot_vm=vm.openstackid;resetSnapshotResult();snapshotModal.show();"
 
                                 class="btn btn-primary">
                             Create Snapshot
@@ -262,7 +263,8 @@
                 <div><strong>Snapshot Name*</strong></div>
 
                 <div class="input-group">
-                    <input type="text" placeholder="Snapshot Name" [(ngModel)]="snapshotName" (ngModelChange)="validSnapshotName($event);">
+                    <input type="text" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
+                           (ngModelChange)="validSnapshotName($event);">
                 </div>
                 <br>
                 <div class="alert alert-info" role="alert">
@@ -273,13 +275,49 @@
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
                         [disabled]="!validSnapshotNameBool"
-                        (click)="createSnapshot(snapshot_vm,snapshotName);">
+                        (click)="createSnapshot(snapshot_vm,snapshotName);snapshotModal.hide();snapshotResult.show()">
                     Create Snapshot
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"
-                        (click)="snapshotModal.hide()">Cancel
+                        (click)="snapshotName=''; validSnapshotNameBool=false;snapshotModal.hide()">Cancel
                 </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<div bsModal #snapshotResult="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Snapshot</h4>
+            </div>
+            <div class="modal-body">
+                <div  class="alert alert-info" role="alert" *ngIf="snapshotDone == 'Waiting' ">
+                   Wait until Snapshot is created....
+                </div>
+
+
+                <div  class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' ">
+                    Successfully created Snapshot.
+                    You can now use it when starting an new instance.
+                </div>
+                <div class="alert alert-danger" role="alert"  *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
+                    An error occured when creating the snapshot.
+
+                    <pre>{{snapshotDone}}</pre>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="snapshotName=''; validSnapshotNameBool=false;snapshotResult.hide();">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
