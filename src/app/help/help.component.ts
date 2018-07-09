@@ -6,6 +6,23 @@ import { NgModule } from '@angular/core';
 })
 
 export class HelpComponent {
+
+  public emailSubject: string;
+  public emailText: string;
+  public emailStatus: number = 0;
+  public emailAdress: string;
+
+  sendEmail(subject: string, message: string) {
+    this.emailStatus = 1;
+    return true;
+  }
+
+  resetEmail(){
+    this.emailStatus = 0;
+    this.emailText = '';
+    this.emailSubject = '';
+    this.emailAdress = '';
+  }
 }
 
 
