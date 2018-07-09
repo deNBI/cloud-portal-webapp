@@ -36,6 +36,7 @@ export class VmOverviewComponent implements OnInit {
 
 
     constructor(private userservice: UserService, private virtualmachineservice: VirtualmachineService,  private perunsettings: PerunSettings) {
+        this.virtualmachineservice.getVolumesByUser().subscribe()
 
     }
 
