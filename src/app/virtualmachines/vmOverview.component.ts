@@ -13,7 +13,7 @@ import {ImageService} from "../api-connector/image.service";
 @Component({
     selector: 'vm-overview',
     templateUrl: 'vmOverview.component.html',
-    providers: [ImageService,UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
+    providers: [ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 })
 
 
@@ -23,6 +23,9 @@ export class VmOverviewComponent implements OnInit {
     status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
+    snapshot_vm: string;
+    validSnapshotNameBool:boolean;
+    snapshotName:string;
     tab = 'own';
     status_changed: number = 0;
     filterusername: string;
@@ -36,7 +39,7 @@ export class VmOverviewComponent implements OnInit {
     filterssh: string;
 
 
-    constructor(private imageService:ImageService,private userservice: UserService, private virtualmachineservice: VirtualmachineService,  private perunsettings: PerunSettings) {
+    constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
 
     }
 
@@ -88,6 +91,12 @@ export class VmOverviewComponent implements OnInit {
             }
 
         })
+    }
+
+    validSnapshotName(e) {
+        this.validSnapshotNameBool = this.snapshotName.length > 0 ? true : false;
+        
+
     }
 
     checkStatus(openstackid: string) {
@@ -349,8 +358,8 @@ export class VmOverviewComponent implements OnInit {
         });
     }
 
-    createSnapshot(snapshot_instance:string,snapshot_name:string){
-        this.imageService.createSnapshot(snapshot_instance,snapshot_name).subscribe()
+    createSnapshot(snapshot_instance: string, snapshot_name: string) {
+        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe()
     }
 
 
