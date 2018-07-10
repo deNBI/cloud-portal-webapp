@@ -102,5 +102,20 @@ export class UserService ***REMOVED***
 
     ***REMOVED***
 
+    sendHelpMail(subject, message): Observable<any> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('subject', subject);
+        urlSearchParams.append('message', message);
+
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        return this.http.post(this.settings.getApiBaseURL() + 'user/sendHelpMail/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ***REMOVED***
+
 
 ***REMOVED***
