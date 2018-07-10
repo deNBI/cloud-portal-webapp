@@ -300,7 +300,7 @@ export class ApplicationsComponent {
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
-        let re = /[-:. ,]/gi
+        let re = /[-:. ,/]/gi
         let  shortNameDate=name + (new Date(Date.now()).toLocaleString().replace(re,''));
         this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
             .then(member_raw => {
