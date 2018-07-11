@@ -48,7 +48,7 @@
                                         Remove Application
                                     </button>
                                     <button *ngIf="application.Status == 'approved'"
-                                            (click)="setSelectedApplication(application);extensionModal.show()"
+                                            (click)="setSelectedApplication(application);ngFormSetDefault(f);extensionModal.show()"
                                             type="button"
                                             class="btn btn-secondary">
                                         Request Extension
@@ -654,7 +654,7 @@
                                     title="Storage limit is the sum of extra storage provided by volumes."></i></strong></label>
                         <div class="col-md-8">
                             <div class="input-group">
-                                <input class="form-control" id="id_project_application_renewal_volume_limit"
+                                <input required class="form-control" id="id_project_application_renewal_volume_limit"
                                        name="project_application_renewal_volume_limit"
                                        placeholder="e.g. 20"
                                        type="number" min="1" step="1" [ngModel]="selectedApplication?.VolumeLimit">

@@ -40,7 +40,7 @@ export class ApplicationsComponent {
     public notificationModalIsClosable: boolean = false;
     private APPROVED_STATUS = 2;
     private EXTENSION_STATUS = 4;
-    private EXTENSTION_STATUS_STRING='extension requested'
+    private EXTENSTION_STATUS_STRING = 'extension requested'
     public FPGA = 1;
     public GPU = 2;
 
@@ -86,6 +86,21 @@ export class ApplicationsComponent {
         }
         values['project_application_id'] = this.selectedApplication.Id;
         this.requestExtension(values);
+
+    }
+
+    ngFormSetDefault(f: NgForm) {
+        f.reset({
+            project_application_renewal_vms_requested : this.selectedApplication.VMsRequested,
+            project_application_renewal_cores_per_vm : this.selectedApplication.CoresPerVM,
+            project_application_renewal_ram_per_vm : this.selectedApplication.RamPerVM,
+            project_application_renewal_volume_limit: this.selectedApplication.VolumeLimit,
+            project_application_renewal_volume_counter: this.selectedApplication.VolumeCounter,
+            project_application_renewal_object_storage: this.selectedApplication.ObjectStorage,
+            project_application_renewal_comment: this.selectedApplication.Comment,
+
+
+        })
 
     }
 
