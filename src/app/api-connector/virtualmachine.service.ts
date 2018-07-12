@@ -7,6 +7,7 @@ import {ApiSettings} from './api-settings.service'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
+import {Volume} from "../virtualmachines/virtualmachinemodels/volume";
 
 @Injectable()
 export class VirtualmachineService {
@@ -126,7 +127,19 @@ export class VirtualmachineService {
         return this.http.post(this.baseVmUrl + 'resumeVm/', urlSearchParams, {
             withCredentials: true,
             headers: header,
-        });
+        });}
+
+
+    getVolumesByUser():Observable<Volume[]> {
+        let urlSearchParams = new URLSearchParams();
+
+    return this.http.get(this.settings.getConnectorBaseUrl() + 'volumes/get_volumes/', {
+      withCredentials: true,
+      search: urlSearchParams
+    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+
+
     }
+
 
 }

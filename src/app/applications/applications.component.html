@@ -43,8 +43,9 @@
                                         Information
                                     </button>
 
-                                    <button *ngIf="application.Status == 'submitted'"
-                                            (click)="deleteModal.show();setDeleteId(application.Id)" type="button"
+
+                                    <button *ngIf="application.Status == 'submitted'" (click)="deleteModal.show();setDeleteId(application.Id)" type="button"
+
                                             class="btn btn-secondary">
                                         Remove Application
                                     </button>
@@ -403,6 +404,10 @@
                                                 [hidden]="getCollapseStatus('application_history-' + application.Id)">Hide</span>
                                             Information
                                         </button>
+                                        <button (click)="deleteModal.show();setDeleteId(application.Id)" type="button"
+                                            class="btn btn-secondary">
+                                        Remove Application
+                                    </button>
                                     </td>
                                 </tr>
                                 <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning)}">

@@ -10,6 +10,7 @@ import {VirtualMachineComponent} from "../virtualmachines/addvm.component";
 import {FlavorDetailComponent} from '../virtualmachines/flavordetail.component';
 import {ClientOverviewComponent} from "../virtualmachines/vmClients.component";
 import {VmOverviewComponent} from "../virtualmachines/vmOverview.component";
+import { VolumeOverviewComponent} from "./volumeOverview.component";
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import {VmOverviewComponent} from "../virtualmachines/vmOverview.component";
     FlavorDetailComponent,
     ClientOverviewComponent,
     VmOverviewComponent,
+      VolumeOverviewComponent,
   ]
 })
 export class VmModule { }
