@@ -31,6 +31,10 @@ export const routes: Routes = [
                 loadChildren: './userinfo/userinfo.module#UserinfoModule'
             ***REMOVED***,
             ***REMOVED***
+                path: 'help',
+                loadChildren: './help/help.module#HelpModule'
+            ***REMOVED***,
+            ***REMOVED***
                 path: 'project-management',
                 loadChildren: './projectmanagement/projectmanagement.module#ProjectManagementModule'
             ***REMOVED***,
