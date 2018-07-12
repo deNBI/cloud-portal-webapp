@@ -21,8 +21,8 @@ export class HelpComponent {
 
 }
 
-  sendEmail(subject: string, message: string, adress: string) {
-        this.userService.sendHelpMail(encodeURIComponent(subject), encodeURIComponent(message)).subscribe(result => {
+  sendEmail(subject: string, message: string, reply: string) {
+        this.userService.sendHelpMail(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => {
             if (result == 1) {
                 this.emailStatus = 1;
             }

@@ -102,10 +102,11 @@ export class UserService {
 
     }
 
-    sendHelpMail(subject, message): Observable<any> {
+    sendHelpMail(subject, message, reply): Observable<any> {
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('subject', subject);
         urlSearchParams.append('message', message);
+        urlSearchParams.append('reply', reply);
 
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
