@@ -9,9 +9,14 @@
         <div class="col-lg-12">
 
 
-            <button (click)="emailModal.show()" type="button " class="btn btn-secondary"
+            <button (click)="setEmailType(1);emailModal.show();" type="button " class="btn btn-secondary"
                     style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i class="icon-envelope-letter"></i>
                 Send newsletter ({{newsletterSubscriptionCounter}})
+            </button>
+
+            <button (click)="setEmailType(0);emailModal.show();" type="button " class="btn btn-secondary"
+                    style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i class="icon-envelope-letter"></i>
+                Send email
             </button>
 
 
@@ -22,6 +27,7 @@
                 </div>
 
                 <div class="card-block">
+                  <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -30,6 +36,7 @@
                             <th>Description</th>
 
                             <th>Date created</th>
+                            <th>Expiration Date</th>
                             <th>Days running</th>
                             <th>Lifetime in Days</th>
                             <th>Actions</th>
@@ -44,7 +51,9 @@
 
 
                             <td>{{ project.DateCreated }}</td>
+                             <td>{{project.DateEnd}}</td>
                             <td>{{ project.DaysRunning }}</td>
+
                             <td>{{project.LifetimeDays}}</td>
                             <td>
                                 <button type="button" class="btn btn-secondary" data-toggle="modal"
@@ -57,6 +66,7 @@
                         </tr>
                         </tbody>
                     </table>
+                  </div>
                 </div>
             </div>
         </div>
@@ -77,6 +87,7 @@
                 </button>
             </div>
             <div class="modal-body">
+              <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -95,6 +106,7 @@
 
                     </tbody>
                 </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close</button>
@@ -109,8 +121,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"> Send email to all members of
-                    the vo</h4>
+                <h4 class="modal-title"> {{emailHeader}}</h4>
                 <button type="button" class="close" (click)="emailModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -174,13 +185,13 @@
             <div class="modal-body">
 
                 <div class="alert alert-warning" role="alert">
-                    Are you sure you want to send this email to all members of the vo?
+                   {{emailVerify}}
                 </div>
 
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
-                        (click)="sendMailToVo(emailSubject,emailText,emailReply);verifyModal.hide();;f.reset();resetEmailModal();successModal.show()">
+                        (click)="sendEmail(emailSubject,emailText,emailReply);verifyModal.hide();f.reset();resetEmailModal();successModal.show()">
                     Yes
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"
