@@ -10,6 +10,7 @@ import ***REMOVED***VirtualMachineComponent***REMOVED*** from "../virtualmachine
 import ***REMOVED***FlavorDetailComponent***REMOVED*** from '../virtualmachines/flavordetail.component';
 import ***REMOVED***ClientOverviewComponent***REMOVED*** from "../virtualmachines/vmClients.component";
 import ***REMOVED***VmOverviewComponent***REMOVED*** from "../virtualmachines/vmOverview.component";
+import ***REMOVED*** VolumeOverviewComponent***REMOVED*** from "./volumeOverview.component";
 
 
 @NgModule(***REMOVED***
@@ -28,6 +29,7 @@ import ***REMOVED***VmOverviewComponent***REMOVED*** from "../virtualmachines/vm
     FlavorDetailComponent,
     ClientOverviewComponent,
     VmOverviewComponent,
+      VolumeOverviewComponent,
   ]
 ***REMOVED***)
 export class VmModule ***REMOVED*** ***REMOVED***

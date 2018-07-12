@@ -4,6 +4,7 @@ import  ***REMOVED*** ImageDetailComponent***REMOVED*** from '../virtualmachines
 import ***REMOVED*** VirtualMachineComponent***REMOVED*** from '../virtualmachines/addvm.component';
 import ***REMOVED***ClientOverviewComponent***REMOVED*** from "../virtualmachines/vmClients.component";
 import ***REMOVED***VmOverviewComponent***REMOVED*** from "../virtualmachines/vmOverview.component";
+import ***REMOVED*** VolumeOverviewComponent***REMOVED*** from "./volumeOverview.component";
 
 const routes: Routes = [
   ***REMOVED***
@@ -27,6 +28,14 @@ const routes: Routes = [
     component:VmOverviewComponent,
     data: ***REMOVED***
       title: 'VM Overview'
+    ***REMOVED***
+
+  ***REMOVED***,
+     ***REMOVED***
+    path:'volumeOverview',
+    component:VolumeOverviewComponent,
+    data: ***REMOVED***
+      title: 'Volumes Overview'
     ***REMOVED***
 
   ***REMOVED***,

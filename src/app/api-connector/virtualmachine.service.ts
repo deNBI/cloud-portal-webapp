@@ -7,6 +7,7 @@ import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachines/virtualmachinemodels/virtualmachine';
+import ***REMOVED***Volume***REMOVED*** from "../virtualmachines/virtualmachinemodels/volume";
 
 @Injectable()
 export class VirtualmachineService ***REMOVED***
@@ -126,7 +127,19 @@ export class VirtualmachineService ***REMOVED***
         return this.http.post(this.baseVmUrl + 'resumeVm/', urlSearchParams, ***REMOVED***
             withCredentials: true,
             headers: header,
-        ***REMOVED***);
+        ***REMOVED***);***REMOVED***
+
+
+    getVolumesByUser():Observable<Volume[]> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+
+    return this.http.get(this.settings.getConnectorBaseUrl() + 'volumes/get_volumes/', ***REMOVED***
+      withCredentials: true,
+      search: urlSearchParams
+    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+
+
     ***REMOVED***
+
 
 ***REMOVED***
