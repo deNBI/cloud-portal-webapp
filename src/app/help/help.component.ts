@@ -14,6 +14,8 @@ export class HelpComponent {
   public emailText: string;
   public emailStatus: number = 0;
   public emailAdress: string;
+  public emailReply: string = '';
+
 
   constructor(private userService: UserService){
 
@@ -35,6 +37,8 @@ export class HelpComponent {
     this.emailText = '';
     this.emailSubject = '';
     this.emailAdress = '';
+    this.emailReply = '';
+
   }
 }
 
