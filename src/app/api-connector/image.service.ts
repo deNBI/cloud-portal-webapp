@@ -56,6 +56,10 @@ export class ImageService ***REMOVED***
     ***REMOVED***
 
 
+
+
+
+
       deleteImageTag(imageTag:string): Observable<any> ***REMOVED***
         let header = new Headers(***REMOVED***
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -66,6 +70,23 @@ export class ImageService ***REMOVED***
 
 
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteImageTag/', urlSearchParams,***REMOVED***
+            withCredentials: true,
+            headers:header
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ***REMOVED***
+
+
+     createSnapshot( snaptshot_instance:string,snapshot_name:string,): Observable<any> ***REMOVED***
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('snapshot_name',snapshot_name)
+        urlSearchParams.append('snapshot_instance',snaptshot_instance)
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/createSnapshot/', urlSearchParams,***REMOVED***
             withCredentials: true,
             headers:header
         ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))

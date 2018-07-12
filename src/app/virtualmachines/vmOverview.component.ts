@@ -7,12 +7,13 @@ import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/vi
 import ***REMOVED***VirtualMachine***REMOVED*** from "./virtualmachinemodels/virtualmachine";
 import ***REMOVED***FullLayoutComponent***REMOVED*** from "../layouts/full-layout.component";
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
+import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.service";
 
 
 @Component(***REMOVED***
     selector: 'vm-overview',
     templateUrl: 'vmOverview.component.html',
-    providers: [UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
+    providers: [ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 ***REMOVED***)
 
 
@@ -22,6 +23,10 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
+    snapshot_vm: string;
+    validSnapshotNameBool: boolean;
+    snapshotDone: string='Waiting';
+    snapshotName: string;
     tab = 'own';
     status_changed: number = 0;
     filterusername: string;
@@ -35,7 +40,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     filterssh: string;
 
 
-    constructor(private userservice: UserService, private virtualmachineservice: VirtualmachineService,  private perunsettings: PerunSettings) ***REMOVED***
+    constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) ***REMOVED***
 
     ***REMOVED***
 
@@ -87,6 +92,15 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
             ***REMOVED***
 
         ***REMOVED***)
+    ***REMOVED***
+
+    validSnapshotName(e) ***REMOVED***
+        this.validSnapshotNameBool = this.snapshotName.length > 0 ? true : false;
+
+
+    ***REMOVED***
+    resetSnapshotResult()***REMOVED***
+        this,this.snapshotDone='Waiting';
     ***REMOVED***
 
     checkStatus(openstackid: string) ***REMOVED***
@@ -348,9 +362,20 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
+    createSnapshot(snapshot_instance: string, snapshot_name: string) ***REMOVED***
+        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => ***REMOVED***
+            if (result['Error'])***REMOVED***
+                this.snapshotDone=result['Error'].toString();
+            ***REMOVED***
+            else if (result['Created'])
+                this.snapshotDone=result['Created'].toString();
+
+
+        ***REMOVED***)
+    ***REMOVED***
+
 
     getElixirId() ***REMOVED***
-        console.log('test')
         this.userservice.getLoggedUser().toPromise()
             .then(result => ***REMOVED***
                 let res = result.json();
