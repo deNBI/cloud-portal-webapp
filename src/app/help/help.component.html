@@ -1,10 +1,19 @@
 <div class="col-md-12">
-<div class="card">
-  <div class="card-body">
-    <h4 class="docs-title" id="content">If you experience any problems, please contact cloud@denbi.de <button type="button" (click)="emailModal.show();" class="btn btn-secondary"><i class="icon-envelope-letter"></i>  Send email</button></h4>
-   <!-- <p class="docs-lead">If you experience any problems, please contact cloud@denbi.de</p>-->
-  </div>
-</div>
+    <div class="card">
+        <div class="card-body">
+            <div class="alert alert-info">
+
+                <h5>If you experience any problems, please contact cloud@denbi.de
+                    <button type="button" (click)="emailModal.show();" class="btn btn-secondary"><i
+                            class="icon-envelope-letter"></i> Send email
+                    </button>
+                </h5>
+
+
+            </div>
+            <!-- <p class="docs-lead">If you experience any problems, please contact cloud@denbi.de</p>-->
+        </div>
+    </div>
 </div>
 
 
@@ -19,7 +28,7 @@
                 </button>
             </div>
             <div class="modal-body">
-              <form class="form-horizontal" id="email_form" #f="ngForm">
+                <form class="form-horizontal" id="email_form" #f="ngForm">
 
                     <div class="form-group row"
                          [ngClass]="{'has-danger':emailSub.invalid && (emailSub.dirty || emailSub.touched),
@@ -30,7 +39,7 @@
                         <div class="col-md-12">
                             <input required id="emailSubject" name="emailSub" placeholder="Subject"
                                    class="form-control"
-                                   type="text"  [(ngModel)]="emailSubject" minlength="1" #emailSub="ngModel">
+                                   type="text" [(ngModel)]="emailSubject" minlength="1" #emailSub="ngModel">
 
                         </div>
                     </div>
@@ -50,17 +59,18 @@
                     <div class="form-group row" [ngClass]="{'has-danger':emailT.invalid && (emailT.dirty || emailT.touched),
                     'has-success':emailT.valid && (emailT.dirty || emailT.touched)
                     }">
-                        <label class="col-md-12 control-label" ><strong>Email text*</strong></label>
+                        <label class="col-md-12 control-label"><strong>Email text*</strong></label>
                         <div class="col-md-12">
                             <textarea minlength="1" required class="form-control" id="emailText" name="emailText"
                                       [(ngModel)]="emailText"
-                                       type="text" #emailT="ngModel"></textarea>
+                                      type="text" #emailT="ngModel"></textarea>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" [disabled]="f.invalid" class="btn btn-primary" (click)="emailModal.hide(); verifyModal.show()">Send email
+                <button type="button" [disabled]="f.invalid" class="btn btn-primary"
+                        (click)="emailModal.hide(); verifyModal.show()">Send email
                 </button>
                 <button type="button" class="btn btn-secondary" (click)="emailModal.hide();">Close
                 </button>
@@ -80,7 +90,7 @@
             <div class="modal-body">
 
                 <div class="alert alert-warning" role="alert">
-                   Are you sure you want to send this email to cloud@denbi.de?
+                    Are you sure you want to send this email to cloud@denbi.de?
                 </div>
 
             </div>
