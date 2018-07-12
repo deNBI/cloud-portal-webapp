@@ -15,7 +15,6 @@ import {VmOverviewComponent} from "../virtualmachines/vmOverview.component";
 import {AddsinglevmComponent} from "./addsinglevm.component";
 import {AddcloudapplicationComponent} from "./addcloudapplication.component";
 
-
 @NgModule({
   imports: [
     ApplicationsRoutingModule,
