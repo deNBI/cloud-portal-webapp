@@ -1,3 +1,5 @@
+import ***REMOVED***ApplicationExtension***REMOVED*** from "./application_extension.model";
+
 export class Application ***REMOVED***
   private _Id: number;
   private _Name: string;
@@ -23,12 +25,20 @@ export class Application ***REMOVED***
   private _OpenStackProject: boolean;
   private _ComputeCenterDetails:[string,string][];
   private _DaysRunning: number;
+  private _ApplicationExtension:ApplicationExtension;
 
 
 
   constructor() ***REMOVED***
   ***REMOVED***
 
+  get ApplicationExtension():ApplicationExtension***REMOVED***
+    return this._ApplicationExtension;
+  ***REMOVED***
+
+  set ApplicationExtension(value:ApplicationExtension)***REMOVED***
+    this._ApplicationExtension=value;
+  ***REMOVED***
   get DaysRunning():number***REMOVED***
     return this._DaysRunning;
   ***REMOVED***
