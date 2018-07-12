@@ -40,7 +40,9 @@ export class VmOverviewComponent implements OnInit {
     filterssh: string;
 
 
+
     constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
+   this.virtualmachineservice.getVolumesByUser().subscribe()
 
     }
 

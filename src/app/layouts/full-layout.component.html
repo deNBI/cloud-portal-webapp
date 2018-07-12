@@ -66,6 +66,10 @@
                     <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/clientOverview']"><i
                             class="icon-list"></i> Client Overview</a>
                 </li>
+                 <li class="nav-item" *ngIf="get_is_vo_admin()">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/volumeOverview']"><i
+                            class="icon-list"></i> Volume Overview</a>
+                </li>
                 <li class="nav-item" *ngIf="vm_project_member || get_is_vo_admin()">
                     <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/vmOverview']"><i
                             class="icon-list"></i> Instance Overview</a>

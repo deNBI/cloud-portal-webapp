@@ -1,0 +1,38 @@
+<div class="card">
+    <div class="card-header">
+        <strong>Volumes</strong>
+        –Overview
+    </div>
+    <div>
+        <div>
+            <div class="table-responsive">
+                <table class="table table-striped ">
+                    <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Virtual Machine</th>
+                        <th>Openstack Id</th>
+                        <th>Size</th>
+                        <!-- th>Client</th-->
+
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let volume of volumes">
+                        <td>{{volume.volume_project}}</td>
+                        <td>{{volume.volume_virtualmachine.name}}</td>
+                        <td>{{volume.volume_openstackid}}</td>
+                        <td>{{volume.volume_size }} GB </td>
+                        <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+
+
+    </div>
+</div>
