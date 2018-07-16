@@ -31,6 +31,12 @@ export class VolumeOverviewComponent implements OnInit {
       })
   }
 
+  deleteVolume(volume_id:string){
+      this.vmService.deleteVolume(volume_id).subscribe(result =>{
+          this.getVolumes();
+      })
+  }
+
 
   ngOnInit(): void {
     this.getVolumes()
