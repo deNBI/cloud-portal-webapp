@@ -13,6 +13,7 @@
                         <th>Virtual Machine</th>
                         <th>Openstack Id</th>
                         <th>Size</th>
+                        <th>Actions</th>
                         <!-- th>Client</th-->
 
                     </tr>
@@ -21,9 +22,11 @@
                     <tbody>
                     <tr *ngFor="let volume of volumes">
                         <td>{{volume.volume_project}}</td>
-                        <td>{{volume.volume_virtualmachine.name}}</td>
+                        <td *ngIf="volume.volume_virtualmachine">{{volume.volume_virtualmachine.name}}</td>
+                        <td *ngIf="!volume.volume_virtualmachine"></td>
                         <td>{{volume.volume_openstackid}}</td>
                         <td>{{volume.volume_size }} GB </td>
+
                         <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
 
                     </tr>
@@ -35,4 +38,5 @@
 
 
     </div>
+</div>
 </div>
