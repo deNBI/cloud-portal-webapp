@@ -157,6 +157,21 @@ export class VirtualmachineService {
         });}
 
 
+        deleteVolume(volume_id:string):Observable<Response>{
+         let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('volume_id', volume_id)
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolume/', urlSearchParams, {
+            withCredentials: true,
+            headers: header,
+        });}
+
+
 
 
 
