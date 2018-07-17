@@ -12,37 +12,53 @@ import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 
 
 @Component({
-  selector: 'client-overview',
-  templateUrl: 'volumeOverview.component.html',
-  providers: [VirtualmachineService]
+    selector: 'client-overview',
+    templateUrl: 'volumeOverview.component.html',
+    providers: [VirtualmachineService]
 })
 
 export class VolumeOverviewComponent implements OnInit {
-  volumes: Volume[];
+    volumes: Volume[];
+    collapse_status: { [id: string]: string } = {};
 
 
-  constructor(private vmService:VirtualmachineService) {
+    constructor(private vmService: VirtualmachineService) {
 
-  }
+    }
 
-  getVolumes(){
-      this.vmService.getVolumesByUser().subscribe(result =>{
-          this.volumes=result
-      })
-  }
+    public getCollapseStatus(id: string) {
+        if (id in this.collapse_status) {
+            this.switchCollapseStatus(id);
+        } else {
+            this.collapse_status[id] = 'open';
+        }
+    }
 
-  deleteVolume(volume_id:string){
-      this.vmService.deleteVolume(volume_id).subscribe(result =>{
-          this.getVolumes();
-      })
-  }
+    public switchCollapseStatus(id: string) {
+        this.collapse_status[id] == '' ? this.collapse_status[id] = 'open' : this.collapse_status[id] = '';
+    }
 
 
-  ngOnInit(): void {
-    this.getVolumes()
-     // this.vmService.attachVolumetoServer('ae05210e-7a40-451a-8ed2-98c868c2ef8b','5302d0df-7409-45c9-8c84-33d087f067a8').subscribe()
-     // this.vmService.deleteVolume('ae05210e-7a40-451a-8ed2-98c868c2ef8b').subscribe()
+    getVolumes() {
+        this.vmService.getVolumesByUser().subscribe(result => {
+            this.volumes = result
 
-  }
+        })
+    }
+
+    deleteVolume(volume_id: string) {
+        this.vmService.deleteVolume(volume_id).subscribe(result => {
+            this.getVolumes();
+
+        })
+    }
+
+
+    ngOnInit(): void {
+        this.getVolumes()
+        // this.vmService.attachVolumetoServer('ae05210e-7a40-451a-8ed2-98c868c2ef8b','5302d0df-7409-45c9-8c84-33d087f067a8').subscribe()
+        // this.vmService.deleteVolume('ae05210e-7a40-451a-8ed2-98c868c2ef8b').subscribe()
+
+    }
 
 }

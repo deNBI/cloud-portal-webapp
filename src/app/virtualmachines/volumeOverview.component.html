@@ -27,18 +27,20 @@
                         <td>{{volume.volume_openstackid}}</td>
                         <td>{{volume.volume_size }} GB</td>
                         <td>
-                            <div class="btn-group open" dropdown="">
+                            <div class="btn-group {{collapse_status[volume.volume_openstackid]}}">
                                 <button class="btn btn-secondary" type="button">Attach Volume</button>
                                 <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                                        dropdowntoggle=""
-                                        type="button" aria-haspopup="true" aria-expanded="false"></button>
+                                        data-toggle="dropdown"
+                                        type="button" aria-haspopup="true" aria-expanded="false"
+                                        (click)="getCollapseStatus(volume.volume_openstackid)"></button>
                                 <ul class="dropdown-menu " role="menu">
                                     <li role="menuitem">
                                         <a class="dropdown-item">Detach Volume</a>
                                     </li>
 
                                     <li role="menuitem">
-                                        <a class="dropdown-item" (click)="deleteVolume(volume.volume_openstackid);">Delete Volume</a>
+                                        <a class="dropdown-item" (click)="deleteVolume(volume.volume_openstackid);">Delete
+                                            Volume</a>
                                     </li>
                                 </ul>
                             </div>
