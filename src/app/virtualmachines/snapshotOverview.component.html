@@ -1,0 +1,43 @@
+<div class="card">
+    <div class="card-header">
+        <strong>Snapshots</strong>
+        –Overview
+    </div>
+    <div>
+        <div>
+            <div class="table-responsive">
+                <table class="table table-striped ">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Actions</th>
+
+                        <!-- th>Client</th-->
+
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let snapshot of snapshots">
+                        <td>{{snapshot.snapshot_name}}</td>
+                        <td>
+                            <button
+                                    (click)="deleteSnapshot(snapshot.snapshot_openstackid);"
+
+                                    class="btn btn-primary">
+                                Delete Snapshot
+                            </button>
+                        </td>
+
+                        <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+
+
+        </div>
+    </div>

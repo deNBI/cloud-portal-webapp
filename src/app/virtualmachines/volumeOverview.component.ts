@@ -12,9 +12,10 @@ import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 
 
 @Component({
-    selector: 'client-overview',
-    templateUrl: 'volumeOverview.component.html',
-    providers: [VirtualmachineService]
+
+  selector: 'volume-overview',
+  templateUrl: 'volumeOverview.component.html',
+  providers: [VirtualmachineService]
 })
 
 export class VolumeOverviewComponent implements OnInit {

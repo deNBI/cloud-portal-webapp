@@ -2,9 +2,9 @@
     <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>&#9776;</button>
     <a class="navbar-brand" href="#"></a>
     <ul class="navbar-nav ml-md-auto">
-      <!--<li class="nav-item pr-3">
-        <button class="btn btn-info">Logout</button>
-      </li> -->
+        <!--<li class="nav-item pr-3">
+          <button class="btn btn-info">Logout</button>
+        </li> -->
     </ul>
 </header>
 <div class="app-body">
@@ -19,7 +19,8 @@
                         User Information </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" routerLinkActive="active" [routerLink]="['/help']"><i class="icon-info"></i> Help</a>
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/help']"><i class="icon-info"></i>
+                        Help</a>
                 </li>
                 <li class="divider"></li>
                 <li class="nav-title">
@@ -66,9 +67,13 @@
                     <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/clientOverview']"><i
                             class="icon-list"></i> Client Overview</a>
                 </li>
-                 <li class="nav-item" *ngIf="get_is_vo_admin()">
+                <li class="nav-item">
                     <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/volumeOverview']"><i
                             class="icon-list"></i> Volume Overview</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/snapshotOverview']"><i
+                            class="icon-list"></i> Snapshot Overview</a>
                 </li>
                 <li class="nav-item" *ngIf="vm_project_member || get_is_vo_admin()">
                     <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/vmOverview']"><i
@@ -113,5 +118,5 @@
 </div>
 
 <footer class="app-footer">
-  <a href="https://cloud.denbi.de">de.NBI</a> &copy; {{ year }}
+    <a href="https://cloud.denbi.de">de.NBI</a> &copy; {{ year }}
 </footer>
