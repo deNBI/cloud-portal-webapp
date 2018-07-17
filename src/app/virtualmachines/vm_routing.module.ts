@@ -5,6 +5,7 @@ import { VirtualMachineComponent} from '../virtualmachines/addvm.component';
 import {ClientOverviewComponent} from "../virtualmachines/vmClients.component";
 import {VmOverviewComponent} from "../virtualmachines/vmOverview.component";
 import { VolumeOverviewComponent} from "./volumeOverview.component";
+import {SnapshotOverviewComponent} from "./snapshotOverview.component";
 
 const routes: Routes = [
   {
@@ -36,6 +37,14 @@ const routes: Routes = [
     component:VolumeOverviewComponent,
     data: {
       title: 'Volumes Overview'
+    }
+
+  },
+       {
+    path:'snapshotOverview',
+    component:SnapshotOverviewComponent,
+    data: {
+      title: 'Snapshots Overview'
     }
 
   },

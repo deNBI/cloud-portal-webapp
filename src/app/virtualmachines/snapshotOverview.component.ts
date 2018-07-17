@@ -9,31 +9,39 @@ import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
 import {Volume} from "./virtualmachinemodels/volume";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
+import {ImageService} from "../api-connector/image.service";
+import {SnapshotModel} from "./virtualmachinemodels/snapshot.model";
 
 
 @Component({
-  selector: 'volume-overview',
-  templateUrl: 'volumeOverview.component.html',
-  providers: [VirtualmachineService]
+  selector: 'snapshot-overview',
+  templateUrl: 'snapshotOverview.component.html',
+  providers: [ImageService]
 })
 
-export class VolumeOverviewComponent implements OnInit {
-  volumes: Volume[];
+export class SnapshotOverviewComponent implements OnInit {
+  snapshots: SnapshotModel[];
 
 
-  constructor(private vmService:VirtualmachineService) {
+  constructor(private imageService:ImageService) {
 
   }
 
-  getVolumes(){
-      this.vmService.getVolumesByUser().subscribe(result =>{
-          this.volumes=result
+  getSnapshots(){
+      this.imageService.getSnapshotsByUser().subscribe(result =>{
+          this.snapshots=result
       })
+  }
+  deleteSnapshot(snapshot_id:string){
+      this.imageService.deleteSnapshot(snapshot_id).subscribe(result =>{
+          this.getSnapshots();
+      })
+
   }
 
 
   ngOnInit(): void {
-    this.getVolumes()
+    this.getSnapshots()
 
   }
 
