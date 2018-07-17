@@ -38,12 +38,28 @@ export class VmOverviewComponent implements OnInit {
     filterstopped_at: string;
     filterproject: string;
     filterssh: string;
+        collapse_status: { [id: string]: string } = {};
+
 
 
 
     constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
    this.virtualmachineservice.getVolumesByUser().subscribe()
 
+    }
+
+
+
+    public getCollapseStatus(id: string) {
+        if (id in this.collapse_status) {
+            this.switchCollapseStatus(id);
+        } else {
+            this.collapse_status[id] = 'open';
+        }
+    }
+
+    public switchCollapseStatus(id: string) {
+        this.collapse_status[id] == '' ? this.collapse_status[id] = 'open' : this.collapse_status[id] = '';
     }
 
     toggleTab(tabString: string) {

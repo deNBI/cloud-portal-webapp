@@ -81,44 +81,43 @@
                     </td>
 
                     <td>
+                        <div *ngIf="vm.status !='DELETED'"
+                             class="btn-group {{collapse_status[vm.openstackid]}}">
+                            <button class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED'"
+                                    (click)="snapshot_vm=vm.openstackid;resetSnapshotResult();snapshotModal.show();">
+                                Create Snapshot
+                            </button>
+                            <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                                    data-toggle="dropdown"
+                                    type="button" aria-haspopup="true" aria-expanded="false"
+                                    (click)="getCollapseStatus(vm.openstackid)"></button>
+                            <ul class="dropdown-menu " role="menu">
+                                <li role="menuitem" *ngIf="vm.status =='ACTIVE'">
+                                    <a class="dropdown-item"
+                                       (click)="status_changed_vm=vm.name;stopVm(vm.openstackid,vm.name);stopModal.show();">Stop
+                                        Vm</a>
+                                </li>
 
-                        <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
-                                *ngIf="vm.status =='ACTIVE'"
-                                (click)="status_changed_vm=vm.name;stopVm(vm.openstackid,vm.name);stopModal.show();"
-                                class="btn btn-primary">
-                            Stop Vm
-                        </button>
+                                <li *ngIf="vm.status =='SUSPENDED'" role="menuitem">
+                                    <a class="dropdown-item"
+                                       (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();">Resume
+                                        Vm</a>
+                                </li>
+                                <li *ngIf="vm.status !='SUSPENDED' && vm.status != 'ACTIVE' && vm.status != 'DELETED'"
+                                    role="menuitem">
+                                    <a class="dropdown-item"
+                                       (click)="checkStatus(vm.openstackid);">Check Status
+                                    </a>
+                                </li>
+                                <li *ngIf="vm.status !='DELETED'" role="menuitem">
+                                    <a class="dropdown-item"
+                                       (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();">Delete
+                                        Vm</a>
+                                </li>
+                            </ul>
+                        </div>
 
 
-                        <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
-                                *ngIf="vm.status =='SUSPENDED'"
-                                (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();"
-
-                                class="btn btn-primary">
-                            Resume Vm
-                        </button>
-                        <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
-                                *ngIf="vm.status !='SUSPENDED' && vm.status != 'ACTIVE' && vm.status != 'DELETED'"
-                                (click)="checkStatus(vm.openstackid);"
-                                class="btn btn-primary">
-                            Check Status
-                        </button>
-
-                        <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
-                                *ngIf="vm.status !='DELETED'"
-                                (click)="snapshot_vm=vm.openstackid;resetSnapshotResult();snapshotModal.show();"
-
-                                class="btn btn-primary">
-                            Create Snapshot
-                        </button>
-
-                        <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
-                                *ngIf="vm.status !='DELETED'"
-                                (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();"
-
-                                class="btn btn-primary">
-                            Delete Vm
-                        </button>
                     </td>
                 </tr>
             </ng-container>
@@ -295,16 +294,17 @@
                 <h4 class="modal-title">Snapshot</h4>
             </div>
             <div class="modal-body">
-                <div  class="alert alert-info" role="alert" *ngIf="snapshotDone == 'Waiting' ">
-                   Wait until Snapshot is created....
+                <div class="alert alert-info" role="alert" *ngIf="snapshotDone == 'Waiting' ">
+                    Wait until Snapshot is created....
                 </div>
 
 
-                <div  class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' ">
+                <div class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' ">
                     Successfully created Snapshot.
                     You can now use it when starting an new instance.
                 </div>
-                <div class="alert alert-danger" role="alert"  *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
+                <div class="alert alert-danger" role="alert"
+                     *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
                     An error occured when creating the snapshot.
 
                     <pre>{{snapshotDone}}</pre>
