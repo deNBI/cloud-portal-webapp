@@ -35,11 +35,11 @@
                                         (click)="getCollapseStatus(volume.volume_openstackid)"></button>
                                 <ul class="dropdown-menu " role="menu">
                                     <li role="menuitem">
-                                        <a class="dropdown-item">Detach Volume</a>
+                                        <a class="dropdown-item" (click)="detachVolume(volume.volume_openstackid,volume.volume_virtualmachine.openstackid);">Detach Volume</a>
                                     </li>
 
                                     <li role="menuitem">
-                                        <a class="dropdown-item" (click)="deleteVolume(volume.volume_openstackid);">Delete
+                                        <a class="dropdown-item" (click)="deleteVolume(volume.volume_openstackid,volume.volume_virtualmachine?.openstackid);">Delete
                                             Volume</a>
                                     </li>
                                 </ul>

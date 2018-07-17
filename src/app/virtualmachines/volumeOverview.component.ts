@@ -46,10 +46,29 @@ export class VolumeOverviewComponent implements OnInit {
         })
     }
 
-    deleteVolume(volume_id: string) {
-        this.vmService.deleteVolume(volume_id).subscribe(result => {
-            this.getVolumes();
+    deleteVolume(volume_id: string, instance_id?: string) {
+        console.log(instance_id)
+        if (instance_id) {
+            this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
+                this.vmService.deleteVolume(volume_id).subscribe(result => {
+                    this.getVolumes();
+                })
+            })
 
+        }
+        else {
+            this.vmService.deleteVolume(volume_id).subscribe(result => {
+                this.getVolumes();
+
+            })
+        }
+    }
+
+    detachVolume(volume_id: string, instance_id: string) {
+        console.log(volume_id);
+        console.log(instance_id);
+        this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
+            this.getVolumes();
         })
     }
 
