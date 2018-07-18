@@ -15,11 +15,16 @@ export class VolumeOverviewComponent implements OnInit {
     volumes: Volume[];
     collapse_status: { [id: string]: string } = {};
     selected_volume: Volume;
-    delete_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume
+    delete_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume
+    request_status: number; // 0=Delete ,1 =Detach
 
 
     constructor(private vmService: VirtualmachineService) {
 
+    }
+
+    setRequestStatus(status: number) {
+        this.request_status = status;
     }
 
     setSelectedVolume(volume: Volume) {
@@ -86,9 +91,15 @@ export class VolumeOverviewComponent implements OnInit {
     }
 
     detachVolume(volume_id: string, instance_id: string) {
-        console.log(volume_id);
-        console.log(instance_id);
+        this.delete_status = 3;
         this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
+            result = result.json()
+            if (result['Deleted'] && result['Deleted'] === true) {
+                this.delete_status = 4;
+            }
+            else {
+                this.delete_status = 2;
+            }
             this.getVolumes();
         })
     }
