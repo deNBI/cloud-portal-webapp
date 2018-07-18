@@ -1,30 +1,29 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {FormsModule} from '@angular/forms';
 import 'rxjs/Rx'
-import {Vmclient} from "./virtualmachinemodels/vmclient";
-import {ClientService} from "../api-connector/vmClients.service";
-import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {ApiSettings} from "../api-connector/api-settings.service";
-import {GroupService} from "../api-connector/group.service";
-import {UserService} from "../api-connector/user.service";
 import {Volume} from "./virtualmachinemodels/volume";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 
 
 @Component({
 
-  selector: 'volume-overview',
-  templateUrl: 'volumeOverview.component.html',
-  providers: [VirtualmachineService]
+    selector: 'volume-overview',
+    templateUrl: 'volumeOverview.component.html',
+    providers: [VirtualmachineService]
 })
 
 export class VolumeOverviewComponent implements OnInit {
     volumes: Volume[];
     collapse_status: { [id: string]: string } = {};
+    selected_volume: Volume;
+    delete_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume
 
 
     constructor(private vmService: VirtualmachineService) {
 
+    }
+
+    setSelectedVolume(volume: Volume) {
+        this.selected_volume = volume;
     }
 
     public getCollapseStatus(id: string) {
@@ -48,10 +47,24 @@ export class VolumeOverviewComponent implements OnInit {
     }
 
     deleteVolume(volume_id: string, instance_id?: string) {
-        console.log(instance_id)
+        this.delete_status = 0;
+
+
         if (instance_id) {
+            this.delete_status = 3;
             this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
+                if (result['Deleted'] && result['Deleted'] === true) {
+                    this.delete_status = 0;
+                }
+
                 this.vmService.deleteVolume(volume_id).subscribe(result => {
+                    result = result.json()
+                    if (result['Deleted'] && result['Deleted'] === true) {
+                        this.delete_status = 1;
+                    }
+                    else {
+                        this.delete_status = 2;
+                    }
                     this.getVolumes();
                 })
             })
@@ -59,6 +72,13 @@ export class VolumeOverviewComponent implements OnInit {
         }
         else {
             this.vmService.deleteVolume(volume_id).subscribe(result => {
+                result = result.json()
+                if (result['Deleted'] && result['Deleted'] === true) {
+                    this.delete_status = 1;
+                }
+                else {
+                    this.delete_status = 2;
+                }
                 this.getVolumes();
 
             })

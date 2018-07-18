@@ -35,11 +35,14 @@
                                         (click)="getCollapseStatus(volume.volume_openstackid)"></button>
                                 <ul class="dropdown-menu " role="menu">
                                     <li role="menuitem">
-                                        <a class="dropdown-item" (click)="detachVolume(volume.volume_openstackid,volume.volume_virtualmachine.openstackid);">Detach Volume</a>
+                                        <a class="dropdown-item"
+                                           (click)="detachVolume(volume.volume_openstackid,volume.volume_virtualmachine.openstackid);">Detach
+                                            Volume</a>
                                     </li>
 
                                     <li role="menuitem">
-                                        <a class="dropdown-item" (click)="deleteVolume(volume.volume_openstackid,volume.volume_virtualmachine?.openstackid);">Delete
+                                        <a class="dropdown-item"
+                                           (click)="setSelectedVolume(volume);verifyModal.show();">Delete
                                             Volume</a>
                                     </li>
                                 </ul>
@@ -61,3 +64,71 @@
         </div>
     </div>
 </div>
+
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" *ngIf="delete_status == 0 || delete_status == 3"> Waiting </h4>
+                <h4 class="modal-title" *ngIf="delete_status == 1"> Success </h4>
+                <h4 class="modal-title" *ngIf="delete_status == 2"> Error </h4>
+
+            </div>
+            <div class="modal-body">
+                  <div class="alert alert-info" role="alert" *ngIf="delete_status == 3">
+                    Detaching {{selected_volume?.volume_openstackid}}... <i class="fa fa-spinner fa-spin"
+                                                                        style="font-size:24px"></i>
+                </div>
+                <div class="alert alert-info" role="alert" *ngIf="delete_status == 0">
+                    Deleting {{selected_volume?.volume_openstackid}}... <i class="fa fa-spinner fa-spin"
+                                                                        style="font-size:24px"></i>
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="delete_status == 1">
+                    {{selected_volume?.volume_openstackid}} was succesfully deleted.
+                </div>
+            </div>
+            <div class="alert alert-warning" role="alert" *ngIf="delete_status == 2">
+                When deleting {{selected_volume?.volume_openstackid}} an error occured.
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="delete_status = 0;deleteModal.hide()">Close
+                </button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Volume</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="alert alert-warning" role="alert">
+                    Are you sure you want to delete {{selected_volume?.volume_openstackid}}?
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-4"
+                        (click)="deleteVolume(selected_volume.volume_openstackid,selected_volume.volume_virtualmachine?.openstackid);verifyModal.hide();deleteModal.show()">
+                    Yes
+                </button>
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="verifyModal.hide();">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
