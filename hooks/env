@@ -5,3 +5,12 @@ if [[ $SOURCE_BRANCH = "prod" ]] || [[ $SOURCE_BRANCH == *.*.* ]] ; then
 else
 	ANGULAR_MODE="stage"
 fi
+
+
+SOURCE_BRANCH=$(git symbolic-ref -q --short HEAD)
+ 
+if  $(git describe --exact-match --tags HEAD) "$ret" -eq 0  || [ $SOURCE_BRANCH = "master" ]; then
+        ANGULAR_MODE="prod"
+else
+        ANGULAR_MODE="stage"
+fi
