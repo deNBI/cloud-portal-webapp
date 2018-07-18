@@ -14,35 +14,53 @@ import {SnapshotModel} from "./virtualmachinemodels/snapshot.model";
 
 
 @Component({
-  selector: 'snapshot-overview',
-  templateUrl: 'snapshotOverview.component.html',
-  providers: [ImageService]
+    selector: 'snapshot-overview',
+    templateUrl: 'snapshotOverview.component.html',
+    providers: [ImageService]
 })
 
 export class SnapshotOverviewComponent implements OnInit {
-  snapshots: SnapshotModel[];
+    snapshots: SnapshotModel[];
+    selected_snapshot: SnapshotModel;
+    delete_status = 0;
 
 
-  constructor(private imageService:ImageService) {
+    constructor(private imageService: ImageService) {
 
-  }
+    }
 
-  getSnapshots(){
-      this.imageService.getSnapshotsByUser().subscribe(result =>{
-          this.snapshots=result
-      })
-  }
-  deleteSnapshot(snapshot_id:string){
-      this.imageService.deleteSnapshot(snapshot_id).subscribe(result =>{
-          this.getSnapshots();
-      })
+    setSelectedSnapshot(snapshot: SnapshotModel) {
+        this.selected_snapshot = snapshot;
+    }
 
-  }
+    getSnapshots() {
+        this.imageService.getSnapshotsByUser().subscribe(result => {
+            this.snapshots = result
+        })
+    }
+
+    deleteSnapshot(snapshot_id: string) {
+        this.imageService.deleteSnapshot(snapshot_id).subscribe(result => {
+
+            this.delete_status = 0;
 
 
-  ngOnInit(): void {
-    this.getSnapshots()
+            if (result['Deleted'] && result['Deleted'] === true) {
+                this.delete_status = 1;
+            }
+            else {
+                this.delete_status = 2;
+            }
 
-  }
+            this.getSnapshots();
+        })
+
+    }
+
+
+    ngOnInit(): void {
+        this.getSnapshots()
+
+    }
 
 }
