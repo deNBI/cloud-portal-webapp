@@ -47,6 +47,7 @@ export class ApplicationsService ***REMOVED***
 
     let header = new Headers(***REMOVED***
       'X-CSRFToken': this.settings.getCSRFToken(),
+        'Content-Type': 'application/json'
     ***REMOVED***);
     return this.http.post(this.settings.getApiBaseURL() + 'application/requestRenewal/',parameter,
       ***REMOVED***
