@@ -2,9 +2,9 @@
     <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>&#9776;</button>
     <a class="navbar-brand" href="#"></a>
     <ul class="navbar-nav ml-md-auto">
-      <!--<li class="nav-item pr-3">
-        <button class="btn btn-info">Logout</button>
-      </li> -->
+        <!--<li class="nav-item pr-3">
+          <button class="btn btn-info">Logout</button>
+        </li> -->
     </ul>
 </header>
 <div class="app-body">
@@ -19,7 +19,8 @@
                         User Information </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" routerLinkActive="active" [routerLink]="['/help']"><i class="icon-info"></i> Help</a>
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/help']"><i class="icon-info"></i>
+                        Help</a>
                 </li>
                 <li class="divider"></li>
                 <li class="nav-title">
@@ -62,18 +63,36 @@
 
                             class="icon-screen-desktop"></i> New Instance</a>
                 </li>
-                <li class="nav-item" *ngIf="get_is_vo_admin()">
-                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/clientOverview']"><i
-                            class="icon-list"></i> Client Overview</a>
+                <li class="nav-item nav-dropdown {{overview_state}}">
+                    <a class="nav-link nav-dropdown-toggle" (click)="  toggle_overview();"><i
+                            class="icon-list"></i> Overviews</a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item" *ngIf="vm_project_member || get_is_vo_admin()">
+                            <a class="nav-link" routerLinkActive="active"
+                               [routerLink]="['/virtualmachines/vmOverview']"><i
+                                    class="icon-list"></i> Instance Overview</a>
+                        </li>
+                        <li class="nav-item" *ngIf="get_is_vo_admin()">
+                            <a class="nav-link" routerLinkActive="active"
+                               [routerLink]="['/virtualmachines/clientOverview']"><i
+                                    class="icon-list"></i> Client Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLinkActive="active"
+                               [routerLink]="['/virtualmachines/volumeOverview']"><i
+                                    class="icon-list"></i> Volume Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLinkActive="active"
+                               [routerLink]="['/virtualmachines/snapshotOverview']"><i
+                                    class="icon-list"></i> Snapshot Overview</a>
+                        </li>
+
+                    </ul>
+
                 </li>
-                 <li class="nav-item" *ngIf="get_is_vo_admin()">
-                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/volumeOverview']"><i
-                            class="icon-list"></i> Volume Overview</a>
-                </li>
-                <li class="nav-item" *ngIf="vm_project_member || get_is_vo_admin()">
-                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/vmOverview']"><i
-                            class="icon-list"></i> Instance Overview</a>
-                </li>
+
+
                 <li *ngIf="is_facility_manager" class="nav-title">
                     Facilities
                 </li>
@@ -113,5 +132,5 @@
 </div>
 
 <footer class="app-footer">
-  <a href="https://cloud.denbi.de">de.NBI</a> &copy; {{ year }}
+    <a href="https://cloud.denbi.de">de.NBI</a> &copy; {{ year }}
 </footer>

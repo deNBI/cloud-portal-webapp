@@ -18,7 +18,6 @@ export class VirtualmachineService {
     }
 
 
-
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string, diskspace?: string): Observable<Response> {
 
         let header = new Headers({
@@ -61,7 +60,18 @@ export class VirtualmachineService {
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
     }
 
-        checkStatusInactiveVms(elixir_id: string): Observable<VirtualMachine[]> {
+    getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> {
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('groupid', groupid)
+
+        return this.http.get(this.baseVmUrl + 'getActiveVmsByProject/', {
+            withCredentials: true,
+            search: urlSearchParams
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+    }
+
+
+    checkStatusInactiveVms(elixir_id: string): Observable<VirtualMachine[]> {
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('elixir_id', elixir_id)
 
@@ -81,10 +91,10 @@ export class VirtualmachineService {
         urlSearchParams.append('openstack_id', openstack_id)
 
 
-        return this.http.post(this.baseVmUrl + 'checkStatusVm/',urlSearchParams, {
+        return this.http.post(this.baseVmUrl + 'checkStatusVm/', urlSearchParams, {
             withCredentials: true,
 
-            headers:header
+            headers: header
         });
     }
 
@@ -127,18 +137,68 @@ export class VirtualmachineService {
         return this.http.post(this.baseVmUrl + 'resumeVm/', urlSearchParams, {
             withCredentials: true,
             headers: header,
-        });}
+        });
+    }
 
 
-    getVolumesByUser():Observable<Volume[]> {
+    getVolumesByUser(): Observable<Volume[]> {
         let urlSearchParams = new URLSearchParams();
 
-    return this.http.get(this.settings.getConnectorBaseUrl() + 'volumes/get_volumes/', {
-      withCredentials: true,
-      search: urlSearchParams
-    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+        return this.http.get(this.settings.getConnectorBaseUrl() + 'volumes/get_volumes/', {
+            withCredentials: true,
+            search: urlSearchParams
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
 
 
+    }
+
+    attachVolumetoServer(volume_id: string, instance_id: string): Observable<Response> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('volume_id', volume_id)
+        urlSearchParams.append('instance_id', instance_id)
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/attachVolume/', urlSearchParams, {
+            withCredentials: true,
+            headers: header,
+        });
+    }
+
+
+    deleteVolume(volume_id: string): Observable<Response> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('volume_id', volume_id)
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolume/', urlSearchParams, {
+            withCredentials: true,
+            headers: header,
+        });
+    }
+
+
+    deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<Response> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('volume_id', volume_id)
+        urlSearchParams.append('instance_id', instance_id)
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolumeAttachment/', urlSearchParams, {
+            withCredentials: true,
+            headers: header,
+        });
     }
 
 

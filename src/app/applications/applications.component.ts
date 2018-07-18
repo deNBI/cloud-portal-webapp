@@ -53,12 +53,15 @@ export class ApplicationsComponent {
                 private perunsettings: PerunSettings,
                 private userservice: UserService,
                 private groupservice: GroupService) {
+        console.log(this.collapse_status)
 
         this.getUserApplications();
         this.getAllApplications();
         this.getApplicationStatus();
         this.getSpecialHardware();
-        this.getComputeCenters();
+        this.getComputeCenters()
+                console.log(this.collapse_status)
+
 
 
     }
@@ -377,7 +380,6 @@ export class ApplicationsComponent {
     }
 
     public approveExtension(application_id: number) {
-        console.log('extend')
         this.applicataionsservice.approveRenewal(application_id).subscribe(result => {
             this.user_applications = [];
             this.all_applications = [];

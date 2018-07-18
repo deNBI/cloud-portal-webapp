@@ -21,7 +21,8 @@ export class FullLayoutComponent implements OnInit {
     private is_vo_admin = false;
     public is_facility_manager = false
     public vm_project_member = false;
-    navbar_state = 'closed'
+    navbar_state = 'closed';
+    overview_state='closed';
     client_avaiable;
 
     constructor(private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) {
@@ -88,6 +89,17 @@ export class FullLayoutComponent implements OnInit {
             this.navbar_state = 'closed'
         }
     }
+
+    toggle_overview(){
+         if (this.overview_state == 'closed') {
+            this.overview_state = 'open'
+        }
+        else {
+            this.overview_state = 'closed'
+        }
+    }
+
+
 
     checkVOstatus(userservice:UserService) {
         let user_id: number;
