@@ -370,7 +370,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
                 this.snapshotDone=result['Error'].toString();
             ***REMOVED***
             else if (result['Created'])
-                this.snapshotDone=result['Created'].toString();
+                this.snapshotDone='true';
 
 
         ***REMOVED***)

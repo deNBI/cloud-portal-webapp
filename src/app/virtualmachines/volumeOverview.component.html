@@ -13,6 +13,7 @@
                         <th>Virtual Machine</th>
                         <th>Openstack Id</th>
                         <th>Size</th>
+                        <th>Actions</th>
                         <!-- th>Client</th-->
 
                     </tr>
@@ -21,9 +22,38 @@
                     <tbody>
                     <tr *ngFor="let volume of volumes">
                         <td>***REMOVED******REMOVED***volume.volume_project***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED***volume.volume_virtualmachine.name***REMOVED******REMOVED***</td>
+                        <td *ngIf="volume.volume_virtualmachine">***REMOVED******REMOVED***volume.volume_virtualmachine.name***REMOVED******REMOVED***</td>
+                        <td *ngIf="!volume.volume_virtualmachine"></td>
                         <td>***REMOVED******REMOVED***volume.volume_openstackid***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED***volume.volume_size ***REMOVED******REMOVED*** GB </td>
+                        <td>***REMOVED******REMOVED***volume.volume_size ***REMOVED******REMOVED*** GB</td>
+                        <td>
+                            <div class="btn-group ***REMOVED******REMOVED***collapse_status[volume.volume_openstackid]***REMOVED******REMOVED***">
+                                <button class="btn btn-secondary"
+                                        (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
+                                        type="button">Delete Volume
+                                </button>
+                                <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                                        data-toggle="dropdown"
+                                        type="button" aria-haspopup="true" aria-expanded="false"
+                                        (click)="getCollapseStatus(volume.volume_openstackid)"></button>
+                                <ul class="dropdown-menu " role="menu">
+                                    <li *ngIf="volume.volume_virtualmachine" role="menuitem">
+                                        <a class="dropdown-item"
+                                           (click)="setRequestStatus(1);setSelectedVolume(volume);verifyModal.show();">Detach
+                                            Volume</a>
+                                    </li>
+
+                                    <li *ngIf="!volume.volume_virtualmachine" role="menuitem">
+                                        <a class="dropdown-item"
+                                           (click)="getActiveVmsByProject(volume.volume_projectid);setSelectedVolume(volume);attachModal.show();">Attach
+                                            Volume</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                        </td>
+
                         <!-- td>***REMOVED******REMOVED***volume.volume_client.host***REMOVED******REMOVED*** : ***REMOVED******REMOVED***volume.volume_client.port***REMOVED******REMOVED***</td-->
 
                     </tr>
@@ -34,5 +64,132 @@
             </div>
 
 
+        </div>
     </div>
 </div>
+
+<div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" *ngIf="delete_status == 0 || delete_status == 3 || delete_status == 5">
+                    Waiting </h4>
+                <h4 class="modal-title" *ngIf="delete_status == 1"> Success </h4>
+                <h4 class="modal-title" *ngIf="delete_status == 2"> Error </h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert" *ngIf="delete_status == 3">
+                    Detaching ***REMOVED******REMOVED***selected_volume?.volume_openstackid***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
+                                                                            style="font-size:24px"></i>
+                </div>
+
+                <div class="alert alert-info" role="alert" *ngIf="delete_status == 5">
+                    Attaching Volume ***REMOVED******REMOVED***selected_volume?.volume_openstackid***REMOVED******REMOVED*** to Virtualmachine ***REMOVED******REMOVED***selected_vm.name***REMOVED******REMOVED***...
+                    <i class="fa fa-spinner fa-spin"
+                       style="font-size:24px"></i>
+                </div>
+                <div class="alert alert-info" role="alert" *ngIf="delete_status == 0">
+                    Deleting ***REMOVED******REMOVED***selected_volume?.volume_openstackid***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
+                                                                           style="font-size:24px"></i>
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="delete_status == 1">
+                    ***REMOVED******REMOVED***selected_volume?.volume_openstackid***REMOVED******REMOVED*** was succesfully deleted.
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="delete_status == 4">
+                    ***REMOVED******REMOVED***selected_volume?.volume_openstackid***REMOVED******REMOVED*** was succesfully detached.
+                </div>
+                 <div class="alert alert-success" role="alert" *ngIf="delete_status == 6">
+                    ***REMOVED******REMOVED***selected_volume?.volume_openstackid***REMOVED******REMOVED*** was succesfully attached.
+                </div>
+            </div>
+            <div class="alert alert-warning" role="alert" *ngIf="delete_status == 2">
+                An error occured.
+            </div>
+
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="delete_status = 0;resultModal.hide()">Close
+                </button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Volume</h4>
+            </div>
+            <div class="modal-body">
+
+                <div *ngIf="request_status == 0;" class="alert alert-warning" role="alert">
+                    Are you sure you want to delete Volume ***REMOVED******REMOVED***selected_volume?.volume_openstackid***REMOVED******REMOVED***?
+                </div>
+                <div *ngIf="request_status == 1;" class="alert alert-warning" role="alert">
+                    Are you sure you want to detach Volume ***REMOVED******REMOVED***selected_volume?.volume_openstackid***REMOVED******REMOVED*** from
+                    ***REMOVED******REMOVED***selected_volume?.volume_virtualmachine?.name***REMOVED******REMOVED***?
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="request_status==0;" class="btn  btn-success col-md-4"
+                        (click)="deleteVolume(selected_volume.volume_openstackid,selected_volume.volume_virtualmachine?.openstackid);verifyModal.hide();resultModal.show()">
+                    Yes
+                </button>
+                <button *ngIf="request_status==1;" class="btn  btn-success col-md-4"
+                        (click)="detachVolume(selected_volume.volume_openstackid,selected_volume.volume_virtualmachine.openstackid);verifyModal.hide();resultModal.show()">
+                    Yes
+                </button>
+
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="verifyModal.hide();">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #attachModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Attach Volume</h4>
+            </div>
+            <div class="modal-body">
+                <strong>To which vm should the volume be attached?</strong>
+
+                <select class="form-control col-md-6" name="selected_vm"
+                        [(ngModel)]="selected_vm">
+                    <option value="undefined" disabled selected hidden> Please Select</option>
+                    <option *ngFor="let vm of project_vms" [ngValue]="vm"> ***REMOVED******REMOVED***vm.name***REMOVED******REMOVED***
+                    </option>
+
+                </select>
+
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-4"
+                        [disabled]="selected_vm== undefined"
+                        (click)="attachVolume(selected_volume.volume_openstackid,selected_vm.openstackid);attachModal.hide();resultModal.show()">
+                    Attach Volume
+                </button>
+
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="selected_vm=undefined;attachModal.hide();">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+

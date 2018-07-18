@@ -18,7 +18,6 @@ export class VirtualmachineService ***REMOVED***
     ***REMOVED***
 
 
-
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string, diskspace?: string): Observable<Response> ***REMOVED***
 
         let header = new Headers(***REMOVED***
@@ -61,7 +60,18 @@ export class VirtualmachineService ***REMOVED***
         ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
     ***REMOVED***
 
-        checkStatusInactiveVms(elixir_id: string): Observable<VirtualMachine[]> ***REMOVED***
+    getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('groupid', groupid)
+
+        return this.http.get(this.baseVmUrl + 'getActiveVmsByProject/', ***REMOVED***
+            withCredentials: true,
+            search: urlSearchParams
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+    ***REMOVED***
+
+
+    checkStatusInactiveVms(elixir_id: string): Observable<VirtualMachine[]> ***REMOVED***
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('elixir_id', elixir_id)
 
@@ -81,10 +91,10 @@ export class VirtualmachineService ***REMOVED***
         urlSearchParams.append('openstack_id', openstack_id)
 
 
-        return this.http.post(this.baseVmUrl + 'checkStatusVm/',urlSearchParams, ***REMOVED***
+        return this.http.post(this.baseVmUrl + 'checkStatusVm/', urlSearchParams, ***REMOVED***
             withCredentials: true,
 
-            headers:header
+            headers: header
         ***REMOVED***);
     ***REMOVED***
 
@@ -127,18 +137,68 @@ export class VirtualmachineService ***REMOVED***
         return this.http.post(this.baseVmUrl + 'resumeVm/', urlSearchParams, ***REMOVED***
             withCredentials: true,
             headers: header,
-        ***REMOVED***);***REMOVED***
+        ***REMOVED***);
+    ***REMOVED***
 
 
-    getVolumesByUser():Observable<Volume[]> ***REMOVED***
+    getVolumesByUser(): Observable<Volume[]> ***REMOVED***
         let urlSearchParams = new URLSearchParams();
 
-    return this.http.get(this.settings.getConnectorBaseUrl() + 'volumes/get_volumes/', ***REMOVED***
-      withCredentials: true,
-      search: urlSearchParams
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+        return this.http.get(this.settings.getConnectorBaseUrl() + 'volumes/get_volumes/', ***REMOVED***
+            withCredentials: true,
+            search: urlSearchParams
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
 
 
+    ***REMOVED***
+
+    attachVolumetoServer(volume_id: string, instance_id: string): Observable<Response> ***REMOVED***
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('volume_id', volume_id)
+        urlSearchParams.append('instance_id', instance_id)
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/attachVolume/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***);
+    ***REMOVED***
+
+
+    deleteVolume(volume_id: string): Observable<Response> ***REMOVED***
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('volume_id', volume_id)
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolume/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***);
+    ***REMOVED***
+
+
+    deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<Response> ***REMOVED***
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('volume_id', volume_id)
+        urlSearchParams.append('instance_id', instance_id)
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolumeAttachment/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***);
     ***REMOVED***
 
 

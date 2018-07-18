@@ -1,0 +1,107 @@
+<div class="card">
+    <div class="card-header">
+        <strong>Snapshots</strong>
+        –Overview
+    </div>
+    <div>
+        <div>
+            <div class="table-responsive">
+                <table class="table table-striped ">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Actions</th>
+
+                        <!-- th>Client</th-->
+
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let snapshot of snapshots">
+                        <td>***REMOVED******REMOVED***snapshot.snapshot_name***REMOVED******REMOVED***</td>
+                        <td>
+                            <button
+                                    (click)="setSelectedSnapshot(snapshot);verifyModal.show();"
+
+                                    class="btn btn-primary">
+                                Delete Snapshot
+                            </button>
+                        </td>
+
+                        <!-- td>***REMOVED******REMOVED***volume.volume_client.host***REMOVED******REMOVED*** : ***REMOVED******REMOVED***volume.volume_client.port***REMOVED******REMOVED***</td-->
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" *ngIf="delete_status == 0"> Waiting </h4>
+                <h4 class="modal-title" *ngIf="delete_status == 1"> Success </h4>
+                <h4 class="modal-title" *ngIf="delete_status == 2"> Error </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert" *ngIf="delete_status == 0">
+                    Deleting ***REMOVED******REMOVED***selected_snapshot?.snapshot_name***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="delete_status == 1">
+                    ***REMOVED******REMOVED***selected_snapshot?.snapshot_name***REMOVED******REMOVED*** was succesfully deleted.
+                </div>
+            </div>
+            <div class="alert alert-warning" role="alert" *ngIf="delete_status == 2">
+                When deleting ***REMOVED******REMOVED***selected_snapshot?.snapshot_name***REMOVED******REMOVED*** an error occured.
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="delete_status = 0;deleteModal.hide()">Close
+                </button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Snapshot</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="alert alert-warning" role="alert">
+                    Are you sure you want to delete ***REMOVED******REMOVED***selected_snapshot?.snapshot_name***REMOVED******REMOVED***?
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-4"
+                        (click)="deleteSnapshot(selected_snapshot.snapshot_openstackid);
+                        ;verifyModal.hide();deleteModal.show()
+                ">
+                    Yes
+                </button>
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="verifyModal.hide();">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
