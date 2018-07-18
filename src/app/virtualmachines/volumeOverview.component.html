@@ -45,7 +45,8 @@
 
                                     <li *ngIf="!volume.volume_virtualmachine" role="menuitem">
                                         <a class="dropdown-item"
-                                           (click)="getActiveVmsByProject(volume.volume_projectid);setSelectedVolume(volume);attachModal.show();">Attach Volume</a>
+                                           (click)="getActiveVmsByProject(volume.volume_projectid);setSelectedVolume(volume);attachModal.show();">Attach
+                                            Volume</a>
                                     </li>
                                 </ul>
                             </div>
@@ -67,12 +68,13 @@
     </div>
 </div>
 
-<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" *ngIf="delete_status == 0 || delete_status == 3"> Waiting </h4>
+                <h4 class="modal-title" *ngIf="delete_status == 0 || delete_status == 3 || delete_status == 5">
+                    Waiting </h4>
                 <h4 class="modal-title" *ngIf="delete_status == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="delete_status == 2"> Error </h4>
 
@@ -81,6 +83,12 @@
                 <div class="alert alert-info" role="alert" *ngIf="delete_status == 3">
                     Detaching {{selected_volume?.volume_openstackid}}... <i class="fa fa-spinner fa-spin"
                                                                             style="font-size:24px"></i>
+                </div>
+
+                <div class="alert alert-info" role="alert" *ngIf="delete_status == 5">
+                    Attaching Volume {{selected_volume?.volume_openstackid}} to Virtualmachine {{selected_vm.name}}...
+                    <i class="fa fa-spinner fa-spin"
+                       style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-info" role="alert" *ngIf="delete_status == 0">
                     Deleting {{selected_volume?.volume_openstackid}}... <i class="fa fa-spinner fa-spin"
@@ -92,14 +100,18 @@
                 <div class="alert alert-success" role="alert" *ngIf="delete_status == 4">
                     {{selected_volume?.volume_openstackid}} was succesfully detached.
                 </div>
+                 <div class="alert alert-success" role="alert" *ngIf="delete_status == 6">
+                    {{selected_volume?.volume_openstackid}} was succesfully attached.
+                </div>
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="delete_status == 2">
-                When deleting {{selected_volume?.volume_openstackid}} an error occured.
+                An error occured.
             </div>
+
 
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="delete_status = 0;deleteModal.hide()">Close
+                <button type="button" class="btn btn-secondary" (click)="delete_status = 0;resultModal.hide()">Close
                 </button>
             </div>
 
@@ -127,11 +139,11 @@
             </div>
             <div class="modal-footer">
                 <button *ngIf="request_status==0;" class="btn  btn-success col-md-4"
-                        (click)="deleteVolume(selected_volume.volume_openstackid,selected_volume.volume_virtualmachine?.openstackid);verifyModal.hide();deleteModal.show()">
+                        (click)="deleteVolume(selected_volume.volume_openstackid,selected_volume.volume_virtualmachine?.openstackid);verifyModal.hide();resultModal.show()">
                     Yes
                 </button>
                 <button *ngIf="request_status==1;" class="btn  btn-success col-md-4"
-                        (click)="detachVolume(selected_volume.volume_openstackid,selected_volume.volume_virtualmachine.openstackid);verifyModal.hide();deleteModal.show()">
+                        (click)="detachVolume(selected_volume.volume_openstackid,selected_volume.volume_virtualmachine.openstackid);verifyModal.hide();resultModal.show()">
                     Yes
                 </button>
 
@@ -167,7 +179,7 @@
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
                         [disabled]="selected_vm== undefined"
-                        (click)="attachVolume(selected_volume.volume_openstackid,selected_vm.openstackid);attachModal.hide()">
+                        (click)="attachVolume(selected_volume.volume_openstackid,selected_vm.openstackid);attachModal.hide();resultModal.show()">
                     Attach Volume
                 </button>
 

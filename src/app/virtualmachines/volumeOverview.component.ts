@@ -18,7 +18,8 @@ export class VolumeOverviewComponent implements OnInit {
     selected_vm: VirtualMachine;
     collapse_status: { [id: string]: string } = {};
     selected_volume: Volume;
-    delete_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume
+    delete_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,
+
     request_status: number; // 0=Delete ,1 =Detach
 
 
@@ -94,13 +95,25 @@ export class VolumeOverviewComponent implements OnInit {
     }
 
     attachVolume(volume_id: string, instance_id: string) {
-        this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result =>{
+        this.delete_status = 5;
+
+        this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
+
+            result = result.json();
+            if (result['Attached'] && result['Attached'] === true) {
+                this.delete_status = 6;
+            }
+            else {
+                this.delete_status = 2;
+            }
             this.getVolumes();
         })
     }
 
     getActiveVmsByProject(groupid: string) {
         this.vmService.getActiveVmsByProject(groupid).subscribe(result => {
+
+
             this.project_vms = result;
         })
     }
@@ -108,7 +121,7 @@ export class VolumeOverviewComponent implements OnInit {
     detachVolume(volume_id: string, instance_id: string) {
         this.delete_status = 3;
         this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
-            result = result.json()
+            result = result.json();
             if (result['Deleted'] && result['Deleted'] === true) {
                 this.delete_status = 4;
             }
