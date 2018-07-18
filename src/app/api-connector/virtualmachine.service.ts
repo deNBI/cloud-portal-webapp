@@ -60,6 +60,17 @@ export class VirtualmachineService {
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
     }
 
+    getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> {
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('groupid', groupid)
+
+        return this.http.get(this.baseVmUrl + 'getActiveVmsByProject/', {
+            withCredentials: true,
+            search: urlSearchParams
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+    }
+
+
     checkStatusInactiveVms(elixir_id: string): Observable<VirtualMachine[]> {
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('elixir_id', elixir_id)

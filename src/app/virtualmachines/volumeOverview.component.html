@@ -28,22 +28,24 @@
                         <td>{{volume.volume_size }} GB</td>
                         <td>
                             <div class="btn-group {{collapse_status[volume.volume_openstackid]}}">
-                                <button class="btn btn-secondary" type="button">Attach Volume</button>
+                                <button class="btn btn-secondary"
+                                        (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
+                                        type="button">Delete Volume
+                                </button>
                                 <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                         data-toggle="dropdown"
                                         type="button" aria-haspopup="true" aria-expanded="false"
                                         (click)="getCollapseStatus(volume.volume_openstackid)"></button>
                                 <ul class="dropdown-menu " role="menu">
-                                    <li role="menuitem">
+                                    <li *ngIf="volume.volume_virtualmachine" role="menuitem">
                                         <a class="dropdown-item"
                                            (click)="setRequestStatus(1);setSelectedVolume(volume);verifyModal.show();">Detach
                                             Volume</a>
                                     </li>
 
-                                    <li role="menuitem">
+                                    <li *ngIf="!volume.volume_virtualmachine" role="menuitem">
                                         <a class="dropdown-item"
-                                           (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();">Delete
-                                            Volume</a>
+                                           (click)="getActiveVmsByProject(volume.volume_projectid);setSelectedVolume(volume);attachModal.show();">Attach Volume</a>
                                     </li>
                                 </ul>
                             </div>
@@ -141,6 +143,41 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+<div bsModal #attachModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Attach Volume</h4>
+            </div>
+            <div class="modal-body">
+                <strong>To which vm should the volume be attached?</strong>
+
+                <select class="form-control col-md-6" name="selected_vm"
+                        [(ngModel)]="selected_vm">
+                    <option value="undefined" disabled selected hidden> Please Select</option>
+                    <option *ngFor="let vm of project_vms" [ngValue]="vm"> {{vm.name}}
+                    </option>
+
+                </select>
+
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-4"
+                        [disabled]="selected_vm== undefined"
+                        (click)="attachVolume(selected_volume.volume_openstackid,selected_vm.openstackid);attachModal.hide()">
+                    Attach Volume
+                </button>
+
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="selected_vm=undefined;attachModal.hide();">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 

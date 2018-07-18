@@ -2,6 +2,7 @@ import {Component, OnInit, TemplateRef} from '@angular/core';
 import 'rxjs/Rx'
 import {Volume} from "./virtualmachinemodels/volume";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
+import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 
 
 @Component({
@@ -13,6 +14,8 @@ import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 
 export class VolumeOverviewComponent implements OnInit {
     volumes: Volume[];
+    project_vms: VirtualMachine[];
+    selected_vm: VirtualMachine;
     collapse_status: { [id: string]: string } = {};
     selected_volume: Volume;
     delete_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume
@@ -88,6 +91,18 @@ export class VolumeOverviewComponent implements OnInit {
 
             })
         }
+    }
+
+    attachVolume(volume_id: string, instance_id: string) {
+        this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result =>{
+            this.getVolumes();
+        })
+    }
+
+    getActiveVmsByProject(groupid: string) {
+        this.vmService.getActiveVmsByProject(groupid).subscribe(result => {
+            this.project_vms = result;
+        })
     }
 
     detachVolume(volume_id: string, instance_id: string) {
