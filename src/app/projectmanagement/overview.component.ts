@@ -155,8 +155,8 @@ export class OverviewComponent ***REMOVED***
 
             for (let key in this.userprojects) ***REMOVED***
                 let group = this.userprojects[key];
-                let dateCreated = new Date(group["createdAt"]);
-                let dateDayDifference = Math.ceil((Math.abs(Date.now() - dateCreated.getTime())) / (1000 * 3600 * 24));
+                let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
                 let is_pi = false;
 
                 //check if user is a PI (group manager)
@@ -182,7 +182,7 @@ export class OverviewComponent ***REMOVED***
                             group["id"],
                             shortname,
                             group["description"],
-                            dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
+                            dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
                             dateDayDifference,
                             is_pi,
                             is_admin,
@@ -200,8 +200,10 @@ export class OverviewComponent ***REMOVED***
 
                                 newProject.Lifetime = lifetime;
                                 if (newProject.Lifetime != -1) ***REMOVED***
-                                    newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - dateCreated.getTime())) / (1000 * 3600 * 24)
 
+                                    newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24)
+                                    let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
+                                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() +1) + "." + moment(expirationDate).year();
                                 ***REMOVED***
                                 else ***REMOVED***
                                     newProject.LifetimeDays = -1;

@@ -15,7 +15,6 @@ import ***REMOVED***VmOverviewComponent***REMOVED*** from "../virtualmachines/vm
 import ***REMOVED***AddsinglevmComponent***REMOVED*** from "./addsinglevm.component";
 import ***REMOVED***AddcloudapplicationComponent***REMOVED*** from "./addcloudapplication.component";
 
-
 @NgModule(***REMOVED***
   imports: [
     ApplicationsRoutingModule,

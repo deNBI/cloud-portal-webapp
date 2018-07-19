@@ -39,6 +39,69 @@ export class ApplicationsService ***REMOVED***
       ***REMOVED***);
   ***REMOVED***
 
+
+
+  requestRenewal(data) ***REMOVED***
+     let parameter = data;
+
+
+    let header = new Headers(***REMOVED***
+      'X-CSRFToken': this.settings.getCSRFToken(),
+        'Content-Type': 'application/json'
+    ***REMOVED***);
+    return this.http.post(this.settings.getApiBaseURL() + 'application/requestRenewal/',parameter,
+      ***REMOVED***
+        headers: header,
+        withCredentials: true
+      ***REMOVED***);
+  ***REMOVED***
+
+    approveRenewal(application_id: number) ***REMOVED***
+
+
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('project_application_id', application_id.toString());
+    let header = new Headers(***REMOVED***
+      'X-CSRFToken': this.settings.getCSRFToken(),
+    ***REMOVED***);
+    return this.http.post(this.settings.getApiBaseURL() + 'application/approveRenewal/', urlSearchParams,
+      ***REMOVED***
+        headers: header,
+        withCredentials: true
+      ***REMOVED***);
+  ***REMOVED***
+
+  declineRenewal(application_id: number) ***REMOVED***
+
+
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('project_application_id', application_id.toString());
+    let header = new Headers(***REMOVED***
+      'X-CSRFToken': this.settings.getCSRFToken(),
+    ***REMOVED***);
+    return this.http.post(this.settings.getApiBaseURL() + 'application/declineRenewal/', urlSearchParams,
+      ***REMOVED***
+        headers: header,
+        withCredentials: true
+      ***REMOVED***);
+  ***REMOVED***
+
+
+   getAllApplicationsRenewalRequests() ***REMOVED***
+    return this.http.get(this.settings.getApiBaseURL() + 'application/applicationRenewalRequests/', ***REMOVED***
+      withCredentials: true,
+      params: ***REMOVED***format: this.settings.getApiFormat()***REMOVED***
+    ***REMOVED***);
+  ***REMOVED***
+
+     getApplicationsRenewalRequest(application_id: number) ***REMOVED***
+    return this.http.get(this.settings.getApiBaseURL() + 'application/getApplicationRenewalRequestById/', ***REMOVED***
+      withCredentials: true,
+      params: ***REMOVED***format: this.settings.getApiFormat(),'project_application_id':application_id***REMOVED***
+    ***REMOVED***);
+  ***REMOVED***
+
+
   deleteApplication(application_id: number) ***REMOVED***
 
 

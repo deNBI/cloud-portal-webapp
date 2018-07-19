@@ -1,215 +1,323 @@
-
-
 <div class="card">
 
-  <div class="card-header">
-    <strong>Instance</strong>
-    –Overview
-  </div>
-      <div *ngIf="is_vo_admin">
+    <div class="card-header">
+        <strong>Instance</strong>
+        –Overview
+    </div>
+    <div *ngIf="is_vo_admin">
 
 
-        <button  style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" class="btn btn-primary" (click)="getVms(elixir_id);toggleTab('own');">Own Machines</button>
+        <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" class="btn btn-primary"
+                (click)="getVms(elixir_id);toggleTab('own');">Own Machines
+        </button>
 
-        <button style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px" class="btn btn-primary" (click)="getAllVms();toggleTab('all')">All Machines</button>
-
-
-
-  </div>
-
-
-   <div style="overflow-x:auto;">
-
-  <table class="table table-striped col-md-12">
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th>Project</th>
-      <th>Status</th>
-      <th>Created at</th>
-      <th>Command</th>
-      <th *ngIf="is_vo_admin">Elixir ID</th>
-      <th>Stopped at</th>
-      <th>Actions</th>
+        <button style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px" class="btn btn-primary"
+                (click)="getAllVms();toggleTab('all')">All Machines
+        </button>
 
 
-
-    </tr>
-
-    </thead>
-    <tbody>
-    <td> <input  style="width: 110px;"type="text" placeholder="Filter" name="filtername" [(ngModel)]="filtername"></td>
-    <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterproject" [(ngModel)]="filterproject"></td>
-    <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterstatus" [(ngModel)]="filterstatus"></td>
-    <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filtercreated_at" [(ngModel)]="filtercreated_at"></td>
-    <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterssh" [(ngModel)]="filterssh"></td>
-    <td *ngIf="is_vo_admin"><input style="width: 110px;"t type="text" placeholder="Filter" name="filterelixir_id" [(ngModel)]="filterelixir_id"></td>
-    <td><input style="width: 110px;"t type="text" placeholder="Filter" name="filterstopped_at" [(ngModel)]="filterstopped_at"></td>
-
-    <ng-container *ngFor="let vm of vms">
-
-      <tr
-        *ngIf="isFilterSSH(vm.ssh_command) && isFilterstatus(vm.status ) && isFilterProject(vm.project) && isFilterCreated_at(vm.created_at) && isFilterElixir_id(vm.elixir_id) && isFilterName(vm.name) && isFilterStopped_at(vm.stopped_at) && isFilterUsername(vm.username)">
-        <td>
-          ***REMOVED******REMOVED***vm.name***REMOVED******REMOVED***
-        </td>
-        <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">***REMOVED******REMOVED***vm.project***REMOVED******REMOVED***</td>
-        <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</td>
-        <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal"> ***REMOVED******REMOVED***vm.created_at***REMOVED******REMOVED***</td>
-        <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">***REMOVED******REMOVED***vm.ssh_command***REMOVED******REMOVED***</td>
-        <td *ngIf="is_vo_admin" style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal"> ***REMOVED******REMOVED***vm.elixir_id***REMOVED******REMOVED***</td>
-        <td>
-          ***REMOVED******REMOVED***vm.stopped_at***REMOVED******REMOVED***
-        </td>
-
-        <td>
-
-          <button   style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" *ngIf="vm.status =='ACTIVE'" (click)="status_changed_vm=vm.name;stopVm(vm.openstackid,vm.name);stopModal.show();"
-                  class="btn btn-primary">
-            Stop Vm
-          </button>
+    </div>
 
 
-          <button  style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" *ngIf="vm.status =='SUSPENDED'" (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();"
+    <div class="table-responsive">
 
-                  class="btn btn-primary">
-            Resume Vm
-          </button>
-           <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"  *ngIf="vm.status !='SUSPENDED' && vm.status != 'ACTIVE' && vm.status != 'DELETED'" (click)="checkStatus(vm.openstackid);"
-                  class="btn btn-primary">
-            Check Status
-          </button>
+        <table class="table table-striped col-md-12">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Project</th>
+                <th>Status</th>
+                <th>Created at</th>
+                <th>Command</th>
+                <th *ngIf="is_vo_admin">Elixir ID</th>
+                <th>Stopped at</th>
+                <th>Actions</th>
 
-         <button  style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" *ngIf="vm.status !='DELETED'" (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();"
 
-                  class="btn btn-primary">
-            Delete Vm
-          </button></td>
-      </tr>
-    </ng-container>
- </tbody>
-  </table>
-   </div>
+            </tr>
+
+            </thead>
+            <tbody>
+            <td><input style="width: 110px;" type="text" placeholder="Filter" name="filtername"
+                       [(ngModel)]="filtername"></td>
+            <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterproject"
+                       [(ngModel)]="filterproject"></td>
+            <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterstatus"
+                       [(ngModel)]="filterstatus"></td>
+            <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filtercreated_at"
+                       [(ngModel)]="filtercreated_at"></td>
+            <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterssh"
+                       [(ngModel)]="filterssh"></td>
+            <td *ngIf="is_vo_admin"><input style="width: 110px;" t type="text" placeholder="Filter"
+                                           name="filterelixir_id" [(ngModel)]="filterelixir_id"></td>
+            <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterstopped_at"
+                       [(ngModel)]="filterstopped_at"></td>
+
+            <ng-container *ngFor="let vm of vms">
+
+                <tr
+                        *ngIf="isFilterSSH(vm.ssh_command) && isFilterstatus(vm.status ) && isFilterProject(vm.project) && isFilterCreated_at(vm.created_at) && isFilterElixir_id(vm.elixir_id) && isFilterName(vm.name) && isFilterStopped_at(vm.stopped_at) && isFilterUsername(vm.username)">
+                    <td>
+                        ***REMOVED******REMOVED***vm.name***REMOVED******REMOVED***
+                    </td>
+                    <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
+                        ***REMOVED******REMOVED***vm.project***REMOVED******REMOVED***
+                    </td>
+                    <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
+                        ***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***
+                    </td>
+                    <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
+                        ***REMOVED******REMOVED***vm.created_at***REMOVED******REMOVED***
+                    </td>
+                    <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
+                        ***REMOVED******REMOVED***vm.ssh_command***REMOVED******REMOVED***
+                    </td>
+                    <td *ngIf="is_vo_admin"
+                        style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
+                        ***REMOVED******REMOVED***vm.elixir_id***REMOVED******REMOVED***
+                    </td>
+                    <td>
+                        ***REMOVED******REMOVED***vm.stopped_at***REMOVED******REMOVED***
+                    </td>
+
+                    <td>
+                        <div *ngIf="vm.status !='DELETED'"
+                             class="btn-group ***REMOVED******REMOVED***collapse_status[vm.openstackid]***REMOVED******REMOVED***">
+                            <button class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED'"
+                                    (click)="snapshot_vm=vm.openstackid;resetSnapshotResult();snapshotModal.show();">
+                                Create Snapshot
+                            </button>
+                            <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                                    data-toggle="dropdown"
+                                    type="button" aria-haspopup="true" aria-expanded="false"
+                                    (click)="getCollapseStatus(vm.openstackid)"></button>
+                            <ul class="dropdown-menu " role="menu">
+                                <li role="menuitem" *ngIf="vm.status =='ACTIVE'">
+                                    <a class="dropdown-item"
+                                       (click)="status_changed_vm=vm.name;stopVm(vm.openstackid,vm.name);stopModal.show();">Stop
+                                        Vm</a>
+                                </li>
+
+                                <li *ngIf="vm.status =='SUSPENDED'" role="menuitem">
+                                    <a class="dropdown-item"
+                                       (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();">Resume
+                                        Vm</a>
+                                </li>
+                                <li *ngIf="vm.status !='SUSPENDED' && vm.status != 'ACTIVE' && vm.status != 'DELETED'"
+                                    role="menuitem">
+                                    <a class="dropdown-item"
+                                       (click)="checkStatus(vm.openstackid);">Check Status
+                                    </a>
+                                </li>
+                                <li *ngIf="vm.status !='DELETED'" role="menuitem">
+                                    <a class="dropdown-item"
+                                       (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();">Delete
+                                        Vm</a>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                    </td>
+                </tr>
+            </ng-container>
+            </tbody>
+        </table>
+    </div>
 </div>
-
 
 
 <div bsModal #stopModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
-        <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
-        <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-          Stopping ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-        </div>
-        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
-          ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** was succesfully stopped.
-        </div>
-      </div>
-      <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When stopping ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** an error occured.
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
+                <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
+                <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+                    Stopping ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
+                    ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** was succesfully stopped.
+                </div>
+            </div>
+            <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
+                When stopping ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** an error occured.
+            </div>
 
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="status_changed=0;stopModal.hide()">Close</button>
-      </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="status_changed=0;stopModal.hide()">Close
+                </button>
+            </div>
 
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
 <div bsModal #resumeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
-        <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
-        <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-          Resuming ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-        </div>
-        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
-          ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** was succesfully resumed.
-        </div>
-      </div>
-      <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When resuming ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** an error occured.
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
+                <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
+                <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+                    Resuming ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
+                    ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** was succesfully resumed.
+                </div>
+            </div>
+            <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
+                When resuming ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** an error occured.
+            </div>
 
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="status_changed=0;resumeModal.hide()">Close</button>
-      </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="status_changed=0;resumeModal.hide()">Close
+                </button>
+            </div>
 
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
-        <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
-        <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-          Deleting ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-        </div>
-        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
-          ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** was succesfully deleted.
-        </div>
-      </div>
-      <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When deleting ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** an error occured.
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
+                <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
+                <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+                    Deleting ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
+                    ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** was succesfully deleted.
+                </div>
+            </div>
+            <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
+                When deleting ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** an error occured.
+            </div>
 
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="status_changed=0;deleteModal.hide()">Close</button>
-      </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="status_changed=0;deleteModal.hide()">Close
+                </button>
+            </div>
 
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 
 <div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Delete Vm</h4>
-      </div>
-      <div class="modal-body">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Vm</h4>
+            </div>
+            <div class="modal-body">
 
-        <div class="alert alert-warning" role="alert">
-          Are you sure you want to delete ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***?
-        </div>
+                <div class="alert alert-warning" role="alert">
+                    Are you sure you want to delete ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***?
+                </div>
 
-      </div>
-      <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
-                (click)="deleteVm(status_changed_vm_id);verifyModal.hide();deleteModal.show()">
-          Yes
-        </button>
-        <button class="btn  btn-danger col-md-4" type="reset"
-                (click)="status_changed_vm_id='';verifyModal.hide();">Cancel
-        </button>
-      </div>
-      </div><!-- /.modal-content -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-4"
+                        (click)="deleteVm(status_changed_vm_id);verifyModal.hide();deleteModal.show()">
+                    Yes
+                </button>
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="status_changed_vm_id='';verifyModal.hide();">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+</div><!-- /.modal -->
+
+
+<div bsModal #snapshotModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Create Snapshot</h4>
+            </div>
+            <div class="modal-body">
+
+                <div><strong>Snapshot Name*</strong></div>
+
+                <div class="input-group">
+                    <input type="text" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
+                           (ngModelChange)="validSnapshotName($event);">
+                </div>
+                <br>
+                <div class="alert alert-info" role="alert">
+                    A snapshot is an image which preserves the disk state of a running instance.
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-4"
+                        [disabled]="!validSnapshotNameBool"
+                        (click)="createSnapshot(snapshot_vm,snapshotName);snapshotModal.hide();snapshotResult.show()">
+                    Create Snapshot
+                </button>
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="snapshotName=''; validSnapshotNameBool=false;snapshotModal.hide()">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #snapshotResult="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Snapshot</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert" *ngIf="snapshotDone == 'Waiting' ">
+                    Wait until Snapshot is created....
+                </div>
+
+
+                <div class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' ">
+                    Successfully created Snapshot.
+                    You can now use it when starting an new instance.
+                </div>
+                <div class="alert alert-danger" role="alert"
+                     *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
+                    An error occured when creating the snapshot.
+
+                    <pre>***REMOVED******REMOVED***snapshotDone***REMOVED******REMOVED***</pre>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="snapshotName=''; validSnapshotNameBool=false;snapshotResult.hide();">Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
