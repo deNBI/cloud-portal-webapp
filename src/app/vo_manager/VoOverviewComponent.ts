@@ -75,6 +75,7 @@ export class VoOverviewComponent {
     }
 
 
+
     sendMailToVo(subject: string, message: string, reply?: string) {
         this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => {
             if (result == 1) {
@@ -108,6 +109,7 @@ export class VoOverviewComponent {
 
     public resetEmailModal() {
 
+
         this.emailHeader = null;
         this.emailSubject = null;
         this.emailText = null;
@@ -129,15 +131,15 @@ export class VoOverviewComponent {
                         shortname = group['name']
                     }
 
-                    let dateCreated = new Date(group["createdAt"]);
-                    let dateDayDifference = Math.ceil((Math.abs(Date.now() - dateCreated.getTime())) / (1000 * 3600 * 24));
+                    let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                    let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
                     let is_pi = false;
                     let is_admin = false;
                     let newProject = new Project(
                         group["id"],
                         shortname,
                         group["description"],
-                        dateCreated.getDate() + "." + (dateCreated.getMonth() + 1) + "." + dateCreated.getFullYear(),
+                        dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
                         dateDayDifference,
                         is_pi,
                         is_admin,
@@ -145,12 +147,18 @@ export class VoOverviewComponent {
                     )
                     newProject.Lifetime = group['lifetime']
                     if (newProject.Lifetime != -1) {
-                        newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - dateCreated.getTime())) / (1000 * 3600 * 24)
-
+                        newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24)
+                        let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
+                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() +1) + "." + moment(expirationDate).year();
                     }
+
                     else {
                         newProject.LifetimeDays = -1;
                     }
+
+
+
+
                     this.projects.push(newProject);
                 })
             }

@@ -7,6 +7,7 @@ import {ApiSettings} from './api-settings.service'
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
+import {Volume} from "../virtualmachines/virtualmachinemodels/volume";
 
 @Injectable()
 export class VirtualmachineService {
@@ -15,7 +16,6 @@ export class VirtualmachineService {
 
     constructor(private http: Http, private settings: ApiSettings) {
     }
-
 
 
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string, diskspace?: string): Observable<Response> {
@@ -60,7 +60,18 @@ export class VirtualmachineService {
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
     }
 
-        checkStatusInactiveVms(elixir_id: string): Observable<VirtualMachine[]> {
+    getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> {
+        let urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('groupid', groupid)
+
+        return this.http.get(this.baseVmUrl + 'getActiveVmsByProject/', {
+            withCredentials: true,
+            search: urlSearchParams
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+    }
+
+
+    checkStatusInactiveVms(elixir_id: string): Observable<VirtualMachine[]> {
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('elixir_id', elixir_id)
 
@@ -80,10 +91,10 @@ export class VirtualmachineService {
         urlSearchParams.append('openstack_id', openstack_id)
 
 
-        return this.http.post(this.baseVmUrl + 'checkStatusVm/',urlSearchParams, {
+        return this.http.post(this.baseVmUrl + 'checkStatusVm/', urlSearchParams, {
             withCredentials: true,
 
-            headers:header
+            headers: header
         });
     }
 
@@ -128,5 +139,67 @@ export class VirtualmachineService {
             headers: header,
         });
     }
+
+
+    getVolumesByUser(): Observable<Volume[]> {
+        let urlSearchParams = new URLSearchParams();
+
+        return this.http.get(this.settings.getConnectorBaseUrl() + 'volumes/get_volumes/', {
+            withCredentials: true,
+            search: urlSearchParams
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+
+
+    }
+
+    attachVolumetoServer(volume_id: string, instance_id: string): Observable<Response> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('volume_id', volume_id)
+        urlSearchParams.append('instance_id', instance_id)
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/attachVolume/', urlSearchParams, {
+            withCredentials: true,
+            headers: header,
+        });
+    }
+
+
+    deleteVolume(volume_id: string): Observable<Response> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('volume_id', volume_id)
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolume/', urlSearchParams, {
+            withCredentials: true,
+            headers: header,
+        });
+    }
+
+
+    deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<Response> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('volume_id', volume_id)
+        urlSearchParams.append('instance_id', instance_id)
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolumeAttachment/', urlSearchParams, {
+            withCredentials: true,
+            headers: header,
+        });
+    }
+
 
 }

@@ -1,3 +1,5 @@
+import {ApplicationExtension} from "./application_extension.model";
+
 export class Application {
   private _Id: number;
   private _Name: string;
@@ -23,12 +25,20 @@ export class Application {
   private _OpenStackProject: boolean;
   private _ComputeCenterDetails:[string,string][];
   private _DaysRunning: number;
+  private _ApplicationExtension:ApplicationExtension;
 
 
 
   constructor() {
   }
 
+  get ApplicationExtension():ApplicationExtension{
+    return this._ApplicationExtension;
+  }
+
+  set ApplicationExtension(value:ApplicationExtension){
+    this._ApplicationExtension=value;
+  }
   get DaysRunning():number{
     return this._DaysRunning;
   }

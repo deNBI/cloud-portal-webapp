@@ -7,12 +7,13 @@ import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 import {FullLayoutComponent} from "../layouts/full-layout.component";
 import {UserService} from "../api-connector/user.service";
+import {ImageService} from "../api-connector/image.service";
 
 
 @Component({
     selector: 'vm-overview',
     templateUrl: 'vmOverview.component.html',
-    providers: [UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
+    providers: [ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 })
 
 
@@ -22,6 +23,10 @@ export class VmOverviewComponent implements OnInit {
     status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
+    snapshot_vm: string;
+    validSnapshotNameBool: boolean;
+    snapshotDone: string='Waiting';
+    snapshotName: string;
     tab = 'own';
     status_changed: number = 0;
     filterusername: string;
@@ -33,10 +38,28 @@ export class VmOverviewComponent implements OnInit {
     filterstopped_at: string;
     filterproject: string;
     filterssh: string;
+        collapse_status: { [id: string]: string } = {};
 
 
-    constructor(private userservice: UserService, private virtualmachineservice: VirtualmachineService,  private perunsettings: PerunSettings) {
 
+
+    constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
+   this.virtualmachineservice.getVolumesByUser().subscribe()
+
+    }
+
+
+
+    public getCollapseStatus(id: string) {
+        if (id in this.collapse_status) {
+            this.switchCollapseStatus(id);
+        } else {
+            this.collapse_status[id] = 'open';
+        }
+    }
+
+    public switchCollapseStatus(id: string) {
+        this.collapse_status[id] == '' ? this.collapse_status[id] = 'open' : this.collapse_status[id] = '';
     }
 
     toggleTab(tabString: string) {
@@ -87,6 +110,15 @@ export class VmOverviewComponent implements OnInit {
             }
 
         })
+    }
+
+    validSnapshotName(e) {
+        this.validSnapshotNameBool = this.snapshotName.length > 0 ? true : false;
+
+
+    }
+    resetSnapshotResult(){
+        this,this.snapshotDone='Waiting';
     }
 
     checkStatus(openstackid: string) {
@@ -348,9 +380,20 @@ export class VmOverviewComponent implements OnInit {
         });
     }
 
+    createSnapshot(snapshot_instance: string, snapshot_name: string) {
+        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => {
+            if (result['Error']){
+                this.snapshotDone=result['Error'].toString();
+            }
+            else if (result['Created'])
+                this.snapshotDone='true';
+
+
+        })
+    }
+
 
     getElixirId() {
-        console.log('test')
         this.userservice.getLoggedUser().toPromise()
             .then(result => {
                 let res = result.json();
