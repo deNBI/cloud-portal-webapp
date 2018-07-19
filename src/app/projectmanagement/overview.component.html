@@ -34,9 +34,9 @@
                                 <p *ngIf="project.ComputeCenter[0] != 'None'">***REMOVED******REMOVED***project.ComputeCenter[0]***REMOVED******REMOVED***</p>
                                 <ul *ngIf="project.ComputeCenter[0] != 'None'">
 
-                                    <button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
+                                    <!--button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
                                             class="btn btn-primary">Set your OpenStack API password
-                                    </button>
+                                    </button-->
                                     <li *ngFor="let details of project.ComputeCenterDetails">***REMOVED******REMOVED***details[0]***REMOVED******REMOVED***: <a
                                             target="_blank"
                                             *ngIf="details[0] == 'Login'"
