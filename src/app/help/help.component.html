@@ -47,9 +47,9 @@
                                       <div class="form-group row" [ngClass]="***REMOVED***'has-danger':emailRep.invalid && (emailRep.dirty || emailRep.touched),
                     'has-success':emailRep.valid && (emailRep.dirty || emailRep.touched)
                     ***REMOVED***">
-                        <label class="col-md-12 control-label" ><strong>Reply to (optional)</strong></label>
+                        <label class="col-md-12 control-label" ><strong>Reply to*</strong></label>
                         <div class="col-md-12">
-                            <input id="Reply to" name="emailReply" placeholder="" class="form-control"
+                            <input required id="Reply to" name="emailReply" placeholder="" class="form-control"
                                    type="text"  [(ngModel)]="emailReply" #emailRep="ngModel" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`***REMOVED***|***REMOVED***~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
 
                         </div>
