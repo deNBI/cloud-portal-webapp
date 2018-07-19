@@ -40,10 +40,9 @@ export class ApplicationsComponent ***REMOVED***
     public notificationModalIsClosable: boolean = false;
     private APPROVED_STATUS = 2;
     private EXTENSION_STATUS = 4;
-    private EXTENSTION_STATUS_STRING = 'extension requested'
+    private EXTENSTION_STATUS_STRING = 'extension requested';
     public FPGA = 1;
     public GPU = 2;
-
 
     collapse_status: ***REMOVED*** [id: string]: boolean ***REMOVED*** = ***REMOVED******REMOVED***;
 
@@ -53,14 +52,12 @@ export class ApplicationsComponent ***REMOVED***
                 private perunsettings: PerunSettings,
                 private userservice: UserService,
                 private groupservice: GroupService) ***REMOVED***
-        console.log(this.collapse_status)
 
         this.getUserApplications();
         this.getAllApplications();
         this.getApplicationStatus();
         this.getSpecialHardware();
         this.getComputeCenters()
-                console.log(this.collapse_status)
 
 
 
@@ -74,9 +71,7 @@ export class ApplicationsComponent ***REMOVED***
 
 
     setSelectedApplication(application: any) ***REMOVED***
-        console.log('hier')
         this.selectedApplication = application;
-        console.log(this.selectedApplication)
     ***REMOVED***
 
     onSubmit(f: NgForm) ***REMOVED***
@@ -387,6 +382,17 @@ export class ApplicationsComponent ***REMOVED***
             this.getAllApplications();
         ***REMOVED***)
     ***REMOVED***
+
+
+      public declineExtension(application_id: number) ***REMOVED***
+        this.applicataionsservice.declineRenewal(application_id).subscribe(result => ***REMOVED***
+            this.user_applications = [];
+            this.all_applications = [];
+            this.getUserApplications();
+            this.getAllApplications();
+        ***REMOVED***)
+    ***REMOVED***
+
 
     public getCollapseStatus(id: string) ***REMOVED***
         if (id in this.collapse_status) ***REMOVED***
