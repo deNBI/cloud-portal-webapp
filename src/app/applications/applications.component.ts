@@ -40,10 +40,9 @@ export class ApplicationsComponent {
     public notificationModalIsClosable: boolean = false;
     private APPROVED_STATUS = 2;
     private EXTENSION_STATUS = 4;
-    private EXTENSTION_STATUS_STRING = 'extension requested'
+    private EXTENSTION_STATUS_STRING = 'extension requested';
     public FPGA = 1;
     public GPU = 2;
-
 
     collapse_status: { [id: string]: boolean } = {};
 
@@ -53,14 +52,12 @@ export class ApplicationsComponent {
                 private perunsettings: PerunSettings,
                 private userservice: UserService,
                 private groupservice: GroupService) {
-        console.log(this.collapse_status)
 
         this.getUserApplications();
         this.getAllApplications();
         this.getApplicationStatus();
         this.getSpecialHardware();
         this.getComputeCenters()
-                console.log(this.collapse_status)
 
 
 
@@ -74,9 +71,7 @@ export class ApplicationsComponent {
 
 
     setSelectedApplication(application: any) {
-        console.log('hier')
         this.selectedApplication = application;
-        console.log(this.selectedApplication)
     }
 
     onSubmit(f: NgForm) {
@@ -387,6 +382,17 @@ export class ApplicationsComponent {
             this.getAllApplications();
         })
     }
+
+
+      public declineExtension(application_id: number) {
+        this.applicataionsservice.declineRenewal(application_id).subscribe(result => {
+            this.user_applications = [];
+            this.all_applications = [];
+            this.getUserApplications();
+            this.getAllApplications();
+        })
+    }
+
 
     public getCollapseStatus(id: string) {
         if (id in this.collapse_status) {

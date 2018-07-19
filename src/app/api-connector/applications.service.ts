@@ -71,6 +71,21 @@ export class ApplicationsService {
       });
   }
 
+  declineRenewal(application_id: number) {
+
+
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('project_application_id', application_id.toString());
+    let header = new Headers({
+      'X-CSRFToken': this.settings.getCSRFToken(),
+    });
+    return this.http.post(this.settings.getApiBaseURL() + 'application/declineRenewal/', urlSearchParams,
+      {
+        headers: header,
+        withCredentials: true
+      });
+  }
+
 
    getAllApplicationsRenewalRequests() {
     return this.http.get(this.settings.getApiBaseURL() + 'application/applicationRenewalRequests/', {
