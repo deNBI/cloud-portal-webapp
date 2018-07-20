@@ -9,6 +9,7 @@ import ***REMOVED***Application***REMOVED*** from "./application.model";
 import ***REMOVED***ApplicationStatus***REMOVED*** from "./application_status.model";
 import ***REMOVED***SpecialHardware***REMOVED*** from "./special_hardware.model";
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
+import ***REMOVED***ResourcesManager***REMOVED*** from "../perun-connector/resources_manager";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import * as moment from 'moment';
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
