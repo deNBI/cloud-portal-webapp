@@ -20,6 +20,7 @@
 
 
     <div class="table-responsive">
+        <pagination [totalItems]="vms_content?.length" [itemsPerPage]="vmsPerPage" (pageChanged)="pageChanged($event)"></pagination>
 
         <table class="table table-striped col-md-12">
             <thead>
@@ -53,7 +54,7 @@
             <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterstopped_at"
                        [(ngModel)]="filterstopped_at"></td>
 
-            <ng-container *ngFor="let vm of vms">
+            <ng-container *ngFor="let vm of vms_returned">
 
                 <tr
                         *ngIf="isFilterSSH(vm.ssh_command) && isFilterstatus(vm.status ) && isFilterProject(vm.project) && isFilterCreated_at(vm.created_at) && isFilterElixir_id(vm.elixir_id) && isFilterName(vm.name) && isFilterStopped_at(vm.stopped_at) && isFilterUsername(vm.username)">

@@ -9,7 +9,6 @@ import {FullLayoutComponent} from "../layouts/full-layout.component";
 import {UserService} from "../api-connector/user.service";
 import {ImageService} from "../api-connector/image.service";
 
-
 @Component({
     selector: 'vm-overview',
     templateUrl: 'vmOverview.component.html',
@@ -18,14 +17,18 @@ import {ImageService} from "../api-connector/image.service";
 
 
 export class VmOverviewComponent implements OnInit {
-    vms: VirtualMachine[];
+    vms_content: VirtualMachine[];
+    vms_returned: VirtualMachine[];
+    vmsPerPage = 1;
+    vmStart = 0;
+    vmEnd = this.vmsPerPage;
     status_changed_vm: string;
     status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
     snapshot_vm: string;
     validSnapshotNameBool: boolean;
-    snapshotDone: string='Waiting';
+    snapshotDone: string = 'Waiting';
     snapshotName: string;
     tab = 'own';
     status_changed: number = 0;
@@ -38,16 +41,22 @@ export class VmOverviewComponent implements OnInit {
     filterstopped_at: string;
     filterproject: string;
     filterssh: string;
-        collapse_status: { [id: string]: string } = {};
-
-
+    collapse_status: { [id: string]: string } = {};
 
 
     constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
-   this.virtualmachineservice.getVolumesByUser().subscribe()
 
     }
 
+    pageChanged(event): void {
+
+        const startItem = (event.page - 1) * event.itemsPerPage;
+        const endItem = event.page * event.itemsPerPage;
+        this.vmStart = startItem;
+        this.vmEnd = endItem;
+        this.vms_returned = this.vms_content.slice(startItem, endItem)
+
+    }
 
 
     public getCollapseStatus(id: string) {
@@ -96,8 +105,8 @@ export class VmOverviewComponent implements OnInit {
 
     checkInactiveVms() {
         this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => {
-            this.vms = vms;
-            for (let vm of this.vms) {
+            this.vms_content = vms;
+            for (let vm of this.vms_content) {
                 if (vm.created_at != '') {
                     vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
                 }
@@ -108,6 +117,7 @@ export class VmOverviewComponent implements OnInit {
                     vm.stopped_at = ''
                 }
             }
+            this.vms_returned = this.vms_content.slice(this.vmStart, this.vmEnd);
 
         })
     }
@@ -117,8 +127,9 @@ export class VmOverviewComponent implements OnInit {
 
 
     }
-    resetSnapshotResult(){
-        this,this.snapshotDone='Waiting';
+
+    resetSnapshotResult() {
+        this, this.snapshotDone = 'Waiting';
     }
 
     checkStatus(openstackid: string) {
@@ -126,8 +137,8 @@ export class VmOverviewComponent implements OnInit {
 
 
                 this.virtualmachineservice.getVm(this.elixir_id).subscribe(vms => {
-                        this.vms = vms;
-                        for (let vm of this.vms) {
+                        this.vms_content = vms;
+                        for (let vm of this.vms_content) {
                             if (vm.created_at != '') {
                                 vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
                             }
@@ -138,6 +149,8 @@ export class VmOverviewComponent implements OnInit {
                                 vm.stopped_at = ''
                             }
                         }
+                        this.vms_returned = this.vms_content.slice(this.vmStart, this.vmEnd)
+
 
                     }
                 );
@@ -288,8 +301,8 @@ export class VmOverviewComponent implements OnInit {
 
     getVms(elixir_id: string): void {
         this.virtualmachineservice.getVm(elixir_id).subscribe(vms => {
-                this.vms = vms;
-                for (let vm of this.vms) {
+                this.vms_content = vms;
+                for (let vm of this.vms_content) {
                     if (vm.created_at != '') {
                         vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
                     }
@@ -301,6 +314,8 @@ export class VmOverviewComponent implements OnInit {
                         vm.stopped_at = ''
                     }
                 }
+                this.vms_returned = this.vms_content.slice(this.vmStart, this.vmEnd)
+
                 this.checkInactiveVms();
             }
         );
@@ -335,8 +350,8 @@ export class VmOverviewComponent implements OnInit {
 
     getAllVms(): void {
         this.virtualmachineservice.getAllVM().subscribe(vms => {
-                this.vms = vms;
-                for (let vm of this.vms) {
+                this.vms_content = vms;
+                for (let vm of this.vms_content) {
 
                     if (vm.created_at != '') {
                         vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
@@ -349,6 +364,8 @@ export class VmOverviewComponent implements OnInit {
                     }
 
                 }
+                            this.vms_returned=this.vms_content.slice(this.vmStart,this.vmEnd)
+
 
             }
         );
@@ -357,6 +374,7 @@ export class VmOverviewComponent implements OnInit {
     ngOnInit(): void {
         this.getElixirId();
         this.checkVOstatus(this.userservice)
+
     }
 
     checkVOstatus(userservice: UserService) {
@@ -382,11 +400,11 @@ export class VmOverviewComponent implements OnInit {
 
     createSnapshot(snapshot_instance: string, snapshot_name: string) {
         this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => {
-            if (result['Error']){
-                this.snapshotDone=result['Error'].toString();
+            if (result['Error']) {
+                this.snapshotDone = result['Error'].toString();
             }
             else if (result['Created'])
-                this.snapshotDone='true';
+                this.snapshotDone = 'true';
 
 
         })
