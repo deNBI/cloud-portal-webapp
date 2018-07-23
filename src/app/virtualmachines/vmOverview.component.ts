@@ -18,6 +18,7 @@ import {ImageService} from "../api-connector/image.service";
 
 export class VmOverviewComponent implements OnInit {
     vms_content: VirtualMachine[];
+    vms_filtered: VirtualMachine[];
     vms_returned: VirtualMachine[];
     vmsPerPage = 1;
     vmStart = 0;
@@ -36,6 +37,7 @@ export class VmOverviewComponent implements OnInit {
     filterip: string;
     filtername: string;
     filterstatus: string;
+    filterstatus_list: { [status: string]: boolean } = {'ACTIVE': true, 'SUSPENDED': true, 'DELETED': false};
     filtercreated_at: string;
     filterelixir_id: string;
     filterstopped_at: string;
@@ -54,7 +56,39 @@ export class VmOverviewComponent implements OnInit {
         const endItem = event.page * event.itemsPerPage;
         this.vmStart = startItem;
         this.vmEnd = endItem;
-        this.vms_returned = this.vms_content.slice(startItem, endItem)
+        this.vms_returned = this.vms_filtered.slice(startItem, endItem)
+
+    }
+
+
+    filterVM(vm: VirtualMachine) {
+        if (this.isFilterstatus(vm.status) && this.isFilterProject(vm.project) && this.isFilterCreated_at(vm.created_at) && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at) && this.isFilterUsername(vm.username)) {
+            return true
+        }
+        else {
+            return false
+        }
+
+
+    }
+
+
+    applyFilter() {
+
+
+        this.vms_filtered = this.vms_content.filter(vm => this.filterVM(vm));
+
+        this.vmStart = 0;
+        this.vmEnd = this.vmsPerPage;
+
+        this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
+
+
+    }
+
+    changeFilterStatus(status: number) {
+        this.filterstatus_list[status] = !this.filterstatus_list[status];
+
 
     }
 
@@ -75,21 +109,9 @@ export class VmOverviewComponent implements OnInit {
         this.tab = tabString;
     }
 
-    isFilterSSH(ssh_command: string): boolean {
-        if (!this.filterssh) {
-            return true;
-        }
-        else if (ssh_command.indexOf(this.filterssh) === 0) {
-
-            return true;
-
-        }
-        else {
-            return false;
-        }
-    }
 
     isFilterProject(vmproject: string): boolean {
+       
         if (!this.filterproject) {
             return true;
         }
@@ -99,6 +121,7 @@ export class VmOverviewComponent implements OnInit {
 
         }
         else {
+
             return false;
         }
     }
@@ -117,7 +140,7 @@ export class VmOverviewComponent implements OnInit {
                     vm.stopped_at = ''
                 }
             }
-            this.vms_returned = this.vms_content.slice(this.vmStart, this.vmEnd);
+            this.applyFilter();
 
         })
     }
@@ -149,7 +172,7 @@ export class VmOverviewComponent implements OnInit {
                                 vm.stopped_at = ''
                             }
                         }
-                        this.vms_returned = this.vms_content.slice(this.vmStart, this.vmEnd)
+                        this.applyFilter()
 
 
                     }
@@ -225,14 +248,13 @@ export class VmOverviewComponent implements OnInit {
     }
 
     isFilterstatus(vmstatus: string): boolean {
-        if (!this.filterstatus) {
-            return true;
-        }
-        else if (vmstatus.indexOf(this.filterstatus) === 0) {
-            return true;
+        if (this.filterstatus_list[vmstatus]
+        ) {
+
+            return true
         }
         else {
-            return false;
+            return false
         }
     }
 
@@ -314,7 +336,7 @@ export class VmOverviewComponent implements OnInit {
                         vm.stopped_at = ''
                     }
                 }
-                this.vms_returned = this.vms_content.slice(this.vmStart, this.vmEnd)
+                this.applyFilter();
 
                 this.checkInactiveVms();
             }
@@ -364,7 +386,7 @@ export class VmOverviewComponent implements OnInit {
                     }
 
                 }
-                            this.vms_returned=this.vms_content.slice(this.vmStart,this.vmEnd)
+                this.applyFilter();
 
 
             }
