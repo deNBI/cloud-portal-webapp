@@ -156,6 +156,7 @@ export class ApplicationsComponent {
                                 r.SpecialHardware = special_hardware;
                             }
                             a.ApplicationExtension = r;
+
                             this.user_applications.push(a)
                         })
 
@@ -480,20 +481,11 @@ export class ApplicationsComponent {
             return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).toPromise();
         }).then(null_result => {
             //setting approved status for Perun Group
-            let APPRVOVED = 2;
-            this.groupservice.setPerunGroupStatus(new_group_id, APPRVOVED).toPromise();
-            this.groupservice.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
+
             if (compute_center != 'undefined') {
                 this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
             }
-            this.groupservice.setShortname(new_group_id.toString(), name).subscribe();
-            this.groupservice.setName(new_group_id.toString(), longname).subscribe();
-            this.groupservice.setNumberOfVms(new_group_id.toString(), numberofVms.toString()).subscribe();
-            this.groupservice.setDescription(new_group_id.toString(), description).subscribe();
-            this.groupservice.setLifetime(new_group_id.toString(), lifetime.toString()).subscribe();
-            this.groupservice.setPerunId(new_group_id.toString(), application_id).subscribe();
-            this.groupservice.setGroupVolumeLimit(new_group_id, volumelimit).subscribe();
-            this.groupservice.setGroupVolumeCounter(new_group_id, volumecounter).subscribe();
+            this.groupservice.setPerunGroupAttributes(application_id,new_group_id).subscribe()
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications
