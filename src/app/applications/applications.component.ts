@@ -458,8 +458,6 @@ export class ApplicationsComponent {
         let manager_member_user_id: number;
         let new_group_id: number;
 
-        let re = /[-:. ,/]/gi
-        let  shortNameDate=name + (new Date(Date.now()).toLocaleString().replace(re,''));
         this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
             .then(member_raw => {
                     let member = member_raw.json();
@@ -467,7 +465,7 @@ export class ApplicationsComponent {
                     manager_member_user_id = member["userId"];
                     // create new group
 
-                    return this.groupservice.createGroup(shortNameDate, description).toPromise();
+                    return this.groupservice.createGroup(name, description).toPromise();
                 }
             ).then(group_raw => {
             let group = group_raw.json();
