@@ -22,6 +22,7 @@ export class VmOverviewComponent implements OnInit {
     vms_returned: VirtualMachine[];
     vmsPerPage = 1;
     vmStart = 0;
+    selected_command:string;
     vmEnd = this.vmsPerPage;
     status_changed_vm: string;
     status_changed_vm_id: string;
@@ -111,7 +112,7 @@ export class VmOverviewComponent implements OnInit {
 
 
     isFilterProject(vmproject: string): boolean {
-       
+
         if (!this.filterproject) {
             return true;
         }
