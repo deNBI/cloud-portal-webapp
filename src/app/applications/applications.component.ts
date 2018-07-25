@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import {UserService} from "../api-connector/user.service";
 import {ApplicationExtension} from "./application_extension.model";
 import {NgForm} from '@angular/forms';
+import 'rxjs/add/operator/catch';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class ApplicationsComponent {
     special_hardware: SpecialHardware[] = [];
     computeCenters: [string, number][];
     selectedApplication: Application;
+    extension_status=0;
     public deleteId: number;
 
     //notification Modal variables
@@ -367,6 +369,11 @@ export class ApplicationsComponent {
     public requestExtension(data) {
 
         this.applicataionsservice.requestRenewal(data).subscribe(result => {
+            if (result.json()['Error']){
+                this.extension_status=2
+            }
+            else{
+            this.extension_status=1;}
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();

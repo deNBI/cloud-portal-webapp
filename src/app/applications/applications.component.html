@@ -773,7 +773,7 @@
 
                 <div class="modal-footer">
                     <button type="button" c class="btn  btn-primary" type="submit" name="_save" form="application_form"
-                            (click)="extensionModal.hide();"
+                            (click)="extensionModal.hide();resultModal.show()"
                             [disabled]="f.invalid"><i
                             class="fa fa-dot-circle-o">
 
@@ -788,3 +788,40 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
+
+
+<div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" *ngIf="delete_status == 0">
+                    Waiting </h4>
+                <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
+                <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
+                   Waiting... <i class="fa fa-spinner fa-spin"
+                                                                            style="font-size:24px"></i>
+                </div>
+
+
+                <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
+                   Extension request successfully submitted!
+                </div>
+            <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
+               Extension request could not be submitted.
+            </div>
+
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="extension_status= 0;resultModal.hide()">Close
+                </button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
