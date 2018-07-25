@@ -12,6 +12,7 @@ import {ClientOverviewComponent} from "../virtualmachines/vmClients.component";
 import {VmOverviewComponent} from "../virtualmachines/vmOverview.component";
 import {VolumeOverviewComponent} from "./volumeOverview.component";
 import {SnapshotOverviewComponent} from "./snapshotOverview.component";
+import {PaginationModule} from 'ngx-bootstrap/pagination'
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import {SnapshotOverviewComponent} from "./snapshotOverview.component";
         CommonModule,
         FormsModule,
         ModalModule.forRoot(),
+        PaginationModule.forRoot(),
 
 
     ],

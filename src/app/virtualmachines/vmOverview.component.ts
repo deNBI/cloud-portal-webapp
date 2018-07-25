@@ -9,7 +9,6 @@ import {FullLayoutComponent} from "../layouts/full-layout.component";
 import {UserService} from "../api-connector/user.service";
 import {ImageService} from "../api-connector/image.service";
 
-
 @Component({
     selector: 'vm-overview',
     templateUrl: 'vmOverview.component.html',
@@ -18,14 +17,20 @@ import {ImageService} from "../api-connector/image.service";
 
 
 export class VmOverviewComponent implements OnInit {
-    vms: VirtualMachine[];
+    vms_content: VirtualMachine[];
+    vms_filtered: VirtualMachine[];
+    vms_returned: VirtualMachine[];
+    vmsPerPage = 1;
+    vmStart = 0;
+    selected_command:string;
+    vmEnd = this.vmsPerPage;
     status_changed_vm: string;
     status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
     snapshot_vm: string;
     validSnapshotNameBool: boolean;
-    snapshotDone: string='Waiting';
+    snapshotDone: string = 'Waiting';
     snapshotName: string;
     tab = 'own';
     status_changed: number = 0;
@@ -33,21 +38,60 @@ export class VmOverviewComponent implements OnInit {
     filterip: string;
     filtername: string;
     filterstatus: string;
+    filterstatus_list: { [status: string]: boolean } = {'ACTIVE': true, 'SUSPENDED': true, 'DELETED': false};
     filtercreated_at: string;
     filterelixir_id: string;
     filterstopped_at: string;
     filterproject: string;
     filterssh: string;
-        collapse_status: { [id: string]: string } = {};
-
-
+    collapse_status: { [id: string]: string } = {};
 
 
     constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
-   this.virtualmachineservice.getVolumesByUser().subscribe()
 
     }
 
+    pageChanged(event): void {
+
+        const startItem = (event.page - 1) * event.itemsPerPage;
+        const endItem = event.page * event.itemsPerPage;
+        this.vmStart = startItem;
+        this.vmEnd = endItem;
+        this.vms_returned = this.vms_filtered.slice(startItem, endItem)
+
+    }
+
+
+    filterVM(vm: VirtualMachine) {
+        if (this.isFilterstatus(vm.status) && this.isFilterProject(vm.project) && this.isFilterCreated_at(vm.created_at) && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at) && this.isFilterUsername(vm.username)) {
+            return true
+        }
+        else {
+            return false
+        }
+
+
+    }
+
+
+    applyFilter() {
+
+
+        this.vms_filtered = this.vms_content.filter(vm => this.filterVM(vm));
+
+        this.vmStart = 0;
+        this.vmEnd = this.vmsPerPage;
+
+        this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
+
+
+    }
+
+    changeFilterStatus(status: number) {
+        this.filterstatus_list[status] = !this.filterstatus_list[status];
+
+
+    }
 
 
     public getCollapseStatus(id: string) {
@@ -66,21 +110,9 @@ export class VmOverviewComponent implements OnInit {
         this.tab = tabString;
     }
 
-    isFilterSSH(ssh_command: string): boolean {
-        if (!this.filterssh) {
-            return true;
-        }
-        else if (ssh_command.indexOf(this.filterssh) === 0) {
-
-            return true;
-
-        }
-        else {
-            return false;
-        }
-    }
 
     isFilterProject(vmproject: string): boolean {
+
         if (!this.filterproject) {
             return true;
         }
@@ -90,14 +122,15 @@ export class VmOverviewComponent implements OnInit {
 
         }
         else {
+
             return false;
         }
     }
 
     checkInactiveVms() {
         this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => {
-            this.vms = vms;
-            for (let vm of this.vms) {
+            this.vms_content = vms;
+            for (let vm of this.vms_content) {
                 if (vm.created_at != '') {
                     vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
                 }
@@ -108,6 +141,7 @@ export class VmOverviewComponent implements OnInit {
                     vm.stopped_at = ''
                 }
             }
+            this.applyFilter();
 
         })
     }
@@ -117,8 +151,9 @@ export class VmOverviewComponent implements OnInit {
 
 
     }
-    resetSnapshotResult(){
-        this,this.snapshotDone='Waiting';
+
+    resetSnapshotResult() {
+        this, this.snapshotDone = 'Waiting';
     }
 
     checkStatus(openstackid: string) {
@@ -126,8 +161,8 @@ export class VmOverviewComponent implements OnInit {
 
 
                 this.virtualmachineservice.getVm(this.elixir_id).subscribe(vms => {
-                        this.vms = vms;
-                        for (let vm of this.vms) {
+                        this.vms_content = vms;
+                        for (let vm of this.vms_content) {
                             if (vm.created_at != '') {
                                 vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
                             }
@@ -138,6 +173,8 @@ export class VmOverviewComponent implements OnInit {
                                 vm.stopped_at = ''
                             }
                         }
+                        this.applyFilter()
+
 
                     }
                 );
@@ -212,14 +249,13 @@ export class VmOverviewComponent implements OnInit {
     }
 
     isFilterstatus(vmstatus: string): boolean {
-        if (!this.filterstatus) {
-            return true;
-        }
-        else if (vmstatus.indexOf(this.filterstatus) === 0) {
-            return true;
+        if (this.filterstatus_list[vmstatus]
+        ) {
+
+            return true
         }
         else {
-            return false;
+            return false
         }
     }
 
@@ -288,8 +324,8 @@ export class VmOverviewComponent implements OnInit {
 
     getVms(elixir_id: string): void {
         this.virtualmachineservice.getVm(elixir_id).subscribe(vms => {
-                this.vms = vms;
-                for (let vm of this.vms) {
+                this.vms_content = vms;
+                for (let vm of this.vms_content) {
                     if (vm.created_at != '') {
                         vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
                     }
@@ -301,6 +337,8 @@ export class VmOverviewComponent implements OnInit {
                         vm.stopped_at = ''
                     }
                 }
+                this.applyFilter();
+
                 this.checkInactiveVms();
             }
         );
@@ -335,8 +373,8 @@ export class VmOverviewComponent implements OnInit {
 
     getAllVms(): void {
         this.virtualmachineservice.getAllVM().subscribe(vms => {
-                this.vms = vms;
-                for (let vm of this.vms) {
+                this.vms_content = vms;
+                for (let vm of this.vms_content) {
 
                     if (vm.created_at != '') {
                         vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
@@ -349,6 +387,8 @@ export class VmOverviewComponent implements OnInit {
                     }
 
                 }
+                this.applyFilter();
+
 
             }
         );
@@ -357,6 +397,7 @@ export class VmOverviewComponent implements OnInit {
     ngOnInit(): void {
         this.getElixirId();
         this.checkVOstatus(this.userservice)
+
     }
 
     checkVOstatus(userservice: UserService) {
@@ -382,11 +423,11 @@ export class VmOverviewComponent implements OnInit {
 
     createSnapshot(snapshot_instance: string, snapshot_name: string) {
         this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => {
-            if (result['Error']){
-                this.snapshotDone=result['Error'].toString();
+            if (result['Error']) {
+                this.snapshotDone = result['Error'].toString();
             }
             else if (result['Created'])
-                this.snapshotDone='true';
+                this.snapshotDone = 'true';
 
 
         })
