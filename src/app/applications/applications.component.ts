@@ -32,7 +32,7 @@ export class ApplicationsComponent {
     special_hardware: SpecialHardware[] = [];
     computeCenters: [string, number][];
     selectedApplication: Application;
-    extension_status=0;
+    extension_status = 0;
     public deleteId: number;
 
     //notification Modal variables
@@ -63,7 +63,6 @@ export class ApplicationsComponent {
         this.getComputeCenters()
 
 
-
     }
 
     getComputeCenters() {
@@ -92,9 +91,9 @@ export class ApplicationsComponent {
 
     ngFormSetDefault(f: NgForm) {
         f.reset({
-            project_application_renewal_vms_requested : this.selectedApplication.VMsRequested,
-            project_application_renewal_cores_per_vm : this.selectedApplication.CoresPerVM,
-            project_application_renewal_ram_per_vm : this.selectedApplication.RamPerVM,
+            project_application_renewal_vms_requested: this.selectedApplication.VMsRequested,
+            project_application_renewal_cores_per_vm: this.selectedApplication.CoresPerVM,
+            project_application_renewal_ram_per_vm: this.selectedApplication.RamPerVM,
             project_application_renewal_volume_limit: this.selectedApplication.VolumeLimit,
             project_application_renewal_volume_counter: this.selectedApplication.VolumeCounter,
             project_application_renewal_object_storage: this.selectedApplication.ObjectStorage,
@@ -369,11 +368,12 @@ export class ApplicationsComponent {
     public requestExtension(data) {
 
         this.applicataionsservice.requestRenewal(data).subscribe(result => {
-            if (result.json()['Error']){
-                this.extension_status=2
+            if (result.json()['Error']) {
+                this.extension_status = 2
             }
-            else{
-            this.extension_status=1;}
+            else {
+                this.extension_status = 1;
+            }
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
@@ -385,6 +385,12 @@ export class ApplicationsComponent {
 
     public approveExtension(application_id: number) {
         this.applicataionsservice.approveRenewal(application_id).subscribe(result => {
+            if (result.json()['Error']) {
+                this.extension_status = 2
+            }
+            else {
+                this.extension_status = 3;
+            }
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
@@ -393,8 +399,14 @@ export class ApplicationsComponent {
     }
 
 
-      public declineExtension(application_id: number) {
+    public declineExtension(application_id: number) {
         this.applicataionsservice.declineRenewal(application_id).subscribe(result => {
+            if (result.json()['Error']) {
+                this.extension_status = 2
+            }
+            else {
+                this.extension_status = 4;
+            }
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
@@ -492,7 +504,7 @@ export class ApplicationsComponent {
             if (compute_center != 'undefined') {
                 this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
             }
-            this.groupservice.setPerunGroupAttributes(application_id,new_group_id).subscribe()
+            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe()
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications
