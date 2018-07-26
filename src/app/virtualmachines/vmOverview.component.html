@@ -21,7 +21,7 @@
 
     <div class="table-responsive">
         <pagination [totalItems]="vms_filtered?.length" [itemsPerPage]="vmsPerPage"
-                    (pageChanged)="pageChanged($event)"></pagination>
+                    (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"></pagination>
 
         <table class="table table-striped col-md-12">
             <thead>
@@ -41,43 +41,41 @@
             </thead>
             <tbody>
             <td><input style="width: 110px;" type="text" placeholder="Filter" name="filtername"
-                       [(ngModel)]="filtername"></td>
+                       [(ngModel)]="filtername" (ngModelChange)="applyFilter();"></td>
             <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterproject"
-                       [(ngModel)]="filterproject"></td>
+                       [(ngModel)]="filterproject" (ngModelChange)="applyFilter();"></td>
             <td>
 
                 <div class="checkbox">
                     <label>
                         <input type="checkbox"
-                               (change)="changeFilterStatus('ACTIVE')" checked/>
+                               (change)="changeFilterStatus('ACTIVE');applyFilter();" checked/>
                         ACTIVE
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox"
-                               (change)="changeFilterStatus('SUSPENDED')" checked/>
+                               (change)="changeFilterStatus('SUSPENDED');applyFilter();" checked/>
                         SUSPENDED
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox"
-                               (change)="changeFilterStatus('DELETED')"/>
+                               (change)="changeFilterStatus('DELETED');applyFilter();"/>
                         DELETED
                     </label>
                 </div>
             </td>
             <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filtercreated_at"
-                       [(ngModel)]="filtercreated_at"></td>
+                       [(ngModel)]="filtercreated_at" (ngModelChange)="applyFilter();"></td>
             <td></td>
             <td *ngIf="is_vo_admin"><input style="width: 110px;" t type="text" placeholder="Filter"
-                                           name="filterelixir_id" [(ngModel)]="filterelixir_id"></td>
+                                           name="filterelixir_id" [(ngModel)]="filterelixir_id" (ngModelChange)="applyFilter();"></td>
             <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterstopped_at"
-                       [(ngModel)]="filterstopped_at"></td>
-            <td>
-                <button class="btn btn-secondary" type="button" (click)="applyFilter()"> Apply Filter</button>
-            </td>
+                       [(ngModel)]="filterstopped_at" (ngModelChange)="applyFilter();"></td>
+
 
             <ng-container *ngFor="let vm of vms_returned">
 
