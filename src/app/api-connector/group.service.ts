@@ -435,6 +435,7 @@ export class GroupService {
 
     }
 
+
     isFreemiumActive(): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'freemium/isActive/', {
@@ -455,5 +456,22 @@ export class GroupService {
         })
 
     }
+
+
+
+    setPerunGroupAttributes(application_id: number, groupid: number) {
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('groupid', groupid.toString());
+        urlSearchParams.append('application_id', application_id.toString());
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setAttributes/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
+
 
 }
