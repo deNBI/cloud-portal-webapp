@@ -191,7 +191,7 @@ export class GroupService {
     }
 
 
-     setGroupVolumeCounter(group_id: number, value: number) {
+    setGroupVolumeCounter(group_id: number, value: number) {
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -381,9 +381,7 @@ export class GroupService {
     }
 
 
-
-
-        getVolumesUsed(groupid: string): Observable<any> {
+    getVolumesUsed(groupid: string): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedVolumes/', {
             withCredentials: true,
             params: {groupid: groupid}
@@ -392,7 +390,7 @@ export class GroupService {
 
     }
 
-      getVolumeCounter(groupid: string): Observable<any> {
+    getVolumeCounter(groupid: string): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getVolumesCounter/', {
             withCredentials: true,
             params: {groupid: groupid}
@@ -437,7 +435,7 @@ export class GroupService {
 
     }
 
-    isFreemiumActive():Observable<any>{
+    isFreemiumActive(): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'freemium/isActive/', {
             withCredentials: true,
@@ -446,9 +444,14 @@ export class GroupService {
 
     }
 
-    addMemberToFreemium():Observable<any>{
-        return this.http.get(this.settings.getApiBaseURL() + 'freemium/becomeMember/', {
+    addMemberToFreemium(): Observable<any> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+
+        return this.http.get(this.settings.getApiBaseURL() + 'freemium/becomeMember/',{
             withCredentials: true,
+            headers: header
         })
 
     }
