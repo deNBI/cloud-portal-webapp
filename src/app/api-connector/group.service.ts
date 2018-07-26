@@ -436,6 +436,29 @@ export class GroupService {
     }
 
 
+    isFreemiumActive(): Observable<any> {
+
+        return this.http.get(this.settings.getApiBaseURL() + 'freemium/isActive/', {
+            withCredentials: true,
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    }
+
+    addMemberToFreemium(): Observable<any> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+
+        return this.http.get(this.settings.getApiBaseURL() + 'freemium/becomeMember/',{
+            withCredentials: true,
+            headers: header
+        })
+
+    }
+
+
+
     setPerunGroupAttributes(application_id: number, groupid: number) {
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({
@@ -448,6 +471,7 @@ export class GroupService {
             headers: header
         })
     }
+
 
 
 }
