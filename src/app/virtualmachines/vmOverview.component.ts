@@ -20,7 +20,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     vms_content: VirtualMachine[];
     vms_filtered: VirtualMachine[];
     vms_returned: VirtualMachine[];
-    vmsPerPage = 1;
+    vmsPerPage = 5;
     currentPage=1;
     vmStart = 0;
     selected_command:string;
