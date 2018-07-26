@@ -191,7 +191,7 @@ export class GroupService ***REMOVED***
     ***REMOVED***
 
 
-     setGroupVolumeCounter(group_id: number, value: number) ***REMOVED***
+    setGroupVolumeCounter(group_id: number, value: number) ***REMOVED***
         let urlSearchParams = new URLSearchParams();
         let header = new Headers(***REMOVED***
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -381,9 +381,7 @@ export class GroupService ***REMOVED***
     ***REMOVED***
 
 
-
-
-        getVolumesUsed(groupid: string): Observable<any> ***REMOVED***
+    getVolumesUsed(groupid: string): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedVolumes/', ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***groupid: groupid***REMOVED***
@@ -392,7 +390,7 @@ export class GroupService ***REMOVED***
 
     ***REMOVED***
 
-      getVolumeCounter(groupid: string): Observable<any> ***REMOVED***
+    getVolumeCounter(groupid: string): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'project/getVolumesCounter/', ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***groupid: groupid***REMOVED***
@@ -436,5 +434,20 @@ export class GroupService ***REMOVED***
 
 
     ***REMOVED***
+
+
+    setPerunGroupAttributes(application_id: number, groupid: number) ***REMOVED***
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        urlSearchParams.append('groupid', groupid.toString());
+        urlSearchParams.append('application_id', application_id.toString());
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setAttributes/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***)
+    ***REMOVED***
+
 
 ***REMOVED***
