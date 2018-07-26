@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import {UserService} from "../api-connector/user.service";
 import {ApplicationExtension} from "./application_extension.model";
 import {NgForm} from '@angular/forms';
+import 'rxjs/add/operator/catch';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class ApplicationsComponent {
     special_hardware: SpecialHardware[] = [];
     computeCenters: [string, number][];
     selectedApplication: Application;
+    extension_status = 0;
     public deleteId: number;
 
     //notification Modal variables
@@ -61,7 +63,6 @@ export class ApplicationsComponent {
         this.getComputeCenters()
 
 
-
     }
 
     getComputeCenters() {
@@ -90,9 +91,9 @@ export class ApplicationsComponent {
 
     ngFormSetDefault(f: NgForm) {
         f.reset({
-            project_application_renewal_vms_requested : this.selectedApplication.VMsRequested,
-            project_application_renewal_cores_per_vm : this.selectedApplication.CoresPerVM,
-            project_application_renewal_ram_per_vm : this.selectedApplication.RamPerVM,
+            project_application_renewal_vms_requested: this.selectedApplication.VMsRequested,
+            project_application_renewal_cores_per_vm: this.selectedApplication.CoresPerVM,
+            project_application_renewal_ram_per_vm: this.selectedApplication.RamPerVM,
             project_application_renewal_volume_limit: this.selectedApplication.VolumeLimit,
             project_application_renewal_volume_counter: this.selectedApplication.VolumeCounter,
             project_application_renewal_object_storage: this.selectedApplication.ObjectStorage,
@@ -156,6 +157,7 @@ export class ApplicationsComponent {
                                 r.SpecialHardware = special_hardware;
                             }
                             a.ApplicationExtension = r;
+
                             this.user_applications.push(a)
                         })
 
@@ -366,6 +368,12 @@ export class ApplicationsComponent {
     public requestExtension(data) {
 
         this.applicataionsservice.requestRenewal(data).subscribe(result => {
+            if (result.json()['Error']) {
+                this.extension_status = 2
+            }
+            else {
+                this.extension_status = 1;
+            }
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
@@ -377,6 +385,12 @@ export class ApplicationsComponent {
 
     public approveExtension(application_id: number) {
         this.applicataionsservice.approveRenewal(application_id).subscribe(result => {
+            if (result.json()['Error']) {
+                this.extension_status = 2
+            }
+            else {
+                this.extension_status = 3;
+            }
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
@@ -385,8 +399,14 @@ export class ApplicationsComponent {
     }
 
 
-      public declineExtension(application_id: number) {
+    public declineExtension(application_id: number) {
         this.applicataionsservice.declineRenewal(application_id).subscribe(result => {
+            if (result.json()['Error']) {
+                this.extension_status = 2
+            }
+            else {
+                this.extension_status = 4;
+            }
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
@@ -458,8 +478,6 @@ export class ApplicationsComponent {
         let manager_member_user_id: number;
         let new_group_id: number;
 
-        let re = /[-:. ,/]/gi
-        let  shortNameDate=name + (new Date(Date.now()).toLocaleString().replace(re,''));
         this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
             .then(member_raw => {
                     let member = member_raw.json();
@@ -467,7 +485,7 @@ export class ApplicationsComponent {
                     manager_member_user_id = member["userId"];
                     // create new group
 
-                    return this.groupservice.createGroup(shortNameDate, description).toPromise();
+                    return this.groupservice.createGroup(name, description).toPromise();
                 }
             ).then(group_raw => {
             let group = group_raw.json();
@@ -482,20 +500,11 @@ export class ApplicationsComponent {
             return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).toPromise();
         }).then(null_result => {
             //setting approved status for Perun Group
-            let APPRVOVED = 2;
-            this.groupservice.setPerunGroupStatus(new_group_id, APPRVOVED).toPromise();
-            this.groupservice.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
+
             if (compute_center != 'undefined') {
                 this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
             }
-            this.groupservice.setShortname(new_group_id.toString(), name).subscribe();
-            this.groupservice.setName(new_group_id.toString(), longname).subscribe();
-            this.groupservice.setNumberOfVms(new_group_id.toString(), numberofVms.toString()).subscribe();
-            this.groupservice.setDescription(new_group_id.toString(), description).subscribe();
-            this.groupservice.setLifetime(new_group_id.toString(), lifetime.toString()).subscribe();
-            this.groupservice.setPerunId(new_group_id.toString(), application_id).subscribe();
-            this.groupservice.setGroupVolumeLimit(new_group_id, volumelimit).subscribe();
-            this.groupservice.setGroupVolumeCounter(new_group_id, volumecounter).subscribe();
+            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe()
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications
