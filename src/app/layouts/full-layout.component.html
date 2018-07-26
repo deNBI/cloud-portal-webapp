@@ -42,13 +42,13 @@
                         <li class="nav-item">
                             <a class="nav-link" routerLinkActive="active"
                                [routerLink]="['/applications/newCloudApplication']">
-                                <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                <i class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
                                    title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i>
                                 Cloud Project </a></li>
                         <li class="nav-item">
                             <a class="nav-link" routerLinkActive="active"
                                [routerLink]="['/applications/newSingleVmApplication']"><i
-                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
                                     title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i>
                                 Simple VM Project </a></li>
 
@@ -64,8 +64,8 @@
                             class="icon-screen-desktop"></i> New Instance</a>
                 </li>
                 <li  *ngIf="vm_project_member || get_is_vo_admin()" class="nav-item nav-dropdown {{overview_state}}">
-                    <a class="nav-link nav-dropdown-toggle" (click)="  toggle_overview();"><i
-                            class="icon-list"></i> Overviews</a>
+                    <a class="nav-link nav-dropdown-toggle"  onmouseover="" style="cursor: pointer;" (click)="  toggle_overview();"><i
+                            class="icon-list"   onmouseover="" style="cursor: pointer;"></i> Overviews</a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item" *ngIf="vm_project_member || get_is_vo_admin()">
                             <a class="nav-link" routerLinkActive="active"
