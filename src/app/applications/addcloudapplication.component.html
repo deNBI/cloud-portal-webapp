@@ -17,9 +17,12 @@
                             <h5 class="col-md-6 form-control-label">General Information</h5>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-4"><strong>Cloud Project  <i class="icon-question" data-toggle="tooltip" data-placement="auto"
-                                   title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i>
-                              </strong>
+                            <label class="col-md-4"><strong>Cloud Project <i class="icon-question menu_links"
+                                                                             data-toggle="tooltip"
+                                                                             data-placement="auto" onmouseover=""
+                                                                             style="cursor: pointer;"
+                                                                             title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i>
+                            </strong>
                             </label>
                             <div class="col-md-8">
                                 A cloud project is represented by an Openstack project which allows you to manage your
@@ -33,6 +36,7 @@
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Project
                                 Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                         onmouseover="" style="cursor: pointer;"
                                          title="Full name of your project"></i></strong></label>
                             <div class="col-md-8">
                                 <input required type="text" id="id_project_application_name"
@@ -52,6 +56,7 @@
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Project
                                 Short Name* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                               onmouseover="" style="cursor: pointer;"
                                                title="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"></i></strong></label>
                             <div class="col-md-8">
                                 <div *ngIf='wronginput'>
@@ -75,7 +80,8 @@
                                 'has-success': f.controls.project_application_description?.valid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched)
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Project
-                                Description* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                Description* <i class="icon-question" onmouseover="" style="cursor: pointer;"
+                                                data-toggle="tooltip" data-placement="auto"
                                                 title="Full description of your project including tools you might
 are going to use."></i></strong></label>
                             <div class="col-md-8">
@@ -93,7 +99,8 @@ are going to use."></i></strong></label>
                                 'has-success': f.controls.project_application_lifetime?.valid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched)
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Desired
-                                lifetime* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                lifetime* <i class="icon-question" onmouseover="" style="cursor: pointer;"
+                                             data-toggle="tooltip" data-placement="auto"
                                              title="Lifetime in months of your project"></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
@@ -118,14 +125,16 @@ are going to use."></i></strong></label>
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of
                                 Virtual
-                                Machines* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                Machines* <i class="icon-question" onmouseover="" style="cursor: pointer;"
+                                             data-toggle="tooltip" data-placement="auto"
                                              title="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
                                     <input required class="form-control" id="id_project_application_vms_requested"
                                            name="project_application_vms_requested"
                                            placeholder="e.g. 5"
-                                           type="number" min="1" step="1" [(ngModel)]="project_application_vms_requested">
+                                           type="number" min="1" step="1"
+                                           [(ngModel)]="project_application_vms_requested">
                                     <span class="input-group-addon"> VMs
                                     </span>
                                 </div>
@@ -138,7 +147,8 @@ are going to use."></i></strong></label>
                                 'has-success': f.controls.project_application_cores_per_vm?.valid
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cores per VM* <i
-                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    class="icon-question" onmouseover="" style="cursor: pointer;" data-toggle="tooltip"
+                                    data-placement="auto"
                                     title="A CPU core is the processing unit of your virtual machine."></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
@@ -160,7 +170,8 @@ are going to use."></i></strong></label>
                                 'has-success': f.controls.project_application_ram_per_vm?.valid
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>RAM per VM* <i
-                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    class="icon-question" onmouseover="" style="cursor: pointer;" data-toggle="tooltip"
+                                    data-placement="auto"
                                     title="RAM is where data is stored that is accessed by the CPU."></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
@@ -181,7 +192,8 @@ are going to use."></i></strong></label>
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage Limit*
                                 <i
-                                        class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                        class="icon-question" onmouseover="" style="cursor: pointer;"
+                                        data-toggle="tooltip" data-placement="auto"
                                         title="Storage limit is the sum of extra storage provided by volumes."></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
@@ -196,17 +208,18 @@ are going to use."></i></strong></label>
                             </div>
                         </div>
 
-                         <div class="form-group row" [ngClass]="***REMOVED***
+                        <div class="form-group row" [ngClass]="***REMOVED***
                                 'has-danger': f.controls.project_application_volume_counter?.invalid,
                                 'has-success': f.controls.project_application_volume_counter?.valid
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Volume Counter*
                                 <i
-                                        class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                        class="icon-question" onmouseover="" style="cursor: pointer;"
+                                        data-toggle="tooltip" data-placement="auto"
                                         title="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <input  required class="form-control" id="id_project_application_volume_counter"
+                                    <input required class="form-control" id="id_project_application_volume_counter"
                                            name="project_application_volume_counter"
                                            placeholder="e.g. 20"
                                            type="number" min="0" step="1" [ngModel]="project_application_vms_requested">
@@ -223,7 +236,8 @@ are going to use."></i></strong></label>
                                 'has-success': f.controls.project_application_object_storage?.valid
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="textarea-input">Object Storage <i
-                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    class="icon-question" onmouseover="" style="cursor: pointer;" data-toggle="tooltip"
+                                    data-placement="auto"
                                     title="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."></i></label>
                             <div class="col-md-8">
                                 <div class="input-group">
@@ -241,6 +255,8 @@ are going to use."></i></strong></label>
 
                         <div class="form-group row">
                             <label class="col-md-4 form-control-label">Special Hardware <i class="icon-question"
+                                                                                           onmouseover=""
+                                                                                           style="cursor: pointer;"
                                                                                            data-toggle="tooltip"
                                                                                            data-placement="auto"
                                                                                            title="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."></i></label>
@@ -276,7 +292,8 @@ are going to use."></i></strong></label>
                                 'has-success': f.controls.project_application_institute?.valid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched)
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Institute Name* <i
-                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    class="icon-question" onmouseover="" style="cursor: pointer;" data-toggle="tooltip"
+                                    data-placement="auto"
                                     title="Your institute"></i></strong></label>
                             <div class="col-md-8">
                                 <input required type="text" id="id_project_application_institute"
@@ -291,7 +308,8 @@ are going to use."></i></strong></label>
                                 'has-success': f.controls.project_application_workgroup?.valid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched)
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Workgroup Name* <i
-                                    class="icon-question" data-toggle="tooltip" data-placement="auto"
+                                    class="icon-question" onmouseover="" style="cursor: pointer;" data-toggle="tooltip"
+                                    data-placement="auto"
                                     title="Your workgroup"></i></strong></label>
                             <div class="col-md-8">
                                 <input required type="text" id="id_project_application_workgroup"
