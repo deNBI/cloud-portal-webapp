@@ -441,7 +441,7 @@ export class ApplicationsComponent ***REMOVED***
 
     public lifeTimeReached(lifetime: number, running: number, status_changed_string: string): string ***REMOVED***
         let status_changed = new Date(status_changed_string);
-        let LifetimeDays = Math.ceil(Math.abs(moment(status_changed).add(lifetime, 'months').toDate().getTime() - status_changed.getTime())) / (1000 * 3600 * 24)
+        let LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(status_changed).add(lifetime, 'months').toDate().getTime() - status_changed.getTime())) / (1000 * 3600 * 24));
 
         return (LifetimeDays - running) < 0 ? "red" : "black";
     ***REMOVED***
