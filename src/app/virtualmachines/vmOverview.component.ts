@@ -20,7 +20,8 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     vms_content: VirtualMachine[];
     vms_filtered: VirtualMachine[];
     vms_returned: VirtualMachine[];
-    vmsPerPage = 1;
+    vmsPerPage = 5;
+    currentPage=1;
     vmStart = 0;
     selected_command:string;
     vmEnd = this.vmsPerPage;
@@ -52,6 +53,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     pageChanged(event): void ***REMOVED***
+        console.log(this)
 
         const startItem = (event.page - 1) * event.itemsPerPage;
         const endItem = event.page * event.itemsPerPage;
@@ -83,6 +85,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.vmEnd = this.vmsPerPage;
 
         this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
+        this.currentPage=1
 
 
     ***REMOVED***
