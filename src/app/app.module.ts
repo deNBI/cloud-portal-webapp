@@ -17,6 +17,7 @@ import ***REMOVED***PerunSettings***REMOVED*** from "./perun-connector/connector
 import ***REMOVED***ApiSettings***REMOVED*** from "./api-connector/api-settings.service";
 // Routing Module
 import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
+import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination';
 
 // Layouts
 import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout.component';
@@ -34,7 +35,8 @@ import ***REMOVED***UserService***REMOVED*** from "./api-connector/user.service"
     TabsModule.forRoot(),
     ChartsModule,
     ModalModule.forRoot(),
-    PopoverModule
+    PopoverModule,
+      PaginationModule.forRoot(),
   ],
   declarations: [
     AppComponent,

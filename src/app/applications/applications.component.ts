@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import ***REMOVED***ApplicationExtension***REMOVED*** from "./application_extension.model";
 import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
+import 'rxjs/add/operator/catch';
 
 
 @Component(***REMOVED***
@@ -31,6 +32,7 @@ export class ApplicationsComponent ***REMOVED***
     special_hardware: SpecialHardware[] = [];
     computeCenters: [string, number][];
     selectedApplication: Application;
+    extension_status = 0;
     public deleteId: number;
 
     //notification Modal variables
@@ -61,7 +63,6 @@ export class ApplicationsComponent ***REMOVED***
         this.getComputeCenters()
 
 
-
     ***REMOVED***
 
     getComputeCenters() ***REMOVED***
@@ -90,9 +91,9 @@ export class ApplicationsComponent ***REMOVED***
 
     ngFormSetDefault(f: NgForm) ***REMOVED***
         f.reset(***REMOVED***
-            project_application_renewal_vms_requested : this.selectedApplication.VMsRequested,
-            project_application_renewal_cores_per_vm : this.selectedApplication.CoresPerVM,
-            project_application_renewal_ram_per_vm : this.selectedApplication.RamPerVM,
+            project_application_renewal_vms_requested: this.selectedApplication.VMsRequested,
+            project_application_renewal_cores_per_vm: this.selectedApplication.CoresPerVM,
+            project_application_renewal_ram_per_vm: this.selectedApplication.RamPerVM,
             project_application_renewal_volume_limit: this.selectedApplication.VolumeLimit,
             project_application_renewal_volume_counter: this.selectedApplication.VolumeCounter,
             project_application_renewal_object_storage: this.selectedApplication.ObjectStorage,
@@ -156,6 +157,7 @@ export class ApplicationsComponent ***REMOVED***
                                 r.SpecialHardware = special_hardware;
                             ***REMOVED***
                             a.ApplicationExtension = r;
+
                             this.user_applications.push(a)
                         ***REMOVED***)
 
@@ -366,6 +368,12 @@ export class ApplicationsComponent ***REMOVED***
     public requestExtension(data) ***REMOVED***
 
         this.applicataionsservice.requestRenewal(data).subscribe(result => ***REMOVED***
+            if (result.json()['Error']) ***REMOVED***
+                this.extension_status = 2
+            ***REMOVED***
+            else ***REMOVED***
+                this.extension_status = 1;
+            ***REMOVED***
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
@@ -377,6 +385,12 @@ export class ApplicationsComponent ***REMOVED***
 
     public approveExtension(application_id: number) ***REMOVED***
         this.applicataionsservice.approveRenewal(application_id).subscribe(result => ***REMOVED***
+            if (result.json()['Error']) ***REMOVED***
+                this.extension_status = 2
+            ***REMOVED***
+            else ***REMOVED***
+                this.extension_status = 3;
+            ***REMOVED***
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
@@ -385,8 +399,14 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***
 
 
-      public declineExtension(application_id: number) ***REMOVED***
+    public declineExtension(application_id: number) ***REMOVED***
         this.applicataionsservice.declineRenewal(application_id).subscribe(result => ***REMOVED***
+            if (result.json()['Error']) ***REMOVED***
+                this.extension_status = 2
+            ***REMOVED***
+            else ***REMOVED***
+                this.extension_status = 4;
+            ***REMOVED***
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
@@ -421,7 +441,7 @@ export class ApplicationsComponent ***REMOVED***
 
     public lifeTimeReached(lifetime: number, running: number, status_changed_string: string): string ***REMOVED***
         let status_changed = new Date(status_changed_string);
-        let LifetimeDays = Math.ceil(Math.abs(moment(status_changed).add(lifetime, 'months').toDate().getTime() - status_changed.getTime())) / (1000 * 3600 * 24)
+        let LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(status_changed).add(lifetime, 'months').toDate().getTime() - status_changed.getTime())) / (1000 * 3600 * 24));
 
         return (LifetimeDays - running) < 0 ? "red" : "black";
     ***REMOVED***
@@ -480,20 +500,11 @@ export class ApplicationsComponent ***REMOVED***
             return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).toPromise();
         ***REMOVED***).then(null_result => ***REMOVED***
             //setting approved status for Perun Group
-            let APPRVOVED = 2;
-            this.groupservice.setPerunGroupStatus(new_group_id, APPRVOVED).toPromise();
-            this.groupservice.setdeNBIDirectAcces(new_group_id, openstack_project).toPromise();
+
             if (compute_center != 'undefined') ***REMOVED***
                 this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
             ***REMOVED***
-            this.groupservice.setShortname(new_group_id.toString(), name).subscribe();
-            this.groupservice.setName(new_group_id.toString(), longname).subscribe();
-            this.groupservice.setNumberOfVms(new_group_id.toString(), numberofVms.toString()).subscribe();
-            this.groupservice.setDescription(new_group_id.toString(), description).subscribe();
-            this.groupservice.setLifetime(new_group_id.toString(), lifetime.toString()).subscribe();
-            this.groupservice.setPerunId(new_group_id.toString(), application_id).subscribe();
-            this.groupservice.setGroupVolumeLimit(new_group_id, volumelimit).subscribe();
-            this.groupservice.setGroupVolumeCounter(new_group_id, volumecounter).subscribe();
+            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe()
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications

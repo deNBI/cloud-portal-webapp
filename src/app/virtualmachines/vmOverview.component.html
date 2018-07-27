@@ -20,6 +20,8 @@
 
 
     <div class="table-responsive">
+        <pagination [totalItems]="vms_filtered?.length" [itemsPerPage]="vmsPerPage"
+                    (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"></pagination>
 
         <table class="table table-striped col-md-12">
             <thead>
@@ -28,7 +30,7 @@
                 <th>Project</th>
                 <th>Status</th>
                 <th>Created at</th>
-                <th>Command</th>
+                <th>How to Connect</th>
                 <th *ngIf="is_vo_admin">Elixir ID</th>
                 <th>Stopped at</th>
                 <th>Actions</th>
@@ -39,24 +41,46 @@
             </thead>
             <tbody>
             <td><input style="width: 110px;" type="text" placeholder="Filter" name="filtername"
-                       [(ngModel)]="filtername"></td>
+                       [(ngModel)]="filtername" (ngModelChange)="applyFilter();"></td>
             <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterproject"
-                       [(ngModel)]="filterproject"></td>
-            <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterstatus"
-                       [(ngModel)]="filterstatus"></td>
+                       [(ngModel)]="filterproject" (ngModelChange)="applyFilter();"></td>
+            <td>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"
+                               (change)="changeFilterStatus('ACTIVE');applyFilter();" checked/>
+                        ACTIVE
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"
+                               (change)="changeFilterStatus('SUSPENDED');applyFilter();" checked/>
+                        SUSPENDED
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"
+                               (change)="changeFilterStatus('DELETED');applyFilter();"/>
+                        DELETED
+                    </label>
+                </div>
+            </td>
             <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filtercreated_at"
-                       [(ngModel)]="filtercreated_at"></td>
-            <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterssh"
-                       [(ngModel)]="filterssh"></td>
+                       [(ngModel)]="filtercreated_at" (ngModelChange)="applyFilter();"></td>
+            <td></td>
             <td *ngIf="is_vo_admin"><input style="width: 110px;" t type="text" placeholder="Filter"
-                                           name="filterelixir_id" [(ngModel)]="filterelixir_id"></td>
+                                           name="filterelixir_id" [(ngModel)]="filterelixir_id" (ngModelChange)="applyFilter();"></td>
             <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterstopped_at"
-                       [(ngModel)]="filterstopped_at"></td>
+                       [(ngModel)]="filterstopped_at" (ngModelChange)="applyFilter();"></td>
 
-            <ng-container *ngFor="let vm of vms">
 
-                <tr
-                        *ngIf="isFilterSSH(vm.ssh_command) && isFilterstatus(vm.status ) && isFilterProject(vm.project) && isFilterCreated_at(vm.created_at) && isFilterElixir_id(vm.elixir_id) && isFilterName(vm.name) && isFilterStopped_at(vm.stopped_at) && isFilterUsername(vm.username)">
+            <ng-container *ngFor="let vm of vms_returned">
+
+
+                <tr>
                     <td>
                         ***REMOVED******REMOVED***vm.name***REMOVED******REMOVED***
                     </td>
@@ -70,7 +94,9 @@
                         ***REMOVED******REMOVED***vm.created_at***REMOVED******REMOVED***
                     </td>
                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-                        ***REMOVED******REMOVED***vm.ssh_command***REMOVED******REMOVED***
+                        <button type="button" class="btn btn-secondary"
+                                (click)="selected_command=vm.ssh_command;infoModal.show()"> Show Information
+                        </button>
                     </td>
                     <td *ngIf="is_vo_admin"
                         style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
@@ -321,3 +347,26 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-info" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Status</h4>
+                <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+
+        <div>
+            <pre><code>***REMOVED******REMOVED***selected_command***REMOVED******REMOVED***</code></pre>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="infoModal.hide();">Close</button>
+        </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

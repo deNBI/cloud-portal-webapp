@@ -12,6 +12,7 @@ import ***REMOVED***ClientOverviewComponent***REMOVED*** from "../virtualmachine
 import ***REMOVED***VmOverviewComponent***REMOVED*** from "../virtualmachines/vmOverview.component";
 import ***REMOVED***VolumeOverviewComponent***REMOVED*** from "./volumeOverview.component";
 import ***REMOVED***SnapshotOverviewComponent***REMOVED*** from "./snapshotOverview.component";
+import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination'
 
 
 @NgModule(***REMOVED***
@@ -21,6 +22,7 @@ import ***REMOVED***SnapshotOverviewComponent***REMOVED*** from "./snapshotOverv
         CommonModule,
         FormsModule,
         ModalModule.forRoot(),
+        PaginationModule.forRoot(),
 
 
     ],

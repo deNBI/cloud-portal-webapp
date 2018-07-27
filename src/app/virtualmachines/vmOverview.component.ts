@@ -9,7 +9,6 @@ import ***REMOVED***FullLayoutComponent***REMOVED*** from "../layouts/full-layou
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.service";
 
-
 @Component(***REMOVED***
     selector: 'vm-overview',
     templateUrl: 'vmOverview.component.html',
@@ -18,14 +17,21 @@ import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.servi
 
 
 export class VmOverviewComponent implements OnInit ***REMOVED***
-    vms: VirtualMachine[];
+    vms_content: VirtualMachine[];
+    vms_filtered: VirtualMachine[];
+    vms_returned: VirtualMachine[];
+    vmsPerPage = 5;
+    currentPage=1;
+    vmStart = 0;
+    selected_command:string;
+    vmEnd = this.vmsPerPage;
     status_changed_vm: string;
     status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
     snapshot_vm: string;
     validSnapshotNameBool: boolean;
-    snapshotDone: string='Waiting';
+    snapshotDone: string = 'Waiting';
     snapshotName: string;
     tab = 'own';
     status_changed: number = 0;
@@ -33,21 +39,62 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     filterip: string;
     filtername: string;
     filterstatus: string;
+    filterstatus_list: ***REMOVED*** [status: string]: boolean ***REMOVED*** = ***REMOVED***'ACTIVE': true, 'SUSPENDED': true, 'DELETED': false***REMOVED***;
     filtercreated_at: string;
     filterelixir_id: string;
     filterstopped_at: string;
     filterproject: string;
     filterssh: string;
-        collapse_status: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
-
-
+    collapse_status: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
 
 
     constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) ***REMOVED***
-   this.virtualmachineservice.getVolumesByUser().subscribe()
 
     ***REMOVED***
 
+    pageChanged(event): void ***REMOVED***
+        console.log(this)
+
+        const startItem = (event.page - 1) * event.itemsPerPage;
+        const endItem = event.page * event.itemsPerPage;
+        this.vmStart = startItem;
+        this.vmEnd = endItem;
+        this.vms_returned = this.vms_filtered.slice(startItem, endItem)
+
+    ***REMOVED***
+
+
+    filterVM(vm: VirtualMachine) ***REMOVED***
+        if (this.isFilterstatus(vm.status) && this.isFilterProject(vm.project) && this.isFilterCreated_at(vm.created_at) && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at) && this.isFilterUsername(vm.username)) ***REMOVED***
+            return true
+        ***REMOVED***
+        else ***REMOVED***
+            return false
+        ***REMOVED***
+
+
+    ***REMOVED***
+
+
+    applyFilter() ***REMOVED***
+
+
+        this.vms_filtered = this.vms_content.filter(vm => this.filterVM(vm));
+
+        this.vmStart = 0;
+        this.vmEnd = this.vmsPerPage;
+
+        this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
+        this.currentPage=1
+
+
+    ***REMOVED***
+
+    changeFilterStatus(status: number) ***REMOVED***
+        this.filterstatus_list[status] = !this.filterstatus_list[status];
+
+
+    ***REMOVED***
 
 
     public getCollapseStatus(id: string) ***REMOVED***
@@ -66,21 +113,9 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.tab = tabString;
     ***REMOVED***
 
-    isFilterSSH(ssh_command: string): boolean ***REMOVED***
-        if (!this.filterssh) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else if (ssh_command.indexOf(this.filterssh) === 0) ***REMOVED***
-
-            return true;
-
-        ***REMOVED***
-        else ***REMOVED***
-            return false;
-        ***REMOVED***
-    ***REMOVED***
 
     isFilterProject(vmproject: string): boolean ***REMOVED***
+
         if (!this.filterproject) ***REMOVED***
             return true;
         ***REMOVED***
@@ -90,14 +125,15 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
         ***REMOVED***
         else ***REMOVED***
+
             return false;
         ***REMOVED***
     ***REMOVED***
 
     checkInactiveVms() ***REMOVED***
         this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => ***REMOVED***
-            this.vms = vms;
-            for (let vm of this.vms) ***REMOVED***
+            this.vms_content = vms;
+            for (let vm of this.vms_content) ***REMOVED***
                 if (vm.created_at != '') ***REMOVED***
                     vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
                 ***REMOVED***
@@ -108,6 +144,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
                     vm.stopped_at = ''
                 ***REMOVED***
             ***REMOVED***
+            this.applyFilter();
 
         ***REMOVED***)
     ***REMOVED***
@@ -117,8 +154,9 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
 
     ***REMOVED***
-    resetSnapshotResult()***REMOVED***
-        this,this.snapshotDone='Waiting';
+
+    resetSnapshotResult() ***REMOVED***
+        this, this.snapshotDone = 'Waiting';
     ***REMOVED***
 
     checkStatus(openstackid: string) ***REMOVED***
@@ -126,8 +164,8 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
 
                 this.virtualmachineservice.getVm(this.elixir_id).subscribe(vms => ***REMOVED***
-                        this.vms = vms;
-                        for (let vm of this.vms) ***REMOVED***
+                        this.vms_content = vms;
+                        for (let vm of this.vms_content) ***REMOVED***
                             if (vm.created_at != '') ***REMOVED***
                                 vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
                             ***REMOVED***
@@ -138,6 +176,8 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
                                 vm.stopped_at = ''
                             ***REMOVED***
                         ***REMOVED***
+                        this.applyFilter()
+
 
                     ***REMOVED***
                 );
@@ -212,14 +252,13 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     isFilterstatus(vmstatus: string): boolean ***REMOVED***
-        if (!this.filterstatus) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else if (vmstatus.indexOf(this.filterstatus) === 0) ***REMOVED***
-            return true;
+        if (this.filterstatus_list[vmstatus]
+        ) ***REMOVED***
+
+            return true
         ***REMOVED***
         else ***REMOVED***
-            return false;
+            return false
         ***REMOVED***
     ***REMOVED***
 
@@ -288,8 +327,8 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
     getVms(elixir_id: string): void ***REMOVED***
         this.virtualmachineservice.getVm(elixir_id).subscribe(vms => ***REMOVED***
-                this.vms = vms;
-                for (let vm of this.vms) ***REMOVED***
+                this.vms_content = vms;
+                for (let vm of this.vms_content) ***REMOVED***
                     if (vm.created_at != '') ***REMOVED***
                         vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
                     ***REMOVED***
@@ -301,6 +340,8 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
                         vm.stopped_at = ''
                     ***REMOVED***
                 ***REMOVED***
+                this.applyFilter();
+
                 this.checkInactiveVms();
             ***REMOVED***
         );
@@ -335,8 +376,8 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
     getAllVms(): void ***REMOVED***
         this.virtualmachineservice.getAllVM().subscribe(vms => ***REMOVED***
-                this.vms = vms;
-                for (let vm of this.vms) ***REMOVED***
+                this.vms_content = vms;
+                for (let vm of this.vms_content) ***REMOVED***
 
                     if (vm.created_at != '') ***REMOVED***
                         vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
@@ -349,6 +390,8 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
                     ***REMOVED***
 
                 ***REMOVED***
+                this.applyFilter();
+
 
             ***REMOVED***
         );
@@ -357,6 +400,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     ngOnInit(): void ***REMOVED***
         this.getElixirId();
         this.checkVOstatus(this.userservice)
+
     ***REMOVED***
 
     checkVOstatus(userservice: UserService) ***REMOVED***
@@ -382,11 +426,11 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
     createSnapshot(snapshot_instance: string, snapshot_name: string) ***REMOVED***
         this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => ***REMOVED***
-            if (result['Error'])***REMOVED***
-                this.snapshotDone=result['Error'].toString();
+            if (result['Error']) ***REMOVED***
+                this.snapshotDone = result['Error'].toString();
             ***REMOVED***
             else if (result['Created'])
-                this.snapshotDone='true';
+                this.snapshotDone = 'true';
 
 
         ***REMOVED***)
