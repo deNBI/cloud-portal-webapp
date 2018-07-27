@@ -90,7 +90,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
-    changeFilterStatus(status: number) ***REMOVED***
+    changeFilterStatus(status: string) ***REMOVED***
         this.filterstatus_list[status] = !this.filterstatus_list[status];
 
 
