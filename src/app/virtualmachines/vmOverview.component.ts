@@ -90,7 +90,7 @@ export class VmOverviewComponent implements OnInit {
 
     }
 
-    changeFilterStatus(status: number) {
+    changeFilterStatus(status: string) {
         this.filterstatus_list[status] = !this.filterstatus_list[status];
 
 
