@@ -17,6 +17,7 @@ import {PerunSettings} from "./perun-connector/connector-settings.service";
 import {ApiSettings} from "./api-connector/api-settings.service";
 // Routing Module
 import {AppRoutingModule} from './app.routing';
+import {PaginationModule} from 'ngx-bootstrap/pagination';
 
 // Layouts
 import {FullLayoutComponent} from './layouts/full-layout.component';
@@ -34,7 +35,8 @@ import {UserService} from "./api-connector/user.service";
     TabsModule.forRoot(),
     ChartsModule,
     ModalModule.forRoot(),
-    PopoverModule
+    PopoverModule,
+      PaginationModule.forRoot(),
   ],
   declarations: [
     AppComponent,

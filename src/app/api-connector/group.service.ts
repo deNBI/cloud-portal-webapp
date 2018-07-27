@@ -191,7 +191,7 @@ export class GroupService {
     }
 
 
-     setGroupVolumeCounter(group_id: number, value: number) {
+    setGroupVolumeCounter(group_id: number, value: number) {
         let urlSearchParams = new URLSearchParams();
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -381,9 +381,7 @@ export class GroupService {
     }
 
 
-
-
-        getVolumesUsed(groupid: string): Observable<any> {
+    getVolumesUsed(groupid: string): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedVolumes/', {
             withCredentials: true,
             params: {groupid: groupid}
@@ -392,7 +390,7 @@ export class GroupService {
 
     }
 
-      getVolumeCounter(groupid: string): Observable<any> {
+    getVolumeCounter(groupid: string): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getVolumesCounter/', {
             withCredentials: true,
             params: {groupid: groupid}
@@ -436,5 +434,20 @@ export class GroupService {
 
 
     }
+
+
+    setPerunGroupAttributes(application_id: number, groupid: number) {
+        let urlSearchParams = new URLSearchParams();
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        urlSearchParams.append('groupid', groupid.toString());
+        urlSearchParams.append('application_id', application_id.toString());
+        return this.http.post(this.settings.getApiBaseURL() + 'group/setAttributes/', urlSearchParams, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
 
 }
