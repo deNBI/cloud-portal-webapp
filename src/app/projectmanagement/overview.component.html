@@ -52,7 +52,8 @@
                             <td>***REMOVED******REMOVED*** project.DaysRunning ***REMOVED******REMOVED***</td>
                             <td>***REMOVED******REMOVED***project.LifetimeDays***REMOVED******REMOVED***</td>
                             <td>
-                                <button type="button" class="btn btn-secondary" data-toggle="modal"
+                              <div class="btn-group-vertical">
+                                <button type="button" style="margin-bottom: 5px" class="btn btn-secondary" data-toggle="modal"
                                         (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
 
                                         *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
@@ -61,9 +62,10 @@
                                 <button
                                         (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.ComputeCenter[0]); addUserModal.show();"
                                         *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
-                                        type="button"
+                                        type="button" style="margin-bottom: 5px"
                                         class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
                                 </button>
+                                </div>
                             </td>
                         </tr>
                         </tbody>
