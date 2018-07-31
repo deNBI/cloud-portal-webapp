@@ -82,7 +82,7 @@
             <div class="modal-header">
                 <h4 class="modal-title" *ngIf="volume_status == 0 || volume_status == 3 || volume_status == 5">
                     Waiting </h4>
-                <h4 class="modal-title" *ngIf="volume_status == 1"> Success </h4>
+                <h4 class="modal-title" *ngIf="volume_status == 1 || volume_status == 4 || volume_status == 6 || volume_status == 8"> Success </h4>
                 <h4 class="modal-title" *ngIf="volume_status == 2"> Error </h4>
 
             </div>
@@ -104,6 +104,11 @@
                 <div class="alert alert-info" role="alert" *ngIf="volume_status == 0">
                     Deleting {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
                                                                     style="font-size:24px"></i>
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="volume_status == 8">
+                   Sucessfully created and attached Volume.
+
+                    <!--Todo : Info einfügen_-->
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="volume_status == 1">
                     {{selected_volume?.volume_name}} was succesfully deleted.

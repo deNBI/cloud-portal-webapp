@@ -28,7 +28,7 @@ export class VolumeOverviewComponent implements OnInit {
     diskspace: number = 1;
     volumeName: string = '';
 
-    volume_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,7:Succesfull created
+    volume_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,7:wait creation 8:succesfully attached and created
 
     request_status: number; // 0=Delete ,1 =Detach
 
@@ -171,7 +171,7 @@ export class VolumeOverviewComponent implements OnInit {
     }
 
     createVolume(volume_name: string, diskspace: string, instance_id: string) {
-        this.volume_status=0
+        this.volume_status = 0
         this.vmService.createVolume(volume_name, diskspace, instance_id).subscribe(result => {
             result = result.json();
             if (result['Created']) {
@@ -184,13 +184,26 @@ export class VolumeOverviewComponent implements OnInit {
 
         })
     }
+
     createAndAttachvolume(volume_name: string, diskspace: string, instance_id: string) {
-         this.volume_status=7;
+        this.volume_status = 7;
         this.vmService.createVolume(volume_name, diskspace, instance_id).subscribe(result => {
             result = result.json();
             if (result['Created']) {
-                let volume_id=result['Created']
-                this.attachVolume(volume_id,instance_id)
+                let volume_id = result['Created']
+                this.volume_status = 5;
+
+                this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
+
+                    result = result.json();
+                    if (result['Attached'] && result['Attached'] === true) {
+                        this.volume_status = 8;
+                    }
+                    else {
+                        this.volume_status = 2;
+                    }
+                    this.getVolumes();
+                })
             }
             else {
                 this.volume_status = 2;
