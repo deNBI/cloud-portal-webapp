@@ -40,6 +40,8 @@ export class OverviewComponent {
     public usersModalProjectID: number;
     public usersModalProjectName: string;
 
+    public isLoaded: boolean;
+
     //modal variables for Add User Modal
     public addUserModal;
     public addUserModalProjectID: number;
@@ -102,6 +104,7 @@ export class OverviewComponent {
 
     getUserProjects(groupservice: GroupService,
                     userservice: UserService) {
+      this.isLoaded = false
         let user_id: number;
         let member_id: number;
         let user_projects: {};
@@ -216,8 +219,7 @@ export class OverviewComponent {
                         }
                     })
                 })
-
-
+              this.isLoaded =true;
             }
 
         });
