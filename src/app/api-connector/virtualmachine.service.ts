@@ -18,7 +18,7 @@ export class VirtualmachineService {
     }
 
 
-    startVM(flavor: string, image: string, servername: string, project: string, projectid: string, diskspace?: string): Observable<Response> {
+    startVM(flavor: string, image: string, servername: string, project: string, projectid: string,volumename?:string, diskspace?: string): Observable<Response> {
 
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -31,6 +31,7 @@ export class VirtualmachineService {
         urlSearchParams.append('project', project);
         urlSearchParams.append('projectid', projectid);
         urlSearchParams.append('diskspace', diskspace);
+        urlSearchParams.append('volumename',volumename);
 
         return this.http.post(this.baseVmUrl + 'createVm/', urlSearchParams, {
             withCredentials: true,

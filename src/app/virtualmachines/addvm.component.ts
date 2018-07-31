@@ -1,4 +1,8 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {
+    Component, OnInit, TemplateRef, ViewChild,
+    AfterViewInit,
+    ElementRef
+} from '@angular/core';
 import {Image} from "./virtualmachinemodels/image";
 import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
 import {Flavor} from './virtualmachinemodels/flavor';
@@ -29,7 +33,10 @@ import {environment} from "../../environments/environment";
     providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService]
 })
 export class VirtualMachineComponent implements OnInit {
+
+
     data: string = "";
+
 
     informationButton: string = "Show Details";
     informationButton2: string = "Show Details";
@@ -41,21 +48,22 @@ export class VirtualMachineComponent implements OnInit {
     userinfo: Userinfo;
     vmclient: Vmclient;
     selectedProjectDiskspaceMax: number;
-    selectedProjectDiskspaceUsed:number;
-    selectedProjectVolumesMax:number;
-    selectedProjectVolumesUsed:number;
+    selectedProjectDiskspaceUsed: number;
+    selectedProjectVolumesMax: number;
+    selectedProjectVolumesUsed: number;
     selectedProjectVmsMax: number;
-    selectedProjectVmsUsed:number;
+    selectedProjectVmsUsed: number;
     selectedProject: [string, number];
     client_avaiable: boolean;
-    optional_params=false;
-    diskspace:number=0;
+    optional_params = false;
+    diskspace: number = 0;
+    volumeName: string = '';
     projects: string[] = new Array();
-    FREEMIUM_ID=environment.freemium_project_id;
+    FREEMIUM_ID = environment.freemium_project_id;
     private checkStatusTimeout: number = 5000;
 
 
-    constructor(private groupService: GroupService, private imageService: ImageService,  private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,private  keyService: keyService, private clientservice: ClientService) {
+    constructor(private groupService: GroupService, private imageService: ImageService, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private  keyService: keyService, private clientservice: ClientService) {
     }
 
 
@@ -68,7 +76,6 @@ export class VirtualMachineComponent implements OnInit {
         this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
 
     }
-
 
 
     getClientData() {
@@ -153,12 +160,11 @@ export class VirtualMachineComponent implements OnInit {
         }, this.checkStatusTimeout);
     }
 
-    startVM(flavor: string, image: string, servername: string, project: string, projectid: string, diskspace?: string): void {
-        if (image && flavor && servername && project) {
+    startVM(flavor: string, image: string, servername: string, project: string, projectid: string): void {
+        if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
 
 
-
-            this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, diskspace).subscribe(data => {
+            this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => {
 
 
                 if (data.json()['Created']) {
@@ -234,73 +240,73 @@ export class VirtualMachineComponent implements OnInit {
             if (result['Diskspace']) {
 
 
-                    this.selectedProjectDiskspaceMax = result['Diskspace'];
+                this.selectedProjectDiskspaceMax = result['Diskspace'];
 
             }
-            else if (result['Diskspace'] === null || result['Diskspace'] === 0){
-                   this.selectedProjectDiskspaceMax = 0;
+            else if (result['Diskspace'] === null || result['Diskspace'] === 0) {
+                this.selectedProjectDiskspaceMax = 0;
             }
 
         })
         this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe(result => {
-              if (result['Diskspace']) {
+            if (result['Diskspace']) {
 
-                    this.selectedProjectDiskspaceUsed = result['Diskspace'];
+                this.selectedProjectDiskspaceUsed = result['Diskspace'];
             }
-            else if (result['Diskspace'] == 0 || result['Diskspace'] == null){
-                  this.selectedProjectDiskspaceUsed = 0;
-              }
+            else if (result['Diskspace'] == 0 || result['Diskspace'] == null) {
+                this.selectedProjectDiskspaceUsed = 0;
+            }
 
 
         })
 
     }
 
-        getSelectedProjectVolumes(): void{
-        this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe( result =>{
-            if (result['VolumeCounter']){
-                this.selectedProjectVolumesMax=result['VolumeCounter'];
+    getSelectedProjectVolumes(): void {
+        this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe(result => {
+            if (result['VolumeCounter']) {
+                this.selectedProjectVolumesMax = result['VolumeCounter'];
             }
-            else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0){
-                this.selectedProjectVolumesMax=0;
+            else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) {
+                this.selectedProjectVolumesMax = 0;
             }
         })
         this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
             console.log(result)
-            if(result['UsedVolumes']){
-                this.selectedProjectVolumesUsed=result['UsedVolumes'];
+            if (result['UsedVolumes']) {
+                this.selectedProjectVolumesUsed = result['UsedVolumes'];
                 console.log(this.selectedProjectVolumesUsed)
             }
-            else if(result['UsedVolumes'] === null || result['UsedVolumes'] === 0){
+            else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) {
 
-                this.selectedProjectVolumesUsed=0;
+                this.selectedProjectVolumesUsed = 0;
             }
 
         })
-        }
+    }
 
 
-        getSelectedProjectVms(): void {
+    getSelectedProjectVms(): void {
         this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()).subscribe(result => {
             if (result['NumberVms']) {
 
 
-                    this.selectedProjectVmsMax = result['NumberVms'];
+                this.selectedProjectVmsMax = result['NumberVms'];
 
             }
-            else if (result['NumberVms'] === null || result['NumberVms'] === 0){
-                   this.selectedProjectVmsMax= 0;
+            else if (result['NumberVms'] === null || result['NumberVms'] === 0) {
+                this.selectedProjectVmsMax = 0;
             }
 
         })
         this.groupService.getGroupUsedVms(this.selectedProject[1].toString()).subscribe(result => {
-              if (result['NumberVms']) {
+            if (result['NumberVms']) {
 
-                    this.selectedProjectVmsUsed = result['NumberVms'];
+                this.selectedProjectVmsUsed = result['NumberVms'];
             }
-            else if (result['NumberVms'] == 0 || result['NumberVms'] == null){
-                  this.selectedProjectVmsUsed = 0;
-              }
+            else if (result['NumberVms'] == 0 || result['NumberVms'] == null) {
+                this.selectedProjectVmsUsed = 0;
+            }
 
 
         })

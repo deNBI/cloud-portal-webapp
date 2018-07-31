@@ -11,7 +11,7 @@
                     <tr>
                         <th>Project</th>
                         <th>Virtual Machine</th>
-                        <th>Openstack Id</th>
+                        <th>Name</th>
                         <th>Size</th>
                         <th>Actions</th>
                         <!-- th>Client</th-->
@@ -24,7 +24,7 @@
                         <td>{{volume.volume_project}}</td>
                         <td *ngIf="volume.volume_virtualmachine">{{volume.volume_virtualmachine.name}}</td>
                         <td *ngIf="!volume.volume_virtualmachine"></td>
-                        <td>{{volume.volume_openstackid}}</td>
+                        <td>{{volume.volume_name}}</td>
                         <td>{{volume.volume_size }} GB</td>
                         <td>
                             <div class="btn-group {{collapse_status[volume.volume_openstackid]}}">
@@ -81,27 +81,27 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="delete_status == 3">
-                    Detaching {{selected_volume?.volume_openstackid}}... <i class="fa fa-spinner fa-spin"
+                    Detaching {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
                                                                             style="font-size:24px"></i>
                 </div>
 
                 <div class="alert alert-info" role="alert" *ngIf="delete_status == 5">
-                    Attaching Volume {{selected_volume?.volume_openstackid}} to Virtualmachine {{selected_vm.name}}...
+                    Attaching Volume {{selected_volume?.volume_name}} to Virtualmachine {{selected_vm.name}}...
                     <i class="fa fa-spinner fa-spin"
                        style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-info" role="alert" *ngIf="delete_status == 0">
-                    Deleting {{selected_volume?.volume_openstackid}}... <i class="fa fa-spinner fa-spin"
+                    Deleting {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
                                                                            style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="delete_status == 1">
-                    {{selected_volume?.volume_openstackid}} was succesfully deleted.
+                    {{selected_volume?.volume_name}} was succesfully deleted.
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="delete_status == 4">
                     {{selected_volume?.volume_openstackid}} was succesfully detached.
                 </div>
                  <div class="alert alert-success" role="alert" *ngIf="delete_status == 6">
-                    {{selected_volume?.volume_openstackid}} was succesfully attached.
+                    {{selected_volume?.volume_name}} was succesfully attached.
                 </div>
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="delete_status == 2">
@@ -129,10 +129,10 @@
             <div class="modal-body">
 
                 <div *ngIf="request_status == 0;" class="alert alert-warning" role="alert">
-                    Are you sure you want to delete Volume {{selected_volume?.volume_openstackid}}?
+                    Are you sure you want to delete Volume {{selected_volume?.volume_name}}?
                 </div>
                 <div *ngIf="request_status == 1;" class="alert alert-warning" role="alert">
-                    Are you sure you want to detach Volume {{selected_volume?.volume_openstackid}} from
+                    Are you sure you want to detach Volume {{selected_volume?.volume_name}} from
                     {{selected_volume?.volume_virtualmachine?.name}}?
                 </div>
 
