@@ -17,6 +17,7 @@ export class VolumeOverviewComponent implements OnInit {
     project_vms: VirtualMachine[];
     selected_vm: VirtualMachine;
     collapse_status: { [id: string]: string } = {};
+    isLoaded=false;
     selected_volume: Volume;
     delete_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,
 
@@ -50,7 +51,8 @@ export class VolumeOverviewComponent implements OnInit {
 
     getVolumes() {
         this.vmService.getVolumesByUser().subscribe(result => {
-            this.volumes = result
+            this.volumes = result;
+            this.isLoaded=true;
 
         })
     }
