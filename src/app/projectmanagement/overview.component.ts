@@ -217,7 +217,7 @@ export class OverviewComponent {
                                     this.projects.push(newProject);
                                     project_checks[newProject.Id] = true;
                                     if (Object.keys(project_checks).length == number_userprojects) {
-                                        let all_ready = true
+                                        let all_ready = true;
                                         for (let key in project_checks) {
                                             if (project_checks[key] == false) {
                                                 all_ready = false
