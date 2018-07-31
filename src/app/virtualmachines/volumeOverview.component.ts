@@ -28,8 +28,7 @@ export class VolumeOverviewComponent implements OnInit {
     diskspace: number = 1;
     volumeName: string = '';
 
-
-    delete_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,7:Succesfull created
+    volume_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,7:Succesfull created
 
     request_status: number; // 0=Delete ,1 =Detach
 
@@ -117,23 +116,23 @@ export class VolumeOverviewComponent implements OnInit {
     }
 
     deleteVolume(volume_id: string, instance_id?: string) {
-        this.delete_status = 0;
+        this.volume_status = 0;
 
 
         if (instance_id) {
-            this.delete_status = 3;
+            this.volume_status = 3;
             this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
                 if (result['Deleted'] && result['Deleted'] === true) {
-                    this.delete_status = 0;
+                    this.volume_status = 0;
                 }
 
                 this.vmService.deleteVolume(volume_id).subscribe(result => {
                     result = result.json()
                     if (result['Deleted'] && result['Deleted'] === true) {
-                        this.delete_status = 1;
+                        this.volume_status = 1;
                     }
                     else {
-                        this.delete_status = 2;
+                        this.volume_status = 2;
                     }
                     this.getVolumes();
                 })
@@ -144,10 +143,10 @@ export class VolumeOverviewComponent implements OnInit {
             this.vmService.deleteVolume(volume_id).subscribe(result => {
                 result = result.json()
                 if (result['Deleted'] && result['Deleted'] === true) {
-                    this.delete_status = 1;
+                    this.volume_status = 1;
                 }
                 else {
-                    this.delete_status = 2;
+                    this.volume_status = 2;
                 }
                 this.getVolumes();
 
@@ -156,34 +155,52 @@ export class VolumeOverviewComponent implements OnInit {
     }
 
     attachVolume(volume_id: string, instance_id: string) {
-        this.delete_status = 5;
+        this.volume_status = 5;
 
         this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
 
             result = result.json();
             if (result['Attached'] && result['Attached'] === true) {
-                this.delete_status = 6;
+                this.volume_status = 6;
             }
             else {
-                this.delete_status = 2;
+                this.volume_status = 2;
             }
             this.getVolumes();
         })
     }
 
     createVolume(volume_name: string, diskspace: string, instance_id: string) {
+        this.volume_status=0
         this.vmService.createVolume(volume_name, diskspace, instance_id).subscribe(result => {
             result = result.json();
             if (result['Created']) {
-                this.delete_status = 7;
+                this.volume_status = 7;
             }
             else {
-                this.delete_status = 2;
+                this.volume_status = 2;
             }
             this.getVolumes();
 
         })
     }
+    createAndAttachvolume(volume_name: string, diskspace: string, instance_id: string) {
+         this.volume_status=7;
+        this.vmService.createVolume(volume_name, diskspace, instance_id).subscribe(result => {
+            result = result.json();
+            if (result['Created']) {
+                let volume_id=result['Created']
+                this.attachVolume(volume_id,instance_id)
+            }
+            else {
+                this.volume_status = 2;
+            }
+            this.getVolumes();
+
+        })
+
+    }
+
 
     getActiveVmsByProject(groupid: string) {
         this.vmService.getActiveVmsByProject(groupid).subscribe(result => {
@@ -194,14 +211,14 @@ export class VolumeOverviewComponent implements OnInit {
     }
 
     detachVolume(volume_id: string, instance_id: string) {
-        this.delete_status = 3;
+        this.volume_status = 3;
         this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
             result = result.json();
             if (result['Deleted'] && result['Deleted'] === true) {
-                this.delete_status = 4;
+                this.volume_status = 4;
             }
             else {
-                this.delete_status = 2;
+                this.volume_status = 2;
             }
             this.getVolumes();
         })
