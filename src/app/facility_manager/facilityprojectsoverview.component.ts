@@ -63,6 +63,7 @@ export class FacilityProjectsOverviewComponent {
         let projects_ready = {};
 
         this.facilityservice.getFacilityAllowedGroups(facility).subscribe(result => {
+            let number_facilityprojects = result.length;
             for (let group of result) {
                 projects_ready[group['id']] = false
                 this.groupservice.getShortame(group['id']).subscribe(name => {
@@ -84,7 +85,7 @@ export class FacilityProjectsOverviewComponent {
                         is_pi,
                         is_admin,
                         [result['Facility'], result['FacilityId']]
-                    )
+                    );
                     newProject.Lifetime = group['lifetime']
                     if (newProject.Lifetime != -1) {
                         newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24))
@@ -95,15 +96,21 @@ export class FacilityProjectsOverviewComponent {
                         newProject.LifetimeDays = -1;
                     }
                     this.projects.push(newProject);
-                    let all_ready = true;
-                    for (let key in projects_ready) {
-                        if (projects_ready[key] == false) {
-                            all_ready = false
+                    projects_ready[group['id']] = true;
 
+                    let all_ready = true;
+                    if (Object.keys(projects_ready).length == number_facilityprojects) {
+
+                        for (let key in projects_ready) {
+                            if (projects_ready[key] == false) {
+                                all_ready = false
+
+                            }
                         }
-                    }
-                    if (all_ready = true) {
-                        this.isLoaded = true
+                        if (all_ready == true) {
+
+                            this.isLoaded = true
+                        }
                     }
                 })
             }
