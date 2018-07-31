@@ -6,6 +6,7 @@ import {Component, Input, ViewChild} from '@angular/core';
     providers: [ImageService]
 })
 export class ImageTagComponent {
+    isLoaded=false;
 
     imageTags: [string, string][]
 
@@ -13,6 +14,7 @@ export class ImageTagComponent {
     constructor(private imageService: ImageService,) {
         this.imageService.getImageTags().subscribe(result => {
             this.imageTags = result;
+            this.isLoaded=true;
         })
     }
 

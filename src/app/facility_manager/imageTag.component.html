@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<div class="animated fadeIn" ng-app>
+<div *ngIf="isLoaded==false" class="loader"></div>
+
+<div *ngIf="isLoaded" class="animated fadeIn" ng-app>
     <div class="row">
         <!--/.col-->
         <h1>Image tags</h1>

@@ -23,6 +23,7 @@ export class VoOverviewComponent {
     public emailVerify: string;
     public emailType: number;
     public newsletterSubscriptionCounter: number;
+    isLoaded = false;
 
     member_id: number;
     projects: Project[] = new Array();
@@ -75,7 +76,6 @@ export class VoOverviewComponent {
     }
 
 
-
     sendMailToVo(subject: string, message: string, reply?: string) {
         this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => {
             if (result == 1) {
@@ -113,8 +113,8 @@ export class VoOverviewComponent {
         this.emailHeader = null;
         this.emailSubject = null;
         this.emailText = null;
-        this.emailType=null;
-        this.emailVerify=null;
+        this.emailType = null;
+        this.emailVerify = null;
         this.emailReply = '';
         this.emailStatus = 0;
 
@@ -122,8 +122,11 @@ export class VoOverviewComponent {
 
 
     getVoProjects() {
+        let projects_ready = {};
         this.voserice.getAllVoGroups().subscribe(result => {
             for (let group of result) {
+                projects_ready[group['id']] = false;
+
                 this.groupservice.getShortame(group['id']).subscribe(name => {
 
                     let shortname = name['shortname']
@@ -149,7 +152,7 @@ export class VoOverviewComponent {
                     if (newProject.Lifetime != -1) {
                         newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
                         let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() +1) + "." + moment(expirationDate).year();
+                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
                     }
 
                     else {
@@ -157,9 +160,17 @@ export class VoOverviewComponent {
                     }
 
 
-
-
                     this.projects.push(newProject);
+                    let all_ready = true;
+                    for (let key in projects_ready) {
+                        if (projects_ready[key] == false) {
+                            all_ready = false
+
+                        }
+                    }
+                    if (all_ready = true) {
+                        this.isLoaded = true
+                    }
                 })
             }
 
