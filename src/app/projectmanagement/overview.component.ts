@@ -10,13 +10,13 @@ import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
-import  * as moment from 'moment';
+import * as moment from 'moment';
 import {VoService} from "../api-connector/vo.service";
 
 
 @Component({
     templateUrl: 'overview.component.html',
-    providers: [VoService,UserService, GroupService,  PerunSettings, ApiSettings]
+    providers: [VoService, UserService, GroupService, PerunSettings, ApiSettings]
 })
 export class OverviewComponent {
 
@@ -40,7 +40,7 @@ export class OverviewComponent {
     public usersModalProjectID: number;
     public usersModalProjectName: string;
 
-    public isLoaded: boolean;
+    public isLoaded: boolean = false;
 
     //modal variables for Add User Modal
     public addUserModal;
@@ -64,11 +64,10 @@ export class OverviewComponent {
     public passwordModalFacility: string = '';
     public passwordModalEmail: string = '';
 
-    constructor(
-                private perunsettings: PerunSettings,
+    constructor(private perunsettings: PerunSettings,
                 private groupservice: GroupService,
                 private userservice: UserService,
-                private voservice:VoService) {
+                private voservice: VoService) {
         this.getUserProjects(groupservice, userservice);
 
     }
@@ -104,13 +103,13 @@ export class OverviewComponent {
 
     getUserProjects(groupservice: GroupService,
                     userservice: UserService) {
-      this.isLoaded = false
         let user_id: number;
         let member_id: number;
         let user_projects: {};
         let user_data: {};
         let admin_groups: {};
         let admin_vos: {};
+        let project_checks = {};
 
         this.userservice
             .getLoggedUser().toPromise()
@@ -140,6 +139,7 @@ export class OverviewComponent {
 
             //hold data in the class just in case
             this.userprojects = user_projects;
+            let number_userprojects = Object.keys(user_projects).length;
             this.userid = user_id;
             this.user_data = user_data;
             this.member_id = member_id;
@@ -176,53 +176,85 @@ export class OverviewComponent {
 
                 this.groupservice.getShortame(group['id']).subscribe(name => {
                     this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => {
-                        let shortname = name['shortname']
-                        if (!shortname) {
-                            shortname = group['name']
-                        }
+                            let shortname = name['shortname']
+                            if (!shortname) {
+                                shortname = group['name']
+                            }
 
-                        let newProject = new Project(
-                            group["id"],
-                            shortname,
-                            group["description"],
-                            dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
-                            dateDayDifference,
-                            is_pi,
-                            is_admin,
-                            [result['Facility'], result['FacilityId']])
-                        let details = result['Details'];
-                        let details_array = [];
-                        for (let detail in details) {
-                            let detail_tuple = [detail, details[detail]];
-                            details_array.push(detail_tuple);
-                        }
-                        newProject.ComputecenterDetails = details_array;
-                        if (is_pi) {
-                            this.groupservice.getLifetime(group['id']).subscribe(result => {
-                                let lifetime = result['lifetime']
+                            let newProject = new Project(
+                                group["id"],
+                                shortname,
+                                group["description"],
+                                dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                                dateDayDifference,
+                                is_pi,
+                                is_admin,
+                                [result['Facility'], result['FacilityId']])
+                            project_checks[newProject.Id] = false
 
-                                newProject.Lifetime = lifetime;
-                                if (newProject.Lifetime != -1) {
+                            let details = result['Details'];
+                            let details_array = [];
+                            for (let detail in details) {
+                                let detail_tuple = [detail, details[detail]];
+                                details_array.push(detail_tuple);
+                            }
+                            newProject.ComputecenterDetails = details_array;
+                            if (is_pi) {
+                                this.groupservice.getLifetime(group['id']).subscribe(result => {
+                                    let lifetime = result['lifetime']
 
-                                    newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24)
-                                    let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() +1) + "." + moment(expirationDate).year();
-                                }
-                                else {
-                                    newProject.LifetimeDays = -1;
-                                }
+                                    newProject.Lifetime = lifetime;
+                                    if (newProject.Lifetime != -1) {
+
+                                        newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24)
+                                        let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
+                                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
+                                    }
+                                    else {
+                                        newProject.LifetimeDays = -1;
+                                    }
+
+                                    this.projects.push(newProject);
+                                    project_checks[newProject.Id] = true;
+                                    if (Object.keys(project_checks).length == number_userprojects) {
+                                        let all_ready = true
+                                        for (let key in project_checks) {
+                                            if (project_checks[key] == false) {
+                                                all_ready = false
+
+                                            }
+                                        }
+                                        if (all_ready = true) {
+                                            this.isLoaded = true
+                                        }
+                                    }
+                                })
+                            }
+                            else {
                                 this.projects.push(newProject);
-                            })
+                                project_checks[newProject.Id] = true;
+                                if (Object.keys(project_checks).length == number_userprojects) {
+                                    let all_ready = true
+                                    for (let key in project_checks) {
+                                        if (project_checks[key] == false) {
+                                            all_ready = false
+
+                                        }
+                                    }
+                                    if (all_ready = true) {
+                                        this.isLoaded = true
+                                    }
+                                }
+
+
+                            }
                         }
-                        else {
-                            this.projects.push(newProject);
-                        }
-                    })
+                    )
                 })
-              this.isLoaded =true;
             }
 
-        });
+
+        })
         // .then( function(){ groupsmanager.getGroupsWhereUserIsAdmin(this.userid); });
     }
 
