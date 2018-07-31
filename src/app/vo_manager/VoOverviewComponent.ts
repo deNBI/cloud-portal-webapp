@@ -125,6 +125,9 @@ export class VoOverviewComponent {
         let projects_ready = {};
         this.voserice.getAllVoGroups().subscribe(result => {
             let number_voprojects = result.length;
+            if (number_voprojects == 0){
+                this.isLoaded=true;
+            }
             for (let group of result) {
                 projects_ready[group['id']] = false;
 

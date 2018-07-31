@@ -140,6 +140,9 @@ export class OverviewComponent {
             //hold data in the class just in case
             this.userprojects = user_projects;
             let number_userprojects = Object.keys(user_projects).length;
+             if (number_userprojects == 0){
+                this.isLoaded=true;
+            }
             this.userid = user_id;
             this.user_data = user_data;
             this.member_id = member_id;

@@ -83,7 +83,7 @@ export class VolumeOverviewComponent implements OnInit {
         }
         else {
             this.vmService.deleteVolume(volume_id).subscribe(result => {
-                result = result.json()
+                result = result.json();
                 if (result['Deleted'] && result['Deleted'] === true) {
                     this.delete_status = 1;
                 }
