@@ -153,6 +153,27 @@ export class VirtualmachineService {
 
     }
 
+
+
+
+    createVolume(volume_name: string, volume_diskspace: string,vm_openstackid): Observable<Response> {
+        let header = new Headers({
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        });
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('volume_name', volume_name);
+        urlSearchParams.append('volume_diskspace', volume_diskspace);
+                urlSearchParams.append('vm_openstackid', vm_openstackid);
+
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/createVolume/', urlSearchParams, {
+            withCredentials: true,
+            headers: header,
+        });
+    }
+
     attachVolumetoServer(volume_id: string, instance_id: string): Observable<Response> {
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),

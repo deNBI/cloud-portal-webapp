@@ -3,13 +3,14 @@ import 'rxjs/Rx'
 import {Volume} from "./virtualmachinemodels/volume";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
+import {GroupService} from "../api-connector/group.service";
 
 
 @Component({
 
     selector: 'volume-overview',
     templateUrl: 'volumeOverview.component.html',
-    providers: [VirtualmachineService]
+    providers: [GroupService, VirtualmachineService]
 })
 
 export class VolumeOverviewComponent implements OnInit {
@@ -18,12 +19,22 @@ export class VolumeOverviewComponent implements OnInit {
     selected_vm: VirtualMachine;
     collapse_status: { [id: string]: string } = {};
     selected_volume: Volume;
-    delete_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,
+    selectedProjectDiskspaceMax: number;
+    selectedProjectDiskspaceUsed: number;
+    selectedProjectVolumesMax: number;
+    selectedProjectVolumesUsed: number;
+    selectedProject: [string, number];
+    projects: string[] = new Array();
+    diskspace: number = 1;
+    volumeName: string = '';
+
+
+    delete_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,7:Succesfull created
 
     request_status: number; // 0=Delete ,1 =Detach
 
 
-    constructor(private vmService: VirtualmachineService) {
+    constructor(private groupService: GroupService, private vmService: VirtualmachineService) {
 
     }
 
@@ -51,6 +62,56 @@ export class VolumeOverviewComponent implements OnInit {
     getVolumes() {
         this.vmService.getVolumesByUser().subscribe(result => {
             this.volumes = result
+
+        })
+    }
+
+    getSelectedProjectDiskspace(): void {
+        this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe(result => {
+            if (result['Diskspace']) {
+
+
+                this.selectedProjectDiskspaceMax = result['Diskspace'];
+
+            }
+            else if (result['Diskspace'] === null || result['Diskspace'] === 0) {
+                this.selectedProjectDiskspaceMax = 0;
+            }
+
+        })
+        this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe(result => {
+            if (result['Diskspace']) {
+
+                this.selectedProjectDiskspaceUsed = result['Diskspace'];
+            }
+            else if (result['Diskspace'] == 0 || result['Diskspace'] == null) {
+                this.selectedProjectDiskspaceUsed = 0;
+            }
+
+
+        })
+
+    }
+
+    getSelectedProjectVolumes(): void {
+        this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe(result => {
+            if (result['VolumeCounter']) {
+                this.selectedProjectVolumesMax = result['VolumeCounter'];
+            }
+            else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) {
+                this.selectedProjectVolumesMax = 0;
+            }
+        })
+        this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
+            console.log(result)
+            if (result['UsedVolumes']) {
+                this.selectedProjectVolumesUsed = result['UsedVolumes'];
+                console.log(this.selectedProjectVolumesUsed)
+            }
+            else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) {
+
+                this.selectedProjectVolumesUsed = 0;
+            }
 
         })
     }
@@ -110,6 +171,20 @@ export class VolumeOverviewComponent implements OnInit {
         })
     }
 
+    createVolume(volume_name: string, diskspace: string, instance_id: string) {
+        this.vmService.createVolume(volume_name, diskspace, instance_id).subscribe(result => {
+            result = result.json();
+            if (result['Created']) {
+                this.delete_status = 7;
+            }
+            else {
+                this.delete_status = 2;
+            }
+            this.getVolumes();
+
+        })
+    }
+
     getActiveVmsByProject(groupid: string) {
         this.vmService.getActiveVmsByProject(groupid).subscribe(result => {
 
@@ -132,9 +207,20 @@ export class VolumeOverviewComponent implements OnInit {
         })
     }
 
+    getUserApprovedProjects() {
+        this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => {
+            for (let project of membergroups.json()) {
+                this.projects.push(project);
+
+            }
+        });
+    }
+
 
     ngOnInit(): void {
         this.getVolumes()
+        this.getUserApprovedProjects();
+
         // this.vmService.attachVolumetoServer('ae05210e-7a40-451a-8ed2-98c868c2ef8b','5302d0df-7409-45c9-8c84-33d087f067a8').subscribe()
         // this.vmService.deleteVolume('ae05210e-7a40-451a-8ed2-98c868c2ef8b').subscribe()
 
