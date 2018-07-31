@@ -241,7 +241,7 @@ export class OverviewComponent {
 
                                         }
                                     }
-                                    if (all_ready = true) {
+                                    if (all_ready == true) {
                                         this.isLoaded = true
                                     }
                                 }
