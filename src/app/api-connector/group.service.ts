@@ -15,7 +15,7 @@ export class GroupService {
     getComputeCenters(): Observable<any> {
 
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'group/computecenters/', {
             withCredentials: true,
 
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
@@ -24,7 +24,7 @@ export class GroupService {
 
     getComputeCentersDetails(resource_id: number): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'facility_details/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'group/facilityDetails/', {
             withCredentials: true,
             params: {resource_id: resource_id}
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
@@ -33,7 +33,7 @@ export class GroupService {
 
     getFacilityByGroup(groupid: string): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'getFacilityByGroup/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'group/getFacilityByGroup/', {
             withCredentials: true,
             params: {groupid: groupid}
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
@@ -48,7 +48,7 @@ export class GroupService {
         });
         urlSearchParams.append('compute_center', computecenter);
         urlSearchParams.append('groupid', groupid);
-        return this.http.post(this.settings.getApiBaseURL() + 'assignGroupToResource/', urlSearchParams, {
+        return this.http.post(this.settings.getApiBaseURL() + 'group/assignGroupToResource/', urlSearchParams, {
             withCredentials: true,
             headers: header
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
@@ -420,20 +420,7 @@ export class GroupService {
     }
 
 
-    setNumberOfVms(groupid: string, numberofVms: string): Observable<any> {
-        let urlSearchParams = new URLSearchParams();
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        urlSearchParams.append('numberOfVms', numberofVms);
-        urlSearchParams.append('groupid', groupid);
-        return this.http.post(this.settings.getApiBaseURL() + 'setGroupNumberOfVms/', urlSearchParams, {
-            withCredentials: true,
-            headers: header
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
-
-    }
 
 
     setPerunGroupAttributes(application_id: number, groupid: number) {

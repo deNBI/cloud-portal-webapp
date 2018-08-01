@@ -243,7 +243,7 @@ export class OverviewComponent {
     }
 
     filterMembers(firstName: string, lastName: string, groupid: number) {
-        this.voservice.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
+        this.userservice.getFilteredMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
             this.filteredMembers = result;
         })
     }
