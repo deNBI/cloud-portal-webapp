@@ -23,6 +23,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
     snapshots: SnapshotModel[];
     selected_snapshot: SnapshotModel;
     delete_status = 0;
+    isLoaded=false;
 
 
     constructor(private imageService: ImageService) ***REMOVED***
@@ -35,7 +36,8 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
 
     getSnapshots() ***REMOVED***
         this.imageService.getSnapshotsByUser().subscribe(result => ***REMOVED***
-            this.snapshots = result
+            this.snapshots = result;
+            this.isLoaded=true;
         ***REMOVED***)
     ***REMOVED***
 

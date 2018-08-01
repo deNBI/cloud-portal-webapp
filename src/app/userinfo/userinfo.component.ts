@@ -18,6 +18,7 @@ export class UserinfoComponent implements OnInit***REMOVED***
   key_visible = false;
   newsletter_subscribed :boolean;
   public_key: string='';
+  isLoaded=false;
 
   constructor(private userservice: UserService, private keyService: keyService) ***REMOVED***
     this.userinfo = new Userinfo();
@@ -30,7 +31,7 @@ export class UserinfoComponent implements OnInit***REMOVED***
    ngOnInit(): void ***REMOVED***
 
             this.userservice.getNewsletterSubscription().subscribe(result => ***REMOVED***
-          result = result.json()['subscribed']
+          result = result.json()['subscribed'];
           if (result.toString() == 'true') ***REMOVED***
               this.newsletter_subscribed = true;
           ***REMOVED***
@@ -76,6 +77,7 @@ export class UserinfoComponent implements OnInit***REMOVED***
   getUserPublicKey() ***REMOVED***
     this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => ***REMOVED***
       this.userinfo.PublicKey = result.toString();
+      this.isLoaded=true;
     ***REMOVED***)
   ***REMOVED***
 

@@ -17,6 +17,7 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     project_vms: VirtualMachine[];
     selected_vm: VirtualMachine;
     collapse_status: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
+    isLoaded=false;
     selected_volume: Volume;
     delete_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,
 
@@ -50,7 +51,8 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
 
     getVolumes() ***REMOVED***
         this.vmService.getVolumesByUser().subscribe(result => ***REMOVED***
-            this.volumes = result
+            this.volumes = result;
+            this.isLoaded=true;
 
         ***REMOVED***)
     ***REMOVED***
@@ -81,7 +83,7 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***
         else ***REMOVED***
             this.vmService.deleteVolume(volume_id).subscribe(result => ***REMOVED***
-                result = result.json()
+                result = result.json();
                 if (result['Deleted'] && result['Deleted'] === true) ***REMOVED***
                     this.delete_status = 1;
                 ***REMOVED***

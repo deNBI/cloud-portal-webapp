@@ -23,6 +23,7 @@ export class VoOverviewComponent ***REMOVED***
     public emailVerify: string;
     public emailType: number;
     public newsletterSubscriptionCounter: number;
+    isLoaded = false;
 
     member_id: number;
     projects: Project[] = new Array();
@@ -75,7 +76,6 @@ export class VoOverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-
     sendMailToVo(subject: string, message: string, reply?: string) ***REMOVED***
         this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => ***REMOVED***
             if (result == 1) ***REMOVED***
@@ -113,8 +113,8 @@ export class VoOverviewComponent ***REMOVED***
         this.emailHeader = null;
         this.emailSubject = null;
         this.emailText = null;
-        this.emailType=null;
-        this.emailVerify=null;
+        this.emailType = null;
+        this.emailVerify = null;
         this.emailReply = '';
         this.emailStatus = 0;
 
@@ -122,45 +122,67 @@ export class VoOverviewComponent ***REMOVED***
 
 
     getVoProjects() ***REMOVED***
+        let projects_ready = ***REMOVED******REMOVED***;
         this.voserice.getAllVoGroups().subscribe(result => ***REMOVED***
+            let number_voprojects = result.length;
+            if (number_voprojects == 0)***REMOVED***
+                this.isLoaded=true;
+            ***REMOVED***
             for (let group of result) ***REMOVED***
+                projects_ready[group['id']] = false;
+
                 this.groupservice.getShortame(group['id']).subscribe(name => ***REMOVED***
 
-                    let shortname = name['shortname']
-                    if (!shortname) ***REMOVED***
-                        shortname = group['name']
+                        let shortname = name['shortname']
+                        if (!shortname) ***REMOVED***
+                            shortname = group['name']
+                        ***REMOVED***
+
+                        let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                        let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
+                        let is_pi = false;
+                        let is_admin = false;
+                        let newProject = new Project(
+                            group["id"],
+                            shortname,
+                            group["description"],
+                            dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                            dateDayDifference,
+                            is_pi,
+                            is_admin,
+                            [result['Facility'], result['FacilityId']]
+                        );
+                        newProject.Lifetime = group['lifetime']
+                        if (newProject.Lifetime != -1) ***REMOVED***
+                            newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
+                            let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
+                            newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
+                        ***REMOVED***
+
+                        else ***REMOVED***
+                            newProject.LifetimeDays = -1;
+                        ***REMOVED***
+
+
+                        this.projects.push(newProject);
+                        projects_ready[group['id']] = true;
+
+                        let all_ready = true;
+                        if (Object.keys(projects_ready).length == number_voprojects) ***REMOVED***
+
+                            for (let key in projects_ready) ***REMOVED***
+                                if (projects_ready[key] == false) ***REMOVED***
+                                    all_ready = false
+
+                                ***REMOVED***
+                            ***REMOVED***
+                            if (all_ready == true) ***REMOVED***
+
+                                this.isLoaded = true
+                            ***REMOVED***
+                        ***REMOVED***
                     ***REMOVED***
-
-                    let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
-                    let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                    let is_pi = false;
-                    let is_admin = false;
-                    let newProject = new Project(
-                        group["id"],
-                        shortname,
-                        group["description"],
-                        dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
-                        dateDayDifference,
-                        is_pi,
-                        is_admin,
-                        [result['Facility'], result['FacilityId']]
-                    )
-                    newProject.Lifetime = group['lifetime']
-                    if (newProject.Lifetime != -1) ***REMOVED***
-                        newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                        let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() +1) + "." + moment(expirationDate).year();
-                    ***REMOVED***
-
-                    else ***REMOVED***
-                        newProject.LifetimeDays = -1;
-                    ***REMOVED***
-
-
-
-
-                    this.projects.push(newProject);
-                ***REMOVED***)
+                )
             ***REMOVED***
 
 

@@ -10,13 +10,13 @@ import ***REMOVED***environment***REMOVED*** from '../../environments/environmen
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
-import  * as moment from 'moment';
+import * as moment from 'moment';
 import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 
 
 @Component(***REMOVED***
     templateUrl: 'overview.component.html',
-    providers: [VoService,UserService, GroupService,  PerunSettings, ApiSettings]
+    providers: [VoService, UserService, GroupService, PerunSettings, ApiSettings]
 ***REMOVED***)
 export class OverviewComponent ***REMOVED***
 
@@ -40,6 +40,8 @@ export class OverviewComponent ***REMOVED***
     public usersModalProjectID: number;
     public usersModalProjectName: string;
 
+    public isLoaded: boolean = false;
+
     //modal variables for Add User Modal
     public addUserModal;
     public addUserModalProjectID: number;
@@ -62,11 +64,10 @@ export class OverviewComponent ***REMOVED***
     public passwordModalFacility: string = '';
     public passwordModalEmail: string = '';
 
-    constructor(
-                private perunsettings: PerunSettings,
+    constructor(private perunsettings: PerunSettings,
                 private groupservice: GroupService,
                 private userservice: UserService,
-                private voservice:VoService) ***REMOVED***
+                private voservice: VoService) ***REMOVED***
         this.getUserProjects(groupservice, userservice);
 
     ***REMOVED***
@@ -108,6 +109,7 @@ export class OverviewComponent ***REMOVED***
         let user_data: ***REMOVED******REMOVED***;
         let admin_groups: ***REMOVED******REMOVED***;
         let admin_vos: ***REMOVED******REMOVED***;
+        let project_checks = ***REMOVED******REMOVED***;
 
         this.userservice
             .getLoggedUser().toPromise()
@@ -137,6 +139,10 @@ export class OverviewComponent ***REMOVED***
 
             //hold data in the class just in case
             this.userprojects = user_projects;
+            let number_userprojects = Object.keys(user_projects).length;
+             if (number_userprojects == 0)***REMOVED***
+                this.isLoaded=true;
+            ***REMOVED***
             this.userid = user_id;
             this.user_data = user_data;
             this.member_id = member_id;
@@ -173,54 +179,85 @@ export class OverviewComponent ***REMOVED***
 
                 this.groupservice.getShortame(group['id']).subscribe(name => ***REMOVED***
                     this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => ***REMOVED***
-                        let shortname = name['shortname']
-                        if (!shortname) ***REMOVED***
-                            shortname = group['name']
-                        ***REMOVED***
+                            let shortname = name['shortname']
+                            if (!shortname) ***REMOVED***
+                                shortname = group['name']
+                            ***REMOVED***
 
-                        let newProject = new Project(
-                            group["id"],
-                            shortname,
-                            group["description"],
-                            dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
-                            dateDayDifference,
-                            is_pi,
-                            is_admin,
-                            [result['Facility'], result['FacilityId']])
-                        let details = result['Details'];
-                        let details_array = [];
-                        for (let detail in details) ***REMOVED***
-                            let detail_tuple = [detail, details[detail]];
-                            details_array.push(detail_tuple);
-                        ***REMOVED***
-                        newProject.ComputecenterDetails = details_array;
-                        if (is_pi) ***REMOVED***
-                            this.groupservice.getLifetime(group['id']).subscribe(result => ***REMOVED***
-                                let lifetime = result['lifetime']
+                            let newProject = new Project(
+                                group["id"],
+                                shortname,
+                                group["description"],
+                                dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                                dateDayDifference,
+                                is_pi,
+                                is_admin,
+                                [result['Facility'], result['FacilityId']])
+                            project_checks[newProject.Id] = false
 
-                                newProject.Lifetime = lifetime;
-                                if (newProject.Lifetime != -1) ***REMOVED***
+                            let details = result['Details'];
+                            let details_array = [];
+                            for (let detail in details) ***REMOVED***
+                                let detail_tuple = [detail, details[detail]];
+                                details_array.push(detail_tuple);
+                            ***REMOVED***
+                            newProject.ComputecenterDetails = details_array;
+                            if (is_pi) ***REMOVED***
+                                this.groupservice.getLifetime(group['id']).subscribe(result => ***REMOVED***
+                                    let lifetime = result['lifetime']
 
-                                    newProject.LifetimeDays = Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24)
-                                    let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() +1) + "." + moment(expirationDate).year();
-                                ***REMOVED***
-                                else ***REMOVED***
-                                    newProject.LifetimeDays = -1;
-                                ***REMOVED***
+                                    newProject.Lifetime = lifetime;
+                                    if (newProject.Lifetime != -1) ***REMOVED***
+
+                                        newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
+                                        let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
+                                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
+                                    ***REMOVED***
+                                    else ***REMOVED***
+                                        newProject.LifetimeDays = -1;
+                                    ***REMOVED***
+
+                                    this.projects.push(newProject);
+                                    project_checks[newProject.Id] = true;
+                                    if (Object.keys(project_checks).length == number_userprojects) ***REMOVED***
+                                        let all_ready = true;
+                                        for (let key in project_checks) ***REMOVED***
+                                            if (project_checks[key] == false) ***REMOVED***
+                                                all_ready = false
+
+                                            ***REMOVED***
+                                        ***REMOVED***
+                                        if (all_ready == true) ***REMOVED***
+                                            this.isLoaded = true
+                                        ***REMOVED***
+                                    ***REMOVED***
+                                ***REMOVED***)
+                            ***REMOVED***
+                            else ***REMOVED***
                                 this.projects.push(newProject);
-                            ***REMOVED***)
+                                project_checks[newProject.Id] = true;
+                                if (Object.keys(project_checks).length == number_userprojects) ***REMOVED***
+                                    let all_ready = true
+                                    for (let key in project_checks) ***REMOVED***
+                                        if (project_checks[key] == false) ***REMOVED***
+                                            all_ready = false
+
+                                        ***REMOVED***
+                                    ***REMOVED***
+                                    if (all_ready == true) ***REMOVED***
+                                        this.isLoaded = true
+                                    ***REMOVED***
+                                ***REMOVED***
+
+
+                            ***REMOVED***
                         ***REMOVED***
-                        else ***REMOVED***
-                            this.projects.push(newProject);
-                        ***REMOVED***
-                    ***REMOVED***)
+                    )
                 ***REMOVED***)
-
-
             ***REMOVED***
 
-        ***REMOVED***);
+
+        ***REMOVED***)
         // .then( function()***REMOVED*** groupsmanager.getGroupsWhereUserIsAdmin(this.userid); ***REMOVED***);
     ***REMOVED***
 

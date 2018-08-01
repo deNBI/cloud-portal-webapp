@@ -1,4 +1,5 @@
-<div class="animated fadeIn" ng-app>
+<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded" class="animated fadeIn" ng-app>
     <div class="row">
         <!--/.col-->
         <h1>Hello, ***REMOVED******REMOVED*** userinfo.FirstName ***REMOVED******REMOVED*** ***REMOVED******REMOVED*** userinfo.LastName ***REMOVED******REMOVED***</h1>
