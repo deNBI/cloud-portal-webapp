@@ -1,4 +1,8 @@
-import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
+import ***REMOVED***
+    Component, OnInit, TemplateRef, ViewChild,
+    AfterViewInit,
+    ElementRef
+***REMOVED*** from '@angular/core';
 import ***REMOVED***Image***REMOVED*** from "./virtualmachinemodels/image";
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
 import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor';
@@ -29,7 +33,10 @@ import ***REMOVED***environment***REMOVED*** from "../../environments/environmen
     providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService]
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
+
+
     data: string = "";
+
 
     informationButton: string = "Show Details";
     informationButton2: string = "Show Details";
@@ -41,24 +48,28 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     userinfo: Userinfo;
     vmclient: Vmclient;
     selectedProjectDiskspaceMax: number;
-    selectedProjectDiskspaceUsed:number;
-    selectedProjectVolumesMax:number;
-    selectedProjectVolumesUsed:number;
+    selectedProjectDiskspaceUsed: number;
+    selectedProjectVolumesMax: number;
+    selectedProjectVolumesUsed: number;
     selectedProjectVmsMax: number;
-    selectedProjectVmsUsed:number;
+    selectedProjectVmsUsed: number;
     selectedProject: [string, number];
     client_avaiable: boolean;
+
+    volumeName: string = '';
+
     optional_params=false;
     diskspace:number=0;
     isLoaded_projects=false;
     isLoaded_images=false;
     isLoaded_flavors=false;
+
     projects: string[] = new Array();
-    FREEMIUM_ID=environment.freemium_project_id;
+    FREEMIUM_ID = environment.freemium_project_id;
     private checkStatusTimeout: number = 5000;
 
 
-    constructor(private groupService: GroupService, private imageService: ImageService,  private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,private  keyService: keyService, private clientservice: ClientService) ***REMOVED***
+    constructor(private groupService: GroupService, private imageService: ImageService, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private  keyService: keyService, private clientservice: ClientService) ***REMOVED***
     ***REMOVED***
 
 
@@ -73,7 +84,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
         this.isLoaded_flavors=true;
 
     ***REMOVED***
-
 
 
     getClientData() ***REMOVED***
@@ -159,12 +169,11 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
         ***REMOVED***, this.checkStatusTimeout);
     ***REMOVED***
 
-    startVM(flavor: string, image: string, servername: string, project: string, projectid: string, diskspace?: string): void ***REMOVED***
-        if (image && flavor && servername && project) ***REMOVED***
+    startVM(flavor: string, image: string, servername: string, project: string, projectid: string): void ***REMOVED***
+        if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) ***REMOVED***
 
 
-
-            this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, diskspace).subscribe(data => ***REMOVED***
+            this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => ***REMOVED***
 
 
                 if (data.json()['Created']) ***REMOVED***
@@ -241,73 +250,73 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
             if (result['Diskspace']) ***REMOVED***
 
 
-                    this.selectedProjectDiskspaceMax = result['Diskspace'];
+                this.selectedProjectDiskspaceMax = result['Diskspace'];
 
             ***REMOVED***
-            else if (result['Diskspace'] === null || result['Diskspace'] === 0)***REMOVED***
-                   this.selectedProjectDiskspaceMax = 0;
+            else if (result['Diskspace'] === null || result['Diskspace'] === 0) ***REMOVED***
+                this.selectedProjectDiskspaceMax = 0;
             ***REMOVED***
 
         ***REMOVED***)
         this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
-              if (result['Diskspace']) ***REMOVED***
+            if (result['Diskspace']) ***REMOVED***
 
-                    this.selectedProjectDiskspaceUsed = result['Diskspace'];
+                this.selectedProjectDiskspaceUsed = result['Diskspace'];
             ***REMOVED***
-            else if (result['Diskspace'] == 0 || result['Diskspace'] == null)***REMOVED***
-                  this.selectedProjectDiskspaceUsed = 0;
-              ***REMOVED***
+            else if (result['Diskspace'] == 0 || result['Diskspace'] == null) ***REMOVED***
+                this.selectedProjectDiskspaceUsed = 0;
+            ***REMOVED***
 
 
         ***REMOVED***)
 
     ***REMOVED***
 
-        getSelectedProjectVolumes(): void***REMOVED***
-        this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe( result =>***REMOVED***
-            if (result['VolumeCounter'])***REMOVED***
-                this.selectedProjectVolumesMax=result['VolumeCounter'];
+    getSelectedProjectVolumes(): void ***REMOVED***
+        this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
+            if (result['VolumeCounter']) ***REMOVED***
+                this.selectedProjectVolumesMax = result['VolumeCounter'];
             ***REMOVED***
-            else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0)***REMOVED***
-                this.selectedProjectVolumesMax=0;
+            else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) ***REMOVED***
+                this.selectedProjectVolumesMax = 0;
             ***REMOVED***
         ***REMOVED***)
         this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
             console.log(result)
-            if(result['UsedVolumes'])***REMOVED***
-                this.selectedProjectVolumesUsed=result['UsedVolumes'];
+            if (result['UsedVolumes']) ***REMOVED***
+                this.selectedProjectVolumesUsed = result['UsedVolumes'];
                 console.log(this.selectedProjectVolumesUsed)
             ***REMOVED***
-            else if(result['UsedVolumes'] === null || result['UsedVolumes'] === 0)***REMOVED***
+            else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) ***REMOVED***
 
-                this.selectedProjectVolumesUsed=0;
+                this.selectedProjectVolumesUsed = 0;
             ***REMOVED***
 
         ***REMOVED***)
-        ***REMOVED***
+    ***REMOVED***
 
 
-        getSelectedProjectVms(): void ***REMOVED***
+    getSelectedProjectVms(): void ***REMOVED***
         this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
             if (result['NumberVms']) ***REMOVED***
 
 
-                    this.selectedProjectVmsMax = result['NumberVms'];
+                this.selectedProjectVmsMax = result['NumberVms'];
 
             ***REMOVED***
-            else if (result['NumberVms'] === null || result['NumberVms'] === 0)***REMOVED***
-                   this.selectedProjectVmsMax= 0;
+            else if (result['NumberVms'] === null || result['NumberVms'] === 0) ***REMOVED***
+                this.selectedProjectVmsMax = 0;
             ***REMOVED***
 
         ***REMOVED***)
         this.groupService.getGroupUsedVms(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
-              if (result['NumberVms']) ***REMOVED***
+            if (result['NumberVms']) ***REMOVED***
 
-                    this.selectedProjectVmsUsed = result['NumberVms'];
+                this.selectedProjectVmsUsed = result['NumberVms'];
             ***REMOVED***
-            else if (result['NumberVms'] == 0 || result['NumberVms'] == null)***REMOVED***
-                  this.selectedProjectVmsUsed = 0;
-              ***REMOVED***
+            else if (result['NumberVms'] == 0 || result['NumberVms'] == null) ***REMOVED***
+                this.selectedProjectVmsUsed = 0;
+            ***REMOVED***
 
 
         ***REMOVED***)
