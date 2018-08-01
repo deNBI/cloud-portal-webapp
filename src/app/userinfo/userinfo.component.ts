@@ -18,6 +18,7 @@ export class UserinfoComponent implements OnInit{
   key_visible = false;
   newsletter_subscribed :boolean;
   public_key: string='';
+  isLoaded=false;
 
   constructor(private userservice: UserService, private keyService: keyService) {
     this.userinfo = new Userinfo();
@@ -30,7 +31,7 @@ export class UserinfoComponent implements OnInit{
    ngOnInit(): void {
 
             this.userservice.getNewsletterSubscription().subscribe(result => {
-          result = result.json()['subscribed']
+          result = result.json()['subscribed'];
           if (result.toString() == 'true') {
               this.newsletter_subscribed = true;
           }
@@ -76,6 +77,7 @@ export class UserinfoComponent implements OnInit{
   getUserPublicKey() {
     this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => {
       this.userinfo.PublicKey = result.toString();
+      this.isLoaded=true;
     })
   }
 

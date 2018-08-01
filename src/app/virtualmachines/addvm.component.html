@@ -3,7 +3,8 @@
     you
     can start a machine. Please set a SSH Key on the User Information tab.
 </div>
-<div class="animated fadeIn" *ngIf="client_avaiable && validatePublicKey()">
+<div *ngIf=" isLoaded_projects==false || isLoaded_images==false ||isLoaded_flavors==false" class="loader"></div>
+<div *ngIf=" isLoaded_projects && isLoaded_images && isLoaded_flavors && client_avaiable && validatePublicKey()">
 
     <div class="row">
         <div class="col-md-12">

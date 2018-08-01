@@ -23,6 +23,7 @@ export class SnapshotOverviewComponent implements OnInit {
     snapshots: SnapshotModel[];
     selected_snapshot: SnapshotModel;
     delete_status = 0;
+    isLoaded=false;
 
 
     constructor(private imageService: ImageService) {
@@ -35,7 +36,8 @@ export class SnapshotOverviewComponent implements OnInit {
 
     getSnapshots() {
         this.imageService.getSnapshotsByUser().subscribe(result => {
-            this.snapshots = result
+            this.snapshots = result;
+            this.isLoaded=true;
         })
     }
 

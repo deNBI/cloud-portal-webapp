@@ -1,4 +1,7 @@
-<div class="animated fadeIn" ng-app>
+<div *ngIf="  isLoaded_userApplication == false || isLoaded_AllApplication == false" class="loader">
+
+</div>
+<div *ngIf="isLoaded_userApplication && isLoaded_AllApplication" class="animated fadeIn" ng-app>
     <div class="row">
         <!--/.col-->
         <h1>Applications Overview</h1>
@@ -110,7 +113,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Volume Counter</td>
-                                                        <td>{{ application.VolumeCounter }} </td>
+                                                        <td>{{ application.VolumeCounter }}</td>
                                                         <td *ngIf="application.Status == 'extension requested'">
                                                             {{application.ApplicationExtension?.VolumeCounter}}
                                                         </td>
@@ -318,7 +321,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Volume Counter</td>
-                                                            <td>{{ application.VolumeCounter }} </td>
+                                                            <td>{{ application.VolumeCounter }}</td>
                                                             <td *ngIf="application.Status == 4">
                                                                 {{application.ApplicationExtension?.VolumeCounter}}
                                                             </td>
@@ -459,7 +462,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Volume Counter</td>
-                                                            <td>{{ application.VolumeCounter }} </td>
+                                                            <td>{{ application.VolumeCounter }}</td>
                                                         </tr>
                                                         <tr *ngIf="application.OpenStackProject">
                                                             <td>ObjectStorage</td>
@@ -803,31 +806,31 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
-                   Waiting... <i class="fa fa-spinner fa-spin"
-                                                                            style="font-size:24px"></i>
+                    Waiting... <i class="fa fa-spinner fa-spin"
+                                  style="font-size:24px"></i>
                 </div>
 
 
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
-                   Extension request successfully submitted!
+                    Extension request successfully submitted!
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 3">
-                   Extension request successfully approved!
+                    Extension request successfully approved!
                 </div>
-                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
-                   Extension request successfully declined!
+                <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+                    Extension request successfully declined!
                 </div>
-            <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
-               An error occured.
-            </div>
+                <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
+                    An error occured.
+                </div>
 
 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="extension_status= 0;resultModal.hide()">
+                        Close
+                    </button>
+                </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="extension_status= 0;resultModal.hide()">Close
-                </button>
-            </div>
-
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->

@@ -1,10 +1,16 @@
-<div>
+
+
+
+
+
+<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded">
     <button type="button" class="btn btn-secondary"
             (click)="selectedProject = undefined;selected_vm=undefined; createModal.show();">Create & Attach Volume
     </button>
 </div>
 
-<div class="card">
+<div *ngIf="isLoaded" class="card">
 
     <div class="card-header">
         <strong>Volumes</strong>

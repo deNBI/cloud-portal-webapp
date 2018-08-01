@@ -55,9 +55,15 @@ export class VirtualMachineComponent implements OnInit {
     selectedProjectVmsUsed: number;
     selectedProject: [string, number];
     client_avaiable: boolean;
-    optional_params = false;
-    diskspace: number = 0;
+
     volumeName: string = '';
+
+    optional_params=false;
+    diskspace:number=0;
+    isLoaded_projects=false;
+    isLoaded_images=false;
+    isLoaded_flavors=false;
+
     projects: string[] = new Array();
     FREEMIUM_ID = environment.freemium_project_id;
     private checkStatusTimeout: number = 5000;
@@ -70,10 +76,12 @@ export class VirtualMachineComponent implements OnInit {
     getImages(): void {
 
         this.imageService.getImages().subscribe(images => this.images = images);
+        this.isLoaded_images=true;
     }
 
     getFlavors(): void {
         this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
+        this.isLoaded_flavors=true;
 
     }
 
@@ -81,6 +89,7 @@ export class VirtualMachineComponent implements OnInit {
     getClientData() {
         this.clientservice.getClientsChecked().subscribe(response => {
             this.getRRFirstClient();
+
 
         })
     }
@@ -229,6 +238,7 @@ export class VirtualMachineComponent implements OnInit {
         this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => {
             for (let project of membergroups.json()) {
                 this.projects.push(project);
+                this.isLoaded_projects=true;
 
             }
         });

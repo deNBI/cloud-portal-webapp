@@ -18,6 +18,7 @@ export class VolumeOverviewComponent implements OnInit {
     project_vms: VirtualMachine[];
     selected_vm: VirtualMachine;
     collapse_status: { [id: string]: string } = {};
+    isLoaded=false;
     selected_volume: Volume;
     selectedProjectDiskspaceMax: number;
     selectedProjectDiskspaceUsed: number;
@@ -60,7 +61,8 @@ export class VolumeOverviewComponent implements OnInit {
 
     getVolumes() {
         this.vmService.getVolumesByUser().subscribe(result => {
-            this.volumes = result
+            this.volumes = result;
+            this.isLoaded=true;
 
         })
     }
@@ -141,7 +143,7 @@ export class VolumeOverviewComponent implements OnInit {
         }
         else {
             this.vmService.deleteVolume(volume_id).subscribe(result => {
-                result = result.json()
+                result = result.json();
                 if (result['Deleted'] && result['Deleted'] === true) {
                     this.volume_status = 1;
                 }

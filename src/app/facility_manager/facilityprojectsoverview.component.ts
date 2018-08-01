@@ -24,6 +24,7 @@ export class FacilityProjectsOverviewComponent {
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
     member_id: number;
+    isLoaded: boolean = false;
     projects: Project[] = new Array();
 
 
@@ -59,9 +60,12 @@ export class FacilityProjectsOverviewComponent {
     }
 
     getFacilityProjects(facility) {
+        let projects_ready = {};
 
         this.facilityservice.getFacilityAllowedGroups(facility).subscribe(result => {
+            let number_facilityprojects = result.length;
             for (let group of result) {
+                projects_ready[group['id']] = false
                 this.groupservice.getShortame(group['id']).subscribe(name => {
 
                     let shortname = name['shortname']
@@ -81,17 +85,33 @@ export class FacilityProjectsOverviewComponent {
                         is_pi,
                         is_admin,
                         [result['Facility'], result['FacilityId']]
-                    )
+                    );
                     newProject.Lifetime = group['lifetime']
                     if (newProject.Lifetime != -1) {
                         newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24))
                         let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() +1) + "." + moment(expirationDate).year();
+                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
                     }
                     else {
                         newProject.LifetimeDays = -1;
                     }
                     this.projects.push(newProject);
+                    projects_ready[group['id']] = true;
+
+                    let all_ready = true;
+                    if (Object.keys(projects_ready).length == number_facilityprojects) {
+
+                        for (let key in projects_ready) {
+                            if (projects_ready[key] == false) {
+                                all_ready = false
+
+                            }
+                        }
+                        if (all_ready == true) {
+
+                            this.isLoaded = true
+                        }
+                    }
                 })
             }
 
