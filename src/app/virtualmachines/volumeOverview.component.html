@@ -1,6 +1,17 @@
+
+
+
+
+
 <div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded">
+    <button type="button" class="btn btn-secondary"
+            (click)="selectedProject = undefined;selected_vm=undefined; createModal.show();">Create & Attach Volume
+    </button>
+</div>
 
 <div *ngIf="isLoaded" class="card">
+
     <div class="card-header">
         <strong>Volumes</strong>
         –Overview
@@ -13,7 +24,7 @@
                     <tr>
                         <th>Project</th>
                         <th>Virtual Machine</th>
-                        <th>Openstack Id</th>
+                        <th>Name</th>
                         <th>Size</th>
                         <th>Actions</th>
                         <!-- th>Client</th-->
@@ -26,7 +37,7 @@
                         <td>{{volume.volume_project}}</td>
                         <td *ngIf="volume.volume_virtualmachine">{{volume.volume_virtualmachine.name}}</td>
                         <td *ngIf="!volume.volume_virtualmachine"></td>
-                        <td>{{volume.volume_openstackid}}</td>
+                        <td>{{volume.volume_name}}</td>
                         <td>{{volume.volume_size }} GB</td>
                         <td>
                             <div class="btn-group {{collapse_status[volume.volume_openstackid]}}">
@@ -75,41 +86,49 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" *ngIf="delete_status == 0 || delete_status == 3 || delete_status == 5">
+                <h4 class="modal-title" *ngIf="volume_status == 0 || volume_status == 3 || volume_status == 5">
                     Waiting </h4>
-                <h4 class="modal-title" *ngIf="delete_status == 1"> Success </h4>
-                <h4 class="modal-title" *ngIf="delete_status == 2"> Error </h4>
+                <h4 class="modal-title" *ngIf="volume_status == 1 || volume_status == 4 || volume_status == 6 || volume_status == 8"> Success </h4>
+                <h4 class="modal-title" *ngIf="volume_status == 2"> Error </h4>
 
             </div>
             <div class="modal-body">
-                <div class="alert alert-info" role="alert" *ngIf="delete_status == 3">
-                    Detaching {{selected_volume?.volume_openstackid}}... <i class="fa fa-spinner fa-spin"
-                                                                            style="font-size:24px"></i>
+                <div class="alert alert-info" role="alert" *ngIf="volume_status == 7">
+                    Creating Volume... <i class="fa fa-spinner fa-spin"
+                                          style="font-size:24px"></i>
+                </div>
+                <div class="alert alert-info" role="alert" *ngIf="volume_status == 3">
+                    Detaching {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
+                                                                     style="font-size:24px"></i>
                 </div>
 
-                <div class="alert alert-info" role="alert" *ngIf="delete_status == 5">
-                    Attaching Volume {{selected_volume?.volume_openstackid}} to Virtualmachine {{selected_vm.name}}...
+                <div class="alert alert-info" role="alert" *ngIf="volume_status == 5">
+                    Attaching Volume {{selected_volume?.volume_name}} to Virtualmachine {{selected_vm.name}}...
                     <i class="fa fa-spinner fa-spin"
                        style="font-size:24px"></i>
                 </div>
-                <div class="alert alert-info" role="alert" *ngIf="delete_status == 0">
-                    Deleting {{selected_volume?.volume_openstackid}}... <i class="fa fa-spinner fa-spin"
-                                                                           style="font-size:24px"></i>
+                <div class="alert alert-info" role="alert" *ngIf="volume_status == 0">
+                    Deleting {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
+                                                                    style="font-size:24px"></i>
                 </div>
-                <div class="alert alert-success" role="alert" *ngIf="delete_status == 1">
-                    {{selected_volume?.volume_openstackid}} was succesfully deleted.
+                <div class="alert alert-success" role="alert" *ngIf="volume_status == 8">
+                   Sucessfully created and attached Volume.
+
+                    <!--Todo : Info einfügen_-->
                 </div>
-                <div class="alert alert-success" role="alert" *ngIf="delete_status == 4">
+                <div class="alert alert-success" role="alert" *ngIf="volume_status == 1">
+                    {{selected_volume?.volume_name}} was succesfully deleted.
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="volume_status == 4">
                     {{selected_volume?.volume_openstackid}} was succesfully detached.
                 </div>
-                 <div class="alert alert-success" role="alert" *ngIf="delete_status == 6">
-                    {{selected_volume?.volume_openstackid}} was succesfully attached.
+                <div class="alert alert-success" role="alert" *ngIf="volume_status == 6">
+                    {{selected_volume?.volume_name}} was succesfully attached.
                 </div>
             </div>
-            <div class="alert alert-warning" role="alert" *ngIf="delete_status == 2">
+            <div class="alert alert-warning" role="alert" *ngIf="volume_status == 2">
                 An error occured.
             </div>
-
 
 
             <div class="modal-footer">
@@ -131,10 +150,10 @@
             <div class="modal-body">
 
                 <div *ngIf="request_status == 0;" class="alert alert-warning" role="alert">
-                    Are you sure you want to delete Volume {{selected_volume?.volume_openstackid}}?
+                    Are you sure you want to delete Volume {{selected_volume?.volume_name}}?
                 </div>
                 <div *ngIf="request_status == 1;" class="alert alert-warning" role="alert">
-                    Are you sure you want to detach Volume {{selected_volume?.volume_openstackid}} from
+                    Are you sure you want to detach Volume {{selected_volume?.volume_name}} from
                     {{selected_volume?.volume_virtualmachine?.name}}?
                 </div>
 
@@ -187,6 +206,139 @@
 
                 <button class="btn  btn-danger col-md-4" type="reset"
                         (click)="selected_vm=undefined;attachModal.hide();">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Create & Attach Volume</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+
+
+                    <label class="col-md-12"> <strong>For which Project the Volume should be created?</strong></label>
+
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 form-control-label">Project</label>
+                    <div class="col-md-6">
+
+                        <select class="form-control"
+                                name="selectedProject" [(ngModel)]="selectedProject"
+                                (ngModelChange)="getActiveVmsByProject(selectedProject[1]);getSelectedProjectDiskspace();getSelectedProjectVolumes();">
+                            <option value="undefined" disabled selected hidden> Please Select</option>
+                            <option *ngFor="let project of projects" [ngValue]="project"> {{project[0]}}
+                            </option>
+
+                        </select>
+
+
+                    </div>
+                </div>
+
+                <div *ngIf="selectedProject" class="form-group row">
+                    <label class="col-md-3 form-control-label">Storage </label>
+
+                    <div class="col-md-6">
+                        <div class="col-md-6">
+
+                            {{selectedProjectDiskspaceUsed}} / {{selectedProjectDiskspaceMax}}
+                            GB
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="selectedProject" class="form-group row">
+
+                    <label class="col-md-3 form-control-label">Storage volumes</label>
+
+                    <div class="col-md-9">
+                        <div class="col-md-6">
+                            <strong>{{selectedProjectVolumesUsed}} / {{selectedProjectVolumesMax}}
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" class="alert alert-danger"
+
+                     *ngIf="selectedProject && (selectedProjectVolumesUsed == selectedProjectVolumesMax ||
+                    selectedProjectDiskspaceUsed == selectedProjectDiskspaceMax)">
+                    This project has already reached its storage  or volume limit.
+                </div>
+
+
+                <div class="form-group row"
+                     *ngIf="selectedProject && !(selectedProjectVolumesUsed == selectedProjectVolumesMax || selectedProjectDiskspaceUsed == selectedProjectDiskspaceMax)">
+
+
+                    <label class="col-md-12"><strong>To which Vm the Volume should be attached?</strong></label>
+                </div>
+                <div *ngIf="selectedProject && !(selectedProjectVolumesUsed == selectedProjectVolumesMax || selectedProjectDiskspaceUsed == selectedProjectDiskspaceMax)"
+                     class="form-group row">
+
+                    <label class="col-md-3 form-control-label">Vm</label>
+                    <div class="col-md-9">
+                        <select class="form-control col-md-6" name="selected_vm"
+                                [(ngModel)]="selected_vm">
+                            <option value="undefined" disabled selected hidden> Please Select</option>
+                            <option *ngFor="let vm of project_vms" [ngValue]="vm"> {{vm.name}}
+                            </option>
+
+                        </select></div>
+
+
+                </div>
+
+
+                <div *ngIf="selected_vm"
+                     class="form-group row">
+                    <label class="col-md-3 form-control-label">Volumename</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <input type="text" placeholder="Volumename" [value]="volumeName"
+                                   (input)="volumeName = $event.target.value">
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="selected_vm"
+                     class="form-group row">
+
+                    <label class="col-md-3 form-control-label">Storage</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <input min="0" step="1" [value]="diskspace"
+                                   (input)="diskspace = $event.target.value" type="number" placeholder="e.g 8 "><span
+                                class="input-group-addon"> GB
+                                    </span>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="selected_vm && (diskspace + selectedProjectDiskspaceUsed) > selectedProjectVolumesMax"
+                     class="alert alert-danger">
+                    The storage limit is exceeded
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-6"
+                        [disabled]="selected_vm== undefined || diskspace <= 0 || volumeName.length == 0 || (diskspace + selectedProjectDiskspaceUsed) > selectedProjectVolumesMax"
+                        (click)="createAndAttachvolume(volumeName,diskspace,selected_vm.openstackid);createModal.hide();resultModal.show()">
+                    Create & Attach Volume
+                </button>
+
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="selected_vm=undefined;createModal.hide();">Cancel
                 </button>
             </div>
         </div><!-- /.modal-content -->

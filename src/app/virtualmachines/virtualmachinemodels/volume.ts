@@ -4,6 +4,7 @@ import {Vmclient} from "./vmclient";
 
 
 export class Volume {
+  volume_name:string;
   volume_project: string;
   volume_projectid: string;
   volume_openstackid: string;
