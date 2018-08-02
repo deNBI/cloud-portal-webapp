@@ -5,7 +5,7 @@ import { Observable} from 'rxjs';
 import {URLSearchParams} from "@angular/http";
 import {ApiSettings} from "./api-settings.service";
 
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/catch';
 
 
