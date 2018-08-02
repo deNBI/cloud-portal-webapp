@@ -18,7 +18,7 @@ export class VirtualmachineService ***REMOVED***
     ***REMOVED***
 
 
-    startVM(flavor: string, image: string, servername: string, project: string, projectid: string, diskspace?: string): Observable<Response> ***REMOVED***
+    startVM(flavor: string, image: string, servername: string, project: string, projectid: string,volumename?:string, diskspace?: string): Observable<Response> ***REMOVED***
 
         let header = new Headers(***REMOVED***
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -31,6 +31,7 @@ export class VirtualmachineService ***REMOVED***
         urlSearchParams.append('project', project);
         urlSearchParams.append('projectid', projectid);
         urlSearchParams.append('diskspace', diskspace);
+        urlSearchParams.append('volumename',volumename);
 
         return this.http.post(this.baseVmUrl + 'createVm/', urlSearchParams, ***REMOVED***
             withCredentials: true,
@@ -150,6 +151,27 @@ export class VirtualmachineService ***REMOVED***
         ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
 
 
+    ***REMOVED***
+
+
+
+
+    createVolume(volume_name: string, volume_diskspace: string,vm_openstackid): Observable<Response> ***REMOVED***
+        let header = new Headers(***REMOVED***
+            'X-CSRFToken': this.settings.getCSRFToken(),
+        ***REMOVED***);
+        let urlSearchParams = new URLSearchParams();
+
+        urlSearchParams.append('volume_name', volume_name);
+        urlSearchParams.append('volume_diskspace', volume_diskspace);
+                urlSearchParams.append('vm_openstackid', vm_openstackid);
+
+
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/createVolume/', urlSearchParams, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***);
     ***REMOVED***
 
     attachVolumetoServer(volume_id: string, instance_id: string): Observable<Response> ***REMOVED***

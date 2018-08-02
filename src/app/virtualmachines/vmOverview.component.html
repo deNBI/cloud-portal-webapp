@@ -1,4 +1,6 @@
-<div class="card">
+<div *ngIf="isLoaded==false" class="loader"></div>
+
+<div *ngIf="isLoaded" class="card">
 
     <div class="card-header">
         <strong>Instance</strong>
@@ -353,7 +355,7 @@
     <div class="modal-dialog modal-info" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Status</h4>
+                <h4 class="modal-title">How to connect</h4>
                 <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

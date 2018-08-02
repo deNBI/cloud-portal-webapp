@@ -6,6 +6,7 @@ import ***REMOVED***Component, Input, ViewChild***REMOVED*** from '@angular/core
     providers: [ImageService]
 ***REMOVED***)
 export class ImageTagComponent ***REMOVED***
+    isLoaded=false;
 
     imageTags: [string, string][]
 
@@ -13,6 +14,7 @@ export class ImageTagComponent ***REMOVED***
     constructor(private imageService: ImageService,) ***REMOVED***
         this.imageService.getImageTags().subscribe(result => ***REMOVED***
             this.imageTags = result;
+            this.isLoaded=true;
         ***REMOVED***)
     ***REMOVED***
 

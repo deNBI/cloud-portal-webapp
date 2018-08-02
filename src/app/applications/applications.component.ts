@@ -34,6 +34,9 @@ export class ApplicationsComponent ***REMOVED***
     selectedApplication: Application;
     extension_status = 0;
     public deleteId: number;
+    isLoaded_userApplication = false;
+    isLoaded_AllApplication = false;
+
 
     //notification Modal variables
     public notificationModal;
@@ -68,6 +71,7 @@ export class ApplicationsComponent ***REMOVED***
     getComputeCenters() ***REMOVED***
         this.groupservice.getComputeCenters().subscribe(result => ***REMOVED***
             this.computeCenters = result;
+
         ***REMOVED***)
     ***REMOVED***
 
@@ -109,10 +113,16 @@ export class ApplicationsComponent ***REMOVED***
             .getUserApplications().toPromise()
             .then(result => ***REMOVED***
                 let res = result.json();
+                let userapp_ready = ***REMOVED******REMOVED***;
+                let number_userapplications = Object.keys(res).length;
+                if (number_userapplications == 0 ) ***REMOVED***
+                    this.isLoaded_userApplication=true;
+                ***REMOVED***
                 for (let key in res) ***REMOVED***
                     let aj = res[key];
                     let a = new Application();
                     a.Id = aj["project_application_id"];
+                    userapp_ready[a.Id] = false;
                     a.Name = aj["project_application_name"];
                     a.Shortname = aj["project_application_shortname"];
                     a.Lifetime = aj["project_application_lifetime"];
@@ -158,12 +168,42 @@ export class ApplicationsComponent ***REMOVED***
                             ***REMOVED***
                             a.ApplicationExtension = r;
 
-                            this.user_applications.push(a)
+                            this.user_applications.push(a);
+                            userapp_ready[a.Id] = true;
+                            console.log(userapp_ready)
+
+                            if (Object.keys(userapp_ready).length == number_userapplications) ***REMOVED***
+                                let all_ready = true
+                                for (let key in  userapp_ready) ***REMOVED***
+                                    if (userapp_ready[key] == false) ***REMOVED***
+                                        all_ready = false
+
+                                    ***REMOVED***
+                                ***REMOVED***
+                                if (all_ready == true) ***REMOVED***
+                                    this.isLoaded_userApplication = true
+                                ***REMOVED***
+                            ***REMOVED***
                         ***REMOVED***)
 
                     ***REMOVED***
                     else ***REMOVED***
-                        this.user_applications.push(a)
+                        this.user_applications.push(a);
+
+                        userapp_ready[a.Id] = true;
+
+                        if (Object.keys(userapp_ready).length == number_userapplications) ***REMOVED***
+                            let all_ready = true
+                            for (let key in  userapp_ready) ***REMOVED***
+                                if (userapp_ready[key] == false) ***REMOVED***
+                                    all_ready = false
+
+                                ***REMOVED***
+                            ***REMOVED***
+                            if (all_ready == true) ***REMOVED***
+                                this.isLoaded_userApplication = true
+                            ***REMOVED***
+                        ***REMOVED***
                     ***REMOVED***
 
 
@@ -219,7 +259,13 @@ export class ApplicationsComponent ***REMOVED***
                         this.applicataionsservice
                             .getAllApplications().toPromise()
                             .then(result => ***REMOVED***
+
                                 let res = result.json();
+                                let allapp_ready = ***REMOVED******REMOVED***;
+                                let number_allapplications = Object.keys(res).length;
+                                  if (number_allapplications == 0 ) ***REMOVED***
+                    this.isLoaded_AllApplication=true;
+                ***REMOVED***
 
                                 for (let key in res) ***REMOVED***
 
@@ -298,13 +344,39 @@ export class ApplicationsComponent ***REMOVED***
 
                                                             r.SpecialHardware = special_hardware;
                                                         ***REMOVED***
-                                                        a.ApplicationExtension = r
+                                                        a.ApplicationExtension = r;
                                                         this.all_applications.push(a)
+                                                        allapp_ready[a.Id] = true;
+                                                        if (Object.keys(allapp_ready).length == number_allapplications) ***REMOVED***
+                                                            let all_ready = true
+                                                            for (let key in  allapp_ready) ***REMOVED***
+                                                                if (allapp_ready[key] == false) ***REMOVED***
+                                                                    all_ready = false
+
+                                                                ***REMOVED***
+                                                            ***REMOVED***
+                                                            if (all_ready == true) ***REMOVED***
+                                                                this.isLoaded_AllApplication = true
+                                                            ***REMOVED***
+                                                        ***REMOVED***
                                                     ***REMOVED***)
 
                                                 ***REMOVED***
                                                 else ***REMOVED***
-                                                    this.all_applications.push((a))
+                                                    this.all_applications.push((a));
+                                                    allapp_ready[a.Id] = true;
+                                                    if (Object.keys(allapp_ready).length == number_allapplications) ***REMOVED***
+                                                        let all_ready = true;
+                                                        for (let key in  allapp_ready) ***REMOVED***
+                                                            if (allapp_ready[key] == false) ***REMOVED***
+                                                                all_ready = false
+
+                                                            ***REMOVED***
+                                                        ***REMOVED***
+                                                        if (all_ready == true) ***REMOVED***
+                                                            this.isLoaded_AllApplication = true
+                                                        ***REMOVED***
+                                                    ***REMOVED***
                                                 ***REMOVED***
 
                                             ***REMOVED***)
@@ -342,13 +414,39 @@ export class ApplicationsComponent ***REMOVED***
                                                     r.SpecialHardware = special_hardware;
                                                 ***REMOVED***
 
-                                                a.ApplicationExtension = r
+                                                a.ApplicationExtension = r;
                                                 this.all_applications.push(a)
+                                                allapp_ready[a.Id] = true;
+                                                if (Object.keys(allapp_ready).length == number_allapplications) ***REMOVED***
+                                                    let all_ready = true;
+                                                    for (let key in  allapp_ready) ***REMOVED***
+                                                        if (allapp_ready[key] == false) ***REMOVED***
+                                                            all_ready = false
+
+                                                        ***REMOVED***
+                                                    ***REMOVED***
+                                                    if (all_ready == true) ***REMOVED***
+                                                        this.isLoaded_AllApplication = true
+                                                    ***REMOVED***
+                                                ***REMOVED***
                                             ***REMOVED***)
 
                                         ***REMOVED***
                                         else ***REMOVED***
                                             this.all_applications.push((a))
+                                            allapp_ready[a.Id] = true;
+                                            if (Object.keys(allapp_ready).length == number_allapplications) ***REMOVED***
+                                                let all_ready = true;
+                                                for (let key in  allapp_ready) ***REMOVED***
+                                                    if (allapp_ready[key] == false) ***REMOVED***
+                                                        all_ready = false
+
+                                                    ***REMOVED***
+                                                ***REMOVED***
+                                                if (all_ready == true) ***REMOVED***
+                                                    this.isLoaded_AllApplication = true
+                                                ***REMOVED***
+                                            ***REMOVED***
                                         ***REMOVED***
 
 

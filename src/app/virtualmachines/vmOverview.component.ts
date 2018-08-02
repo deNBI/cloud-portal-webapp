@@ -46,6 +46,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     filterproject: string;
     filterssh: string;
     collapse_status: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
+    isLoaded=false;
 
 
     constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) ***REMOVED***
@@ -340,6 +341,8 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
                         vm.stopped_at = ''
                     ***REMOVED***
                 ***REMOVED***
+                this.isLoaded=true;
+
                 this.applyFilter();
 
                 this.checkInactiveVms();

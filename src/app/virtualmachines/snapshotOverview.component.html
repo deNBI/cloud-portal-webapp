@@ -1,4 +1,7 @@
-<div class="card">
+
+<div *ngIf="isLoaded==false" class="loader"></div>
+
+<div *ngIf="isLoaded" class="card">
     <div class="card-header">
         <strong>Snapshots</strong>
         –Overview

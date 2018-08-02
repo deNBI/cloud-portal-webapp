@@ -1,4 +1,5 @@
-<div class="animated fadeIn" ng-app>
+<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded" class="animated fadeIn" ng-app>
     <div class="row">
         <!--/.col-->
         <h1>Hello, ***REMOVED******REMOVED*** userinfo.FirstName ***REMOVED******REMOVED*** ***REMOVED******REMOVED*** userinfo.LastName ***REMOVED******REMOVED***</h1>
@@ -13,61 +14,67 @@
                     <i class="fa fa-align-justify"></i> Personal Information
                 </div>
                 <div class="card-block">
-                  <div class="table-responsive">
-                    <table class="table table-striped">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
 
-                        <tr>
-                            <td>Elixir Login</td>
-                            <td>***REMOVED******REMOVED*** userinfo.UserLogin ***REMOVED******REMOVED***</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Elixir ID</td>
-                            <td>***REMOVED******REMOVED***userinfo.ElxirId***REMOVED******REMOVED***</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Public Key</td>
-                            <td *ngIf="userinfo.PublicKey == 'None'">No public key is set</td>
-                            <td *ngIf="userinfo.PublicKey != 'None'"
-                                style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-                                <button *ngIf="userinfo.PublicKey" (click)="toggleKey()"
-                                        class="btn btn-primary">
-                                    ***REMOVED******REMOVED***key***REMOVED******REMOVED***
-                                </button>
-                                <div *ngIf="key_visible"><br>***REMOVED******REMOVED***userinfo.PublicKey***REMOVED******REMOVED***</div>
-                            </td>
-                            <td>
+                            <tr>
+                                <td>Elixir Login</td>
+                                <td>***REMOVED******REMOVED*** userinfo.UserLogin ***REMOVED******REMOVED***</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Elixir ID</td>
+                                <td>***REMOVED******REMOVED***userinfo.ElxirId***REMOVED******REMOVED***</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Public Key</td>
+                                <td *ngIf="userinfo.PublicKey == 'None'">No public key is set</td>
+                                <td *ngIf="userinfo.PublicKey != 'None'"
+                                    style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
+                                    <button *ngIf="userinfo.PublicKey" (click)="toggleKey()"
+                                            class="btn btn-primary">
+                                        ***REMOVED******REMOVED***key***REMOVED******REMOVED***
+                                    </button>
+                                    <div *ngIf="key_visible"><br>***REMOVED******REMOVED***userinfo.PublicKey***REMOVED******REMOVED***</div>
+                                </td>
+                                <td>
 
-                                <alert type="info">
-                                    <strong>Tutorial:</strong><a target="_blank"
-                                                                 href="https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys">
-                                    How
-                                    to generate a ssh keypair?</a>
-                                </alert>
+                                    <alert type="info">
+                                        <strong>Tutorial:</strong><a target="_blank"
+                                                                     href="https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys">
+                                        How
+                                        to generate a ssh keypair?</a>
+                                    </alert>
 
-                                <button class="btn btn-primary" type="button" (click)="pubKeyModal.show()">Set pub key
-                                </button>
+                                    <button class="btn btn-primary" type="button" (click)="pubKeyModal.show()">Set pub
+                                        key
+                                    </button>
 
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Newsletter</td>
-                            <td><div class="row">
-                                <div class="col-md-2"><label class="switch switch-text switch-primary-outline-alt">
-                                    <input type="checkbox" class="switch-input" [(ngModel)]="newsletter_subscribed"
-                                           (change)="setNewsletterSubscription($event)">
-                                    <span class="switch-label" data-on="On" data-off="Off"></span>
-                                    <span class="switch-handle"></span>
-                                </label></div>
-                                <div class="col-md-6"> Subscribe to our newsletter and get the latest news of upcoming
-                                    events and current developments in de.NBI Cloud.
-                                </div></div>
-                            </td>
-                            <td></td>
-                        </tr>
-                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Newsletter</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2"><label
+                                                class="switch switch-text switch-primary-outline-alt">
+                                            <input type="checkbox" class="switch-input"
+                                                   [(ngModel)]="newsletter_subscribed"
+                                                   (change)="setNewsletterSubscription($event)">
+                                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                                            <span class="switch-handle"></span>
+                                        </label></div>
+                                        <div class="col-md-6"> Subscribe to our newsletter and get the latest news of
+                                            upcoming
+                                            events and current developments in de.NBI Cloud.
+                                        </div>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -81,31 +88,31 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Set public key</h4>
+                <h4 class="modal-title">Change public key</h4>
             </div>
             <div class="modal-body">
                 <alert type="info" *ngIf="public_key?.length ==0 ">
-                    <strong>Info: </strong> Enter a valid public key!
+                    <strong>Info: </strong> Please enter a valid public key!
 
                 </alert>
 
 
                 <alert type="success" *ngIf="validatePublicKey()">
-                    <strong>Info: </strong> This is a valid public Key!
+                    <strong>Info: </strong> This is a valid public key!
                 </alert>
                 <alert type="danger" *ngIf="!validatePublicKey() && public_key?.length >0">
                     <strong>Warning</strong> This is not a valid public key!
                 </alert>
-                <textarea type="text" class="form-control input-lg"
-                          placeholder="Enter a new valid public key." name="public_key" [(ngModel)]="public_key"
+                <textarea rows="8" type="text" class="form-control input-lg"
+                          placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="public_key"
                           #publickey></textarea>
 
                 <br>
 
 
                 <alert *ngIf="validatePublicKey()" type="danger">
-                    <strong>Warning!</strong> If the key is changed,all your running machines may become
-                    unreachable!
+                    <strong>Warning!</strong> Replacing your current public key with a different one will probably
+                    render all your currently running machines inaccessible.
                 </alert>
             </div>
 
