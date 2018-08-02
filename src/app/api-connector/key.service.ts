@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Image} from '../virtualmachines/virtualmachinemodels/image';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import { Observable} from 'rxjs';
 import {URLSearchParams} from "@angular/http";
 import {ApiSettings} from "./api-settings.service";
 

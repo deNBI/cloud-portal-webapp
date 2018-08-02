@@ -9,7 +9,7 @@ import {
 } from '@angular/http';
 import { CookieService } from 'ng2-cookies';
 import { Observable } from 'rxjs/Rx';
-import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
+import {ModalDirective} from "ngx-bootstrap";
 
 @Injectable()
 export class HttpInterceptor extends Http {
