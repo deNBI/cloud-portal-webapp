@@ -46,6 +46,7 @@ export class VmOverviewComponent implements OnInit {
     filterproject: string;
     filterssh: string;
     collapse_status: { [id: string]: string } = {};
+    isLoaded=false;
 
 
     constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
@@ -340,6 +341,8 @@ export class VmOverviewComponent implements OnInit {
                         vm.stopped_at = ''
                     }
                 }
+                this.isLoaded=true;
+
                 this.applyFilter();
 
                 this.checkInactiveVms();

@@ -329,7 +329,6 @@ export class GroupService {
             params: {groupid: groupid}
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
-
     }
 
     setPerunId(groupid: string, applicationId: string): Observable<any> {

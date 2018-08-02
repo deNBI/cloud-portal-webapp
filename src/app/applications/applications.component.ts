@@ -34,6 +34,9 @@ export class ApplicationsComponent {
     selectedApplication: Application;
     extension_status = 0;
     public deleteId: number;
+    isLoaded_userApplication = false;
+    isLoaded_AllApplication = false;
+
 
     //notification Modal variables
     public notificationModal;
@@ -68,6 +71,7 @@ export class ApplicationsComponent {
     getComputeCenters() {
         this.groupservice.getComputeCenters().subscribe(result => {
             this.computeCenters = result;
+
         })
     }
 
@@ -109,10 +113,16 @@ export class ApplicationsComponent {
             .getUserApplications().toPromise()
             .then(result => {
                 let res = result.json();
+                let userapp_ready = {};
+                let number_userapplications = Object.keys(res).length;
+                if (number_userapplications == 0 ) {
+                    this.isLoaded_userApplication=true;
+                }
                 for (let key in res) {
                     let aj = res[key];
                     let a = new Application();
                     a.Id = aj["project_application_id"];
+                    userapp_ready[a.Id] = false;
                     a.Name = aj["project_application_name"];
                     a.Shortname = aj["project_application_shortname"];
                     a.Lifetime = aj["project_application_lifetime"];
@@ -158,12 +168,42 @@ export class ApplicationsComponent {
                             }
                             a.ApplicationExtension = r;
 
-                            this.user_applications.push(a)
+                            this.user_applications.push(a);
+                            userapp_ready[a.Id] = true;
+                            console.log(userapp_ready)
+
+                            if (Object.keys(userapp_ready).length == number_userapplications) {
+                                let all_ready = true
+                                for (let key in  userapp_ready) {
+                                    if (userapp_ready[key] == false) {
+                                        all_ready = false
+
+                                    }
+                                }
+                                if (all_ready == true) {
+                                    this.isLoaded_userApplication = true
+                                }
+                            }
                         })
 
                     }
                     else {
-                        this.user_applications.push(a)
+                        this.user_applications.push(a);
+
+                        userapp_ready[a.Id] = true;
+
+                        if (Object.keys(userapp_ready).length == number_userapplications) {
+                            let all_ready = true
+                            for (let key in  userapp_ready) {
+                                if (userapp_ready[key] == false) {
+                                    all_ready = false
+
+                                }
+                            }
+                            if (all_ready == true) {
+                                this.isLoaded_userApplication = true
+                            }
+                        }
                     }
 
 
@@ -219,7 +259,13 @@ export class ApplicationsComponent {
                         this.applicataionsservice
                             .getAllApplications().toPromise()
                             .then(result => {
+
                                 let res = result.json();
+                                let allapp_ready = {};
+                                let number_allapplications = Object.keys(res).length;
+                                  if (number_allapplications == 0 ) {
+                    this.isLoaded_AllApplication=true;
+                }
 
                                 for (let key in res) {
 
@@ -298,13 +344,39 @@ export class ApplicationsComponent {
 
                                                             r.SpecialHardware = special_hardware;
                                                         }
-                                                        a.ApplicationExtension = r
+                                                        a.ApplicationExtension = r;
                                                         this.all_applications.push(a)
+                                                        allapp_ready[a.Id] = true;
+                                                        if (Object.keys(allapp_ready).length == number_allapplications) {
+                                                            let all_ready = true
+                                                            for (let key in  allapp_ready) {
+                                                                if (allapp_ready[key] == false) {
+                                                                    all_ready = false
+
+                                                                }
+                                                            }
+                                                            if (all_ready == true) {
+                                                                this.isLoaded_AllApplication = true
+                                                            }
+                                                        }
                                                     })
 
                                                 }
                                                 else {
-                                                    this.all_applications.push((a))
+                                                    this.all_applications.push((a));
+                                                    allapp_ready[a.Id] = true;
+                                                    if (Object.keys(allapp_ready).length == number_allapplications) {
+                                                        let all_ready = true;
+                                                        for (let key in  allapp_ready) {
+                                                            if (allapp_ready[key] == false) {
+                                                                all_ready = false
+
+                                                            }
+                                                        }
+                                                        if (all_ready == true) {
+                                                            this.isLoaded_AllApplication = true
+                                                        }
+                                                    }
                                                 }
 
                                             })
@@ -342,13 +414,39 @@ export class ApplicationsComponent {
                                                     r.SpecialHardware = special_hardware;
                                                 }
 
-                                                a.ApplicationExtension = r
+                                                a.ApplicationExtension = r;
                                                 this.all_applications.push(a)
+                                                allapp_ready[a.Id] = true;
+                                                if (Object.keys(allapp_ready).length == number_allapplications) {
+                                                    let all_ready = true;
+                                                    for (let key in  allapp_ready) {
+                                                        if (allapp_ready[key] == false) {
+                                                            all_ready = false
+
+                                                        }
+                                                    }
+                                                    if (all_ready == true) {
+                                                        this.isLoaded_AllApplication = true
+                                                    }
+                                                }
                                             })
 
                                         }
                                         else {
                                             this.all_applications.push((a))
+                                            allapp_ready[a.Id] = true;
+                                            if (Object.keys(allapp_ready).length == number_allapplications) {
+                                                let all_ready = true;
+                                                for (let key in  allapp_ready) {
+                                                    if (allapp_ready[key] == false) {
+                                                        all_ready = false
+
+                                                    }
+                                                }
+                                                if (all_ready == true) {
+                                                    this.isLoaded_AllApplication = true
+                                                }
+                                            }
                                         }
 
 

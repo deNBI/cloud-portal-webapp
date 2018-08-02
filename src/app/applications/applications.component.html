@@ -1,4 +1,7 @@
-<div class="animated fadeIn" ng-app>
+<div *ngIf="  isLoaded_userApplication == false || isLoaded_AllApplication == false" class="loader">
+
+</div>
+<div *ngIf="isLoaded_userApplication && isLoaded_AllApplication" class="animated fadeIn" ng-app>
     <div class="row">
         <!--/.col-->
         <h1>Applications Overview</h1>
@@ -54,7 +57,7 @@
                                                 (click)="setSelectedApplication(application);ngFormSetDefault(f);extensionModal.show()"
                                                 type="button"
                                                 class="btn btn-secondary">
-                                            Request Modification
+                                            Request Extension/Modification
                                         </button>
                                     </td>
                                 </tr>
@@ -110,8 +113,11 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Volume Counter</td>
+
                                                         <td>{{ application.VolumeCounter }} </td>
                                                         <td *ngIf="application.Status == 'modification requested'">
+
+
                                                             {{application.ApplicationExtension?.VolumeCounter}}
                                                         </td>
                                                     </tr>
@@ -318,7 +324,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Volume Counter</td>
-                                                            <td>{{ application.VolumeCounter }} </td>
+                                                            <td>{{ application.VolumeCounter }}</td>
                                                             <td *ngIf="application.Status == 4">
                                                                 {{application.ApplicationExtension?.VolumeCounter}}
                                                             </td>
@@ -459,7 +465,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Volume Counter</td>
-                                                            <td>{{ application.VolumeCounter }} </td>
+                                                            <td>{{ application.VolumeCounter }}</td>
                                                         </tr>
                                                         <tr *ngIf="application.OpenStackProject">
                                                             <td>ObjectStorage</td>
@@ -803,31 +809,33 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
-                   Waiting... <i class="fa fa-spinner fa-spin"
-                                                                            style="font-size:24px"></i>
+                    Waiting... <i class="fa fa-spinner fa-spin"
+                                  style="font-size:24px"></i>
                 </div>
 
 
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
+
                    Modify request successfully submitted!
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 3">
                    Modify request successfully approved!
                 </div>
                  <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
-                   Modify request successfully declined!
+                   Modify request successfully declined!      </div>
+         
+                <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
+                    An error occured.
+
                 </div>
-            <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
-               An error occured.
-            </div>
 
 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="extension_status= 0;resultModal.hide()">
+                        Close
+                    </button>
+                </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="extension_status= 0;resultModal.hide()">Close
-                </button>
-            </div>
-
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
