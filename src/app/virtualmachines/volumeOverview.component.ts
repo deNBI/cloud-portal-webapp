@@ -172,9 +172,9 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    createVolume(volume_name: string, diskspace: string, instance_id: string) ***REMOVED***
+    createVolume(volume_name: string, diskspace: number, instance_id: string) ***REMOVED***
         this.volume_status = 0
-        this.vmService.createVolume(volume_name, diskspace, instance_id).subscribe(result => ***REMOVED***
+        this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => ***REMOVED***
             result = result.json();
             if (result['Created']) ***REMOVED***
                 this.volume_status = 7;
@@ -187,9 +187,9 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    createAndAttachvolume(volume_name: string, diskspace: string, instance_id: string) ***REMOVED***
+    createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string) ***REMOVED***
         this.volume_status = 7;
-        this.vmService.createVolume(volume_name, diskspace, instance_id).subscribe(result => ***REMOVED***
+        this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => ***REMOVED***
             result = result.json();
             if (result['Created']) ***REMOVED***
                 let volume_id = result['Created']
