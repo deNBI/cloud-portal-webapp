@@ -172,9 +172,9 @@ export class VolumeOverviewComponent implements OnInit {
         })
     }
 
-    createVolume(volume_name: string, diskspace: string, instance_id: string) {
+    createVolume(volume_name: string, diskspace: number, instance_id: string) {
         this.volume_status = 0
-        this.vmService.createVolume(volume_name, diskspace, instance_id).subscribe(result => {
+        this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
             result = result.json();
             if (result['Created']) {
                 this.volume_status = 7;
@@ -187,9 +187,9 @@ export class VolumeOverviewComponent implements OnInit {
         })
     }
 
-    createAndAttachvolume(volume_name: string, diskspace: string, instance_id: string) {
+    createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string) {
         this.volume_status = 7;
-        this.vmService.createVolume(volume_name, diskspace, instance_id).subscribe(result => {
+        this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
             result = result.json();
             if (result['Created']) {
                 let volume_id = result['Created']
