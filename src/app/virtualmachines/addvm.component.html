@@ -3,7 +3,8 @@
     you
     can start a machine. Please set a SSH Key on the User Information tab.
 </div>
-<div class="animated fadeIn" *ngIf="client_avaiable && validatePublicKey()">
+<div *ngIf=" isLoaded_projects==false || isLoaded_images==false ||isLoaded_flavors==false" class="loader"></div>
+<div *ngIf=" isLoaded_projects && isLoaded_images && isLoaded_flavors && client_avaiable && validatePublicKey()">
 
     <div class="row">
         <div class="col-md-12">
@@ -86,28 +87,45 @@
                             </div>
 
                         </div>
-                        <div class="form-group row" *ngIf="(selectedProjectVmsMax || selectedProjectVmsMax == 0) && selectedProject && selectedProject[1] != FREEMIUM_ID">
+                        <div class="form-group row"
+                             *ngIf="(selectedProjectVmsMax || selectedProjectVmsMax == 0) && selectedProject && selectedProject[1] != FREEMIUM_ID">
                             <label class="col-md-3 form-control-label"><strong>Vms in use</strong></label>
                             <div class="col-md-6">
                                 <strong>{{selectedProjectVmsUsed}} / {{selectedProjectVmsMax}} Vms</strong>
                             </div>
                         </div>
 
-                        <div  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID" class="form-group row">
+                        <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID" class="form-group row">
 
                             <label class="col-md-3 form-control-label"><strong>Optional parameters</strong></label>
-                             <div class="col-md-6">
-                            <button type="button" class="btn btn-info .btn-pill" (click)="optional_params= !optional_params">
-                                <strong *ngIf="!optional_params">Show</strong><strong *ngIf="optional_params">Hide</strong>
-                            </button></div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-info .btn-pill"
+                                        (click)="optional_params= !optional_params">
+                                    <strong *ngIf="!optional_params">Show</strong><strong
+                                        *ngIf="optional_params">Hide</strong>
+                                </button>
+                            </div>
                         </div>
-                        <div  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params"  class="form-group row" >
+                        <div class="form-group row"
+                             *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
+                            <label class="col-md-3 form-control-label">Volumename</label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Volumename" [value]="volumeName" (input)="volumeName = $event.target.value">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params"
+                             class="form-group row">
 
                             <label class="col-md-3 form-control-label">Storage</label>
 
                             <div class="col-md-9">
                                 <div class="input-group">
-                                    <input min="0" step="1" [value]="diskspace" (input)="diskspace = $event.target.value" type="number" placeholder="e.g 8 "><span class="input-group-addon"> GB
+                                    <input min="0" step="1" [value]="diskspace"
+                                           (input)="diskspace = $event.target.value" type="number" placeholder="e.g 8 "><span
+                                        class="input-group-addon"> GB
                                     </span>
 
                                     <div class="col-md-6">
@@ -120,20 +138,20 @@
 
 
                         </div>
-                        <div  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params"  class="form-group row" >
+                        <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params"
+                             class="form-group row">
 
                             <label class="col-md-3 form-control-label">Storage volumes</label>
 
                             <div class="col-md-9">
                                 <div class="col-md-6">
-                                        <strong>{{selectedProjectVolumesUsed}} / {{selectedProjectVolumesMax}}
-                                            </strong>
-                                    </div>
+                                    <strong>{{selectedProjectVolumesUsed}} / {{selectedProjectVolumesMax}}
+                                    </strong>
+                                </div>
                             </div>
 
 
                         </div>
-
 
 
                         <!-- <div class="form-group row">

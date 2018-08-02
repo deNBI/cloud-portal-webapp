@@ -1,4 +1,7 @@
-<div class="animated fadeIn" ng-app>
+<div *ngIf="  isLoaded_userApplication == false || isLoaded_AllApplication == false" class="loader">
+
+</div>
+<div *ngIf="isLoaded_userApplication && isLoaded_AllApplication" class="animated fadeIn" ng-app>
     <div class="row">
         <!--/.col-->
         <h1>Applications Overview</h1>
@@ -50,11 +53,11 @@
                                                 class="btn btn-secondary">
                                             Remove Application
                                         </button>
-                                        <button *ngIf="application.Status == 'approved' || application.Status == 'extension declined'"
+                                        <button *ngIf="application.Status == 'approved' || application.Status == 'modification declined'"
                                                 (click)="setSelectedApplication(application);ngFormSetDefault(f);extensionModal.show()"
                                                 type="button"
                                                 class="btn btn-secondary">
-                                            Request Extension
+                                            Request Extension/Modification
                                         </button>
                                     </td>
                                 </tr>
@@ -70,26 +73,26 @@
                                                         <td>Description</td>
                                                         <td>{{ application.Description }}
                                                         </td>
-                                                        <td *ngIf="application.Status == 'extension requested'"></td>
+                                                        <td *ngIf="application.Status == 'modification requested'"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>Comment</td>
                                                         <td>{{ application.Comment }}</td>
-                                                        <td *ngIf="application.Status == 'extension requested'">
+                                                        <td *ngIf="application.Status == 'modification requested'">
                                                             {{application.ApplicationExtension?.Comment}}
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>VMs</td>
                                                         <td>{{ application.VMsRequested }} VMs</td>
-                                                        <td *ngIf="application.Status == 'extension requested'">
+                                                        <td *ngIf="application.Status == 'modification requested'">
                                                             {{application.ApplicationExtension?.VMsRequested}} VMs
                                                         </td>
                                                     </tr>
                                                     <tr *ngIf="application.OpenStackProject">
                                                         <td>Cores/VM</td>
                                                         <td>{{ application.CoresPerVM }} Cores per VM</td>
-                                                        <td *ngIf="application.Status == 'extension requested'">
+                                                        <td *ngIf="application.Status == 'modification requested'">
                                                             {{application.ApplicationExtension?.CoresPerVM}} Cores per
                                                             VM
                                                         </td>
@@ -97,28 +100,31 @@
                                                     <tr *ngIf="application.OpenStackProject">
                                                         <td>RAM</td>
                                                         <td>{{ application.RamPerVM }} GB</td>
-                                                        <td *ngIf="application.Status == 'extension requested'">
+                                                        <td *ngIf="application.Status == 'modification requested'">
                                                             {{application.ApplicationExtension?.RamPerVM}} GB
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>Storage Limit</td>
                                                         <td>{{ application.VolumeLimit }} GB</td>
-                                                        <td *ngIf="application.Status == 'extension requested'">
+                                                        <td *ngIf="application.Status == 'modification requested'">
                                                             {{application.ApplicationExtension?.VolumeLimit}} GB
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>Volume Counter</td>
+
                                                         <td>{{ application.VolumeCounter }} </td>
-                                                        <td *ngIf="application.Status == 'extension requested'">
+                                                        <td *ngIf="application.Status == 'modification requested'">
+
+
                                                             {{application.ApplicationExtension?.VolumeCounter}}
                                                         </td>
                                                     </tr>
                                                     <tr *ngIf="application.OpenStackProject">
                                                         <td>ObjectStorage</td>
                                                         <td>{{ application.ObjectStorage }} GB</td>
-                                                        <td *ngIf="application.Status == 'extension requested'">
+                                                        <td *ngIf="application.Status == 'modification requested'">
                                                             {{application.ApplicationExtension?.ObjectStorage}} GB
                                                         </td>
                                                     </tr>
@@ -127,7 +133,7 @@
                                                         <td><span style="margin-right: 5px;" class="badge badge-primary"
                                                                   *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
                                                         </td>
-                                                        <td *ngIf="application.Status == 'extension requested'">
+                                                        <td *ngIf="application.Status == 'modification requested'">
                                                        <span style="margin-right: 5px;" class="badge badge-primary"
                                                              *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">{{ sh }}</span>
                                                         </td>
@@ -216,7 +222,7 @@
                                                     (click)="approveExtension(application.Id);resultModal.show();"
                                                     type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
                                                 Approve
-                                                Extension
+                                                Modification
                                             </button>
 
                                             <button *ngIf="application.Status == 1"
@@ -228,7 +234,7 @@
                                                     type="button" class="btn btn-secondary"
                                                     (click)="declineExtension(application.Id);resultModal.show();"><i
                                                     class="fa fa-close"></i>&nbsp;
-                                                Decline Extension
+                                                Decline Modification
                                             </button>
 
 
@@ -318,7 +324,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Volume Counter</td>
-                                                            <td>{{ application.VolumeCounter }} </td>
+                                                            <td>{{ application.VolumeCounter }}</td>
                                                             <td *ngIf="application.Status == 4">
                                                                 {{application.ApplicationExtension?.VolumeCounter}}
                                                             </td>
@@ -459,7 +465,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Volume Counter</td>
-                                                            <td>{{ application.VolumeCounter }} </td>
+                                                            <td>{{ application.VolumeCounter }}</td>
                                                         </tr>
                                                         <tr *ngIf="application.OpenStackProject">
                                                             <td>ObjectStorage</td>
@@ -576,7 +582,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h1>Extension Request: {{selectedApplication?.Name}}</h1>
+                <h1>Modify Request: {{selectedApplication?.Name}}</h1>
             </div>
             <div class="modal-body">
                 <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
@@ -803,31 +809,33 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
-                   Waiting... <i class="fa fa-spinner fa-spin"
-                                                                            style="font-size:24px"></i>
+                    Waiting... <i class="fa fa-spinner fa-spin"
+                                  style="font-size:24px"></i>
                 </div>
 
 
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
-                   Extension request successfully submitted!
+
+                   Modify request successfully submitted!
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 3">
-                   Extension request successfully approved!
+                   Modify request successfully approved!
                 </div>
                  <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
-                   Extension request successfully declined!
+                   Modify request successfully declined!      </div>
+         
+                <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
+                    An error occured.
+
                 </div>
-            <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
-               An error occured.
-            </div>
 
 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="extension_status= 0;resultModal.hide()">
+                        Close
+                    </button>
+                </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="extension_status= 0;resultModal.hide()">Close
-                </button>
-            </div>
-
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->

@@ -26,7 +26,8 @@
                             <label class="col-md-4">
                                 <strong>Single Virtual Machines Project
                                     <i
-                                            class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
+                                            class="icon-question" onmouseover="" style="cursor: pointer;"
+                                            data-toggle="tooltip" data-placement="auto"
                                             title="You will be able to start virtual machines through the portal with minimal
                                     effort and access them via ssh. This project type does not demand knowlegde in cloud
                                     computing."></i>
@@ -45,7 +46,8 @@
                                 'has-success': f.controls.project_application_name?.valid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Project
-                                Name* <i class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
+                                Name* <i class="icon-question" onmouseover="" style="cursor: pointer;"
+                                         data-toggle="tooltip" data-placement="auto"
                                          title="Full name of your project"></i></strong></label>
                             <div class="col-md-8">
                                 <input required type="text" id="id_project_application_name"
@@ -63,7 +65,8 @@
                                 'has-success': f.controls.project_application_shortname?.valid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Project
-                                Short Name* <i class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
+                                Short Name* <i class="icon-question" onmouseover="" style="cursor: pointer;"
+                                               data-toggle="tooltip" data-placement="auto"
                                                title="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"></i></strong></label>
                             <div class="col-md-8">
                                 <div *ngIf='wronginput'>
@@ -87,7 +90,8 @@
                                 'has-success': f.controls.project_application_description?.valid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Project
-                                Description* <i class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
+                                Description* <i class="icon-question" onmouseover="" style="cursor: pointer;"
+                                                data-toggle="tooltip" data-placement="auto"
                                                 title="Full description of your project including tools you might
 are going to use."></i></strong></label>
                             <div class="col-md-8">
@@ -105,7 +109,8 @@ are going to use."></i></strong></label>
                                 'has-success': f.controls.project_application_lifetime?.valid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Desired
-                                lifetime* <i class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
+                                lifetime* <i class="icon-question" onmouseover="" style="cursor: pointer;"
+                                             data-toggle="tooltip" data-placement="auto"
                                              title="Lifetime in months of your project"></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
@@ -129,7 +134,8 @@ are going to use."></i></strong></label>
                                 'has-success': f.controls.project_application_vms_requested?.valid
                                 }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of Virtual
-                                Machines* <i class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
+                                Machines* <i class="icon-question" onmouseover="" style="cursor: pointer;"
+                                             data-toggle="tooltip" data-placement="auto"
                                              title="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
@@ -150,7 +156,8 @@ are going to use."></i></strong></label>
                                 }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage Limit*
                                 <i
-                                        class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
+                                        class="icon-question" onmouseover="" style="cursor: pointer;"
+                                        data-toggle="tooltip" data-placement="auto"
                                         title="Storage limit is the sum of extra storage provided by volumes."></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
@@ -161,7 +168,7 @@ are going to use."></i></strong></label>
                                     <span class="input-group-addon"> GB
                                     </span>
                                 </div>
-                                <span class="help-block">How many extra storage do you need for your Vms?</span>
+                                <span class="help-block">How many extra storage do you need for your VMs?</span>
                             </div>
                         </div>
 
@@ -169,9 +176,11 @@ are going to use."></i></strong></label>
                                 'has-danger': f.controls.project_application_volume_counter?.invalid,
                                 'has-success': f.controls.project_application_volume_counter?.valid
                                 }">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Volume Counter*
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of storage
+                                volumes*
                                 <i
-                                        class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
+                                        class="icon-question" onmouseover="" style="cursor: pointer;"
+                                        data-toggle="tooltip" data-placement="auto"
                                         title="The number of storage volumes allowed to create. Each vm is allowed to mount only one storage volume. The sum of the volumes size equals the value provided in the sotrage limit field"></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
@@ -179,8 +188,6 @@ are going to use."></i></strong></label>
                                            name="project_application_volume_counter"
                                            placeholder="e.g. 20"
                                            type="number" min="0" step="1" [ngModel]="project_application_vms_requested">
-                                    <span class="input-group-addon"> GB
-                                    </span>
                                 </div>
                                 <span class="help-block">How many storage volumes do you want to use?</span>
                             </div>
@@ -219,7 +226,8 @@ are going to use."></i></strong></label>
                                 'has-success': f.controls.project_application_institute?.valid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Institute Name* <i
-                                    class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
+                                    class="icon-question" onmouseover="" style="cursor: pointer;" data-toggle="tooltip"
+                                    data-placement="auto"
                                     title="Your institute"></i></strong></label>
                             <div class="col-md-8">
                                 <input required type="text" id="id_project_application_institute"
@@ -234,7 +242,8 @@ are going to use."></i></strong></label>
                                 'has-success': f.controls.project_application_workgroup?.valid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Workgroup Name* <i
-                                    class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
+                                    class="icon-question" onmouseover="" style="cursor: pointer;" data-toggle="tooltip"
+                                    data-placement="auto"
                                     title="Your workgroup"></i></strong></label>
                             <div class="col-md-8">
                                 <input required type="text" id="id_project_application_workgroup"
@@ -245,16 +254,15 @@ are going to use."></i></strong></label>
 
                         </div>
 
-                        <div class="form-group row">
-                            <p class="col-md-12 form-control-label">By submitting this application you agree to the
-                                cloud
-                                usage policy.</p>
-                        </div>
-
 
                     </form>
                 </div>
                 <div class="card-footer">
+                    <div class="form-group row">
+                        <p class="col-md-12 form-control-label">By submitting this application you agree to the
+                            cloud
+                            usage policy.</p>
+                    </div>
                     <button (click)="acknowledgemodal.show()"
                             [disabled]="f.invalid"
                             class="btn btn-sm btn-primary"><i
