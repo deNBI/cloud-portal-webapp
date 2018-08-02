@@ -217,8 +217,8 @@ export class VolumeOverviewComponent implements OnInit {
     }
 
 
-    getActiveVmsByProject(groupid: string) {
-        this.vmService.getActiveVmsByProject(groupid).subscribe(result => {
+    getActiveVmsByProject(groupid: number) {
+        this.vmService.getActiveVmsByProject(groupid.toString()).subscribe(result => {
 
 
             this.project_vms = result;
