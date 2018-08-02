@@ -217,8 +217,8 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
 
-    getActiveVmsByProject(groupid: string) ***REMOVED***
-        this.vmService.getActiveVmsByProject(groupid).subscribe(result => ***REMOVED***
+    getActiveVmsByProject(groupid: number) ***REMOVED***
+        this.vmService.getActiveVmsByProject(groupid.toString()).subscribe(result => ***REMOVED***
 
 
             this.project_vms = result;
