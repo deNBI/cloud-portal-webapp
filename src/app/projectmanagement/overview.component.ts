@@ -39,6 +39,7 @@ export class OverviewComponent ***REMOVED***
     public usersModalProjectMembers: ProjectMember[] = new Array;
     public usersModalProjectID: number;
     public usersModalProjectName: string;
+    public selectedProject: Project;
 
     public isLoaded: boolean = false;
 
@@ -140,8 +141,8 @@ export class OverviewComponent ***REMOVED***
             //hold data in the class just in case
             this.userprojects = user_projects;
             let number_userprojects = Object.keys(user_projects).length;
-             if (number_userprojects == 0)***REMOVED***
-                this.isLoaded=true;
+            if (number_userprojects == 0) ***REMOVED***
+                this.isLoaded = true;
             ***REMOVED***
             this.userid = user_id;
             this.user_data = user_data;
@@ -179,7 +180,7 @@ export class OverviewComponent ***REMOVED***
 
                 this.groupservice.getShortame(group['id']).subscribe(name => ***REMOVED***
                     this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => ***REMOVED***
-                            let shortname = name['shortname']
+                            let shortname = name['shortname'];
                             if (!shortname) ***REMOVED***
                                 shortname = group['name']
                             ***REMOVED***
@@ -192,8 +193,8 @@ export class OverviewComponent ***REMOVED***
                                 dateDayDifference,
                                 is_pi,
                                 is_admin,
-                                [result['Facility'], result['FacilityId']])
-                            project_checks[newProject.Id] = false
+                                [result['Facility'], result['FacilityId']]);
+                            project_checks[newProject.Id] = false;
 
                             let details = result['Details'];
                             let details_array = [];
@@ -202,42 +203,24 @@ export class OverviewComponent ***REMOVED***
                                 details_array.push(detail_tuple);
                             ***REMOVED***
                             newProject.ComputecenterDetails = details_array;
-                            if (is_pi) ***REMOVED***
-                                this.groupservice.getLifetime(group['id']).subscribe(result => ***REMOVED***
-                                    let lifetime = result['lifetime']
+                            this.groupservice.getLifetime(group['id']).subscribe(result => ***REMOVED***
+                                let lifetime = result['lifetime']
 
-                                    newProject.Lifetime = lifetime;
-                                    if (newProject.Lifetime != -1) ***REMOVED***
+                                newProject.Lifetime = lifetime;
+                                if (newProject.Lifetime != -1) ***REMOVED***
 
-                                        newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                                        let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                                    ***REMOVED***
-                                    else ***REMOVED***
-                                        newProject.LifetimeDays = -1;
-                                    ***REMOVED***
+                                    newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
+                                    let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
+                                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
+                                ***REMOVED***
+                                else ***REMOVED***
+                                    newProject.LifetimeDays = -1;
+                                ***REMOVED***
 
-                                    this.projects.push(newProject);
-                                    project_checks[newProject.Id] = true;
-                                    if (Object.keys(project_checks).length == number_userprojects) ***REMOVED***
-                                        let all_ready = true;
-                                        for (let key in project_checks) ***REMOVED***
-                                            if (project_checks[key] == false) ***REMOVED***
-                                                all_ready = false
-
-                                            ***REMOVED***
-                                        ***REMOVED***
-                                        if (all_ready == true) ***REMOVED***
-                                            this.isLoaded = true
-                                        ***REMOVED***
-                                    ***REMOVED***
-                                ***REMOVED***)
-                            ***REMOVED***
-                            else ***REMOVED***
                                 this.projects.push(newProject);
                                 project_checks[newProject.Id] = true;
                                 if (Object.keys(project_checks).length == number_userprojects) ***REMOVED***
-                                    let all_ready = true
+                                    let all_ready = true;
                                     for (let key in project_checks) ***REMOVED***
                                         if (project_checks[key] == false) ***REMOVED***
                                             all_ready = false
@@ -248,9 +231,9 @@ export class OverviewComponent ***REMOVED***
                                         this.isLoaded = true
                                     ***REMOVED***
                                 ***REMOVED***
+                            ***REMOVED***)
 
 
-                            ***REMOVED***
                         ***REMOVED***
                     )
                 ***REMOVED***)
