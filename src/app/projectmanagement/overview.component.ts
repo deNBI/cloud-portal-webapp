@@ -39,6 +39,7 @@ export class OverviewComponent {
     public usersModalProjectMembers: ProjectMember[] = new Array;
     public usersModalProjectID: number;
     public usersModalProjectName: string;
+    public selectedProject: Project;
 
     public isLoaded: boolean = false;
 
@@ -140,8 +141,8 @@ export class OverviewComponent {
             //hold data in the class just in case
             this.userprojects = user_projects;
             let number_userprojects = Object.keys(user_projects).length;
-             if (number_userprojects == 0){
-                this.isLoaded=true;
+            if (number_userprojects == 0) {
+                this.isLoaded = true;
             }
             this.userid = user_id;
             this.user_data = user_data;
@@ -179,7 +180,7 @@ export class OverviewComponent {
 
                 this.groupservice.getShortame(group['id']).subscribe(name => {
                     this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => {
-                            let shortname = name['shortname']
+                            let shortname = name['shortname'];
                             if (!shortname) {
                                 shortname = group['name']
                             }
@@ -192,8 +193,8 @@ export class OverviewComponent {
                                 dateDayDifference,
                                 is_pi,
                                 is_admin,
-                                [result['Facility'], result['FacilityId']])
-                            project_checks[newProject.Id] = false
+                                [result['Facility'], result['FacilityId']]);
+                            project_checks[newProject.Id] = false;
 
                             let details = result['Details'];
                             let details_array = [];
@@ -202,42 +203,24 @@ export class OverviewComponent {
                                 details_array.push(detail_tuple);
                             }
                             newProject.ComputecenterDetails = details_array;
-                            if (is_pi) {
-                                this.groupservice.getLifetime(group['id']).subscribe(result => {
-                                    let lifetime = result['lifetime']
+                            this.groupservice.getLifetime(group['id']).subscribe(result => {
+                                let lifetime = result['lifetime']
 
-                                    newProject.Lifetime = lifetime;
-                                    if (newProject.Lifetime != -1) {
+                                newProject.Lifetime = lifetime;
+                                if (newProject.Lifetime != -1) {
 
-                                        newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                                        let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                                    }
-                                    else {
-                                        newProject.LifetimeDays = -1;
-                                    }
+                                    newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
+                                    let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
+                                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
+                                }
+                                else {
+                                    newProject.LifetimeDays = -1;
+                                }
 
-                                    this.projects.push(newProject);
-                                    project_checks[newProject.Id] = true;
-                                    if (Object.keys(project_checks).length == number_userprojects) {
-                                        let all_ready = true;
-                                        for (let key in project_checks) {
-                                            if (project_checks[key] == false) {
-                                                all_ready = false
-
-                                            }
-                                        }
-                                        if (all_ready == true) {
-                                            this.isLoaded = true
-                                        }
-                                    }
-                                })
-                            }
-                            else {
                                 this.projects.push(newProject);
                                 project_checks[newProject.Id] = true;
                                 if (Object.keys(project_checks).length == number_userprojects) {
-                                    let all_ready = true
+                                    let all_ready = true;
                                     for (let key in project_checks) {
                                         if (project_checks[key] == false) {
                                             all_ready = false
@@ -248,9 +231,9 @@ export class OverviewComponent {
                                         this.isLoaded = true
                                     }
                                 }
+                            })
 
 
-                            }
                         }
                     )
                 })
