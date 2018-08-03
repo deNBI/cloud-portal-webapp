@@ -263,7 +263,7 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
     filterMembers(firstName: string, lastName: string, groupid: number) ***REMOVED***
-        this.voservice.getMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => ***REMOVED***
+        this.userservice.getFilteredMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => ***REMOVED***
             this.filteredMembers = result;
         ***REMOVED***)
     ***REMOVED***
