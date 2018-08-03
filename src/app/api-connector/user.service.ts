@@ -118,5 +118,19 @@ export class UserService ***REMOVED***
 
     ***REMOVED***
 
+    getFilteredMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string) ***REMOVED***
+
+        return this.http.get(this.settings.getApiBaseURL() + 'user/getFilteredMembers', ***REMOVED***
+            withCredentials: true,
+            params: ***REMOVED***
+                firstName: firstname,
+                lastName: lastName,
+                groupid: groupid
+            ***REMOVED***
+        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+
+    ***REMOVED***
+
 
 ***REMOVED***
