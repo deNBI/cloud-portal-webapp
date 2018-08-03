@@ -24,7 +24,7 @@ export class OverviewComponent {
     debug_module = false;
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
-    is_admin=false;
+    is_admin = false;
     userprojects: {};
     member_id: number;
     admingroups: {};
@@ -110,92 +110,91 @@ export class OverviewComponent {
             if (number_userprojects == 0) {
                 this.isLoaded = true;
             }
-
+            let groupids = [];
             for (let key in this.userprojects) {
                 let group = this.userprojects[key];
-                let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
-                let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                let is_pi = false;
-
-                //check if user is a PI (group manager)
-                if (!this.is_admin) {
-                    for (let gkey in this.admingroups) {
-                        if (group["id"] == this.admingroups[gkey]["id"]) {
-                            is_pi = true;
-                            break;
-                        }
-                    }
-                } else {
-                    is_pi = true;
-                }
-
-                this.groupservice.getShortame(group['id']).subscribe(name => {
-                    this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => {
-                            let shortname = name['shortname'];
-                            if (!shortname) {
-                                shortname = group['name']
-                            }
-
-                            let newProject = new Project(
-                                group["id"],
-                                shortname,
-                                group["description"],
-                                dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
-                                dateDayDifference,
-                                is_pi,
-                                this.is_admin,
-                                [result['Facility'], result['FacilityId']]);
-                            project_checks[newProject.Id] = false;
-
-                            let details = result['Details'];
-                            let details_array = [];
-                            for (let detail in details) {
-                                let detail_tuple = [detail, details[detail]];
-                                details_array.push(detail_tuple);
-                            }
-                            newProject.ComputecenterDetails = details_array;
-                            this.groupservice.getLifetime(group['id']).subscribe(result => {
-                                let lifetime = result['lifetime']
-
-                                newProject.Lifetime = lifetime;
-                                if (newProject.Lifetime != -1) {
-
-                                    newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                                    let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                                }
-                                else {
-                                    newProject.LifetimeDays = -1;
-                                }
-
-                                this.projects.push(newProject);
-                                project_checks[newProject.Id] = true;
-                                if (Object.keys(project_checks).length == number_userprojects) {
-                                    let all_ready = true;
-                                    for (let key in project_checks) {
-                                        if (project_checks[key] == false) {
-                                            all_ready = false
-
-                                        }
-                                    }
-                                    if (all_ready == true) {
-                                        this.isLoaded = true
-                                    }
-                                }
-                            })
-
-
-                        }
-                    )
-                })
+                groupids.push(group['id'])
             }
+            this.groupservice.getGroupDetails(groupids).subscribe(result => {
+                let groupShortNamesAndFacilities = result;
 
 
-        });
+                for (let key in this.userprojects) {
+                    let group = this.userprojects[key];
+                    let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                    let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
+                    let is_pi = false;
+                    let groupid = group['id'];
+                    let facility = groupShortNamesAndFacilities[groupid]['facility'];
+                    let shortname = groupShortNamesAndFacilities[groupid]['shortname'];
+                    let details = facility['Details'];
+                    let details_array = [];
+                    let lifetime = groupShortNamesAndFacilities[groupid]['lifetime'];
+                    let lifetimeDays = -1;
+                    let expirationDate=undefined;
 
 
-        // .then( function(){ groupsmanager.getGroupsWhereUserIsAdmin(this.userid); });
+                    if (lifetime != -1) {
+
+                         lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
+                         expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
+                    }
+
+
+                    for (let detail in details) {
+                        let detail_tuple = [detail, details[detail]];
+                        details_array.push(detail_tuple);
+                    }
+
+
+                    //check if user is a PI (group manager)
+                    if (!this.is_admin) {
+                        for (let gkey in this.admingroups) {
+                            if (group["id"] == this.admingroups[gkey]["id"]) {
+                                is_pi = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        is_pi = true;
+                    }
+
+                    if (!shortname) {
+                        shortname = group['name']
+                    }
+
+                    let newProject = new Project(
+                        group["id"],
+                        shortname,
+                        group["description"],
+                        dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                        dateDayDifference,
+                        is_pi,
+                        this.is_admin,
+                        [facility['Facility'], facility['FacilityId']]);
+
+
+                    newProject.ComputecenterDetails = details_array;
+
+                    newProject.Lifetime = lifetime;
+
+                    newProject.LifetimeDays = lifetimeDays;
+                    if (expirationDate) {
+                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
+                    }
+
+
+                    this.projects.push(newProject);
+
+
+                }
+                this.isLoaded = true;
+
+            })
+        })
+
     }
+
 
     lifeTimeReached(lifetime: number, running: number): string {
         if (!lifetime) {
@@ -208,7 +207,9 @@ export class OverviewComponent {
     }
 
 
-    public resetAddUserModal() {
+    public
+
+    resetAddUserModal() {
         this.addUserModalProjectID = null;
         this.addUserModalProjectName = null;
         this.UserModalFacility = null;

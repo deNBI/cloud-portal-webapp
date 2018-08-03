@@ -11,6 +11,8 @@ import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
 import {FacilityService} from "../api-connector/facility.service";
 import {FormsModule} from '@angular/forms';
+import { map } from 'rxjs/operators';
+
 import * as moment from 'moment';
 
 @Component({
