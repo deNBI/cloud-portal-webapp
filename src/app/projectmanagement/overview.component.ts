@@ -12,6 +12,7 @@ import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
 import * as moment from 'moment';
 import {VoService} from "../api-connector/vo.service";
+import {forkJoin} from 'rxjs';
 
 
 @Component({
@@ -23,13 +24,10 @@ export class OverviewComponent {
     debug_module = false;
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
-
+    is_admin=false;
     userprojects: {};
-    userid: number;
     member_id: number;
-    user_data: {};
     admingroups: {};
-    adminvos: {};
     filteredMembers = null;
     projects: Project[] = new Array();
 
@@ -102,63 +100,16 @@ export class OverviewComponent {
         })
     }
 
-    getUserProjects(groupservice: GroupService,
-                    userservice: UserService) {
-        let user_id: number;
-        let member_id: number;
-        let user_projects: {};
-        let user_data: {};
-        let admin_groups: {};
-        let admin_vos: {};
+    getUserProjects() {
         let project_checks = {};
-
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) {
-                //TODO catch errors
-                let userid = userdata.json()["id"];
-                user_id = userid;
-                user_data = userdata.json();
-                return userservice.getMemberByUser(userid).toPromise();
-            })
-            .then(function (memberdata) {
-                let memberid = memberdata.json()["id"];
-                member_id = memberid;
-                return groupservice.getMemberGroups(memberid).toPromise();
-            }).then(function (groupsdata) {
-            user_projects = groupsdata.json();
-        }).then(function () {
-            return userservice.getGroupsWhereUserIsAdmin(user_id).toPromise();
-        }).then(function (admingroups) {
-            admin_groups = admingroups.json();
-        }).then(function () {
-
-            return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
-        }).then(function (adminvos) {
-            admin_vos = adminvos.json();
-        }).then(result => {
-
-            //hold data in the class just in case
-            this.userprojects = user_projects;
-            let number_userprojects = Object.keys(user_projects).length;
+        forkJoin([this.groupservice.getMemberGroups(), this.userservice.getGroupsWhereUserIsAdmin(), this.voservice.isVo()]).subscribe(result => {
+            this.userprojects = result[0];
+            this.admingroups = result[1];
+            this.is_admin = result[2]['Is_Vo_Manager'];
+            let number_userprojects = Object.keys(this.userprojects).length;
             if (number_userprojects == 0) {
                 this.isLoaded = true;
             }
-            this.userid = user_id;
-            this.user_data = user_data;
-            this.member_id = member_id;
-            this.admingroups = admin_groups;
-            this.adminvos = admin_vos;
-
-            let is_admin = false;
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in this.adminvos) {
-                if (this.adminvos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
-                    is_admin = true;
-                    break;
-                }
-            }
-
 
             for (let key in this.userprojects) {
                 let group = this.userprojects[key];
@@ -167,7 +118,7 @@ export class OverviewComponent {
                 let is_pi = false;
 
                 //check if user is a PI (group manager)
-                if (!is_admin) {
+                if (!this.is_admin) {
                     for (let gkey in this.admingroups) {
                         if (group["id"] == this.admingroups[gkey]["id"]) {
                             is_pi = true;
@@ -192,7 +143,7 @@ export class OverviewComponent {
                                 dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
                                 dateDayDifference,
                                 is_pi,
-                                is_admin,
+                                this.is_admin,
                                 [result['Facility'], result['FacilityId']]);
                             project_checks[newProject.Id] = false;
 
@@ -240,10 +191,11 @@ export class OverviewComponent {
             }
 
 
-        })
+        });
+
+
         // .then( function(){ groupsmanager.getGroupsWhereUserIsAdmin(this.userid); });
     }
-
 
     lifeTimeReached(lifetime: number, running: number): string {
         if (!lifetime) {

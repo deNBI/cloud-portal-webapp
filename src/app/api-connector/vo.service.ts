@@ -12,13 +12,15 @@ export class VoService {
     }
 
 
-    isVo() {
+    isVo():Observable<any>  {
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/isVoManager/', {
             withCredentials: true,
-        })
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
     }
+
+
 
 
     getNewsletterSubscriptionCounter():Observable<any> {

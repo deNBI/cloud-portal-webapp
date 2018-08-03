@@ -25,7 +25,7 @@ export class MemberGuardService implements CanActivate {
 
                 }).then(res => {
 
-                this.userservice.getMemberByUser(res['id']).toPromise().then(memberinfo => {
+                this.userservice.getMemberByUser().toPromise().then(memberinfo => {
                     if (memberinfo.json()['name'] === 'MemberNotExistsException') {
                         this.router.navigate(['/registration-info']);
                         resolve(false);

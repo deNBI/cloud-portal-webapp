@@ -56,7 +56,7 @@ export class FullLayoutComponent implements OnInit {
 
     is_vm_project_member() {
         this.groupService.getMemberGroupsStatus().subscribe(result => {
-            if (result.json().length > 0) {
+            if (result.length > 0) {
                 this.vm_project_member = true
             }
         })
@@ -112,7 +112,7 @@ export class FullLayoutComponent implements OnInit {
                 user_id = userdata.json()["id"];
 
 
-                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
+                return userservice.getVosWhereUserIsAdmin().toPromise();
             }).then(function (adminvos) {
             admin_vos = adminvos.json();
         }).then(result => {

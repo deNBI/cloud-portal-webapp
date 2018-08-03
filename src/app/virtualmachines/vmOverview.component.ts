@@ -414,7 +414,7 @@ export class VmOverviewComponent implements OnInit {
             .then(function (userdata) {
                 //TODO catch errors
                 user_id = userdata.json()["id"];
-                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
+                return userservice.getVosWhereUserIsAdmin().toPromise();
             }).then(function (adminvos) {
             admin_vos = adminvos.json();
         }).then(result => {
@@ -446,7 +446,7 @@ export class VmOverviewComponent implements OnInit {
                 let res = result.json();
 
                 let userid = res["id"];
-                this.userservice.getLogins(userid).toPromise().then(result => {
+                this.userservice.getLogins().toPromise().then(result => {
                     let logins = result.json()
                     for (let login of logins) {
                         if (login['friendlyName'] === 'login-namespace:elixir-persistent') {

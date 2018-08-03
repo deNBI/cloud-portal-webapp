@@ -90,11 +90,11 @@ export class UserinfoComponent implements OnInit{
         this.userinfo.LastName = res["lastName"];
         this.userinfo.Id = res["id"];
 
-        return this.userservice.getMemberByUser(res["id"]).toPromise();
+        return this.userservice.getMemberByUser().toPromise();
 
       }).then(memberinfo => {
       this.userinfo.MemberId = memberinfo.json()["id"];
-      this.userservice.getLogins(this.userinfo.Id).toPromise().then(result => {
+      this.userservice.getLogins().toPromise().then(result => {
         let logins = result.json()
         for (let login of logins) {
           if (login['friendlyName'] === 'login-namespace:elixir-persistent') {

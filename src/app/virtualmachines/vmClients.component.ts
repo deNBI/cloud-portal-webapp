@@ -35,7 +35,7 @@ export class ClientOverviewComponent implements OnInit {
             .then(function (userdata) {
                 //TODO catch errors
                 user_id = userdata.json()["id"];
-                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
+                return userservice.getVosWhereUserIsAdmin().toPromise();
             }).then(function (adminvos) {
             admin_vos = adminvos.json();
         }).then(result => {

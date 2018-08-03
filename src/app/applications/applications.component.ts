@@ -248,7 +248,7 @@ export class ApplicationsComponent {
             .then(userdata => {
                 //TODO catch errors
                 user_id = userdata.json()["id"];
-                return this.userservice.getVosWhereUserIsAdmin(user_id).toPromise();
+                return this.userservice.getVosWhereUserIsAdmin().toPromise();
             }).then(function (adminvos) {
             admin_vos = adminvos.json();
         }).then(result => {

@@ -25,12 +25,11 @@ export class UserService {
         });
     }
 
-    getLogins(user: number): Observable<Response> {
+    getLogins(): Observable<Response> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'user/getLogins/',
             {
                 withCredentials: true,
-                params: {user: user}
             });
     }
 
@@ -42,11 +41,10 @@ export class UserService {
             });
     }
 
-    getMemberByUser(user_id: number) {
+    getMemberByUser() {
 
         return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByUser/`, {
             withCredentials: true,
-            params: {user: user_id}
         });
     }
 
@@ -64,17 +62,15 @@ export class UserService {
     }
 
 
-    getVosWhereUserIsAdmin(user_id: number) {
+    getVosWhereUserIsAdmin() {
         return this.http.get(this.settings.getApiBaseURL() + 'user/getVosWhereUserIsAdmin/', {
             withCredentials: true,
-            params: {userid: user_id}
         });
     }
 
-    getGroupsWhereUserIsAdmin(user_id: number) {
+    getGroupsWhereUserIsAdmin() {
         return this.http.get(this.settings.getApiBaseURL() + 'user/getGroupsWhereUserIsAdmin/', {
             withCredentials: true,
-            params: {userid: user_id}
         });
     }
 
