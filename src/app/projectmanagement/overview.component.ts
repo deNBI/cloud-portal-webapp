@@ -67,7 +67,7 @@ export class OverviewComponent {
                 private groupservice: GroupService,
                 private userservice: UserService,
                 private voservice: VoService) {
-        this.getUserProjects(groupservice, userservice);
+        this.getUserProjects();
 
     }
 
