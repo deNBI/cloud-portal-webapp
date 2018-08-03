@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import { Observable} from 'rxjs';
 import {ApiSettings}  from './api-settings.service'
 import {URLSearchParams} from "@angular/http";
 import {Vmclient} from "../virtualmachines/virtualmachinemodels/vmclient";
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/catch';
 
 @Injectable()

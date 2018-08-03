@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {URLSearchParams} from '@angular/http';
 import {VirtualMachineComponent} from '../virtualmachines/addvm.component'
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import { Observable} from 'rxjs';
 import {ApiSettings} from './api-settings.service'
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/catch';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from "../virtualmachines/virtualmachinemodels/volume";

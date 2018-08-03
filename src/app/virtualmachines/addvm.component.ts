@@ -4,7 +4,7 @@ import {
     ElementRef
 } from '@angular/core';
 import {Image} from "./virtualmachinemodels/image";
-import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
+import {ModalDirective} from "ngx-bootstrap";
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
 import {FlavorService} from '../api-connector/flavor.service';

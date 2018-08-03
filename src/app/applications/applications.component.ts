@@ -8,7 +8,7 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Application} from "./application.model";
 import {ApplicationStatus} from "./application_status.model";
 import {SpecialHardware} from "./special_hardware.model";
-import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
+import {ModalDirective} from "ngx-bootstrap";
 import {ResourcesManager} from "../perun-connector/resources_manager";
 import {GroupService} from "../api-connector/group.service";
 import * as moment from 'moment';
