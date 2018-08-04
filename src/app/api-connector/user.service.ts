@@ -120,7 +120,7 @@ export class UserService ***REMOVED***
 
     getFilteredMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string) ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getFilteredMembers', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'user/getFilteredMembers/', ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***
                 firstName: firstname,
