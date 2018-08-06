@@ -5,6 +5,7 @@ import {ApiSettings} from './api-settings.service';
 import {URLSearchParams} from "@angular/http";
 import { map } from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
+import {catchError } from 'rxjs/operators';
 
 import 'rxjs/add/operator/catch';
 
@@ -20,7 +21,7 @@ export class FlavorService {
     return this.http.get(this.settings.getConnectorBaseUrl() + 'flavors/getFlavors/', {
       withCredentials: true,
       search: urlSearchParams
-    }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+    }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
   }
 

@@ -3,6 +3,7 @@ import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {URLSearchParams} from '@angular/http';
 import {ApiSettings} from './api-settings.service';
 import {Observable, throwError} from 'rxjs';
+import {catchError } from 'rxjs/operators';
 
 
 import 'rxjs/add/operator/catch';
@@ -113,7 +114,7 @@ export class UserService {
         return this.http.post(this.settings.getApiBaseURL() + 'user/sendHelpMail/', urlSearchParams, {
             withCredentials: true,
             headers: header,
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -126,7 +127,7 @@ export class UserService {
                 lastName: lastName,
                 groupid: groupid
             }
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }

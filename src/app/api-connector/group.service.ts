@@ -5,6 +5,7 @@ import {URLSearchParams} from "@angular/http";
 import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/catch';
 import {Observable, throwError} from 'rxjs';
+import {catchError } from 'rxjs/operators';
 
 
 @Injectable()
@@ -19,7 +20,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/computecenters/', {
             withCredentials: true,
 
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -28,7 +29,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/facilityDetails/', {
             withCredentials: true,
             params: {resource_id: resource_id}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -37,7 +38,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getFacilityByGroup/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -52,7 +53,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/assignGroupToResource/', urlSearchParams, {
             withCredentials: true,
             headers: header
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }
@@ -62,7 +63,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/isUserPi/', {
             withCredentials: true,
             params: {group_id: groupid, user_id: userid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -72,8 +73,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupAdminsId/', {
             withCredentials: true,
             params: {group_id: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(
-            error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -82,7 +82,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupRichMembers/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -160,7 +160,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setDescription/', urlSearchParams, {
             withCredentials: true,
             headers: header
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }
@@ -230,8 +230,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setName/', urlSearchParams, {
             withCredentials: true,
             headers: header
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
-
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -243,8 +242,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getName/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
-
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -259,8 +257,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setShortname/', urlSearchParams, {
             withCredentials: true,
             headers: header
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
-
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -270,7 +267,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getShortname/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }
@@ -278,7 +275,7 @@ export class GroupService {
     getGroupDetails(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupDetails/', {
             withCredentials: true,
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }
@@ -287,14 +284,13 @@ export class GroupService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'group/getMemberGroupsStatus/', {
             withCredentials: true,
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
-
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
     }
 
     getMemberGroups(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getMemberGroups/', {
             withCredentials: true,
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
     }
 
 
@@ -308,7 +304,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setLifetime/', urlSearchParams, {
             withCredentials: true,
             headers: header
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }
@@ -336,7 +332,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getLifetime/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -364,7 +360,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupMembers/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }
@@ -374,7 +370,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getApprovedDiskSpace/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }
@@ -383,7 +379,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedDiskSpace/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }
@@ -393,8 +389,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedVolumes/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
-
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -402,8 +397,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getVolumesCounter/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
-
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -412,7 +406,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getNumberApprovedVms/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }
@@ -422,8 +416,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedVms/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
-
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 

@@ -3,6 +3,7 @@ import {Image} from '../virtualmachines/virtualmachinemodels/image';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {URLSearchParams} from "@angular/http";
 import {ApiSettings} from "./api-settings.service";
+import {catchError } from 'rxjs/operators';
 
 import { map } from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
@@ -21,7 +22,7 @@ export class keyService {
 
     return this.http.get(this.baseKeysUrl + 'getPublicKeyByUser/', {
       withCredentials: true,
-    }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+    }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
   }
 

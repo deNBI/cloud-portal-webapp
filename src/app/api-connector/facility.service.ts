@@ -4,8 +4,7 @@ import {URLSearchParams} from '@angular/http';
 import {ApiSettings} from './api-settings.service';
 import {map} from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
-import 'rxjs/add/operator/catch';
-
+import {catchError } from 'rxjs/operators';
 
 @Injectable()
 export class FacilityService {
@@ -16,7 +15,7 @@ export class FacilityService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilitiesWhereUserIsManager/', {
             withCredentials: true,
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -25,7 +24,7 @@ export class FacilityService {
         return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilityAllowedGroups/', {
             withCredentials: true,
             params: {facility_id: facility}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }
@@ -35,7 +34,7 @@ export class FacilityService {
         return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilityAllowedGroupsWithDetails/', {
             withCredentials: true,
             params: {facility_id: facility}
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }
@@ -53,7 +52,7 @@ export class FacilityService {
         return this.http.post(this.settings.getApiBaseURL() + 'facilityManager/sendMailToAllMembers/', urlSearchParams, {
             withCredentials: true,
             headers: header,
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }

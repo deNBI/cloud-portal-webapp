@@ -6,6 +6,7 @@ import {URLSearchParams} from '@angular/http';
 import {ApiSettings} from './api-settings.service';
 import { map } from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
+import {catchError } from 'rxjs/operators';
 
 import 'rxjs/add/operator/catch';
 
@@ -22,7 +23,7 @@ export class ImageService {
         return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getImages/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }
@@ -35,7 +36,7 @@ export class ImageService {
         return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getImageTags/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -52,7 +53,7 @@ export class ImageService {
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/addImageTag/', urlSearchParams, {
             withCredentials: true,
             headers: header
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -69,7 +70,7 @@ export class ImageService {
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteImageTag/', urlSearchParams, {
             withCredentials: true,
             headers: header
-        }).map((res: Response) => res.json()).catch((error: any) =>throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -86,7 +87,7 @@ export class ImageService {
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/createSnapshot/', urlSearchParams, {
             withCredentials: true,
             headers: header
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
@@ -101,9 +102,7 @@ export class ImageService {
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteSnapshot/', urlSearchParams, {
             withCredentials: true,
             headers: header
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
-
-
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
     }
 
     getSnapshotsByUser(): Observable<SnapshotModel[]> {
@@ -113,7 +112,7 @@ export class ImageService {
         return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getSnapshots/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
 
     }

@@ -11,6 +11,7 @@ import {FlavorService} from '../api-connector/flavor.service';
 import {ImageDetailComponent} from "./imagedetail.component";
 import {FormsModule} from '@angular/forms';
 import 'rxjs/Rx'
+import {forkJoin} from 'rxjs';
 
 import {Metadata} from './virtualmachinemodels/metadata';
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
@@ -60,9 +61,7 @@ export class VirtualMachineComponent implements OnInit {
 
     optional_params=false;
     diskspace:number=0;
-    isLoaded_projects=false;
-    isLoaded_images=false;
-    isLoaded_flavors=false;
+    isLoaded=false;
 
     projects: string[] = new Array();
     FREEMIUM_ID = environment.freemium_project_id;
@@ -76,14 +75,15 @@ export class VirtualMachineComponent implements OnInit {
     getImages(): void {
 
         this.imageService.getImages().subscribe(images => this.images = images);
-        this.isLoaded_images=true;
     }
 
     getFlavors(): void {
         this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
-        this.isLoaded_flavors=true;
 
     }
+
+
+
 
 
     getClientData() {
@@ -240,9 +240,20 @@ export class VirtualMachineComponent implements OnInit {
                 this.projects.push(project);
 
             }
-            this.isLoaded_projects=true
-
         });
+    }
+
+       initializeData(){
+        forkJoin(this.imageService.getImages(),this.flavorService.getFlavors(),this.groupService.getMemberGroupsStatus()).subscribe(result =>{
+            this.images=result[0];
+            this.flavors=result[1];
+            let membergroups=result[2];
+              for (let project of membergroups) {
+                this.projects.push(project);
+
+            }
+            this.isLoaded=true;
+        })
     }
 
 
@@ -328,8 +339,7 @@ export class VirtualMachineComponent implements OnInit {
 
         this.userinfo = new Userinfo();
         this.getClientData();
-        this.getUserApprovedProjects();
-        this.getUserPublicKey();
+        this.initializeData();
 
 
     }

@@ -6,6 +6,7 @@ import {ApiSettings} from './api-settings.service'
 import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/catch';
 import {Observable, throwError} from 'rxjs';
+import {catchError } from 'rxjs/operators';
 
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from "../virtualmachines/virtualmachinemodels/volume";
@@ -48,7 +49,7 @@ export class VirtualmachineService {
         return this.http.get(this.baseVmUrl + 'getallVms/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
     }
 
 
@@ -59,7 +60,7 @@ export class VirtualmachineService {
         return this.http.get(this.baseVmUrl + 'getVmByUser/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
     }
 
     getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> {
@@ -69,7 +70,7 @@ export class VirtualmachineService {
         return this.http.get(this.baseVmUrl + 'getActiveVmsByProject/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
     }
 
 
@@ -80,7 +81,7 @@ export class VirtualmachineService {
         return this.http.get(this.baseVmUrl + 'checkStatusInactiveVms/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
     }
 
 
@@ -149,8 +150,7 @@ export class VirtualmachineService {
         return this.http.get(this.settings.getConnectorBaseUrl() + 'volumes/get_volumes/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'));
-
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
 
     }
 
