@@ -22,13 +22,19 @@ export class FacilityService {
 
   getFacilityAllowedGroups(facility): Observable<any> {
 
-       let urlSearchParams = new URLSearchParams();
     return this.http.get(this.settings.getApiBaseURL()+ 'facilityManager/getFacilityAllowedGroups/', {
         withCredentials: true,
         params: {facility_id: facility}
     }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
 
+  }
+  getFacilityAllowedGroupsWithDetails(facility): Observable<any> {
+
+    return this.http.get(this.settings.getApiBaseURL()+ 'facilityManager/getFacilityAllowedGroupsWithDetails/', {
+        withCredentials: true,
+        params: {facility_id: facility}
+    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
 
   }

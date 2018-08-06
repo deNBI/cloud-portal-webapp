@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import { Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {URLSearchParams} from '@angular/http';
 import {ApiSettings} from './api-settings.service';
-import { map } from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import 'rxjs/add/operator/catch';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class VoService {
     }
 
 
-    isVo():Observable<any>  {
+    isVo(): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/isVoManager/', {
             withCredentials: true,
@@ -21,32 +21,37 @@ export class VoService {
     }
 
 
-
-
-    getNewsletterSubscriptionCounter():Observable<any> {
+    getNewsletterSubscriptionCounter(): Observable<any> {
 
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getNewsletterSubscriptionCounter/', {
             withCredentials: true,
 
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))}
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+    }
 
 
+    getAllVoGroups(): Observable<any> {
 
+        return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getAllGroups/', {
+            withCredentials: true,
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
-  getAllVoGroups(): Observable<any> {
+    }
 
-    return this.http.get(this.settings.getApiBaseURL()+ 'vo_manager/getAllGroups/', {
-      withCredentials: true,
-    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+    getAllGroupsWithDetails(): Observable<any> {
 
-  }
+        return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getAllGroupsWithDetails/', {
+            withCredentials: true,
+        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
-    sendNewsletterToVo(subject, message,reply?): Observable<any> {
+    }
+
+    sendNewsletterToVo(subject, message, reply?): Observable<any> {
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('subject', subject);
         urlSearchParams.append('message', message);
-        urlSearchParams.append('reply',reply)
+        urlSearchParams.append('reply', reply)
 
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -59,11 +64,11 @@ export class VoService {
     }
 
 
-        sendMailToVo(subject, message,reply?): Observable<any> {
+    sendMailToVo(subject, message, reply?): Observable<any> {
         let urlSearchParams = new URLSearchParams();
         urlSearchParams.append('subject', subject);
         urlSearchParams.append('message', message);
-        urlSearchParams.append('reply',reply)
+        urlSearchParams.append('reply', reply)
 
         let header = new Headers({
             'X-CSRFToken': this.settings.getCSRFToken(),
@@ -74,9 +79,6 @@ export class VoService {
         }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
     }
-
-
-
 
 
 }

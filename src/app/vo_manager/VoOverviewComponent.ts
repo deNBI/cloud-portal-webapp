@@ -22,6 +22,8 @@ export class VoOverviewComponent {
     public emailHeader: string;
     public emailVerify: string;
     public emailType: number;
+        public selectedProject: Project;
+
     public newsletterSubscriptionCounter: number;
     isLoaded = false;
 
@@ -122,70 +124,58 @@ export class VoOverviewComponent {
 
 
     getVoProjects() {
-        this.voserice.getAllVoGroups().subscribe(result => {
+        this.voserice.getAllGroupsWithDetails().subscribe(result => {
             let vo_projects = result;
-            let groupids = [];
             for (let key in vo_projects) {
                 let group = vo_projects[key];
-                groupids.push(group['id'])
-            }
-            if (groupids.length == 0) {
-                this.isLoaded=true;
-            }
-            this.groupservice.getGroupDetails(groupids).subscribe(result => {
-                let groupShortNamesAndFacilities = result;
-                for (let key in vo_projects) {
-                    let group = vo_projects[key];
-                    let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
-                    let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                    let is_pi = false;
-                    let groupid = group['id'];
-                    let facility = groupShortNamesAndFacilities[groupid]['facility'];
-                    let shortname = groupShortNamesAndFacilities[groupid]['shortname'];
-                    let details = facility['Details'];
-                    let details_array = [];
-                    let lifetime = groupShortNamesAndFacilities[groupid]['lifetime'];
-                    let lifetimeDays = -1;
-                    let expirationDate = undefined;
-                    if (lifetime != -1) {
-                        lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                        expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
-                    }
-                    for (let detail in details) {
-                        let detail_tuple = [detail, details[detail]];
-                        details_array.push(detail_tuple);
-                    }
-                    //check if user is a PI (group manager)
-
-
-                    if (!shortname) {
-                        shortname = group['name']
-                    }
-                    let is_admin = true;
-                    let newProject = new Project(
-                        group["id"],
-                        shortname,
-                        group["description"],
-                        dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
-                        dateDayDifference,
-                        is_pi,
-                        is_admin,
-                        [facility['Facility'], facility['FacilityId']]);
-                    newProject.ComputecenterDetails = details_array;
-                    newProject.Lifetime = lifetime;
-                    newProject.LifetimeDays = lifetimeDays;
-                    if (expirationDate) {
-                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                    }
-                    this.projects.push(newProject);
+                let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
+                let is_pi = group['is_pi'];
+                let groupid = key;
+                let facility = group['facility'];
+                let shortname = group['shortname'];
+                let details = facility['Details'];
+                let details_array = [];
+                let lifetime = group['lifetime'];
+                let lifetimeDays = -1;
+                let expirationDate = undefined;
+                if (lifetime != -1) {
+                    lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
+                    expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
                 }
-                this.isLoaded = true;
+                for (let detail in details) {
+                    let detail_tuple = [detail, details[detail]];
+                    details_array.push(detail_tuple);
+                }
+                //check if user is a PI (group manager)
 
-            })
+                if (!shortname) {
+                    shortname = group['name']
+                }
+
+                let newProject = new Project(
+                    Number(groupid),
+                    shortname,
+                    group["description"],
+                    dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                    dateDayDifference,
+                    is_pi,
+                    true,
+                    [facility['Facility'], facility['FacilityId']]);
+                newProject.ComputecenterDetails = details_array;
+                newProject.Lifetime = lifetime;
+                newProject.LifetimeDays = lifetimeDays;
+                if (expirationDate) {
+                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
+                }
+                this.projects.push(newProject);
+            }
+            this.isLoaded = true;
+
+
         })
-
-
     }
+
 
     lifeTimeReached(lifetimeDays: number, running: number): string {
 
@@ -211,7 +201,9 @@ export class VoOverviewComponent {
         )
     }
 
-    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) {
+    public
+
+    showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) {
         this.getMembesOfTheProject(projectid, projectname);
 
     }

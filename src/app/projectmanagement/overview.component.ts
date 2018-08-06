@@ -89,12 +89,12 @@ export class OverviewComponent {
 
             this.passwordModalFacility = facility;
             if (result['Error']) {
-                this.passwordModalTitle = 'Set or update password'
+                this.passwordModalTitle = 'Set or update password';
                 this.passwordModalType = 'warning'
             }
             else {
-                this.passwordModalTitle = 'Success'
-                this.passwordModalType = 'success'
+                this.passwordModalTitle = 'Success';
+                this.passwordModalType = 'success';
                 this.passwordModalPassword = result.toString()
             }
         })
@@ -102,55 +102,55 @@ export class OverviewComponent {
 
     getUserProjects() {
 
-            this.groupservice.getGroupDetails().subscribe(result => {
-                this.userprojects= result;
-                for (let key in this.userprojects) {
-                    let group = this.userprojects[key];
-                    let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
-                    let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                    let is_pi = group['is_pi'];
-                    let groupid = key;
-                    let facility = group['facility'];
-                    let shortname = group['shortname'];
-                    let details = facility['Details'];
-                    let details_array = [];
-                    let lifetime = group['lifetime'];
-                    let lifetimeDays = -1;
-                    let expirationDate = undefined;
-                    if (lifetime != -1) {
-                        lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                        expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
-                    }
-                    for (let detail in details) {
-                        let detail_tuple = [detail, details[detail]];
-                        details_array.push(detail_tuple);
-                    }
-                    //check if user is a PI (group manager)
-
-                    if (!shortname) {
-                        shortname = group['name']
-                    }
-
-                    let newProject = new Project(
-                        Number(groupid),
-                        shortname,
-                        group["description"],
-                        dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
-                        dateDayDifference,
-                        is_pi,
-                        this.is_admin,
-                        [facility['Facility'], facility['FacilityId']]);
-                    newProject.ComputecenterDetails = details_array;
-                    newProject.Lifetime = lifetime;
-                    newProject.LifetimeDays = lifetimeDays;
-                    if (expirationDate) {
-                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                    }
-                    this.projects.push(newProject);
+        this.groupservice.getGroupDetails().subscribe(result => {
+            this.userprojects = result;
+            for (let key in this.userprojects) {
+                let group = this.userprojects[key];
+                let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
+                let is_pi = group['is_pi'];
+                let groupid = key;
+                let facility = group['facility'];
+                let shortname = group['shortname'];
+                let details = facility['Details'];
+                let details_array = [];
+                let lifetime = group['lifetime'];
+                let lifetimeDays = -1;
+                let expirationDate = undefined;
+                if (lifetime != -1) {
+                    lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
+                    expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
                 }
-                this.isLoaded = true;
+                for (let detail in details) {
+                    let detail_tuple = [detail, details[detail]];
+                    details_array.push(detail_tuple);
+                }
+                //check if user is a PI (group manager)
 
-            })
+                if (!shortname) {
+                    shortname = group['name']
+                }
+
+                let newProject = new Project(
+                    Number(groupid),
+                    shortname,
+                    group["description"],
+                    dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                    dateDayDifference,
+                    is_pi,
+                    this.is_admin,
+                    [facility['Facility'], facility['FacilityId']]);
+                newProject.ComputecenterDetails = details_array;
+                newProject.Lifetime = lifetime;
+                newProject.LifetimeDays = lifetimeDays;
+                if (expirationDate) {
+                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
+                }
+                this.projects.push(newProject);
+            }
+            this.isLoaded = true;
+
+        })
 
     }
 
@@ -164,8 +164,6 @@ export class OverviewComponent {
         }
         return (lifetime - running) < 0 ? "red" : "black";
     }
-
-
 
 
     resetAddUserModal() {
