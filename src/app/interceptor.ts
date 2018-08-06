@@ -8,8 +8,10 @@ import {
   XHRBackend,
 } from '@angular/http';
 import { CookieService } from 'ng2-cookies';
-import { Observable } from 'rxjs/Rx';
+import {Observable, throwError} from 'rxjs';
 import {ModalDirective} from "ngx-bootstrap";
+import 'rxjs/add/operator/catch';
+
 
 @Injectable()
 export class HttpInterceptor extends Http {
@@ -30,6 +32,6 @@ export class HttpInterceptor extends Http {
     if (error.status === 0) {
       this.timeoutModal.show();
     }
-    return Observable.throw(error)
+    return throwError(error)
   }
 }

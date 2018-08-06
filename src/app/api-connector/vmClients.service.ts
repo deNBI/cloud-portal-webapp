@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import { Observable} from 'rxjs';
 import {ApiSettings}  from './api-settings.service'
 import {URLSearchParams} from "@angular/http";
 import {Vmclient} from "../virtualmachines/virtualmachinemodels/vmclient";
 import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/catch';
+import {Observable, throwError} from 'rxjs';
 
 @Injectable()
 export class ClientService {
@@ -20,7 +20,7 @@ export class ClientService {
     return this.http.get(this.clientURL + 'getUncheckedClients/', {
       withCredentials: true,
       search: urlSearchParams
-    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'));
 
   }
 
@@ -31,7 +31,7 @@ export class ClientService {
     return this.http.get(this.clientURL + 'isClientAvaiable/', {
       withCredentials: true,
       search: urlSearchParams
-    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'));
 
   }
 
@@ -41,7 +41,7 @@ export class ClientService {
     return this.http.get(this.clientURL + 'getCheckedClients/', {
       withCredentials: true,
       search: urlSearchParams
-    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'));
   }
 
   checkClient(host: string, port: string): Observable<Response> {

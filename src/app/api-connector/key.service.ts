@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Image} from '../virtualmachines/virtualmachinemodels/image';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import { Observable} from 'rxjs';
 import {URLSearchParams} from "@angular/http";
 import {ApiSettings} from "./api-settings.service";
 
 import { map } from 'rxjs/operators';
+import {Observable, throwError} from 'rxjs';
+
 import 'rxjs/add/operator/catch';
 
 
@@ -20,7 +21,7 @@ export class keyService {
 
     return this.http.get(this.baseKeysUrl + 'getPublicKeyByUser/', {
       withCredentials: true,
-    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+    }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
 
   }
 

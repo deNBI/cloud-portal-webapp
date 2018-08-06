@@ -2,10 +2,11 @@ import {Injectable} from '@angular/core';
 import {URLSearchParams} from '@angular/http';
 import {VirtualMachineComponent} from '../virtualmachines/addvm.component'
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import { Observable} from 'rxjs';
 import {ApiSettings} from './api-settings.service'
 import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/catch';
+import {Observable, throwError} from 'rxjs';
+
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from "../virtualmachines/virtualmachinemodels/volume";
 
@@ -47,7 +48,7 @@ export class VirtualmachineService {
         return this.http.get(this.baseVmUrl + 'getallVms/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
     }
 
 
@@ -58,7 +59,7 @@ export class VirtualmachineService {
         return this.http.get(this.baseVmUrl + 'getVmByUser/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
     }
 
     getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> {
@@ -68,7 +69,7 @@ export class VirtualmachineService {
         return this.http.get(this.baseVmUrl + 'getActiveVmsByProject/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
     }
 
 
@@ -79,7 +80,7 @@ export class VirtualmachineService {
         return this.http.get(this.baseVmUrl + 'checkStatusInactiveVms/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
     }
 
 
@@ -105,7 +106,7 @@ export class VirtualmachineService {
         });
         let urlSearchParams = new URLSearchParams();
 
-        urlSearchParams.append('openstack_id', openstack_id)
+        urlSearchParams.append('openstack_id', openstack_id);
 
         return this.http.post(this.baseVmUrl + 'deleteVm/', urlSearchParams, {
             withCredentials: true,
@@ -119,7 +120,7 @@ export class VirtualmachineService {
         });
         let urlSearchParams = new URLSearchParams();
 
-        urlSearchParams.append('openstack_id', openstack_id)
+        urlSearchParams.append('openstack_id', openstack_id);
 
         return this.http.post(this.baseVmUrl + 'stopVm/', urlSearchParams, {
             withCredentials: true,
@@ -133,7 +134,7 @@ export class VirtualmachineService {
         });
         let urlSearchParams = new URLSearchParams();
 
-        urlSearchParams.append('openstack_id', openstack_id)
+        urlSearchParams.append('openstack_id', openstack_id);
 
         return this.http.post(this.baseVmUrl + 'resumeVm/', urlSearchParams, {
             withCredentials: true,
@@ -148,7 +149,7 @@ export class VirtualmachineService {
         return this.http.get(this.settings.getConnectorBaseUrl() + 'volumes/get_volumes/', {
             withCredentials: true,
             search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'));
 
 
     }
@@ -197,7 +198,7 @@ export class VirtualmachineService {
         });
         let urlSearchParams = new URLSearchParams();
 
-        urlSearchParams.append('volume_id', volume_id)
+        urlSearchParams.append('volume_id', volume_id);
 
 
         return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolume/', urlSearchParams, {
@@ -213,8 +214,8 @@ export class VirtualmachineService {
         });
         let urlSearchParams = new URLSearchParams();
 
-        urlSearchParams.append('volume_id', volume_id)
-        urlSearchParams.append('instance_id', instance_id)
+        urlSearchParams.append('volume_id', volume_id);
+        urlSearchParams.append('instance_id', instance_id);
 
 
         return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolumeAttachment/', urlSearchParams, {

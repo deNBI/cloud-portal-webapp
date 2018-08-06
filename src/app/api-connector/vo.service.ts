@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {Observable} from 'rxjs';
 import {URLSearchParams} from '@angular/http';
 import {ApiSettings} from './api-settings.service';
 import {map} from 'rxjs/operators';
 import 'rxjs/add/operator/catch';
+import {Observable, throwError} from 'rxjs';
 
 @Injectable()
 export class VoService {
@@ -16,7 +16,7 @@ export class VoService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/isVoManager/', {
             withCredentials: true,
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
 
     }
 
@@ -27,7 +27,7 @@ export class VoService {
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getNewsletterSubscriptionCounter/', {
             withCredentials: true,
 
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
     }
 
 
@@ -35,7 +35,7 @@ export class VoService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getAllGroups/', {
             withCredentials: true,
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
 
     }
 
@@ -43,7 +43,7 @@ export class VoService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getAllGroupsWithDetails/', {
             withCredentials: true,
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
 
     }
 
@@ -59,7 +59,7 @@ export class VoService {
         return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendNewsletterToMembers/', urlSearchParams, {
             withCredentials: true,
             headers: header,
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
 
     }
 
@@ -76,7 +76,7 @@ export class VoService {
         return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendMailToAllMembers/', urlSearchParams, {
             withCredentials: true,
             headers: header,
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).map((res: Response) => res.json()).catch((error: any) => throwError(error.json().error || 'Server error'))
 
     }
 
