@@ -20,7 +20,7 @@ import 'rxjs/add/operator/catch';
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [UserService, GroupService, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+    providers: [UserService, GroupService, PerunSettings, ApplicationStatusService,ApplicationsService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -58,6 +58,7 @@ export class ApplicationsComponent {
                 private perunsettings: PerunSettings,
                 private userservice: UserService,
                 private groupservice: GroupService) {
+        console.log(applicataionsservice)
 
         this.getUserApplications();
         this.getAllApplications();
@@ -110,13 +111,12 @@ export class ApplicationsComponent {
 
     getUserApplications() {
         this.applicataionsservice
-            .getUserApplications().toPromise()
-            .then(result => {
-                let res = result.json();
+            .getUserApplications().subscribe(result => {
+                let res = result;
                 let userapp_ready = {};
                 let number_userapplications = Object.keys(res).length;
-                if (number_userapplications == 0 ) {
-                    this.isLoaded_userApplication=true;
+                if (number_userapplications == 0) {
+                    this.isLoaded_userApplication = true;
                 }
                 for (let key in res) {
                     let aj = res[key];
@@ -140,7 +140,7 @@ export class ApplicationsComponent {
                     a.Comment = aj["project_application_comment"];
                     if (a.Status.toString() == this.EXTENSTION_STATUS_STRING) {
                         this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => {
-                            res = result.json();
+                            res = result;
                             let r = new ApplicationExtension();
 
 
@@ -260,12 +260,12 @@ export class ApplicationsComponent {
                             .getAllApplications().toPromise()
                             .then(result => {
 
-                                let res = result.json();
+                                let res = result;
                                 let allapp_ready = {};
                                 let number_allapplications = Object.keys(res).length;
-                                  if (number_allapplications == 0 ) {
-                    this.isLoaded_AllApplication=true;
-                }
+                                if (number_allapplications == 0) {
+                                    this.isLoaded_AllApplication = true;
+                                }
 
                                 for (let key in res) {
 
@@ -319,7 +319,7 @@ export class ApplicationsComponent {
 
                                                 if (a.Status == this.EXTENSION_STATUS) {
                                                     this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => {
-                                                        res = result.json()
+                                                        res = result;
                                                         let r = new ApplicationExtension();
 
                                                         r.Id = res['project_application'];
@@ -388,7 +388,7 @@ export class ApplicationsComponent {
 
                                         if (a.Status == this.EXTENSION_STATUS) {
                                             this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => {
-                                                res = result.json()
+                                                res = result;
                                                 let r = new ApplicationExtension();
 
                                                 r.Id = res['project_application'];
@@ -466,7 +466,7 @@ export class ApplicationsComponent {
     public requestExtension(data) {
 
         this.applicataionsservice.requestRenewal(data).subscribe(result => {
-            if (result.json()['Error']) {
+            if (result['Error']) {
                 this.extension_status = 2
             }
             else {
@@ -483,7 +483,7 @@ export class ApplicationsComponent {
 
     public approveExtension(application_id: number) {
         this.applicataionsservice.approveRenewal(application_id).subscribe(result => {
-            if (result.json()['Error']) {
+            if (result['Error']) {
                 this.extension_status = 2
             }
             else {
@@ -499,7 +499,7 @@ export class ApplicationsComponent {
 
     public declineExtension(application_id: number) {
         this.applicataionsservice.declineRenewal(application_id).subscribe(result => {
-            if (result.json()['Error']) {
+            if (result['Error']) {
                 this.extension_status = 2
             }
             else {
