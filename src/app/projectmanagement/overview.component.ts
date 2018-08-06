@@ -2,7 +2,7 @@ import {Component, Input, ViewChild} from '@angular/core';
 import {Http} from '@angular/http';
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Project} from './project.model';
-import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
+import {ModalDirective} from "ngx-bootstrap";
 import {ProjectMember} from './project_member.model'
 import 'rxjs/add/operator/toPromise';
 import {isNumber} from "util";
