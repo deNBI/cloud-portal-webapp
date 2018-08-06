@@ -236,11 +236,12 @@ export class VirtualMachineComponent implements OnInit {
 
     getUserApprovedProjects() {
         this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => {
-            for (let project of membergroups.json()) {
+            for (let project of membergroups) {
                 this.projects.push(project);
-                this.isLoaded_projects=true;
 
             }
+            this.isLoaded_projects=true
+
         });
     }
 
