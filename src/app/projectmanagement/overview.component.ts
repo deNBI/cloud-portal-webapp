@@ -54,7 +54,7 @@ export class OverviewComponent {
     public notificationModalTitle: string = "Notification";
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
-    public notificationModalInfoMessage: string = ''
+    public notificationModalInfoMessage: string = '';
     public notificationModalIsClosable: boolean = false;
 
     public passwordModalTitle: string = "Changing Password";
@@ -101,70 +101,38 @@ export class OverviewComponent {
     }
 
     getUserProjects() {
-        let project_checks = {};
-        forkJoin([this.groupservice.getMemberGroups(), this.userservice.getGroupsWhereUserIsAdmin(), this.voservice.isVo()]).subscribe(result => {
-            this.userprojects = result[0];
-            this.admingroups = result[1];
-            this.is_admin = result[2]['Is_Vo_Manager'];
-            let number_userprojects = Object.keys(this.userprojects).length;
-            if (number_userprojects == 0) {
-                this.isLoaded = true;
-            }
-            let groupids = [];
-            for (let key in this.userprojects) {
-                let group = this.userprojects[key];
-                groupids.push(group['id'])
-            }
-            this.groupservice.getGroupDetails(groupids).subscribe(result => {
-                let groupShortNamesAndFacilities = result;
 
-
+            this.groupservice.getGroupDetails().subscribe(result => {
+                this.userprojects= result;
                 for (let key in this.userprojects) {
                     let group = this.userprojects[key];
                     let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                     let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                    let is_pi = false;
-                    let groupid = group['id'];
-                    let facility = groupShortNamesAndFacilities[groupid]['facility'];
-                    let shortname = groupShortNamesAndFacilities[groupid]['shortname'];
+                    let is_pi = group['is_pi'];
+                    let groupid = key;
+                    let facility = group['facility'];
+                    let shortname = group['shortname'];
                     let details = facility['Details'];
                     let details_array = [];
-                    let lifetime = groupShortNamesAndFacilities[groupid]['lifetime'];
+                    let lifetime = group['lifetime'];
                     let lifetimeDays = -1;
-                    let expirationDate=undefined;
-
-
+                    let expirationDate = undefined;
                     if (lifetime != -1) {
-
-                         lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                         expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
+                        lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
+                        expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
                     }
-
-
                     for (let detail in details) {
                         let detail_tuple = [detail, details[detail]];
                         details_array.push(detail_tuple);
                     }
-
-
                     //check if user is a PI (group manager)
-                    if (!this.is_admin) {
-                        for (let gkey in this.admingroups) {
-                            if (group["id"] == this.admingroups[gkey]["id"]) {
-                                is_pi = true;
-                                break;
-                            }
-                        }
-                    } else {
-                        is_pi = true;
-                    }
 
                     if (!shortname) {
                         shortname = group['name']
                     }
 
                     let newProject = new Project(
-                        group["id"],
+                        Number(groupid),
                         shortname,
                         group["description"],
                         dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
@@ -172,26 +140,17 @@ export class OverviewComponent {
                         is_pi,
                         this.is_admin,
                         [facility['Facility'], facility['FacilityId']]);
-
-
                     newProject.ComputecenterDetails = details_array;
-
                     newProject.Lifetime = lifetime;
-
                     newProject.LifetimeDays = lifetimeDays;
                     if (expirationDate) {
                         newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
                     }
-
-
                     this.projects.push(newProject);
-
-
                 }
                 this.isLoaded = true;
 
             })
-        })
 
     }
 
@@ -207,7 +166,7 @@ export class OverviewComponent {
     }
 
 
-    public
+
 
     resetAddUserModal() {
         this.addUserModalProjectID = null;

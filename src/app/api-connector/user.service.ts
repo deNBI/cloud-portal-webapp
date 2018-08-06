@@ -116,7 +116,7 @@ export class UserService {
 
     getFilteredMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string) {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getFilteredMembers', {
+        return this.http.get(this.settings.getApiBaseURL() + 'user/getFilteredMembers/', {
             withCredentials: true,
             params: {
                 firstName: firstname,

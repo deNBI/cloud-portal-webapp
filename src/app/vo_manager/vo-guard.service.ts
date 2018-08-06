@@ -16,8 +16,8 @@ export class VoGuardService implements CanActivate {
             this.voservice.isVo().subscribe(
                 result => {
 
-                    let res = result.json();
-                    if (res['Is_Vo_Manager'].toString() == 'true') {
+                    let res = result;
+                    if (res['Is_Vo_Manager']) {
                         return resolve(true)
                     }
                     else {

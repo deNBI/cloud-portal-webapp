@@ -122,70 +122,66 @@ export class VoOverviewComponent {
 
 
     getVoProjects() {
-        let projects_ready = {};
         this.voserice.getAllVoGroups().subscribe(result => {
-            let number_voprojects = result.length;
-            if (number_voprojects == 0){
+            let vo_projects = result;
+            let groupids = [];
+            for (let key in vo_projects) {
+                let group = vo_projects[key];
+                groupids.push(group['id'])
+            }
+            if (groupids.length == 0) {
                 this.isLoaded=true;
             }
-            for (let group of result) {
-                projects_ready[group['id']] = false;
-
-                this.groupservice.getShortame(group['id']).subscribe(name => {
-
-                        let shortname = name['shortname']
-                        if (!shortname) {
-                            shortname = group['name']
-                        }
-
-                        let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
-                        let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                        let is_pi = false;
-                        let is_admin = false;
-                        let newProject = new Project(
-                            group["id"],
-                            shortname,
-                            group["description"],
-                            dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
-                            dateDayDifference,
-                            is_pi,
-                            is_admin,
-                            [result['Facility'], result['FacilityId']]
-                        );
-                        newProject.Lifetime = group['lifetime']
-                        if (newProject.Lifetime != -1) {
-                            newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                            let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                            newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                        }
-
-                        else {
-                            newProject.LifetimeDays = -1;
-                        }
-
-
-                        this.projects.push(newProject);
-                        projects_ready[group['id']] = true;
-
-                        let all_ready = true;
-                        if (Object.keys(projects_ready).length == number_voprojects) {
-
-                            for (let key in projects_ready) {
-                                if (projects_ready[key] == false) {
-                                    all_ready = false
-
-                                }
-                            }
-                            if (all_ready == true) {
-
-                                this.isLoaded = true
-                            }
-                        }
+            this.groupservice.getGroupDetails(groupids).subscribe(result => {
+                let groupShortNamesAndFacilities = result;
+                for (let key in vo_projects) {
+                    let group = vo_projects[key];
+                    let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                    let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
+                    let is_pi = false;
+                    let groupid = group['id'];
+                    let facility = groupShortNamesAndFacilities[groupid]['facility'];
+                    let shortname = groupShortNamesAndFacilities[groupid]['shortname'];
+                    let details = facility['Details'];
+                    let details_array = [];
+                    let lifetime = groupShortNamesAndFacilities[groupid]['lifetime'];
+                    let lifetimeDays = -1;
+                    let expirationDate = undefined;
+                    if (lifetime != -1) {
+                        lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
+                        expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
                     }
-                )
-            }
+                    for (let detail in details) {
+                        let detail_tuple = [detail, details[detail]];
+                        details_array.push(detail_tuple);
+                    }
+                    //check if user is a PI (group manager)
 
 
+                    if (!shortname) {
+                        shortname = group['name']
+                    }
+                    let is_admin = true;
+                    let newProject = new Project(
+                        group["id"],
+                        shortname,
+                        group["description"],
+                        dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                        dateDayDifference,
+                        is_pi,
+                        is_admin,
+                        [facility['Facility'], facility['FacilityId']]);
+                    newProject.ComputecenterDetails = details_array;
+                    newProject.Lifetime = lifetime;
+                    newProject.LifetimeDays = lifetimeDays;
+                    if (expirationDate) {
+                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
+                    }
+                    this.projects.push(newProject);
+                }
+                this.isLoaded = true;
+
+            })
         })
 
 
