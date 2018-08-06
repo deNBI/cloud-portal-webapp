@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {ApiSettings}  from './api-settings.service'
-import {Observable} from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
+import { Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/catch';
 
 
