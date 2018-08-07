@@ -125,7 +125,7 @@ export class VirtualMachineComponent implements OnInit {
     }
 
     getUserPublicKey() {
-        this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => {
+        this.keyService.getKey().subscribe(result => {
             this.userinfo.PublicKey = result.toString();
         })
     }

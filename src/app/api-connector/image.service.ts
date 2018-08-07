@@ -34,7 +34,7 @@ export class ImageService {
     getImageTags(): Observable<any> {
         return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getImageTags/', {
             withCredentials: true,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -50,7 +50,7 @@ export class ImageService {
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/addImageTag/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -64,7 +64,7 @@ export class ImageService {
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteImageTag/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -80,7 +80,7 @@ export class ImageService {
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/createSnapshot/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -92,16 +92,16 @@ export class ImageService {
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteSnapshot/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
     getSnapshotsByUser(): Observable<SnapshotModel[]> {
 
 
-        return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getSnapshots/', {
+        return this.http.get<SnapshotModel[]>(this.settings.getConnectorBaseUrl() + 'images/getSnapshots/', {
             withCredentials: true,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }

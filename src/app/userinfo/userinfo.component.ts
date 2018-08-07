@@ -55,7 +55,7 @@ export class UserinfoComponent implements OnInit{
 
     let newstr = publicKey.replace(re, "%2B");
 
-    this.keyService.postKey(this.userinfo.ElxirId, publicKey.replace(re, '%2B'), keyname).subscribe(result => {
+    this.keyService.postKey( publicKey.replace(re, '%2B')).subscribe(result => {
       this.getUserPublicKey();
     });
   }
@@ -75,7 +75,7 @@ export class UserinfoComponent implements OnInit{
 
 
   getUserPublicKey() {
-    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => {
+    this.keyService.getKey().subscribe(result => {
       this.userinfo.PublicKey = result.toString();
       this.isLoaded=true;
     })

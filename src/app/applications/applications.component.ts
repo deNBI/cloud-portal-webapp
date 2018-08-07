@@ -226,7 +226,7 @@ export class ApplicationsComponent {
     getSpecialHardware() {
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => {
-                let res = result.json();
+                let res = result;
                 for (let key in res) {
                     let shj = res[key];
                     let sh = new SpecialHardware(shj["special_hardware_id"], shj["special_hardware_key"], shj["special_hardware_name"]);
@@ -586,7 +586,7 @@ export class ApplicationsComponent {
                     return this.groupservice.createGroup(name, description).toPromise();
                 }
             ).then(group_raw => {
-            let group = group_raw.json();
+            let group = group_raw;
             new_group_id = group["id"];
 
             //add the application user to the group
