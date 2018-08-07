@@ -21,7 +21,7 @@ const header = new HttpHeaders({
 @Injectable()
 export class VirtualmachineService {
     data: string;
-    baseVmUrl = this.settings.getConnectorBaseUrl() + 'vms/'
+    baseVmUrl = this.settings.getConnectorBaseUrl() + 'vms/';
 
     constructor(private http: HttpClient, private settings: ApiSettings) {
     }
