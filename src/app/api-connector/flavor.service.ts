@@ -18,10 +18,10 @@ export class FlavorService {
 
     getFlavors(): Observable<Flavor[]> {
 
-        return this.http.get(this.settings.getConnectorBaseUrl() + 'flavors/getFlavors/', {
+        return this.http.get<Flavor[]>(this.settings.getConnectorBaseUrl() + 'flavors/getFlavors/', {
             withCredentials: true,
 
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 

@@ -4,115 +4,104 @@ import {SnapshotModel} from "../virtualmachines/virtualmachinemodels/snapshot.mo
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {URLSearchParams} from '@angular/http';
 import {ApiSettings} from './api-settings.service';
-import { map } from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
-import {catchError } from 'rxjs/operators';
-
+import {catchError} from 'rxjs/operators';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
 import 'rxjs/add/operator/catch';
+
+const header = new HttpHeaders({
+    'X-CSRFToken': Cookie.get("csrftoken")
+});
 
 
 @Injectable()
 export class ImageService {
-    constructor(private http: Http, private settings: ApiSettings) {
+    constructor(private http: HttpClient, private settings: ApiSettings) {
     }
 
     getImages(): Observable<Image[]> {
-        let urlSearchParams = new URLSearchParams();
 
-
-        return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getImages/', {
+        return this.http.get<Image[]>(this.settings.getConnectorBaseUrl() + 'images/getImages/', {
             withCredentials: true,
-            search: urlSearchParams
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
 
 
     getImageTags(): Observable<any> {
-        let urlSearchParams = new URLSearchParams();
-
-
         return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getImageTags/', {
             withCredentials: true,
-            search: urlSearchParams
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+
 
     }
 
 
     addImageTags(imageTag: string, description: string): Observable<any> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
 
-        urlSearchParams.append('imageTag', imageTag)
-        urlSearchParams.append('description', description)
+        let params = new HttpParams();
+        params = params.append('imageTag', imageTag);
+        params.append('description', description);
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/addImageTag/', urlSearchParams, {
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/addImageTag/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
 
     }
 
 
     deleteImageTag(imageTag: string): Observable<any> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
 
-        urlSearchParams.append('imageTag', imageTag)
+        let params = new HttpParams();
+        params = params.append('imageTag', imageTag);
 
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteImageTag/', urlSearchParams, {
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteImageTag/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+
 
     }
 
 
     createSnapshot(snaptshot_instance: string, snapshot_name: string,): Observable<any> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
 
-        urlSearchParams.append('snapshot_name', snapshot_name)
-        urlSearchParams.append('snapshot_instance', snaptshot_instance)
+        let params = new HttpParams();
+        params = params.append('snapshot_name', snapshot_name);
+        params.append('snapshot_instance', snaptshot_instance);
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/createSnapshot/', urlSearchParams, {
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/createSnapshot/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+
 
     }
 
     deleteSnapshot(snapshot_id: string): Observable<any> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
+        let params = new HttpParams();
+        params = params.append('snapshot_id', snapshot_id);
 
-        urlSearchParams.append('snapshot_id', snapshot_id)
-
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteSnapshot/', urlSearchParams, {
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteSnapshot/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+
     }
 
     getSnapshotsByUser(): Observable<SnapshotModel[]> {
-        let urlSearchParams = new URLSearchParams();
 
 
         return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getSnapshots/', {
             withCredentials: true,
-            search: urlSearchParams
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
 
 
     }

@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {ApiSettings} from './api-settings.service';
 import {map} from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
@@ -21,7 +20,7 @@ export class FacilityService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilitiesWhereUserIsManager/', {
             withCredentials: true,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -30,7 +29,7 @@ export class FacilityService {
         return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilityAllowedGroups/', {
             withCredentials: true,
             params: {facility_id: facility}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -40,7 +39,7 @@ export class FacilityService {
         return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilityAllowedGroupsWithDetails/', {
             withCredentials: true,
             params: {facility_id: facility}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -55,7 +54,7 @@ export class FacilityService {
         return this.http.post(this.settings.getApiBaseURL() + 'facilityManager/sendMailToAllMembers/', params, {
             withCredentials: true,
             headers: header,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }

@@ -27,7 +27,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/computecenters/', {
             withCredentials: true,
 
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
     getComputeCentersDetails(resource_id: number): Observable<any> {
@@ -37,7 +37,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/facilityDetails/', {
             withCredentials: true,
             params: params
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -48,7 +48,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getFacilityByGroup/', {
             withCredentials: true,
             params: params
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -61,7 +61,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/assignGroupToResource/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -71,7 +71,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/isUserPi/', {
             withCredentials: true,
             params: {group_id: groupid, user_id: userid}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -81,7 +81,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupAdminsId/', {
             withCredentials: true,
             params: {group_id: groupid}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -91,7 +91,7 @@ export class GroupService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupRichMembers/', {
             withCredentials: true,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
@@ -104,7 +104,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/addMember/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
@@ -117,7 +117,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/addAdmin/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
@@ -132,7 +132,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/removeMember/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
@@ -147,7 +147,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/removeAdmin/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
@@ -160,7 +160,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setDescription/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -176,7 +176,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setStatus/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
     setGroupVolumeLimit(group_id: number, value: number): Observable<any> {
@@ -190,7 +190,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setGroupVolumeLimit/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
@@ -204,7 +204,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setGroupVolumeCounter/', value, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
     setdeNBIDirectAcces(group_id: number, value: boolean): Observable<any> {
@@ -217,7 +217,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setdeNBIDirectAccess/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
@@ -228,7 +228,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setName/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
@@ -236,7 +236,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getName/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -248,7 +248,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setShortname/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -258,14 +258,14 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getShortname/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
     getGroupDetails(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupDetails/', {
             withCredentials: true,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -274,13 +274,13 @@ export class GroupService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'group/getMemberGroupsStatus/', {
             withCredentials: true,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
     getMemberGroups(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getMemberGroups/', {
             withCredentials: true,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
@@ -292,7 +292,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setLifetime/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -305,7 +305,7 @@ export class GroupService {
             {
                 withCredentials: true,
                 headers: header
-            }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+            }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
@@ -314,7 +314,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getLifetime/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)))
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -326,7 +326,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setPerunId/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -337,7 +337,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupMembers/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -347,8 +347,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getApprovedDiskSpace/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
-
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -356,7 +355,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedDiskSpace/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -366,14 +365,14 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedVolumes/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
     getVolumeCounter(groupid: string): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getVolumesCounter/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
     getGroupApprovedVms(groupid: string): Observable<any> {
@@ -381,7 +380,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getNumberApprovedVms/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -391,7 +390,7 @@ export class GroupService {
         return this.http.get(this.settings.getApiBaseURL() + 'project/getUsedVms/', {
             withCredentials: true,
             params: {groupid: groupid}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -404,7 +403,7 @@ export class GroupService {
         return this.http.post(this.settings.getApiBaseURL() + 'group/setAttributes/', params, {
             withCredentials: true,
             headers: header
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 

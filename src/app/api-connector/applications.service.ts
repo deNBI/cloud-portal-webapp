@@ -123,7 +123,7 @@ export class ApplicationsService {
                 headers: http_header_csrf,
                 withCredentials: true,
                 params:params
-            }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
+            }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
