@@ -1,5 +1,5 @@
 <div class="allert alert-info" *ngIf="!client_avaiable"><strong>Info</strong> No Client avaiable.</div>
-<div class="allert alert-info" *ngIf="!validatePublicKey()"><strong>Info</strong>You need to set a valid SSH Key before
+<div class="allert alert-info" *ngIf="validPublickey"><strong>Info</strong>You need to set a valid SSH Key before
     you
     can start a machine. Please set a SSH Key on the User Information tab.
 </div>

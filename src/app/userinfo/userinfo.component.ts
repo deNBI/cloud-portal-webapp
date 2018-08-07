@@ -31,7 +31,7 @@ export class UserinfoComponent implements OnInit{
    ngOnInit(): void {
 
             this.userservice.getNewsletterSubscription().subscribe(result => {
-          result = result.json()['subscribed'];
+          result = result['subscribed'];
           if (result.toString() == 'true') {
               this.newsletter_subscribed = true;
           }
@@ -76,7 +76,7 @@ export class UserinfoComponent implements OnInit{
 
   getUserPublicKey() {
     this.keyService.getKey().subscribe(result => {
-      this.userinfo.PublicKey = result.toString();
+      this.userinfo.PublicKey = result['public_key'];
       this.isLoaded=true;
     })
   }
@@ -84,7 +84,7 @@ export class UserinfoComponent implements OnInit{
   getUserinfo() {
     this.userservice.getLoggedUser().toPromise()
       .then(result => {
-        let res = result.json();
+        let res = result;
 
         this.userinfo.FirstName = res["firstName"];
         this.userinfo.LastName = res["lastName"];
@@ -93,9 +93,9 @@ export class UserinfoComponent implements OnInit{
         return this.userservice.getMemberByUser().toPromise();
 
       }).then(memberinfo => {
-      this.userinfo.MemberId = memberinfo.json()["id"];
+      this.userinfo.MemberId = memberinfo["id"];
       this.userservice.getLogins().toPromise().then(result => {
-        let logins = result.json()
+        let logins = result;
         for (let login of logins) {
           if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
             this.userinfo.ElxirId = login['value']

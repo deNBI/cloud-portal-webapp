@@ -109,12 +109,12 @@ export class FullLayoutComponent implements OnInit {
             .getLoggedUser().toPromise()
             .then(function (userdata) {
                 //TODO catch errors
-                user_id = userdata.json()["id"];
+                user_id = userdata["id"];
 
 
                 return userservice.getVosWhereUserIsAdmin().toPromise();
             }).then(function (adminvos) {
-            admin_vos = adminvos.json();
+            admin_vos = adminvos;
         }).then(result => {
             //check if user is a Vo admin so we can serv according buttons
             for (let vkey in admin_vos) {

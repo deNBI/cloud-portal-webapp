@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from "./api-settings.service";
-import {catchError } from 'rxjs/operators';
+import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
@@ -10,31 +10,29 @@ const header = new HttpHeaders({
 });
 
 
-
 @Injectable()
 export class keyService {
-  baseKeysUrl = this.settings.getApiBaseURL() + 'keys/';
+    baseKeysUrl = this.settings.getApiBaseURL() + 'keys/';
 
-  constructor(private http: HttpClient, private settings: ApiSettings) {
-  }
+    constructor(private http: HttpClient, private settings: ApiSettings) {
+    }
 
-  getKey(): Observable<any> {
+    getKey(): Observable<any> {
 
-    return this.http.get(this.baseKeysUrl + 'getPublicKeyByUser/', {
-      withCredentials: true,
-    }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get(this.baseKeysUrl + 'getPublicKeyByUser/', {
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error)));
 
-  }
+    }
 
-  postKey(public_key: string): Observable<any> {
-      let params = new HttpParams();
-        params.append('public_key', public_key);
+    postKey(public_key: string): Observable<any> {
+        let params = new HttpParams().set('public_key', public_key);
 
-    return this.http.post(this.baseKeysUrl + 'importKey/', params, {
-      withCredentials: true,
-      headers: header,
-    }).pipe(catchError((error: any) => throwError(error)));
-  }
+        return this.http.post(this.baseKeysUrl + 'importKey/', params, {
+            withCredentials: true,
+            headers: header,
+        }).pipe(catchError((error: any) => throwError(error)));
+    }
 
 
 }

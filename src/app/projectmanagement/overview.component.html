@@ -57,13 +57,13 @@
                                     <div class="btn-group-vertical">
                                         <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
                                                 data-toggle="modal"
-                                                (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
+                                                (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
 
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
                                             <i class="fa fa-users"></i>&nbsp;Show Members
                                         </button>
                                         <button
-                                                (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.ComputeCenter[0]); addUserModal.show();"
+                                                (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.ComputeCenter); addUserModal.show();"
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
                                                 type="button" style="margin-bottom: 5px"
                                                 class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
@@ -117,17 +117,17 @@
                                     <i class="fa fa-trash"></i>&nbsp; Remove member
                                 </button>
 
-                                <button *ngIf="!member.IsPi" (click)="usersModal.hide();promoteAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility);
+                                <button *ngIf="!member.IsPi" (click)="usersModal.hide();promoteAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility[1]);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button">
                                     <i class="fa fa-trash"></i>&nbsp; Set Admin status
                                 </button>
-                                <button *ngIf="member.IsPi" (click)="usersModal.hide();removeAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility);
+                                <button *ngIf="member.IsPi" (click)="usersModal.hide();removeAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility[1]);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button">
                                     <i class="fa fa-trash"></i>&nbsp; Remove Admin status
                                 </button>
-                                <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Id,member.Username,UserModalFacility);
+                                <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Id,member.Username,UserModalFacility[1]);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button">
 
@@ -245,11 +245,11 @@
                             <tbody *ngFor="  let member of filteredMembers">
                             <td>
                                 <button
-                                        (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName'],UserModalFacility);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                                        (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName'],UserModalFacility[1]);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
                                         class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
                                 </button>
                                 <button
-                                        (click)="addAdmin(addUserModalProjectID,member['member_id'],member['user_id'],member['firstName'],member['lastName'],UserModalFacility);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                                        (click)="addAdmin(addUserModalProjectID,member['member_id'],member['user_id'],member['firstName'],member['lastName'],UserModalFacility[1]);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
                                         class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
                                 </button>
                             </td>
@@ -402,7 +402,7 @@
 
 
             <div>
-                <p style=" word-wrap: break-word;">{{ selectedProject?.Description }}</p>
+                {{ selectedProject?.Description }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;infoModal.hide();">Close</button>

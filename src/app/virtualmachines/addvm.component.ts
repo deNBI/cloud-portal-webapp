@@ -56,12 +56,13 @@ export class VirtualMachineComponent implements OnInit {
     selectedProjectVmsUsed: number;
     selectedProject: [string, number];
     client_avaiable: boolean;
+    validPublickey: boolean;
 
     volumeName: string = '';
 
-    optional_params=false;
-    diskspace:number=0;
-    isLoaded=false;
+    optional_params = false;
+    diskspace: number = 0;
+    isLoaded = false;
 
     projects: string[] = new Array();
     FREEMIUM_ID = environment.freemium_project_id;
@@ -81,9 +82,6 @@ export class VirtualMachineComponent implements OnInit {
         this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
 
     }
-
-
-
 
 
     getClientData() {
@@ -115,18 +113,19 @@ export class VirtualMachineComponent implements OnInit {
     validatePublicKey() {
 
         if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)) {
-            return true;
+            this.validPublickey = true;
         }
         else {
 
-            return false;
+            this.validPublickey = false;
         }
+        console.log(this.validPublickey)
 
     }
 
     getUserPublicKey() {
         this.keyService.getKey().subscribe(result => {
-            this.userinfo.PublicKey = result.toString();
+            this.userinfo.PublicKey = result['public_key'];
         })
     }
 
@@ -152,7 +151,7 @@ export class VirtualMachineComponent implements OnInit {
 
         setTimeout(() => {
             this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
-                res = res.json()
+                res = res;
                 if (res['Started'] || res['Error']) {
                     this.data = res
                     this.getSelectedProjectDiskspace();
@@ -176,11 +175,11 @@ export class VirtualMachineComponent implements OnInit {
             this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => {
 
 
-                if (data.json()['Created']) {
-                    this.check_status_loop(data.json()['Created']);
+                if (data['Created']) {
+                    this.check_status_loop(data['Created']);
                 }
                 else {
-                    this.data = data.json()
+                    this.data = data
                 }
 
 
@@ -243,16 +242,18 @@ export class VirtualMachineComponent implements OnInit {
         });
     }
 
-       initializeData(){
-        forkJoin(this.imageService.getImages(),this.flavorService.getFlavors(),this.groupService.getMemberGroupsStatus()).subscribe(result =>{
-            this.images=result[0];
-            this.flavors=result[1];
-            let membergroups=result[2];
-              for (let project of membergroups) {
+    initializeData() {
+        forkJoin(this.imageService.getImages(), this.flavorService.getFlavors(), this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => {
+            this.images = result[0];
+            this.flavors = result[1];
+            this.userinfo.PublicKey = result[2]['public_key'];
+            this.validatePublicKey();
+            let membergroups = result[2];
+            for (let project of membergroups) {
                 this.projects.push(project);
 
             }
-            this.isLoaded=true;
+            this.isLoaded = true;
         })
     }
 

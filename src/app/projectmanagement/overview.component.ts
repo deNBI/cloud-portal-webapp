@@ -5,14 +5,13 @@ import {Project} from './project.model';
 import {ModalDirective} from "ngx-bootstrap";
 import {ProjectMember} from './project_member.model'
 import 'rxjs/add/operator/toPromise';
-import {isNumber} from "util";
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
 import * as moment from 'moment';
 import {VoService} from "../api-connector/vo.service";
-import {forkJoin} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 
 
 @Component({
@@ -80,7 +79,7 @@ export class OverviewComponent {
 
     setUserFacilityPassword(facility: string, details: [string, string][]) {
         this.userservice.setUserFacilityPassword(facility).subscribe(result => {
-            result = result.json()
+            result = result;
             for (let key of details) {
                 if (key[0] == 'Support') {
                     this.passwordModalEmail = key[1];
@@ -188,7 +187,7 @@ export class OverviewComponent {
             this.usersModalProjectName = projectname;
             this.usersModalProjectMembers = new Array();
             this.groupservice.getGroupAdminIds(projectid.toString()).subscribe(result => {
-                let admindIds = result['adminIds']
+                let admindIds = result['adminIds'];
                 for (let member of members) {
                     let member_id = member["id"];
                     let user_id = member["userId"];
@@ -281,39 +280,42 @@ export class OverviewComponent {
         }
         else {
             this.UserModalFacility = facility;
+            console.log(facility)
 
         }
     }
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id: number) {
-        this.groupservice.addMember(groupid, memberid, facility_id).toPromise()
-            .then(result => {
-
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id?: number) {
+        this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
+            result => {
                 if (result.status == 200) {
                     this.updateNotificaitonModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
 
                 } else {
-                    console.log(result.json())
+
 
                     this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
                 }
-            }).catch(error => {
-            if (error.json()['name'] == 'AlreadyMemberException') {
-                this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
-            }
+            },
+            error => {
 
-            else {
-                this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
-            }
-        });
+                if (error['name'] == 'AlreadyMemberException') {
+                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
+                }
+
+                else {
+                    this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+                }
+            });
+
     }
 
 
-    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id: number) {
-        this.groupservice.addMember(groupid, memberid, facility_id).toPromise().then(result => {
-            this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
-                .then(result => {
+    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id?: number) {
+        this.groupservice.addMember(groupid, memberid, facility_id).subscribe(result => {
+            this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
+                result => {
 
                     if (result.status == 200) {
                         this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
@@ -321,17 +323,17 @@ export class OverviewComponent {
                     } else {
                         this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                     }
-                }).catch(error => {
-                if (error.json()['name'] == 'AlreadyAdminException') {
-                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
-                }
-                else {
-                    this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
-                }
-            })
-        }).catch(error => {
-            this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
-                .then(result => {
+                }, error => {
+                    if (error['name'] == 'AlreadyAdminException') {
+                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                    }
+                    else {
+                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                    }
+                })
+        }, error => {
+            this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
+                result => {
 
                     if (result.status == 200) {
                         this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
@@ -339,21 +341,19 @@ export class OverviewComponent {
                     } else {
                         this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                     }
-                }).catch(error => {
-                if (error.json()['name'] == 'AlreadyAdminException') {
+                }, error => {
+                if (error['name'] == 'AlreadyAdminException') {
                     this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
                 }
                 else {
                     this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                 }
             })
-
-
         })
     }
 
 
-    public promoteAdmin(groupid: number, userid: number, username: string, facility_id: number) {
+    public promoteAdmin(groupid: number, userid: number, username: string, facility_id?: number) {
         this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
             .then(result => {
 
@@ -369,7 +369,7 @@ export class OverviewComponent {
     }
 
 
-    public removeAdmin(groupid: number, userid: number, name: string, facility_id: number) {
+    public removeAdmin(groupid: number, userid: number, name: string, facility_id?: number) {
         this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
             .then(result => {
 
@@ -384,9 +384,8 @@ export class OverviewComponent {
         });
     }
 
-    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id: number) {
-        this.groupservice.removeMember(groupid, memberid, userid, facility_id).toPromise()
-            .then(result => {
+    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id?: number) {
+        this.groupservice.removeMember(groupid, memberid, userid, facility_id).subscribe(result => {
 
                 if (result.status == 200) {
                     this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
@@ -394,9 +393,10 @@ export class OverviewComponent {
                 } else {
                     this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
                 }
-            }).catch(error => {
-            this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
-        });
+            },
+            error => {
+                this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
+            });
     }
 
     public resetFacilityDetailsModal() {

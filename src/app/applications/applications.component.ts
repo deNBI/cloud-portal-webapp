@@ -214,7 +214,7 @@ export class ApplicationsComponent {
     getApplicationStatus() {
         this.applicationstatusservice.getAllApplicationStatus().toPromise()
             .then(result => {
-                let res = result.json();
+                let res = result;
                 for (let key in res) {
                     let asj = res[key];
                     let aj = new ApplicationStatus(asj["application_status_id"], asj["application_status_name"]);
@@ -247,10 +247,10 @@ export class ApplicationsComponent {
             .getLoggedUser().toPromise()
             .then(userdata => {
                 //TODO catch errors
-                user_id = userdata.json()["id"];
+                user_id = userdata["id"];
                 return this.userservice.getVosWhereUserIsAdmin().toPromise();
             }).then(function (adminvos) {
-            admin_vos = adminvos.json();
+            admin_vos = adminvos;
         }).then(result => {
                 //check if user is a Vo admin so we can serv according buttons
                 for (let vkey in admin_vos) {
@@ -578,7 +578,7 @@ export class ApplicationsComponent {
 
         this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
             .then(member_raw => {
-                    let member = member_raw.json();
+                    let member = member_raw;
                     manager_member_id = member["id"];
                     manager_member_user_id = member["userId"];
                     // create new group
