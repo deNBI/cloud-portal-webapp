@@ -5,10 +5,7 @@ import {ApiSettings} from './api-settings.service';
 import {Observable, throwError} from 'rxjs';
 import {catchError } from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import { map } from 'rxjs/operators';
-
 import {Cookie} from 'ng2-cookies/ng2-cookies';
-import 'rxjs/add/operator/catch';
 
 const header = new HttpHeaders({
     'X-CSRFToken': Cookie.get("csrftoken")

@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {map} from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Cookie} from 'ng2-cookies/ng2-cookies';

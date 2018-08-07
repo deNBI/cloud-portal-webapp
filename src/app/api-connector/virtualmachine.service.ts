@@ -1,16 +1,10 @@
 import {Injectable} from '@angular/core';
-import {URLSearchParams} from '@angular/http';
-import {VirtualMachineComponent} from '../virtualmachines/addvm.component'
-import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {ApiSettings} from './api-settings.service'
-import {map} from 'rxjs/operators';
 import 'rxjs/add/operator/catch';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-
 import {Cookie} from 'ng2-cookies/ng2-cookies';
-import 'rxjs/add/operator/catch';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from "../virtualmachines/virtualmachinemodels/volume";
 
