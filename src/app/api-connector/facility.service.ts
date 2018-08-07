@@ -1,21 +1,27 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {URLSearchParams} from '@angular/http';
 import {ApiSettings} from './api-settings.service';
 import {map} from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
-import {catchError } from 'rxjs/operators';
+import {catchError} from 'rxjs/operators';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
+
+const header = new HttpHeaders({
+    'X-CSRFToken': Cookie.get("csrftoken")
+});
+
 
 @Injectable()
 export class FacilityService {
-    constructor(private http: Http, private settings: ApiSettings) {
+    constructor(private http: HttpClient, private settings: ApiSettings) {
     }
 
     getManagerFacilities(): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilitiesWhereUserIsManager/', {
             withCredentials: true,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -24,7 +30,7 @@ export class FacilityService {
         return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilityAllowedGroups/', {
             withCredentials: true,
             params: {facility_id: facility}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -34,25 +40,22 @@ export class FacilityService {
         return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilityAllowedGroupsWithDetails/', {
             withCredentials: true,
             params: {facility_id: facility}
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
 
 
     }
 
     sendMailToFacility(facility, subject, message, reply?): Observable<any> {
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('subject', subject);
-        urlSearchParams.append('facility_id', facility);
-        urlSearchParams.append('message', message);
-        urlSearchParams.append('reply', reply)
+        let params = new HttpParams();
+        params = params.append('subject', subject);
+        params.append('facility_id', facility);
+        params.append('message', message);
+        params.append('reply', reply);
 
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        return this.http.post(this.settings.getApiBaseURL() + 'facilityManager/sendMailToAllMembers/', urlSearchParams, {
+        return this.http.post(this.settings.getApiBaseURL() + 'facilityManager/sendMailToAllMembers/', params, {
             withCredentials: true,
             headers: header,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error)));
 
 
     }
