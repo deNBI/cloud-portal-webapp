@@ -6,10 +6,18 @@ import {map} from 'rxjs/operators';
 import 'rxjs/add/operator/catch';
 import {Observable, throwError} from 'rxjs';
 import {catchError } from 'rxjs/operators';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+
+import {Cookie} from 'ng2-cookies/ng2-cookies';
+
+
+const header = new HttpHeaders({
+    'X-CSRFToken': Cookie.get("csrftoken")
+});
 
 @Injectable()
 export class VoService {
-    constructor(private http: Http, private settings: ApiSettings) {
+    constructor(private http: HttpClient, private settings: ApiSettings) {
     }
 
 
@@ -17,7 +25,7 @@ export class VoService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/isVoManager/', {
             withCredentials: true,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
@@ -27,7 +35,7 @@ export class VoService {
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getNewsletterSubscriptionCounter/', {
             withCredentials: true,
 
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
@@ -35,7 +43,7 @@ export class VoService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getAllGroups/', {
             withCredentials: true,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
@@ -43,40 +51,36 @@ export class VoService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getAllGroupsWithDetails/', {
             withCredentials: true,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
     sendNewsletterToVo(subject, message, reply?): Observable<any> {
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('subject', subject);
-        urlSearchParams.append('message', message);
-        urlSearchParams.append('reply', reply)
 
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendNewsletterToMembers/', urlSearchParams, {
+         let params = new HttpParams();
+        params.append('subject', subject);
+        params.append('message', message);
+        params.append('reply',reply);
+
+        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendNewsletterToMembers/',params, {
             withCredentials: true,
             headers: header,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
 
     sendMailToVo(subject, message, reply?): Observable<any> {
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('subject', subject);
-        urlSearchParams.append('message', message);
-        urlSearchParams.append('reply', reply)
+           let params = new HttpParams();
+        params.append('subject', subject);
+        params.append('message', message);
+        params.append('reply',reply);
 
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendMailToAllMembers/', urlSearchParams, {
+
+        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendMailToAllMembers/', params, {
             withCredentials: true,
             headers: header,
-        }).pipe(map((res: Response) => res.json())).pipe(catchError((error: any) => throwError(error.json().error || 'Server error')))
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
