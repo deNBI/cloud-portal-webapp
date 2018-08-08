@@ -27,8 +27,7 @@ export class GroupService {
     }
 
     getComputeCentersDetails(resource_id: number): Observable<any> {
-        let params = new HttpParams();
-        params = params.append('resource_id', resource_id.toString());
+        let params = new HttpParams().set('resource_id', resource_id.toString());
 
         return this.http.get(this.settings.getApiBaseURL() + 'group/facilityDetails/', {
             withCredentials: true,
@@ -49,9 +48,7 @@ export class GroupService {
 
 
     assignGroupToResource(groupid: string, computecenter: string): Observable<any> {
-        let params = new HttpParams();
-        params = params.append('compute_center', computecenter);
-        params.append('groupid', groupid);
+        let params = new HttpParams().set('compute_center', computecenter).set('groupid', groupid);
 
         return this.http.post(this.settings.getApiBaseURL() + 'group/assignGroupToResource/', params, {
             withCredentials: true,

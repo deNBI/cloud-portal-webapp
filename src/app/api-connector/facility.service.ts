@@ -44,11 +44,7 @@ export class FacilityService {
     }
 
     sendMailToFacility(facility, subject, message, reply?): Observable<any> {
-        let params = new HttpParams();
-        params = params.append('subject', subject);
-        params.append('facility_id', facility);
-        params.append('message', message);
-        params.append('reply', reply);
+        let params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
 
         return this.http.post(this.settings.getApiBaseURL() + 'facilityManager/sendMailToAllMembers/', params, {
             withCredentials: true,

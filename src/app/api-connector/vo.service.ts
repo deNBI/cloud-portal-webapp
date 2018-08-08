@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service';
 import 'rxjs/add/operator/catch';
 import {Observable, throwError} from 'rxjs';
-import {catchError } from 'rxjs/operators';
+import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 import {Cookie} from 'ng2-cookies/ng2-cookies';
@@ -54,12 +54,9 @@ export class VoService {
 
     sendNewsletterToVo(subject, message, reply?): Observable<any> {
 
-         let params = new HttpParams();
-        params.append('subject', subject);
-        params.append('message', message);
-        params.append('reply',reply);
+        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendNewsletterToMembers/',params, {
+        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendNewsletterToMembers/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -68,10 +65,7 @@ export class VoService {
 
 
     sendMailToVo(subject, message, reply?): Observable<any> {
-           let params = new HttpParams();
-        params.append('subject', subject);
-        params.append('message', message);
-        params.append('reply',reply);
+        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendMailToAllMembers/', params, {

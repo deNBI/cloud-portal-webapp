@@ -99,10 +99,7 @@ export class UserService {
 
     sendHelpMail(subject, message, reply): Observable<any> {
 
-        let params = new HttpParams();
-        params.append('subject', subject);
-        params.append('message', message);
-        params.append('reply', reply);
+        let params = new HttpParams().set('subject',subject).set('message',message).set('reply',reply);
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'user/sendHelpMail/', params, {
