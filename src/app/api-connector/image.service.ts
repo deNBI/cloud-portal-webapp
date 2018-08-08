@@ -38,9 +38,7 @@ export class ImageService {
 
     addImageTags(imageTag: string, description: string): Observable<any> {
 
-        let params = new HttpParams();
-        params = params.append('imageTag', imageTag);
-        params.append('description', description);
+        let params = new HttpParams().set('imageTag', imageTag).set('description', description);
 
 
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/addImageTag/', params, {
@@ -53,9 +51,7 @@ export class ImageService {
 
     deleteImageTag(imageTag: string): Observable<any> {
 
-        let params = new HttpParams();
-        params = params.append('imageTag', imageTag);
-
+        let params = new HttpParams().set('imageTag', imageTag);
 
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteImageTag/', params, {
             withCredentials: true,
@@ -68,9 +64,7 @@ export class ImageService {
 
     createSnapshot(snaptshot_instance: string, snapshot_name: string,): Observable<any> {
 
-        let params = new HttpParams();
-        params = params.append('snapshot_name', snapshot_name);
-        params.append('snapshot_instance', snaptshot_instance);
+        let params = new HttpParams().set('snapshot_name', snapshot_name).set('snapshot_instance', snaptshot_instance);
 
 
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/createSnapshot/', params, {
@@ -82,8 +76,7 @@ export class ImageService {
     }
 
     deleteSnapshot(snapshot_id: string): Observable<any> {
-        let params = new HttpParams();
-        params = params.append('snapshot_id', snapshot_id);
+        let params = new HttpParams().set('snapshot_id',snapshot_id);
 
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteSnapshot/', params, {
             withCredentials: true,

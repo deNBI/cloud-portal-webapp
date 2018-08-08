@@ -3,7 +3,7 @@ import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {URLSearchParams} from '@angular/http';
 import {ApiSettings} from './api-settings.service';
 import {Observable, throwError} from 'rxjs';
-import {catchError } from 'rxjs/operators';
+import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 
@@ -12,17 +12,16 @@ const header = new HttpHeaders({
 });
 
 
-
-
 @Injectable()
 export class UserService {
     constructor(private http: HttpClient, private settings: ApiSettings) {
     }
 
     setUserFacilityPassword(facility: string): Observable<any> {
-       let params = new HttpParams();
-        params.append('facility',facility);
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'user/setUserPassword/', facility, {
+        let params = new HttpParams().set('facility', facility)
+
+        ;
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'user/setUserPassword/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -36,7 +35,7 @@ export class UserService {
             }).pipe(catchError((error: any) => throwError(error)));
     }
 
-    getLoggedUser():Observable<any> {
+    getLoggedUser(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'user/getLoggedUser/',
             {
                 withCredentials: true,
@@ -44,7 +43,7 @@ export class UserService {
             }).pipe(catchError((error: any) => throwError(error)));
     }
 
-    getMemberByUser():Observable<any> {
+    getMemberByUser(): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByUser/`, {
             withCredentials: true,
@@ -52,7 +51,7 @@ export class UserService {
     }
 
 
-    getMemberByExtSourceNameAndExtLogin(ext_login: string):Observable<any> {
+    getMemberByExtSourceNameAndExtLogin(ext_login: string): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByExtSourceNameAndExtLogin/`, {
             withCredentials: true,
@@ -65,33 +64,35 @@ export class UserService {
     }
 
 
-    getVosWhereUserIsAdmin():Observable<any> {
+    getVosWhereUserIsAdmin(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'user/getVosWhereUserIsAdmin/', {
             withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));;
+        }).pipe(catchError((error: any) => throwError(error)));
+        ;
     }
 
-    getGroupsWhereUserIsAdmin():Observable<any> {
+    getGroupsWhereUserIsAdmin(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'user/getGroupsWhereUserIsAdmin/', {
             withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));;
+        }).pipe(catchError((error: any) => throwError(error)));
+        ;
     }
 
     setNewsletterSubscription(subscribed: boolean): Observable<any> {
-        let params = new HttpParams();
-        params.append('subscribed', subscribed.toString());
+        let params = new HttpParams().set('subscribed', subscribed.toString());
 
         return this.http.post(this.settings.getApiBaseURL() + 'newsletter/setNewsletterSubscription/', params, {
             withCredentials: true,
             headers: header,
-        }).pipe(catchError((error: any) => throwError(error)));;
+        }).pipe(catchError((error: any) => throwError(error)));
+
     }
 
     getNewsletterSubscription(): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'newsletter/getNewsletterSubscription/', {
             withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));;
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -100,8 +101,8 @@ export class UserService {
 
         let params = new HttpParams();
         params.append('subject', subject);
-        params.append('message',message);
-        params.append('reply',reply);
+        params.append('message', message);
+        params.append('reply', reply);
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'user/sendHelpMail/', params, {
@@ -111,7 +112,7 @@ export class UserService {
 
     }
 
-    getFilteredMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string):Observable<any> {
+    getFilteredMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'user/getFilteredMembers/', {
             withCredentials: true,

@@ -119,12 +119,13 @@ export class VirtualMachineComponent implements OnInit {
 
             this.validPublickey = false;
         }
-        console.log(this.validPublickey)
+
 
     }
 
     getUserPublicKey() {
         this.keyService.getKey().subscribe(result => {
+            console.log(result['public_key']);
             this.userinfo.PublicKey = result['public_key'];
         })
     }
@@ -246,7 +247,7 @@ export class VirtualMachineComponent implements OnInit {
         forkJoin(this.imageService.getImages(), this.flavorService.getFlavors(), this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => {
             this.images = result[0];
             this.flavors = result[1];
-            this.userinfo.PublicKey = result[2]['public_key'];
+            this.userinfo.PublicKey = result[3]['public_key'];
             this.validatePublicKey();
             let membergroups = result[2];
             for (let project of membergroups) {
@@ -295,10 +296,8 @@ export class VirtualMachineComponent implements OnInit {
             }
         })
         this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
-            console.log(result)
             if (result['UsedVolumes']) {
                 this.selectedProjectVolumesUsed = result['UsedVolumes'];
-                console.log(this.selectedProjectVolumesUsed)
             }
             else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) {
 

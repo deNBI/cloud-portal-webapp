@@ -74,10 +74,10 @@ export class ClientOverviewComponent implements OnInit {
         if (host && port) {
             this.clientservice.checkClient(host, port).subscribe(data => {
 
-                if (data.text() == "false") {
+                if (data['status'] == false) {
                     this.checkStatus = 'No Connection';
                 }
-                else if (data.text() == 'true') {
+                else if (data['status'] == true) {
                     this.checkStatus = "Connected";
                 }
                 else {

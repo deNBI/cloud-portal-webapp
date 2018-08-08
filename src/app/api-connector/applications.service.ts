@@ -64,12 +64,11 @@ export class ApplicationsService {
     approveRenewal(application_id: number): Observable<any> {
 
 
-        let params = new HttpParams();
-        params = params.append('project_application_id', application_id.toString());
+        let params = new HttpParams().set('project_application_id', application_id.toString());
 
         return this.http.post(this.settings.getApiBaseURL() + 'application/approveRenewal/',
             {
-                headers: http_header_csrf,
+                headers: http_header_json_csrf,
                 withCredentials: true,
                 params: params
             }).pipe(catchError((error: any) => throwError(error)));
@@ -78,8 +77,7 @@ export class ApplicationsService {
 
     declineRenewal(application_id: number): Observable<any> {
 
-        let params = new HttpParams();
-        params = params.append('project_application_id', application_id.toString());
+        let params = new HttpParams().set('project_application_id', application_id.toString());
 
         return this.http.post(this.settings.getApiBaseURL() + 'application/declineRenewal/',
             {
