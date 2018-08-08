@@ -1,5 +1,4 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import 'rxjs/Rx'
 import {Volume} from "./virtualmachinemodels/volume";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";

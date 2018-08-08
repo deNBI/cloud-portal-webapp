@@ -6,13 +6,16 @@ import {catchError} from 'rxjs/operators';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 
 
-const http_header_json_csrf = new HttpHeaders({
+const header = new HttpHeaders({
     'X-CSRFToken': Cookie.get("csrftoken"),
     'Content-Type': 'application/json'
+
 });
 
-const http_header_csrf = new HttpHeaders({
-    'X-CSRFToken': Cookie.get("csrftoken")
+const header_csrf = new HttpHeaders({
+    'X-CSRFToken': Cookie.get("csrftoken"),
+    'Content-Type': 'application/json'
+
 });
 
 @Injectable()
@@ -23,7 +26,7 @@ export class ApplicationsService {
 
     getUserApplications(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', {
-            headers: http_header_json_csrf,
+            headers: header_csrf,
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
     }
@@ -31,7 +34,7 @@ export class ApplicationsService {
     getAllApplications(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'all_applications/', {
             withCredentials: true,
-            headers: http_header_json_csrf,
+            headers: header_csrf,
 
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -43,7 +46,7 @@ export class ApplicationsService {
 
         return this.http.post(this.settings.getApiBaseURL() + 'add_application/', parameter,
             {
-                headers: http_header_json_csrf,
+                headers: header,
                 withCredentials: true
             }).pipe(catchError((error: any) => throwError(error)));
 
@@ -55,7 +58,7 @@ export class ApplicationsService {
 
         return this.http.post(this.settings.getApiBaseURL() + 'application/requestRenewal/', parameter,
             {
-                headers: http_header_json_csrf,
+                headers: header,
                 withCredentials: true
             }).pipe(catchError((error: any) => throwError(error)));
 
@@ -64,26 +67,20 @@ export class ApplicationsService {
     approveRenewal(application_id: number): Observable<any> {
 
 
-        let params = new HttpParams().set('project_application_id', application_id.toString());
-
-        return this.http.post(this.settings.getApiBaseURL() + 'application/approveRenewal/',
-            {
-                headers: http_header_json_csrf,
-                withCredentials: true,
-                params: params
-            }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.post(this.settings.getApiBaseURL() + 'application/approveRenewal/', {'project_application_id': application_id}, {
+            headers: header_csrf,
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
     declineRenewal(application_id: number): Observable<any> {
 
-        let params = new HttpParams().set('project_application_id', application_id.toString());
 
-        return this.http.post(this.settings.getApiBaseURL() + 'application/declineRenewal/',
+        return this.http.post(this.settings.getApiBaseURL() + 'application/declineRenewal/', {'project_application_id': application_id},
             {
-                headers: http_header_csrf,
+                headers: header_csrf,
                 withCredentials: true,
-                params: params
             }).pipe(catchError((error: any) => throwError(error)));
 
     }
@@ -92,7 +89,7 @@ export class ApplicationsService {
     getAllApplicationsRenewalRequests(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'application/applicationRenewalRequests/', {
             withCredentials: true,
-            headers: http_header_json_csrf,
+            headers: header_csrf,
 
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -102,7 +99,7 @@ export class ApplicationsService {
         let params = new HttpParams().set('project_application_id', application_id.toString());
         return this.http.get(this.settings.getApiBaseURL() + 'application/getApplicationRenewalRequestById/', {
             withCredentials: true,
-            headers: http_header_json_csrf,
+            headers: header_csrf,
             params: params
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -115,7 +112,7 @@ export class ApplicationsService {
 
         return this.http.post(this.settings.getApiBaseURL() + 'delete_application/deleteApplicationById/',
             {
-                headers: http_header_csrf,
+                headers: header_csrf,
                 withCredentials: true,
                 params: params
             }).pipe(catchError((error: any) => throwError(error)));

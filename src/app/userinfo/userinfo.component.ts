@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import 'rxjs/add/operator/toPromise';
 
 import {Userinfo} from './userinfo.model'
 import {PerunSettings} from "../perun-connector/connector-settings.service";

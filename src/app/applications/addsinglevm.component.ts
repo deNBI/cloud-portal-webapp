@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import 'rxjs/add/operator/toPromise';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {NgForm} from '@angular/forms';
 import {SpecialHardwareService} from '../api-connector/special-hardware.service'

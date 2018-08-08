@@ -1,6 +1,5 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import 'rxjs/Rx'
 
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";

@@ -12,7 +12,6 @@ import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
 import {AsideToggleDirective} from './shared/aside.directive';
 import {PopoverModule} from 'ngx-popover';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
-import {HttpModule} from '@angular/http';
 import {PerunSettings} from "./perun-connector/connector-settings.service";
 import {ApiSettings} from "./api-connector/api-settings.service";
 import {HttpClientModule} from '@angular/common/http';
@@ -30,7 +29,6 @@ import {UserService} from "./api-connector/user.service";
 @NgModule({
     imports: [
         BrowserModule,
-        HttpModule,
         HttpClientModule,
         AppRoutingModule,
         BsDropdownModule.forRoot(),

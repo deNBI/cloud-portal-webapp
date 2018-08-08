@@ -1,5 +1,4 @@
 import {Component, ViewChild} from '@angular/core';
-import 'rxjs/add/operator/toPromise';
 import {ApplicationsService} from '../api-connector/applications.service'
 import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {ApplicationStatusService} from '../api-connector/application-status.service'
@@ -15,7 +14,6 @@ import * as moment from 'moment';
 import {UserService} from "../api-connector/user.service";
 import {ApplicationExtension} from "./application_extension.model";
 import {NgForm} from '@angular/forms';
-import 'rxjs/add/operator/catch';
 
 
 @Component({
@@ -46,7 +44,7 @@ export class ApplicationsComponent {
     public notificationModalIsClosable: boolean = false;
     private APPROVED_STATUS = 2;
     private EXTENSION_STATUS = 4;
-    private EXTENSTION_STATUS_STRING = 'extension requested';
+    private EXTENSTION_STATUS_STRING = 'modification requested';
     public FPGA = 1;
     public GPU = 2;
 
@@ -58,7 +56,6 @@ export class ApplicationsComponent {
                 private perunsettings: PerunSettings,
                 private userservice: UserService,
                 private groupservice: GroupService) {
-        console.log(applicataionsservice)
 
         this.getUserApplications();
         this.getAllApplications();
@@ -170,7 +167,6 @@ export class ApplicationsComponent {
 
                             this.user_applications.push(a);
                             userapp_ready[a.Id] = true;
-                            console.log(userapp_ready)
 
                             if (Object.keys(userapp_ready).length == number_userapplications) {
                                 let all_ready = true

@@ -10,7 +10,8 @@ import {
 import { CookieService } from 'ng2-cookies';
 import {Observable, throwError} from 'rxjs';
 import {ModalDirective} from "ngx-bootstrap";
-import 'rxjs/add/operator/catch';
+import {catchError} from 'rxjs/operators';
+
 
 
 @Injectable()
@@ -23,9 +24,8 @@ export class HttpInterceptor extends Http {
     this.timeoutModal = modal;
   }
 
-  public request(url: string|Request, options?: RequestOptionsArgs): Observable<Response> {
-    return super.request(url, options)
-      .catch(this.handleError)
+  public request(url: string|Request, options?: RequestOptionsArgs): Observable<any> {
+    return super.request(url, options).pipe(catchError((error: any) => throwError(this.handleError)));
   }
 
   public handleError = (error: Response) => {

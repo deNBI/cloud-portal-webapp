@@ -10,7 +10,6 @@ import {ImageService} from '../api-connector/image.service';
 import {FlavorService} from '../api-connector/flavor.service';
 import {ImageDetailComponent} from "./imagedetail.component";
 import {FormsModule} from '@angular/forms';
-import 'rxjs/Rx'
 import {forkJoin} from 'rxjs';
 
 import {Metadata} from './virtualmachinemodels/metadata';

@@ -4,7 +4,6 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Project} from './project.model';
 import {ModalDirective} from "ngx-bootstrap";
 import {ProjectMember} from './project_member.model'
-import 'rxjs/add/operator/toPromise';
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";

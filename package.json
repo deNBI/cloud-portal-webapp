@@ -38,7 +38,6 @@
     "ngx-popover": "0.0.16",
     "node-sass": "^4.9.2",
     "rxjs": "6.2.2",
-    "rxjs-compat": "^6.2.2",
     "ts-helpers": "1.1.2",
     "uglifyjs": "^2.4.11",
     "zone.js": "0.8.26"

@@ -30,6 +30,7 @@ export class MemberGuardService implements CanActivate {
                         this.router.navigate(['/registration-info']);
                         resolve(false);
 
+
                     }
                     return resolve(true);
 

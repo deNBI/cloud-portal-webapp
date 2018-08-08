@@ -3,8 +3,6 @@ import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {PerunSettings} from './connector-settings.service'
 import { Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/toPromise';
 import {ApiSettings} from "../api-connector/api-settings.service";
 
 @Injectable()

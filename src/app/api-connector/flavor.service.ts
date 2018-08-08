@@ -5,7 +5,6 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 
-import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class FlavorService {

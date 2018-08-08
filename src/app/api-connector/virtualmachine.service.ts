@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import 'rxjs/add/operator/catch';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
