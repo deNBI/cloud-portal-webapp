@@ -108,13 +108,11 @@ export class ApplicationsService {
 
     deleteApplication(application_id: number): Observable<any> {
 
-        let params = new HttpParams().set('project_application_id', application_id.toString());
 
-        return this.http.post(this.settings.getApiBaseURL() + 'delete_application/deleteApplicationById/',
+        return this.http.post(this.settings.getApiBaseURL() + 'application/deleteApplicationById/',{'project_application_id':application_id},
             {
                 headers: header_csrf,
                 withCredentials: true,
-                params: params
             }).pipe(catchError((error: any) => throwError(error)));
 
     }
