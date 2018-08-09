@@ -4,13 +4,13 @@ import {
     ElementRef
 } from '@angular/core';
 import {Image} from "./virtualmachinemodels/image";
-import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
+import {ModalDirective} from "ngx-bootstrap";
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
 import {FlavorService} from '../api-connector/flavor.service';
 import {ImageDetailComponent} from "./imagedetail.component";
 import {FormsModule} from '@angular/forms';
-import 'rxjs/Rx'
+import {forkJoin} from 'rxjs';
 
 import {Metadata} from './virtualmachinemodels/metadata';
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
@@ -55,14 +55,13 @@ export class VirtualMachineComponent implements OnInit {
     selectedProjectVmsUsed: number;
     selectedProject: [string, number];
     client_avaiable: boolean;
+    validPublickey: boolean;
 
     volumeName: string = '';
 
-    optional_params=false;
-    diskspace:number=0;
-    isLoaded_projects=false;
-    isLoaded_images=false;
-    isLoaded_flavors=false;
+    optional_params = false;
+    diskspace: number = 0;
+    isLoaded = false;
 
     projects: string[] = new Array();
     FREEMIUM_ID = environment.freemium_project_id;
@@ -76,12 +75,10 @@ export class VirtualMachineComponent implements OnInit {
     getImages(): void {
 
         this.imageService.getImages().subscribe(images => this.images = images);
-        this.isLoaded_images=true;
     }
 
     getFlavors(): void {
         this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
-        this.isLoaded_flavors=true;
 
     }
 
@@ -115,18 +112,20 @@ export class VirtualMachineComponent implements OnInit {
     validatePublicKey() {
 
         if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)) {
-            return true;
+            this.validPublickey = true;
         }
         else {
 
-            return false;
+            this.validPublickey = false;
         }
+
 
     }
 
     getUserPublicKey() {
-        this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => {
-            this.userinfo.PublicKey = result.toString();
+        this.keyService.getKey().subscribe(result => {
+            console.log(result['public_key']);
+            this.userinfo.PublicKey = result['public_key'];
         })
     }
 
@@ -152,7 +151,7 @@ export class VirtualMachineComponent implements OnInit {
 
         setTimeout(() => {
             this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
-                res = res.json()
+                res = res;
                 if (res['Started'] || res['Error']) {
                     this.data = res
                     this.getSelectedProjectDiskspace();
@@ -176,11 +175,11 @@ export class VirtualMachineComponent implements OnInit {
             this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => {
 
 
-                if (data.json()['Created']) {
-                    this.check_status_loop(data.json()['Created']);
+                if (data['Created']) {
+                    this.check_status_loop(data['Created']);
                 }
                 else {
-                    this.data = data.json()
+                    this.data = data
                 }
 
 
@@ -236,12 +235,26 @@ export class VirtualMachineComponent implements OnInit {
 
     getUserApprovedProjects() {
         this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => {
-            for (let project of membergroups.json()) {
+            for (let project of membergroups) {
                 this.projects.push(project);
-                this.isLoaded_projects=true;
 
             }
         });
+    }
+
+    initializeData() {
+        forkJoin(this.imageService.getImages(), this.flavorService.getFlavors(), this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => {
+            this.images = result[0];
+            this.flavors = result[1];
+            this.userinfo.PublicKey = result[3]['public_key'];
+            this.validatePublicKey();
+            let membergroups = result[2];
+            for (let project of membergroups) {
+                this.projects.push(project);
+
+            }
+            this.isLoaded = true;
+        })
     }
 
 
@@ -282,10 +295,8 @@ export class VirtualMachineComponent implements OnInit {
             }
         })
         this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
-            console.log(result)
             if (result['UsedVolumes']) {
                 this.selectedProjectVolumesUsed = result['UsedVolumes'];
-                console.log(this.selectedProjectVolumesUsed)
             }
             else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) {
 
@@ -327,8 +338,7 @@ export class VirtualMachineComponent implements OnInit {
 
         this.userinfo = new Userinfo();
         this.getClientData();
-        this.getUserApprovedProjects();
-        this.getUserPublicKey();
+        this.initializeData();
 
 
     }

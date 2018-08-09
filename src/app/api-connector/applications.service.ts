@@ -1,122 +1,121 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, Headers, RequestOptions, URLSearchParams} from '@angular/http';
-import {ApiSettings}  from './api-settings.service'
-import {Observable} from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import {ApiSettings} from './api-settings.service'
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
 
+
+const header = new HttpHeaders({
+    'X-CSRFToken': Cookie.get("csrftoken"),
+    'Content-Type': 'application/json'
+
+});
+
+const header_csrf = new HttpHeaders({
+    'X-CSRFToken': Cookie.get("csrftoken"),
+    'Content-Type': 'application/json'
+
+});
 
 @Injectable()
 export class ApplicationsService {
-  constructor(private http: Http, private settings: ApiSettings) {
-  }
-
-  getUserApplications() {
-    return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', {
-      withCredentials: true,
-      params: {format: this.settings.getApiFormat()}
-    });
-  }
-
-  getAllApplications() {
-    return this.http.get(this.settings.getApiBaseURL() + 'all_applications/', {
-      withCredentials: true,
-      params: {format: this.settings.getApiFormat()}
-    });
-  }
-
-  addNewApplication(data) {
-    let parameter = data;
-    let header = new Headers({
-      'X-CSRFToken': this.settings.getCSRFToken(),
-      'Content-Type': 'application/json'
-    });
-
-    return this.http.post(this.settings.getApiBaseURL() + 'add_application/', parameter,
-      {
-        headers: header,
-        withCredentials: true
-      });
-  }
+    constructor(private http: HttpClient, private settings: ApiSettings) {
+    }
 
 
+    getUserApplications(): Observable<any> {
+        return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', {
+            headers: header_csrf,
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error)));
+    }
 
-  requestRenewal(data) {
-     let parameter = data;
+    getAllApplications(): Observable<any> {
+        return this.http.get(this.settings.getApiBaseURL() + 'all_applications/', {
+            withCredentials: true,
+            headers: header_csrf,
 
+        }).pipe(catchError((error: any) => throwError(error)));
 
-    let header = new Headers({
-      'X-CSRFToken': this.settings.getCSRFToken(),
-        'Content-Type': 'application/json'
-    });
-    return this.http.post(this.settings.getApiBaseURL() + 'application/requestRenewal/',parameter,
-      {
-        headers: header,
-        withCredentials: true
-      });
-  }
+    }
 
-    approveRenewal(application_id: number) {
-
-
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('project_application_id', application_id.toString());
-    let header = new Headers({
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    });
-    return this.http.post(this.settings.getApiBaseURL() + 'application/approveRenewal/', urlSearchParams,
-      {
-        headers: header,
-        withCredentials: true
-      });
-  }
-
-  declineRenewal(application_id: number) {
+    addNewApplication(data): Observable<any> {
+        let parameter = data;
 
 
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('project_application_id', application_id.toString());
-    let header = new Headers({
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    });
-    return this.http.post(this.settings.getApiBaseURL() + 'application/declineRenewal/', urlSearchParams,
-      {
-        headers: header,
-        withCredentials: true
-      });
-  }
+        return this.http.post(this.settings.getApiBaseURL() + 'add_application/', parameter,
+            {
+                headers: header,
+                withCredentials: true
+            }).pipe(catchError((error: any) => throwError(error)));
+
+    }
 
 
-   getAllApplicationsRenewalRequests() {
-    return this.http.get(this.settings.getApiBaseURL() + 'application/applicationRenewalRequests/', {
-      withCredentials: true,
-      params: {format: this.settings.getApiFormat()}
-    });
-  }
+    requestRenewal(data): Observable<any> {
+        let parameter = data;
 
-     getApplicationsRenewalRequest(application_id: number) {
-    return this.http.get(this.settings.getApiBaseURL() + 'application/getApplicationRenewalRequestById/', {
-      withCredentials: true,
-      params: {format: this.settings.getApiFormat(),'project_application_id':application_id}
-    });
-  }
+        return this.http.post(this.settings.getApiBaseURL() + 'application/requestRenewal/', parameter,
+            {
+                headers: header,
+                withCredentials: true
+            }).pipe(catchError((error: any) => throwError(error)));
 
+    }
 
-  deleteApplication(application_id: number) {
+    approveRenewal(application_id: number): Observable<any> {
 
 
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('project_application_id', application_id.toString());
-    let header = new Headers({
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    });
-    return this.http.post(this.settings.getApiBaseURL() + 'delete_application/deleteApplicationById/', urlSearchParams,
-      {
-        headers: header,
-        withCredentials: true
-      });
-  }
+        return this.http.post(this.settings.getApiBaseURL() + 'application/approveRenewal/', {'project_application_id': application_id}, {
+            headers: header_csrf,
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error)));
 
+    }
+
+    declineRenewal(application_id: number): Observable<any> {
+
+
+        return this.http.post(this.settings.getApiBaseURL() + 'application/declineRenewal/', {'project_application_id': application_id},
+            {
+                headers: header_csrf,
+                withCredentials: true,
+            }).pipe(catchError((error: any) => throwError(error)));
+
+    }
+
+
+    getAllApplicationsRenewalRequests(): Observable<any> {
+        return this.http.get(this.settings.getApiBaseURL() + 'application/applicationRenewalRequests/', {
+            withCredentials: true,
+            headers: header_csrf,
+
+        }).pipe(catchError((error: any) => throwError(error)));
+
+    }
+
+    getApplicationsRenewalRequest(application_id: number): Observable<any> {
+        let params = new HttpParams().set('project_application_id', application_id.toString());
+        return this.http.get(this.settings.getApiBaseURL() + 'application/getApplicationRenewalRequestById/', {
+            withCredentials: true,
+            headers: header_csrf,
+            params: params
+        }).pipe(catchError((error: any) => throwError(error)));
+
+    }
+
+
+    deleteApplication(application_id: number): Observable<any> {
+
+
+        return this.http.post(this.settings.getApiBaseURL() + 'application/deleteApplicationById/',{'project_application_id':application_id},
+            {
+                headers: header_csrf,
+                withCredentials: true,
+            }).pipe(catchError((error: any) => throwError(error)));
+
+    }
 
 
 }

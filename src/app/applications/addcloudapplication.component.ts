@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import 'rxjs/add/operator/toPromise';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {NgForm} from '@angular/forms';
 import {SpecialHardwareService} from '../api-connector/special-hardware.service'
@@ -50,7 +49,7 @@ export class AddcloudapplicationComponent {
     getSpecialHardware() {
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => {
-                let res = result.json();
+                let res = result;
                 for (let key in res) {
                     let shj = res[key];
                     let sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
@@ -106,7 +105,7 @@ export class AddcloudapplicationComponent {
                     this.updateNotificaitonModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 }).catch(error => {
-                var error_json = error.json()
+                var error_json = error
                 this.error = []
                 for (let key of Object.keys(error_json)) {
                     this.error.push(key.split('_',)[2])

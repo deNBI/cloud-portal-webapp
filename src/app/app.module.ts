@@ -12,9 +12,9 @@ import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
 import {AsideToggleDirective} from './shared/aside.directive';
 import {PopoverModule} from 'ngx-popover';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
-import {HttpModule} from '@angular/http';
 import {PerunSettings} from "./perun-connector/connector-settings.service";
 import {ApiSettings} from "./api-connector/api-settings.service";
+import {HttpClientModule} from '@angular/common/http';
 // Routing Module
 import {AppRoutingModule} from './app.routing';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
@@ -27,37 +27,37 @@ import {RegistrationInfoComponent} from "./registration-info.component";
 import {UserService} from "./api-connector/user.service";
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    HttpModule,
-    AppRoutingModule,
-    BsDropdownModule.forRoot(),
-    TabsModule.forRoot(),
-    ChartsModule,
-    ModalModule.forRoot(),
-    PopoverModule,
-      PaginationModule.forRoot(),
-  ],
-  declarations: [
-    AppComponent,
-    FullLayoutComponent,
-    SimpleLayoutComponent,
-    NAV_DROPDOWN_DIRECTIVES,
-    BreadcrumbsComponent,
-    SIDEBAR_TOGGLE_DIRECTIVES,
-    AsideToggleDirective,
-    RegistrationInfoComponent
-  ],
-  providers: [{
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  },
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BsDropdownModule.forRoot(),
+        TabsModule.forRoot(),
+        ChartsModule,
+        ModalModule.forRoot(),
+        PopoverModule,
+        PaginationModule.forRoot(),
+    ],
+    declarations: [
+        AppComponent,
+        FullLayoutComponent,
+        SimpleLayoutComponent,
+        NAV_DROPDOWN_DIRECTIVES,
+        BreadcrumbsComponent,
+        SIDEBAR_TOGGLE_DIRECTIVES,
+        AsideToggleDirective,
+        RegistrationInfoComponent
+    ],
+    providers: [{
+        provide: LocationStrategy,
+        useClass: HashLocationStrategy
+    },
 
-    PerunSettings,
-    ApiSettings,
-      UserService
-  ],
-  bootstrap: [AppComponent]
+        PerunSettings,
+        ApiSettings,
+        UserService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

@@ -1,226 +1,172 @@
 import {Injectable} from '@angular/core';
-import {URLSearchParams} from '@angular/http';
-import {VirtualMachineComponent} from '../virtualmachines/addvm.component'
-import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
 import {ApiSettings} from './api-settings.service'
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from "../virtualmachines/virtualmachinemodels/volume";
+
+const header = new HttpHeaders({
+    'X-CSRFToken': Cookie.get("csrftoken")
+});
 
 @Injectable()
 export class VirtualmachineService {
     data: string;
-    baseVmUrl = this.settings.getConnectorBaseUrl() + 'vms/'
+    baseVmUrl = this.settings.getConnectorBaseUrl() + 'vms/';
 
-    constructor(private http: Http, private settings: ApiSettings) {
+    constructor(private http: HttpClient, private settings: ApiSettings) {
     }
 
 
-    startVM(flavor: string, image: string, servername: string, project: string, projectid: string,volumename?:string, diskspace?: string): Observable<Response> {
+    startVM(flavor: string, image: string, servername: string, project: string, projectid: string, volumename?: string, diskspace?: string): Observable<any> {
 
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('flavor', flavor);
-        urlSearchParams.append('image', image);
-        urlSearchParams.append('servername', servername);
+        let params = new HttpParams()
+            .set('flavor', flavor)
+            .set('image', image)
+            .set('servername', servername)
+            .set('project', project)
+            .set('projectid', projectid)
+            .set('diskspace', diskspace)
+            .set('volumename', volumename);
 
-        urlSearchParams.append('project', project);
-        urlSearchParams.append('projectid', projectid);
-        urlSearchParams.append('diskspace', diskspace);
-        urlSearchParams.append('volumename',volumename);
-
-        return this.http.post(this.baseVmUrl + 'createVm/', urlSearchParams, {
+        return this.http.post(this.baseVmUrl + 'createVm/', params, {
             withCredentials: true,
             headers: header,
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
     getAllVM(): Observable<VirtualMachine[]> {
 
-
-        let urlSearchParams = new URLSearchParams();
-
-        return this.http.get(this.baseVmUrl + 'getallVms/', {
+        return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'getallVms/', {
             withCredentials: true,
-            search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
     getVm(elixir_id: string): Observable<VirtualMachine[]> {
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('elixir_id', elixir_id)
+        let params = new HttpParams().set('elixir_id', elixir_id);
 
-        return this.http.get(this.baseVmUrl + 'getVmByUser/', {
+        return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'getVmByUser/', {
             withCredentials: true,
-            search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+            params: params
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
     getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> {
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('groupid', groupid)
+        let params = new HttpParams().set('groupid', groupid);
 
-        return this.http.get(this.baseVmUrl + 'getActiveVmsByProject/', {
+        return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'getActiveVmsByProject/', {
             withCredentials: true,
-            search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+            params: params
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
     checkStatusInactiveVms(elixir_id: string): Observable<VirtualMachine[]> {
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('elixir_id', elixir_id)
+        let params = new HttpParams().set('elixir_id', elixir_id);
 
-        return this.http.get(this.baseVmUrl + 'checkStatusInactiveVms/', {
+        return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'checkStatusInactiveVms/', {
             withCredentials: true,
-            search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+            params: params
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
     checkVmStatus(openstack_id: string): Observable<any> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
-
-        urlSearchParams.append('openstack_id', openstack_id)
-
-
-        return this.http.post(this.baseVmUrl + 'checkStatusVm/', urlSearchParams, {
+        let params = new HttpParams().set('openstack_id', openstack_id);
+        return this.http.post(this.baseVmUrl + 'checkStatusVm/', params, {
             withCredentials: true,
 
             headers: header
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
+        ;
     }
 
-    deleteVM(openstack_id: string): Observable<Response> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
+    deleteVM(openstack_id: string): Observable<any> {
 
-        urlSearchParams.append('openstack_id', openstack_id)
-
-        return this.http.post(this.baseVmUrl + 'deleteVm/', urlSearchParams, {
+        let params = new HttpParams().set('openstack_id', openstack_id);
+        return this.http.post(this.baseVmUrl + 'deleteVm/', params, {
             withCredentials: true,
             headers: header,
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
+        ;
     }
 
-    stopVM(openstack_id: string): Observable<Response> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
+    stopVM(openstack_id: string): Observable<any> {
 
-        urlSearchParams.append('openstack_id', openstack_id)
+        let params = new HttpParams().set('openstack_id', openstack_id);
 
-        return this.http.post(this.baseVmUrl + 'stopVm/', urlSearchParams, {
+        return this.http.post(this.baseVmUrl + 'stopVm/', params, {
             withCredentials: true,
             headers: header,
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
-    resumeVM(openstack_id: string): Observable<Response> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
+    resumeVM(openstack_id: string): Observable<any> {
 
-        urlSearchParams.append('openstack_id', openstack_id)
+        let params = new HttpParams().set('openstack_id', openstack_id);
+        ;
 
-        return this.http.post(this.baseVmUrl + 'resumeVm/', urlSearchParams, {
+        return this.http.post(this.baseVmUrl + 'resumeVm/', params, {
             withCredentials: true,
             headers: header,
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
+
     }
 
 
     getVolumesByUser(): Observable<Volume[]> {
-        let urlSearchParams = new URLSearchParams();
-
-        return this.http.get(this.settings.getConnectorBaseUrl() + 'volumes/get_volumes/', {
+        return this.http.get<Volume[]>(this.settings.getConnectorBaseUrl() + 'volumes/get_volumes/', {
             withCredentials: true,
-            search: urlSearchParams
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
 
+    createVolume(volume_name: string, volume_diskspace: string, vm_openstackid): Observable<any> {
+        let params = new HttpParams().set('volume_name', volume_name)
+            .set('volume_diskspace', volume_diskspace)
+            .set('vm_openstackid', vm_openstackid);
 
-
-    createVolume(volume_name: string, volume_diskspace: string,vm_openstackid): Observable<Response> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
-
-        urlSearchParams.append('volume_name', volume_name);
-        urlSearchParams.append('volume_diskspace', volume_diskspace);
-                urlSearchParams.append('vm_openstackid', vm_openstackid);
-
-
-
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/createVolume/', urlSearchParams, {
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/createVolume/', params, {
             withCredentials: true,
             headers: header,
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
-    attachVolumetoServer(volume_id: string, instance_id: string): Observable<Response> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
+    attachVolumetoServer(volume_id: string, instance_id: string): Observable<any> {
 
-        urlSearchParams.append('volume_id', volume_id)
-        urlSearchParams.append('instance_id', instance_id)
+        let params = new HttpParams().set('volume_id', volume_id).set('instance_id', instance_id);
 
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/attachVolume/', urlSearchParams, {
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/attachVolume/', params, {
             withCredentials: true,
             headers: header,
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
-    deleteVolume(volume_id: string): Observable<Response> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
+    deleteVolume(volume_id: string): Observable<any> {
 
-        urlSearchParams.append('volume_id', volume_id)
+        let params = new HttpParams().set('volume_id',volume_id);
 
-
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolume/', urlSearchParams, {
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolume/', params, {
             withCredentials: true,
             headers: header,
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
-    deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<Response> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
+    deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<any> {
 
-        urlSearchParams.append('volume_id', volume_id)
-        urlSearchParams.append('instance_id', instance_id)
+        let params = new HttpParams().set('volume_id',volume_id).set('instance_id',instance_id)
 
-
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolumeAttachment/', urlSearchParams, {
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolumeAttachment/', params, {
             withCredentials: true,
             headers: header,
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 

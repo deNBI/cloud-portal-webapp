@@ -2,16 +2,15 @@ import {Component, Input, ViewChild} from '@angular/core';
 import {Http} from '@angular/http';
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Project} from './project.model';
-import {ModalDirective} from 'ngx-bootstrap/modal/modal.component';
+import {ModalDirective} from "ngx-bootstrap";
 import {ProjectMember} from './project_member.model'
-import 'rxjs/add/operator/toPromise';
-import {isNumber} from "util";
 import {environment} from '../../environments/environment'
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
 import * as moment from 'moment';
 import {VoService} from "../api-connector/vo.service";
+import {catchError} from 'rxjs/operators';
 
 
 @Component({
@@ -23,13 +22,10 @@ export class OverviewComponent {
     debug_module = false;
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
-
+    is_admin = false;
     userprojects: {};
-    userid: number;
     member_id: number;
-    user_data: {};
     admingroups: {};
-    adminvos: {};
     filteredMembers = null;
     projects: Project[] = new Array();
 
@@ -56,7 +52,7 @@ export class OverviewComponent {
     public notificationModalTitle: string = "Notification";
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
-    public notificationModalInfoMessage: string = ''
+    public notificationModalInfoMessage: string = '';
     public notificationModalIsClosable: boolean = false;
 
     public passwordModalTitle: string = "Changing Password";
@@ -69,7 +65,7 @@ export class OverviewComponent {
                 private groupservice: GroupService,
                 private userservice: UserService,
                 private voservice: VoService) {
-        this.getUserProjects(groupservice, userservice);
+        this.getUserProjects();
 
     }
 
@@ -82,7 +78,7 @@ export class OverviewComponent {
 
     setUserFacilityPassword(facility: string, details: [string, string][]) {
         this.userservice.setUserFacilityPassword(facility).subscribe(result => {
-            result = result.json()
+            result = result;
             for (let key of details) {
                 if (key[0] == 'Support') {
                     this.passwordModalEmail = key[1];
@@ -91,157 +87,69 @@ export class OverviewComponent {
 
             this.passwordModalFacility = facility;
             if (result['Error']) {
-                this.passwordModalTitle = 'Set or update password'
+                this.passwordModalTitle = 'Set or update password';
                 this.passwordModalType = 'warning'
             }
             else {
-                this.passwordModalTitle = 'Success'
-                this.passwordModalType = 'success'
+                this.passwordModalTitle = 'Success';
+                this.passwordModalType = 'success';
                 this.passwordModalPassword = result.toString()
             }
         })
     }
 
-    getUserProjects(groupservice: GroupService,
-                    userservice: UserService) {
-        let user_id: number;
-        let member_id: number;
-        let user_projects: {};
-        let user_data: {};
-        let admin_groups: {};
-        let admin_vos: {};
-        let project_checks = {};
+    getUserProjects() {
 
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) {
-                //TODO catch errors
-                let userid = userdata.json()["id"];
-                user_id = userid;
-                user_data = userdata.json();
-                return userservice.getMemberByUser(userid).toPromise();
-            })
-            .then(function (memberdata) {
-                let memberid = memberdata.json()["id"];
-                member_id = memberid;
-                return groupservice.getMemberGroups(memberid).toPromise();
-            }).then(function (groupsdata) {
-            user_projects = groupsdata.json();
-        }).then(function () {
-            return userservice.getGroupsWhereUserIsAdmin(user_id).toPromise();
-        }).then(function (admingroups) {
-            admin_groups = admingroups.json();
-        }).then(function () {
-
-            return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
-        }).then(function (adminvos) {
-            admin_vos = adminvos.json();
-        }).then(result => {
-
-            //hold data in the class just in case
-            this.userprojects = user_projects;
-            let number_userprojects = Object.keys(user_projects).length;
-            if (number_userprojects == 0) {
-                this.isLoaded = true;
-            }
-            this.userid = user_id;
-            this.user_data = user_data;
-            this.member_id = member_id;
-            this.admingroups = admin_groups;
-            this.adminvos = admin_vos;
-
-            let is_admin = false;
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in this.adminvos) {
-                if (this.adminvos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
-                    is_admin = true;
-                    break;
-                }
-            }
-
-
+        this.groupservice.getGroupDetails().subscribe(result => {
+            this.userprojects = result;
             for (let key in this.userprojects) {
                 let group = this.userprojects[key];
                 let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                let is_pi = false;
-
+                let is_pi = group['is_pi'];
+                let groupid = key;
+                let facility = group['facility'];
+                let shortname = group['shortname'];
+                let details = facility['Details'];
+                let details_array = [];
+                let lifetime = group['lifetime'];
+                let lifetimeDays = -1;
+                let expirationDate = undefined;
+                if (lifetime != -1) {
+                    lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
+                    expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
+                }
+                for (let detail in details) {
+                    let detail_tuple = [detail, details[detail]];
+                    details_array.push(detail_tuple);
+                }
                 //check if user is a PI (group manager)
-                if (!is_admin) {
-                    for (let gkey in this.admingroups) {
-                        if (group["id"] == this.admingroups[gkey]["id"]) {
-                            is_pi = true;
-                            break;
-                        }
-                    }
-                } else {
-                    is_pi = true;
+
+                if (!shortname) {
+                    shortname = group['name']
                 }
 
-                this.groupservice.getShortame(group['id']).subscribe(name => {
-                    this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => {
-                            let shortname = name['shortname'];
-                            if (!shortname) {
-                                shortname = group['name']
-                            }
-
-                            let newProject = new Project(
-                                group["id"],
-                                shortname,
-                                group["description"],
-                                dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
-                                dateDayDifference,
-                                is_pi,
-                                is_admin,
-                                [result['Facility'], result['FacilityId']]);
-                            project_checks[newProject.Id] = false;
-
-                            let details = result['Details'];
-                            let details_array = [];
-                            for (let detail in details) {
-                                let detail_tuple = [detail, details[detail]];
-                                details_array.push(detail_tuple);
-                            }
-                            newProject.ComputecenterDetails = details_array;
-                            this.groupservice.getLifetime(group['id']).subscribe(result => {
-                                let lifetime = result['lifetime']
-
-                                newProject.Lifetime = lifetime;
-                                if (newProject.Lifetime != -1) {
-
-                                    newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                                    let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                                }
-                                else {
-                                    newProject.LifetimeDays = -1;
-                                }
-
-                                this.projects.push(newProject);
-                                project_checks[newProject.Id] = true;
-                                if (Object.keys(project_checks).length == number_userprojects) {
-                                    let all_ready = true;
-                                    for (let key in project_checks) {
-                                        if (project_checks[key] == false) {
-                                            all_ready = false
-
-                                        }
-                                    }
-                                    if (all_ready == true) {
-                                        this.isLoaded = true
-                                    }
-                                }
-                            })
-
-
-                        }
-                    )
-                })
+                let newProject = new Project(
+                    Number(groupid),
+                    shortname,
+                    group["description"],
+                    dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                    dateDayDifference,
+                    is_pi,
+                    this.is_admin,
+                    [facility['Facility'], facility['FacilityId']]);
+                newProject.ComputecenterDetails = details_array;
+                newProject.Lifetime = lifetime;
+                newProject.LifetimeDays = lifetimeDays;
+                if (expirationDate) {
+                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
+                }
+                this.projects.push(newProject);
             }
-
+            this.isLoaded = true;
 
         })
-        // .then( function(){ groupsmanager.getGroupsWhereUserIsAdmin(this.userid); });
+
     }
 
 
@@ -256,7 +164,7 @@ export class OverviewComponent {
     }
 
 
-    public resetAddUserModal() {
+    resetAddUserModal() {
         this.addUserModalProjectID = null;
         this.addUserModalProjectName = null;
         this.UserModalFacility = null;
@@ -278,7 +186,7 @@ export class OverviewComponent {
             this.usersModalProjectName = projectname;
             this.usersModalProjectMembers = new Array();
             this.groupservice.getGroupAdminIds(projectid.toString()).subscribe(result => {
-                let admindIds = result['adminIds']
+                let admindIds = result['adminIds'];
                 for (let member of members) {
                     let member_id = member["id"];
                     let user_id = member["userId"];
@@ -371,39 +279,42 @@ export class OverviewComponent {
         }
         else {
             this.UserModalFacility = facility;
+            console.log(facility)
 
         }
     }
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id: number) {
-        this.groupservice.addMember(groupid, memberid, facility_id).toPromise()
-            .then(result => {
-
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id?: number) {
+        this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
+            result => {
                 if (result.status == 200) {
                     this.updateNotificaitonModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
 
                 } else {
-                    console.log(result.json())
+
 
                     this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
                 }
-            }).catch(error => {
-            if (error.json()['name'] == 'AlreadyMemberException') {
-                this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
-            }
+            },
+            error => {
 
-            else {
-                this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
-            }
-        });
+                if (error['name'] == 'AlreadyMemberException') {
+                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
+                }
+
+                else {
+                    this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+                }
+            });
+
     }
 
 
-    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id: number) {
-        this.groupservice.addMember(groupid, memberid, facility_id).toPromise().then(result => {
-            this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
-                .then(result => {
+    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id?: number) {
+        this.groupservice.addMember(groupid, memberid, facility_id).subscribe(result => {
+            this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
+                result => {
 
                     if (result.status == 200) {
                         this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
@@ -411,17 +322,17 @@ export class OverviewComponent {
                     } else {
                         this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                     }
-                }).catch(error => {
-                if (error.json()['name'] == 'AlreadyAdminException') {
-                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
-                }
-                else {
-                    this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
-                }
-            })
-        }).catch(error => {
-            this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
-                .then(result => {
+                }, error => {
+                    if (error['name'] == 'AlreadyAdminException') {
+                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                    }
+                    else {
+                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                    }
+                })
+        }, error => {
+            this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
+                result => {
 
                     if (result.status == 200) {
                         this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
@@ -429,21 +340,19 @@ export class OverviewComponent {
                     } else {
                         this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                     }
-                }).catch(error => {
-                if (error.json()['name'] == 'AlreadyAdminException') {
+                }, error => {
+                if (error['name'] == 'AlreadyAdminException') {
                     this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
                 }
                 else {
                     this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                 }
             })
-
-
         })
     }
 
 
-    public promoteAdmin(groupid: number, userid: number, username: string, facility_id: number) {
+    public promoteAdmin(groupid: number, userid: number, username: string, facility_id?: number) {
         this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
             .then(result => {
 
@@ -459,7 +368,7 @@ export class OverviewComponent {
     }
 
 
-    public removeAdmin(groupid: number, userid: number, name: string, facility_id: number) {
+    public removeAdmin(groupid: number, userid: number, name: string, facility_id?: number) {
         this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
             .then(result => {
 
@@ -474,9 +383,8 @@ export class OverviewComponent {
         });
     }
 
-    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id: number) {
-        this.groupservice.removeMember(groupid, memberid, userid, facility_id).toPromise()
-            .then(result => {
+    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id?: number) {
+        this.groupservice.removeMember(groupid, memberid, userid, facility_id).subscribe(result => {
 
                 if (result.status == 200) {
                     this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
@@ -484,9 +392,10 @@ export class OverviewComponent {
                 } else {
                     this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
                 }
-            }).catch(error => {
-            this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
-        });
+            },
+            error => {
+                this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
+            });
     }
 
     public resetFacilityDetailsModal() {
