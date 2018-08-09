@@ -1,5 +1,4 @@
 import ***REMOVED***Component***REMOVED*** from '@angular/core';
-import 'rxjs/add/operator/toPromise';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
 import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/special-hardware.service'
@@ -50,7 +49,7 @@ export class AddcloudapplicationComponent ***REMOVED***
     getSpecialHardware() ***REMOVED***
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => ***REMOVED***
-                let res = result.json();
+                let res = result;
                 for (let key in res) ***REMOVED***
                     let shj = res[key];
                     let sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
@@ -106,7 +105,7 @@ export class AddcloudapplicationComponent ***REMOVED***
                     this.updateNotificaitonModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 ***REMOVED***).catch(error => ***REMOVED***
-                var error_json = error.json()
+                var error_json = error
                 this.error = []
                 for (let key of Object.keys(error_json)) ***REMOVED***
                     this.error.push(key.split('_',)[2])

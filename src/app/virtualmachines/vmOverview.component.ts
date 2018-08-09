@@ -1,6 +1,5 @@
 import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import 'rxjs/Rx'
 
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
@@ -290,7 +289,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
             ***REMOVED***
 
-            if (result.text() === 'true') ***REMOVED***
+            if (result['deleted'] === true) ***REMOVED***
                 this.status_changed = 1;
             ***REMOVED***
             else ***REMOVED***
@@ -315,7 +314,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
             ***REMOVED***
 
-            if (result.text() === 'true') ***REMOVED***
+            if (result['stopped'] === true) ***REMOVED***
                 this.status_changed = 1;
             ***REMOVED***
             else ***REMOVED***
@@ -366,7 +365,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
             ***REMOVED***
 
-            if (result.text() === 'true') ***REMOVED***
+            if (result['resumed'] === 'true') ***REMOVED***
                 this.status_changed = 1;
             ***REMOVED***
             else ***REMOVED***
@@ -413,10 +412,10 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
             .getLoggedUser().toPromise()
             .then(function (userdata) ***REMOVED***
                 //TODO catch errors
-                user_id = userdata.json()["id"];
-                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
+                user_id = userdata["id"];
+                return userservice.getVosWhereUserIsAdmin().toPromise();
             ***REMOVED***).then(function (adminvos) ***REMOVED***
-            admin_vos = adminvos.json();
+            admin_vos = adminvos;
         ***REMOVED***).then(result => ***REMOVED***
             //check if user is a Vo admin so we can serv according buttons
             for (let vkey in admin_vos) ***REMOVED***
@@ -443,11 +442,11 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     getElixirId() ***REMOVED***
         this.userservice.getLoggedUser().toPromise()
             .then(result => ***REMOVED***
-                let res = result.json();
+                let res = result;
 
                 let userid = res["id"];
-                this.userservice.getLogins(userid).toPromise().then(result => ***REMOVED***
-                    let logins = result.json()
+                this.userservice.getLogins().toPromise().then(result => ***REMOVED***
+                    let logins = result;
                     for (let login of logins) ***REMOVED***
                         if (login['friendlyName'] === 'login-namespace:elixir-persistent') ***REMOVED***
 

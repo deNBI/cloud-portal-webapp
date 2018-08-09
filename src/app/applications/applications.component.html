@@ -169,7 +169,7 @@
 
                 <div *ngIf="this.activeApplicationsAvailable() == true" class="card-block">
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table class="table table-striped">F
                             <thead>
                             <tr>
                                 <th>Project Name</th>
@@ -194,7 +194,7 @@
                                         <td>***REMOVED******REMOVED***application.Institute***REMOVED******REMOVED***</td>
 
 
-                                        <td>
+                                        <td >
                                             <select [style.display]="application.OpenStackProject? 'inherit' :'none'"
                                                     class="form-control" #selectedComputeCenter>
 
@@ -204,7 +204,7 @@
                                                 </option>
                                             </select>
                                         </td>
-                                        <td *ngIf="application.Status == 4 "> ***REMOVED******REMOVED***application.ComputeCenter[0]***REMOVED******REMOVED***</td>
+
 
 
                                         <td>
@@ -823,7 +823,7 @@
                 </div>
                  <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
                    Modify request successfully declined!      </div>
-         
+
                 <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
                     An error occured.
 

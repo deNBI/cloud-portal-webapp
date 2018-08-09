@@ -1,6 +1,5 @@
 import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import 'rxjs/Rx'
 import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
 import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
@@ -34,10 +33,10 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
             .getLoggedUser().toPromise()
             .then(function (userdata) ***REMOVED***
                 //TODO catch errors
-                user_id = userdata.json()["id"];
-                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
+                user_id = userdata["id"];
+                return userservice.getVosWhereUserIsAdmin().toPromise();
             ***REMOVED***).then(function (adminvos) ***REMOVED***
-            admin_vos = adminvos.json();
+            admin_vos = adminvos;
         ***REMOVED***).then(result => ***REMOVED***
             //check if user is a Vo admin so we can serv according buttons
             for (let vkey in admin_vos) ***REMOVED***
@@ -74,10 +73,10 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         if (host && port) ***REMOVED***
             this.clientservice.checkClient(host, port).subscribe(data => ***REMOVED***
 
-                if (data.text() == "false") ***REMOVED***
+                if (data['status'] == false) ***REMOVED***
                     this.checkStatus = 'No Connection';
                 ***REMOVED***
-                else if (data.text() == 'true') ***REMOVED***
+                else if (data['status'] == true) ***REMOVED***
                     this.checkStatus = "Connected";
                 ***REMOVED***
                 else ***REMOVED***

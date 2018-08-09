@@ -56,7 +56,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
 
     is_vm_project_member() ***REMOVED***
         this.groupService.getMemberGroupsStatus().subscribe(result => ***REMOVED***
-            if (result.json().length > 0) ***REMOVED***
+            if (result.length > 0) ***REMOVED***
                 this.vm_project_member = true
             ***REMOVED***
         ***REMOVED***)
@@ -109,12 +109,12 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
             .getLoggedUser().toPromise()
             .then(function (userdata) ***REMOVED***
                 //TODO catch errors
-                user_id = userdata.json()["id"];
+                user_id = userdata["id"];
 
 
-                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
+                return userservice.getVosWhereUserIsAdmin().toPromise();
             ***REMOVED***).then(function (adminvos) ***REMOVED***
-            admin_vos = adminvos.json();
+            admin_vos = adminvos;
         ***REMOVED***).then(result => ***REMOVED***
             //check if user is a Vo admin so we can serv according buttons
             for (let vkey in admin_vos) ***REMOVED***

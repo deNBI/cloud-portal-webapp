@@ -12,9 +12,9 @@ import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sideba
 import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.directive';
 import ***REMOVED***PopoverModule***REMOVED*** from 'ngx-popover';
 import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
-import ***REMOVED***HttpModule***REMOVED*** from '@angular/http';
 import ***REMOVED***PerunSettings***REMOVED*** from "./perun-connector/connector-settings.service";
 import ***REMOVED***ApiSettings***REMOVED*** from "./api-connector/api-settings.service";
+import ***REMOVED***HttpClientModule***REMOVED*** from '@angular/common/http';
 // Routing Module
 import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
 import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination';
@@ -27,37 +27,37 @@ import ***REMOVED***RegistrationInfoComponent***REMOVED*** from "./registration-
 import ***REMOVED***UserService***REMOVED*** from "./api-connector/user.service";
 
 @NgModule(***REMOVED***
-  imports: [
-    BrowserModule,
-    HttpModule,
-    AppRoutingModule,
-    BsDropdownModule.forRoot(),
-    TabsModule.forRoot(),
-    ChartsModule,
-    ModalModule.forRoot(),
-    PopoverModule,
-      PaginationModule.forRoot(),
-  ],
-  declarations: [
-    AppComponent,
-    FullLayoutComponent,
-    SimpleLayoutComponent,
-    NAV_DROPDOWN_DIRECTIVES,
-    BreadcrumbsComponent,
-    SIDEBAR_TOGGLE_DIRECTIVES,
-    AsideToggleDirective,
-    RegistrationInfoComponent
-  ],
-  providers: [***REMOVED***
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  ***REMOVED***,
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BsDropdownModule.forRoot(),
+        TabsModule.forRoot(),
+        ChartsModule,
+        ModalModule.forRoot(),
+        PopoverModule,
+        PaginationModule.forRoot(),
+    ],
+    declarations: [
+        AppComponent,
+        FullLayoutComponent,
+        SimpleLayoutComponent,
+        NAV_DROPDOWN_DIRECTIVES,
+        BreadcrumbsComponent,
+        SIDEBAR_TOGGLE_DIRECTIVES,
+        AsideToggleDirective,
+        RegistrationInfoComponent
+    ],
+    providers: [***REMOVED***
+        provide: LocationStrategy,
+        useClass: HashLocationStrategy
+    ***REMOVED***,
 
-    PerunSettings,
-    ApiSettings,
-      UserService
-  ],
-  bootstrap: [AppComponent]
+        PerunSettings,
+        ApiSettings,
+        UserService
+    ],
+    bootstrap: [AppComponent]
 ***REMOVED***)
 export class AppModule ***REMOVED***
 ***REMOVED***

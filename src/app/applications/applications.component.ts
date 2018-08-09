@@ -1,5 +1,4 @@
 import ***REMOVED***Component, ViewChild***REMOVED*** from '@angular/core';
-import 'rxjs/add/operator/toPromise';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/special-hardware.service'
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service'
@@ -8,19 +7,18 @@ import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connecto
 import ***REMOVED***Application***REMOVED*** from "./application.model";
 import ***REMOVED***ApplicationStatus***REMOVED*** from "./application_status.model";
 import ***REMOVED***SpecialHardware***REMOVED*** from "./special_hardware.model";
-import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
+import ***REMOVED***ModalDirective***REMOVED*** from "ngx-bootstrap";
 import ***REMOVED***ResourcesManager***REMOVED*** from "../perun-connector/resources_manager";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import * as moment from 'moment';
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import ***REMOVED***ApplicationExtension***REMOVED*** from "./application_extension.model";
 import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
-import 'rxjs/add/operator/catch';
 
 
 @Component(***REMOVED***
     templateUrl: 'applications.component.html',
-    providers: [UserService, GroupService, PerunSettings, ApplicationsService, ApplicationStatusService, SpecialHardwareService, ApiSettings]
+    providers: [UserService, GroupService, PerunSettings, ApplicationStatusService,ApplicationsService, SpecialHardwareService, ApiSettings]
 ***REMOVED***)
 export class ApplicationsComponent ***REMOVED***
 
@@ -46,7 +44,7 @@ export class ApplicationsComponent ***REMOVED***
     public notificationModalIsClosable: boolean = false;
     private APPROVED_STATUS = 2;
     private EXTENSION_STATUS = 4;
-    private EXTENSTION_STATUS_STRING = 'extension requested';
+    private EXTENSTION_STATUS_STRING = 'modification requested';
     public FPGA = 1;
     public GPU = 2;
 
@@ -110,13 +108,12 @@ export class ApplicationsComponent ***REMOVED***
 
     getUserApplications() ***REMOVED***
         this.applicataionsservice
-            .getUserApplications().toPromise()
-            .then(result => ***REMOVED***
-                let res = result.json();
+            .getUserApplications().subscribe(result => ***REMOVED***
+                let res = result;
                 let userapp_ready = ***REMOVED******REMOVED***;
                 let number_userapplications = Object.keys(res).length;
-                if (number_userapplications == 0 ) ***REMOVED***
-                    this.isLoaded_userApplication=true;
+                if (number_userapplications == 0) ***REMOVED***
+                    this.isLoaded_userApplication = true;
                 ***REMOVED***
                 for (let key in res) ***REMOVED***
                     let aj = res[key];
@@ -140,7 +137,7 @@ export class ApplicationsComponent ***REMOVED***
                     a.Comment = aj["project_application_comment"];
                     if (a.Status.toString() == this.EXTENSTION_STATUS_STRING) ***REMOVED***
                         this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => ***REMOVED***
-                            res = result.json();
+                            res = result;
                             let r = new ApplicationExtension();
 
 
@@ -170,7 +167,6 @@ export class ApplicationsComponent ***REMOVED***
 
                             this.user_applications.push(a);
                             userapp_ready[a.Id] = true;
-                            console.log(userapp_ready)
 
                             if (Object.keys(userapp_ready).length == number_userapplications) ***REMOVED***
                                 let all_ready = true
@@ -214,7 +210,7 @@ export class ApplicationsComponent ***REMOVED***
     getApplicationStatus() ***REMOVED***
         this.applicationstatusservice.getAllApplicationStatus().toPromise()
             .then(result => ***REMOVED***
-                let res = result.json();
+                let res = result;
                 for (let key in res) ***REMOVED***
                     let asj = res[key];
                     let aj = new ApplicationStatus(asj["application_status_id"], asj["application_status_name"]);
@@ -226,7 +222,7 @@ export class ApplicationsComponent ***REMOVED***
     getSpecialHardware() ***REMOVED***
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => ***REMOVED***
-                let res = result.json();
+                let res = result;
                 for (let key in res) ***REMOVED***
                     let shj = res[key];
                     let sh = new SpecialHardware(shj["special_hardware_id"], shj["special_hardware_key"], shj["special_hardware_name"]);
@@ -247,10 +243,10 @@ export class ApplicationsComponent ***REMOVED***
             .getLoggedUser().toPromise()
             .then(userdata => ***REMOVED***
                 //TODO catch errors
-                user_id = userdata.json()["id"];
-                return this.userservice.getVosWhereUserIsAdmin(user_id).toPromise();
+                user_id = userdata["id"];
+                return this.userservice.getVosWhereUserIsAdmin().toPromise();
             ***REMOVED***).then(function (adminvos) ***REMOVED***
-            admin_vos = adminvos.json();
+            admin_vos = adminvos;
         ***REMOVED***).then(result => ***REMOVED***
                 //check if user is a Vo admin so we can serv according buttons
                 for (let vkey in admin_vos) ***REMOVED***
@@ -260,12 +256,12 @@ export class ApplicationsComponent ***REMOVED***
                             .getAllApplications().toPromise()
                             .then(result => ***REMOVED***
 
-                                let res = result.json();
+                                let res = result;
                                 let allapp_ready = ***REMOVED******REMOVED***;
                                 let number_allapplications = Object.keys(res).length;
-                                  if (number_allapplications == 0 ) ***REMOVED***
-                    this.isLoaded_AllApplication=true;
-                ***REMOVED***
+                                if (number_allapplications == 0) ***REMOVED***
+                                    this.isLoaded_AllApplication = true;
+                                ***REMOVED***
 
                                 for (let key in res) ***REMOVED***
 
@@ -319,7 +315,7 @@ export class ApplicationsComponent ***REMOVED***
 
                                                 if (a.Status == this.EXTENSION_STATUS) ***REMOVED***
                                                     this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => ***REMOVED***
-                                                        res = result.json()
+                                                        res = result;
                                                         let r = new ApplicationExtension();
 
                                                         r.Id = res['project_application'];
@@ -388,7 +384,7 @@ export class ApplicationsComponent ***REMOVED***
 
                                         if (a.Status == this.EXTENSION_STATUS) ***REMOVED***
                                             this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => ***REMOVED***
-                                                res = result.json()
+                                                res = result;
                                                 let r = new ApplicationExtension();
 
                                                 r.Id = res['project_application'];
@@ -466,7 +462,7 @@ export class ApplicationsComponent ***REMOVED***
     public requestExtension(data) ***REMOVED***
 
         this.applicataionsservice.requestRenewal(data).subscribe(result => ***REMOVED***
-            if (result.json()['Error']) ***REMOVED***
+            if (result['Error']) ***REMOVED***
                 this.extension_status = 2
             ***REMOVED***
             else ***REMOVED***
@@ -483,7 +479,7 @@ export class ApplicationsComponent ***REMOVED***
 
     public approveExtension(application_id: number) ***REMOVED***
         this.applicataionsservice.approveRenewal(application_id).subscribe(result => ***REMOVED***
-            if (result.json()['Error']) ***REMOVED***
+            if (result['Error']) ***REMOVED***
                 this.extension_status = 2
             ***REMOVED***
             else ***REMOVED***
@@ -499,7 +495,7 @@ export class ApplicationsComponent ***REMOVED***
 
     public declineExtension(application_id: number) ***REMOVED***
         this.applicataionsservice.declineRenewal(application_id).subscribe(result => ***REMOVED***
-            if (result.json()['Error']) ***REMOVED***
+            if (result['Error']) ***REMOVED***
                 this.extension_status = 2
             ***REMOVED***
             else ***REMOVED***
@@ -578,7 +574,7 @@ export class ApplicationsComponent ***REMOVED***
 
         this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
             .then(member_raw => ***REMOVED***
-                    let member = member_raw.json();
+                    let member = member_raw;
                     manager_member_id = member["id"];
                     manager_member_user_id = member["userId"];
                     // create new group
@@ -586,7 +582,7 @@ export class ApplicationsComponent ***REMOVED***
                     return this.groupservice.createGroup(name, description).toPromise();
                 ***REMOVED***
             ).then(group_raw => ***REMOVED***
-            let group = group_raw.json();
+            let group = group_raw;
             new_group_id = group["id"];
 
             //add the application user to the group

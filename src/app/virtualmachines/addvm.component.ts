@@ -4,13 +4,13 @@ import ***REMOVED***
     ElementRef
 ***REMOVED*** from '@angular/core';
 import ***REMOVED***Image***REMOVED*** from "./virtualmachinemodels/image";
-import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
+import ***REMOVED***ModalDirective***REMOVED*** from "ngx-bootstrap";
 import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor';
 import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***ImageDetailComponent***REMOVED*** from "./imagedetail.component";
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import 'rxjs/Rx'
+import ***REMOVED***forkJoin***REMOVED*** from 'rxjs';
 
 import ***REMOVED***Metadata***REMOVED*** from './virtualmachinemodels/metadata';
 import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
@@ -55,14 +55,13 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     selectedProjectVmsUsed: number;
     selectedProject: [string, number];
     client_avaiable: boolean;
+    validPublickey: boolean;
 
     volumeName: string = '';
 
-    optional_params=false;
-    diskspace:number=0;
-    isLoaded_projects=false;
-    isLoaded_images=false;
-    isLoaded_flavors=false;
+    optional_params = false;
+    diskspace: number = 0;
+    isLoaded = false;
 
     projects: string[] = new Array();
     FREEMIUM_ID = environment.freemium_project_id;
@@ -76,12 +75,10 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     getImages(): void ***REMOVED***
 
         this.imageService.getImages().subscribe(images => this.images = images);
-        this.isLoaded_images=true;
     ***REMOVED***
 
     getFlavors(): void ***REMOVED***
         this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
-        this.isLoaded_flavors=true;
 
     ***REMOVED***
 
@@ -115,18 +112,20 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     validatePublicKey() ***REMOVED***
 
         if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]***REMOVED***0,3***REMOVED***( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)) ***REMOVED***
-            return true;
+            this.validPublickey = true;
         ***REMOVED***
         else ***REMOVED***
 
-            return false;
+            this.validPublickey = false;
         ***REMOVED***
+
 
     ***REMOVED***
 
     getUserPublicKey() ***REMOVED***
-        this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => ***REMOVED***
-            this.userinfo.PublicKey = result.toString();
+        this.keyService.getKey().subscribe(result => ***REMOVED***
+            console.log(result['public_key']);
+            this.userinfo.PublicKey = result['public_key'];
         ***REMOVED***)
     ***REMOVED***
 
@@ -152,7 +151,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
         setTimeout(() => ***REMOVED***
             this.virtualmachineservice.checkVmStatus(id).subscribe(res => ***REMOVED***
-                res = res.json()
+                res = res;
                 if (res['Started'] || res['Error']) ***REMOVED***
                     this.data = res
                     this.getSelectedProjectDiskspace();
@@ -176,11 +175,11 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
             this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => ***REMOVED***
 
 
-                if (data.json()['Created']) ***REMOVED***
-                    this.check_status_loop(data.json()['Created']);
+                if (data['Created']) ***REMOVED***
+                    this.check_status_loop(data['Created']);
                 ***REMOVED***
                 else ***REMOVED***
-                    this.data = data.json()
+                    this.data = data
                 ***REMOVED***
 
 
@@ -236,12 +235,26 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
     getUserApprovedProjects() ***REMOVED***
         this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => ***REMOVED***
-            for (let project of membergroups.json()) ***REMOVED***
+            for (let project of membergroups) ***REMOVED***
                 this.projects.push(project);
-                this.isLoaded_projects=true;
 
             ***REMOVED***
         ***REMOVED***);
+    ***REMOVED***
+
+    initializeData() ***REMOVED***
+        forkJoin(this.imageService.getImages(), this.flavorService.getFlavors(), this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => ***REMOVED***
+            this.images = result[0];
+            this.flavors = result[1];
+            this.userinfo.PublicKey = result[3]['public_key'];
+            this.validatePublicKey();
+            let membergroups = result[2];
+            for (let project of membergroups) ***REMOVED***
+                this.projects.push(project);
+
+            ***REMOVED***
+            this.isLoaded = true;
+        ***REMOVED***)
     ***REMOVED***
 
 
@@ -282,10 +295,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
             ***REMOVED***
         ***REMOVED***)
         this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
-            console.log(result)
             if (result['UsedVolumes']) ***REMOVED***
                 this.selectedProjectVolumesUsed = result['UsedVolumes'];
-                console.log(this.selectedProjectVolumesUsed)
             ***REMOVED***
             else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) ***REMOVED***
 
@@ -327,8 +338,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
         this.userinfo = new Userinfo();
         this.getClientData();
-        this.getUserApprovedProjects();
-        this.getUserPublicKey();
+        this.initializeData();
 
 
     ***REMOVED***

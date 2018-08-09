@@ -1,41 +1,38 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***Image***REMOVED*** from '../virtualmachines/virtualmachinemodels/image';
-import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
-import ***REMOVED***URLSearchParams***REMOVED*** from "@angular/http";
 import ***REMOVED***ApiSettings***REMOVED*** from "./api-settings.service";
+import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
+import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
+import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+const header = new HttpHeaders(***REMOVED***
+    'X-CSRFToken': Cookie.get("csrftoken")
+***REMOVED***);
 
 
 @Injectable()
 export class keyService ***REMOVED***
-  baseKeysUrl = this.settings.getApiBaseURL() + 'keys/';
+    baseKeysUrl = this.settings.getApiBaseURL() + 'keys/';
 
-  constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
-  ***REMOVED***
+    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    ***REMOVED***
 
-  getKey(elixir_id: string): Observable<Response> ***REMOVED***
+    getKey(): Observable<any> ***REMOVED***
 
-    return this.http.get(this.baseKeysUrl + 'getPublicKeyByUser/', ***REMOVED***
-      withCredentials: true,
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        return this.http.get(this.baseKeysUrl + 'getPublicKeyByUser/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
-  ***REMOVED***
+    ***REMOVED***
 
-  postKey(elixir_id: string, public_key: string, keyname: string): Observable<Response> ***REMOVED***
-    let header = new Headers(***REMOVED***
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    ***REMOVED***);
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('public_key', public_key);
+    postKey(public_key: string): Observable<any> ***REMOVED***
+        let params = new HttpParams().set('public_key', public_key);
 
-    return this.http.post(this.baseKeysUrl + 'importKey/', urlSearchParams, ***REMOVED***
-      withCredentials: true,
-      headers: header,
-    ***REMOVED***);
-  ***REMOVED***
+        return this.http.post(this.baseKeysUrl + 'importKey/', params, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
 
 
 ***REMOVED***

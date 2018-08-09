@@ -2,15 +2,16 @@ import ***REMOVED***Component, Input, ViewChild***REMOVED*** from '@angular/core
 import ***REMOVED***Http***REMOVED*** from '@angular/http';
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
-import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
+import ***REMOVED***ModalDirective***REMOVED*** from "ngx-bootstrap";
 import ***REMOVED***ProjectMember***REMOVED*** from '../projectmanagement/project_member.model'
-import 'rxjs/add/operator/toPromise';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
+import ***REMOVED***map***REMOVED*** from 'rxjs/operators';
+
 import * as moment from 'moment';
 
 @Component(***REMOVED***
@@ -33,6 +34,8 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
     public usersModalProjectMembers: ProjectMember[] = new Array;
     public usersModalProjectID: number;
     public usersModalProjectName: string;
+    public selectedProject: Project;
+
 
     public emailSubject: string;
     public emailText: string;
@@ -60,60 +63,56 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
     ***REMOVED***
 
     getFacilityProjects(facility) ***REMOVED***
-        let projects_ready = ***REMOVED******REMOVED***;
 
-        this.facilityservice.getFacilityAllowedGroups(facility).subscribe(result => ***REMOVED***
-            let number_facilityprojects = result.length;
-            for (let group of result) ***REMOVED***
-                projects_ready[group['id']] = false
-                this.groupservice.getShortame(group['id']).subscribe(name => ***REMOVED***
 
-                    let shortname = name['shortname']
-                    if (!shortname) ***REMOVED***
-                        shortname = group['name']
-                    ***REMOVED***
-                    let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
-                    let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                    let is_pi = false;
-                    let is_admin = false;
-                    let newProject = new Project(
-                        group["id"],
-                        shortname,
-                        group["description"],
-                        dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
-                        dateDayDifference,
-                        is_pi,
-                        is_admin,
-                        [result['Facility'], result['FacilityId']]
-                    );
-                    newProject.Lifetime = group['lifetime']
-                    if (newProject.Lifetime != -1) ***REMOVED***
-                        newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24))
-                        let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                        newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                    ***REMOVED***
-                    else ***REMOVED***
-                        newProject.LifetimeDays = -1;
-                    ***REMOVED***
-                    this.projects.push(newProject);
-                    projects_ready[group['id']] = true;
+        this.facilityservice.getFacilityAllowedGroupsWithDetails(facility).subscribe(result => ***REMOVED***
+            let facility_projects = result;
+            let is_pi = false;
+            let is_admin = false;
+            for (let key in facility_projects) ***REMOVED***
+                let group = facility_projects[key];
+                let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
+                let is_pi = group['is_pi'];
+                let groupid = key;
+                let facility = group['facility'];
+                let shortname = group['shortname'];
+                let details = facility['Details'];
+                let details_array = [];
+                let lifetime = group['lifetime'];
+                let lifetimeDays = -1;
+                let expirationDate = undefined;
+                if (lifetime != -1) ***REMOVED***
+                    lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
+                    expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
+                ***REMOVED***
+                for (let detail in details) ***REMOVED***
+                    let detail_tuple = [detail, details[detail]];
+                    details_array.push(detail_tuple);
+                ***REMOVED***
 
-                    let all_ready = true;
-                    if (Object.keys(projects_ready).length == number_facilityprojects) ***REMOVED***
+                if (!shortname) ***REMOVED***
+                    shortname = group['name']
+                ***REMOVED***
 
-                        for (let key in projects_ready) ***REMOVED***
-                            if (projects_ready[key] == false) ***REMOVED***
-                                all_ready = false
-
-                            ***REMOVED***
-                        ***REMOVED***
-                        if (all_ready == true) ***REMOVED***
-
-                            this.isLoaded = true
-                        ***REMOVED***
-                    ***REMOVED***
-                ***REMOVED***)
+                let newProject = new Project(
+                    Number(groupid),
+                    shortname,
+                    group["description"],
+                    dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                    dateDayDifference,
+                    is_pi,
+                    is_admin,
+                    [facility['Facility'], facility['FacilityId']]);
+                newProject.ComputecenterDetails = details_array;
+                newProject.Lifetime = lifetime;
+                newProject.LifetimeDays = lifetimeDays;
+                if (expirationDate) ***REMOVED***
+                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
+                ***REMOVED***
+                this.projects.push(newProject);
             ***REMOVED***
+            this.isLoaded = true;
 
 
         ***REMOVED***)

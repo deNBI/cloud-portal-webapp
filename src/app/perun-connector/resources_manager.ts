@@ -1,10 +1,8 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
 import ***REMOVED***PerunSettings***REMOVED*** from './connector-settings.service'
-import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
+import ***REMOVED*** Observable***REMOVED*** from 'rxjs';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/toPromise';
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 
 @Injectable()

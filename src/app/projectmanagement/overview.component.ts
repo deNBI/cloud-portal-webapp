@@ -2,16 +2,15 @@ import ***REMOVED***Component, Input, ViewChild***REMOVED*** from '@angular/core
 import ***REMOVED***Http***REMOVED*** from '@angular/http';
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***Project***REMOVED*** from './project.model';
-import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
+import ***REMOVED***ModalDirective***REMOVED*** from "ngx-bootstrap";
 import ***REMOVED***ProjectMember***REMOVED*** from './project_member.model'
-import 'rxjs/add/operator/toPromise';
-import ***REMOVED***isNumber***REMOVED*** from "util";
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
 import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import * as moment from 'moment';
 import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
+import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 
 
 @Component(***REMOVED***
@@ -23,13 +22,10 @@ export class OverviewComponent ***REMOVED***
     debug_module = false;
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
-
+    is_admin = false;
     userprojects: ***REMOVED******REMOVED***;
-    userid: number;
     member_id: number;
-    user_data: ***REMOVED******REMOVED***;
     admingroups: ***REMOVED******REMOVED***;
-    adminvos: ***REMOVED******REMOVED***;
     filteredMembers = null;
     projects: Project[] = new Array();
 
@@ -56,7 +52,7 @@ export class OverviewComponent ***REMOVED***
     public notificationModalTitle: string = "Notification";
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
-    public notificationModalInfoMessage: string = ''
+    public notificationModalInfoMessage: string = '';
     public notificationModalIsClosable: boolean = false;
 
     public passwordModalTitle: string = "Changing Password";
@@ -69,7 +65,7 @@ export class OverviewComponent ***REMOVED***
                 private groupservice: GroupService,
                 private userservice: UserService,
                 private voservice: VoService) ***REMOVED***
-        this.getUserProjects(groupservice, userservice);
+        this.getUserProjects();
 
     ***REMOVED***
 
@@ -82,7 +78,7 @@ export class OverviewComponent ***REMOVED***
 
     setUserFacilityPassword(facility: string, details: [string, string][]) ***REMOVED***
         this.userservice.setUserFacilityPassword(facility).subscribe(result => ***REMOVED***
-            result = result.json()
+            result = result;
             for (let key of details) ***REMOVED***
                 if (key[0] == 'Support') ***REMOVED***
                     this.passwordModalEmail = key[1];
@@ -91,157 +87,69 @@ export class OverviewComponent ***REMOVED***
 
             this.passwordModalFacility = facility;
             if (result['Error']) ***REMOVED***
-                this.passwordModalTitle = 'Set or update password'
+                this.passwordModalTitle = 'Set or update password';
                 this.passwordModalType = 'warning'
             ***REMOVED***
             else ***REMOVED***
-                this.passwordModalTitle = 'Success'
-                this.passwordModalType = 'success'
+                this.passwordModalTitle = 'Success';
+                this.passwordModalType = 'success';
                 this.passwordModalPassword = result.toString()
             ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    getUserProjects(groupservice: GroupService,
-                    userservice: UserService) ***REMOVED***
-        let user_id: number;
-        let member_id: number;
-        let user_projects: ***REMOVED******REMOVED***;
-        let user_data: ***REMOVED******REMOVED***;
-        let admin_groups: ***REMOVED******REMOVED***;
-        let admin_vos: ***REMOVED******REMOVED***;
-        let project_checks = ***REMOVED******REMOVED***;
+    getUserProjects() ***REMOVED***
 
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) ***REMOVED***
-                //TODO catch errors
-                let userid = userdata.json()["id"];
-                user_id = userid;
-                user_data = userdata.json();
-                return userservice.getMemberByUser(userid).toPromise();
-            ***REMOVED***)
-            .then(function (memberdata) ***REMOVED***
-                let memberid = memberdata.json()["id"];
-                member_id = memberid;
-                return groupservice.getMemberGroups(memberid).toPromise();
-            ***REMOVED***).then(function (groupsdata) ***REMOVED***
-            user_projects = groupsdata.json();
-        ***REMOVED***).then(function () ***REMOVED***
-            return userservice.getGroupsWhereUserIsAdmin(user_id).toPromise();
-        ***REMOVED***).then(function (admingroups) ***REMOVED***
-            admin_groups = admingroups.json();
-        ***REMOVED***).then(function () ***REMOVED***
-
-            return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
-        ***REMOVED***).then(function (adminvos) ***REMOVED***
-            admin_vos = adminvos.json();
-        ***REMOVED***).then(result => ***REMOVED***
-
-            //hold data in the class just in case
-            this.userprojects = user_projects;
-            let number_userprojects = Object.keys(user_projects).length;
-            if (number_userprojects == 0) ***REMOVED***
-                this.isLoaded = true;
-            ***REMOVED***
-            this.userid = user_id;
-            this.user_data = user_data;
-            this.member_id = member_id;
-            this.admingroups = admin_groups;
-            this.adminvos = admin_vos;
-
-            let is_admin = false;
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in this.adminvos) ***REMOVED***
-                if (this.adminvos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) ***REMOVED***
-                    is_admin = true;
-                    break;
-                ***REMOVED***
-            ***REMOVED***
-
-
+        this.groupservice.getGroupDetails().subscribe(result => ***REMOVED***
+            this.userprojects = result;
             for (let key in this.userprojects) ***REMOVED***
                 let group = this.userprojects[key];
                 let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                let is_pi = false;
-
+                let is_pi = group['is_pi'];
+                let groupid = key;
+                let facility = group['facility'];
+                let shortname = group['shortname'];
+                let details = facility['Details'];
+                let details_array = [];
+                let lifetime = group['lifetime'];
+                let lifetimeDays = -1;
+                let expirationDate = undefined;
+                if (lifetime != -1) ***REMOVED***
+                    lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
+                    expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
+                ***REMOVED***
+                for (let detail in details) ***REMOVED***
+                    let detail_tuple = [detail, details[detail]];
+                    details_array.push(detail_tuple);
+                ***REMOVED***
                 //check if user is a PI (group manager)
-                if (!is_admin) ***REMOVED***
-                    for (let gkey in this.admingroups) ***REMOVED***
-                        if (group["id"] == this.admingroups[gkey]["id"]) ***REMOVED***
-                            is_pi = true;
-                            break;
-                        ***REMOVED***
-                    ***REMOVED***
-                ***REMOVED*** else ***REMOVED***
-                    is_pi = true;
+
+                if (!shortname) ***REMOVED***
+                    shortname = group['name']
                 ***REMOVED***
 
-                this.groupservice.getShortame(group['id']).subscribe(name => ***REMOVED***
-                    this.groupservice.getFacilityByGroup(group["id"]).subscribe(result => ***REMOVED***
-                            let shortname = name['shortname'];
-                            if (!shortname) ***REMOVED***
-                                shortname = group['name']
-                            ***REMOVED***
-
-                            let newProject = new Project(
-                                group["id"],
-                                shortname,
-                                group["description"],
-                                dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
-                                dateDayDifference,
-                                is_pi,
-                                is_admin,
-                                [result['Facility'], result['FacilityId']]);
-                            project_checks[newProject.Id] = false;
-
-                            let details = result['Details'];
-                            let details_array = [];
-                            for (let detail in details) ***REMOVED***
-                                let detail_tuple = [detail, details[detail]];
-                                details_array.push(detail_tuple);
-                            ***REMOVED***
-                            newProject.ComputecenterDetails = details_array;
-                            this.groupservice.getLifetime(group['id']).subscribe(result => ***REMOVED***
-                                let lifetime = result['lifetime']
-
-                                newProject.Lifetime = lifetime;
-                                if (newProject.Lifetime != -1) ***REMOVED***
-
-                                    newProject.LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(newProject.Lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                                    let expirationDate = moment(dateCreated).add(newProject.Lifetime, 'months').toDate();
-                                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                                ***REMOVED***
-                                else ***REMOVED***
-                                    newProject.LifetimeDays = -1;
-                                ***REMOVED***
-
-                                this.projects.push(newProject);
-                                project_checks[newProject.Id] = true;
-                                if (Object.keys(project_checks).length == number_userprojects) ***REMOVED***
-                                    let all_ready = true;
-                                    for (let key in project_checks) ***REMOVED***
-                                        if (project_checks[key] == false) ***REMOVED***
-                                            all_ready = false
-
-                                        ***REMOVED***
-                                    ***REMOVED***
-                                    if (all_ready == true) ***REMOVED***
-                                        this.isLoaded = true
-                                    ***REMOVED***
-                                ***REMOVED***
-                            ***REMOVED***)
-
-
-                        ***REMOVED***
-                    )
-                ***REMOVED***)
+                let newProject = new Project(
+                    Number(groupid),
+                    shortname,
+                    group["description"],
+                    dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                    dateDayDifference,
+                    is_pi,
+                    this.is_admin,
+                    [facility['Facility'], facility['FacilityId']]);
+                newProject.ComputecenterDetails = details_array;
+                newProject.Lifetime = lifetime;
+                newProject.LifetimeDays = lifetimeDays;
+                if (expirationDate) ***REMOVED***
+                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
+                ***REMOVED***
+                this.projects.push(newProject);
             ***REMOVED***
-
+            this.isLoaded = true;
 
         ***REMOVED***)
-        // .then( function()***REMOVED*** groupsmanager.getGroupsWhereUserIsAdmin(this.userid); ***REMOVED***);
+
     ***REMOVED***
 
 
@@ -256,7 +164,7 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public resetAddUserModal() ***REMOVED***
+    resetAddUserModal() ***REMOVED***
         this.addUserModalProjectID = null;
         this.addUserModalProjectName = null;
         this.UserModalFacility = null;
@@ -278,7 +186,7 @@ export class OverviewComponent ***REMOVED***
             this.usersModalProjectName = projectname;
             this.usersModalProjectMembers = new Array();
             this.groupservice.getGroupAdminIds(projectid.toString()).subscribe(result => ***REMOVED***
-                let admindIds = result['adminIds']
+                let admindIds = result['adminIds'];
                 for (let member of members) ***REMOVED***
                     let member_id = member["id"];
                     let user_id = member["userId"];
@@ -371,39 +279,42 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***
         else ***REMOVED***
             this.UserModalFacility = facility;
+            console.log(facility)
 
         ***REMOVED***
     ***REMOVED***
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id: number) ***REMOVED***
-        this.groupservice.addMember(groupid, memberid, facility_id).toPromise()
-            .then(result => ***REMOVED***
-
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id?: number) ***REMOVED***
+        this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
+            result => ***REMOVED***
                 if (result.status == 200) ***REMOVED***
                     this.updateNotificaitonModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
-                    console.log(result.json())
+
 
                     this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
                 ***REMOVED***
-            ***REMOVED***).catch(error => ***REMOVED***
-            if (error.json()['name'] == 'AlreadyMemberException') ***REMOVED***
-                this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
-            ***REMOVED***
+            ***REMOVED***,
+            error => ***REMOVED***
 
-            else ***REMOVED***
-                this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
-            ***REMOVED***
-        ***REMOVED***);
+                if (error['name'] == 'AlreadyMemberException') ***REMOVED***
+                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
+                ***REMOVED***
+
+                else ***REMOVED***
+                    this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+                ***REMOVED***
+            ***REMOVED***);
+
     ***REMOVED***
 
 
-    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id: number) ***REMOVED***
-        this.groupservice.addMember(groupid, memberid, facility_id).toPromise().then(result => ***REMOVED***
-            this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
-                .then(result => ***REMOVED***
+    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id?: number) ***REMOVED***
+        this.groupservice.addMember(groupid, memberid, facility_id).subscribe(result => ***REMOVED***
+            this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
+                result => ***REMOVED***
 
                     if (result.status == 200) ***REMOVED***
                         this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
@@ -411,17 +322,17 @@ export class OverviewComponent ***REMOVED***
                     ***REMOVED*** else ***REMOVED***
                         this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                     ***REMOVED***
-                ***REMOVED***).catch(error => ***REMOVED***
-                if (error.json()['name'] == 'AlreadyAdminException') ***REMOVED***
-                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
-                ***REMOVED***
-                else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
-                ***REMOVED***
-            ***REMOVED***)
-        ***REMOVED***).catch(error => ***REMOVED***
-            this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
-                .then(result => ***REMOVED***
+                ***REMOVED***, error => ***REMOVED***
+                    if (error['name'] == 'AlreadyAdminException') ***REMOVED***
+                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                    ***REMOVED***
+                    else ***REMOVED***
+                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                    ***REMOVED***
+                ***REMOVED***)
+        ***REMOVED***, error => ***REMOVED***
+            this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
+                result => ***REMOVED***
 
                     if (result.status == 200) ***REMOVED***
                         this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
@@ -429,21 +340,19 @@ export class OverviewComponent ***REMOVED***
                     ***REMOVED*** else ***REMOVED***
                         this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                     ***REMOVED***
-                ***REMOVED***).catch(error => ***REMOVED***
-                if (error.json()['name'] == 'AlreadyAdminException') ***REMOVED***
+                ***REMOVED***, error => ***REMOVED***
+                if (error['name'] == 'AlreadyAdminException') ***REMOVED***
                     this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
                 ***REMOVED***
                 else ***REMOVED***
                     this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                 ***REMOVED***
             ***REMOVED***)
-
-
         ***REMOVED***)
     ***REMOVED***
 
 
-    public promoteAdmin(groupid: number, userid: number, username: string, facility_id: number) ***REMOVED***
+    public promoteAdmin(groupid: number, userid: number, username: string, facility_id?: number) ***REMOVED***
         this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
@@ -459,7 +368,7 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public removeAdmin(groupid: number, userid: number, name: string, facility_id: number) ***REMOVED***
+    public removeAdmin(groupid: number, userid: number, name: string, facility_id?: number) ***REMOVED***
         this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
@@ -474,9 +383,8 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id: number) ***REMOVED***
-        this.groupservice.removeMember(groupid, memberid, userid, facility_id).toPromise()
-            .then(result => ***REMOVED***
+    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id?: number) ***REMOVED***
+        this.groupservice.removeMember(groupid, memberid, userid, facility_id).subscribe(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
                     this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
@@ -484,9 +392,10 @@ export class OverviewComponent ***REMOVED***
                 ***REMOVED*** else ***REMOVED***
                     this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
                 ***REMOVED***
-            ***REMOVED***).catch(error => ***REMOVED***
-            this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
-        ***REMOVED***);
+            ***REMOVED***,
+            error => ***REMOVED***
+                this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
+            ***REMOVED***);
     ***REMOVED***
 
     public resetFacilityDetailsModal() ***REMOVED***

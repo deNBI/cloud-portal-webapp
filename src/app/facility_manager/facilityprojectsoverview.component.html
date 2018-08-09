@@ -48,7 +48,7 @@
                             [ngStyle]="***REMOVED***'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)***REMOVED***">
                             <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
                             <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED*** project.Description ***REMOVED******REMOVED***</td>
+                                <td><button class="btn btn-secondary" (click)="selectedProject=project;infoModal.show();">Show Description</button></td>
 
 
                             <td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>
@@ -236,6 +236,30 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-info" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Description</h4>
+                <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+
+            <div>
+                <p style=" word-wrap: break-word;">***REMOVED******REMOVED*** selectedProject?.Description ***REMOVED******REMOVED***</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;infoModal.hide();">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
 
 
 
