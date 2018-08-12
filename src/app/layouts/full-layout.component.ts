@@ -6,12 +6,13 @@ import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***PopoverModule ***REMOVED*** from 'ngx-popover';
+import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 
 
 @Component(***REMOVED***
     selector: 'app-dashboard',
     templateUrl: './full-layout.component.html',
-    providers: [GroupService,UserService,FacilityService, ClientService,  PerunSettings, ApiSettings]
+    providers: [VoService,GroupService,UserService,FacilityService, ClientService,  PerunSettings, ApiSettings]
 ***REMOVED***)
 export class FullLayoutComponent implements OnInit ***REMOVED***
 
@@ -25,7 +26,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     overview_state='closed';
     client_avaiable;
 
-    constructor(private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
+    constructor(private voService:VoService,private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
         this.is_client_avaiable();
         this.is_vm_project_member();
         this.get_is_facility_manager();
@@ -101,33 +102,14 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
 
 
 
-    checkVOstatus(userservice:UserService) ***REMOVED***
-        let user_id: number;
-        let admin_vos: ***REMOVED******REMOVED***;
-
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) ***REMOVED***
-                //TODO catch errors
-                user_id = userdata["id"];
-
-
-                return userservice.getVosWhereUserIsAdmin().toPromise();
-            ***REMOVED***).then(function (adminvos) ***REMOVED***
-            admin_vos = adminvos;
-        ***REMOVED***).then(result => ***REMOVED***
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in admin_vos) ***REMOVED***
-                if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) ***REMOVED***
-                    this.is_vo_admin = true;
-                ***REMOVED***
-
-            ***REMOVED***
-        ***REMOVED***);
+    checkVOstatus() ***REMOVED***
+       this.voService.isVo().subscribe(result =>***REMOVED***
+           this.is_vo_admin=result['Is_Vo_Manager'];
+       ***REMOVED***)
     ***REMOVED***
 
     ngOnInit(): void ***REMOVED***
 
-        this.checkVOstatus(this.userservice);
+        this.checkVOstatus();
     ***REMOVED***
 ***REMOVED***
