@@ -6,12 +6,13 @@ import {FacilityService} from "../api-connector/facility.service";
 import {UserService} from "../api-connector/user.service";
 import {GroupService} from "../api-connector/group.service";
 import {PopoverModule } from 'ngx-popover';
+import {VoService} from "../api-connector/vo.service";
 
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './full-layout.component.html',
-    providers: [GroupService,UserService,FacilityService, ClientService,  PerunSettings, ApiSettings]
+    providers: [VoService,GroupService,UserService,FacilityService, ClientService,  PerunSettings, ApiSettings]
 })
 export class FullLayoutComponent implements OnInit {
 
@@ -25,7 +26,7 @@ export class FullLayoutComponent implements OnInit {
     overview_state='closed';
     client_avaiable;
 
-    constructor(private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) {
+    constructor(private voService:VoService,private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) {
         this.is_client_avaiable();
         this.is_vm_project_member();
         this.get_is_facility_manager();
@@ -101,33 +102,14 @@ export class FullLayoutComponent implements OnInit {
 
 
 
-    checkVOstatus(userservice:UserService) {
-        let user_id: number;
-        let admin_vos: {};
-
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) {
-                //TODO catch errors
-                user_id = userdata["id"];
-
-
-                return userservice.getVosWhereUserIsAdmin().toPromise();
-            }).then(function (adminvos) {
-            admin_vos = adminvos;
-        }).then(result => {
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in admin_vos) {
-                if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
-                    this.is_vo_admin = true;
-                }
-
-            }
-        });
+    checkVOstatus() {
+       this.voService.isVo().subscribe(result =>{
+           this.is_vo_admin=result['Is_Vo_Manager'];
+       })
     }
 
     ngOnInit(): void {
 
-        this.checkVOstatus(this.userservice);
+        this.checkVOstatus();
     }
 }
