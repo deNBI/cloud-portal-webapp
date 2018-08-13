@@ -7,8 +7,6 @@ import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***PopoverModule ***REMOVED*** from 'ngx-popover';
 import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
-import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
-
 
 @Component(***REMOVED***
     selector: 'app-dashboard',
@@ -17,7 +15,6 @@ import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
 ***REMOVED***)
 export class FullLayoutComponent implements OnInit ***REMOVED***
 
-    userinfo: Userinfo;
     public year = new Date().getFullYear();
     public disabled = false;
     public status: ***REMOVED*** isopen: boolean ***REMOVED*** = ***REMOVED***isopen: false***REMOVED***;
