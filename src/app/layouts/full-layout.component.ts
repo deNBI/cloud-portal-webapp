@@ -7,8 +7,6 @@ import {UserService} from "../api-connector/user.service";
 import {GroupService} from "../api-connector/group.service";
 import {PopoverModule } from 'ngx-popover';
 import {VoService} from "../api-connector/vo.service";
-import {Userinfo} from '../userinfo/userinfo.model';
-
 
 @Component({
     selector: 'app-dashboard',
@@ -17,7 +15,6 @@ import {Userinfo} from '../userinfo/userinfo.model';
 })
 export class FullLayoutComponent implements OnInit {
 
-    userinfo: Userinfo;
     public year = new Date().getFullYear();
     public disabled = false;
     public status: { isopen: boolean } = {isopen: false};
