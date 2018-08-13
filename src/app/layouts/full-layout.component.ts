@@ -7,6 +7,7 @@ import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***PopoverModule ***REMOVED*** from 'ngx-popover';
 import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
+import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
 
 
 @Component(***REMOVED***
@@ -16,12 +17,14 @@ import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 ***REMOVED***)
 export class FullLayoutComponent implements OnInit ***REMOVED***
 
+    userinfo: Userinfo;
     public year = new Date().getFullYear();
     public disabled = false;
     public status: ***REMOVED*** isopen: boolean ***REMOVED*** = ***REMOVED***isopen: false***REMOVED***;
     private is_vo_admin = false;
-    public is_facility_manager = false
+    public is_facility_manager = false;
     public vm_project_member = false;
+    public login_name = '';
     navbar_state = 'closed';
     overview_state='closed';
     client_avaiable;
@@ -30,7 +33,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
         this.is_client_avaiable();
         this.is_vm_project_member();
         this.get_is_facility_manager();
-
+        this.getLoginName();
     ***REMOVED***
 
     public get_is_vo_admin(): boolean ***REMOVED***
@@ -112,4 +115,18 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
 
         this.checkVOstatus();
     ***REMOVED***
+
+    getLoginName() ***REMOVED***
+            this.userservice.getLogins().toPromise().then(result => ***REMOVED***
+                let logins = result;
+                for (let login of logins) ***REMOVED***
+                  if (login['friendlyName'] === 'login-namespace:elixir') ***REMOVED***
+                        this.login_name = login['value'];
+                    ***REMOVED***
+
+                ***REMOVED***
+
+            ***REMOVED***);
+
+        ***REMOVED***
 ***REMOVED***
