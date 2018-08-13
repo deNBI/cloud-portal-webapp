@@ -7,6 +7,7 @@ import {UserService} from "../api-connector/user.service";
 import {GroupService} from "../api-connector/group.service";
 import {PopoverModule } from 'ngx-popover';
 import {VoService} from "../api-connector/vo.service";
+import {Userinfo} from '../userinfo/userinfo.model';
 
 
 @Component({
@@ -16,12 +17,14 @@ import {VoService} from "../api-connector/vo.service";
 })
 export class FullLayoutComponent implements OnInit {
 
+    userinfo: Userinfo;
     public year = new Date().getFullYear();
     public disabled = false;
     public status: { isopen: boolean } = {isopen: false};
     private is_vo_admin = false;
-    public is_facility_manager = false
+    public is_facility_manager = false;
     public vm_project_member = false;
+    public login_name = '';
     navbar_state = 'closed';
     overview_state='closed';
     client_avaiable;
@@ -30,7 +33,7 @@ export class FullLayoutComponent implements OnInit {
         this.is_client_avaiable();
         this.is_vm_project_member();
         this.get_is_facility_manager();
-
+        this.getLoginName();
     }
 
     public get_is_vo_admin(): boolean {
@@ -112,4 +115,18 @@ export class FullLayoutComponent implements OnInit {
 
         this.checkVOstatus();
     }
+
+    getLoginName() {
+            this.userservice.getLogins().toPromise().then(result => {
+                let logins = result;
+                for (let login of logins) {
+                  if (login['friendlyName'] === 'login-namespace:elixir') {
+                        this.login_name = login['value'];
+                    }
+
+                }
+
+            });
+
+        }
 }
