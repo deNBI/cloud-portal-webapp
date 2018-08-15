@@ -112,16 +112,13 @@ export class ApplicationsComponent {
         this.applicataionsservice
             .getUserApplications().subscribe(result => {
             let res = result;
-            let userapp_ready = {};
-            let number_userapplications = Object.keys(res).length;
-            if (number_userapplications == 0) {
+            if (Object.keys(res).length == 0) {
                 this.isLoaded_userApplication = true;
             }
             for (let key in res) {
                 let aj = res[key];
                 let a = new Application();
                 a.Id = aj["project_application_id"];
-                userapp_ready[a.Id] = false;
                 a.Name = aj["project_application_name"];
                 a.Shortname = aj["project_application_shortname"];
                 a.Lifetime = aj["project_application_lifetime"];
@@ -137,75 +134,36 @@ export class ApplicationsComponent {
                 a.SpecialHardware = aj["project_application_special_hardware"];
                 a.OpenStackProject = aj["project_application_openstack_project"];
                 a.Comment = aj["project_application_comment"];
-                if (a.Status.toString() == this.EXTENSTION_STATUS_STRING) {
-                    this.applicataionsservice.getApplicationsRenewalRequest(a.Id).subscribe(result => {
-                        res = result;
-                        let r = new ApplicationExtension();
+                if (aj['projectapplicationrenewal']) {
+                    let r = new ApplicationExtension();
 
+                    r.Id = aj['projectapplicationrenewal']['project_application'];
+                    r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                    r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                    r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                    r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                    r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                    r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                    r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                    let special_hardware = [];
+                    if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) {
+                        let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
 
-                        r.Id = res['project_application'];
-                        r.Lifetime = res['project_application_renewal_lifetime'];
-                        r.VolumeLimit = res['project_application_renewal_volume_limit'];
-                        r.VolumeCounter = res['project_application_renewal_volume_counter'];
-                        r.VMsRequested = res['project_application_renewal_vms_requested'];
-                        r.Comment = res['project_application_renewal_comment'];
-                        r.CoresPerVM = res['project_application_renewal_cores_per_vm'];
-                        r.ObjectStorage = res['project_application_renewal_object_storage'];
-                        r.RamPerVM = res['project_application_renewal_ram_per_vm'];
-                        r.Comment = res['project_application_renewal_comment'];
-                        let special_hardware = [];
-                        if (res['project_application_renewal_special_hardware'] != null) {
-                            let special_hardware_string = res['project_application_renewal_special_hardware'].toString();
+                        for (let c = 0; c < special_hardware_string.length; c++) {
+                            let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                            special_hardware.push(sh)
 
-                            for (let c = 0; c < special_hardware_string.length; c++) {
-                                let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
-                                special_hardware.push(sh)
-
-                            }
-
-                            r.SpecialHardware = special_hardware;
                         }
-                        a.ApplicationExtension = r;
 
-                        this.user_applications.push(a);
-                        userapp_ready[a.Id] = true;
-
-                        if (Object.keys(userapp_ready).length == number_userapplications) {
-                            let all_ready = true
-                            for (let key in  userapp_ready) {
-                                if (userapp_ready[key] == false) {
-                                    all_ready = false
-
-                                }
-                            }
-                            if (all_ready == true) {
-                                this.isLoaded_userApplication = true
-                            }
-                        }
-                    })
-
-                }
-                else {
-                    this.user_applications.push(a);
-
-                    userapp_ready[a.Id] = true;
-
-                    if (Object.keys(userapp_ready).length == number_userapplications) {
-                        let all_ready = true
-                        for (let key in  userapp_ready) {
-                            if (userapp_ready[key] == false) {
-                                all_ready = false
-
-                            }
-                        }
-                        if (all_ready == true) {
-                            this.isLoaded_userApplication = true
-                        }
+                        r.SpecialHardware = special_hardware;
                     }
+                    a.ApplicationExtension = r;
                 }
-
-
+                this.user_applications.push(a)
             }
+            this.isLoaded_userApplication = true;
         });
     }
 
