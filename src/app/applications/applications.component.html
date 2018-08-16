@@ -169,7 +169,7 @@
 
                 <div *ngIf="this.activeApplicationsAvailable() == true" class="card-block">
                     <div class="table-responsive">
-                        <table class="table table-striped">F
+                        <table class="table table-striped">
                             <thead>
                             <tr>
                                 <th>Project Name</th>
@@ -400,7 +400,7 @@
                             </thead>
                             <tbody>
                             <ng-container *ngFor="let application of all_applications">
-                                <ng-container *ngIf="application.Status != 1 && application.Status != 4">
+                                <ng-container *ngIf="application.Status != 1">
                                     <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)}">
                                         <td>{{ application.Name }}</td>
                                         <td>{{application.Shortname}}</td>
