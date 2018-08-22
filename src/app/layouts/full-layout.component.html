@@ -1,10 +1,8 @@
 <header class="app-header navbar">
     <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>&#9776;</button>
-    <a class="navbar-brand" href="#"></a>
-    <ul class="navbar-nav ml-md-auto">
-        <!--<li class="nav-item pr-3">
-          <button class="btn btn-info">Logout</button>
-        </li> -->
+    <a class="navbar-brand d-none d-md-block" href="#"></a>
+    <ul class="nav navbar-nav ml-md-auto">
+      <li><strong class="text-info">{{login_name}}</strong></li>
     </ul>
 </header>
 <div class="app-body">
@@ -40,13 +38,13 @@
                             class="icon-pencil"></i> New Application</a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
-                            <a class="nav-link" routerLinkActive="active"
+                            <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                                [routerLink]="['/applications/newCloudApplication']">
                                 <i class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
                                    title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i>
                                 Cloud Project </a></li>
                         <li class="nav-item">
-                            <a class="nav-link" routerLinkActive="active"
+                            <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                                [routerLink]="['/applications/newSingleVmApplication']"><i
                                     class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
                                     title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i>
@@ -68,24 +66,24 @@
                             class="icon-list"   onmouseover="" style="cursor: pointer;"></i> Overviews</a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item" *ngIf="vm_project_member || get_is_vo_admin()">
-                            <a class="nav-link" routerLinkActive="active"
+                            <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                                [routerLink]="['/virtualmachines/vmOverview']"><i
-                                    class="icon-list"></i> Instance Overview</a>
+                                    class="icon-list"></i> Instance</a>
                         </li>
                         <li class="nav-item" *ngIf="get_is_vo_admin()">
-                            <a class="nav-link" routerLinkActive="active"
+                            <a  style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                                [routerLink]="['/virtualmachines/clientOverview']"><i
-                                    class="icon-list"></i> Client Overview</a>
+                                    class="icon-list"></i> Client</a>
                         </li>
                         <li class="nav-item" *ngIf="vm_project_member || get_is_vo_admin()">
-                            <a class="nav-link" routerLinkActive="active"
+                            <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                                [routerLink]="['/virtualmachines/volumeOverview']"><i
-                                    class="icon-list"></i> Volume Overview</a>
+                                    class="icon-list"></i> Volume</a>
                         </li>
                         <li class="nav-item" *ngIf="vm_project_member || get_is_vo_admin()">
-                            <a class="nav-link" routerLinkActive="active"
+                            <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                                [routerLink]="['/virtualmachines/snapshotOverview']"><i
-                                    class="icon-list"></i> Snapshot Overview</a>
+                                    class="icon-list"></i>Snapshot</a>
                         </li>
 
                     </ul>
