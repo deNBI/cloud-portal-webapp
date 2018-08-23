@@ -26,6 +26,7 @@ export class Application ***REMOVED***
   private _ComputeCenterDetails:[string,string][];
   private _DaysRunning: number;
   private _ApplicationExtension:ApplicationExtension;
+  private _PerunId:number;
 
 
 
@@ -229,5 +230,12 @@ export class Application ***REMOVED***
 
   set UserEmail(value: number) ***REMOVED***
     this._UserEmail = value;
+  ***REMOVED***
+    get PerunId():number***REMOVED***
+     return this._PerunId;
+  ***REMOVED***
+
+  set PerunId(value:number)***REMOVED***
+     this._PerunId=value;
   ***REMOVED***
 ***REMOVED***

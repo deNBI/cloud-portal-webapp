@@ -62,7 +62,9 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
     getUserPublicKey() ***REMOVED***
         this.keyService.getKey().subscribe(result => ***REMOVED***
+            console.log(result)
             this.userinfo.PublicKey = result['public_key'];
+            console.log(this.userinfo.PublicKey)
             this.isLoaded = true;
         ***REMOVED***)
     ***REMOVED***
@@ -82,6 +84,7 @@ export class UserinfoComponent implements OnInit ***REMOVED***
             this.userinfo.MemberId = memberinfo["id"];
             this.userservice.getLogins().toPromise().then(result => ***REMOVED***
                 let logins = result;
+                console.log(logins);
                 for (let login of logins) ***REMOVED***
                     if (login['friendlyName'] === 'login-namespace:elixir-persistent') ***REMOVED***
                         this.userinfo.ElxirId = login['value']
