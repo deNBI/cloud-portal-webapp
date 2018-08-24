@@ -164,6 +164,7 @@ export class ApplicationsComponent {
                 this.user_applications.push(a)
             }
             this.isLoaded_userApplication = true;
+           
         });
     }
 
@@ -303,9 +304,18 @@ export class ApplicationsComponent {
                         }
                         this.isLoaded_AllApplication = true;
 
+
                     });
+                    if (observable_list.length == 0) {
+                        this.isLoaded_AllApplication = true;
+
+                    }
 
                 });
+            }
+            else {
+                this.isLoaded_AllApplication = true;
+
             }
 
         });
