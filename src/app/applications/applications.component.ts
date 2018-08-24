@@ -164,6 +164,7 @@ export class ApplicationsComponent ***REMOVED***
                 this.user_applications.push(a)
             ***REMOVED***
             this.isLoaded_userApplication = true;
+           
         ***REMOVED***);
     ***REMOVED***
 
@@ -303,9 +304,18 @@ export class ApplicationsComponent ***REMOVED***
                         ***REMOVED***
                         this.isLoaded_AllApplication = true;
 
+
                     ***REMOVED***);
+                    if (observable_list.length == 0) ***REMOVED***
+                        this.isLoaded_AllApplication = true;
+
+                    ***REMOVED***
 
                 ***REMOVED***);
+            ***REMOVED***
+            else ***REMOVED***
+                this.isLoaded_AllApplication = true;
+
             ***REMOVED***
 
         ***REMOVED***);
