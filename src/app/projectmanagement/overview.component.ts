@@ -22,6 +22,7 @@ export class OverviewComponent {
     debug_module = false;
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
+    @Input() invitation_group_pre :string= environment.invitation_group_pre
     is_admin = false;
     userprojects: {};
     member_id: number;
