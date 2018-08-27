@@ -1,5 +1,4 @@
-import {Component,OnInit} from '@angular/core';
-import 'rxjs/add/operator/toPromise';
+import {Component, OnInit} from '@angular/core';
 
 import {Userinfo} from './userinfo.model'
 import {PerunSettings} from "../perun-connector/connector-settings.service";
@@ -9,124 +8,127 @@ import {UserService} from "../api-connector/user.service";
 
 
 @Component({
-  templateUrl: 'userinfo.component.html',
-  providers: [UserService, PerunSettings,  ApiSettings, keyService]
+    templateUrl: 'userinfo.component.html',
+    providers: [UserService, PerunSettings, ApiSettings, keyService]
 })
-export class UserinfoComponent implements OnInit{
-  userinfo: Userinfo;
-  key: string = 'Show Public Key';
-  key_visible = false;
-  newsletter_subscribed :boolean;
-  public_key: string='';
-  isLoaded=false;
+export class UserinfoComponent implements OnInit {
+    userinfo: Userinfo;
+    key: string = 'Show Public Key';
+    key_visible = false;
+    newsletter_subscribed: boolean;
+    public_key: string = '';
+    isLoaded = false;
 
-  constructor(private userservice: UserService, private keyService: keyService) {
-    this.userinfo = new Userinfo();
-    this.getUserinfo();
-
-
-
-  }
-
-   ngOnInit(): void {
-
-            this.userservice.getNewsletterSubscription().subscribe(result => {
-          result = result.json()['subscribed'];
-          if (result.toString() == 'true') {
-              this.newsletter_subscribed = true;
-          }
-          else {
-              this.newsletter_subscribed = false;
-          }
-
-      })
+    constructor(private userservice: UserService, private keyService: keyService) {
+        this.userinfo = new Userinfo();
+        this.getUserinfo();
 
 
     }
 
-  setNewsletterSubscription(e){
-     this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => {
-    })
-  }
+    ngOnInit(): void {
 
-  importKey(publicKey: string, keyname: string) {
 
-    let re = /\+/gi;
-
-    let newstr = publicKey.replace(re, "%2B");
-
-    this.keyService.postKey(this.userinfo.ElxirId, publicKey.replace(re, '%2B'), keyname).subscribe(result => {
-      this.getUserPublicKey();
-    });
-  }
-
-  validatePublicKey() {
-
-    if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key)) {
-      return true;
-    }
-    else {
-
-      return false;
     }
 
-  }
+    setNewsletterSubscription(e) {
+        this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => {
+        })
+    }
 
+    importKey(publicKey: string, keyname: string) {
 
+        let re = /\+/gi;
 
-  getUserPublicKey() {
-    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => {
-      this.userinfo.PublicKey = result.toString();
-      this.isLoaded=true;
-    })
-  }
+        let newstr = publicKey.replace(re, "%2B");
 
-  getUserinfo() {
-    this.userservice.getLoggedUser().toPromise()
-      .then(result => {
-        let res = result.json();
+        this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(result => {
+            this.getUserPublicKey();
+        });
+    }
 
-        this.userinfo.FirstName = res["firstName"];
-        this.userinfo.LastName = res["lastName"];
-        this.userinfo.Id = res["id"];
+    validatePublicKey() {
 
-        return this.userservice.getMemberByUser(res["id"]).toPromise();
+        if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key)) {
+            return true;
+        }
+        else {
 
-      }).then(memberinfo => {
-      this.userinfo.MemberId = memberinfo.json()["id"];
-      this.userservice.getLogins(this.userinfo.Id).toPromise().then(result => {
-        let logins = result.json()
-        for (let login of logins) {
-          if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
-            this.userinfo.ElxirId = login['value']
-          }
-          else if (login['friendlyName'] === 'login-namespace:elixir') {
-            this.userinfo.UserLogin = login['value'];
-
-          }
-
+            return false;
         }
 
-      }).then(result => {
-        this.getUserPublicKey()
-
-      });
-
-    })
-  }
-  show_key(){
-    if(this.key_visible ==false){
-      this.toggleKey();
     }
-  }
-  toggleKey() {
-    if (this.key == 'Show Public Key') {
-      this.key = 'Hide Public Key';
-      this.key_visible = true;
-    } else {
-      this.key = 'Show Public Key';
-      this.key_visible = false;
+
+
+    getUserPublicKey() {
+        this.keyService.getKey().subscribe(result => {
+            console.log(result)
+            this.userinfo.PublicKey = result['public_key'];
+            console.log(this.userinfo.PublicKey)
+            this.isLoaded = true;
+        })
     }
-  }
+
+    getUserinfo() {
+        this.userservice.getLoggedUser().toPromise()
+            .then(result => {
+                let res = result;
+
+                this.userinfo.FirstName = res["firstName"];
+                this.userinfo.LastName = res["lastName"];
+                this.userinfo.Id = res["id"];
+
+                return this.userservice.getMemberByUser().toPromise();
+
+            }).then(memberinfo => {
+            this.userinfo.MemberId = memberinfo["id"];
+            this.userservice.getLogins().toPromise().then(result => {
+                let logins = result;
+                console.log(logins);
+                for (let login of logins) {
+                    if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
+                        this.userinfo.ElxirId = login['value']
+                    }
+                    else if (login['friendlyName'] === 'login-namespace:elixir') {
+                        this.userinfo.UserLogin = login['value'];
+
+                    }
+
+                }
+
+            }).then(result => {
+                this.userservice.getNewsletterSubscription().subscribe(result => {
+                    result = result['subscribed'];
+                    if (result.toString() == 'true') {
+                        this.newsletter_subscribed = true;
+                    }
+                    else {
+                        this.newsletter_subscribed = false;
+                    }
+                    this.getUserPublicKey()
+
+
+                })
+
+            });
+
+        })
+    }
+
+    show_key() {
+        if (this.key_visible == false) {
+            this.toggleKey();
+        }
+    }
+
+    toggleKey() {
+        if (this.key == 'Show Public Key') {
+            this.key = 'Hide Public Key';
+            this.key_visible = true;
+        } else {
+            this.key = 'Show Public Key';
+            this.key_visible = false;
+        }
+    }
 }
 

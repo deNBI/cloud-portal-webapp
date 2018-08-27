@@ -6,12 +6,12 @@ import {FacilityService} from "../api-connector/facility.service";
 import {UserService} from "../api-connector/user.service";
 import {GroupService} from "../api-connector/group.service";
 import {PopoverModule } from 'ngx-popover';
-
+import {VoService} from "../api-connector/vo.service";
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './full-layout.component.html',
-    providers: [GroupService,UserService,FacilityService, ClientService,  PerunSettings, ApiSettings]
+    providers: [VoService,GroupService,UserService,FacilityService, ClientService,  PerunSettings, ApiSettings]
 })
 export class FullLayoutComponent implements OnInit {
 
@@ -19,17 +19,18 @@ export class FullLayoutComponent implements OnInit {
     public disabled = false;
     public status: { isopen: boolean } = {isopen: false};
     private is_vo_admin = false;
-    public is_facility_manager = false
+    public is_facility_manager = false;
     public vm_project_member = false;
+    public login_name = '';
     navbar_state = 'closed';
     overview_state='closed';
     client_avaiable;
 
-    constructor(private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) {
+    constructor(private voService:VoService,private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) {
         this.is_client_avaiable();
         this.is_vm_project_member();
         this.get_is_facility_manager();
-
+        this.getLoginName();
     }
 
     public get_is_vo_admin(): boolean {
@@ -56,7 +57,7 @@ export class FullLayoutComponent implements OnInit {
 
     is_vm_project_member() {
         this.groupService.getMemberGroupsStatus().subscribe(result => {
-            if (result.json().length > 0) {
+            if (result.length > 0) {
                 this.vm_project_member = true
             }
         })
@@ -101,33 +102,28 @@ export class FullLayoutComponent implements OnInit {
 
 
 
-    checkVOstatus(userservice:UserService) {
-        let user_id: number;
-        let admin_vos: {};
-
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) {
-                //TODO catch errors
-                user_id = userdata.json()["id"];
-
-
-                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
-            }).then(function (adminvos) {
-            admin_vos = adminvos.json();
-        }).then(result => {
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in admin_vos) {
-                if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
-                    this.is_vo_admin = true;
-                }
-
-            }
-        });
+    checkVOstatus() {
+       this.voService.isVo().subscribe(result =>{
+           this.is_vo_admin=result['Is_Vo_Manager'];
+       })
     }
 
     ngOnInit(): void {
 
-        this.checkVOstatus(this.userservice);
+        this.checkVOstatus();
     }
+
+    getLoginName() {
+            this.userservice.getLogins().toPromise().then(result => {
+                let logins = result;
+                for (let login of logins) {
+                  if (login['friendlyName'] === 'login-namespace:elixir') {
+                        this.login_name = login['value'];
+                    }
+
+                }
+
+            });
+
+        }
 }

@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {stringDistance} from "codelyzer/util/utils";
 import {environment} from '../../environments/environment'
 
 @Injectable()

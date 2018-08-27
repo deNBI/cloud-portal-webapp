@@ -48,7 +48,7 @@
                             [ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}">
                             <td>{{ project.Id }}</td>
                             <td>{{ project.Name }}</td>
-                            <td>{{ project.Description }}</td>
+                                <td><button class="btn btn-secondary" (click)="selectedProject=project;infoModal.show();">Show Description</button></td>
 
 
                             <td>{{ project.DateCreated }}</td>
@@ -236,6 +236,30 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-info" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Description</h4>
+                <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+
+            <div>
+                <p style=" word-wrap: break-word;">{{ selectedProject?.Description }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;infoModal.hide();">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
 
 
 

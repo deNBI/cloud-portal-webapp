@@ -1,91 +1,81 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
-import {ApiSettings}  from './api-settings.service'
-import {URLSearchParams} from "@angular/http";
+import {ApiSettings} from './api-settings.service'
 import {Vmclient} from "../virtualmachines/virtualmachinemodels/vmclient";
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+
+import {Cookie} from 'ng2-cookies/ng2-cookies';
+
+
+const header = new HttpHeaders({
+    'X-CSRFToken': Cookie.get("csrftoken")
+});
 
 @Injectable()
 export class ClientService {
-  clientURL =  this.settings.getConnectorBaseUrl()  + 'clients/';
+    clientURL = this.settings.getConnectorBaseUrl() + 'clients/';
 
-  constructor(private http: Http,private settings: ApiSettings) {
-  }
+    constructor(private http: HttpClient, private settings: ApiSettings) {
+    }
 
-  getClientsUnchecked(): Observable<Vmclient[]> {
-    let urlSearchParams = new URLSearchParams();
+    getClientsUnchecked(): Observable<Vmclient[]> {
 
-    return this.http.get(this.clientURL + 'getUncheckedClients/', {
-      withCredentials: true,
-      search: urlSearchParams
-    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+        return this.http.get<Vmclient[]>(this.clientURL + 'getUncheckedClients/', {
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error)));
 
-  }
+    }
 
-  isClientAvaiable(): Observable<Vmclient> {
+    isClientAvaiable(): Observable<Vmclient> {
 
-    let urlSearchParams = new URLSearchParams();
 
-    return this.http.get(this.clientURL + 'isClientAvaiable/', {
-      withCredentials: true,
-      search: urlSearchParams
-    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+        return this.http.get<Vmclient>(this.clientURL + 'isClientAvaiable/', {
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error)));
+    }
 
-  }
+    getClientsChecked(): Observable<Vmclient[]> {
 
-  getClientsChecked(): Observable<Vmclient[]> {
-    let urlSearchParams = new URLSearchParams();
+        return this.http.get<Vmclient[]>(this.clientURL + 'getCheckedClients/', {
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error)));
+    }
 
-    return this.http.get(this.clientURL + 'getCheckedClients/', {
-      withCredentials: true,
-      search: urlSearchParams
-    }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-  }
+    checkClient(host: string, port: string): Observable<any> {
+        let params = new HttpParams().set('host', host).set('port', port);
 
-  checkClient(host: string, port: string): Observable<Response> {
-     let header = new Headers({
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    });
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('port', port);
 
-    urlSearchParams.append('host', host);
+        return this.http.post(this.clientURL + 'checkClient/', params, {
+            withCredentials: true,
+            headers: header,
+        }).pipe(catchError((error: any) => throwError(error)));
+        ;
 
-    return this.http.post(this.clientURL + 'checkClient/', urlSearchParams, {
-      withCredentials: true,
-      headers: header,
-    });
+    }
 
-  }
+    postClient(host: string, port: string, location: string): Observable<any> {
 
-  postClient(host: string, port: string, location: string): Observable<Response> {
-      let header = new Headers({
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    });
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('port', port);
-    urlSearchParams.append('location', location);
-    urlSearchParams.append('host', host);
+        let params = new HttpParams().set('host', host).set('port', port).set('location', location);
 
-    return this.http.post(this.clientURL + 'addClient/',urlSearchParams, {
-      withCredentials: true,
-      headers: header,
-    });
-  }
 
-  deleteClient(host: string, port: string, location: string): Observable<Response> {
-      let header = new Headers({
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    });
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('port', port);
-    urlSearchParams.append('host', host);
-    urlSearchParams.append('location', location);
-    return this.http.post(this.clientURL + 'deleteClient/', urlSearchParams, {
-      withCredentials: true,
-      headers: header,
-    });
-  }
+        return this.http.post(this.clientURL + 'addClient/', params, {
+            withCredentials: true,
+            headers: header,
+        }).pipe(catchError((error: any) => throwError(error)));
+
+    }
+
+    deleteClient(host: string, port: string, location: string): Observable<any> {
+
+        let params = new HttpParams().set('host', host).set('port', port).set('location', location);
+
+
+
+        return this.http.post(this.clientURL + 'deleteClient/', params, {
+            withCredentials: true,
+            headers: header,
+        }).pipe(catchError((error: any) => throwError(error)));
+
+    }
 }

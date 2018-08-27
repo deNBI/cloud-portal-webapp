@@ -1,57 +1,57 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
 import {URLSearchParams} from '@angular/http';
 import {ApiSettings} from './api-settings.service';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
+
+const header = new HttpHeaders({
+    'X-CSRFToken': Cookie.get("csrftoken")
+});
 
 
 @Injectable()
 export class UserService {
-    constructor(private http: Http, private settings: ApiSettings) {
+    constructor(private http: HttpClient, private settings: ApiSettings) {
     }
 
-    setUserFacilityPassword(facility: string): Observable<Response> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('facility', facility);
+    setUserFacilityPassword(facility: string): Observable<any> {
+        let params = new HttpParams().set('facility', facility)
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'user/setUserPassword/', urlSearchParams, {
+        ;
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'user/setUserPassword/', params, {
             withCredentials: true,
             headers: header,
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
-    getLogins(user: number): Observable<Response> {
+    getLogins(): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'user/getLogins/',
             {
                 withCredentials: true,
-                params: {user: user}
-            });
+            }).pipe(catchError((error: any) => throwError(error)));
     }
 
-    getLoggedUser() {
+    getLoggedUser(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'user/getLoggedUser/',
             {
                 withCredentials: true,
 
-            });
+            }).pipe(catchError((error: any) => throwError(error)));
     }
 
-    getMemberByUser(user_id: number) {
+    getMemberByUser(): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByUser/`, {
             withCredentials: true,
-            params: {user: user_id}
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
-    getMemberByExtSourceNameAndExtLogin(ext_login: string) {
+    getMemberByExtSourceNameAndExtLogin(ext_login: string): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByExtSourceNameAndExtLogin/`, {
             withCredentials: true,
@@ -60,74 +60,65 @@ export class UserService {
                 extLogin: ext_login,
 
             }
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
-    getVosWhereUserIsAdmin(user_id: number) {
+    getVosWhereUserIsAdmin(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'user/getVosWhereUserIsAdmin/', {
             withCredentials: true,
-            params: {userid: user_id}
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
+        ;
     }
 
-    getGroupsWhereUserIsAdmin(user_id: number) {
+    getGroupsWhereUserIsAdmin(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'user/getGroupsWhereUserIsAdmin/', {
             withCredentials: true,
-            params: {userid: user_id}
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
+        ;
     }
 
     setNewsletterSubscription(subscribed: boolean): Observable<any> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('subscribed', subscribed.toString());
+        let params = new HttpParams().set('subscribed', subscribed.toString());
 
-        return this.http.post(this.settings.getApiBaseURL() + 'newsletter/setNewsletterSubscription/', urlSearchParams, {
+        return this.http.post(this.settings.getApiBaseURL() + 'newsletter/setNewsletterSubscription/', params, {
             withCredentials: true,
             headers: header,
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
+
     }
 
     getNewsletterSubscription(): Observable<any> {
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
+
         return this.http.get(this.settings.getApiBaseURL() + 'newsletter/getNewsletterSubscription/', {
             withCredentials: true,
-        });
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
 
     sendHelpMail(subject, message, reply): Observable<any> {
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('subject', subject);
-        urlSearchParams.append('message', message);
-        urlSearchParams.append('reply', reply);
 
-        let header = new Headers({
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        });
-        return this.http.post(this.settings.getApiBaseURL() + 'user/sendHelpMail/', urlSearchParams, {
+        let params = new HttpParams().set('subject',subject).set('message',message).set('reply',reply);
+
+
+        return this.http.post(this.settings.getApiBaseURL() + 'user/sendHelpMail/', params, {
             withCredentials: true,
             headers: header,
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
-    getFilteredMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string) {
+    getFilteredMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getFilteredMembers', {
+        return this.http.get(this.settings.getApiBaseURL() + 'user/getFilteredMembers/', {
             withCredentials: true,
             params: {
                 firstName: firstname,
                 lastName: lastName,
                 groupid: groupid
             }
-        }).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        }).pipe(catchError((error: any) => throwError(error)));
 
 
     }

@@ -1,6 +1,5 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import 'rxjs/Rx'
 
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
@@ -290,7 +289,7 @@ export class VmOverviewComponent implements OnInit {
 
             }
 
-            if (result.text() === 'true') {
+            if (result['deleted'] === true) {
                 this.status_changed = 1;
             }
             else {
@@ -315,7 +314,7 @@ export class VmOverviewComponent implements OnInit {
 
             }
 
-            if (result.text() === 'true') {
+            if (result['stopped'] === true) {
                 this.status_changed = 1;
             }
             else {
@@ -366,7 +365,7 @@ export class VmOverviewComponent implements OnInit {
 
             }
 
-            if (result.text() === 'true') {
+            if (result['resumed'] === 'true') {
                 this.status_changed = 1;
             }
             else {
@@ -413,10 +412,10 @@ export class VmOverviewComponent implements OnInit {
             .getLoggedUser().toPromise()
             .then(function (userdata) {
                 //TODO catch errors
-                user_id = userdata.json()["id"];
-                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
+                user_id = userdata["id"];
+                return userservice.getVosWhereUserIsAdmin().toPromise();
             }).then(function (adminvos) {
-            admin_vos = adminvos.json();
+            admin_vos = adminvos;
         }).then(result => {
             //check if user is a Vo admin so we can serv according buttons
             for (let vkey in admin_vos) {
@@ -443,11 +442,11 @@ export class VmOverviewComponent implements OnInit {
     getElixirId() {
         this.userservice.getLoggedUser().toPromise()
             .then(result => {
-                let res = result.json();
+                let res = result;
 
                 let userid = res["id"];
-                this.userservice.getLogins(userid).toPromise().then(result => {
-                    let logins = result.json()
+                this.userservice.getLogins().toPromise().then(result => {
+                    let logins = result;
                     for (let login of logins) {
                         if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
 

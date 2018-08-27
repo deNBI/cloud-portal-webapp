@@ -1,6 +1,5 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import 'rxjs/Rx'
 import {Vmclient} from "./virtualmachinemodels/vmclient";
 import {ClientService} from "../api-connector/vmClients.service";
 import {PerunSettings} from "../perun-connector/connector-settings.service";
@@ -34,10 +33,10 @@ export class ClientOverviewComponent implements OnInit {
             .getLoggedUser().toPromise()
             .then(function (userdata) {
                 //TODO catch errors
-                user_id = userdata.json()["id"];
-                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
+                user_id = userdata["id"];
+                return userservice.getVosWhereUserIsAdmin().toPromise();
             }).then(function (adminvos) {
-            admin_vos = adminvos.json();
+            admin_vos = adminvos;
         }).then(result => {
             //check if user is a Vo admin so we can serv according buttons
             for (let vkey in admin_vos) {
@@ -74,10 +73,10 @@ export class ClientOverviewComponent implements OnInit {
         if (host && port) {
             this.clientservice.checkClient(host, port).subscribe(data => {
 
-                if (data.text() == "false") {
+                if (data['status'] == false) {
                     this.checkStatus = 'No Connection';
                 }
-                else if (data.text() == 'true') {
+                else if (data['status'] == true) {
                     this.checkStatus = "Connected";
                 }
                 else {
