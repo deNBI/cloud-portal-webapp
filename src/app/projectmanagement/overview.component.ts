@@ -148,8 +148,8 @@ export class OverviewComponent {
                 }
                 let newProjectApplications = [];
                 for (let application of group['applications']) {
-                    let dateApplicationCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
-                    let membername = application['user']['firstname'] + ' ' + application['user']['lastName']
+                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
                     let newMemberApplication = new ProjectMemberApplication(
                         application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
                     )
@@ -219,6 +219,13 @@ export class OverviewComponent {
 
 
         });
+    }
+    approveMemberApplication(project:number,application:number){
+        this.groupservice.approveGroupApplication(project,application).subscribe();
+    }
+
+     rejectMemberApplication(project:number,application:number){
+        this.groupservice.rejectGroupApplication(project,application).subscribe();
     }
 
     isPi(member: ProjectMember): string {

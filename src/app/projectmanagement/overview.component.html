@@ -29,7 +29,11 @@
                                 [ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}">
                                 <td>{{ project.Id }}</td>
                                 <td>{{ project.Name }}</td>
-                                <td><button class="btn btn-secondary" (click)="selectedProject=project;infoModal.show();">Show Description</button></td>
+                                <td>
+                                    <button class="btn btn-secondary"
+                                            (click)="selectedProject=project;infoModal.show();">Show Description
+                                    </button>
+                                </td>
 
                                 <td>
                                     <p *ngIf="project.ComputeCenter[0] == 'None'">None</p>
@@ -68,11 +72,11 @@
                                                 type="button" style="margin-bottom: 5px"
                                                 class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
                                         </button>
-                                         <button
-                                                (click)="addUserModal.show();"
+                                        <button
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
-                                                type="button" style="margin-bottom: 5px"
-                                                class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Applications()
+                                                type="button" style="margin-bottom: 5px" (click)="selectedProject = project;applicationModal.show();"
+                                                class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Applications
+                                            ({{project.ProjectMemberApplications.length}})
                                         </button>
                                     </div>
                                 </td>
@@ -414,8 +418,59 @@
                 {{ selectedProject?.Description }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;infoModal.hide();">Close</button>
+                <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;infoModal.hide();">
+                    Close
+                </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
+
+
+<div bsModal #applicationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-info modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Applications for {{selectedProject?.Name}}</h4>
+                <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table  class="table table-bordered table-striped table-sm">
+                    <thead>
+
+                    <th>Name</th>
+                    <th>Date Submitted</th>
+                    <th>Actions</th>
+                    </thead>
+                    <tbody *ngFor="  let application of selectedProject?.ProjectMemberApplications">
+
+                    <td>{{application.Name}}</td>
+                    <td>{{application.DateCreated}}</td>
+                    <td>
+                        <button
+                                (click)="approveMemberApplication(selectedProject?.Id,application.Id); applicationModal.hide();"
+                                class="btn btn-success"><i class="fa fa-check"></i> Approve
+                        </button>
+                        <button style="margin-left: 10px"
+                                (click)="rejectMemberApplication(selectedProject?.Id,application.Id); applicationModal.hide();"
+                                class="btn btn-danger"><i class="fa fa-times"></i> Reject
+                        </button>
+                    </td>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;applicationModal.hide();">
+                    Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
