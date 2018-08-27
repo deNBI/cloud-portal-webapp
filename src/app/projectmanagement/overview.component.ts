@@ -155,7 +155,7 @@ export class OverviewComponent {
                     )
                     newProjectApplications.push(newMemberApplication)
                 }
-                newProject.ProjectMemberApplications=newProjectApplications;
+                newProject.ProjectMemberApplications = newProjectApplications;
                 this.projects.push(newProject);
             }
             this.isLoaded = true;
@@ -220,12 +220,41 @@ export class OverviewComponent {
 
         });
     }
-    approveMemberApplication(project:number,application:number){
-        this.groupservice.approveGroupApplication(project,application).subscribe();
+
+    approveMemberApplication(project: number, application: number) {
+        this.groupservice.approveGroupApplication(project, application).subscribe(result => {
+            this.groupservice.getGroupApplications(project).subscribe(result => {
+                let newProjectApplications = [];
+                for (let application of result) {
+                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                    let newMemberApplication = new ProjectMemberApplication(
+                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                    )
+                    newProjectApplications.push(newMemberApplication)
+                }
+                this.selectedProject.ProjectMemberApplications = newProjectApplications;
+
+            })
+        });
     }
 
-     rejectMemberApplication(project:number,application:number){
-        this.groupservice.rejectGroupApplication(project,application).subscribe();
+    rejectMemberApplication(project: number, application: number) {
+        this.groupservice.rejectGroupApplication(project, application).subscribe(result => {
+            this.groupservice.getGroupApplications(project).subscribe(result => {
+                let newProjectApplications = [];
+                for (let application of result) {
+                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                    let newMemberApplication = new ProjectMemberApplication(
+                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                    )
+                    newProjectApplications.push(newMemberApplication)
+                }
+                this.selectedProject.ProjectMemberApplications = newProjectApplications;
+
+            })
+        });
     }
 
     isPi(member: ProjectMember): string {
