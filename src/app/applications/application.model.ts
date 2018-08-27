@@ -26,6 +26,7 @@ export class Application {
   private _ComputeCenterDetails:[string,string][];
   private _DaysRunning: number;
   private _ApplicationExtension:ApplicationExtension;
+  private _PerunId:number;
 
 
 
@@ -229,5 +230,12 @@ export class Application {
 
   set UserEmail(value: number) {
     this._UserEmail = value;
+  }
+    get PerunId():number{
+     return this._PerunId;
+  }
+
+  set PerunId(value:number){
+     this._PerunId=value;
   }
 }

@@ -19,6 +19,7 @@ export class Project {
   private _UserIsPi: boolean;
   private _ComputeCenter:[string,number];
   private _ComputeCenterDetails:[string,string][];
+  private _PerunId:number;
 
 
   constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: [string,number]) {
@@ -41,6 +42,7 @@ export class Project {
    set LifetimeDays(value:number){
     this._LifetimeDays=value;
   }
+
   get Lifetime():number{
     return this._Lifetime;
   }
