@@ -8,8 +8,11 @@ import ***REMOVED***
   XHRBackend,
 ***REMOVED*** from '@angular/http';
 import ***REMOVED*** CookieService ***REMOVED*** from 'ng2-cookies';
-import ***REMOVED*** Observable ***REMOVED*** from 'rxjs/Rx';
-import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap/modal/modal.component';
+import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
+import ***REMOVED***ModalDirective***REMOVED*** from "ngx-bootstrap";
+import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+
+
 
 @Injectable()
 export class HttpInterceptor extends Http ***REMOVED***
@@ -21,15 +24,14 @@ export class HttpInterceptor extends Http ***REMOVED***
     this.timeoutModal = modal;
   ***REMOVED***
 
-  public request(url: string|Request, options?: RequestOptionsArgs): Observable<Response> ***REMOVED***
-    return super.request(url, options)
-      .catch(this.handleError)
+  public request(url: string|Request, options?: RequestOptionsArgs): Observable<any> ***REMOVED***
+    return super.request(url, options).pipe(catchError((error: any) => throwError(this.handleError)));
   ***REMOVED***
 
   public handleError = (error: Response) => ***REMOVED***
     if (error.status === 0) ***REMOVED***
       this.timeoutModal.show();
     ***REMOVED***
-    return Observable.throw(error)
+    return throwError(error)
   ***REMOVED***
 ***REMOVED***

@@ -1,37 +1,38 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
-import ***REMOVED***ApiSettings***REMOVED***  from './api-settings.service'
-import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
+import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
+import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
+
+import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
+
+
+const header = new HttpHeaders(***REMOVED***
+    'X-CSRFToken': Cookie.get("csrftoken")
+***REMOVED***);
 
 
 @Injectable()
 export class ApplicationStatusService ***REMOVED***
-  constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
-  ***REMOVED***
+    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    ***REMOVED***
 
-  getAllApplicationStatus() ***REMOVED***
-    return this.http.get(this.settings.getApiBaseURL() + 'application_status/', ***REMOVED***
-      withCredentials: true,
-      params: ***REMOVED***format: this.settings.getApiFormat()***REMOVED***
-    ***REMOVED***);
-  ***REMOVED***
+    getAllApplicationStatus(): Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'application_status/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
 
-  setApplicationStatus(application_id: number, status_id: number,compute_center:string) ***REMOVED***
-    let parameter = JSON.stringify(***REMOVED***
-      "project_application_status": status_id,
-      'compute_center': compute_center
-    ***REMOVED***);
-    let header = new Headers(***REMOVED***
-      'X-CSRFToken': this.settings.getCSRFToken(),
-      'Content-Type': 'application/json'
-    ***REMOVED***);
-    return this.http.patch(this.settings.getApiBaseURL() + 'update_application_status/' + application_id + "/", parameter,
-      ***REMOVED***
-        headers: header,
-        withCredentials: true
-      ***REMOVED***);
-  ***REMOVED***
+    setApplicationStatus(application_id: number, status_id: number, compute_center: string): Observable<any> ***REMOVED***
+        let params = new HttpParams().set("project_application_status", status_id.toString()).set('compute_center',compute_center)
+
+
+        return this.http.patch(this.settings.getApiBaseURL() + 'update_application_status/' + application_id + "/", params,
+            ***REMOVED***
+                headers: header,
+                withCredentials: true
+            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
 
 ***REMOVED***

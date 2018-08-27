@@ -194,7 +194,7 @@
                                         <td>***REMOVED******REMOVED***application.Institute***REMOVED******REMOVED***</td>
 
 
-                                        <td>
+                                        <td >
                                             <select [style.display]="application.OpenStackProject? 'inherit' :'none'"
                                                     class="form-control" #selectedComputeCenter>
 
@@ -204,7 +204,7 @@
                                                 </option>
                                             </select>
                                         </td>
-                                        <td *ngIf="application.Status == 4 "> ***REMOVED******REMOVED***application.ComputeCenter[0]***REMOVED******REMOVED***</td>
+
 
 
                                         <td>
@@ -400,7 +400,7 @@
                             </thead>
                             <tbody>
                             <ng-container *ngFor="let application of all_applications">
-                                <ng-container *ngIf="application.Status != 1 && application.Status != 4">
+                                <ng-container *ngIf="application.Status != 1">
                                     <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)***REMOVED***">
                                         <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
@@ -823,7 +823,7 @@
                 </div>
                  <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
                    Modify request successfully declined!      </div>
-         
+
                 <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
                     An error occured.
 

@@ -2,6 +2,8 @@ import ***REMOVED***Injectable***REMOVED*** from "@angular/core";
 import ***REMOVED***CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot***REMOVED*** from "@angular/router";
 import ***REMOVED***environment***REMOVED*** from "../environments/environment";
 import ***REMOVED***UserService***REMOVED*** from "./api-connector/user.service";
+import ***REMOVED*** Observable***REMOVED*** from 'rxjs';
+
 
 
 @Injectable()
@@ -12,21 +14,22 @@ export class MemberGuardService implements CanActivate ***REMOVED***
     ***REMOVED***
 
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) ***REMOVED***
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Observable<boolean> | Promise<boolean> | boolean ***REMOVED***
         return new Promise((resolve, reject) => ***REMOVED***
             this.userservice.getLoggedUser().toPromise()
                 .then(result => ***REMOVED***
 
-                    let res = result.json();
+                    let res = result;
 
                     return res
 
                 ***REMOVED***).then(res => ***REMOVED***
 
-                this.userservice.getMemberByUser(res['id']).toPromise().then(memberinfo => ***REMOVED***
-                    if (memberinfo.json()['name'] === 'MemberNotExistsException') ***REMOVED***
+                this.userservice.getMemberByUser().toPromise().then(memberinfo => ***REMOVED***
+                    if (memberinfo['name'] === 'MemberNotExistsException') ***REMOVED***
                         this.router.navigate(['/registration-info']);
                         resolve(false);
+
 
                     ***REMOVED***
                     return resolve(true);
@@ -40,7 +43,7 @@ export class MemberGuardService implements CanActivate ***REMOVED***
             ***REMOVED***).catch(rejection => ***REMOVED***
 
                 //this.router.navigate(['/portal']);
-                window.location.href = environment.login
+                window.location.href = environment.login;
                 resolve(false);
 
             ***REMOVED***);

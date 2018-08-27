@@ -19,6 +19,7 @@ export class Project ***REMOVED***
   private _UserIsPi: boolean;
   private _ComputeCenter:[string,number];
   private _ComputeCenterDetails:[string,string][];
+  private _PerunId:number;
 
 
   constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: [string,number]) ***REMOVED***
@@ -41,6 +42,7 @@ export class Project ***REMOVED***
    set LifetimeDays(value:number)***REMOVED***
     this._LifetimeDays=value;
   ***REMOVED***
+
   get Lifetime():number***REMOVED***
     return this._Lifetime;
   ***REMOVED***
