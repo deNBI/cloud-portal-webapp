@@ -11,6 +11,7 @@ import {UserService} from "../api-connector/user.service";
 import * as moment from 'moment';
 import {VoService} from "../api-connector/vo.service";
 import {catchError} from 'rxjs/operators';
+import {ProjectMemberApplication} from "./project_member_application";
 
 
 @Component({
@@ -22,7 +23,7 @@ export class OverviewComponent {
     debug_module = false;
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
-    @Input() invitation_group_pre :string= environment.invitation_group_pre
+    @Input() invitation_group_pre: string = environment.invitation_group_pre
     is_admin = false;
     userprojects: {};
     member_id: number;
@@ -145,6 +146,16 @@ export class OverviewComponent {
                 if (expirationDate) {
                     newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
                 }
+                let newProjectApplications = [];
+                for (let application of group['applications']) {
+                    let dateApplicationCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                    let membername = application['user']['firstname'] + ' ' + application['user']['lastName']
+                    let newMemberApplication = new ProjectMemberApplication(
+                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                    )
+                    newProjectApplications.push(newMemberApplication)
+                }
+                newProject.ProjectMemberApplications=newProjectApplications;
                 this.projects.push(newProject);
             }
             this.isLoaded = true;
@@ -342,13 +353,13 @@ export class OverviewComponent {
                         this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                     }
                 }, error => {
-                if (error['name'] == 'AlreadyAdminException') {
-                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
-                }
-                else {
-                    this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
-                }
-            })
+                    if (error['name'] == 'AlreadyAdminException') {
+                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                    }
+                    else {
+                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                    }
+                })
         })
     }
 

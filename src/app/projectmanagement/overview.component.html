@@ -68,6 +68,12 @@
                                                 type="button" style="margin-bottom: 5px"
                                                 class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
                                         </button>
+                                         <button
+                                                (click)="addUserModal.show();"
+                                                *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
+                                                type="button" style="margin-bottom: 5px"
+                                                class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Applications()
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
