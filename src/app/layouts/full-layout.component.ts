@@ -6,12 +6,12 @@ import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***PopoverModule ***REMOVED*** from 'ngx-popover';
-
+import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 
 @Component(***REMOVED***
     selector: 'app-dashboard',
     templateUrl: './full-layout.component.html',
-    providers: [GroupService,UserService,FacilityService, ClientService,  PerunSettings, ApiSettings]
+    providers: [VoService,GroupService,UserService,FacilityService, ClientService,  PerunSettings, ApiSettings]
 ***REMOVED***)
 export class FullLayoutComponent implements OnInit ***REMOVED***
 
@@ -19,17 +19,18 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     public disabled = false;
     public status: ***REMOVED*** isopen: boolean ***REMOVED*** = ***REMOVED***isopen: false***REMOVED***;
     private is_vo_admin = false;
-    public is_facility_manager = false
+    public is_facility_manager = false;
     public vm_project_member = false;
+    public login_name = '';
     navbar_state = 'closed';
     overview_state='closed';
     client_avaiable;
 
-    constructor(private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
+    constructor(private voService:VoService,private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
         this.is_client_avaiable();
         this.is_vm_project_member();
         this.get_is_facility_manager();
-
+        this.getLoginName();
     ***REMOVED***
 
     public get_is_vo_admin(): boolean ***REMOVED***
@@ -56,7 +57,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
 
     is_vm_project_member() ***REMOVED***
         this.groupService.getMemberGroupsStatus().subscribe(result => ***REMOVED***
-            if (result.json().length > 0) ***REMOVED***
+            if (result.length > 0) ***REMOVED***
                 this.vm_project_member = true
             ***REMOVED***
         ***REMOVED***)
@@ -101,33 +102,28 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
 
 
 
-    checkVOstatus(userservice:UserService) ***REMOVED***
-        let user_id: number;
-        let admin_vos: ***REMOVED******REMOVED***;
-
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) ***REMOVED***
-                //TODO catch errors
-                user_id = userdata.json()["id"];
-
-
-                return userservice.getVosWhereUserIsAdmin(user_id).toPromise();
-            ***REMOVED***).then(function (adminvos) ***REMOVED***
-            admin_vos = adminvos.json();
-        ***REMOVED***).then(result => ***REMOVED***
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in admin_vos) ***REMOVED***
-                if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) ***REMOVED***
-                    this.is_vo_admin = true;
-                ***REMOVED***
-
-            ***REMOVED***
-        ***REMOVED***);
+    checkVOstatus() ***REMOVED***
+       this.voService.isVo().subscribe(result =>***REMOVED***
+           this.is_vo_admin=result['Is_Vo_Manager'];
+       ***REMOVED***)
     ***REMOVED***
 
     ngOnInit(): void ***REMOVED***
 
-        this.checkVOstatus(this.userservice);
+        this.checkVOstatus();
     ***REMOVED***
+
+    getLoginName() ***REMOVED***
+            this.userservice.getLogins().toPromise().then(result => ***REMOVED***
+                let logins = result;
+                for (let login of logins) ***REMOVED***
+                  if (login['friendlyName'] === 'login-namespace:elixir') ***REMOVED***
+                        this.login_name = login['value'];
+                    ***REMOVED***
+
+                ***REMOVED***
+
+            ***REMOVED***);
+
+        ***REMOVED***
 ***REMOVED***

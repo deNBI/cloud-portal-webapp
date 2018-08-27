@@ -1,80 +1,78 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
-import ***REMOVED***URLSearchParams***REMOVED*** from '@angular/http';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
+import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
+
+import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
+
+
+const header = new HttpHeaders(***REMOVED***
+    'X-CSRFToken': Cookie.get("csrftoken")
+***REMOVED***);
 
 @Injectable()
 export class VoService ***REMOVED***
-    constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
+    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
     ***REMOVED***
 
 
-    isVo() ***REMOVED***
+    isVo(): Observable<any> ***REMOVED***
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/isVoManager/', ***REMOVED***
             withCredentials: true,
-        ***REMOVED***)
-
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
 
-    getNewsletterSubscriptionCounter():Observable<any> ***REMOVED***
+    getNewsletterSubscriptionCounter(): Observable<any> ***REMOVED***
 
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getNewsletterSubscriptionCounter/', ***REMOVED***
             withCredentials: true,
 
-        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))***REMOVED***
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
 
 
+    getAllVoGroups(): Observable<any> ***REMOVED***
 
+        return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getAllGroups/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
-  getAllVoGroups(): Observable<any> ***REMOVED***
+    ***REMOVED***
 
-    return this.http.get(this.settings.getApiBaseURL()+ 'vo_manager/getAllGroups/', ***REMOVED***
-      withCredentials: true,
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+    getAllGroupsWithDetails(): Observable<any> ***REMOVED***
 
-  ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getAllGroupsWithDetails/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
-    sendNewsletterToVo(subject, message,reply?): Observable<any> ***REMOVED***
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('subject', subject);
-        urlSearchParams.append('message', message);
-        urlSearchParams.append('reply',reply)
+    ***REMOVED***
 
-        let header = new Headers(***REMOVED***
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        ***REMOVED***);
-        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendNewsletterToMembers/', urlSearchParams, ***REMOVED***
+    sendNewsletterToVo(subject, message, reply?): Observable<any> ***REMOVED***
+
+        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+
+        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendNewsletterToMembers/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
-        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
     ***REMOVED***
 
 
-        sendMailToVo(subject, message,reply?): Observable<any> ***REMOVED***
-        let urlSearchParams = new URLSearchParams();
-        urlSearchParams.append('subject', subject);
-        urlSearchParams.append('message', message);
-        urlSearchParams.append('reply',reply)
+    sendMailToVo(subject, message, reply?): Observable<any> ***REMOVED***
+        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-        let header = new Headers(***REMOVED***
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        ***REMOVED***);
-        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendMailToAllMembers/', urlSearchParams, ***REMOVED***
+
+        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendMailToAllMembers/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
-        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
     ***REMOVED***
-
-
-
 
 
 ***REMOVED***

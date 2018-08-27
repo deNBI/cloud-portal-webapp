@@ -1,14 +1,5 @@
 import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import 'rxjs/Rx'
-import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
-import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
-import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
-import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
-import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
-import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
-import ***REMOVED***Volume***REMOVED*** from "./virtualmachinemodels/volume";
-import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
 import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.service";
 import ***REMOVED***SnapshotModel***REMOVED*** from "./virtualmachinemodels/snapshot.model";
 

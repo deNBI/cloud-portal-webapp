@@ -1,5 +1,4 @@
 import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
-import 'rxjs/Rx'
 import ***REMOVED***Volume***REMOVED*** from "./virtualmachinemodels/volume";
 import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
 import ***REMOVED***VirtualMachine***REMOVED*** from "./virtualmachinemodels/virtualmachine";
@@ -129,7 +128,6 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
                 ***REMOVED***
 
                 this.vmService.deleteVolume(volume_id).subscribe(result => ***REMOVED***
-                    result = result.json()
                     if (result['Deleted'] && result['Deleted'] === true) ***REMOVED***
                         this.volume_status = 1;
                     ***REMOVED***
@@ -143,7 +141,6 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***
         else ***REMOVED***
             this.vmService.deleteVolume(volume_id).subscribe(result => ***REMOVED***
-                result = result.json();
                 if (result['Deleted'] && result['Deleted'] === true) ***REMOVED***
                     this.volume_status = 1;
                 ***REMOVED***
@@ -161,7 +158,6 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
 
         this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => ***REMOVED***
 
-            result = result.json();
             if (result['Attached'] && result['Attached'] === true) ***REMOVED***
                 this.volume_status = 6;
             ***REMOVED***
@@ -175,7 +171,6 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     createVolume(volume_name: string, diskspace: number, instance_id: string) ***REMOVED***
         this.volume_status = 0
         this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => ***REMOVED***
-            result = result.json();
             if (result['Created']) ***REMOVED***
                 this.volume_status = 7;
             ***REMOVED***
@@ -190,14 +185,12 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string) ***REMOVED***
         this.volume_status = 7;
         this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => ***REMOVED***
-            result = result.json();
             if (result['Created']) ***REMOVED***
                 let volume_id = result['Created']
                 this.volume_status = 5;
 
                 this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => ***REMOVED***
 
-                    result = result.json();
                     if (result['Attached'] && result['Attached'] === true) ***REMOVED***
                         this.volume_status = 8;
                     ***REMOVED***
@@ -228,7 +221,6 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     detachVolume(volume_id: string, instance_id: string) ***REMOVED***
         this.volume_status = 3;
         this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => ***REMOVED***
-            result = result.json();
             if (result['Deleted'] && result['Deleted'] === true) ***REMOVED***
                 this.volume_status = 4;
             ***REMOVED***
@@ -241,7 +233,7 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
 
     getUserApprovedProjects() ***REMOVED***
         this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => ***REMOVED***
-            for (let project of membergroups.json()) ***REMOVED***
+            for (let project of membergroups) ***REMOVED***
                 this.projects.push(project);
 
             ***REMOVED***

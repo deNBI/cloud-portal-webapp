@@ -74,7 +74,8 @@
                        [(ngModel)]="filtercreated_at" (ngModelChange)="applyFilter();"></td>
             <td></td>
             <td *ngIf="is_vo_admin"><input style="width: 110px;" t type="text" placeholder="Filter"
-                                           name="filterelixir_id" [(ngModel)]="filterelixir_id" (ngModelChange)="applyFilter();"></td>
+                                           name="filterelixir_id" [(ngModel)]="filterelixir_id"
+                                           (ngModelChange)="applyFilter();"></td>
             <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterstopped_at"
                        [(ngModel)]="filterstopped_at" (ngModelChange)="applyFilter();"></td>
 
@@ -96,7 +97,7 @@
                         ***REMOVED******REMOVED***vm.created_at***REMOVED******REMOVED***
                     </td>
                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-                        <button type="button" class="btn btn-secondary"
+                        <button type="button" class="btn btn-secondary btn-block" style="white-space: normal; word-wrap: break-word;"
                                 (click)="selected_command=vm.ssh_command;infoModal.show()"> Show Information
                         </button>
                     </td>
@@ -362,13 +363,13 @@
             </div>
 
 
-        <div>
-            <pre><code>***REMOVED******REMOVED***selected_command***REMOVED******REMOVED***</code></pre>
+            <div>
+                <pre><code style=" word-wrap: break-word;">>***REMOVED******REMOVED***selected_command***REMOVED******REMOVED***</code></pre>
 
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="infoModal.hide();">Close</button>
-        </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="infoModal.hide();">Close</button>
+            </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>

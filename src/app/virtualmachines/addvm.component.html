@@ -1,16 +1,17 @@
-<div class="allert alert-info" *ngIf="!client_avaiable"><strong>Info</strong> No Client avaiable.</div>
-<div class="allert alert-info" *ngIf="!validatePublicKey()"><strong>Info</strong>You need to set a valid SSH Key before
+<div class="allert alert-info" *ngIf="isLoaded && !client_avaiable"><strong>Info</strong> No Client avaiable.</div>
+<div class="allert alert-info" *ngIf="isLoaded && !validPublickey"><strong>Info</strong>You need to set a valid SSH Key
+    before
     you
     can start a machine. Please set a SSH Key on the User Information tab.
 </div>
-<div *ngIf=" isLoaded_projects==false || isLoaded_images==false ||isLoaded_flavors==false" class="loader"></div>
-<div *ngIf=" isLoaded_projects && isLoaded_images && isLoaded_flavors && client_avaiable && validatePublicKey()">
+<div *ngIf=" isLoaded==false" class="loader"></div>
+<div *ngIf=" isLoaded && client_avaiable && validPublickey">
 
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <strong>New VirtualMachine</strong>
+                    <strong>New Virtual Machine</strong>
                     – Form
                 </div>
 
@@ -111,7 +112,8 @@
                             <label class="col-md-3 form-control-label">Volumename</label>
                             <div class="col-md-9">
                                 <div class="input-group">
-                                    <input type="text" placeholder="Volumename" [value]="volumeName" (input)="volumeName = $event.target.value">
+                                    <input type="text" placeholder="Volumename" [value]="volumeName"
+                                           (input)="volumeName = $event.target.value">
                                 </div>
                             </div>
                         </div>

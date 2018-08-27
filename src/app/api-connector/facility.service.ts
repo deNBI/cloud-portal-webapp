@@ -1,58 +1,57 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
-import ***REMOVED***URLSearchParams***REMOVED*** from '@angular/http';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
+import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
+import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
+
+const header = new HttpHeaders(***REMOVED***
+    'X-CSRFToken': Cookie.get("csrftoken")
+***REMOVED***);
 
 
 @Injectable()
 export class FacilityService ***REMOVED***
-  constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
-  ***REMOVED***
+    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    ***REMOVED***
 
-  getManagerFacilities(): Observable<any> ***REMOVED***
+    getManagerFacilities(): Observable<any> ***REMOVED***
 
-    return this.http.get(this.settings.getApiBaseURL()+ 'facilityManager/getFacilitiesWhereUserIsManager/', ***REMOVED***
-      withCredentials: true,
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilitiesWhereUserIsManager/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
-  ***REMOVED***
+    ***REMOVED***
 
-  getFacilityAllowedGroups(facility): Observable<any> ***REMOVED***
+    getFacilityAllowedGroups(facility): Observable<any> ***REMOVED***
 
-       let urlSearchParams = new URLSearchParams();
-    return this.http.get(this.settings.getApiBaseURL()+ 'facilityManager/getFacilityAllowedGroups/', ***REMOVED***
-        withCredentials: true,
-        params: ***REMOVED***facility_id: facility***REMOVED***
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-
+        return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilityAllowedGroups/', ***REMOVED***
+            withCredentials: true,
+            params: ***REMOVED***facility_id: facility***REMOVED***
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
 
+    ***REMOVED***
 
-  ***REMOVED***
+    getFacilityAllowedGroupsWithDetails(facility): Observable<any> ***REMOVED***
 
-  sendMailToFacility(facility,subject,message,reply?): Observable<any> ***REMOVED***
-      let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('subject', subject);
-    urlSearchParams.append('facility_id', facility);
-    urlSearchParams.append('message',message);
-    urlSearchParams.append('reply',reply)
-
-     let header = new Headers(***REMOVED***
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    ***REMOVED***);
-    return this.http.post(this.settings.getApiBaseURL()+ 'facilityManager/sendMailToAllMembers/',urlSearchParams, ***REMOVED***
-        withCredentials: true,
-        headers: header,
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+        return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilityAllowedGroupsWithDetails/', ***REMOVED***
+            withCredentials: true,
+            params: ***REMOVED***facility_id: facility***REMOVED***
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
 
+    ***REMOVED***
+
+    sendMailToFacility(facility, subject, message, reply?): Observable<any> ***REMOVED***
+        let params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
+
+        return this.http.post(this.settings.getApiBaseURL() + 'facilityManager/sendMailToAllMembers/', params, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
 
-
-
-  ***REMOVED***
+    ***REMOVED***
 
 ***REMOVED***

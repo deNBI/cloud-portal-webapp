@@ -1,91 +1,81 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
-import ***REMOVED***ApiSettings***REMOVED***  from './api-settings.service'
-import ***REMOVED***URLSearchParams***REMOVED*** from "@angular/http";
+import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
 import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachines/virtualmachinemodels/vmclient";
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
+import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
+
+import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
+
+
+const header = new HttpHeaders(***REMOVED***
+    'X-CSRFToken': Cookie.get("csrftoken")
+***REMOVED***);
 
 @Injectable()
 export class ClientService ***REMOVED***
-  clientURL =  this.settings.getConnectorBaseUrl()  + 'clients/';
+    clientURL = this.settings.getConnectorBaseUrl() + 'clients/';
 
-  constructor(private http: Http,private settings: ApiSettings) ***REMOVED***
-  ***REMOVED***
+    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    ***REMOVED***
 
-  getClientsUnchecked(): Observable<Vmclient[]> ***REMOVED***
-    let urlSearchParams = new URLSearchParams();
+    getClientsUnchecked(): Observable<Vmclient[]> ***REMOVED***
 
-    return this.http.get(this.clientURL + 'getUncheckedClients/', ***REMOVED***
-      withCredentials: true,
-      search: urlSearchParams
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+        return this.http.get<Vmclient[]>(this.clientURL + 'getUncheckedClients/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
-  ***REMOVED***
+    ***REMOVED***
 
-  isClientAvaiable(): Observable<Vmclient> ***REMOVED***
+    isClientAvaiable(): Observable<Vmclient> ***REMOVED***
 
-    let urlSearchParams = new URLSearchParams();
 
-    return this.http.get(this.clientURL + 'isClientAvaiable/', ***REMOVED***
-      withCredentials: true,
-      search: urlSearchParams
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+        return this.http.get<Vmclient>(this.clientURL + 'isClientAvaiable/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
 
-  ***REMOVED***
+    getClientsChecked(): Observable<Vmclient[]> ***REMOVED***
 
-  getClientsChecked(): Observable<Vmclient[]> ***REMOVED***
-    let urlSearchParams = new URLSearchParams();
+        return this.http.get<Vmclient[]>(this.clientURL + 'getCheckedClients/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
 
-    return this.http.get(this.clientURL + 'getCheckedClients/', ***REMOVED***
-      withCredentials: true,
-      search: urlSearchParams
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-  ***REMOVED***
+    checkClient(host: string, port: string): Observable<any> ***REMOVED***
+        let params = new HttpParams().set('host', host).set('port', port);
 
-  checkClient(host: string, port: string): Observable<Response> ***REMOVED***
-     let header = new Headers(***REMOVED***
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    ***REMOVED***);
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('port', port);
 
-    urlSearchParams.append('host', host);
+        return this.http.post(this.clientURL + 'checkClient/', params, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        ;
 
-    return this.http.post(this.clientURL + 'checkClient/', urlSearchParams, ***REMOVED***
-      withCredentials: true,
-      headers: header,
-    ***REMOVED***);
+    ***REMOVED***
 
-  ***REMOVED***
+    postClient(host: string, port: string, location: string): Observable<any> ***REMOVED***
 
-  postClient(host: string, port: string, location: string): Observable<Response> ***REMOVED***
-      let header = new Headers(***REMOVED***
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    ***REMOVED***);
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('port', port);
-    urlSearchParams.append('location', location);
-    urlSearchParams.append('host', host);
+        let params = new HttpParams().set('host', host).set('port', port).set('location', location);
 
-    return this.http.post(this.clientURL + 'addClient/',urlSearchParams, ***REMOVED***
-      withCredentials: true,
-      headers: header,
-    ***REMOVED***);
-  ***REMOVED***
 
-  deleteClient(host: string, port: string, location: string): Observable<Response> ***REMOVED***
-      let header = new Headers(***REMOVED***
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    ***REMOVED***);
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('port', port);
-    urlSearchParams.append('host', host);
-    urlSearchParams.append('location', location);
-    return this.http.post(this.clientURL + 'deleteClient/', urlSearchParams, ***REMOVED***
-      withCredentials: true,
-      headers: header,
-    ***REMOVED***);
-  ***REMOVED***
+        return this.http.post(this.clientURL + 'addClient/', params, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+
+    ***REMOVED***
+
+    deleteClient(host: string, port: string, location: string): Observable<any> ***REMOVED***
+
+        let params = new HttpParams().set('host', host).set('port', port).set('location', location);
+
+
+
+        return this.http.post(this.clientURL + 'deleteClient/', params, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+
+    ***REMOVED***
 ***REMOVED***

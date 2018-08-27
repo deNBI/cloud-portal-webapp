@@ -1,0 +1,157 @@
+***REMOVED***
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": ***REMOVED***
+    "coreui-angular": ***REMOVED***
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "architect": ***REMOVED***
+        "build": ***REMOVED***
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": ***REMOVED***
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+            "assets": [
+              "src/static/webapp/assets",
+              "src/static/webapp"
+            ],
+            "styles": [
+              "src/scss/style.scss"
+            ],
+            "scripts": [
+              "node_modules/chart.js/dist/Chart.bundle.min.js",
+              "node_modules/chart.js/dist/Chart.min.js"
+            ]
+          ***REMOVED***,
+          "configurations": ***REMOVED***
+            "production": ***REMOVED***
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                ***REMOVED***
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                ***REMOVED***
+              ]
+            ***REMOVED***,
+            "stage": ***REMOVED***
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                ***REMOVED***
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.stage.ts"
+                ***REMOVED***
+              ]
+            ***REMOVED***
+          ***REMOVED***
+        ***REMOVED***,
+        "serve": ***REMOVED***
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": ***REMOVED***
+            "browserTarget": "coreui-angular:build",
+            "port": 8001,
+            "host": "portal-dev.denbi.de",
+            "ssl": false
+          ***REMOVED***,
+          "configurations": ***REMOVED***
+            "production": ***REMOVED***
+              "browserTarget": "coreui-angular:build:production"
+            ***REMOVED***,
+            "stage": ***REMOVED***
+              "browserTarget": "coreui-angular:build:stage"
+            ***REMOVED***
+          ***REMOVED***
+        ***REMOVED***,
+        "extract-i18n": ***REMOVED***
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": ***REMOVED***
+            "browserTarget": "coreui-angular:build"
+          ***REMOVED***
+        ***REMOVED***,
+        "test": ***REMOVED***
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": ***REMOVED***
+            "main": "src/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/chart.js/dist/Chart.bundle.min.js",
+              "node_modules/chart.js/dist/Chart.min.js"
+            ],
+            "styles": [
+              "src/scss/style.scss"
+            ],
+            "assets": [
+              "static/webapp/assets",
+              "src/static/webapp"
+            ]
+          ***REMOVED***
+        ***REMOVED***,
+        "lint": ***REMOVED***
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": ***REMOVED***
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": []
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***,
+    "coreui-angular-e2e": ***REMOVED***
+      "root": "e2e",
+      "sourceRoot": "e2e",
+      "projectType": "application",
+      "architect": ***REMOVED***
+        "e2e": ***REMOVED***
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": ***REMOVED***
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "coreui-angular:serve"
+          ***REMOVED***
+        ***REMOVED***,
+        "lint": ***REMOVED***
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": ***REMOVED***
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": []
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***,
+  "defaultProject": "coreui-angular",
+  "schematics": ***REMOVED***
+    "@schematics/angular:component": ***REMOVED***
+      "prefix": "app",
+      "styleext": "scss"
+    ***REMOVED***,
+    "@schematics/angular:directive": ***REMOVED***
+      "prefix": "app"
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
