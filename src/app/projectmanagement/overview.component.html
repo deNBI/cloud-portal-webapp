@@ -452,11 +452,11 @@
                     <td>{{application.DateCreated}}</td>
                     <td>
                         <button
-                                (click)="approveMemberApplication(selectedProject?.Id,application.Id); applicationModal.hide();"
+                                (click)="approveMemberApplication(selectedProject?.Id,application.Id,application.Name); "
                                 class="btn btn-success"><i class="fa fa-check"></i> Approve
                         </button>
                         <button style="margin-left: 10px"
-                                (click)="rejectMemberApplication(selectedProject?.Id,application.Id); applicationModal.hide();"
+                                (click)="appication_action='rejected';application_member_name=application.Name;rejectMemberApplication(selectedProject?.Id,application.Id,application.Name); "
                                 class="btn btn-danger"><i class="fa fa-times"></i> Reject
                         </button>
                     </td>
@@ -466,6 +466,12 @@
 
 
             <div class="modal-footer">
+                <div *ngIf="application_action_success && loaded" class="alert alert-success">
+                        <strong>Success:</strong> Succesfully {{application_action}} the application of {{application_member_name}}.
+                    </div>
+                <div *ngIf="!application_action_success && loaded" class="alert alert-danger">
+                        <strong>Failed:</strong> The application of {{application_member_name}} could not be  {{application_action}} .
+                    </div>
                 <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;applicationModal.hide();">
                     Close
                 </button>

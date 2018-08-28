@@ -29,7 +29,11 @@ export class OverviewComponent {
     member_id: number;
     admingroups: {};
     filteredMembers = null;
+    application_action = '';
+    application_member_name = '';
+    application_action_success: boolean;
     projects: Project[] = new Array();
+    loaded = false;
 
 
     // modal variables for User list
@@ -221,8 +225,10 @@ export class OverviewComponent {
         });
     }
 
-    approveMemberApplication(project: number, application: number) {
+    approveMemberApplication(project: number, application: number, membername: string) {
+        this.loaded = false;
         this.groupservice.approveGroupApplication(project, application).subscribe(result => {
+            let application=result;
             this.groupservice.getGroupApplications(project).subscribe(result => {
                 let newProjectApplications = [];
                 for (let application of result) {
@@ -234,13 +240,26 @@ export class OverviewComponent {
                     newProjectApplications.push(newMemberApplication)
                 }
                 this.selectedProject.ProjectMemberApplications = newProjectApplications;
+                if (application['state'] == 'APPROVED') {
+                    this.application_action_success = true;
+                }
+                else {
+                    this.application_action_success = false;
+                }
+                this.application_action = 'approved';
+                this.application_member_name = membername;
+                this.loaded = true;
 
             })
         });
     }
 
-    rejectMemberApplication(project: number, application: number) {
+    rejectMemberApplication(project: number, application: number, membername: string) {
+        this.loaded = false;
+
         this.groupservice.rejectGroupApplication(project, application).subscribe(result => {
+                        let application=result;
+
             this.groupservice.getGroupApplications(project).subscribe(result => {
                 let newProjectApplications = [];
                 for (let application of result) {
@@ -252,6 +271,16 @@ export class OverviewComponent {
                     newProjectApplications.push(newMemberApplication)
                 }
                 this.selectedProject.ProjectMemberApplications = newProjectApplications;
+                if (application['state'] == 'REJECTED') {
+                    this.application_action_success = true;
+                }
+                else {
+                    this.application_action_success = false;
+                }
+                this.application_action = 'rejected';
+                this.application_member_name = membername;
+                        this.loaded=true;
+
 
             })
         });
