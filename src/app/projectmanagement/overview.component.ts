@@ -31,9 +31,10 @@ export class OverviewComponent {
     filteredMembers = null;
     application_action = '';
     application_member_name = '';
+    application_action_done = false;
     application_action_success: boolean;
     projects: Project[] = new Array();
-    loaded = false;
+    loaded = true;
 
 
     // modal variables for User list
@@ -227,8 +228,9 @@ export class OverviewComponent {
 
     approveMemberApplication(project: number, application: number, membername: string) {
         this.loaded = false;
+        this.application_action_done = false;
         this.groupservice.approveGroupApplication(project, application).subscribe(result => {
-            let application=result;
+            let application = result;
             this.groupservice.getGroupApplications(project).subscribe(result => {
                 let newProjectApplications = [];
                 for (let application of result) {
@@ -249,6 +251,7 @@ export class OverviewComponent {
                 this.application_action = 'approved';
                 this.application_member_name = membername;
                 this.loaded = true;
+                this.application_action_done = true
 
             })
         });
@@ -256,15 +259,16 @@ export class OverviewComponent {
 
     rejectMemberApplication(project: number, application: number, membername: string) {
         this.loaded = false;
+        this.application_action_done = false;
 
         this.groupservice.rejectGroupApplication(project, application).subscribe(result => {
-                        let application=result;
+            let application = result;
 
             this.groupservice.getGroupApplications(project).subscribe(result => {
                 let newProjectApplications = [];
                 for (let application of result) {
-                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
-                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName'];
                     let newMemberApplication = new ProjectMemberApplication(
                         application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
                     )
@@ -279,7 +283,8 @@ export class OverviewComponent {
                 }
                 this.application_action = 'rejected';
                 this.application_member_name = membername;
-                        this.loaded=true;
+                this.loaded = true;
+                this.application_action_done=true;
 
 
             })

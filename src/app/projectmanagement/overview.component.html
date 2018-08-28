@@ -74,8 +74,9 @@
                                         </button>
                                         <button
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
-                                                type="button" style="margin-bottom: 5px" (click)="selectedProject = project;applicationModal.show();"
-                                                class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Applications
+                                                type="button" style="margin-bottom: 5px"
+                                                (click)="selectedProject = project;applicationModal.show();"
+                                                class="btn btn-secondary"><i class="fa fa-list-alt"></i>&nbsp; Applications
                                             ({{project.ProjectMemberApplications.length}})
                                         </button>
                                     </div>
@@ -221,7 +222,7 @@
                             name:</p>
 
                         <input placeholder="first name" #firstName> <input placeholder="last name" #lastName>
-                        <button type="button" class="btn btn-primary"
+                        <button style="margin-left: 10px" type="button" class="btn btn-primary"
                                 (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"><i
                                 class="fa fa-search"></i> Search
                         </button>
@@ -230,16 +231,10 @@
                         <br>
                         <strong>Please note</strong> that if you can not find the user, he is not a member of the de.NBI
                         vo. In that case you can invite him by sending him
-                        one of the following links:
+                        the following link:
                         <br>
                         <br>
                         <ul>
-                            <li>If the user does have an elixir account:
-                                <pre>{{voRegistrationLink}}</pre>
-                            </li>
-                            <li>If the user does not have an elixir account:
-                                <pre>https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew={{voRegistrationLink}}</pre>
-                            </li>
                             <li>Invite Member
                                 <pre>{{invitation_group_pre}}{{ addUserModalProjectName }}</pre>
                             </li>
@@ -437,9 +432,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin" style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+            </div>
 
-            <div class="table-responsive">
-                <table  class="table table-bordered table-striped table-sm">
+            <div *ngIf="loaded" class="table-responsive">
+                <table class="table table-bordered table-striped table-sm">
                     <thead>
 
                     <th>Name</th>
@@ -466,13 +463,16 @@
 
 
             <div class="modal-footer">
-                <div *ngIf="application_action_success && loaded" class="alert alert-success">
-                        <strong>Success:</strong> Succesfully {{application_action}} the application of {{application_member_name}}.
-                    </div>
-                <div *ngIf="!application_action_success && loaded" class="alert alert-danger">
-                        <strong>Failed:</strong> The application of {{application_member_name}} could not be  {{application_action}} .
-                    </div>
-                <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;applicationModal.hide();">
+                <p *ngIf="application_action_success && application_action_done" class="alert alert-success">
+                    <strong>Success:</strong> Succesfully {{application_action}} the application of
+                    {{application_member_name}}.
+                </p>
+                <p *ngIf="!application_action_success && application_action_done" class="alert alert-danger">
+                    <strong>Failed:</strong> The application of {{application_member_name}} could not be
+                    {{application_action}} .
+                </p>
+                <button type="button" class="btn btn-secondary"
+                        (click)="selectedProject=undefined;applicationModal.hide();">
                     Close
                 </button>
             </div>
