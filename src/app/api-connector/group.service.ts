@@ -268,6 +268,36 @@ export class GroupService {
 
     }
 
+
+    getGroupApplications(group:number): Observable<any>{
+         return this.http.get(this.settings.getApiBaseURL() + 'group/' + group + '/applications/', {
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error.error)));
+
+
+    }
+
+    approveGroupApplication(groupid:number,application:number) : Observable<any> {
+
+
+        return this.http.get(this.settings.getApiBaseURL() + 'group/'+ groupid +'/applications/' + application + '/approve/', {
+            withCredentials: true,
+            headers: header
+        }).pipe(catchError((error: any) => throwError(error.error)));
+
+    }
+
+      rejectGroupApplication(groupid:number,application:number) : Observable<any> {
+
+
+        return this.http.get(this.settings.getApiBaseURL() + 'group/'+ groupid +'/applications/' + application + '/reject/', {
+            withCredentials: true,
+            headers: header
+        }).pipe(catchError((error: any) => throwError(error.error)));
+
+    }
+
+
     getMemberGroupsStatus(): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'group/getMemberGroupsStatus/', {

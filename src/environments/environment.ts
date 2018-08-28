@@ -4,11 +4,13 @@
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
 export const environment = {
-  production: false,
-  vo: 3334,
-  freemium_project_id:10392,
-  apiBaseUrl: 'http://portal-dev.denbi.de:8000/api/v0/',
-  voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev',
-  connectorBaseUrl : 'http://portal-dev.denbi.de:8000/connector/',
-     login: 'https://portal-dev.denbi.de/portal/'
+    production: false,
+    vo: 3334,
+    freemium_project_id: 10392,
+    invitation_group_pre: 'https://perun.elixir-czech.cz/fed/registrar//registrar/?vo=denbi-dev&group=',
+
+    apiBaseUrl: 'http://portal-dev.denbi.de:8000/api/v0/',
+    voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev',
+    connectorBaseUrl: 'http://portal-dev.denbi.de:8000/connector/',
+    login: 'https://portal-dev.denbi.de/portal/'
 };
