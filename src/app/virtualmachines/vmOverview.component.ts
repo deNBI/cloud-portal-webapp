@@ -28,7 +28,7 @@ export class VmOverviewComponent implements OnInit {
     status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
-    snapshot_vm: string;
+    snapshot_vm: VirtualMachine
     validSnapshotNameBool: boolean;
     snapshotDone: string = 'Waiting';
     snapshotName: string;
@@ -426,8 +426,8 @@ export class VmOverviewComponent implements OnInit {
         });
     }
 
-    createSnapshot(snapshot_instance: string, snapshot_name: string) {
-        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => {
+    createSnapshot(snapshot_instance: string, snapshot_name: string,snapshot_projectid:string) {
+        this.imageService.createSnapshot(snapshot_instance, snapshot_name,snapshot_projectid).subscribe(result => {
             if (result['Error']) {
                 this.snapshotDone = result['Error'].toString();
             }
