@@ -29,7 +29,11 @@
                                 [ngStyle]="***REMOVED***'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)***REMOVED***">
                                 <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
-                                <td><button class="btn btn-secondary" (click)="selectedProject=project;infoModal.show();">Show Description</button></td>
+                                <td>
+                                    <button class="btn btn-secondary"
+                                            (click)="selectedProject=project;infoModal.show();">Show Description
+                                    </button>
+                                </td>
 
                                 <td>
                                     <p *ngIf="project.ComputeCenter[0] == 'None'">None</p>
@@ -67,6 +71,13 @@
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
                                                 type="button" style="margin-bottom: 5px"
                                                 class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
+                                        </button>
+                                        <button
+                                                *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
+                                                type="button" style="margin-bottom: 5px"
+                                                (click)="selectedProject = project;applicationModal.show();"
+                                                class="btn btn-secondary"><i class="fa fa-list-alt"></i>&nbsp; Applications
+                                            (***REMOVED******REMOVED***project.ProjectMemberApplications.length***REMOVED******REMOVED***)
                                         </button>
                                     </div>
                                 </td>
@@ -211,7 +222,7 @@
                             name:</p>
 
                         <input placeholder="first name" #firstName> <input placeholder="last name" #lastName>
-                        <button type="button" class="btn btn-primary"
+                        <button style="margin-left: 10px" type="button" class="btn btn-primary"
                                 (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"><i
                                 class="fa fa-search"></i> Search
                         </button>
@@ -220,15 +231,12 @@
                         <br>
                         <strong>Please note</strong> that if you can not find the user, he is not a member of the de.NBI
                         vo. In that case you can invite him by sending him
-                        one of the following links:
+                        the following link:
                         <br>
                         <br>
                         <ul>
-                            <li>If the user does have an elixir account:
-                                <pre>***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
-                            </li>
-                            <li>If the user does not have an elixir account:
-                                <pre>https://perun.elixir-czech.cz/registrar/?vo=elixir&targetnew=***REMOVED******REMOVED***voRegistrationLink***REMOVED******REMOVED***</pre>
+                            <li>Invite Member
+                                <pre>***REMOVED******REMOVED***invitation_group_pre***REMOVED******REMOVED******REMOVED******REMOVED*** addUserModalProjectName ***REMOVED******REMOVED***</pre>
                             </li>
                         </ul>
                     </div>
@@ -405,8 +413,70 @@
                 ***REMOVED******REMOVED*** selectedProject?.Description ***REMOVED******REMOVED***
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;infoModal.hide();">Close</button>
+                <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;infoModal.hide();">
+                    Close
+                </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
+
+
+<div bsModal #applicationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-info modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Applications for ***REMOVED******REMOVED***selectedProject?.Name***REMOVED******REMOVED***</h4>
+                <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin" style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+            </div>
+
+            <div *ngIf="loaded" class="table-responsive">
+                <table class="table table-bordered table-striped table-sm">
+                    <thead>
+
+                    <th>Name</th>
+                    <th>Date Submitted</th>
+                    <th>Actions</th>
+                    </thead>
+                    <tbody *ngFor="  let application of selectedProject?.ProjectMemberApplications">
+
+                    <td>***REMOVED******REMOVED***application.Name***REMOVED******REMOVED***</td>
+                    <td>***REMOVED******REMOVED***application.DateCreated***REMOVED******REMOVED***</td>
+                    <td>
+                        <button
+                                (click)="approveMemberApplication(selectedProject?.Id,application.Id,application.Name); "
+                                class="btn btn-success"><i class="fa fa-check"></i> Approve
+                        </button>
+                        <button style="margin-left: 10px"
+                                (click)="appication_action='rejected';application_member_name=application.Name;rejectMemberApplication(selectedProject?.Id,application.Id,application.Name); "
+                                class="btn btn-danger"><i class="fa fa-times"></i> Reject
+                        </button>
+                    </td>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="modal-footer">
+                <p *ngIf="application_action_success && application_action_done" class="alert alert-success mr-auto">
+                    <strong>Success:</strong> Succesfully ***REMOVED******REMOVED***application_action***REMOVED******REMOVED*** the application of
+                    ***REMOVED******REMOVED***application_member_name***REMOVED******REMOVED***.
+                </p>
+                <p *ngIf="!application_action_success && application_action_done" class="alert alert-danger mr-auto">
+                    <strong>Failed:</strong> The application of ***REMOVED******REMOVED***application_member_name***REMOVED******REMOVED*** could not be
+                    ***REMOVED******REMOVED***application_action***REMOVED******REMOVED*** .
+                </p>
+                <button type="button" class="btn btn-secondary"
+                        (click)="selectedProject=undefined;applicationModal.hide();">
+                    Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
