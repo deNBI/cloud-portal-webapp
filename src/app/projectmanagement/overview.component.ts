@@ -11,6 +11,7 @@ import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service
 import * as moment from 'moment';
 import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***ProjectMemberApplication***REMOVED*** from "./project_member_application";
 
 
 @Component(***REMOVED***
@@ -22,12 +23,18 @@ export class OverviewComponent ***REMOVED***
     debug_module = false;
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
+    @Input() invitation_group_pre: string = environment.invitation_group_pre
     is_admin = false;
     userprojects: ***REMOVED******REMOVED***;
     member_id: number;
     admingroups: ***REMOVED******REMOVED***;
     filteredMembers = null;
+    application_action = '';
+    application_member_name = '';
+    application_action_done = false;
+    application_action_success: boolean;
     projects: Project[] = new Array();
+    loaded = true;
 
 
     // modal variables for User list
@@ -144,6 +151,16 @@ export class OverviewComponent ***REMOVED***
                 if (expirationDate) ***REMOVED***
                     newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
                 ***REMOVED***
+                let newProjectApplications = [];
+                for (let application of group['applications']) ***REMOVED***
+                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                    let newMemberApplication = new ProjectMemberApplication(
+                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                    )
+                    newProjectApplications.push(newMemberApplication)
+                ***REMOVED***
+                newProject.ProjectMemberApplications = newProjectApplications;
                 this.projects.push(newProject);
             ***REMOVED***
             this.isLoaded = true;
@@ -206,6 +223,71 @@ export class OverviewComponent ***REMOVED***
             ***REMOVED***)
 
 
+        ***REMOVED***);
+    ***REMOVED***
+
+    approveMemberApplication(project: number, application: number, membername: string) ***REMOVED***
+        this.loaded = false;
+        this.application_action_done = false;
+        this.groupservice.approveGroupApplication(project, application).subscribe(result => ***REMOVED***
+            let application = result;
+            this.groupservice.getGroupApplications(project).subscribe(result => ***REMOVED***
+                let newProjectApplications = [];
+                for (let application of result) ***REMOVED***
+                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                    let newMemberApplication = new ProjectMemberApplication(
+                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                    )
+                    newProjectApplications.push(newMemberApplication)
+                ***REMOVED***
+                this.selectedProject.ProjectMemberApplications = newProjectApplications;
+                if (application['state'] == 'APPROVED') ***REMOVED***
+                    this.application_action_success = true;
+                ***REMOVED***
+                else ***REMOVED***
+                    this.application_action_success = false;
+                ***REMOVED***
+                this.application_action = 'approved';
+                this.application_member_name = membername;
+                this.loaded = true;
+                this.application_action_done = true
+
+            ***REMOVED***)
+        ***REMOVED***);
+    ***REMOVED***
+
+    rejectMemberApplication(project: number, application: number, membername: string) ***REMOVED***
+        this.loaded = false;
+        this.application_action_done = false;
+
+        this.groupservice.rejectGroupApplication(project, application).subscribe(result => ***REMOVED***
+            let application = result;
+
+            this.groupservice.getGroupApplications(project).subscribe(result => ***REMOVED***
+                let newProjectApplications = [];
+                for (let application of result) ***REMOVED***
+                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName'];
+                    let newMemberApplication = new ProjectMemberApplication(
+                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                    )
+                    newProjectApplications.push(newMemberApplication)
+                ***REMOVED***
+                this.selectedProject.ProjectMemberApplications = newProjectApplications;
+                if (application['state'] == 'REJECTED') ***REMOVED***
+                    this.application_action_success = true;
+                ***REMOVED***
+                else ***REMOVED***
+                    this.application_action_success = false;
+                ***REMOVED***
+                this.application_action = 'rejected';
+                this.application_member_name = membername;
+                this.loaded = true;
+                this.application_action_done=true;
+
+
+            ***REMOVED***)
         ***REMOVED***);
     ***REMOVED***
 
@@ -341,13 +423,13 @@ export class OverviewComponent ***REMOVED***
                         this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                     ***REMOVED***
                 ***REMOVED***, error => ***REMOVED***
-                if (error['name'] == 'AlreadyAdminException') ***REMOVED***
-                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
-                ***REMOVED***
-                else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
-                ***REMOVED***
-            ***REMOVED***)
+                    if (error['name'] == 'AlreadyAdminException') ***REMOVED***
+                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                    ***REMOVED***
+                    else ***REMOVED***
+                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                    ***REMOVED***
+                ***REMOVED***)
         ***REMOVED***)
     ***REMOVED***
 
