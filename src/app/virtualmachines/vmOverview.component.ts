@@ -426,8 +426,8 @@ export class VmOverviewComponent implements OnInit {
         });
     }
 
-    createSnapshot(snapshot_instance: string, snapshot_name: string,snapshot_projectid:string) {
-        this.imageService.createSnapshot(snapshot_instance, snapshot_name,snapshot_projectid).subscribe(result => {
+    createSnapshot(snapshot_instance: string, snapshot_name: string) {
+        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => {
             if (result['Error']) {
                 this.snapshotDone = result['Error'].toString();
             }
