@@ -152,15 +152,17 @@ export class OverviewComponent {
                     newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
                 }
                 let newProjectApplications = [];
-                for (let application of group['applications']) {
-                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
-                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
-                    let newMemberApplication = new ProjectMemberApplication(
-                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
-                    )
-                    newProjectApplications.push(newMemberApplication)
+                if (group['applications']) {
+                    for (let application of group['applications']) {
+                        let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                        let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                        let newMemberApplication = new ProjectMemberApplication(
+                            application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                        )
+                        newProjectApplications.push(newMemberApplication)
+                    }
+                    newProject.ProjectMemberApplications = newProjectApplications;
                 }
-                newProject.ProjectMemberApplications = newProjectApplications;
                 this.projects.push(newProject);
             }
             this.isLoaded = true;
@@ -284,7 +286,7 @@ export class OverviewComponent {
                 this.application_action = 'rejected';
                 this.application_member_name = membername;
                 this.loaded = true;
-                this.application_action_done=true;
+                this.application_action_done = true;
 
 
             })
