@@ -22,7 +22,7 @@ export class VoOverviewComponent {
     public emailHeader: string;
     public emailVerify: string;
     public emailType: number;
-        public selectedProject: Project;
+    public selectedProject: Project;
 
     public newsletterSubscriptionCounter: number;
     isLoaded = false;
@@ -193,17 +193,17 @@ export class VoOverviewComponent {
                 for (let member of members) {
                     let member_id = member["id"];
                     let user_id = member["userId"];
-                    let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
-                    this.usersModalProjectMembers.push(new ProjectMember(user_id, fullName, member_id));
+                    let fullName = member["firstName"] + " " + member["lastName"];
+                    let newMember = new ProjectMember(user_id, fullName, member_id);
+                    newMember.ElixirId = member['elixirId'];
+                    this.usersModalProjectMembers.push(newMember);
                 }
 
             }
         )
     }
 
-    public
-
-    showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) {
+    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) {
         this.getMembesOfTheProject(projectid, projectname);
 
     }
