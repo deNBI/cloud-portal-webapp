@@ -152,15 +152,17 @@ export class OverviewComponent ***REMOVED***
                     newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
                 ***REMOVED***
                 let newProjectApplications = [];
-                for (let application of group['applications']) ***REMOVED***
-                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
-                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
-                    let newMemberApplication = new ProjectMemberApplication(
-                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
-                    )
-                    newProjectApplications.push(newMemberApplication)
+                if (group['applications']) ***REMOVED***
+                    for (let application of group['applications']) ***REMOVED***
+                        let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                        let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                        let newMemberApplication = new ProjectMemberApplication(
+                            application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                        )
+                        newProjectApplications.push(newMemberApplication)
+                    ***REMOVED***
+                    newProject.ProjectMemberApplications = newProjectApplications;
                 ***REMOVED***
-                newProject.ProjectMemberApplications = newProjectApplications;
                 this.projects.push(newProject);
             ***REMOVED***
             this.isLoaded = true;
@@ -284,7 +286,7 @@ export class OverviewComponent ***REMOVED***
                 this.application_action = 'rejected';
                 this.application_member_name = membername;
                 this.loaded = true;
-                this.application_action_done=true;
+                this.application_action_done = true;
 
 
             ***REMOVED***)
