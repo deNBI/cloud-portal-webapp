@@ -5,11 +5,12 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {keyService} from "../api-connector/key.service";
 import {UserService} from "../api-connector/user.service";
+import {GroupService} from "../api-connector/group.service";
 
 
 @Component({
     templateUrl: 'userinfo.component.html',
-    providers: [UserService, PerunSettings, ApiSettings, keyService]
+    providers: [GroupService, UserService, PerunSettings, ApiSettings, keyService]
 })
 export class UserinfoComponent implements OnInit {
     userinfo: Userinfo;
@@ -18,18 +19,31 @@ export class UserinfoComponent implements OnInit {
     newsletter_subscribed: boolean;
     public_key: string = '';
     isLoaded = false;
+    is_project_member= true;
+    freemium_active = false;
 
-    constructor(private userservice: UserService, private keyService: keyService) {
+    constructor(private groupService: GroupService, private userservice: UserService, private keyService: keyService) {
         this.userinfo = new Userinfo();
         this.getUserinfo();
 
 
     }
 
+
     ngOnInit(): void {
+        this.isFreemiumActive();
+        this.is_vm_project_member();
 
 
     }
+
+    isFreemiumActive() {
+        this.groupService.isFreemiumActive().subscribe(result => {
+            this.freemium_active = result['Freemium'];
+
+        });
+    }
+
 
     setNewsletterSubscription(e) {
         this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => {
@@ -62,9 +76,7 @@ export class UserinfoComponent implements OnInit {
 
     getUserPublicKey() {
         this.keyService.getKey().subscribe(result => {
-            console.log(result)
             this.userinfo.PublicKey = result['public_key'];
-            console.log(this.userinfo.PublicKey)
             this.isLoaded = true;
         })
     }
@@ -84,7 +96,6 @@ export class UserinfoComponent implements OnInit {
             this.userinfo.MemberId = memberinfo["id"];
             this.userservice.getLogins().toPromise().then(result => {
                 let logins = result;
-                console.log(logins);
                 for (let login of logins) {
                     if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
                         this.userinfo.ElxirId = login['value']
@@ -129,6 +140,24 @@ export class UserinfoComponent implements OnInit {
             this.key = 'Show Public Key';
             this.key_visible = false;
         }
+    }
+
+    joinFreemium() {
+        this.groupService.addMemberToFreemium().subscribe(result => {
+        });
+        //window.location.reload(true);
+
+    }
+
+    is_vm_project_member() {
+        this.groupService.getMemberGroupsStatus().subscribe(result => {
+            if (result.length > 0) {
+                this.is_project_member = true
+            }
+            else {
+                this.is_project_member = false
+            }
+        })
     }
 }
 

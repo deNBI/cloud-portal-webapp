@@ -252,6 +252,9 @@ export class VmOverviewComponent implements OnInit {
     }
 
     isFilterstatus(vmstatus: string): boolean {
+        if (vmstatus == 'FREEMIUM'){
+            return true
+        }
         if (this.filterstatus_list[vmstatus]
         ) {
 
