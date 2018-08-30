@@ -166,8 +166,7 @@ export class OverviewComponent {
                         )
                         newProjectApplications.push(newMemberApplication)
                     }
-
-                    newProject.ProjectMemberApplications = newProjectApplications;
+      newProject.ProjectMemberApplications = newProjectApplications;
                 }
 
                 this.projects.push(newProject);
