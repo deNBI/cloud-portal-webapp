@@ -145,7 +145,7 @@ export class UserinfoComponent implements OnInit {
     joinFreemium() {
         this.groupService.addMemberToFreemium().subscribe(result => {
         });
-        //window.location.reload(true);
+        window.location.reload(true);
 
     }
 
