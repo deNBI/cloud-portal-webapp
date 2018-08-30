@@ -109,6 +109,7 @@ export class OverviewComponent {
 
         this.groupservice.getGroupDetails().subscribe(result => {
             this.userprojects = result;
+            console.log(this.userprojects)
             for (let key in this.userprojects) {
                 let group = this.userprojects[key];
                 let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
@@ -122,6 +123,7 @@ export class OverviewComponent {
                 let lifetime = group['lifetime'];
                 let lifetimeDays = -1;
                 let expirationDate = undefined;
+                console.log('1')
                 if (lifetime != -1) {
                     lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
                     expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
@@ -135,6 +137,8 @@ export class OverviewComponent {
                 if (!shortname) {
                     shortname = group['name']
                 }
+                console.log('2')
+
 
                 let newProject = new Project(
                     Number(groupid),
@@ -151,16 +155,20 @@ export class OverviewComponent {
                 if (expirationDate) {
                     newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
                 }
+
                 let newProjectApplications = [];
-                for (let application of group['applications']) {
-                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
-                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
-                    let newMemberApplication = new ProjectMemberApplication(
-                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
-                    )
-                    newProjectApplications.push(newMemberApplication)
+                if (group['applications']) {
+                    for (let application of group['applications']) {
+                        let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                        let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                        let newMemberApplication = new ProjectMemberApplication(
+                            application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                        )
+                        newProjectApplications.push(newMemberApplication)
+                    }
+      newProject.ProjectMemberApplications = newProjectApplications;
                 }
-                newProject.ProjectMemberApplications = newProjectApplications;
+
                 this.projects.push(newProject);
             }
             this.isLoaded = true;
@@ -207,8 +215,9 @@ export class OverviewComponent {
                 for (let member of members) {
                     let member_id = member["id"];
                     let user_id = member["userId"];
-                    let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
+                    let fullName = member["firstName"] + " " + member["lastName"];
                     let projectMember = new ProjectMember(user_id, fullName, member_id);
+                    projectMember.ElixirId=member['elixirId'];
                     if (admindIds.indexOf(user_id) != -1) {
                         projectMember.IsPi = true;
                     }
@@ -284,7 +293,7 @@ export class OverviewComponent {
                 this.application_action = 'rejected';
                 this.application_member_name = membername;
                 this.loaded = true;
-                this.application_action_done=true;
+                this.application_action_done = true;
 
 
             })
