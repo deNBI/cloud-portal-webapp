@@ -215,8 +215,9 @@ export class OverviewComponent {
                 for (let member of members) {
                     let member_id = member["id"];
                     let user_id = member["userId"];
-                    let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
+                    let fullName = member["firstName"] + " " + member["lastName"];
                     let projectMember = new ProjectMember(user_id, fullName, member_id);
+                    projectMember.ElixirId=member['elixirId'];
                     if (admindIds.indexOf(user_id) != -1) {
                         projectMember.IsPi = true;
                     }
