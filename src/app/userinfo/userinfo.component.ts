@@ -5,11 +5,12 @@ import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connecto
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
+import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 
 
 @Component(***REMOVED***
     templateUrl: 'userinfo.component.html',
-    providers: [UserService, PerunSettings, ApiSettings, keyService]
+    providers: [GroupService, UserService, PerunSettings, ApiSettings, keyService]
 ***REMOVED***)
 export class UserinfoComponent implements OnInit ***REMOVED***
     userinfo: Userinfo;
@@ -18,18 +19,31 @@ export class UserinfoComponent implements OnInit ***REMOVED***
     newsletter_subscribed: boolean;
     public_key: string = '';
     isLoaded = false;
+    is_project_member= true;
+    freemium_active = false;
 
-    constructor(private userservice: UserService, private keyService: keyService) ***REMOVED***
+    constructor(private groupService: GroupService, private userservice: UserService, private keyService: keyService) ***REMOVED***
         this.userinfo = new Userinfo();
         this.getUserinfo();
 
 
     ***REMOVED***
 
+
     ngOnInit(): void ***REMOVED***
+        this.isFreemiumActive();
+        this.is_vm_project_member();
 
 
     ***REMOVED***
+
+    isFreemiumActive() ***REMOVED***
+        this.groupService.isFreemiumActive().subscribe(result => ***REMOVED***
+            this.freemium_active = result['Freemium'];
+
+        ***REMOVED***);
+    ***REMOVED***
+
 
     setNewsletterSubscription(e) ***REMOVED***
         this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => ***REMOVED***
@@ -62,9 +76,7 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
     getUserPublicKey() ***REMOVED***
         this.keyService.getKey().subscribe(result => ***REMOVED***
-            console.log(result)
             this.userinfo.PublicKey = result['public_key'];
-            console.log(this.userinfo.PublicKey)
             this.isLoaded = true;
         ***REMOVED***)
     ***REMOVED***
@@ -84,7 +96,6 @@ export class UserinfoComponent implements OnInit ***REMOVED***
             this.userinfo.MemberId = memberinfo["id"];
             this.userservice.getLogins().toPromise().then(result => ***REMOVED***
                 let logins = result;
-                console.log(logins);
                 for (let login of logins) ***REMOVED***
                     if (login['friendlyName'] === 'login-namespace:elixir-persistent') ***REMOVED***
                         this.userinfo.ElxirId = login['value']
@@ -129,6 +140,24 @@ export class UserinfoComponent implements OnInit ***REMOVED***
             this.key = 'Show Public Key';
             this.key_visible = false;
         ***REMOVED***
+    ***REMOVED***
+
+    joinFreemium() ***REMOVED***
+        this.groupService.addMemberToFreemium().subscribe(result => ***REMOVED***
+        ***REMOVED***);
+        window.location.reload(true);
+
+    ***REMOVED***
+
+    is_vm_project_member() ***REMOVED***
+        this.groupService.getMemberGroupsStatus().subscribe(result => ***REMOVED***
+            if (result.length > 0) ***REMOVED***
+                this.is_project_member = true
+            ***REMOVED***
+            else ***REMOVED***
+                this.is_project_member = false
+            ***REMOVED***
+        ***REMOVED***)
     ***REMOVED***
 ***REMOVED***
 
