@@ -362,7 +362,9 @@ export class GroupService ***REMOVED***
 
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupMembers/', ***REMOVED***
             withCredentials: true,
-            params: ***REMOVED***groupid: groupid***REMOVED***
+            params: ***REMOVED***groupid: groupid***REMOVED***,
+            headers: header
+
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
 
