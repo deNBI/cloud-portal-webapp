@@ -110,7 +110,7 @@ export class GroupService {
             .set('group_id', group_id.toString())
             .set('user_id', user_id.toString());
 
-         if (facility_id) {
+        if (facility_id) {
             params.set('facility_id', facility_id.toString())
 
         }
@@ -130,7 +130,7 @@ export class GroupService {
             .set('user_id', user_id.toString())
             .set('member_id', member_id.toString());
 
-         if (facility_id) {
+        if (facility_id) {
             params.set('facility_id', facility_id.toString())
 
         }
@@ -150,7 +150,7 @@ export class GroupService {
         let params = new HttpParams()
             .set('group_id', group_id.toString())
             .set('user_id', user_id.toString());
-         if (facility_id) {
+        if (facility_id) {
             params.set('facility_id', facility_id.toString())
 
         }
@@ -269,28 +269,28 @@ export class GroupService {
     }
 
 
-    getGroupApplications(group:number): Observable<any>{
-         return this.http.get(this.settings.getApiBaseURL() + 'group/' + group + '/applications/', {
+    getGroupApplications(group: number): Observable<any> {
+        return this.http.get(this.settings.getApiBaseURL() + 'group/' + group + '/applications/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error.error)));
 
 
     }
 
-    approveGroupApplication(groupid:number,application:number) : Observable<any> {
+    approveGroupApplication(groupid: number, application: number): Observable<any> {
 
 
-        return this.http.get(this.settings.getApiBaseURL() + 'group/'+ groupid +'/applications/' + application + '/approve/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'group/' + groupid + '/applications/' + application + '/approve/', {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));
 
     }
 
-      rejectGroupApplication(groupid:number,application:number) : Observable<any> {
+    rejectGroupApplication(groupid: number, application: number): Observable<any> {
 
 
-        return this.http.get(this.settings.getApiBaseURL() + 'group/'+ groupid +'/applications/' + application + '/reject/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'group/' + groupid + '/applications/' + application + '/reject/', {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));
@@ -302,6 +302,8 @@ export class GroupService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'group/getMemberGroupsStatus/', {
             withCredentials: true,
+            headers: header
+
         }).pipe(catchError((error: any) => throwError(error.error)));
     }
 
@@ -439,12 +441,11 @@ export class GroupService {
 
     addMemberToFreemium(): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'freemium/becomeMember/',{
+        return this.http.get(this.settings.getApiBaseURL() + 'freemium/becomeMember/', {
             withCredentials: true,
             headers: header
         })
     }
-
 
 
 }
