@@ -28,45 +28,49 @@
                 </div>
 
                 <div class="card-block">
-                  <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Project ID</th>
-                            <th>Project Name</th>
-                            <th>Description</th>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Project ID</th>
+                                <th>Project Name</th>
+                                <th>Description</th>
 
-                            <th>Date created</th>
-                            <th>Expiration Date</th>
-                            <th>Days running</th>
-                            <th>Lifetime in Days</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let project of projects"
-                            [ngStyle]="***REMOVED***'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)***REMOVED***">
-                            <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
-                                <td><button class="btn btn-secondary" (click)="selectedProject=project;infoModal.show();">Show Description</button></td>
+                                <th>Date created</th>
+                                <th>Expiration Date</th>
+                                <th>Days running</th>
+                                <th>Lifetime in Days</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let project of projects"
+                                [ngStyle]="***REMOVED***'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)***REMOVED***">
+                                <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
+                                <td>
+                                    <button class="btn btn-secondary"
+                                            (click)="selectedProject=project;infoModal.show();">Show Description
+                                    </button>
+                                </td>
 
 
-                            <td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED***project.DateEnd***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED*** project.DaysRunning ***REMOVED******REMOVED***</td>
-                            <td>***REMOVED******REMOVED***project.LifetimeDays***REMOVED******REMOVED***</td>
-                            <td>
-                                <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                        (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
+                                <td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED***project.DateEnd***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED*** project.DaysRunning ***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED***project.LifetimeDays***REMOVED******REMOVED***</td>
+                                <td>
+                                    <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                            (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
 
-                                >
-                                    <i class="fa fa-users"></i>&nbsp;Show Members
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                  </div>
+                                    >
+                                        <i class="fa fa-users"></i>&nbsp;Show Members
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,26 +91,28 @@
                 </button>
             </div>
             <div class="modal-body">
-              <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Member ID</th>
-                        <th>Full Name</th>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Member ID</th>
+                            <th>Elixir ID</th>
+                            <th>Full Name</th>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let member of usersModalProjectMembers">
-                        <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
-                    </tr>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let member of usersModalProjectMembers">
+                            <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
+                            <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
+                            <td>***REMOVED******REMOVED***member.ElixirId***REMOVED******REMOVED***</td>
+                            <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
+                        </tr>
 
-                    </tbody>
-                </table>
-              </div>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close</button>
@@ -254,7 +260,9 @@
                 <p style=" word-wrap: break-word;">***REMOVED******REMOVED*** selectedProject?.Description ***REMOVED******REMOVED***</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;infoModal.hide();">Close</button>
+                <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;infoModal.hide();">
+                    Close
+                </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

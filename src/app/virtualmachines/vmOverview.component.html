@@ -112,7 +112,7 @@
                     <td>
                         <div *ngIf="vm.status !='DELETED'"
                              class="btn-group ***REMOVED******REMOVED***collapse_status[vm.openstackid]***REMOVED******REMOVED***">
-                            <button class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED'"
+                            <button class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED' && vm.status != 'FREEMIUM' "
                                     (click)="snapshot_vm=vm.openstackid;resetSnapshotResult();snapshotModal.show();">
                                 Create Snapshot
                             </button>
@@ -132,7 +132,7 @@
                                        (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();">Resume
                                         Vm</a>
                                 </li>
-                                <li *ngIf="vm.status !='SUSPENDED' && vm.status != 'ACTIVE' && vm.status != 'DELETED'"
+                                <li *ngIf="vm.status !='SUSPENDED' && vm.status != 'ACTIVE' && vm.status != 'DELETED' && vm.status != 'FREEMIUM'"
                                     role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="checkStatus(vm.openstackid);">Check Status

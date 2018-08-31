@@ -252,6 +252,9 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     isFilterstatus(vmstatus: string): boolean ***REMOVED***
+        if (vmstatus == 'FREEMIUM')***REMOVED***
+            return true
+        ***REMOVED***
         if (this.filterstatus_list[vmstatus]
         ) ***REMOVED***
 
