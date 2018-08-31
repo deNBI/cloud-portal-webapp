@@ -50,6 +50,7 @@ export class OverviewComponent {
     public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
+    public addUserModalRealName: string;
     public UserModalFacilityDetails: [string, string][];
     public UserModalFacility: [string, number];
 
@@ -109,6 +110,7 @@ export class OverviewComponent {
 
         this.groupservice.getGroupDetails().subscribe(result => {
             this.userprojects = result;
+            console.log(this.userprojects)
             for (let key in this.userprojects) {
                 let group = this.userprojects[key];
                 let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
@@ -121,7 +123,10 @@ export class OverviewComponent {
                 let details_array = [];
                 let lifetime = group['lifetime'];
                 let lifetimeDays = -1;
+                let realname = group['name'];
+
                 let expirationDate = undefined;
+                console.log('1')
                 if (lifetime != -1) {
                     lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
                     expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
@@ -135,6 +140,9 @@ export class OverviewComponent {
                 if (!shortname) {
                     shortname = group['name']
                 }
+                console.log('2')
+
+
 
                 let newProject = new Project(
                     Number(groupid),
@@ -148,9 +156,11 @@ export class OverviewComponent {
                 newProject.ComputecenterDetails = details_array;
                 newProject.Lifetime = lifetime;
                 newProject.LifetimeDays = lifetimeDays;
+                newProject.RealName = realname;
                 if (expirationDate) {
                     newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
                 }
+
                 let newProjectApplications = [];
                 if (group['applications']) {
                     for (let application of group['applications']) {
@@ -161,8 +171,9 @@ export class OverviewComponent {
                         )
                         newProjectApplications.push(newMemberApplication)
                     }
-                    newProject.ProjectMemberApplications = newProjectApplications;
+      newProject.ProjectMemberApplications = newProjectApplications;
                 }
+
                 this.projects.push(newProject);
             }
             this.isLoaded = true;
@@ -209,8 +220,9 @@ export class OverviewComponent {
                 for (let member of members) {
                     let member_id = member["id"];
                     let user_id = member["userId"];
-                    let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
+                    let fullName = member["firstName"] + " " + member["lastName"];
                     let projectMember = new ProjectMember(user_id, fullName, member_id);
+                    projectMember.ElixirId=member['elixirId'];
                     if (admindIds.indexOf(user_id) != -1) {
                         projectMember.IsPi = true;
                     }
@@ -355,15 +367,15 @@ export class OverviewComponent {
         this.notificationModalType = type;
     }
 
-    public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string, number]) {
+    public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility: [string, number]) {
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
+        this.addUserModalRealName = realname;
         if (facility[0] === 'None') {
             this.UserModalFacility = null;
         }
         else {
             this.UserModalFacility = facility;
-            console.log(facility)
 
         }
     }
