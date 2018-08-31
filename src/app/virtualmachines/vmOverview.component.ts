@@ -53,7 +53,6 @@ export class VmOverviewComponent implements OnInit {
     }
 
     pageChanged(event): void {
-        console.log(this)
 
         const startItem = (event.page - 1) * event.itemsPerPage;
         const endItem = event.page * event.itemsPerPage;

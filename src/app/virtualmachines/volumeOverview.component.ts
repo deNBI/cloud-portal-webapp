@@ -103,10 +103,8 @@ export class VolumeOverviewComponent implements OnInit {
             }
         })
         this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
-            console.log(result)
             if (result['UsedVolumes']) {
                 this.selectedProjectVolumesUsed = result['UsedVolumes'];
-                console.log(this.selectedProjectVolumesUsed)
             }
             else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) {
 
