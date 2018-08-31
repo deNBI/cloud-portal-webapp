@@ -3,6 +3,7 @@ export class ProjectMember {
   private _MemberId: number;
   private _Username: string;
   private _IsPi: boolean;
+  private _ElixirId:string;
 
 
   constructor(Id: number, Username: string, MemberId: number) {
@@ -13,6 +14,13 @@ export class ProjectMember {
   }
 
 
+  get ElixirId():string{
+    return this._ElixirId
+  }
+
+  set ElixirId(value:string){
+    this._ElixirId=value;
+  }
   get IsPi():boolean{
     return this._IsPi;
   }
