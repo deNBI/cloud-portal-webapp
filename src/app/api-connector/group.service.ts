@@ -362,7 +362,9 @@ export class GroupService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupMembers/', {
             withCredentials: true,
-            params: {groupid: groupid}
+            params: {groupid: groupid},
+            headers: header
+
         }).pipe(catchError((error: any) => throwError(error.error)));
 
 

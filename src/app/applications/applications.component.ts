@@ -58,8 +58,7 @@ export class ApplicationsComponent {
                 private userservice: UserService,
                 private groupservice: GroupService,
                 private voService: VoService) {
-        this.groupservice.getGroupApplications(10599).subscribe();
-        this.groupservice.rejectGroupApplication(10599,22367).subscribe()
+        
 
         this.getUserApplications();
         this.getAllApplications();
