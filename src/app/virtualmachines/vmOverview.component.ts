@@ -53,7 +53,6 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     pageChanged(event): void ***REMOVED***
-        console.log(this)
 
         const startItem = (event.page - 1) * event.itemsPerPage;
         const endItem = event.page * event.itemsPerPage;

@@ -124,7 +124,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
     getUserPublicKey() ***REMOVED***
         this.keyService.getKey().subscribe(result => ***REMOVED***
-            console.log(result['public_key']);
             this.userinfo.PublicKey = result['public_key'];
         ***REMOVED***)
     ***REMOVED***

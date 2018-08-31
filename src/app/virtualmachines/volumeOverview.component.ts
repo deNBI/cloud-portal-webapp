@@ -103,10 +103,8 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
             ***REMOVED***
         ***REMOVED***)
         this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
-            console.log(result)
             if (result['UsedVolumes']) ***REMOVED***
                 this.selectedProjectVolumesUsed = result['UsedVolumes'];
-                console.log(this.selectedProjectVolumesUsed)
             ***REMOVED***
             else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) ***REMOVED***
 
