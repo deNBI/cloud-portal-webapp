@@ -50,6 +50,7 @@ export class OverviewComponent ***REMOVED***
     public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
+    public addUserModalRealName: string;
     public UserModalFacilityDetails: [string, string][];
     public UserModalFacility: [string, number];
 
@@ -121,6 +122,8 @@ export class OverviewComponent ***REMOVED***
                 let details_array = [];
                 let lifetime = group['lifetime'];
                 let lifetimeDays = -1;
+                let realname = group['name'];
+
                 let expirationDate = undefined;
                 if (lifetime != -1) ***REMOVED***
                     lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
@@ -136,6 +139,7 @@ export class OverviewComponent ***REMOVED***
                     shortname = group['name']
                 ***REMOVED***
 
+
                 let newProject = new Project(
                     Number(groupid),
                     shortname,
@@ -148,6 +152,7 @@ export class OverviewComponent ***REMOVED***
                 newProject.ComputecenterDetails = details_array;
                 newProject.Lifetime = lifetime;
                 newProject.LifetimeDays = lifetimeDays;
+                newProject.RealName = realname;
                 if (expirationDate) ***REMOVED***
                     newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
                 ***REMOVED***
@@ -355,15 +360,15 @@ export class OverviewComponent ***REMOVED***
         this.notificationModalType = type;
     ***REMOVED***
 
-    public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string, number]) ***REMOVED***
+    public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility: [string, number]) ***REMOVED***
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
+        this.addUserModalRealName = realname;
         if (facility[0] === 'None') ***REMOVED***
             this.UserModalFacility = null;
         ***REMOVED***
         else ***REMOVED***
             this.UserModalFacility = facility;
-            console.log(facility)
 
         ***REMOVED***
     ***REMOVED***
