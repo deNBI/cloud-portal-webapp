@@ -431,4 +431,20 @@ export class GroupService ***REMOVED***
     ***REMOVED***
 
 
+    isFreemiumActive(): Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'freemium/isActive/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+    ***REMOVED***
+
+    addMemberToFreemium(): Observable<any> ***REMOVED***
+
+        return this.http.get(this.settings.getApiBaseURL() + 'freemium/becomeMember/',***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***)
+    ***REMOVED***
+
+
+
 ***REMOVED***

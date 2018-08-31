@@ -22,7 +22,7 @@ export class VoOverviewComponent ***REMOVED***
     public emailHeader: string;
     public emailVerify: string;
     public emailType: number;
-        public selectedProject: Project;
+    public selectedProject: Project;
 
     public newsletterSubscriptionCounter: number;
     isLoaded = false;
@@ -193,17 +193,17 @@ export class VoOverviewComponent ***REMOVED***
                 for (let member of members) ***REMOVED***
                     let member_id = member["id"];
                     let user_id = member["userId"];
-                    let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
-                    this.usersModalProjectMembers.push(new ProjectMember(user_id, fullName, member_id));
+                    let fullName = member["firstName"] + " " + member["lastName"];
+                    let newMember = new ProjectMember(user_id, fullName, member_id);
+                    newMember.ElixirId = member['elixirId'];
+                    this.usersModalProjectMembers.push(newMember);
                 ***REMOVED***
 
             ***REMOVED***
         )
     ***REMOVED***
 
-    public
-
-    showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) ***REMOVED***
+    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) ***REMOVED***
         this.getMembesOfTheProject(projectid, projectname);
 
     ***REMOVED***

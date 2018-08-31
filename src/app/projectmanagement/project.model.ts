@@ -23,6 +23,7 @@ export class Project ***REMOVED***
   private _ComputeCenterDetails:[string,string][];
   private _PerunId:number;
   private _ProjectMemberApplications:ProjectMemberApplication[];
+  private _RealName:string;
 
 
   constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: [string,number]) ***REMOVED***
@@ -39,6 +40,15 @@ export class Project ***REMOVED***
 
 //todo exdend with additional information
 
+  get RealName():string***REMOVED***
+
+    return this._RealName
+  ***REMOVED***
+
+
+  set RealName(value:string)***REMOVED***
+    this._RealName=value;
+  ***REMOVED***
   get ProjectMemberApplications():ProjectMemberApplication[]***REMOVED***
     return this._ProjectMemberApplications;
   ***REMOVED***
