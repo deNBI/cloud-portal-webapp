@@ -3,7 +3,7 @@ node {
     stage('Clone repository') {
         checkout scm
     }
-
+ 
     stage('build image'){
                     sh 'export ANGULAR_MODE="stage"'
                     image = docker.build("denbicloud/cloud-portal-webapp")
