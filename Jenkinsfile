@@ -6,7 +6,6 @@ node {
 
     stage('build image'){
     
-                    sh 'docker rmi denbicloud/cloud-portal-webapp'
                     image = docker.build("denbicloud/cloud-portal-webapp")
         }              
     stage('push image'){
