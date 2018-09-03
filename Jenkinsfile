@@ -5,7 +5,7 @@ node {
     }
  
     stage('build image'){
-                    sh 'export ANGULAR_MODE="stage"'
+                    sh export ANGULAR_MODE="stage"
                     image = docker.build("denbicloud/cloud-portal-webapp")
         }
                
