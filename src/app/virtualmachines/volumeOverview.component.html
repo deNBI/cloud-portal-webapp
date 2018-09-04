@@ -180,6 +180,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Attach Volume</h4>
+              <button type="button" class="close" (click)="attachModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <strong>To which vm should the volume be attached?</strong>
@@ -216,6 +219,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Create & Attach Volume</h4>
+              <button type="button" class="close" (click)="createModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="form-group row">

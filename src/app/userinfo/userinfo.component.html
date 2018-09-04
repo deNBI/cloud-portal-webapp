@@ -95,6 +95,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Change public key</h4>
+                      <button type="button" class="close" (click)="pubKeyModal.hide()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
             </div>
             <div class="modal-body">
                 <alert type="info" *ngIf="public_key?.length ==0 ">
