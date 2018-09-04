@@ -5,7 +5,8 @@ node {
     }
  
     stage('build image'){
-                    image = sh 'docker build --no-cache --build-arg "ANGULAR_MODE=stage" -t denbicloud/cloud-portal-webapp .'
+                    sh 'export ANGULAR_MODE="stage"'
+                    image = docker.build("denbicloud/cloud-portal-webapp")
         }
                
     stage('push image'){
