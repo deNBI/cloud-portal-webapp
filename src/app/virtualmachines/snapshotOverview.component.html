@@ -13,6 +13,7 @@
                     <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Project</th>
                         <th>Actions</th>
 
                         <!-- th>Client</th-->
@@ -23,8 +24,9 @@
                     <tbody>
                     <tr *ngFor="let snapshot of snapshots">
                         <td>***REMOVED******REMOVED***snapshot.snapshot_name***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***snapshot.snapshot_project***REMOVED******REMOVED***</td>
                         <td>
-                            <button
+                            <button *ngIf="snapshot.snapshot_created"
                                     (click)="setSelectedSnapshot(snapshot);verifyModal.show();"
 
                                     class="btn btn-primary">
