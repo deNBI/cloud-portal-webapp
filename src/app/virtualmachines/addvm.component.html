@@ -119,8 +119,12 @@
                             </div>
                         </div>
                         <div class="form-group row"
+                             [ngClass]="{'has-danger':diskspace > 0 && volumeName == '',
+                             'has-success': diskspace == 0 || (diskspace > 0 && volumeName != '')}"
                              *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
-                            <label class="col-md-3 form-control-label">Volumename</label>
+                            <label *ngIf="diskspace <= 0" class="col-md-3 form-control-label">Volumename</label>
+                            <label *ngIf="diskspace > 0" class="col-md-3 form-control-label"><strong>Volumename*</strong></label>
+
                             <div class="col-md-9">
                                 <div class="input-group">
                                     <input type="text" placeholder="Volumename" [value]="volumeName"
