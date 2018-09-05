@@ -249,7 +249,7 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     getUserApprovedProjects() ***REMOVED***
-        this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => ***REMOVED***
+        this.groupService.getMemberGroupsStatus().subscribe(membergroups => ***REMOVED***
             for (let project of membergroups) ***REMOVED***
                 this.projects.push(project);
 
