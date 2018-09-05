@@ -56,6 +56,11 @@
                                            (click)="getActiveVmsByProject(volume.volume_projectid);setSelectedVolume(volume);attachModal.show();">Attach
                                             Volume</a>
                                     </li>
+                                    <li role="menuitem">
+                                        <a class="dropdown-item"
+                                           (click)="setSelectedVolume(volume);renameModal.show();">Rename
+                                            Volume</a>
+                                    </li>
                                 </ul>
                             </div>
 
@@ -111,7 +116,10 @@
                 <div class="alert alert-success" role="alert" *ngIf="volume_status == 8">
                     Sucessfully created and attached Volume.
 
-                    <!--Todo : Info einfügen_-->
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="volume_status == 10">
+                    Sucessfully renamed Volume.
+
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="volume_status == 1">
                     ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED*** was succesfully deleted.
@@ -212,6 +220,38 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+<div bsModal #renameModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Rename Volume</h4>
+            </div>
+            <div class="modal-body">
+                <strong>Please enter a new name for the volume:</strong>
+
+                <div >
+                    <div class="input-group ">
+                        <input type="text" placeholder="Name" #newName>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-4"
+                        (click)="renameVolume(selected_volume.volume_openstackid,newName.value);newName.value='';renameModal.hide();resultModal.show();">
+                    Rename Volume
+                </button>
+
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="selected_volume=undefined;newName.value='';renameModal.hide();">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
