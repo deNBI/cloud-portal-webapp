@@ -20,6 +20,7 @@ export class Application ***REMOVED***
   private _DateStatusChanged: string;
   private _User: number;
   private _UserEmail: number;
+  private _UserAffiliations:string[];
   private _Status: number;
   private _ComputeCenter: [string,number];
   private _OpenStackProject: boolean;
@@ -33,6 +34,13 @@ export class Application ***REMOVED***
   constructor() ***REMOVED***
   ***REMOVED***
 
+  get UserAffiliations():string[]***REMOVED***
+    return this._UserAffiliations
+  ***REMOVED***
+
+  set UserAffiliations(value:string[])***REMOVED***
+    this._UserAffiliations=value;
+  ***REMOVED***
   get ApplicationExtension():ApplicationExtension***REMOVED***
     return this._ApplicationExtension;
   ***REMOVED***
