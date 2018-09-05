@@ -23,7 +23,7 @@ export const routes: Routes = [
         component: FullLayoutComponent,
         canActivate: [MemberGuardService],
         data: ***REMOVED***
-            title: 'de.NBI Portal'
+            title: 'de.NBI Cloud Portal'
         ***REMOVED***,
         children: [
             ***REMOVED***
