@@ -16,11 +16,12 @@
                 </div>
 
                 <div class="card-body">
+
                     <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
                         <div class="form-group row"
                              [ngClass]="{'has-danger':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'has-success':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
-                            <label class="col-md-3 form-control-label"><strong>Name</strong></label>
+                            <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <input required id="id_instance_name" name="instance_name" class="form-control"
@@ -29,11 +30,11 @@
                             </div>
                         </div>
 
-                        <div class="form-group row"
+
                              [ngClass]="{'has-danger':f.controls.selectedFlavor?.invalid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched),
                              'has-success':f.controls.selectedFlavor?.valid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched)}">
-                            <label class="col-md-3 form-control-label"><strong>Flavor</strong></label>
-                            <div class="col-md-6">
+                            <label class="col-md-3 form-control-label"><strong>Flavor*</strong></label>
+
 
 
                                 <select required class="form-control col-md-6" name="selectedFlavor"
@@ -55,10 +56,12 @@
                             <flavor-detail [collapse2]="collapsed2" [flavor]="selectedFlavor"></flavor-detail>
                         </div>
 
+
                         <div class="form-group row"
                              [ngClass]="{'has-danger':f.controls.selectedImage?.invalid && (f.controls.selectedImage?.dirty || f.controls.selectedImage.touched),
                              'has-success':f.controls.selectedImage?.valid && (f.controls.selectedImage?.dirty || f.controls.selectedImage?.touched)}">
-                            <label class="col-md-3 form-control-label"><strong>Image</strong></label>
+                            <label class="col-md-3 form-control-label"><strong>Image*</strong></label>
+
                             <div class="col-md-6">
 
                                 <select required class="form-control" name="selectedImage" [(ngModel)]="selectedImage">
@@ -83,7 +86,8 @@
                              [ngClass]="{'has-danger':f.controls.selectedProject?.invalid && (f.controls.selectedProject?.dirty || f.controls.selectedProject.touched),
                              'has-success':f.controls.selectedProject?.valid && (f.controls.selectedProject?.dirty || f.controls.selectedProject?.touched)}"
                         >
-                            <label class="col-md-3 form-control-label"><strong>Project</strong></label>
+                            <label class="col-md-3 form-control-label"><strong>Project*</strong></label>
+
                             <div class="col-md-6">
 
                                 <select required class="form-control" name="selectedProject"
@@ -103,7 +107,7 @@
                              *ngIf="(selectedProjectVmsMax || selectedProjectVmsMax == 0) && selectedProject && selectedProject[1] != FREEMIUM_ID">
                             <label class="col-md-3 form-control-label"><strong>Vms in use</strong></label>
                             <div class="col-md-6">
-                                <strong>{{selectedProjectVmsUsed}} / {{selectedProjectVmsMax}} Vms</strong>
+                                <strong> current: {{selectedProjectVmsUsed}} | max :{{selectedProjectVmsMax}} Vms</strong>
                             </div>
                         </div>
 
@@ -146,7 +150,7 @@
                                     </span>
 
                                     <div class="col-md-6">
-                                        <strong>{{selectedProjectDiskspaceUsed}} / {{selectedProjectDiskspaceMax}}
+                                        <strong>current: {{selectedProjectDiskspaceUsed}} | max {{selectedProjectDiskspaceMax}}
                                             GB</strong>
                                     </div>
 
@@ -162,7 +166,7 @@
 
                             <div class="col-md-9">
                                 <div class="col-md-6">
-                                    <strong>{{selectedProjectVolumesUsed}} / {{selectedProjectVolumesMax}}
+                                    <strong>current: {{selectedProjectVolumesUsed}} | max: {{selectedProjectVolumesMax}}
                                     </strong>
                                 </div>
                             </div>
@@ -213,11 +217,7 @@
                 </div>
             </div>
             <div class="modal-body" *ngIf="data['Started']">
-                Server started use the following command to connect <br><br>
                 <pre><code>{{data['Started']}}</code></pre>
-                <br>
-                Be aware that you may need to wait a few minutes till you can connect to the machine.
-
             </div>
             <div class="modal-body" *ngIf="data['Error']">
                 An Error occured<br><br>
