@@ -21,7 +21,7 @@
                                 <th>Expiration Date</th>
                                 <th>Days running</th>
                                 <th>Lifetime in Days</th>
-                                <th>Actions</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -79,6 +79,7 @@
                                                 class="btn btn-secondary"><i class="fa fa-list-alt"></i>&nbsp; Applications
                                             ({{project.ProjectMemberApplications.length}})
                                         </button>
+                                        <p *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)">member</p>
                                     </div>
                                 </td>
                             </tr>
