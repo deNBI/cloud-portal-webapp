@@ -255,6 +255,12 @@
                                                  [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
                                                 <div class="table-responsive">
                                                     <table class="table table-striped">
+                                                         <tr>
+                                                            <td>User Affiliations</td>
+                                                            <td>{{ application.UserAffiliations}}</td>
+                                                            <td *ngIf="application.Status == 4">
+                                                            </td>
+                                                        </tr>
                                                         <tr>
                                                             <td>Description</td>
                                                             <td>{{ application.Description }}</td>
@@ -556,6 +562,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Application</h4>
+              <button type="button" class="close" (click)="deleteModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
 
@@ -583,6 +592,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1>Modify Request: {{selectedApplication?.Name}}</h1>
+              <button type="button" class="close" (click)="extensionModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
@@ -805,7 +817,9 @@
                     Waiting </h4>
                 <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
-
+                <button type="button" class="close" (click)="resultmodal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
