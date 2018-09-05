@@ -58,7 +58,7 @@ export class ApplicationsComponent {
                 private userservice: UserService,
                 private groupservice: GroupService,
                 private voService: VoService) {
-        
+
 
         this.getUserApplications();
         this.getAllApplications();
@@ -76,6 +76,9 @@ export class ApplicationsComponent {
         })
     }
 
+    getUserAffilaitions(user:number){
+        this.userservice.getuserAffiliations(user).subscribe()
+    }
 
     setSelectedApplication(application: any) {
         this.selectedApplication = application;
@@ -234,6 +237,7 @@ export class ApplicationsComponent {
                         a.DateSubmitted = aj["project_application_date_submitted"];
                         a.DateStatusChanged = aj["project_application_date_status_changed"];
                         a.User = aj["project_application_user"]["username"];
+                        a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
                         a.UserEmail = aj["project_application_user"]["email"];
                         a.Status = aj["project_application_status"];
                         if (a.Status == this.APPROVED_STATUS) {
