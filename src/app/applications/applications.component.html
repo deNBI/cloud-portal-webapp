@@ -255,6 +255,12 @@
                                                  [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
                                                 <div class="table-responsive">
                                                     <table class="table table-striped">
+                                                         <tr>
+                                                            <td>User Affiliations</td>
+                                                            <td>{{ application.UserAffiliations}}</td>
+                                                            <td *ngIf="application.Status == 4">
+                                                            </td>
+                                                        </tr>
                                                         <tr>
                                                             <td>Description</td>
                                                             <td>{{ application.Description }}</td>

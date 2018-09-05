@@ -35,6 +35,15 @@ export class UserService {
             }).pipe(catchError((error: any) => throwError(error)));
     }
 
+    getuserAffiliations(user_id: number) {
+        return this.http.get(this.settings.getApiBaseURL() + 'user/' + user_id.toString() + '/affiliations/',
+            {
+                withCredentials: true,
+
+            }).pipe(catchError((error: any) => throwError(error)));
+
+    }
+
     getLoggedUser(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'user/getLoggedUser/',
             {
@@ -99,7 +108,7 @@ export class UserService {
 
     sendHelpMail(subject, message, reply): Observable<any> {
 
-        let params = new HttpParams().set('subject',subject).set('message',message).set('reply',reply);
+        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'user/sendHelpMail/', params, {
