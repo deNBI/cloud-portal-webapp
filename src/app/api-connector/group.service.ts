@@ -300,7 +300,7 @@ export class GroupService {
 
     getMemberGroupsStatus(): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'group/getMemberGroupsStatus/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'group/singlevmprojects/', {
             withCredentials: true,
             headers: header
 
@@ -442,6 +442,7 @@ export class GroupService {
     }
 
     addMemberToFreemium(): Observable<any> {
+        console.log('addmember');
 
         return this.http.get(this.settings.getApiBaseURL() + 'freemium/becomeMember/', {
             withCredentials: true,

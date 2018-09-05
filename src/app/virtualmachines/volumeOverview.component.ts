@@ -249,7 +249,7 @@ export class VolumeOverviewComponent implements OnInit {
     }
 
     getUserApprovedProjects() {
-        this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => {
+        this.groupService.getMemberGroupsStatus().subscribe(membergroups => {
             for (let project of membergroups) {
                 this.projects.push(project);
 
