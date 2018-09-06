@@ -311,7 +311,7 @@
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
                         [disabled]="!validSnapshotNameBool"
-                        (click)="createSnapshot(snapshot_vm.openstackid,snapshotName,snapshot_vm);snapshotModal.hide();snapshotResult.show()">
+                        (click)="createSnapshot(snapshot_vm.openstackid,snapshotName);snapshotModal.hide();snapshotResult.show()">
                     Create Snapshot
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"

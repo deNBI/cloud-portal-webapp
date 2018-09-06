@@ -29,12 +29,11 @@
                                 </div>
                             </div>
                         </div>
-
-
+                        <div class="form-group row"
                              [ngClass]="***REMOVED***'has-danger':f.controls.selectedFlavor?.invalid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched),
                              'has-success':f.controls.selectedFlavor?.valid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched)***REMOVED***">
-                            <label class="col-md-3 form-control-label"><strong>Flavor*</strong></label>
-
+                            <label class="col-md-3 form-control-label"><strong>Flavor</strong></label>
+                            <div class="col-md-6">
 
 
                                 <select required class="form-control col-md-6" name="selectedFlavor"
@@ -55,7 +54,6 @@
                         <div class="col-md-9">
                             <flavor-detail [collapse2]="collapsed2" [flavor]="selectedFlavor"></flavor-detail>
                         </div>
-
 
                         <div class="form-group row"
                              [ngClass]="***REMOVED***'has-danger':f.controls.selectedImage?.invalid && (f.controls.selectedImage?.dirty || f.controls.selectedImage.touched),
@@ -107,7 +105,8 @@
                              *ngIf="(selectedProjectVmsMax || selectedProjectVmsMax == 0) && selectedProject && selectedProject[1] != FREEMIUM_ID">
                             <label class="col-md-3 form-control-label"><strong>Vms in use</strong></label>
                             <div class="col-md-6">
-                                <strong> current: ***REMOVED******REMOVED***selectedProjectVmsUsed***REMOVED******REMOVED*** | max :***REMOVED******REMOVED***selectedProjectVmsMax***REMOVED******REMOVED*** Vms</strong>
+                                <strong> current: ***REMOVED******REMOVED***selectedProjectVmsUsed***REMOVED******REMOVED*** | max: ***REMOVED******REMOVED***selectedProjectVmsMax***REMOVED******REMOVED***
+                                    Vms</strong>
                             </div>
                         </div>
 
@@ -127,7 +126,8 @@
                              'has-success': diskspace == 0 || (diskspace > 0 && volumeName != '')***REMOVED***"
                              *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
                             <label *ngIf="diskspace <= 0" class="col-md-3 form-control-label">Volumename</label>
-                            <label *ngIf="diskspace > 0" class="col-md-3 form-control-label"><strong>Volumename*</strong></label>
+                            <label *ngIf="diskspace > 0"
+                                   class="col-md-3 form-control-label"><strong>Volumename*</strong></label>
 
                             <div class="col-md-9">
                                 <div class="input-group">
@@ -145,12 +145,14 @@
                             <div class="col-md-9">
                                 <div class="input-group">
                                     <input min="0" step="1" [value]="diskspace"
-                                           (input)="diskspace = $event.target.value" type="number" placeholder="e.g 8 "><span
+                                           (input)="diskspace = $event.target.value" type="number"
+                                           placeholder="e.g 8 "><span
                                         class="input-group-addon"> GB
                                     </span>
 
                                     <div class="col-md-6">
-                                        <strong>current: ***REMOVED******REMOVED***selectedProjectDiskspaceUsed***REMOVED******REMOVED*** | max ***REMOVED******REMOVED***selectedProjectDiskspaceMax***REMOVED******REMOVED***
+                                        <strong>current: ***REMOVED******REMOVED***selectedProjectDiskspaceUsed***REMOVED******REMOVED*** | max
+                                            ***REMOVED******REMOVED***selectedProjectDiskspaceMax***REMOVED******REMOVED***
                                             GB</strong>
                                     </div>
 
@@ -166,7 +168,7 @@
 
                             <div class="col-md-9">
                                 <div class="col-md-6">
-                                    <strong>current: ***REMOVED******REMOVED***selectedProjectVolumesUsed***REMOVED******REMOVED*** | max: ***REMOVED******REMOVED***selectedProjectVolumesMax***REMOVED******REMOVED***
+                                    <strong>current: ***REMOVED******REMOVED***selectedProjectVolumesUsed***REMOVED******REMOVED*** | max: ***REMOVED******REMOVED***selectedProjectVolumesMax***REMOVED******REMOVED*** Volumes
                                     </strong>
                                 </div>
                             </div>
@@ -196,7 +198,6 @@
         </div>
 
     </div>
-
 </div>
 
 
@@ -228,7 +229,8 @@
                 Parameters missing
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="infoModal.hide();resetData2()">Close</button>
+                <button type="button" class="btn btn-secondary" (click)="infoModal.hide();resetData2()">Close
+                </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
