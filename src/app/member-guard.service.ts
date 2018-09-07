@@ -18,7 +18,47 @@ export class MemberGuardService implements CanActivate ***REMOVED***
         return new Promise((resolve, reject) => ***REMOVED***
             this.userservice.getLoggedUser().toPromise()
                 .then(result => ***REMOVED***
+                    console.log(result.status)
 
+                    let res = result;
+
+                    return res
+
+                ***REMOVED***).then(res => ***REMOVED***
+
+                this.userservice.getMemberByUser().toPromise().then(memberinfo => ***REMOVED***
+                    if (memberinfo['name'] === 'MemberNotExistsException') ***REMOVED***
+                        this.router.navigate(['/registration-info']);
+                        resolve(false);
+
+
+                    ***REMOVED***
+                    return resolve(true);
+
+                ***REMOVED***).catch(rejection => ***REMOVED***
+
+                    this.router.navigate(['/registration-info']);
+                    resolve(false);
+
+                ***REMOVED***);
+            ***REMOVED***).catch(rejection => ***REMOVED***
+
+                //this.router.navigate(['/portal']);
+                window.location.href = environment.login;
+                resolve(false);
+
+            ***REMOVED***);
+
+        ***REMOVED***)
+
+
+    ***REMOVED***
+
+
+     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Observable<boolean> | Promise<boolean> | boolean ***REMOVED***
+        return new Promise((resolve, reject) => ***REMOVED***
+            this.userservice.getLoggedUser().toPromise()
+                .then(result => ***REMOVED***
                     let res = result;
 
                     return res
