@@ -79,7 +79,7 @@
                                                 class="btn btn-secondary"><i class="fa fa-list-alt"></i>&nbsp; Applications
                                             ({{project.ProjectMemberApplications.length}})
                                         </button>
-                                        <p *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)">Role: Member</p>
+                                        <h4 *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)"> <span class="badge badge-default">Project Member </span></h4>
                                     </div>
                                 </td>
                             </tr>
