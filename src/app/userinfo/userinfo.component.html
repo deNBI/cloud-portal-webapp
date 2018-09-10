@@ -74,7 +74,7 @@
                                         </label></div>
                                         <div class="col-md-6"> Subscribe to our newsletter and get the latest news of
                                             upcoming
-                                            events and current developments in de.NBI Cloud.
+                                            events and current developments in de.NBI Cloud Portal.
                                         </div>
                                     </div>
                                 </td>
@@ -95,6 +95,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Change public key</h4>
+                      <button type="button" class="close" (click)="pubKeyModal.hide()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
             </div>
             <div class="modal-body">
                 <alert type="info" *ngIf="public_key?.length ==0 ">

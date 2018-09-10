@@ -35,6 +35,15 @@ export class UserService ***REMOVED***
             ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
+    getuserAffiliations(user_id: number) ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'user/' + user_id.toString() + '/affiliations/',
+            ***REMOVED***
+                withCredentials: true,
+
+            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+
+    ***REMOVED***
+
     getLoggedUser(): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'user/getLoggedUser/',
             ***REMOVED***
@@ -99,7 +108,7 @@ export class UserService ***REMOVED***
 
     sendHelpMail(subject, message, reply): Observable<any> ***REMOVED***
 
-        let params = new HttpParams().set('subject',subject).set('message',message).set('reply',reply);
+        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'user/sendHelpMail/', params, ***REMOVED***

@@ -17,11 +17,11 @@
                                 <th>Project Name</th>
                                 <th>Description</th>
                                 <th>Facility</th>
-                                <th>Date created</th>
-                                <th>Expiration Date</th>
+                                <th>Date created (d/m/y)</th>
+                                <th>Expiration Date (d/m/y)</th>
                                 <th>Days running</th>
                                 <th>Lifetime in Days</th>
-                                <th>Actions</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -79,6 +79,7 @@
                                                 class="btn btn-secondary"><i class="fa fa-list-alt"></i>&nbsp; Applications
                                             (***REMOVED******REMOVED***project.ProjectMemberApplications.length***REMOVED******REMOVED***)
                                         </button>
+                                        <h4 *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)"> <span class="badge badge-default">Project Member </span></h4>
                                     </div>
                                 </td>
                             </tr>
@@ -166,6 +167,9 @@
             <div class="modal-header">
                 <h4 class="modal-title">Add member to the project ***REMOVED******REMOVED*** addUserModalProjectID ***REMOVED******REMOVED***
                     (***REMOVED******REMOVED*** addUserModalProjectName ***REMOVED******REMOVED***)</h4>
+              <button type="button" class="close" (click)="addUserModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div *ngIf="UserModalFacility === null"><p>In order to add a new user to the project please do the
@@ -408,12 +412,11 @@
                 </button>
             </div>
 
-
-            <div>
-                ***REMOVED******REMOVED*** selectedProject?.Description ***REMOVED******REMOVED***
-            </div>
+             <div class="modal-body">
+               <p>***REMOVED******REMOVED*** selectedProject?.Description ***REMOVED******REMOVED***</p>
+               </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="selectedProject=undefined;infoModal.hide();">
+                <button type="button" class="btn btn-primary" (click)="selectedProject=undefined;infoModal.hide();">
                     Close
                 </button>
             </div>
@@ -424,11 +427,11 @@
 
 <div bsModal #applicationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-info modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Applications for ***REMOVED******REMOVED***selectedProject?.Name***REMOVED******REMOVED***</h4>
-                <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+                <button type="button" class="close" (click)="applicationModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -463,6 +466,7 @@
 
 
             <div class="modal-footer">
+
                 <p *ngIf="application_action_success && application_action_done" class="alert alert-success mr-auto">
                     <strong>Success:</strong> Succesfully ***REMOVED******REMOVED***application_action***REMOVED******REMOVED*** the application of
                     ***REMOVED******REMOVED***application_member_name***REMOVED******REMOVED***.

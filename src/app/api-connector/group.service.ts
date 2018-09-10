@@ -300,7 +300,7 @@ export class GroupService ***REMOVED***
 
     getMemberGroupsStatus(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'group/getMemberGroupsStatus/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'group/singlevmprojects/', ***REMOVED***
             withCredentials: true,
             headers: header
 
@@ -362,7 +362,9 @@ export class GroupService ***REMOVED***
 
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupMembers/', ***REMOVED***
             withCredentials: true,
-            params: ***REMOVED***groupid: groupid***REMOVED***
+            params: ***REMOVED***groupid: groupid***REMOVED***,
+            headers: header
+
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
 
@@ -440,6 +442,7 @@ export class GroupService ***REMOVED***
     ***REMOVED***
 
     addMemberToFreemium(): Observable<any> ***REMOVED***
+        console.log('addmember');
 
         return this.http.get(this.settings.getApiBaseURL() + 'freemium/becomeMember/', ***REMOVED***
             withCredentials: true,

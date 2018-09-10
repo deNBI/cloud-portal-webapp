@@ -16,22 +16,27 @@
                 </div>
 
                 <div class="card-body">
-                    <form id="application_form" #f="ngForm" class="form-horizontal">
-                        <div class="form-group row">
-                            <label class="col-md-3 form-control-label"><strong>Name</strong></label>
-                            <div class="col-md-9">
+
+                    <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
+                        <div class="form-group row"
+                             [ngClass]="***REMOVED***'has-danger':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
+                             'has-success':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)***REMOVED***">
+                            <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
+                            <div class="col-md-6">
                                 <div class="input-group">
-                                    <input type="text" placeholder="Instancename" #servername>
+                                    <input required id="id_instance_name" name="instance_name" class="form-control"
+                                           type="text" placeholder="Instancename" ngModel>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group row">
+                        <div class="form-group row"
+                             [ngClass]="***REMOVED***'has-danger':f.controls.selectedFlavor?.invalid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched),
+                             'has-success':f.controls.selectedFlavor?.valid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched)***REMOVED***">
                             <label class="col-md-3 form-control-label"><strong>Flavor</strong></label>
                             <div class="col-md-6">
 
 
-                                <select class="form-control col-md-6" name="selectedFlavor"
+                                <select required class="form-control col-md-6" name="selectedFlavor"
                                         [(ngModel)]="selectedFlavor">
                                     <option value="undefined" disabled selected hidden> Please Select</option>
                                     <option *ngFor="  let flavor of flavors" [ngValue]="flavor"> ***REMOVED******REMOVED***flavor.name***REMOVED******REMOVED***
@@ -50,11 +55,14 @@
                             <flavor-detail [collapse2]="collapsed2" [flavor]="selectedFlavor"></flavor-detail>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="col-md-3 form-control-label"><strong>Image</strong></label>
+                        <div class="form-group row"
+                             [ngClass]="***REMOVED***'has-danger':f.controls.selectedImage?.invalid && (f.controls.selectedImage?.dirty || f.controls.selectedImage.touched),
+                             'has-success':f.controls.selectedImage?.valid && (f.controls.selectedImage?.dirty || f.controls.selectedImage?.touched)***REMOVED***">
+                            <label class="col-md-3 form-control-label"><strong>Image*</strong></label>
+
                             <div class="col-md-6">
 
-                                <select class="form-control" name="selectedImage" [(ngModel)]="selectedImage">
+                                <select required class="form-control" name="selectedImage" [(ngModel)]="selectedImage">
                                     <option value="undefined" disabled selected hidden> Please Select</option>
 
                                     <option *ngFor="let image of images" [ngValue]="image"> ***REMOVED******REMOVED***image.name***REMOVED******REMOVED***</option>
@@ -72,11 +80,16 @@
                             <image-detail [collapse1]="collapsed1" [image]="selectedImage"></image-detail>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="col-md-3 form-control-label"><strong>Project</strong></label>
+                        <div class="form-group row"
+                             [ngClass]="***REMOVED***'has-danger':f.controls.selectedProject?.invalid && (f.controls.selectedProject?.dirty || f.controls.selectedProject.touched),
+                             'has-success':f.controls.selectedProject?.valid && (f.controls.selectedProject?.dirty || f.controls.selectedProject?.touched)***REMOVED***"
+                        >
+                            <label class="col-md-3 form-control-label"><strong>Project*</strong></label>
+
                             <div class="col-md-6">
 
-                                <select class="form-control" name="selectedProject" [(ngModel)]="selectedProject"
+                                <select required class="form-control" name="selectedProject"
+                                        [(ngModel)]="selectedProject"
                                         (ngModelChange)="getSelectedProjectDiskspace();getSelectedProjectVms();getSelectedProjectVolumes();">
                                     <option value="undefined" disabled selected hidden> Please Select</option>
                                     <option *ngFor="let project of projects" [ngValue]="project"> ***REMOVED******REMOVED***project[0]***REMOVED******REMOVED***
@@ -92,7 +105,8 @@
                              *ngIf="(selectedProjectVmsMax || selectedProjectVmsMax == 0) && selectedProject && selectedProject[1] != FREEMIUM_ID">
                             <label class="col-md-3 form-control-label"><strong>Vms in use</strong></label>
                             <div class="col-md-6">
-                                <strong>***REMOVED******REMOVED***selectedProjectVmsUsed***REMOVED******REMOVED*** / ***REMOVED******REMOVED***selectedProjectVmsMax***REMOVED******REMOVED*** Vms</strong>
+                                <strong> current: ***REMOVED******REMOVED***selectedProjectVmsUsed***REMOVED******REMOVED*** | max: ***REMOVED******REMOVED***selectedProjectVmsMax***REMOVED******REMOVED***
+                                    Vms</strong>
                             </div>
                         </div>
 
@@ -108,8 +122,13 @@
                             </div>
                         </div>
                         <div class="form-group row"
+                             [ngClass]="***REMOVED***'has-danger':diskspace > 0 && volumeName == '',
+                             'has-success': diskspace == 0 || (diskspace > 0 && volumeName != '')***REMOVED***"
                              *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
-                            <label class="col-md-3 form-control-label">Volumename</label>
+                            <label *ngIf="diskspace <= 0" class="col-md-3 form-control-label">Volumename</label>
+                            <label *ngIf="diskspace > 0"
+                                   class="col-md-3 form-control-label"><strong>Volumename*</strong></label>
+
                             <div class="col-md-9">
                                 <div class="input-group">
                                     <input type="text" placeholder="Volumename" [value]="volumeName"
@@ -126,12 +145,14 @@
                             <div class="col-md-9">
                                 <div class="input-group">
                                     <input min="0" step="1" [value]="diskspace"
-                                           (input)="diskspace = $event.target.value" type="number" placeholder="e.g 8 "><span
+                                           (input)="diskspace = $event.target.value" type="number"
+                                           placeholder="e.g 8 "><span
                                         class="input-group-addon"> GB
                                     </span>
 
                                     <div class="col-md-6">
-                                        <strong>***REMOVED******REMOVED***selectedProjectDiskspaceUsed***REMOVED******REMOVED*** / ***REMOVED******REMOVED***selectedProjectDiskspaceMax***REMOVED******REMOVED***
+                                        <strong>current: ***REMOVED******REMOVED***selectedProjectDiskspaceUsed***REMOVED******REMOVED*** | max
+                                            ***REMOVED******REMOVED***selectedProjectDiskspaceMax***REMOVED******REMOVED***
                                             GB</strong>
                                     </div>
 
@@ -147,7 +168,7 @@
 
                             <div class="col-md-9">
                                 <div class="col-md-6">
-                                    <strong>***REMOVED******REMOVED***selectedProjectVolumesUsed***REMOVED******REMOVED*** / ***REMOVED******REMOVED***selectedProjectVolumesMax***REMOVED******REMOVED***
+                                    <strong>current: ***REMOVED******REMOVED***selectedProjectVolumesUsed***REMOVED******REMOVED*** | max: ***REMOVED******REMOVED***selectedProjectVolumesMax***REMOVED******REMOVED*** Volumes
                                     </strong>
                                 </div>
                             </div>
@@ -156,53 +177,9 @@
                         </div>
 
 
-                        <!-- <div class="form-group row">
-                           <label class="col-md-3 form-control-label"><strong>Key</strong></label>
-                           <div class="col-md-9">
-                             <div class="input-group">
-                               <input type="text" placeholder="Key" #serverkey>
-
-
-                             </div>
-
-                           </div>
-                         </div>-->
-
-
-                        <!-- <div class="form-group row" >
-                           <label class="col-md-3 form-control-label" ><strong>Metadata</strong></label>
-                         </div>
-                            <div class="form-group col">
-                                <div class="table-striped">
-                                <table class="table">
-                                    <thead >
-                                       <tr>
-                                           <th>Key</th>
-                                           <th>Value</th>
-                                           <th>Add/Remove</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr *ngFor="let metadata of metadatalist">
-                                        <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">***REMOVED******REMOVED***metadata.key***REMOVED******REMOVED***</td>
-                                       <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">***REMOVED******REMOVED***metadata.value***REMOVED******REMOVED***</td>
-                                        <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal"><button (click)="deleteMetadataItem(metadata)"><strong>-</strong></button></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-
-
-                                      <input   type="text" placeholder="Key"  #key>
-                                      <input   type="text" placehhttps://openstack.cebitec.uni-bielefeld.de:5000
-                                      <button (click)="addMetadataItem(key.value,value.value)"><strong>+</strong></button>
-
-
-                               </div>
-
-
-                                 </div>-->
-                        <button type="button" class="btn btn-primary offset-md-8" data-toggle="modal"
-                                (click)="startVM(selectedFlavor.name,selectedImage.name,servername.value,selectedProject[0],selectedProject[1],diskspace);resetData();infoModal.show();">
+                        <button type="button" [disabled]="f.invalid" class="btn btn-primary offset-md-8"
+                                data-toggle="modal"
+                                (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1],diskspace);resetData();infoModal.show();">
                             Start VM
                         </button>
                         <br><br><br>
@@ -217,15 +194,10 @@
             </div>
         </div>
         <div class="col-md-6">
-            <!--    <div>
-                  <flavor-detail [flavor]="selectedFlavor"></flavor-detail>
-                </div>-->
-
 
         </div>
 
     </div>
-
 </div>
 
 
@@ -246,11 +218,7 @@
                 </div>
             </div>
             <div class="modal-body" *ngIf="data['Started']">
-                Server started use the following command to connect <br><br>
                 <pre><code>***REMOVED******REMOVED***data['Started']***REMOVED******REMOVED***</code></pre>
-                <br>
-                Be aware that you may need to wait a few minutes till you can connect to the machine.
-
             </div>
             <div class="modal-body" *ngIf="data['Error']">
                 An Error occured<br><br>
@@ -261,7 +229,8 @@
                 Parameters missing
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="infoModal.hide();resetData2()">Close</button>
+                <button type="button" class="btn btn-secondary" (click)="infoModal.hide();resetData2()">Close
+                </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

@@ -28,7 +28,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
-    snapshot_vm: string;
+    snapshot_vm: VirtualMachine
     validSnapshotNameBool: boolean;
     snapshotDone: string = 'Waiting';
     snapshotName: string;
