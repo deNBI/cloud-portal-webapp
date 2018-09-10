@@ -200,7 +200,7 @@
 
                                                 <option value="undefined" selected> no center</option>
                                                 <option *ngFor="let computeCenter of computeCenters"
-                                                        value="{{computeCenter[1]}}"> {{computeCenter[0]}}
+                                                        value="{{computeCenter.FacilityId}}"> {{computeCenter.Name}}
                                                 </option>
                                             </select>
                                         </td>
@@ -413,7 +413,7 @@
                                         <td>{{ application.DateSubmitted }}</td>
                                         <td>{{ application.User }}</td>
                                         <td>{{ application.Institute }}</td>
-                                        <td>{{application.ComputeCenter[0]}}</td>
+                                        <td>{{application.ComputeCenter.Name}}</td>
                                         <td>{{ getStatusById(application.Status) }}</td>
                                         <td>
                                             <button (click)="switchCollapseStatus('application_history-' + application.Id)"
@@ -500,7 +500,7 @@
                                                             <td>Facility Details</td>
                                                             <td>
                                                                 <ul>
-                                                                    <li>Name: {{application.ComputeCenter[0]}}</li>
+                                                                    <li>Name: {{application.ComputeCenter.Name}}</li>
                                                                     <li *ngFor="let details of application.ComputeCenterDetails">
                                                                         {{details[0]}}: <a target="_blank"
                                                                                            *ngIf="details[0] == 'Login'"

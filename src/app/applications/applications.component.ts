@@ -16,6 +16,7 @@ import {ApplicationExtension} from "./application_extension.model";
 import {NgForm} from '@angular/forms';
 import {forkJoin} from 'rxjs';
 import {VoService} from "../api-connector/vo.service";
+import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
 
 @Component({
     templateUrl: 'applications.component.html',
@@ -29,7 +30,7 @@ export class ApplicationsComponent {
     application_status: ApplicationStatus[] = [];
     all_applications_renewal: ApplicationExtension[] = [];
     special_hardware: SpecialHardware[] = [];
-    computeCenters: [string, number][];
+    computeCenters: ComputecenterComponent[]=[];
     selectedApplication: Application;
     extension_status = 0;
     public deleteId: number;
@@ -71,12 +72,15 @@ export class ApplicationsComponent {
 
     getComputeCenters() {
         this.groupservice.getComputeCenters().subscribe(result => {
-            this.computeCenters = result;
+            for (let cc of result) {
+                let compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
+                this.computeCenters.push(compute_center)
+            }
 
         })
     }
 
-    getUserAffilaitions(user:number){
+    getUserAffilaitions(user: number) {
         this.userservice.getuserAffiliations(user).subscribe()
     }
 
@@ -275,46 +279,21 @@ export class ApplicationsComponent {
                             }
                             a.ApplicationExtension = r;
                         }
-                        a.ComputeCenter = ['', -1];
 
                         this.all_applications.push(a);
 
                     }
-                    let observable_list = [];
                     for (let app of this.all_applications) {
                         // app.ComputeCenter = ['None', -1];
                         if (app.Status !== 1 && app.PerunId) {
-                            observable_list.push(this.groupservice.getFacilityByGroup(app.PerunId.toString()))
+                            let compute_center = new ComputecenterComponent(app['FacilityId'], app['Facility'], app['Login'], app['Support']);
+                            app.ComputeCenter = compute_center
+
                         }
 
                     }
-                    forkJoin(observable_list).subscribe(result => {
-                        for (let res of result) {
+                    this.isLoaded_AllApplication = true;
 
-                            let details = res['Details'];
-                            let details_array = [];
-                            for (let detail in details) {
-                                let detail_tuple = [detail, details[detail]];
-                                details_array.push(detail_tuple);
-                            }
-                            for (let app of  this.all_applications) {
-                                if (app.PerunId == res['Group']) {
-                                    app.ComputecenterDetails = details_array,
-                                        app.ComputeCenter = [res['Facility'], res['FacilityId']]
-                                }
-
-                            }
-
-
-                        }
-                        this.isLoaded_AllApplication = true;
-
-
-                    });
-                    if (observable_list.length == 0) {
-                        this.isLoaded_AllApplication = true;
-
-                    }
 
                 });
             }

@@ -6,6 +6,7 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
+import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
 
 
 @Component({
@@ -18,8 +19,8 @@ export class ClientOverviewComponent implements OnInit {
     clients: Vmclient[];
     is_vo_admin = false;
     checkStatus: string = 'Not checked';
-    computeCenters: [string, number][];
-    selectedComputeCenter: string;
+    computeCenters: ComputecenterComponent[]=[];
+    selectedComputeCenter: ComputecenterComponent;
     isLoaded = false;
 
     constructor(private userservice: UserService, private groupservice: GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) {
@@ -64,7 +65,10 @@ export class ClientOverviewComponent implements OnInit {
 
     getComputeCenters() {
         this.groupservice.getComputeCenters().subscribe(result => {
-            this.computeCenters = result;
+            for (let cc of result) {
+                let compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
+                this.computeCenters.push(compute_center)
+            }
 
         })
     }
