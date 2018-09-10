@@ -165,7 +165,6 @@ export class VoOverviewComponent {
                     is_pi,
                     true,
                     compute_center);
-                newProject.ComputecenterDetails = details_array;
                 newProject.Lifetime = lifetime;
                 newProject.LifetimeDays = lifetimeDays;
                 if (expirationDate) {
