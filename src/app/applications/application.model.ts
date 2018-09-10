@@ -20,6 +20,7 @@ export class Application {
   private _DateStatusChanged: string;
   private _User: number;
   private _UserEmail: number;
+  private _UserAffiliations:string[];
   private _Status: number;
   private _ComputeCenter: [string,number];
   private _OpenStackProject: boolean;
@@ -33,6 +34,13 @@ export class Application {
   constructor() {
   }
 
+  get UserAffiliations():string[]{
+    return this._UserAffiliations
+  }
+
+  set UserAffiliations(value:string[]){
+    this._UserAffiliations=value;
+  }
   get ApplicationExtension():ApplicationExtension{
     return this._ApplicationExtension;
   }

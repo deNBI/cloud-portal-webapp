@@ -17,7 +17,7 @@ export class VolumeOverviewComponent implements OnInit {
     project_vms: VirtualMachine[];
     selected_vm: VirtualMachine;
     collapse_status: { [id: string]: string } = {};
-    isLoaded=false;
+    isLoaded = false;
     selected_volume: Volume;
     selectedProjectDiskspaceMax: number;
     selectedProjectDiskspaceUsed: number;
@@ -28,7 +28,9 @@ export class VolumeOverviewComponent implements OnInit {
     diskspace: number = 1;
     volumeName: string = '';
 
-    volume_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,7:wait creation 8:succesfully attached and created
+    volume_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume ,
+    // 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,7:wait creation 8:succesfully attached and created
+    // 9 = Changing Name 10 = changing name successfull
 
     request_status: number; // 0=Delete ,1 =Detach
 
@@ -61,7 +63,7 @@ export class VolumeOverviewComponent implements OnInit {
     getVolumes() {
         this.vmService.getVolumesByUser().subscribe(result => {
             this.volumes = result;
-            this.isLoaded=true;
+            this.isLoaded = true;
 
         })
     }
@@ -166,8 +168,25 @@ export class VolumeOverviewComponent implements OnInit {
         })
     }
 
+    renameVolume(volume_id: string, new_volume_name: string) {
+        this.volume_status = 9
+        this.vmService.renameVolume(volume_id, new_volume_name).subscribe(result => {
+            if (result['volume_name'] == new_volume_name) {
+                this.volume_status = 10;
+            }
+            else {
+                this.volume_status = 2;
+            }
+                    this.getVolumes();
+
+        }
+    )
+
+
+    }
+
     createVolume(volume_name: string, diskspace: number, instance_id: string) {
-        this.volume_status = 0
+        this.volume_status = 0;
         this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
             if (result['Created']) {
                 this.volume_status = 7;
@@ -230,7 +249,7 @@ export class VolumeOverviewComponent implements OnInit {
     }
 
     getUserApprovedProjects() {
-        this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => {
+        this.groupService.getMemberGroupsStatus().subscribe(membergroups => {
             for (let project of membergroups) {
                 this.projects.push(project);
 
