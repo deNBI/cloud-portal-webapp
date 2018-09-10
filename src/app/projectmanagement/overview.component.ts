@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import {VoService} from "../api-connector/vo.service";
 import {catchError} from 'rxjs/operators';
 import {ProjectMemberApplication} from "./project_member_application";
+import {ComputecenterComponent} from "./computecenter.component";
 
 
 @Component({
@@ -139,6 +140,9 @@ export class OverviewComponent {
                     shortname = group['name']
                 }
 
+                let compute_center=new ComputecenterComponent(facility['FacilityId'],facility['Facility'],facility['Login'],facility['Support']);
+                console.log(compute_center)
+
 
                 let newProject = new Project(
                     Number(groupid),
@@ -148,8 +152,7 @@ export class OverviewComponent {
                     dateDayDifference,
                     is_pi,
                     this.is_admin,
-                    [facility['Facility'], facility['FacilityId']]);
-                newProject.ComputecenterDetails = details_array;
+                    compute_center);
                 newProject.Lifetime = lifetime;
                 newProject.LifetimeDays = lifetimeDays;
                 newProject.RealName = realname;
@@ -164,11 +167,12 @@ export class OverviewComponent {
                         let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
                         let newMemberApplication = new ProjectMemberApplication(
                             application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
-                        )
+                        );
                         newProjectApplications.push(newMemberApplication)
                     }
                     newProject.ProjectMemberApplications = newProjectApplications;
                 }
+                console.log(newProject)
 
                 this.projects.push(newProject);
             }
