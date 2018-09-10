@@ -114,7 +114,7 @@
                                                     <tr>
                                                         <td>Volume Counter</td>
 
-                                                        <td>{{ application.VolumeCounter }} </td>
+                                                        <td>{{ application.VolumeCounter }}</td>
                                                         <td *ngIf="application.Status == 'modification requested'">
 
 
@@ -194,7 +194,7 @@
                                         <td>{{application.Institute}}</td>
 
 
-                                        <td >
+                                        <td>
                                             <select [style.display]="application.OpenStackProject? 'inherit' :'none'"
                                                     class="form-control" #selectedComputeCenter>
 
@@ -204,7 +204,6 @@
                                                 </option>
                                             </select>
                                         </td>
-
 
 
                                         <td>
@@ -255,7 +254,7 @@
                                                  [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
                                                 <div class="table-responsive">
                                                     <table class="table table-striped">
-                                                         <tr>
+                                                        <tr>
                                                             <td>User Affiliations</td>
                                                             <td>{{ application.UserAffiliations}}</td>
                                                             <td *ngIf="application.Status == 4">
@@ -413,7 +412,7 @@
                                         <td>{{ application.DateSubmitted }}</td>
                                         <td>{{ application.User }}</td>
                                         <td>{{ application.Institute }}</td>
-                                        <td>{{application.ComputeCenter.Name}}</td>
+                                        <td>{{application?.ComputeCenter?.Name}}</td>
                                         <td>{{ getStatusById(application.Status) }}</td>
                                         <td>
                                             <button (click)="switchCollapseStatus('application_history-' + application.Id)"
@@ -495,18 +494,23 @@
                                                             <td>{{application.DaysRunning}}</td>
 
                                                         </tr>
-                                                        <tr *ngIf="application.ComputeCenterDetails">
+                                                        <tr *ngIf="application.ComputeCenter">
 
                                                             <td>Facility Details</td>
                                                             <td>
-                                                                <ul>
-                                                                    <li>Name: {{application.ComputeCenter.Name}}</li>
-                                                                    <li *ngFor="let details of application.ComputeCenterDetails">
-                                                                        {{details[0]}}: <a target="_blank"
-                                                                                           *ngIf="details[0] == 'Login'"
-                                                                                           href="{{details[1]}}">{{details[1]}}</a>
-                                                                        <span *ngIf="details[0] != 'Login'">{{details[1]}}</span>
+                                                                <ul *ngIf="application.ComputeCenter.Name">
+                                                                    <li *ngIf="application.OpenStackProject"><a
+                                                                            target="_blank"
+                                                                            href="application.ComputeCenter.Login">Login:
+                                                                        {{application.ComputeCenter.Login}}</a></li>
+                                                                    <li>Support: {{application.ComputeCenter.Support}}
                                                                     </li>
+
+                                                                    <!--button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
+                                                                            class="btn btn-primary">Set your OpenStack API password
+                                                                    </button-->
+
+
                                                                 </ul>
                                                             </td>
 
@@ -562,7 +566,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Application</h4>
-              <button type="button" class="close" (click)="deleteModal.hide()" aria-label="Close">
+                <button type="button" class="close" (click)="deleteModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -592,7 +596,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1>Modify Request: {{selectedApplication?.Name}}</h1>
-              <button type="button" class="close" (click)="extensionModal.hide()" aria-label="Close">
+                <button type="button" class="close" (click)="extensionModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -830,13 +834,14 @@
 
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
 
-                   Modify request successfully submitted!
+                    Modify request successfully submitted!
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 3">
-                   Modify request successfully approved!
+                    Modify request successfully approved!
                 </div>
-                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
-                   Modify request successfully declined!      </div>
+                <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+                    Modify request successfully declined!
+                </div>
 
                 <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
                     An error occured.

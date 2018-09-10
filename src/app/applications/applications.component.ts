@@ -30,7 +30,7 @@ export class ApplicationsComponent {
     application_status: ApplicationStatus[] = [];
     all_applications_renewal: ApplicationExtension[] = [];
     special_hardware: SpecialHardware[] = [];
-    computeCenters: ComputecenterComponent[]=[];
+    computeCenters: ComputecenterComponent[] = [];
     selectedApplication: Application;
     extension_status = 0;
     public deleteId: number;
@@ -283,17 +283,40 @@ export class ApplicationsComponent {
                         this.all_applications.push(a);
 
                     }
+                    let observable_list = [];
                     for (let app of this.all_applications) {
                         // app.ComputeCenter = ['None', -1];
                         if (app.Status !== 1 && app.PerunId) {
-                            let compute_center = new ComputecenterComponent(app['FacilityId'], app['Facility'], app['Login'], app['Support']);
-                            app.ComputeCenter = compute_center
-
+                            observable_list.push(this.groupservice.getFacilityByGroup(app.PerunId.toString()))
                         }
 
                     }
-                    this.isLoaded_AllApplication = true;
+                    forkJoin(observable_list).subscribe(result => {
+                        for (let res of result) {
 
+                            let login = res['Login'];
+                            let suport = res['Support'];
+                            let facilityname = res['Facility'];
+                            let facilityId = res['FacilityId']
+
+                            let cc = new ComputecenterComponent(facilityId, facilityname, login, suport)
+                            for (let app of  this.all_applications) {
+                                if (app.PerunId == res['Group']) {
+                                    app.ComputeCenter = cc
+                                }
+
+                            }
+
+
+                        }
+                        this.isLoaded_AllApplication = true;
+
+
+                    });
+                    if (observable_list.length == 0) {
+                        this.isLoaded_AllApplication = true;
+
+                    }
 
                 });
             }

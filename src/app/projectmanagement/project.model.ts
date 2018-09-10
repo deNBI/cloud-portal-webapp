@@ -24,6 +24,8 @@ export class Project {
   private _PerunId:number;
   private _ProjectMemberApplications:ProjectMemberApplication[];
   private _RealName:string;
+    private _OpenStackProject: boolean;
+
 
 
   constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: ComputecenterComponent) {
@@ -62,6 +64,13 @@ export class Project {
   }
    set LifetimeDays(value:number){
     this._LifetimeDays=value;
+  }
+    get OpenStackProject(): boolean {
+    return this._OpenStackProject
+  }
+
+  set OpenStackProject(value: boolean) {
+    this._OpenStackProject = value;
   }
 
   get Lifetime():number{
