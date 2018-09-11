@@ -59,6 +59,7 @@ export class ApplicationsComponent ***REMOVED***
                 private groupservice: GroupService,
                 private voService: VoService) ***REMOVED***
 
+
         this.getUserApplications();
         this.getAllApplications();
         this.getApplicationStatus();
@@ -75,6 +76,9 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
+    getUserAffilaitions(user:number)***REMOVED***
+        this.userservice.getuserAffiliations(user).subscribe()
+    ***REMOVED***
 
     setSelectedApplication(application: any) ***REMOVED***
         this.selectedApplication = application;
@@ -164,7 +168,7 @@ export class ApplicationsComponent ***REMOVED***
                 this.user_applications.push(a)
             ***REMOVED***
             this.isLoaded_userApplication = true;
-           
+
         ***REMOVED***);
     ***REMOVED***
 
@@ -233,6 +237,7 @@ export class ApplicationsComponent ***REMOVED***
                         a.DateSubmitted = aj["project_application_date_submitted"];
                         a.DateStatusChanged = aj["project_application_date_status_changed"];
                         a.User = aj["project_application_user"]["username"];
+                        a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
                         a.UserEmail = aj["project_application_user"]["email"];
                         a.Status = aj["project_application_status"];
                         if (a.Status == this.APPROVED_STATUS) ***REMOVED***

@@ -28,7 +28,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
-    snapshot_vm: string;
+    snapshot_vm: VirtualMachine
     validSnapshotNameBool: boolean;
     snapshotDone: string = 'Waiting';
     snapshotName: string;
@@ -53,7 +53,6 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     pageChanged(event): void ***REMOVED***
-        console.log(this)
 
         const startItem = (event.page - 1) * event.itemsPerPage;
         const endItem = event.page * event.itemsPerPage;
@@ -252,6 +251,9 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     isFilterstatus(vmstatus: string): boolean ***REMOVED***
+        if (vmstatus == 'FREEMIUM')***REMOVED***
+            return true
+        ***REMOVED***
         if (this.filterstatus_list[vmstatus]
         ) ***REMOVED***
 

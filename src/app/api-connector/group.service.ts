@@ -110,7 +110,7 @@ export class GroupService ***REMOVED***
             .set('group_id', group_id.toString())
             .set('user_id', user_id.toString());
 
-         if (facility_id) ***REMOVED***
+        if (facility_id) ***REMOVED***
             params.set('facility_id', facility_id.toString())
 
         ***REMOVED***
@@ -130,7 +130,7 @@ export class GroupService ***REMOVED***
             .set('user_id', user_id.toString())
             .set('member_id', member_id.toString());
 
-         if (facility_id) ***REMOVED***
+        if (facility_id) ***REMOVED***
             params.set('facility_id', facility_id.toString())
 
         ***REMOVED***
@@ -150,7 +150,7 @@ export class GroupService ***REMOVED***
         let params = new HttpParams()
             .set('group_id', group_id.toString())
             .set('user_id', user_id.toString());
-         if (facility_id) ***REMOVED***
+        if (facility_id) ***REMOVED***
             params.set('facility_id', facility_id.toString())
 
         ***REMOVED***
@@ -268,10 +268,42 @@ export class GroupService ***REMOVED***
 
     ***REMOVED***
 
+
+    getGroupApplications(group: number): Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'group/' + group + '/applications/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+
+
+    ***REMOVED***
+
+    approveGroupApplication(groupid: number, application: number): Observable<any> ***REMOVED***
+
+
+        return this.http.get(this.settings.getApiBaseURL() + 'group/' + groupid + '/applications/' + application + '/approve/', ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+
+    ***REMOVED***
+
+    rejectGroupApplication(groupid: number, application: number): Observable<any> ***REMOVED***
+
+
+        return this.http.get(this.settings.getApiBaseURL() + 'group/' + groupid + '/applications/' + application + '/reject/', ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+
+    ***REMOVED***
+
+
     getMemberGroupsStatus(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'group/getMemberGroupsStatus/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'group/singlevmprojects/', ***REMOVED***
             withCredentials: true,
+            headers: header
+
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
     ***REMOVED***
 
@@ -330,7 +362,9 @@ export class GroupService ***REMOVED***
 
         return this.http.get(this.settings.getApiBaseURL() + 'group/getGroupMembers/', ***REMOVED***
             withCredentials: true,
-            params: ***REMOVED***groupid: groupid***REMOVED***
+            params: ***REMOVED***groupid: groupid***REMOVED***,
+            headers: header
+
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
 
@@ -398,6 +432,22 @@ export class GroupService ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+    ***REMOVED***
+
+
+    isFreemiumActive(): Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'freemium/isActive/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+    ***REMOVED***
+
+    addMemberToFreemium(): Observable<any> ***REMOVED***
+        console.log('addmember');
+
+        return this.http.get(this.settings.getApiBaseURL() + 'freemium/becomeMember/', ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***)
     ***REMOVED***
 
 

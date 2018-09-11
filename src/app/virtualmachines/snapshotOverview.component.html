@@ -4,15 +4,16 @@
 <div *ngIf="isLoaded" class="card">
     <div class="card-header">
         <strong>Snapshots</strong>
-        –Overview
+        –Overview <div *ngIf="snapshots.length == 0"><p>No snapshots available. Click this <a href="https://cloud.denbi.de/wiki/portal/#snapshots/">link</a> to see how to use and create a snapshot.</p></div>
     </div>
-    <div>
+    <div> 
         <div>
             <div class="table-responsive">
                 <table class="table table-striped ">
                     <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Project</th>
                         <th>Actions</th>
 
                         <!-- th>Client</th-->
@@ -23,8 +24,9 @@
                     <tbody>
                     <tr *ngFor="let snapshot of snapshots">
                         <td>***REMOVED******REMOVED***snapshot.snapshot_name***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***snapshot.snapshot_project***REMOVED******REMOVED***</td>
                         <td>
-                            <button
+                            <button *ngIf="snapshot.snapshot_created"
                                     (click)="setSelectedSnapshot(snapshot);verifyModal.show();"
 
                                     class="btn btn-primary">

@@ -1,3 +1,5 @@
+import ***REMOVED***ProjectMemberApplication***REMOVED*** from "./project_member_application";
+
 export class Project ***REMOVED***
   get UserIsAdmin(): boolean ***REMOVED***
     return this._UserIsAdmin;
@@ -20,6 +22,8 @@ export class Project ***REMOVED***
   private _ComputeCenter:[string,number];
   private _ComputeCenterDetails:[string,string][];
   private _PerunId:number;
+  private _ProjectMemberApplications:ProjectMemberApplication[];
+  private _RealName:string;
 
 
   constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: [string,number]) ***REMOVED***
@@ -35,6 +39,23 @@ export class Project ***REMOVED***
   ***REMOVED***
 
 //todo exdend with additional information
+
+  get RealName():string***REMOVED***
+
+    return this._RealName
+  ***REMOVED***
+
+
+  set RealName(value:string)***REMOVED***
+    this._RealName=value;
+  ***REMOVED***
+  get ProjectMemberApplications():ProjectMemberApplication[]***REMOVED***
+    return this._ProjectMemberApplications;
+  ***REMOVED***
+
+  set ProjectMemberApplications(value:ProjectMemberApplication[])***REMOVED***
+    this._ProjectMemberApplications=value;
+  ***REMOVED***
 
   get LifetimeDays():number***REMOVED***
     return this._LifetimeDays

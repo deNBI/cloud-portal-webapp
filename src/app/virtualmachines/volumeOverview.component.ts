@@ -17,7 +17,7 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     project_vms: VirtualMachine[];
     selected_vm: VirtualMachine;
     collapse_status: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
-    isLoaded=false;
+    isLoaded = false;
     selected_volume: Volume;
     selectedProjectDiskspaceMax: number;
     selectedProjectDiskspaceUsed: number;
@@ -28,7 +28,9 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     diskspace: number = 1;
     volumeName: string = '';
 
-    volume_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume , 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,7:wait creation 8:succesfully attached and created
+    volume_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume ,
+    // 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,7:wait creation 8:succesfully attached and created
+    // 9 = Changing Name 10 = changing name successfull
 
     request_status: number; // 0=Delete ,1 =Detach
 
@@ -61,7 +63,7 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     getVolumes() ***REMOVED***
         this.vmService.getVolumesByUser().subscribe(result => ***REMOVED***
             this.volumes = result;
-            this.isLoaded=true;
+            this.isLoaded = true;
 
         ***REMOVED***)
     ***REMOVED***
@@ -103,10 +105,8 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
             ***REMOVED***
         ***REMOVED***)
         this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
-            console.log(result)
             if (result['UsedVolumes']) ***REMOVED***
                 this.selectedProjectVolumesUsed = result['UsedVolumes'];
-                console.log(this.selectedProjectVolumesUsed)
             ***REMOVED***
             else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) ***REMOVED***
 
@@ -168,8 +168,25 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
+    renameVolume(volume_id: string, new_volume_name: string) ***REMOVED***
+        this.volume_status = 9
+        this.vmService.renameVolume(volume_id, new_volume_name).subscribe(result => ***REMOVED***
+            if (result['volume_name'] == new_volume_name) ***REMOVED***
+                this.volume_status = 10;
+            ***REMOVED***
+            else ***REMOVED***
+                this.volume_status = 2;
+            ***REMOVED***
+                    this.getVolumes();
+
+        ***REMOVED***
+    )
+
+
+    ***REMOVED***
+
     createVolume(volume_name: string, diskspace: number, instance_id: string) ***REMOVED***
-        this.volume_status = 0
+        this.volume_status = 0;
         this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => ***REMOVED***
             if (result['Created']) ***REMOVED***
                 this.volume_status = 7;
@@ -232,7 +249,7 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     getUserApprovedProjects() ***REMOVED***
-        this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => ***REMOVED***
+        this.groupService.getMemberGroupsStatus().subscribe(membergroups => ***REMOVED***
             for (let project of membergroups) ***REMOVED***
                 this.projects.push(project);
 

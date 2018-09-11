@@ -62,7 +62,7 @@ export class ImageService ***REMOVED***
     ***REMOVED***
 
 
-    createSnapshot(snaptshot_instance: string, snapshot_name: string,): Observable<any> ***REMOVED***
+    createSnapshot(snaptshot_instance: string, snapshot_name: string): Observable<any> ***REMOVED***
 
         let params = new HttpParams().set('snapshot_name', snapshot_name).set('snapshot_instance', snaptshot_instance);
 

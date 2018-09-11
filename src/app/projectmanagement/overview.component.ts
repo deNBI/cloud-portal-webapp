@@ -11,6 +11,7 @@ import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service
 import * as moment from 'moment';
 import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***ProjectMemberApplication***REMOVED*** from "./project_member_application";
 
 
 @Component(***REMOVED***
@@ -22,12 +23,18 @@ export class OverviewComponent ***REMOVED***
     debug_module = false;
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
+    @Input() invitation_group_pre: string = environment.invitation_group_pre
     is_admin = false;
     userprojects: ***REMOVED******REMOVED***;
     member_id: number;
     admingroups: ***REMOVED******REMOVED***;
     filteredMembers = null;
+    application_action = '';
+    application_member_name = '';
+    application_action_done = false;
+    application_action_success: boolean;
     projects: Project[] = new Array();
+    loaded = true;
 
 
     // modal variables for User list
@@ -43,6 +50,7 @@ export class OverviewComponent ***REMOVED***
     public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
+    public addUserModalRealName: string;
     public UserModalFacilityDetails: [string, string][];
     public UserModalFacility: [string, number];
 
@@ -114,6 +122,8 @@ export class OverviewComponent ***REMOVED***
                 let details_array = [];
                 let lifetime = group['lifetime'];
                 let lifetimeDays = -1;
+                let realname = group['name'];
+
                 let expirationDate = undefined;
                 if (lifetime != -1) ***REMOVED***
                     lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
@@ -129,6 +139,7 @@ export class OverviewComponent ***REMOVED***
                     shortname = group['name']
                 ***REMOVED***
 
+
                 let newProject = new Project(
                     Number(groupid),
                     shortname,
@@ -141,9 +152,24 @@ export class OverviewComponent ***REMOVED***
                 newProject.ComputecenterDetails = details_array;
                 newProject.Lifetime = lifetime;
                 newProject.LifetimeDays = lifetimeDays;
+                newProject.RealName = realname;
                 if (expirationDate) ***REMOVED***
                     newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
                 ***REMOVED***
+
+                let newProjectApplications = [];
+                if (group['applications']) ***REMOVED***
+                    for (let application of group['applications']) ***REMOVED***
+                        let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                        let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                        let newMemberApplication = new ProjectMemberApplication(
+                            application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                        )
+                        newProjectApplications.push(newMemberApplication)
+                    ***REMOVED***
+                    newProject.ProjectMemberApplications = newProjectApplications;
+                ***REMOVED***
+
                 this.projects.push(newProject);
             ***REMOVED***
             this.isLoaded = true;
@@ -178,10 +204,8 @@ export class OverviewComponent ***REMOVED***
 
 
     getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
-        this.groupservice.getGroupRichMembers(projectid).toPromise()
-            .then(function (members_raw) ***REMOVED***
-                return members_raw;
-            ***REMOVED***).then(members => ***REMOVED***
+        this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => ***REMOVED***
+
             this.usersModalProjectID = projectid;
             this.usersModalProjectName = projectname;
             this.usersModalProjectMembers = new Array();
@@ -190,8 +214,9 @@ export class OverviewComponent ***REMOVED***
                 for (let member of members) ***REMOVED***
                     let member_id = member["id"];
                     let user_id = member["userId"];
-                    let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
+                    let fullName = member["firstName"] + " " + member["lastName"];
                     let projectMember = new ProjectMember(user_id, fullName, member_id);
+                    projectMember.ElixirId = member['elixirId'];
                     if (admindIds.indexOf(user_id) != -1) ***REMOVED***
                         projectMember.IsPi = true;
                     ***REMOVED***
@@ -206,6 +231,71 @@ export class OverviewComponent ***REMOVED***
             ***REMOVED***)
 
 
+        ***REMOVED***);
+    ***REMOVED***
+
+    approveMemberApplication(project: number, application: number, membername: string) ***REMOVED***
+        this.loaded = false;
+        this.application_action_done = false;
+        this.groupservice.approveGroupApplication(project, application).subscribe(result => ***REMOVED***
+            let application = result;
+            this.groupservice.getGroupApplications(project).subscribe(result => ***REMOVED***
+                let newProjectApplications = [];
+                for (let application of result) ***REMOVED***
+                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                    let newMemberApplication = new ProjectMemberApplication(
+                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                    )
+                    newProjectApplications.push(newMemberApplication)
+                ***REMOVED***
+                this.selectedProject.ProjectMemberApplications = newProjectApplications;
+                if (application['state'] == 'APPROVED') ***REMOVED***
+                    this.application_action_success = true;
+                ***REMOVED***
+                else ***REMOVED***
+                    this.application_action_success = false;
+                ***REMOVED***
+                this.application_action = 'approved';
+                this.application_member_name = membername;
+                this.loaded = true;
+                this.application_action_done = true
+
+            ***REMOVED***)
+        ***REMOVED***);
+    ***REMOVED***
+
+    rejectMemberApplication(project: number, application: number, membername: string) ***REMOVED***
+        this.loaded = false;
+        this.application_action_done = false;
+
+        this.groupservice.rejectGroupApplication(project, application).subscribe(result => ***REMOVED***
+            let application = result;
+
+            this.groupservice.getGroupApplications(project).subscribe(result => ***REMOVED***
+                let newProjectApplications = [];
+                for (let application of result) ***REMOVED***
+                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName'];
+                    let newMemberApplication = new ProjectMemberApplication(
+                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                    )
+                    newProjectApplications.push(newMemberApplication)
+                ***REMOVED***
+                this.selectedProject.ProjectMemberApplications = newProjectApplications;
+                if (application['state'] == 'REJECTED') ***REMOVED***
+                    this.application_action_success = true;
+                ***REMOVED***
+                else ***REMOVED***
+                    this.application_action_success = false;
+                ***REMOVED***
+                this.application_action = 'rejected';
+                this.application_member_name = membername;
+                this.loaded = true;
+                this.application_action_done = true;
+
+
+            ***REMOVED***)
         ***REMOVED***);
     ***REMOVED***
 
@@ -271,15 +361,15 @@ export class OverviewComponent ***REMOVED***
         this.notificationModalType = type;
     ***REMOVED***
 
-    public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string, number]) ***REMOVED***
+    public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility: [string, number]) ***REMOVED***
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
+        this.addUserModalRealName = realname;
         if (facility[0] === 'None') ***REMOVED***
             this.UserModalFacility = null;
         ***REMOVED***
         else ***REMOVED***
             this.UserModalFacility = facility;
-            console.log(facility)
 
         ***REMOVED***
     ***REMOVED***
@@ -341,13 +431,13 @@ export class OverviewComponent ***REMOVED***
                         this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                     ***REMOVED***
                 ***REMOVED***, error => ***REMOVED***
-                if (error['name'] == 'AlreadyAdminException') ***REMOVED***
-                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
-                ***REMOVED***
-                else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
-                ***REMOVED***
-            ***REMOVED***)
+                    if (error['name'] == 'AlreadyAdminException') ***REMOVED***
+                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                    ***REMOVED***
+                    else ***REMOVED***
+                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                    ***REMOVED***
+                ***REMOVED***)
         ***REMOVED***)
     ***REMOVED***
 
