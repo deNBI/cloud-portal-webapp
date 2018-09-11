@@ -31,10 +31,10 @@
                 <th>Name</th>
                 <th>Project</th>
                 <th>Status</th>
-                <th>Created at</th>
+                <th>Created at (d/m/y)</th>
                 <th>How to Connect</th>
                 <th *ngIf="is_vo_admin">Elixir ID</th>
-                <th>Stopped at</th>
+                <th>Stopped at (d/m/y)</th>
                 <th>Actions</th>
 
 
@@ -112,8 +112,10 @@
                     <td>
                         <div *ngIf="vm.status !='DELETED'"
                              class="btn-group {{collapse_status[vm.openstackid]}}">
+
                             <button class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED'"
-                                    (click)="snapshot_vm=vm.openstackid;resetSnapshotResult();snapshotModal.show();">
+                                    (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();">
+
                                 Create Snapshot
                             </button>
                             <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
@@ -132,7 +134,7 @@
                                        (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();">Resume
                                         Vm</a>
                                 </li>
-                                <li *ngIf="vm.status !='SUSPENDED' && vm.status != 'ACTIVE' && vm.status != 'DELETED'"
+                                <li *ngIf="vm.status !='SUSPENDED' && vm.status != 'ACTIVE' && vm.status != 'DELETED' && vm.status != 'FREEMIUM'"
                                     role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="checkStatus(vm.openstackid);">Check Status
@@ -257,6 +259,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Vm</h4>
+              <button type="button" class="close" (click)="verifyModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
 
@@ -285,6 +290,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Create Snapshot</h4>
+              <button type="button" class="close" (click)="snapshotModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
 
@@ -303,7 +311,7 @@
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
                         [disabled]="!validSnapshotNameBool"
-                        (click)="createSnapshot(snapshot_vm,snapshotName);snapshotModal.hide();snapshotResult.show()">
+                        (click)="createSnapshot(snapshot_vm.openstackid,snapshotName);snapshotModal.hide();snapshotResult.show()">
                     Create Snapshot
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"
@@ -330,7 +338,7 @@
 
                 <div class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' ">
                     Successfully created Snapshot.
-                    You can now use it when starting an new instance.
+                    It might take some minutes till you can use it for starting a new instance.
                 </div>
                 <div class="alert alert-danger" role="alert"
                      *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
@@ -363,9 +371,8 @@
             </div>
 
 
-            <div>
-                <pre><code style=" word-wrap: break-word;">>{{selected_command}}</code></pre>
-
+            <div class="modal-body">
+                <pre><code>{{selected_command}}</code></pre>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="infoModal.hide();">Close</button>

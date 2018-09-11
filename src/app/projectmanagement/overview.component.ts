@@ -11,6 +11,7 @@ import {UserService} from "../api-connector/user.service";
 import * as moment from 'moment';
 import {VoService} from "../api-connector/vo.service";
 import {catchError} from 'rxjs/operators';
+import {ProjectMemberApplication} from "./project_member_application";
 
 
 @Component({
@@ -22,12 +23,18 @@ export class OverviewComponent {
     debug_module = false;
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
+    @Input() invitation_group_pre: string = environment.invitation_group_pre
     is_admin = false;
     userprojects: {};
     member_id: number;
     admingroups: {};
     filteredMembers = null;
+    application_action = '';
+    application_member_name = '';
+    application_action_done = false;
+    application_action_success: boolean;
     projects: Project[] = new Array();
+    loaded = true;
 
 
     // modal variables for User list
@@ -43,6 +50,7 @@ export class OverviewComponent {
     public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
+    public addUserModalRealName: string;
     public UserModalFacilityDetails: [string, string][];
     public UserModalFacility: [string, number];
 
@@ -114,6 +122,8 @@ export class OverviewComponent {
                 let details_array = [];
                 let lifetime = group['lifetime'];
                 let lifetimeDays = -1;
+                let realname = group['name'];
+
                 let expirationDate = undefined;
                 if (lifetime != -1) {
                     lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
@@ -129,6 +139,7 @@ export class OverviewComponent {
                     shortname = group['name']
                 }
 
+
                 let newProject = new Project(
                     Number(groupid),
                     shortname,
@@ -141,9 +152,24 @@ export class OverviewComponent {
                 newProject.ComputecenterDetails = details_array;
                 newProject.Lifetime = lifetime;
                 newProject.LifetimeDays = lifetimeDays;
+                newProject.RealName = realname;
                 if (expirationDate) {
                     newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
                 }
+
+                let newProjectApplications = [];
+                if (group['applications']) {
+                    for (let application of group['applications']) {
+                        let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                        let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                        let newMemberApplication = new ProjectMemberApplication(
+                            application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                        )
+                        newProjectApplications.push(newMemberApplication)
+                    }
+                    newProject.ProjectMemberApplications = newProjectApplications;
+                }
+
                 this.projects.push(newProject);
             }
             this.isLoaded = true;
@@ -178,10 +204,8 @@ export class OverviewComponent {
 
 
     getMembesOfTheProject(projectid: number, projectname: string) {
-        this.groupservice.getGroupRichMembers(projectid).toPromise()
-            .then(function (members_raw) {
-                return members_raw;
-            }).then(members => {
+        this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => {
+
             this.usersModalProjectID = projectid;
             this.usersModalProjectName = projectname;
             this.usersModalProjectMembers = new Array();
@@ -190,8 +214,9 @@ export class OverviewComponent {
                 for (let member of members) {
                     let member_id = member["id"];
                     let user_id = member["userId"];
-                    let fullName = member["user"]["firstName"] + " " + member["user"]["lastName"];
+                    let fullName = member["firstName"] + " " + member["lastName"];
                     let projectMember = new ProjectMember(user_id, fullName, member_id);
+                    projectMember.ElixirId = member['elixirId'];
                     if (admindIds.indexOf(user_id) != -1) {
                         projectMember.IsPi = true;
                     }
@@ -206,6 +231,71 @@ export class OverviewComponent {
             })
 
 
+        });
+    }
+
+    approveMemberApplication(project: number, application: number, membername: string) {
+        this.loaded = false;
+        this.application_action_done = false;
+        this.groupservice.approveGroupApplication(project, application).subscribe(result => {
+            let application = result;
+            this.groupservice.getGroupApplications(project).subscribe(result => {
+                let newProjectApplications = [];
+                for (let application of result) {
+                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                    let newMemberApplication = new ProjectMemberApplication(
+                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                    )
+                    newProjectApplications.push(newMemberApplication)
+                }
+                this.selectedProject.ProjectMemberApplications = newProjectApplications;
+                if (application['state'] == 'APPROVED') {
+                    this.application_action_success = true;
+                }
+                else {
+                    this.application_action_success = false;
+                }
+                this.application_action = 'approved';
+                this.application_member_name = membername;
+                this.loaded = true;
+                this.application_action_done = true
+
+            })
+        });
+    }
+
+    rejectMemberApplication(project: number, application: number, membername: string) {
+        this.loaded = false;
+        this.application_action_done = false;
+
+        this.groupservice.rejectGroupApplication(project, application).subscribe(result => {
+            let application = result;
+
+            this.groupservice.getGroupApplications(project).subscribe(result => {
+                let newProjectApplications = [];
+                for (let application of result) {
+                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName'];
+                    let newMemberApplication = new ProjectMemberApplication(
+                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                    )
+                    newProjectApplications.push(newMemberApplication)
+                }
+                this.selectedProject.ProjectMemberApplications = newProjectApplications;
+                if (application['state'] == 'REJECTED') {
+                    this.application_action_success = true;
+                }
+                else {
+                    this.application_action_success = false;
+                }
+                this.application_action = 'rejected';
+                this.application_member_name = membername;
+                this.loaded = true;
+                this.application_action_done = true;
+
+
+            })
         });
     }
 
@@ -271,15 +361,15 @@ export class OverviewComponent {
         this.notificationModalType = type;
     }
 
-    public showAddUserToProjectModal(projectid: number, projectname: string, facility: [string, number]) {
+    public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility: [string, number]) {
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
+        this.addUserModalRealName = realname;
         if (facility[0] === 'None') {
             this.UserModalFacility = null;
         }
         else {
             this.UserModalFacility = facility;
-            console.log(facility)
 
         }
     }
@@ -341,13 +431,13 @@ export class OverviewComponent {
                         this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
                     }
                 }, error => {
-                if (error['name'] == 'AlreadyAdminException') {
-                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
-                }
-                else {
-                    this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
-                }
-            })
+                    if (error['name'] == 'AlreadyAdminException') {
+                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                    }
+                    else {
+                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                    }
+                })
         })
     }
 

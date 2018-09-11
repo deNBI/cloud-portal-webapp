@@ -1,8 +1,14 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
     <div class="row">
-        <!--/.col-->
-        <h1>Hello, {{ userinfo.FirstName }} {{ userinfo.LastName }}</h1>
+        <div class="col-md-8">
+            <!--/.col-->
+            <h1>Hello, {{ userinfo.FirstName }} {{ userinfo.LastName }}</h1></div>
+        <div class="col-md-4">
+            <button *ngIf="freemium_active && !is_project_member" class="btn btn-primary btn-lg"
+                    (click)="joinFreemium();">Join Freemium!
+            </button>
+        </div>
     </div>
     <div class="row">
         <h3>This is your personal data page.</h3>
@@ -68,7 +74,7 @@
                                         </label></div>
                                         <div class="col-md-6"> Subscribe to our newsletter and get the latest news of
                                             upcoming
-                                            events and current developments in de.NBI Cloud.
+                                            events and current developments in de.NBI Cloud Portal.
                                         </div>
                                     </div>
                                 </td>
@@ -89,6 +95,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Change public key</h4>
+                      <button type="button" class="close" (click)="pubKeyModal.hide()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
             </div>
             <div class="modal-body">
                 <alert type="info" *ngIf="public_key?.length ==0 ">

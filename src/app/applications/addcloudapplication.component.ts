@@ -92,7 +92,6 @@ export class AddcloudapplicationComponent {
                 }
             }
             if (this.check_not_zero(values) == false) {
-                console.log('error')
                 this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
                 return;
