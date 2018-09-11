@@ -234,6 +234,21 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
+    loadProjectApplications(project: number) ***REMOVED***
+        this.groupservice.getGroupApplications(project).subscribe(result => ***REMOVED***
+            let newProjectApplications = [];
+            for (let application of result) ***REMOVED***
+                let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                let newMemberApplication = new ProjectMemberApplication(
+                    application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                )
+                newProjectApplications.push(newMemberApplication)
+            ***REMOVED***
+            this.selectedProject.ProjectMemberApplications = newProjectApplications;
+        ***REMOVED***)
+    ***REMOVED***
+
     approveMemberApplication(project: number, application: number, membername: string) ***REMOVED***
         this.loaded = false;
         this.application_action_done = false;
