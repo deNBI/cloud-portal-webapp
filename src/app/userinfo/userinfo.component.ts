@@ -144,11 +144,7 @@ export class UserinfoComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     joinFreemium() ***REMOVED***
-        this.groupService.addMemberToFreemium().subscribe( result => ***REMOVED***
-          console.log(result);
-          this.freemium=true;
-        ***REMOVED***);
-
+        this.groupService.addMemberToFreemium().subscribe();
     ***REMOVED***
 
     is_vm_project_member() ***REMOVED***
