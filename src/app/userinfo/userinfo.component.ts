@@ -144,11 +144,7 @@ export class UserinfoComponent implements OnInit {
     }
 
     joinFreemium() {
-        this.groupService.addMemberToFreemium().subscribe( result => {
-          console.log(result);
-          this.freemium=true;
-        });
-
+        this.groupService.addMemberToFreemium().subscribe();
     }
 
     is_vm_project_member() {
