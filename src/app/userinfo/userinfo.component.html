@@ -6,7 +6,7 @@
             <h1>Hello, {{ userinfo.FirstName }} {{ userinfo.LastName }}</h1></div>
         <div class="col-md-4">
             <button *ngIf="freemium_active && !is_project_member" class="btn btn-primary btn-lg"
-                    (click)="joinFreemium();">Join Freemium!
+                    (click)="freemiummodal.show();">Join Freemium!
             </button>
         </div>
     </div>
@@ -135,6 +135,40 @@
                         (click)="importKey(publickey.value, userinfo.ElxirId);show_key();pubKeyModal.hide();">Set
                 </button>
                 <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide();">Cancel
+                </button>
+
+            </div>
+        </div><!-- /.modal-content -->L
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #freemiummodal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Added to Freemium group</h4>
+                      <button type="button" class="close" (click)="freemiummodal.hide()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+            </div>
+            <div class="modal-body">
+                <alert type="info">
+                  <strong>Info: </strong> <p>If you join Freemiun you can reload the page and you should see a New Instance tab where you are able to start a virtual machine.</p>
+
+                </alert>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+
+                <button  class="btn btn-success col-md4" type="button"
+                        (click)="joinFreemium();freemiummodal.hide();">Join Freemium
+                </button>
+                <button class="btn  btn-primary col-md-4" type="reset" (click)="freemiummodal.hide();">Cancel
                 </button>
 
             </div>
