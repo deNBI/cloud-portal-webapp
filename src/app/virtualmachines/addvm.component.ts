@@ -96,8 +96,7 @@ export class VirtualMachineComponent implements OnInit {
                 if (client.toString() === "true") {
 
                     this.client_avaiable = true;
-                    this.getImages();
-                    this.getFlavors();
+
                 }
                 else {
                     this.client_avaiable = false;
