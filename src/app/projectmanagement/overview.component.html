@@ -75,7 +75,7 @@
                                         <button
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
                                                 type="button" style="margin-bottom: 5px"
-                                                (click)="selectedProject = project;applicationModal.show();loadProjectApplications(selectedProject?.Id)"
+                                                (click)="selectedProject = project;applicationModal.show();loadProjectApplications(selectedProject?.Id);application_action_done=false;"
                                                 class="btn btn-secondary"><i class="fa fa-list-alt"></i>&nbsp; Applications
                                         </button>
                                         <h4 *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)"> <span class="badge badge-default">Project Member </span></h4>
@@ -475,7 +475,7 @@
                     {{application_action}} .
                 </p>
                 <button type="button" class="btn btn-secondary"
-                        (click)="selectedProject=undefined;applicationModal.hide();">
+                        (click)="application_action_done=false;selectedProject=undefined;applicationModal.hide();">
                     Close
                 </button>
             </div>
