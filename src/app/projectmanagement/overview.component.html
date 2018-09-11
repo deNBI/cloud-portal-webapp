@@ -474,6 +474,10 @@
                     <strong>Failed:</strong> The application of {{application_member_name}} could not be
                     {{application_action}} .
                 </p>
+                 <button type="button" class="btn btn-primary"
+                        (click)="loadProjectApplications(selectedProject?.Id)">
+                    Refresh
+                </button>
                 <button type="button" class="btn btn-secondary"
                         (click)="application_action_done=false;selectedProject=undefined;applicationModal.hide();">
                     Close
