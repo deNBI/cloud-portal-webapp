@@ -5,13 +5,12 @@ node ***REMOVED***
     ***REMOVED***
  
     stage('build image')***REMOVED***
-                    sh 'export ANGULAR_MODE="stage"'
-                    image = docker.build("denbicloud/cloud-portal-webapp")
+         sh 'docker build --no-cache --build-arg "ANGULAR_MODE=stage" -t denbicloud/cloud-portal-webapp:dev .'
         ***REMOVED***
                
     stage('push image')***REMOVED***
     withDockerRegistry([ credentialsId: "docker1", url: "" ]) ***REMOVED***
-    image.push("dev")
+    sh 'docker push denbicloud/cloud-portal-webapp:dev'
    ***REMOVED***
    ***REMOVED***              
  ***REMOVED***
