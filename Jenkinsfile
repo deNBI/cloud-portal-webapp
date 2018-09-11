@@ -5,7 +5,7 @@ node ***REMOVED***
     ***REMOVED***
  
     stage('build image')***REMOVED***
-         sh 'docker build --no-cache --build-arg "ANGULAR_MODE=stage" -t denbicloud/cloud-portal-webapp:dev .'
+         sh 'docker build --no-cache --rm --build-arg "ANGULAR_MODE=stage" -t denbicloud/cloud-portal-webapp:dev .'
         ***REMOVED***
                
     stage('push image')***REMOVED***
