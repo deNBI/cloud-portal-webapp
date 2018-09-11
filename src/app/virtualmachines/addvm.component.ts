@@ -124,7 +124,6 @@ export class VirtualMachineComponent implements OnInit {
 
     getUserPublicKey() {
         this.keyService.getKey().subscribe(result => {
-            console.log(result['public_key']);
             this.userinfo.PublicKey = result['public_key'];
         })
     }
@@ -234,7 +233,7 @@ export class VirtualMachineComponent implements OnInit {
     }
 
     getUserApprovedProjects() {
-        this.groupService.getMemberGroupsStatus().toPromise().then(membergroups => {
+        this.groupService.getMemberGroupsStatus().subscribe(membergroups => {
             for (let project of membergroups) {
                 this.projects.push(project);
 

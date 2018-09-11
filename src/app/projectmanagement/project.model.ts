@@ -1,3 +1,5 @@
+import {ProjectMemberApplication} from "./project_member_application";
+
 export class Project {
   get UserIsAdmin(): boolean {
     return this._UserIsAdmin;
@@ -20,6 +22,8 @@ export class Project {
   private _ComputeCenter:[string,number];
   private _ComputeCenterDetails:[string,string][];
   private _PerunId:number;
+  private _ProjectMemberApplications:ProjectMemberApplication[];
+  private _RealName:string;
 
 
   constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: [string,number]) {
@@ -35,6 +39,23 @@ export class Project {
   }
 
 //todo exdend with additional information
+
+  get RealName():string{
+
+    return this._RealName
+  }
+
+
+  set RealName(value:string){
+    this._RealName=value;
+  }
+  get ProjectMemberApplications():ProjectMemberApplication[]{
+    return this._ProjectMemberApplications;
+  }
+
+  set ProjectMemberApplications(value:ProjectMemberApplication[]){
+    this._ProjectMemberApplications=value;
+  }
 
   get LifetimeDays():number{
     return this._LifetimeDays

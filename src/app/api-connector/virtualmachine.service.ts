@@ -148,9 +148,20 @@ export class VirtualmachineService {
     }
 
 
+    renameVolume(volume_id: string, new_volume_name: string): Observable<any> {
+        let params = new HttpParams().set('new_volume_name', new_volume_name);
+
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/' + volume_id + '/rename/', params, {
+            withCredentials: true,
+            headers: header,
+        }).pipe(catchError((error: any) => throwError(error)));
+
+    }
+
+
     deleteVolume(volume_id: string): Observable<any> {
 
-        let params = new HttpParams().set('volume_id',volume_id);
+        let params = new HttpParams().set('volume_id', volume_id);
 
         return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolume/', params, {
             withCredentials: true,
@@ -161,7 +172,7 @@ export class VirtualmachineService {
 
     deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<any> {
 
-        let params = new HttpParams().set('volume_id',volume_id).set('instance_id',instance_id)
+        let params = new HttpParams().set('volume_id', volume_id).set('instance_id', instance_id)
 
         return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolumeAttachment/', params, {
             withCredentials: true,

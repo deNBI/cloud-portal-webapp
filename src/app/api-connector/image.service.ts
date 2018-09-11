@@ -62,7 +62,7 @@ export class ImageService {
     }
 
 
-    createSnapshot(snaptshot_instance: string, snapshot_name: string,): Observable<any> {
+    createSnapshot(snaptshot_instance: string, snapshot_name: string): Observable<any> {
 
         let params = new HttpParams().set('snapshot_name', snapshot_name).set('snapshot_instance', snaptshot_instance);
 
