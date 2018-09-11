@@ -23,6 +23,7 @@ import {VoService} from "../api-connector/vo.service";
 })
 export class ApplicationsComponent {
 
+
     user_applications: Application[] = [];
     is_vo_admin = false;
     all_applications: Application[] = [];
@@ -35,6 +36,7 @@ export class ApplicationsComponent {
     public deleteId: number;
     isLoaded_userApplication = false;
     isLoaded_AllApplication = false;
+    application_user: { [id: string]: { [id: string]: string } } = {};
 
 
     //notification Modal variables
@@ -76,7 +78,7 @@ export class ApplicationsComponent {
         })
     }
 
-    getUserAffilaitions(user:number){
+    getUserAffilaitions(user: number) {
         this.userservice.getuserAffiliations(user).subscribe()
     }
 
@@ -340,6 +342,23 @@ export class ApplicationsComponent {
             this.getUserApplications();
             this.getAllApplications();
         })
+
+
+    }
+
+    public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string) {
+        if (!this.getCollapseStatus(collapse_id)) {
+            if (!(elixir_id in this.application_user)) {
+                this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe(result => {
+
+                    let name = result['firstName'] + ' ' + result['lastName'];
+                    let appuser: { [id: string]: string } = {};
+                    appuser['name'] = name;
+                    appuser['email'] = result['email'];
+                    this.application_user[elixir_id] = appuser;
+                })
+            }
+        }
 
 
     }
