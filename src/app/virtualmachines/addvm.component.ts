@@ -72,13 +72,13 @@ export class VirtualMachineComponent implements OnInit {
     }
 
 
-    getImages(): void {
+    getImages(project_id:number): void {
 
-        this.imageService.getImages().subscribe(images => this.images = images);
+        this.imageService.getImages(project_id).subscribe(images => this.images = images);
     }
 
-    getFlavors(): void {
-        this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
+    getFlavors(project_id:number): void {
+        this.flavorService.getFlavors(project_id).subscribe(flavors => this.flavors = flavors);
 
     }
 
@@ -241,12 +241,10 @@ export class VirtualMachineComponent implements OnInit {
     }
 
     initializeData() {
-        forkJoin(this.imageService.getImages(), this.flavorService.getFlavors(), this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => {
-            this.images = result[0];
-            this.flavors = result[1];
-            this.userinfo.PublicKey = result[3]['public_key'];
+        forkJoin(this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => {
+            this.userinfo.PublicKey = result[1]['public_key'];
             this.validatePublicKey();
-            let membergroups = result[2];
+            let membergroups = result[0];
             for (let project of membergroups) {
                 this.projects.push(project);
 

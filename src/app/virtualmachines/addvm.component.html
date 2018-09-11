@@ -28,7 +28,7 @@
 
                                 <select required class="form-control" name="selectedProject"
                                         [(ngModel)]="selectedProject"
-                                        (ngModelChange)="getSelectedProjectDiskspace();getSelectedProjectVms();getSelectedProjectVolumes();getImages();getFlavors();">
+                                        (ngModelChange)="getSelectedProjectDiskspace();getSelectedProjectVms();getSelectedProjectVolumes();getImages(selectedProject[1]);getFlavors(selectedProject[1]);">
                                     <option value="undefined" disabled selected hidden> Please Select</option>
                                     <option *ngFor="let project of projects" [ngValue]="project"> {{project[0]}}
                                     </option>
