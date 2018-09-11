@@ -75,9 +75,8 @@
                                         <button
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
                                                 type="button" style="margin-bottom: 5px"
-                                                (click)="selectedProject = project;applicationModal.show();"
+                                                (click)="selectedProject = project;applicationModal.show();loadProjectApplications(selectedProject?.Id)"
                                                 class="btn btn-secondary"><i class="fa fa-list-alt"></i>&nbsp; Applications
-                                            ({{project.ProjectMemberApplications.length}})
                                         </button>
                                         <h4 *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)"> <span class="badge badge-default">Project Member </span></h4>
                                     </div>
@@ -456,7 +455,7 @@
                                 class="btn btn-success"><i class="fa fa-check"></i> Approve
                         </button>
                         <button style="margin-left: 10px"
-                                (click)="appication_action='rejected';application_member_name=application.Name;rejectMemberApplication(selectedProject?.Id,application.Id,application.Name); "
+                                (click)="application_action='rejected';application_member_name=application.Name;rejectMemberApplication(selectedProject?.Id,application.Id,application.Name); "
                                 class="btn btn-danger"><i class="fa fa-times"></i> Reject
                         </button>
                     </td>

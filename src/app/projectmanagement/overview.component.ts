@@ -234,6 +234,21 @@ export class OverviewComponent {
         });
     }
 
+    loadProjectApplications(project: number) {
+        this.groupservice.getGroupApplications(project).subscribe(result => {
+            let newProjectApplications = [];
+            for (let application of result) {
+                let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
+                let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
+                let newMemberApplication = new ProjectMemberApplication(
+                    application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
+                )
+                newProjectApplications.push(newMemberApplication)
+            }
+            this.selectedProject.ProjectMemberApplications = newProjectApplications;
+        })
+    }
+
     approveMemberApplication(project: number, application: number, membername: string) {
         this.loaded = false;
         this.application_action_done = false;
