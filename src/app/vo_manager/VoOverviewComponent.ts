@@ -4,6 +4,7 @@ import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.mode
 import ***REMOVED***ProjectMember***REMOVED*** from "../projectmanagement/project_member.model";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import * as moment from 'moment';
+import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
 
 @Component(***REMOVED***
     selector: 'voOverview',
@@ -152,6 +153,8 @@ export class VoOverviewComponent ***REMOVED***
                 if (!shortname) ***REMOVED***
                     shortname = group['name']
                 ***REMOVED***
+                let compute_center = new ComputecenterComponent(facility['FacilityId'], facility['Facility'], facility['Login'], facility['Support']);
+
 
                 let newProject = new Project(
                     Number(groupid),
@@ -161,8 +164,7 @@ export class VoOverviewComponent ***REMOVED***
                     dateDayDifference,
                     is_pi,
                     true,
-                    [facility['Facility'], facility['FacilityId']]);
-                newProject.ComputecenterDetails = details_array;
+                    compute_center);
                 newProject.Lifetime = lifetime;
                 newProject.LifetimeDays = lifetimeDays;
                 if (expirationDate) ***REMOVED***

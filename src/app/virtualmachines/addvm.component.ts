@@ -72,13 +72,13 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
 
-    getImages(): void ***REMOVED***
+    getImages(project_id:number): void ***REMOVED***
 
-        this.imageService.getImages().subscribe(images => this.images = images);
+        this.imageService.getImages(project_id).subscribe(images => this.images = images);
     ***REMOVED***
 
-    getFlavors(): void ***REMOVED***
-        this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
+    getFlavors(project_id:number): void ***REMOVED***
+        this.flavorService.getFlavors(project_id).subscribe(flavors => this.flavors = flavors);
 
     ***REMOVED***
 
@@ -96,8 +96,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
                 if (client.toString() === "true") ***REMOVED***
 
                     this.client_avaiable = true;
-                    this.getImages();
-                    this.getFlavors();
+
                 ***REMOVED***
                 else ***REMOVED***
                     this.client_avaiable = false;
@@ -242,12 +241,10 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     initializeData() ***REMOVED***
-        forkJoin(this.imageService.getImages(), this.flavorService.getFlavors(), this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => ***REMOVED***
-            this.images = result[0];
-            this.flavors = result[1];
-            this.userinfo.PublicKey = result[3]['public_key'];
+        forkJoin(this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => ***REMOVED***
+            this.userinfo.PublicKey = result[1]['public_key'];
             this.validatePublicKey();
-            let membergroups = result[2];
+            let membergroups = result[0];
             for (let project of membergroups) ***REMOVED***
                 this.projects.push(project);
 

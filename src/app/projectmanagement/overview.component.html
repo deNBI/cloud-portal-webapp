@@ -36,19 +36,15 @@
                                 </td>
 
                                 <td>
-                                    <p *ngIf="project.ComputeCenter[0] == 'None'">None</p>
-                                    <p *ngIf="project.ComputeCenter[0] != 'None'">***REMOVED******REMOVED***project.ComputeCenter[0]***REMOVED******REMOVED***</p>
-                                    <ul *ngIf="project.ComputeCenter[0] != 'None'">
+                                    <p *ngIf="project.ComputeCenter.Name">***REMOVED******REMOVED***project.ComputeCenter.Name***REMOVED******REMOVED***</p>
+                                    <ul *ngIf="project.ComputeCenter.Name">
+                                        <li *ngIf="project.OpenStackProject"><a target="_blank" href="project.ComputeCenter.Login">Login: ***REMOVED******REMOVED***project.ComputeCenter.Login***REMOVED******REMOVED***</a></li>
+                                        <li>Support: ***REMOVED******REMOVED***project.ComputeCenter.Support***REMOVED******REMOVED***</li>
 
                                         <!--button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
                                                 class="btn btn-primary">Set your OpenStack API password
                                         </button-->
-                                        <li *ngFor="let details of project.ComputeCenterDetails">***REMOVED******REMOVED***details[0]***REMOVED******REMOVED***: <a
-                                                target="_blank"
-                                                *ngIf="details[0] == 'Login'"
-                                                href="***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</a>
-                                            <span *ngIf="details[0] != 'Login'">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</span>
-                                        </li>
+
                                     </ul>
 
                                 </td>

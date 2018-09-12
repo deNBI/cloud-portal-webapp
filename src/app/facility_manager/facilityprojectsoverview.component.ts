@@ -13,6 +13,7 @@ import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED***map***REMOVED*** from 'rxjs/operators';
 
 import * as moment from 'moment';
+import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
 
 @Component(***REMOVED***
     templateUrl: 'facilityprojectsoverview.component.html',
@@ -94,6 +95,8 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
                 if (!shortname) ***REMOVED***
                     shortname = group['name']
                 ***REMOVED***
+                let compute_center = new ComputecenterComponent(facility['FacilityId'], facility['Facility'], facility['Login'], facility['Support']);
+
 
                 let newProject = new Project(
                     Number(groupid),
@@ -103,8 +106,7 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
                     dateDayDifference,
                     is_pi,
                     is_admin,
-                    [facility['Facility'], facility['FacilityId']]);
-                newProject.ComputecenterDetails = details_array;
+                   compute_center);
                 newProject.Lifetime = lifetime;
                 newProject.LifetimeDays = lifetimeDays;
                 if (expirationDate) ***REMOVED***
@@ -149,8 +151,8 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
                     let member_id = member["id"];
                     let user_id = member["userId"];
                     let fullName = member["firstName"] + " " + member["lastName"];
-                    let newMember=new ProjectMember(user_id, fullName, member_id);
-                    newMember.ElixirId=member['elixirId'];
+                    let newMember = new ProjectMember(user_id, fullName, member_id);
+                    newMember.ElixirId = member['elixirId'];
                     this.usersModalProjectMembers.push(newMember);
                 ***REMOVED***
 

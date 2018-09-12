@@ -200,7 +200,7 @@
 
                                                 <option value="undefined" selected> no center</option>
                                                 <option *ngFor="let computeCenter of computeCenters"
-                                                        value="***REMOVED******REMOVED***computeCenter[1]***REMOVED******REMOVED***"> ***REMOVED******REMOVED***computeCenter[0]***REMOVED******REMOVED***
+                                                        value="***REMOVED******REMOVED***computeCenter.FacilityId***REMOVED******REMOVED***"> ***REMOVED******REMOVED***computeCenter.Name***REMOVED******REMOVED***
                                                 </option>
                                             </select>
                                         </td>
@@ -424,7 +424,7 @@
                                         <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED*** application.User ***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED*** application.Institute ***REMOVED******REMOVED***</td>
-                                        <td>***REMOVED******REMOVED***application.ComputeCenter[0]***REMOVED******REMOVED***</td>
+                                        <td>***REMOVED******REMOVED***application?.ComputeCenter?.Name***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED*** getStatusById(application.Status) ***REMOVED******REMOVED***</td>
                                         <td>
                                             <button (click)="switchCollapseStatus('application_history-' + application.Id)"
@@ -506,18 +506,23 @@
                                                             <td>***REMOVED******REMOVED***application.DaysRunning***REMOVED******REMOVED***</td>
 
                                                         </tr>
-                                                        <tr *ngIf="application.ComputeCenterDetails">
+                                                        <tr *ngIf="application.ComputeCenter">
 
                                                             <td>Facility Details</td>
                                                             <td>
-                                                                <ul>
-                                                                    <li>Name: ***REMOVED******REMOVED***application.ComputeCenter[0]***REMOVED******REMOVED***</li>
-                                                                    <li *ngFor="let details of application.ComputeCenterDetails">
-                                                                        ***REMOVED******REMOVED***details[0]***REMOVED******REMOVED***: <a target="_blank"
-                                                                                           *ngIf="details[0] == 'Login'"
-                                                                                           href="***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</a>
-                                                                        <span *ngIf="details[0] != 'Login'">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</span>
+                                                                <ul *ngIf="application.ComputeCenter.Name">
+                                                                    <li *ngIf="application.OpenStackProject"><a
+                                                                            target="_blank"
+                                                                            href="application.ComputeCenter.Login">Login:
+                                                                        ***REMOVED******REMOVED***application.ComputeCenter.Login***REMOVED******REMOVED***</a></li>
+                                                                    <li>Support: ***REMOVED******REMOVED***application.ComputeCenter.Support***REMOVED******REMOVED***
                                                                     </li>
+
+                                                                    <!--button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
+                                                                            class="btn btn-primary">Set your OpenStack API password
+                                                                    </button-->
+
+
                                                                 </ul>
                                                             </td>
 

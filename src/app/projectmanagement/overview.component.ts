@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 import ***REMOVED***ProjectMemberApplication***REMOVED*** from "./project_member_application";
+import ***REMOVED***ComputecenterComponent***REMOVED*** from "./computecenter.component";
 
 
 @Component(***REMOVED***
@@ -118,8 +119,6 @@ export class OverviewComponent ***REMOVED***
                 let groupid = key;
                 let facility = group['facility'];
                 let shortname = group['shortname'];
-                let details = facility['Details'];
-                let details_array = [];
                 let lifetime = group['lifetime'];
                 let lifetimeDays = -1;
                 let realname = group['name'];
@@ -129,15 +128,13 @@ export class OverviewComponent ***REMOVED***
                     lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
                     expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
                 ***REMOVED***
-                for (let detail in details) ***REMOVED***
-                    let detail_tuple = [detail, details[detail]];
-                    details_array.push(detail_tuple);
-                ***REMOVED***
                 //check if user is a PI (group manager)
 
                 if (!shortname) ***REMOVED***
                     shortname = group['name']
                 ***REMOVED***
+
+                let compute_center=new ComputecenterComponent(facility['FacilityId'],facility['Facility'],facility['Login'],facility['Support']);
 
 
                 let newProject = new Project(
@@ -148,8 +145,8 @@ export class OverviewComponent ***REMOVED***
                     dateDayDifference,
                     is_pi,
                     this.is_admin,
-                    [facility['Facility'], facility['FacilityId']]);
-                newProject.ComputecenterDetails = details_array;
+                    compute_center);
+                newProject.OpenStackProject=group['openstack_project'];
                 newProject.Lifetime = lifetime;
                 newProject.LifetimeDays = lifetimeDays;
                 newProject.RealName = realname;
@@ -164,7 +161,7 @@ export class OverviewComponent ***REMOVED***
                         let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
                         let newMemberApplication = new ProjectMemberApplication(
                             application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
-                        )
+                        );
                         newProjectApplications.push(newMemberApplication)
                     ***REMOVED***
                     newProject.ProjectMemberApplications = newProjectApplications;

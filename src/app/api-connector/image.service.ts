@@ -17,10 +17,13 @@ export class ImageService ***REMOVED***
     constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
     ***REMOVED***
 
-    getImages(): Observable<Image[]> ***REMOVED***
+    getImages(project_id:number): Observable<Image[]> ***REMOVED***
+        let params = new HttpParams().set('project_id', project_id.toString())
+
 
         return this.http.get<Image[]>(this.settings.getConnectorBaseUrl() + 'images/getImages/', ***REMOVED***
             withCredentials: true,
+            params:params,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
 
@@ -76,7 +79,7 @@ export class ImageService ***REMOVED***
     ***REMOVED***
 
     deleteSnapshot(snapshot_id: string): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('snapshot_id',snapshot_id);
+        let params = new HttpParams().set('snapshot_id', snapshot_id);
 
         return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteSnapshot/', params, ***REMOVED***
             withCredentials: true,

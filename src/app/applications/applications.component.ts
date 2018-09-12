@@ -16,6 +16,7 @@ import ***REMOVED***ApplicationExtension***REMOVED*** from "./application_extens
 import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
 import ***REMOVED***forkJoin***REMOVED*** from 'rxjs';
 import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
+import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
 
 @Component(***REMOVED***
     templateUrl: 'applications.component.html',
@@ -30,7 +31,7 @@ export class ApplicationsComponent ***REMOVED***
     application_status: ApplicationStatus[] = [];
     all_applications_renewal: ApplicationExtension[] = [];
     special_hardware: SpecialHardware[] = [];
-    computeCenters: [string, number][];
+    computeCenters: ComputecenterComponent[] = [];
     selectedApplication: Application;
     extension_status = 0;
     public deleteId: number;
@@ -73,7 +74,10 @@ export class ApplicationsComponent ***REMOVED***
 
     getComputeCenters() ***REMOVED***
         this.groupservice.getComputeCenters().subscribe(result => ***REMOVED***
-            this.computeCenters = result;
+            for (let cc of result) ***REMOVED***
+                let compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
+                this.computeCenters.push(compute_center)
+            ***REMOVED***
 
         ***REMOVED***)
     ***REMOVED***
@@ -277,7 +281,6 @@ export class ApplicationsComponent ***REMOVED***
                             ***REMOVED***
                             a.ApplicationExtension = r;
                         ***REMOVED***
-                        a.ComputeCenter = ['', -1];
 
                         this.all_applications.push(a);
 
@@ -293,16 +296,15 @@ export class ApplicationsComponent ***REMOVED***
                     forkJoin(observable_list).subscribe(result => ***REMOVED***
                         for (let res of result) ***REMOVED***
 
-                            let details = res['Details'];
-                            let details_array = [];
-                            for (let detail in details) ***REMOVED***
-                                let detail_tuple = [detail, details[detail]];
-                                details_array.push(detail_tuple);
-                            ***REMOVED***
+                            let login = res['Login'];
+                            let suport = res['Support'];
+                            let facilityname = res['Facility'];
+                            let facilityId = res['FacilityId']
+
+                            let cc = new ComputecenterComponent(facilityId, facilityname, login, suport)
                             for (let app of  this.all_applications) ***REMOVED***
                                 if (app.PerunId == res['Group']) ***REMOVED***
-                                    app.ComputecenterDetails = details_array,
-                                        app.ComputeCenter = [res['Facility'], res['FacilityId']]
+                                    app.ComputeCenter = cc
                                 ***REMOVED***
 
                             ***REMOVED***

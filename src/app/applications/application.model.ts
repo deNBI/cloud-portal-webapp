@@ -1,4 +1,5 @@
 import ***REMOVED***ApplicationExtension***REMOVED*** from "./application_extension.model";
+import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
 
 export class Application ***REMOVED***
   private _Id: number;
@@ -22,9 +23,8 @@ export class Application ***REMOVED***
   private _UserEmail: number;
   private _UserAffiliations:string[];
   private _Status: number;
-  private _ComputeCenter: [string,number];
+  private _ComputeCenter: ComputecenterComponent;
   private _OpenStackProject: boolean;
-  private _ComputeCenterDetails:[string,string][];
   private _DaysRunning: number;
   private _ApplicationExtension:ApplicationExtension;
   private _PerunId:number;
@@ -64,18 +64,13 @@ export class Application ***REMOVED***
   ***REMOVED***
 
 
-    get ComputeCenterDetails()***REMOVED***
-    return this._ComputeCenterDetails;
-  ***REMOVED***
-  set ComputecenterDetails(value:[string,string][])***REMOVED***
-    this._ComputeCenterDetails=value;
-  ***REMOVED***
 
-  get ComputeCenter(): [string,number] ***REMOVED***
+
+  get ComputeCenter(): ComputecenterComponent ***REMOVED***
     return this._ComputeCenter
   ***REMOVED***
 
-  set ComputeCenter(value: [string,number]) ***REMOVED***
+  set ComputeCenter(value: ComputecenterComponent) ***REMOVED***
     this._ComputeCenter = value;
   ***REMOVED***
 
