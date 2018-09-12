@@ -45,6 +45,14 @@ export class UserService ***REMOVED***
             ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
     ***REMOVED***
+
+    isMember(userid:string)***REMOVED***
+            return this.http.get(this.settings.getApiBaseURL() + 'user/' + userid + '/membe/',
+            ***REMOVED***
+                withCredentials: true,
+            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+
+    ***REMOVED***
     getuserAffiliations(user_id: number) ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'user/' + user_id.toString() + '/affiliations/',
             ***REMOVED***

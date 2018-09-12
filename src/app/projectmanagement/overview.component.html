@@ -445,7 +445,7 @@
 
                     <td>***REMOVED******REMOVED***application.Name***REMOVED******REMOVED***</td>
                     <td>***REMOVED******REMOVED***application.DateCreated***REMOVED******REMOVED***</td>
-                    <td>
+                    <td *ngIf="application.UserIsVoMember">
                         <button
                                 (click)="approveMemberApplication(selectedProject?.Id,application.Id,application.Name); "
                                 class="btn btn-success"><i class="fa fa-check"></i> Approve
@@ -455,6 +455,7 @@
                                 class="btn btn-danger"><i class="fa fa-times"></i> Reject
                         </button>
                     </td>
+                    <td *ngIf="!application.UserIsVoMember"> Membership for the vo must be approved beforehand</td>
                     </tbody>
                 </table>
             </div>
