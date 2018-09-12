@@ -1,4 +1,5 @@
 import {ProjectMemberApplication} from "./project_member_application";
+import {ComputecenterComponent} from "./computecenter.component";
 
 export class Project {
   get UserIsAdmin(): boolean {
@@ -19,14 +20,15 @@ export class Project {
   private _Lifetime: number;
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
-  private _ComputeCenter:[string,number];
-  private _ComputeCenterDetails:[string,string][];
+  private _ComputeCenter:ComputecenterComponent;
   private _PerunId:number;
   private _ProjectMemberApplications:ProjectMemberApplication[];
   private _RealName:string;
+    private _OpenStackProject: boolean;
 
 
-  constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: [string,number]) {
+
+  constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: ComputecenterComponent) {
     this._Id = Id;
     this._Name = Name;
     this._Description = Description;
@@ -63,6 +65,13 @@ export class Project {
    set LifetimeDays(value:number){
     this._LifetimeDays=value;
   }
+    get OpenStackProject(): boolean {
+    return this._OpenStackProject
+  }
+
+  set OpenStackProject(value: boolean) {
+    this._OpenStackProject = value;
+  }
 
   get Lifetime():number{
     return this._Lifetime;
@@ -70,17 +79,12 @@ export class Project {
   set Lifetime(value:number){
     this._Lifetime=value;
   }
-  get ComputeCenterDetails(){
-    return this._ComputeCenterDetails;
-  }
-  set ComputecenterDetails(value:[string,string][]){
-    this._ComputeCenterDetails=value;
-  }
-  get ComputeCenter(): [string,number] {
+
+  get ComputeCenter(): ComputecenterComponent {
     return this._ComputeCenter
   }
 
-  set ComputeCenter(value: [string,number]) {
+  set ComputeCenter(value: ComputecenterComponent) {
     this._ComputeCenter = value;
   }
 

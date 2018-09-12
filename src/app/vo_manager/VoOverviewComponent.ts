@@ -4,6 +4,7 @@ import {Project} from "../projectmanagement/project.model";
 import {ProjectMember} from "../projectmanagement/project_member.model";
 import {GroupService} from "../api-connector/group.service";
 import * as moment from 'moment';
+import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
 
 @Component({
     selector: 'voOverview',
@@ -152,6 +153,8 @@ export class VoOverviewComponent {
                 if (!shortname) {
                     shortname = group['name']
                 }
+                let compute_center = new ComputecenterComponent(facility['FacilityId'], facility['Facility'], facility['Login'], facility['Support']);
+
 
                 let newProject = new Project(
                     Number(groupid),
@@ -161,8 +164,7 @@ export class VoOverviewComponent {
                     dateDayDifference,
                     is_pi,
                     true,
-                    [facility['Facility'], facility['FacilityId']]);
-                newProject.ComputecenterDetails = details_array;
+                    compute_center);
                 newProject.Lifetime = lifetime;
                 newProject.LifetimeDays = lifetimeDays;
                 if (expirationDate) {

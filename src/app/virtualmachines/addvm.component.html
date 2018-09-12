@@ -19,6 +19,35 @@
 
                     <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
                         <div class="form-group row"
+                             [ngClass]="{'has-danger':f.controls.selectedProject?.invalid && (f.controls.selectedProject?.dirty || f.controls.selectedProject.touched),
+                             'has-success':f.controls.selectedProject?.valid && (f.controls.selectedProject?.dirty || f.controls.selectedProject?.touched)}"
+                        >
+                            <label class="col-md-3 form-control-label"><strong>Project*</strong></label>
+
+                            <div class="col-md-6">
+
+                                <select required class="form-control" name="selectedProject"
+                                        [(ngModel)]="selectedProject"
+                                        (ngModelChange)="getSelectedProjectDiskspace();getSelectedProjectVms();getSelectedProjectVolumes();getImages(selectedProject[1]);getFlavors(selectedProject[1]);">
+                                    <option value="undefined" disabled selected hidden> Please Select</option>
+                                    <option *ngFor="let project of projects" [ngValue]="project"> {{project[0]}}
+                                    </option>
+
+                                </select>
+
+
+                            </div>
+
+                        </div>
+                          <div class="form-group row"
+                             *ngIf="(selectedProjectVmsMax || selectedProjectVmsMax == 0) && selectedProject && selectedProject[1] != FREEMIUM_ID">
+                            <label class="col-md-3 form-control-label"><strong>Vms in use</strong></label>
+                            <div class="col-md-6">
+                                <strong> current: {{selectedProjectVmsUsed}} | max: {{selectedProjectVmsMax}}
+                                    Vms</strong>
+                            </div>
+                        </div>
+                        <div *ngIf="selectedProject" class="form-group row"
                              [ngClass]="{'has-danger':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'has-success':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
                             <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
@@ -29,10 +58,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row"
+                        <div *ngIf="selectedProject" class="form-group row"
                              [ngClass]="{'has-danger':f.controls.selectedFlavor?.invalid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched),
                              'has-success':f.controls.selectedFlavor?.valid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched)}">
-                            <label class="col-md-3 form-control-label"><strong>Flavor</strong></label>
+                            <label class="col-md-3 form-control-label"><strong>Flavor*</strong></label>
                             <div class="col-md-6">
 
 
@@ -55,7 +84,7 @@
                             <flavor-detail [collapse2]="collapsed2" [flavor]="selectedFlavor"></flavor-detail>
                         </div>
 
-                        <div class="form-group row"
+                        <div *ngIf="selectedProject" class="form-group row"
                              [ngClass]="{'has-danger':f.controls.selectedImage?.invalid && (f.controls.selectedImage?.dirty || f.controls.selectedImage.touched),
                              'has-success':f.controls.selectedImage?.valid && (f.controls.selectedImage?.dirty || f.controls.selectedImage?.touched)}">
                             <label class="col-md-3 form-control-label"><strong>Image*</strong></label>
@@ -80,35 +109,8 @@
                             <image-detail [collapse1]="collapsed1" [image]="selectedImage"></image-detail>
                         </div>
 
-                        <div class="form-group row"
-                             [ngClass]="{'has-danger':f.controls.selectedProject?.invalid && (f.controls.selectedProject?.dirty || f.controls.selectedProject.touched),
-                             'has-success':f.controls.selectedProject?.valid && (f.controls.selectedProject?.dirty || f.controls.selectedProject?.touched)}"
-                        >
-                            <label class="col-md-3 form-control-label"><strong>Project*</strong></label>
-
-                            <div class="col-md-6">
-
-                                <select required class="form-control" name="selectedProject"
-                                        [(ngModel)]="selectedProject"
-                                        (ngModelChange)="getSelectedProjectDiskspace();getSelectedProjectVms();getSelectedProjectVolumes();">
-                                    <option value="undefined" disabled selected hidden> Please Select</option>
-                                    <option *ngFor="let project of projects" [ngValue]="project"> {{project[0]}}
-                                    </option>
-
-                                </select>
 
 
-                            </div>
-
-                        </div>
-                        <div class="form-group row"
-                             *ngIf="(selectedProjectVmsMax || selectedProjectVmsMax == 0) && selectedProject && selectedProject[1] != FREEMIUM_ID">
-                            <label class="col-md-3 form-control-label"><strong>Vms in use</strong></label>
-                            <div class="col-md-6">
-                                <strong> current: {{selectedProjectVmsUsed}} | max: {{selectedProjectVmsMax}}
-                                    Vms</strong>
-                            </div>
-                        </div>
 
                         <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID" class="form-group row">
 
@@ -168,7 +170,8 @@
 
                             <div class="col-md-9">
                                 <div class="col-md-6">
-                                    <strong>current: {{selectedProjectVolumesUsed}} | max: {{selectedProjectVolumesMax}} Volumes
+                                    <strong>current: {{selectedProjectVolumesUsed}} | max: {{selectedProjectVolumesMax}}
+                                        Volumes
                                     </strong>
                                 </div>
                             </div>
@@ -177,7 +180,7 @@
                         </div>
 
 
-                        <button type="button" [disabled]="f.invalid" class="btn btn-primary offset-md-8"
+                        <button type="button" [disabled]="f.invalid || (diskspace > 0 && volumeName == '')" class="btn btn-primary offset-md-8"
                                 data-toggle="modal"
                                 (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1],diskspace);resetData();infoModal.show();">
                             Start VM

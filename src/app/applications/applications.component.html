@@ -200,7 +200,7 @@
 
                                                 <option value="undefined" selected> no center</option>
                                                 <option *ngFor="let computeCenter of computeCenters"
-                                                        value="{{computeCenter[1]}}"> {{computeCenter[0]}}
+                                                        value="{{computeCenter.FacilityId}}"> {{computeCenter.Name}}
                                                 </option>
                                             </select>
                                         </td>
@@ -424,7 +424,7 @@
                                         <td>{{ application.DateSubmitted }}</td>
                                         <td>{{ application.User }}</td>
                                         <td>{{ application.Institute }}</td>
-                                        <td>{{application.ComputeCenter[0]}}</td>
+                                        <td>{{application?.ComputeCenter?.Name}}</td>
                                         <td>{{ getStatusById(application.Status) }}</td>
                                         <td>
                                             <button (click)="switchCollapseStatus('application_history-' + application.Id)"
@@ -506,18 +506,23 @@
                                                             <td>{{application.DaysRunning}}</td>
 
                                                         </tr>
-                                                        <tr *ngIf="application.ComputeCenterDetails">
+                                                        <tr *ngIf="application.ComputeCenter">
 
                                                             <td>Facility Details</td>
                                                             <td>
-                                                                <ul>
-                                                                    <li>Name: {{application.ComputeCenter[0]}}</li>
-                                                                    <li *ngFor="let details of application.ComputeCenterDetails">
-                                                                        {{details[0]}}: <a target="_blank"
-                                                                                           *ngIf="details[0] == 'Login'"
-                                                                                           href="{{details[1]}}">{{details[1]}}</a>
-                                                                        <span *ngIf="details[0] != 'Login'">{{details[1]}}</span>
+                                                                <ul *ngIf="application.ComputeCenter.Name">
+                                                                    <li *ngIf="application.OpenStackProject"><a
+                                                                            target="_blank"
+                                                                            href="application.ComputeCenter.Login">Login:
+                                                                        {{application.ComputeCenter.Login}}</a></li>
+                                                                    <li>Support: {{application.ComputeCenter.Support}}
                                                                     </li>
+
+                                                                    <!--button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
+                                                                            class="btn btn-primary">Set your OpenStack API password
+                                                                    </button-->
+
+
                                                                 </ul>
                                                             </td>
 
