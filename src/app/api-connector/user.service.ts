@@ -45,6 +45,14 @@ export class UserService {
             }).pipe(catchError((error: any) => throwError(error)));
 
     }
+
+    isMember(userid:string){
+            return this.http.get(this.settings.getApiBaseURL() + 'user/' + userid + '/membe/',
+            {
+                withCredentials: true,
+            }).pipe(catchError((error: any) => throwError(error)));
+
+    }
     getuserAffiliations(user_id: number) {
         return this.http.get(this.settings.getApiBaseURL() + 'user/' + user_id.toString() + '/affiliations/',
             {

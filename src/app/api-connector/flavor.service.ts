@@ -3,7 +3,6 @@ import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {ApiSettings} from './api-settings.service';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 
