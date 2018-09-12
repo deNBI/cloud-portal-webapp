@@ -225,9 +225,10 @@ export class OverviewComponent {
                 let membername = application['user']['firstName'] + ' ' + application['user']['lastName'];
                 let userid = application['user']['id'];
                 this.userservice.isMember(userid).subscribe(isMember => {
-                        isMember = isMember['isMember'];
+
+                        let isMemberBool = isMember['isMember'];
                         let newMemberApplication = new ProjectMemberApplication(
-                            application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(), userid, isMember
+                            application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(), userid, isMemberBool
                         )
                         newProjectApplications.push(newMemberApplication)
 
@@ -300,9 +301,7 @@ export class OverviewComponent {
     }
 
 
-    public
-
-    showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) {
+    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) {
         this.getMembesOfTheProject(projectid, projectname);
         if (facility[0] === 'None') {
             this.UserModalFacility = null;
@@ -313,9 +312,7 @@ export class OverviewComponent {
     }
 
 
-    public
-
-    resetPasswordModal() {
+    public resetPasswordModal() {
         this.passwordModalTitle = "Changing Password";
         this.passwordModalType = 'info';
         this.passwordModalPassword = '';
@@ -324,51 +321,37 @@ export class OverviewComponent {
 
     }
 
-    public
-
-    resetNotificaitonModal() {
+    public resetNotificaitonModal() {
         this.notificationModalTitle = "Notification";
         this.notificationModalMessage = "Please wait...";
         this.notificationModalIsClosable = false;
         this.notificationModalType = "info";
     }
 
-    public
-
-    updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
+    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
         this.notificationModalTitle = title;
         this.notificationModalMessage = message;
         this.notificationModalIsClosable = closable;
         this.notificationModalType = type;
     }
 
-    public
-
-    makeNotificationModalClosable(closable: boolean) {
+    public makeNotificationModalClosable(closable: boolean) {
         this.notificationModalIsClosable = closable;
     }
 
-    public
-
-    changeNotificationModalTitle(title: string) {
+    public changeNotificationModalTitle(title: string) {
         this.notificationModalTitle = title;
     }
 
-    public
-
-    changeNotificationModalMessage(message: string) {
+    public changeNotificationModalMessage(message: string) {
         this.notificationModalMessage = message;
     }
 
-    public
-
-    changeNotificationModalType(type: string) {
+    public changeNotificationModalType(type: string) {
         this.notificationModalType = type;
     }
 
-    public
-
-    showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility: [string, number]) {
+    public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility: [string, number]) {
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
         this.addUserModalRealName = realname;
@@ -382,9 +365,7 @@ export class OverviewComponent {
     }
 
 
-    public
-
-    addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id ?: number) {
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id ?: number) {
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => {
                 if (result.status == 200) {
@@ -410,9 +391,7 @@ export class OverviewComponent {
     }
 
 
-    public
-
-    addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id ?: number) {
+    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id ?: number) {
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(result => {
             this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
                 result => {
@@ -453,9 +432,7 @@ export class OverviewComponent {
     }
 
 
-    public
-
-    promoteAdmin(groupid: number, userid: number, username: string, facility_id ?: number) {
+    public promoteAdmin(groupid: number, userid: number, username: string, facility_id ?: number) {
         this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
             .then(result => {
 
@@ -471,9 +448,7 @@ export class OverviewComponent {
     }
 
 
-    public
-
-    removeAdmin(groupid: number, userid: number, name: string, facility_id ?: number) {
+    public removeAdmin(groupid: number, userid: number, name: string, facility_id ?: number) {
         this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
             .then(result => {
 
@@ -488,9 +463,7 @@ export class OverviewComponent {
         });
     }
 
-    public
-
-    removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id ?: number) {
+    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id ?: number) {
         this.groupservice.removeMember(groupid, memberid, userid, facility_id).subscribe(result => {
 
                 if (result.status == 200) {
@@ -505,16 +478,12 @@ export class OverviewComponent {
             });
     }
 
-    public
-
-    resetFacilityDetailsModal() {
+    public resetFacilityDetailsModal() {
         this.UserModalFacility = null;
         this.UserModalFacilityDetails = null;
     }
 
-    public
-
-    comingSoon() {
+    public comingSoon() {
         alert("This function will be implemented soon.")
     }
 }
