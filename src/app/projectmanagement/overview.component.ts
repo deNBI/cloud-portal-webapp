@@ -225,9 +225,10 @@ export class OverviewComponent ***REMOVED***
                 let membername = application['user']['firstName'] + ' ' + application['user']['lastName'];
                 let userid = application['user']['id'];
                 this.userservice.isMember(userid).subscribe(isMember => ***REMOVED***
-                        isMember = isMember['isMember'];
+
+                        let isMemberBool = isMember['isMember'];
                         let newMemberApplication = new ProjectMemberApplication(
-                            application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(), userid, isMember
+                            application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(), userid, isMemberBool
                         )
                         newProjectApplications.push(newMemberApplication)
 
@@ -300,9 +301,7 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public
-
-    showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) ***REMOVED***
+    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) ***REMOVED***
         this.getMembesOfTheProject(projectid, projectname);
         if (facility[0] === 'None') ***REMOVED***
             this.UserModalFacility = null;
@@ -313,9 +312,7 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public
-
-    resetPasswordModal() ***REMOVED***
+    public resetPasswordModal() ***REMOVED***
         this.passwordModalTitle = "Changing Password";
         this.passwordModalType = 'info';
         this.passwordModalPassword = '';
@@ -324,51 +321,37 @@ export class OverviewComponent ***REMOVED***
 
     ***REMOVED***
 
-    public
-
-    resetNotificaitonModal() ***REMOVED***
+    public resetNotificaitonModal() ***REMOVED***
         this.notificationModalTitle = "Notification";
         this.notificationModalMessage = "Please wait...";
         this.notificationModalIsClosable = false;
         this.notificationModalType = "info";
     ***REMOVED***
 
-    public
-
-    updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
+    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
         this.notificationModalTitle = title;
         this.notificationModalMessage = message;
         this.notificationModalIsClosable = closable;
         this.notificationModalType = type;
     ***REMOVED***
 
-    public
-
-    makeNotificationModalClosable(closable: boolean) ***REMOVED***
+    public makeNotificationModalClosable(closable: boolean) ***REMOVED***
         this.notificationModalIsClosable = closable;
     ***REMOVED***
 
-    public
-
-    changeNotificationModalTitle(title: string) ***REMOVED***
+    public changeNotificationModalTitle(title: string) ***REMOVED***
         this.notificationModalTitle = title;
     ***REMOVED***
 
-    public
-
-    changeNotificationModalMessage(message: string) ***REMOVED***
+    public changeNotificationModalMessage(message: string) ***REMOVED***
         this.notificationModalMessage = message;
     ***REMOVED***
 
-    public
-
-    changeNotificationModalType(type: string) ***REMOVED***
+    public changeNotificationModalType(type: string) ***REMOVED***
         this.notificationModalType = type;
     ***REMOVED***
 
-    public
-
-    showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility: [string, number]) ***REMOVED***
+    public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility: [string, number]) ***REMOVED***
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
         this.addUserModalRealName = realname;
@@ -382,9 +365,7 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public
-
-    addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id ?: number) ***REMOVED***
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id ?: number) ***REMOVED***
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => ***REMOVED***
                 if (result.status == 200) ***REMOVED***
@@ -410,9 +391,7 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public
-
-    addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id ?: number) ***REMOVED***
+    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id ?: number) ***REMOVED***
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(result => ***REMOVED***
             this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
                 result => ***REMOVED***
@@ -453,9 +432,7 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public
-
-    promoteAdmin(groupid: number, userid: number, username: string, facility_id ?: number) ***REMOVED***
+    public promoteAdmin(groupid: number, userid: number, username: string, facility_id ?: number) ***REMOVED***
         this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
@@ -471,9 +448,7 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public
-
-    removeAdmin(groupid: number, userid: number, name: string, facility_id ?: number) ***REMOVED***
+    public removeAdmin(groupid: number, userid: number, name: string, facility_id ?: number) ***REMOVED***
         this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
@@ -488,9 +463,7 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    public
-
-    removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id ?: number) ***REMOVED***
+    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id ?: number) ***REMOVED***
         this.groupservice.removeMember(groupid, memberid, userid, facility_id).subscribe(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
@@ -505,16 +478,12 @@ export class OverviewComponent ***REMOVED***
             ***REMOVED***);
     ***REMOVED***
 
-    public
-
-    resetFacilityDetailsModal() ***REMOVED***
+    public resetFacilityDetailsModal() ***REMOVED***
         this.UserModalFacility = null;
         this.UserModalFacilityDetails = null;
     ***REMOVED***
 
-    public
-
-    comingSoon() ***REMOVED***
+    public comingSoon() ***REMOVED***
         alert("This function will be implemented soon.")
     ***REMOVED***
 ***REMOVED***
