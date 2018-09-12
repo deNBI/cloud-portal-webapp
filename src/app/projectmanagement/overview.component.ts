@@ -219,6 +219,7 @@ export class OverviewComponent ***REMOVED***
 
     loadProjectApplications(project: number) ***REMOVED***
         this.groupservice.getGroupApplications(project).subscribe(applications => ***REMOVED***
+
             let newProjectApplications = [];
             for (let application of applications) ***REMOVED***
                 let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
@@ -249,6 +250,8 @@ export class OverviewComponent ***REMOVED***
         this.application_action_done = false;
         this.groupservice.approveGroupApplication(project, application).subscribe(result => ***REMOVED***
             let application = result;
+            this.selectedProject.ProjectMemberApplications = [];
+
             this.loadProjectApplications(project);
             if (application['state'] == 'APPROVED') ***REMOVED***
                 this.application_action_success = true;
@@ -271,11 +274,14 @@ export class OverviewComponent ***REMOVED***
 
         this.groupservice.rejectGroupApplication(project, application).subscribe(result => ***REMOVED***
             let application = result;
+            this.selectedProject.ProjectMemberApplications = [];
+
             this.loadProjectApplications(project);
 
 
             if (application['state'] == 'REJECTED') ***REMOVED***
                 this.application_action_success = true;
+
             ***REMOVED***
             else ***REMOVED***
                 this.application_action_success = false;
