@@ -21,6 +21,7 @@ export class UserinfoComponent implements OnInit {
     isLoaded = false;
     is_project_member= true;
     freemium_active = false;
+    freemium: boolean;
 
     constructor(private groupService: GroupService, private userservice: UserService, private keyService: keyService) {
         this.userinfo = new Userinfo();
@@ -143,12 +144,7 @@ export class UserinfoComponent implements OnInit {
     }
 
     joinFreemium() {
-        this.groupService.addMemberToFreemium().subscribe(result => {
-            console.log(result)
-                    window.location.reload(true);
-
-        });
-
+        this.groupService.addMemberToFreemium().subscribe();
     }
 
     is_vm_project_member() {
