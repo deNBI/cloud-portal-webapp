@@ -23,6 +23,7 @@ import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 ***REMOVED***)
 export class ApplicationsComponent ***REMOVED***
 
+
     user_applications: Application[] = [];
     is_vo_admin = false;
     all_applications: Application[] = [];
@@ -35,6 +36,7 @@ export class ApplicationsComponent ***REMOVED***
     public deleteId: number;
     isLoaded_userApplication = false;
     isLoaded_AllApplication = false;
+    application_user: ***REMOVED*** [id: string]: ***REMOVED*** [id: string]: string ***REMOVED*** ***REMOVED*** = ***REMOVED******REMOVED***;
 
 
     //notification Modal variables
@@ -76,7 +78,7 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    getUserAffilaitions(user:number)***REMOVED***
+    getUserAffilaitions(user: number) ***REMOVED***
         this.userservice.getuserAffiliations(user).subscribe()
     ***REMOVED***
 
@@ -340,6 +342,23 @@ export class ApplicationsComponent ***REMOVED***
             this.getUserApplications();
             this.getAllApplications();
         ***REMOVED***)
+
+
+    ***REMOVED***
+
+    public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string) ***REMOVED***
+        if (!this.getCollapseStatus(collapse_id)) ***REMOVED***
+            if (!(elixir_id in this.application_user)) ***REMOVED***
+                this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe(result => ***REMOVED***
+
+                    let name = result['firstName'] + ' ' + result['lastName'];
+                    let appuser: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
+                    appuser['name'] = name;
+                    appuser['email'] = result['email'];
+                    this.application_user[elixir_id] = appuser;
+                ***REMOVED***)
+            ***REMOVED***
+        ***REMOVED***
 
 
     ***REMOVED***

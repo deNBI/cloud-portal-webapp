@@ -114,7 +114,7 @@
                                                     <tr>
                                                         <td>Volume Counter</td>
 
-                                                        <td>***REMOVED******REMOVED*** application.VolumeCounter ***REMOVED******REMOVED*** </td>
+                                                        <td>***REMOVED******REMOVED*** application.VolumeCounter ***REMOVED******REMOVED***</td>
                                                         <td *ngIf="application.Status == 'modification requested'">
 
 
@@ -194,7 +194,7 @@
                                         <td>***REMOVED******REMOVED***application.Institute***REMOVED******REMOVED***</td>
 
 
-                                        <td >
+                                        <td>
                                             <select [style.display]="application.OpenStackProject? 'inherit' :'none'"
                                                     class="form-control" #selectedComputeCenter>
 
@@ -204,7 +204,6 @@
                                                 </option>
                                             </select>
                                         </td>
-
 
 
                                         <td>
@@ -238,7 +237,7 @@
                                             </button>
 
 
-                                            <button (click)="switchCollapseStatus('application_review-' + application.Id)"
+                                            <button (click)="switchCollapseStatus('application_review-' + application.Id);  getMemberDetailsByElixirIdIfCollapsed(application.User,'application_review-' + application.Id);"
                                                     type="button" class="btn btn-secondary">
                                                 <i class="fa fa-info-circle"></i>&nbsp;
                                                 <span [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
@@ -255,9 +254,21 @@
                                                  [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
                                                 <div class="table-responsive">
                                                     <table class="table table-striped">
-                                                         <tr>
+                                                        <tr>
                                                             <td>User Affiliations</td>
                                                             <td>***REMOVED******REMOVED*** application.UserAffiliations***REMOVED******REMOVED***</td>
+                                                            <td *ngIf="application.Status == 4">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>User Name</td>
+                                                            <td>***REMOVED******REMOVED***application_user[application.User]?.name***REMOVED******REMOVED***</td>
+                                                            <td *ngIf="application.Status == 4">
+                                                            </td>
+                                                        </tr>
+                                                           <tr>
+                                                            <td>User Email</td>
+                                                            <td>***REMOVED******REMOVED***application_user[application.User]?.email***REMOVED******REMOVED***</td>
                                                             <td *ngIf="application.Status == 4">
                                                             </td>
                                                         </tr>
@@ -562,7 +573,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Application</h4>
-              <button type="button" class="close" (click)="deleteModal.hide()" aria-label="Close">
+                <button type="button" class="close" (click)="deleteModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -592,7 +603,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1>Modify Request: ***REMOVED******REMOVED***selectedApplication?.Name***REMOVED******REMOVED***</h1>
-              <button type="button" class="close" (click)="extensionModal.hide()" aria-label="Close">
+                <button type="button" class="close" (click)="extensionModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -830,13 +841,14 @@
 
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
 
-                   Modify request successfully submitted!
+                    Modify request successfully submitted!
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 3">
-                   Modify request successfully approved!
+                    Modify request successfully approved!
                 </div>
-                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
-                   Modify request successfully declined!      </div>
+                <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+                    Modify request successfully declined!
+                </div>
 
                 <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
                     An error occured.

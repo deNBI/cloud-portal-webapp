@@ -35,6 +35,16 @@ export class UserService ***REMOVED***
             ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
+
+    getMemberDetailsByElixirId(elixir_id:string)***REMOVED***
+         return this.http.get(this.settings.getApiBaseURL() + 'user/member/',
+            ***REMOVED***
+                withCredentials: true,
+                params:***REMOVED***elixir_id:elixir_id***REMOVED***
+
+            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+
+    ***REMOVED***
     getuserAffiliations(user_id: number) ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'user/' + user_id.toString() + '/affiliations/',
             ***REMOVED***
