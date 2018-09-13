@@ -218,6 +218,8 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
     loadProjectApplications(project: number) ***REMOVED***
+        this.loaded = false;
+
         this.groupservice.getGroupApplications(project).subscribe(applications => ***REMOVED***
 
             let newProjectApplications = [];
@@ -234,6 +236,8 @@ export class OverviewComponent ***REMOVED***
                         newProjectApplications.push(newMemberApplication)
 
                         this.selectedProject.ProjectMemberApplications = newProjectApplications;
+                        this.loaded = true;
+
                     ***REMOVED***
                 )
             ***REMOVED***
@@ -252,7 +256,6 @@ export class OverviewComponent ***REMOVED***
             let application = result;
             this.selectedProject.ProjectMemberApplications = [];
 
-            this.loadProjectApplications(project);
             if (application['state'] == 'APPROVED') ***REMOVED***
                 this.application_action_success = true;
             ***REMOVED***
@@ -261,8 +264,8 @@ export class OverviewComponent ***REMOVED***
             ***REMOVED***
             this.application_action = 'approved';
             this.application_member_name = membername;
-            this.loaded = true;
             this.application_action_done = true
+            this.loadProjectApplications(project);
 
 
         ***REMOVED***);
@@ -276,8 +279,6 @@ export class OverviewComponent ***REMOVED***
             let application = result;
             this.selectedProject.ProjectMemberApplications = [];
 
-            this.loadProjectApplications(project);
-
 
             if (application['state'] == 'REJECTED') ***REMOVED***
                 this.application_action_success = true;
@@ -288,8 +289,8 @@ export class OverviewComponent ***REMOVED***
             ***REMOVED***
             this.application_action = 'rejected';
             this.application_member_name = membername;
-            this.loaded = true;
             this.application_action_done = true;
+            this.loadProjectApplications(project);
 
 
         ***REMOVED***);
