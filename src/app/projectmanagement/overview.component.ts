@@ -218,6 +218,8 @@ export class OverviewComponent {
     }
 
     loadProjectApplications(project: number) {
+        this.loaded = false;
+
         this.groupservice.getGroupApplications(project).subscribe(applications => {
 
             let newProjectApplications = [];
@@ -234,6 +236,8 @@ export class OverviewComponent {
                         newProjectApplications.push(newMemberApplication)
 
                         this.selectedProject.ProjectMemberApplications = newProjectApplications;
+                        this.loaded = true;
+
                     }
                 )
             }
@@ -252,7 +256,6 @@ export class OverviewComponent {
             let application = result;
             this.selectedProject.ProjectMemberApplications = [];
 
-            this.loadProjectApplications(project);
             if (application['state'] == 'APPROVED') {
                 this.application_action_success = true;
             }
@@ -261,8 +264,8 @@ export class OverviewComponent {
             }
             this.application_action = 'approved';
             this.application_member_name = membername;
-            this.loaded = true;
             this.application_action_done = true
+            this.loadProjectApplications(project);
 
 
         });
@@ -276,8 +279,6 @@ export class OverviewComponent {
             let application = result;
             this.selectedProject.ProjectMemberApplications = [];
 
-            this.loadProjectApplications(project);
-
 
             if (application['state'] == 'REJECTED') {
                 this.application_action_success = true;
@@ -288,8 +289,8 @@ export class OverviewComponent {
             }
             this.application_action = 'rejected';
             this.application_member_name = membername;
-            this.loaded = true;
             this.application_action_done = true;
+            this.loadProjectApplications(project);
 
 
         });
