@@ -179,8 +179,8 @@ export class OverviewComponent {
         this.UserModalFacility = null;
     }
 
-    filterMembers(firstName: string, lastName: string, groupid: number) {
-        this.userservice.getFilteredMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => {
+    filterMembers(searchString:string, groupid: number) {
+        this.userservice.getFilteredMembersOfdeNBIVo(searchString, groupid.toString()).subscribe(result => {
             this.filteredMembers = result;
         })
     }
