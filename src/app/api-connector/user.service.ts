@@ -21,7 +21,7 @@ export class UserService {
         let params = new HttpParams().set('facility', facility)
 
         ;
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'user/setUserPassword/', params, {
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'users/setUserPassword/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
