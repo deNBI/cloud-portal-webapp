@@ -31,7 +31,7 @@ export class ImageService {
 
 
     getImageTags(): Observable<any> {
-        return this.http.get(this.settings.getConnectorBaseUrl() + 'images/getImageTags/', {
+        return this.http.get(this.settings.getConnectorBaseUrl() + 'imageTags/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -44,7 +44,7 @@ export class ImageService {
         let params = new HttpParams().set('imageTag', imageTag).set('description', description);
 
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/addImageTag/', params, {
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'imageTags/', params, {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error)));
@@ -54,9 +54,8 @@ export class ImageService {
 
     deleteImageTag(imageTag: string): Observable<any> {
 
-        let params = new HttpParams().set('imageTag', imageTag);
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'images/deleteImageTag/', params, {
+        return this.http.delete(this.settings.getConnectorBaseUrl() + 'imageTags/' + imageTag +'/',  {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error)));
