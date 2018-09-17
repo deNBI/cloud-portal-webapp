@@ -72,7 +72,7 @@ export class VirtualmachineService {
 
 
     checkVmStatus(openstack_id: string): Observable<any> {
-        return this.http.post(this.baseVmUrl + openstack_id + '/status', {
+        return this.http.post(this.baseVmUrl + openstack_id + '/status/', null,{
             withCredentials: true,
 
             headers: header
@@ -133,10 +133,10 @@ export class VirtualmachineService {
 
     attachVolumetoServer(volume_id: string, instance_id: string): Observable<any> {
 
-        let params = new HttpParams().set('instance_id', instance_id);
+        let params = new HttpParams().set('instance_id', instance_id).set('os_action','attach');
 
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/'+ volume_id +'/attach/', params, {
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/'+ volume_id + '/action/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -146,7 +146,7 @@ export class VirtualmachineService {
     renameVolume(volume_id: string, new_volume_name: string): Observable<any> {
         let params = new HttpParams().set('new_volume_name', new_volume_name);
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/' + volume_id + '/rename/', params, {
+        return this.http.patch(this.settings.getConnectorBaseUrl() + 'volumes/' + volume_id + '/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -165,9 +165,9 @@ export class VirtualmachineService {
 
     deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<any> {
 
-        let params = new HttpParams().set('instance_id', instance_id)
+        let params = new HttpParams().set('instance_id', instance_id).set('os_action','detach');
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/' + volume_id + '/detach/', params, {
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/' + volume_id + '/action/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
