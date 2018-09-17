@@ -31,7 +31,7 @@ export class VirtualmachineService {
             .set('diskspace', diskspace)
             .set('volumename', volumename);
 
-        return this.http.post(this.baseVmUrl + 'createVm/', params, {
+        return this.http.post(this.baseVmUrl, params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -39,27 +39,24 @@ export class VirtualmachineService {
 
     getAllVM(): Observable<VirtualMachine[]> {
 
-        return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'getallVms/', {
+        return this.http.get<VirtualMachine[]>(this.settings.getConnectorBaseUrl() + 'voManager/vms/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
-    getVm(elixir_id: string): Observable<VirtualMachine[]> {
-        let params = new HttpParams().set('elixir_id', elixir_id);
+    getVmsFromLoggedInUser(): Observable<VirtualMachine[]> {
 
-        return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'getVmByUser/', {
+        return this.http.get<VirtualMachine[]>(this.baseVmUrl, {
             withCredentials: true,
-            params: params
+
         }).pipe(catchError((error: any) => throwError(error)));
     }
 
     getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> {
-        let params = new HttpParams().set('groupid', groupid);
 
-        return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'getActiveVmsByProject/', {
+        return this.http.get<VirtualMachine[]>(this.settings.getApiBaseURL() + 'projects/' + groupid + '/vms/', {
             withCredentials: true,
-            params: params
         }).pipe(catchError((error: any) => throwError(error)));
     }
 
@@ -75,8 +72,7 @@ export class VirtualmachineService {
 
 
     checkVmStatus(openstack_id: string): Observable<any> {
-        let params = new HttpParams().set('openstack_id', openstack_id);
-        return this.http.post(this.baseVmUrl + 'checkStatusVm/', params, {
+        return this.http.post(this.baseVmUrl +  openstack_id + '/status', params, {
             withCredentials: true,
 
             headers: header

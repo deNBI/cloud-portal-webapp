@@ -155,14 +155,14 @@ export class VmOverviewComponent implements OnInit {
     }
 
     resetSnapshotResult() {
-        this, this.snapshotDone = 'Waiting';
+         this.snapshotDone = 'Waiting';
     }
 
     checkStatus(openstackid: string) {
         this.virtualmachineservice.checkVmStatus(openstackid).subscribe(res => {
 
 
-                this.virtualmachineservice.getVm(this.elixir_id).subscribe(vms => {
+                this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
                         this.vms_content = vms;
                         for (let vm of this.vms_content) {
                             if (vm.created_at != '') {
@@ -328,7 +328,7 @@ export class VmOverviewComponent implements OnInit {
     }
 
     getVms(elixir_id: string): void {
-        this.virtualmachineservice.getVm(elixir_id).subscribe(vms => {
+        this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
                 this.vms_content = vms;
                 for (let vm of this.vms_content) {
                     if (vm.created_at != '') {
