@@ -49,10 +49,7 @@ export class ClientOverviewComponent implements OnInit {
     }
 
 
-    getClientsUnchecked(): void {
-        this.clientservice.getClientsUnchecked().subscribe(clients => this.clients = clients);
 
-    }
 
     getClientsChecked(): void {
         this.clientservice.getClientsChecked().subscribe(clients => {
@@ -103,8 +100,8 @@ export class ClientOverviewComponent implements OnInit {
         }
     }
 
-    deleteClient(host: string, port: string, location: string): void {
-        this.clientservice.deleteClient(host, port, location).subscribe(data => {
+    deleteClient(client_id:number): void {
+        this.clientservice.deleteClient(client_id).subscribe(data => {
 
             this.getClientsChecked();
         });

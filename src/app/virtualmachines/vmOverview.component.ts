@@ -316,7 +316,7 @@ export class VmOverviewComponent implements OnInit {
 
             }
 
-            if (result['stopped'] === true) {
+            if (result['stopped']) {
                 this.status_changed = 1;
             }
             else {
@@ -367,7 +367,7 @@ export class VmOverviewComponent implements OnInit {
 
             }
 
-            if (result['resumed'] === 'true') {
+            if (result['resumed']) {
                 this.status_changed = 1;
             }
             else {
