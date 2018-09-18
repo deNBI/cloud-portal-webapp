@@ -36,8 +36,9 @@ export class UserService {
     }
 
 
-    getMemberDetailsByElixirId(elixir_id:string){
-         return this.http.get(this.settings.getApiBaseURL() + 'users/' + elixir_id + '/member/',
+    getMemberDetailsByElixirId(elixir_id: string) {
+        elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
+        return this.http.get(this.settings.getApiBaseURL() + 'users/' + elixir_id + '/member/',
             {
                 withCredentials: true,
 
@@ -45,13 +46,14 @@ export class UserService {
 
     }
 
-    isMember(userid:string){
-            return this.http.get(this.settings.getApiBaseURL() + 's' + userid + '/member/status/',
+    isMember(userid: string) {
+        return this.http.get(this.settings.getApiBaseURL() + 's' + userid + '/member/status/',
             {
                 withCredentials: true,
             }).pipe(catchError((error: any) => throwError(error)));
 
     }
+
     getuserAffiliations(user_id: number) {
         return this.http.get(this.settings.getApiBaseURL() + 'users/' + user_id.toString() + '/affiliations/',
             {

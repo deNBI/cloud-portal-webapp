@@ -25,14 +25,14 @@ export class ApplicationsService {
 
 
     getUserApplications(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/project_applications/', {
             headers: header_csrf,
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
     }
 
     getAllApplications(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'all_applications/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', {
             withCredentials: true,
             headers: header_csrf,
 
@@ -44,7 +44,7 @@ export class ApplicationsService {
         let parameter = data;
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'add_application/', parameter,
+        return this.http.post(this.settings.getApiBaseURL() + 'project_applications/', parameter,
             {
                 headers: header,
                 withCredentials: true
@@ -107,7 +107,7 @@ export class ApplicationsService {
     deleteApplication(application_id: number): Observable<any> {
 
 
-        return this.http.delete(this.settings.getApiBaseURL() +'applications/' + application_id +'/',
+        return this.http.delete(this.settings.getApiBaseURL() +'project_applications/' + application_id +'/',
             {
                 headers: header_csrf,
                 withCredentials: true,

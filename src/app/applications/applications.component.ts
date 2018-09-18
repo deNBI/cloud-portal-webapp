@@ -129,6 +129,7 @@ export class ApplicationsComponent {
             }
             for (let key in res) {
                 let aj = res[key];
+                console.log(aj)
                 let a = new Application();
                 a.Id = aj["project_application_id"];
                 a.Name = aj["project_application_name"];
