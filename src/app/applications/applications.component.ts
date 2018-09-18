@@ -17,10 +17,11 @@ import {NgForm} from '@angular/forms';
 import {forkJoin} from 'rxjs';
 import {VoService} from "../api-connector/vo.service";
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
+import {FacilityService} from "../api-connector/facility.service";
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
+    providers: [FacilityService,VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
 
@@ -60,7 +61,8 @@ export class ApplicationsComponent {
                 private perunsettings: PerunSettings,
                 private userservice: UserService,
                 private groupservice: GroupService,
-                private voService: VoService) {
+                private voService: VoService,
+                private facilityService:FacilityService) {
 
 
         this.getUserApplications();
@@ -73,7 +75,7 @@ export class ApplicationsComponent {
     }
 
     getComputeCenters() {
-        this.groupservice.getComputeCenters().subscribe(result => {
+        this.facilityService.getComputeCenters().subscribe(result => {
             for (let cc of result) {
                 let compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
