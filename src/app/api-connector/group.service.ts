@@ -256,7 +256,7 @@ export class GroupService {
     approveGroupApplication(groupid: number, application: number): Observable<any> {
 
 
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/applications/' + application + '/approve/', {
+        return this.http.post(this.settings.getApiBaseURL() + 'projects/' + groupid + '/applications/' + application + '/status/', null,{
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));
@@ -266,7 +266,7 @@ export class GroupService {
     rejectGroupApplication(groupid: number, application: number): Observable<any> {
 
 
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/applications/' + application + '/reject/', {
+        return this.http.delete(this.settings.getApiBaseURL() + 'projects/' + groupid + '/applications/' + application + '/status/',{
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));
