@@ -67,7 +67,7 @@ export class VoService {
         let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'voManagers/current/voMail', params, {
+        return this.http.post(this.settings.getApiBaseURL() + 'voManagers/current/voMail/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
