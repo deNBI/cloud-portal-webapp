@@ -107,7 +107,7 @@ export class ApplicationsService {
     deleteApplication(application_id: number): Observable<any> {
 
 
-        return this.http.delete(this.settings.getApiBaseURL() +' application/' + application_id +'/',
+        return this.http.delete(this.settings.getApiBaseURL() +'applications/' + application_id +'/',
             {
                 headers: header_csrf,
                 withCredentials: true,
