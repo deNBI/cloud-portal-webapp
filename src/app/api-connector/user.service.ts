@@ -108,7 +108,7 @@ export class UserService {
     setNewsletterSubscription(subscribed: boolean): Observable<any> {
         let params = new HttpParams().set('subscribed', subscribed.toString());
 
-        return this.http.post(this.settings.getApiBaseURL() + 'newsletter/setNewsletterSubscription/', params, {
+        return this.http.post(this.settings.getApiBaseURL() + 'newsletter/subscription/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -117,7 +117,7 @@ export class UserService {
 
     getNewsletterSubscription(): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'newsletter/getNewsletterSubscription/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'newsletter/subscription/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
