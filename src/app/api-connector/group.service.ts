@@ -342,14 +342,14 @@ export class GroupService {
 
 
     getGroupMaxDiskspace(groupid: string): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/approvedDiskspace/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/attributes/approvedDiskspace/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error.error)));
 
     }
 
     getGroupUsedDiskspace(groupid: string): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/usedDiskspace/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/attributes/usedDiskspace/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error.error)));
 
@@ -358,20 +358,20 @@ export class GroupService {
 
 
     getVolumesUsed(groupid: string): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/usedVolumes/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/attributes/usedVolumes/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error.error)));
     }
 
     getVolumeCounter(groupid: string): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/volumesCounter/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/attributes/volumesCounter/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error.error)));
     }
 
     getGroupApprovedVms(groupid: string): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/approvedVms/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'projects/'  + groupid +'/attributes/approvedVms/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error.error)));
 
@@ -380,7 +380,7 @@ export class GroupService {
 
     getGroupUsedVms(groupid: string): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/usedVms/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/attributes/usedVms/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error.error)));
 
