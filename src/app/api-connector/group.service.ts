@@ -182,7 +182,7 @@ export class GroupService {
 
         let params = new HttpParams().set('value', value.toString());
 
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/'+ group_id + '/attributes/volumeCounter/', params, {
+        return this.http.post(this.settings.getApiBaseURL() + 'projects/'+ group_id + '/attributes/volumesCounter/', params, {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));
