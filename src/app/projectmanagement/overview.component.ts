@@ -223,6 +223,10 @@ export class OverviewComponent {
         this.groupservice.getGroupApplications(project).subscribe(applications => {
 
             let newProjectApplications = [];
+            if (applications.length == 0) {
+                this.loaded = true;
+
+            }
             for (let application of applications) {
                 let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let membername = application['user']['firstName'] + ' ' + application['user']['lastName'];
