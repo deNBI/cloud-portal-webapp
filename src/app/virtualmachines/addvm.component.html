@@ -39,7 +39,7 @@
                             </div>
 
                         </div>
-                          <div class="form-group row"
+                        <div class="form-group row"
                              *ngIf="(selectedProjectVmsMax || selectedProjectVmsMax == 0) && selectedProject && selectedProject[1] != FREEMIUM_ID">
                             <label class="col-md-3 form-control-label"><strong>Vms in use</strong></label>
                             <div class="col-md-6">
@@ -110,8 +110,6 @@
                         </div>
 
 
-
-
                         <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID" class="form-group row">
 
                             <label class="col-md-3 form-control-label"><strong>Optional parameters</strong></label>
@@ -180,7 +178,8 @@
                         </div>
 
 
-                        <button type="button" [disabled]="f.invalid || (diskspace > 0 && volumeName == '')" class="btn btn-primary offset-md-8"
+                        <button type="button" [disabled]="f.invalid || (disksfpace > 0 && volumeName == '')"
+                                class="btn btn-primary offset-md-8"
                                 data-toggle="modal"
                                 (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1],diskspace);resetData();infoModal.show();">
                             Start VM
@@ -218,8 +217,33 @@
                 <p>We are setting up a machine for you. This can take up to 5 minutes.</p>
                 <div class="text-center">
                     <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+
                 </div>
-                <p>If you close this modal you can find instructions how to connect to the virtual machine on the instance overview site</p>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped {{creating_vm_prograss_bar}} bg-info"
+                         role="progressbar" style="width: 33%;"
+                         aria-valuemin="0"
+                         aria-valuemax="100">{{creating_vm_status}}
+                    </div>
+
+                    <div class="progress-bar progress-bar-striped {{checking_vm_status_progress_bar}}"
+                         [style.width.%]="checking_vm_status_width"
+                         role="progressbar"
+                         aria-valuemin="0"
+                         aria-valuemax="100">{{checking_vm_status}}
+                    </div>
+
+                    <div
+                            class="progress-bar progress-bar-striped bg-success progress-bar-animated "
+                            role="progressbar"
+                            [style.width.%]="checking_vm_ssh_port_width"
+
+                            aria-valuemin="0"
+                            aria-valuemax="100">{{checking_vm_ssh_port}}
+                    </div>
+                </div>
+                <p>If you close this modal you can find instructions how to connect to the virtual machine on the
+                    instance overview site</p>
             </div>
             <div class="modal-body" *ngIf="data['Started']">
                 <pre><code>{{data['Started']}}</code></pre>
