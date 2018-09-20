@@ -139,11 +139,10 @@ export class UserService {
 
     getFilteredMembersOfdeNBIVo(searchString: string,  groupid: string): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'users/getFilteredMembers/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'users/filter/', {
             withCredentials: true,
             params: {
                 searchString:searchString,
-                groupid: groupid
             }
         }).pipe(catchError((error: any) => throwError(error)));
 
