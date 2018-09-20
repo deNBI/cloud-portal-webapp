@@ -179,8 +179,8 @@ export class OverviewComponent ***REMOVED***
         this.UserModalFacility = null;
     ***REMOVED***
 
-    filterMembers(firstName: string, lastName: string, groupid: number) ***REMOVED***
-        this.userservice.getFilteredMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => ***REMOVED***
+    filterMembers(searchString:string, groupid: number) ***REMOVED***
+        this.userservice.getFilteredMembersOfdeNBIVo(searchString, groupid.toString()).subscribe(result => ***REMOVED***
             this.filteredMembers = result;
         ***REMOVED***)
     ***REMOVED***

@@ -25,6 +25,7 @@ import ***REMOVED***SimpleLayoutComponent***REMOVED*** from './layouts/simple-la
 import ***REMOVED***ModalModule***REMOVED*** from "ngx-bootstrap";
 import ***REMOVED***RegistrationInfoComponent***REMOVED*** from "./registration-info.component";
 import ***REMOVED***UserService***REMOVED*** from "./api-connector/user.service";
+import ***REMOVED***ConsentInfoComponent***REMOVED*** from "./consent-info.component";
 
 @NgModule(***REMOVED***
     imports: [
@@ -46,7 +47,8 @@ import ***REMOVED***UserService***REMOVED*** from "./api-connector/user.service"
         BreadcrumbsComponent,
         SIDEBAR_TOGGLE_DIRECTIVES,
         AsideToggleDirective,
-        RegistrationInfoComponent
+        RegistrationInfoComponent,
+        ConsentInfoComponent
     ],
     providers: [***REMOVED***
         provide: LocationStrategy,
