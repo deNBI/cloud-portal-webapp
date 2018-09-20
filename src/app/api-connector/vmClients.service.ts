@@ -19,25 +19,19 @@ export class ClientService {
     constructor(private http: HttpClient, private settings: ApiSettings) {
     }
 
-    getClientsUnchecked(): Observable<Vmclient[]> {
 
-        return this.http.get<Vmclient[]>(this.clientURL + 'getUncheckedClients/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));
-
-    }
 
     isClientAvaiable(): Observable<Vmclient> {
 
 
-        return this.http.get<Vmclient>(this.clientURL + 'isClientAvaiable/', {
+        return this.http.get<Vmclient>(this.clientURL + 'active/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
     }
 
     getClientsChecked(): Observable<Vmclient[]> {
 
-        return this.http.get<Vmclient[]>(this.clientURL + 'getCheckedClients/', {
+        return this.http.get<Vmclient[]>(this.clientURL, {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
     }
@@ -59,20 +53,15 @@ export class ClientService {
         let params = new HttpParams().set('host', host).set('port', port).set('location', location);
 
 
-        return this.http.post(this.clientURL + 'addClient/', params, {
+        return this.http.post(this.clientURL , params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
-    deleteClient(host: string, port: string, location: string): Observable<any> {
-
-        let params = new HttpParams().set('host', host).set('port', port).set('location', location);
-
-
-
-        return this.http.post(this.clientURL + 'deleteClient/', params, {
+    deleteClient(client_id:number): Observable<any> {
+        return this.http.delete(this.clientURL + client_id +'/', {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));

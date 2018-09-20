@@ -21,7 +21,7 @@ export class UserService {
         let params = new HttpParams().set('facility', facility)
 
         ;
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'user/setUserPassword/', params, {
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'users/setUserPassword/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -29,32 +29,33 @@ export class UserService {
 
     getLogins(): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getLogins/',
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/logins/',
             {
                 withCredentials: true,
             }).pipe(catchError((error: any) => throwError(error)));
     }
 
 
-    getMemberDetailsByElixirId(elixir_id:string){
-         return this.http.get(this.settings.getApiBaseURL() + 'user/member/',
+    getMemberDetailsByElixirId(elixir_id: string) {
+        elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
+        return this.http.get(this.settings.getApiBaseURL() + 'users/' + elixir_id + '/member/',
             {
                 withCredentials: true,
-                params:{elixir_id:elixir_id}
 
             }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
-    isMember(userid:string){
-            return this.http.get(this.settings.getApiBaseURL() + 'user/' + userid + '/membe/',
+    isMember(userid: string) {
+        return this.http.get(this.settings.getApiBaseURL() + 'users/' + userid + '/member/status/',
             {
                 withCredentials: true,
             }).pipe(catchError((error: any) => throwError(error)));
 
     }
+
     getuserAffiliations(user_id: number) {
-        return this.http.get(this.settings.getApiBaseURL() + 'user/' + user_id.toString() + '/affiliations/',
+        return this.http.get(this.settings.getApiBaseURL() + 'users/' + user_id.toString() + '/affiliations/',
             {
                 withCredentials: true,
 
@@ -63,7 +64,7 @@ export class UserService {
     }
 
     getLoggedUser(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getLoggedUser/',
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/',
             {
                 withCredentials: true,
 
@@ -72,7 +73,7 @@ export class UserService {
 
     getMemberByUser(): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByUser/`, {
+        return this.http.get(this.settings.getApiBaseURL() + `users/current/member/`, {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
     }
@@ -80,7 +81,7 @@ export class UserService {
 
     getMemberByExtSourceNameAndExtLogin(ext_login: string): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByExtSourceNameAndExtLogin/`, {
+        return this.http.get(this.settings.getApiBaseURL() + `users/current/extLogin/member/`, {
             withCredentials: true,
             params: {
 
@@ -92,14 +93,14 @@ export class UserService {
 
 
     getVosWhereUserIsAdmin(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getVosWhereUserIsAdmin/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/adminVos/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
         ;
     }
 
     getGroupsWhereUserIsAdmin(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getGroupsWhereUserIsAdmin/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/adminGroups/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
         ;
@@ -108,7 +109,7 @@ export class UserService {
     setNewsletterSubscription(subscribed: boolean): Observable<any> {
         let params = new HttpParams().set('subscribed', subscribed.toString());
 
-        return this.http.post(this.settings.getApiBaseURL() + 'newsletter/setNewsletterSubscription/', params, {
+        return this.http.post(this.settings.getApiBaseURL() + 'newsletter/subscription/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -117,7 +118,7 @@ export class UserService {
 
     getNewsletterSubscription(): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'newsletter/getNewsletterSubscription/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'newsletter/subscription/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -129,7 +130,7 @@ export class UserService {
         let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'user/sendHelpMail/', params, {
+        return this.http.post(this.settings.getApiBaseURL() + 'users/current/helpMail/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -138,7 +139,7 @@ export class UserService {
 
     getFilteredMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getFilteredMembers/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'users/getFilteredMembers/', {
             withCredentials: true,
             params: {
                 firstName: firstname,
