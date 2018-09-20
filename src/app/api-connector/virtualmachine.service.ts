@@ -31,7 +31,7 @@ export class VirtualmachineService ***REMOVED***
             .set('diskspace', diskspace)
             .set('volumename', volumename);
 
-        return this.http.post(this.baseVmUrl + 'createVm/', params, ***REMOVED***
+        return this.http.post(this.baseVmUrl, params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -39,27 +39,24 @@ export class VirtualmachineService ***REMOVED***
 
     getAllVM(): Observable<VirtualMachine[]> ***REMOVED***
 
-        return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'getallVms/', ***REMOVED***
+        return this.http.get<VirtualMachine[]>(this.settings.getConnectorBaseUrl() + 'voManager/vms/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
 
-    getVm(elixir_id: string): Observable<VirtualMachine[]> ***REMOVED***
-        let params = new HttpParams().set('elixir_id', elixir_id);
+    getVmsFromLoggedInUser(): Observable<VirtualMachine[]> ***REMOVED***
 
-        return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'getVmByUser/', ***REMOVED***
+        return this.http.get<VirtualMachine[]>(this.baseVmUrl, ***REMOVED***
             withCredentials: true,
-            params: params
+
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
     getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> ***REMOVED***
-        let params = new HttpParams().set('groupid', groupid);
 
-        return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'getActiveVmsByProject/', ***REMOVED***
+        return this.http.get<VirtualMachine[]>(this.settings.getApiBaseURL() + 'projects/' + groupid + '/vms/', ***REMOVED***
             withCredentials: true,
-            params: params
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
@@ -67,7 +64,7 @@ export class VirtualmachineService ***REMOVED***
     checkStatusInactiveVms(elixir_id: string): Observable<VirtualMachine[]> ***REMOVED***
         let params = new HttpParams().set('elixir_id', elixir_id);
 
-        return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'checkStatusInactiveVms/', ***REMOVED***
+        return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'status/', ***REMOVED***
             withCredentials: true,
             params: params
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -75,30 +72,28 @@ export class VirtualmachineService ***REMOVED***
 
 
     checkVmStatus(openstack_id: string): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('openstack_id', openstack_id);
-        return this.http.post(this.baseVmUrl + 'checkStatusVm/', params, ***REMOVED***
+        return this.http.post(this.baseVmUrl + openstack_id + '/status/', null,***REMOVED***
             withCredentials: true,
 
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-        ;
+
     ***REMOVED***
 
     deleteVM(openstack_id: string): Observable<any> ***REMOVED***
 
-        let params = new HttpParams().set('openstack_id', openstack_id);
-        return this.http.post(this.baseVmUrl + 'deleteVm/', params, ***REMOVED***
+        return this.http.delete(this.baseVmUrl + openstack_id +'/', ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-        ;
+
     ***REMOVED***
 
     stopVM(openstack_id: string): Observable<any> ***REMOVED***
+                let params = new HttpParams().set('os_action', 'stop');
 
-        let params = new HttpParams().set('openstack_id', openstack_id);
 
-        return this.http.post(this.baseVmUrl + 'stopVm/', params, ***REMOVED***
+        return this.http.post(this.baseVmUrl + openstack_id + '/action/' , params,***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -106,10 +101,10 @@ export class VirtualmachineService ***REMOVED***
 
     resumeVM(openstack_id: string): Observable<any> ***REMOVED***
 
-        let params = new HttpParams().set('openstack_id', openstack_id);
-        ;
+        let params = new HttpParams().set('os_action', 'resume');
 
-        return this.http.post(this.baseVmUrl + 'resumeVm/', params, ***REMOVED***
+
+        return this.http.post(this.baseVmUrl + openstack_id + '/action/',params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -118,7 +113,7 @@ export class VirtualmachineService ***REMOVED***
 
 
     getVolumesByUser(): Observable<Volume[]> ***REMOVED***
-        return this.http.get<Volume[]>(this.settings.getConnectorBaseUrl() + 'volumes/get_volumes/', ***REMOVED***
+        return this.http.get<Volume[]>(this.settings.getConnectorBaseUrl() + 'volumes/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
@@ -130,7 +125,7 @@ export class VirtualmachineService ***REMOVED***
             .set('volume_diskspace', volume_diskspace)
             .set('vm_openstackid', vm_openstackid);
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/createVolume/', params, ***REMOVED***
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -138,10 +133,10 @@ export class VirtualmachineService ***REMOVED***
 
     attachVolumetoServer(volume_id: string, instance_id: string): Observable<any> ***REMOVED***
 
-        let params = new HttpParams().set('volume_id', volume_id).set('instance_id', instance_id);
+        let params = new HttpParams().set('instance_id', instance_id).set('os_action','attach');
 
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/attachVolume/', params, ***REMOVED***
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/'+ volume_id + '/action/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -151,7 +146,7 @@ export class VirtualmachineService ***REMOVED***
     renameVolume(volume_id: string, new_volume_name: string): Observable<any> ***REMOVED***
         let params = new HttpParams().set('new_volume_name', new_volume_name);
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/' + volume_id + '/rename/', params, ***REMOVED***
+        return this.http.patch(this.settings.getConnectorBaseUrl() + 'volumes/' + volume_id + '/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -161,9 +156,7 @@ export class VirtualmachineService ***REMOVED***
 
     deleteVolume(volume_id: string): Observable<any> ***REMOVED***
 
-        let params = new HttpParams().set('volume_id', volume_id);
-
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolume/', params, ***REMOVED***
+        return this.http.delete(this.settings.getConnectorBaseUrl() + 'volumes/'+ volume_id + '/', ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -172,9 +165,9 @@ export class VirtualmachineService ***REMOVED***
 
     deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<any> ***REMOVED***
 
-        let params = new HttpParams().set('volume_id', volume_id).set('instance_id', instance_id)
+        let params = new HttpParams().set('instance_id', instance_id).set('os_action','detach');
 
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/deleteVolumeAttachment/', params, ***REMOVED***
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'volumes/' + volume_id + '/action/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));

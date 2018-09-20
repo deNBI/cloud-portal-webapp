@@ -16,7 +16,7 @@ export class FlavorService ***REMOVED***
                 let params = new HttpParams().set('project_id', project_id.toString());
 
 
-        return this.http.get<Flavor[]>(this.settings.getConnectorBaseUrl() + 'flavors/getFlavors/', ***REMOVED***
+        return this.http.get<Flavor[]>(this.settings.getConnectorBaseUrl() + 'flavors/', ***REMOVED***
             withCredentials: true,
             params:params
 

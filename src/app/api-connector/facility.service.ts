@@ -15,9 +15,19 @@ export class FacilityService ***REMOVED***
     constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
     ***REMOVED***
 
+
+     getComputeCenters(): Observable<any> ***REMOVED***
+
+
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/', ***REMOVED***
+            withCredentials: true,
+
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+    ***REMOVED***
+
     getManagerFacilities(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilitiesWhereUserIsManager/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'facilityManagers/current/facilities/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
@@ -25,9 +35,8 @@ export class FacilityService ***REMOVED***
 
     getFacilityAllowedGroups(facility): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilityAllowedGroups/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/projects/', ***REMOVED***
             withCredentials: true,
-            params: ***REMOVED***facility_id: facility***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
 
@@ -35,9 +44,8 @@ export class FacilityService ***REMOVED***
 
     getFacilityAllowedGroupsWithDetails(facility): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilityAllowedGroupsWithDetails/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/projects/details/' , ***REMOVED***
             withCredentials: true,
-            params: ***REMOVED***facility_id: facility***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
 
@@ -46,7 +54,7 @@ export class FacilityService ***REMOVED***
     sendMailToFacility(facility, subject, message, reply?): Observable<any> ***REMOVED***
         let params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
 
-        return this.http.post(this.settings.getApiBaseURL() + 'facilityManager/sendMailToAllMembers/', params, ***REMOVED***
+        return this.http.post(this.settings.getApiBaseURL() + 'facilityManagers/current/facilityMail/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));

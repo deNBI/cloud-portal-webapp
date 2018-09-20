@@ -19,7 +19,7 @@ export class VoService ***REMOVED***
 
     isVo(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/isVoManager/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'voManagers/current/status/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
@@ -28,7 +28,7 @@ export class VoService ***REMOVED***
     getNewsletterSubscriptionCounter(): Observable<any> ***REMOVED***
 
 
-        return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getNewsletterSubscriptionCounter/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'newsletter/subscription/counter/', ***REMOVED***
             withCredentials: true,
 
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -37,7 +37,7 @@ export class VoService ***REMOVED***
 
     getAllVoGroups(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getAllGroups/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
@@ -45,7 +45,7 @@ export class VoService ***REMOVED***
 
     getAllGroupsWithDetails(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'vo_manager/getAllGroupsWithDetails/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/details/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
@@ -55,7 +55,7 @@ export class VoService ***REMOVED***
 
         let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendNewsletterToMembers/', params, ***REMOVED***
+        return this.http.post(this.settings.getApiBaseURL() + 'voManagers/current/newsletter/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -67,7 +67,7 @@ export class VoService ***REMOVED***
         let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'vo_manager/sendMailToAllMembers/', params, ***REMOVED***
+        return this.http.post(this.settings.getApiBaseURL() + 'voManagers/current/voMail/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));

@@ -155,14 +155,14 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     resetSnapshotResult() ***REMOVED***
-        this, this.snapshotDone = 'Waiting';
+         this.snapshotDone = 'Waiting';
     ***REMOVED***
 
     checkStatus(openstackid: string) ***REMOVED***
         this.virtualmachineservice.checkVmStatus(openstackid).subscribe(res => ***REMOVED***
 
 
-                this.virtualmachineservice.getVm(this.elixir_id).subscribe(vms => ***REMOVED***
+                this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
                         this.vms_content = vms;
                         for (let vm of this.vms_content) ***REMOVED***
                             if (vm.created_at != '') ***REMOVED***
@@ -316,7 +316,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
             ***REMOVED***
 
-            if (result['stopped'] === true) ***REMOVED***
+            if (result['stopped']) ***REMOVED***
                 this.status_changed = 1;
             ***REMOVED***
             else ***REMOVED***
@@ -328,7 +328,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     getVms(elixir_id: string): void ***REMOVED***
-        this.virtualmachineservice.getVm(elixir_id).subscribe(vms => ***REMOVED***
+        this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
                 this.vms_content = vms;
                 for (let vm of this.vms_content) ***REMOVED***
                     if (vm.created_at != '') ***REMOVED***
@@ -367,7 +367,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
             ***REMOVED***
 
-            if (result['resumed'] === 'true') ***REMOVED***
+            if (result['resumed']) ***REMOVED***
                 this.status_changed = 1;
             ***REMOVED***
             else ***REMOVED***

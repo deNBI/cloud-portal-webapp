@@ -7,12 +7,13 @@ import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
+import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
 
 
 @Component(***REMOVED***
     selector: 'client-overview',
     templateUrl: 'vmClients.component.html',
-    providers: [UserService, GroupService, ClientService, PerunSettings, ApiSettings]
+    providers: [FacilityService,UserService, GroupService, ClientService, PerunSettings, ApiSettings]
 ***REMOVED***)
 
 export class ClientOverviewComponent implements OnInit ***REMOVED***
@@ -23,7 +24,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     selectedComputeCenter: ComputecenterComponent;
     isLoaded = false;
 
-    constructor(private userservice: UserService, private groupservice: GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
+    constructor(private facilityService:FacilityService,private userservice: UserService, private groupservice: GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
 
     ***REMOVED***
 
@@ -49,10 +50,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
 
-    getClientsUnchecked(): void ***REMOVED***
-        this.clientservice.getClientsUnchecked().subscribe(clients => this.clients = clients);
 
-    ***REMOVED***
 
     getClientsChecked(): void ***REMOVED***
         this.clientservice.getClientsChecked().subscribe(clients => ***REMOVED***
@@ -64,7 +62,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     getComputeCenters() ***REMOVED***
-        this.groupservice.getComputeCenters().subscribe(result => ***REMOVED***
+        this.facilityService.getComputeCenters().subscribe(result => ***REMOVED***
             for (let cc of result) ***REMOVED***
                 let compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
@@ -103,8 +101,8 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
-    deleteClient(host: string, port: string, location: string): void ***REMOVED***
-        this.clientservice.deleteClient(host, port, location).subscribe(data => ***REMOVED***
+    deleteClient(client_id:number): void ***REMOVED***
+        this.clientservice.deleteClient(client_id).subscribe(data => ***REMOVED***
 
             this.getClientsChecked();
         ***REMOVED***);

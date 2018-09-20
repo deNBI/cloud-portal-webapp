@@ -12,14 +12,15 @@ const header = new HttpHeaders(***REMOVED***
 
 @Injectable()
 export class keyService ***REMOVED***
-    baseKeysUrl = this.settings.getApiBaseURL() + 'keys/';
+
+
 
     constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
     ***REMOVED***
 
     getKey(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.baseKeysUrl + 'getPublicKeyByUser/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/public_key/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
@@ -28,7 +29,7 @@ export class keyService ***REMOVED***
     postKey(public_key: string): Observable<any> ***REMOVED***
         let params = new HttpParams().set('public_key', public_key);
 
-        return this.http.post(this.baseKeysUrl + 'importKey/', params, ***REMOVED***
+        return this.http.put(this.settings.getApiBaseURL() + 'users/current/public_key/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));

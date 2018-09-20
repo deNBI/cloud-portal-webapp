@@ -223,6 +223,10 @@ export class OverviewComponent ***REMOVED***
         this.groupservice.getGroupApplications(project).subscribe(applications => ***REMOVED***
 
             let newProjectApplications = [];
+            if (applications.length == 0) ***REMOVED***
+                this.loaded = true;
+
+            ***REMOVED***
             for (let application of applications) ***REMOVED***
                 let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let membername = application['user']['firstName'] + ' ' + application['user']['lastName'];
@@ -470,8 +474,8 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id ?: number) ***REMOVED***
-        this.groupservice.removeMember(groupid, memberid, userid, facility_id).subscribe(result => ***REMOVED***
+    public removeMember(groupid: number, memberid: number, name: string, facility_id ?: number) ***REMOVED***
+        this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
                     this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");

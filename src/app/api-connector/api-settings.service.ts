@@ -12,7 +12,7 @@ export class ApiSettings ***REMOVED***
     return environment.apiBaseUrl;
   ***REMOVED***
   getConnectorBaseUrl(): string ***REMOVED***
-    return environment.connectorBaseUrl;
+    return environment.apiBaseUrl;
   ***REMOVED***
 
   /*
