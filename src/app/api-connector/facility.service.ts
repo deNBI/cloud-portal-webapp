@@ -15,9 +15,19 @@ export class FacilityService {
     constructor(private http: HttpClient, private settings: ApiSettings) {
     }
 
+
+     getComputeCenters(): Observable<any> {
+
+
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/', {
+            withCredentials: true,
+
+        }).pipe(catchError((error: any) => throwError(error.error)));
+    }
+
     getManagerFacilities(): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilitiesWhereUserIsManager/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'facilityManagers/current/facilities/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -25,9 +35,8 @@ export class FacilityService {
 
     getFacilityAllowedGroups(facility): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilityAllowedGroups/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/projects/', {
             withCredentials: true,
-            params: {facility_id: facility}
         }).pipe(catchError((error: any) => throwError(error)));
 
 
@@ -35,9 +44,8 @@ export class FacilityService {
 
     getFacilityAllowedGroupsWithDetails(facility): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'facilityManager/getFacilityAllowedGroupsWithDetails/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/projects/details/' , {
             withCredentials: true,
-            params: {facility_id: facility}
         }).pipe(catchError((error: any) => throwError(error)));
 
 
@@ -46,7 +54,7 @@ export class FacilityService {
     sendMailToFacility(facility, subject, message, reply?): Observable<any> {
         let params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
 
-        return this.http.post(this.settings.getApiBaseURL() + 'facilityManager/sendMailToAllMembers/', params, {
+        return this.http.post(this.settings.getApiBaseURL() + 'facilityManagers/current/facilityMail/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));

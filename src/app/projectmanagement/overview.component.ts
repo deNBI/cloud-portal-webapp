@@ -223,6 +223,10 @@ export class OverviewComponent {
         this.groupservice.getGroupApplications(project).subscribe(applications => {
 
             let newProjectApplications = [];
+            if (applications.length == 0) {
+                this.loaded = true;
+
+            }
             for (let application of applications) {
                 let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let membername = application['user']['firstName'] + ' ' + application['user']['lastName'];
@@ -470,8 +474,8 @@ export class OverviewComponent {
         });
     }
 
-    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id ?: number) {
-        this.groupservice.removeMember(groupid, memberid, userid, facility_id).subscribe(result => {
+    public removeMember(groupid: number, memberid: number, name: string, facility_id ?: number) {
+        this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(result => {
 
                 if (result.status == 200) {
                     this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
