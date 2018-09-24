@@ -181,7 +181,7 @@
                         <button type="button" [disabled]="f.invalid || (disksfpace > 0 && volumeName == '')"
                                 class="btn btn-primary offset-md-8"
                                 data-toggle="modal"
-                                (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1],diskspace);resetData();infoModal.show();">
+                                (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1],diskspace);resetData();resetProgressBar;infoModal.show();">
                             Start VM
                         </button>
                         <br><br><br>
@@ -215,10 +215,7 @@
             </div>
             <div class="modal-body" *ngIf="data=='' || data['Waiting']">
                 <p>We are setting up a machine for you. This can take up to 5 minutes.</p>
-                <div class="text-center">
-                    <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-
-                </div>
+                
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped {{creating_vm_prograss_bar}} bg-info"
                          role="progressbar" style="width: 33%;"

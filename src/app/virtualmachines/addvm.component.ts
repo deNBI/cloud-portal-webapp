@@ -151,6 +151,16 @@ export class VirtualMachineComponent implements OnInit {
 
     }
 
+    resetProgressBar() {
+        this.creating_vm_status = 'Creating..';
+        this.creating_vm_prograss_bar = 'progress-bar-animated';
+        this.checking_vm_status = '';
+        this.checking_vm_status_width = 0;
+        this.checking_vm_status_progress_bar = 'progress-bar-animated';
+        this.checking_vm_ssh_port = '';
+        this.checking_vm_ssh_port_width = 0;
+    }
+
     check_status_loop(id: string) {
 
         setTimeout(() => {
@@ -158,13 +168,7 @@ export class VirtualMachineComponent implements OnInit {
                 res = res;
 
                 if (res['Started'] || res['Error']) {
-                    this.creating_vm_status = 'Creating..';
-                    this.creating_vm_prograss_bar = 'progress-bar-animated';
-                    this.checking_vm_status = '';
-                    this.checking_vm_status_width = 0;
-                    this.checking_vm_status_progress_bar = 'progress-bar-animated';
-                    this.checking_vm_ssh_port = '';
-                    this.checking_vm_ssh_port_width = 0;
+                    this.resetProgressBar();
                     this.data = res;
                     this.getSelectedProjectDiskspace();
                     this.getSelectedProjectVms();
