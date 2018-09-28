@@ -36,7 +36,13 @@ export class VirtualMachineComponent implements OnInit {
 
 
     data: string = "";
-
+    creating_vm_status = 'Creating..';
+    creating_vm_prograss_bar = 'progress-bar-animated';
+    checking_vm_status = '';
+    checking_vm_status_width = 0;
+    checking_vm_status_progress_bar = 'progress-bar-animated';
+    checking_vm_ssh_port = '';
+    checking_vm_ssh_port_width = 0;
 
     informationButton: string = "Show Details";
     informationButton2: string = "Show Details";
@@ -72,13 +78,13 @@ export class VirtualMachineComponent implements OnInit {
     }
 
 
-    getImages(): void {
+    getImages(project_id: number): void {
 
-        this.imageService.getImages().subscribe(images => this.images = images);
+        this.imageService.getImages(project_id).subscribe(images => this.images = images);
     }
 
-    getFlavors(): void {
-        this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
+    getFlavors(project_id: number): void {
+        this.flavorService.getFlavors(project_id).subscribe(flavors => this.flavors = flavors);
 
     }
 
@@ -96,8 +102,7 @@ export class VirtualMachineComponent implements OnInit {
                 if (client.toString() === "true") {
 
                     this.client_avaiable = true;
-                    this.getImages();
-                    this.getFlavors();
+
                 }
                 else {
                     this.client_avaiable = false;
@@ -146,13 +151,25 @@ export class VirtualMachineComponent implements OnInit {
 
     }
 
+    resetProgressBar() {
+        this.creating_vm_status = 'Creating..';
+        this.creating_vm_prograss_bar = 'progress-bar-animated';
+        this.checking_vm_status = '';
+        this.checking_vm_status_width = 0;
+        this.checking_vm_status_progress_bar = 'progress-bar-animated';
+        this.checking_vm_ssh_port = '';
+        this.checking_vm_ssh_port_width = 0;
+    }
+
     check_status_loop(id: string) {
 
         setTimeout(() => {
             this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
                 res = res;
+
                 if (res['Started'] || res['Error']) {
-                    this.data = res
+                    this.resetProgressBar();
+                    this.data = res;
                     this.getSelectedProjectDiskspace();
                     this.getSelectedProjectVms();
                     this.getSelectedProjectVolumes();
@@ -160,6 +177,15 @@ export class VirtualMachineComponent implements OnInit {
 
                 }
                 else {
+                    if (res['Waiting'] == 'PORT_CLOSED') {
+                        this.checking_vm_status = 'Active.';
+                        this.checking_vm_status_progress_bar = '';
+                        this.creating_vm_prograss_bar = '';
+                        this.checking_vm_ssh_port = 'Checking port..';
+                        this.checking_vm_ssh_port_width = 34;
+
+
+                    }
                     this.check_status_loop(id)
                 }
 
@@ -175,9 +201,17 @@ export class VirtualMachineComponent implements OnInit {
 
 
                 if (data['Created']) {
+                    this.creating_vm_status = 'Created';
+                    this.creating_vm_prograss_bar = '';
+                    this.checking_vm_status = 'Checking status..';
+                    this.checking_vm_status_progress_bar = 'progress-bar-animated';
+                    this.checking_vm_status_width = 33;
+
                     this.check_status_loop(data['Created']);
                 }
                 else {
+                    this.creating_vm_status = 'Creating';
+
                     this.data = data
                 }
 
@@ -186,6 +220,8 @@ export class VirtualMachineComponent implements OnInit {
 
         }
         else {
+            this.creating_vm_status = 'Creating';
+
             this.data = "INVALID"
 
         }
@@ -242,12 +278,10 @@ export class VirtualMachineComponent implements OnInit {
     }
 
     initializeData() {
-        forkJoin(this.imageService.getImages(), this.flavorService.getFlavors(), this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => {
-            this.images = result[0];
-            this.flavors = result[1];
-            this.userinfo.PublicKey = result[3]['public_key'];
+        forkJoin(this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => {
+            this.userinfo.PublicKey = result[1]['public_key'];
             this.validatePublicKey();
-            let membergroups = result[2];
+            let membergroups = result[0];
             for (let project of membergroups) {
                 this.projects.push(project);
 

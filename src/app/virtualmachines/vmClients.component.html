@@ -27,7 +27,7 @@
           <td>{{client.port}}</td>
           <td>{{client.status}}</td>
           <td>
-            <button type="button" class="btn btn-primary navbar-inverse" (click)="deleteClient(client.host,client.port,client.location);">
+            <button type="button" class="btn btn-primary navbar-inverse" (click)="deleteClient(client.id);">
               Delete
               Client
             </button>
@@ -39,7 +39,7 @@
           <td>
                 <select class="form-control col-md-6" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
                   <option value="undefined" disabled selected hidden> Please Select</option>
-                  <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter[0]"> {{computecenter[0]}}</option>
+                  <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter"> {{computecenter.Name}}</option>
 
                 </select></td>
           <td><input type="text" placeholder="Host" #hos></td>
@@ -48,7 +48,7 @@
 
           <td>
             <button type="button" style="padding-right: 5px;margin-right: 5px" class="btn btn-primary navbar-inverse" (click)="checkClient(hos.value,port.value)">Check Status</button>
-             <button type="button" class="btn btn-primary navbar-inverse" (click)="postClient(hos.value,port.value,selectedComputeCenter);">Add Client
+             <button type="button" class="btn btn-primary navbar-inverse" (click)="postClient(hos.value,port.value,selectedComputeCenter.Name);">Add Client
             </button>
           </td>
 

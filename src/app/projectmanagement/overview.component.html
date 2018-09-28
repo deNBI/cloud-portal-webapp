@@ -36,19 +36,17 @@
                                 </td>
 
                                 <td>
-                                    <p *ngIf="project.ComputeCenter[0] == 'None'">None</p>
-                                    <p *ngIf="project.ComputeCenter[0] != 'None'">{{project.ComputeCenter[0]}}</p>
-                                    <ul *ngIf="project.ComputeCenter[0] != 'None'">
+                                    <p *ngIf="project.ComputeCenter.Name">{{project.ComputeCenter.Name}}</p>
+                                    <ul *ngIf="project.ComputeCenter.Name">
+                                        <li *ngIf="project.OpenStackProject"><a target="_blank"
+                                                                                href="project.ComputeCenter.Login">Login:
+                                            {{project.ComputeCenter.Login}}</a></li>
+                                        <li>Support: {{project.ComputeCenter.Support}}</li>
 
                                         <!--button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
                                                 class="btn btn-primary">Set your OpenStack API password
                                         </button-->
-                                        <li *ngFor="let details of project.ComputeCenterDetails">{{details[0]}}: <a
-                                                target="_blank"
-                                                *ngIf="details[0] == 'Login'"
-                                                href="{{details[1]}}">{{details[1]}}</a>
-                                            <span *ngIf="details[0] != 'Login'">{{details[1]}}</span>
-                                        </li>
+
                                     </ul>
 
                                 </td>
@@ -75,11 +73,12 @@
                                         <button
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
                                                 type="button" style="margin-bottom: 5px"
-                                                (click)="selectedProject = project;applicationModal.show();"
-                                                class="btn btn-secondary"><i class="fa fa-list-alt"></i>&nbsp; Applications
-                                            ({{project.ProjectMemberApplications.length}})
+                                                (click)="selectedProject = project;applicationModal.show();loadProjectApplications(selectedProject?.Id);application_action_done=false;"
+                                                class="btn btn-secondary"><i class="fa fa-list-alt"></i>&nbsp;
+                                            Applications
                                         </button>
-                                        <h4 *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)"> <span class="badge badge-default">Project Member </span></h4>
+                                        <h4 *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)"><span
+                                                class="badge badge-default">Project Member </span></h4>
                                     </div>
                                 </td>
                             </tr>
@@ -139,7 +138,7 @@
                                                " class="btn btn-secondary" type="button">
                                     <i class="fa fa-trash"></i>&nbsp; Remove Admin status
                                 </button>
-                                <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Id,member.Username,UserModalFacility[1]);
+                                <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username,UserModalFacility[1]);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button">
 
@@ -167,7 +166,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Add member to the project {{ addUserModalProjectID }}
                     ({{ addUserModalProjectName }})</h4>
-              <button type="button" class="close" (click)="addUserModal.hide()" aria-label="Close">
+                <button type="button" class="close" (click)="addUserModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -222,13 +221,13 @@
                 <div *ngIf="UserModalFacility !== null">
 
                     <div>
-                        <p style=" margin-bottom: 15px;">Search and add a user to your project by providing his exact
-                            name:</p>
+                        <p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
+                            four characters of his name or the exact name:</p>
 
-                        <input placeholder="first name" #firstName> <input placeholder="last name" #lastName>
+                        <input placeholder="" #searchString>
                         <button style="margin-left: 10px" type="button" class="btn btn-primary"
-                                (click)="filterMembers(firstName.value,lastName.value,addUserModalProjectID )"><i
-                                class="fa fa-search"></i> Search
+                                (click)="filterMembers(searchString.value,addUserModalProjectID )"><i
+                                class="fa fa-search"></i> Search Member
                         </button>
 
                         <br>
@@ -260,7 +259,7 @@
                                         (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName'],UserModalFacility[1]);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
                                         class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
                                 </button>
-                                <button
+                                <button style="padding-left: 10px;margin-left: 10px"
                                         (click)="addAdmin(addUserModalProjectID,member['member_id'],member['user_id'],member['firstName'],member['lastName'],UserModalFacility[1]);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
                                         class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
                                 </button>
@@ -412,9 +411,9 @@
                 </button>
             </div>
 
-             <div class="modal-body">
-               <p>{{ selectedProject?.Description }}</p>
-               </div>
+            <div class="modal-body">
+                <p>{{ selectedProject?.Description }}</p>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" (click)="selectedProject=undefined;infoModal.hide();">
                     Close
@@ -435,7 +434,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin" style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+            <div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
+                                                               style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
             </div>
 
             <div *ngIf="loaded" class="table-responsive">
@@ -450,16 +450,17 @@
 
                     <td>{{application.Name}}</td>
                     <td>{{application.DateCreated}}</td>
-                    <td>
+                    <td *ngIf="application.UserIsVoMember">
                         <button
                                 (click)="approveMemberApplication(selectedProject?.Id,application.Id,application.Name); "
                                 class="btn btn-success"><i class="fa fa-check"></i> Approve
                         </button>
                         <button style="margin-left: 10px"
-                                (click)="appication_action='rejected';application_member_name=application.Name;rejectMemberApplication(selectedProject?.Id,application.Id,application.Name); "
+                                (click)="application_action='rejected';application_member_name=application.Name;rejectMemberApplication(selectedProject?.Id,application.Id,application.Name); "
                                 class="btn btn-danger"><i class="fa fa-times"></i> Reject
                         </button>
                     </td>
+                    <td *ngIf="!application.UserIsVoMember"> Membership for the vo must be approved beforehand</td>
                     </tbody>
                 </table>
             </div>
@@ -475,8 +476,12 @@
                     <strong>Failed:</strong> The application of {{application_member_name}} could not be
                     {{application_action}} .
                 </p>
+                <button type="button" class="btn btn-primary"
+                        (click)="loadProjectApplications(selectedProject?.Id)">
+                    Refresh
+                </button>
                 <button type="button" class="btn btn-secondary"
-                        (click)="selectedProject=undefined;applicationModal.hide();">
+                        (click)="application_action_done=false;selectedProject=undefined;applicationModal.hide();">
                     Close
                 </button>
             </div>

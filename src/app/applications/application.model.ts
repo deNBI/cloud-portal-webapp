@@ -1,4 +1,5 @@
 import {ApplicationExtension} from "./application_extension.model";
+import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
 
 export class Application {
   private _Id: number;
@@ -22,9 +23,8 @@ export class Application {
   private _UserEmail: number;
   private _UserAffiliations:string[];
   private _Status: number;
-  private _ComputeCenter: [string,number];
+  private _ComputeCenter: ComputecenterComponent;
   private _OpenStackProject: boolean;
-  private _ComputeCenterDetails:[string,string][];
   private _DaysRunning: number;
   private _ApplicationExtension:ApplicationExtension;
   private _PerunId:number;
@@ -64,18 +64,13 @@ export class Application {
   }
 
 
-    get ComputeCenterDetails(){
-    return this._ComputeCenterDetails;
-  }
-  set ComputecenterDetails(value:[string,string][]){
-    this._ComputeCenterDetails=value;
-  }
 
-  get ComputeCenter(): [string,number] {
+
+  get ComputeCenter(): ComputecenterComponent {
     return this._ComputeCenter
   }
 
-  set ComputeCenter(value: [string,number]) {
+  set ComputeCenter(value: ComputecenterComponent) {
     this._ComputeCenter = value;
   }
 

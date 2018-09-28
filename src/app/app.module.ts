@@ -25,6 +25,7 @@ import {SimpleLayoutComponent} from './layouts/simple-layout.component';
 import {ModalModule} from "ngx-bootstrap";
 import {RegistrationInfoComponent} from "./registration-info.component";
 import {UserService} from "./api-connector/user.service";
+import {ConsentInfoComponent} from "./consent-info.component";
 
 @NgModule({
     imports: [
@@ -46,7 +47,8 @@ import {UserService} from "./api-connector/user.service";
         BreadcrumbsComponent,
         SIDEBAR_TOGGLE_DIRECTIVES,
         AsideToggleDirective,
-        RegistrationInfoComponent
+        RegistrationInfoComponent,
+        ConsentInfoComponent
     ],
     providers: [{
         provide: LocationStrategy,
