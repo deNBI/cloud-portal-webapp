@@ -1,4 +1,5 @@
 import ***REMOVED***ProjectMemberApplication***REMOVED*** from "./project_member_application";
+import ***REMOVED***ComputecenterComponent***REMOVED*** from "./computecenter.component";
 
 export class Project ***REMOVED***
   get UserIsAdmin(): boolean ***REMOVED***
@@ -19,14 +20,15 @@ export class Project ***REMOVED***
   private _Lifetime: number;
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
-  private _ComputeCenter:[string,number];
-  private _ComputeCenterDetails:[string,string][];
+  private _ComputeCenter:ComputecenterComponent;
   private _PerunId:number;
   private _ProjectMemberApplications:ProjectMemberApplication[];
   private _RealName:string;
+    private _OpenStackProject: boolean;
 
 
-  constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: [string,number]) ***REMOVED***
+
+  constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: ComputecenterComponent) ***REMOVED***
     this._Id = Id;
     this._Name = Name;
     this._Description = Description;
@@ -63,6 +65,13 @@ export class Project ***REMOVED***
    set LifetimeDays(value:number)***REMOVED***
     this._LifetimeDays=value;
   ***REMOVED***
+    get OpenStackProject(): boolean ***REMOVED***
+    return this._OpenStackProject
+  ***REMOVED***
+
+  set OpenStackProject(value: boolean) ***REMOVED***
+    this._OpenStackProject = value;
+  ***REMOVED***
 
   get Lifetime():number***REMOVED***
     return this._Lifetime;
@@ -70,17 +79,12 @@ export class Project ***REMOVED***
   set Lifetime(value:number)***REMOVED***
     this._Lifetime=value;
   ***REMOVED***
-  get ComputeCenterDetails()***REMOVED***
-    return this._ComputeCenterDetails;
-  ***REMOVED***
-  set ComputecenterDetails(value:[string,string][])***REMOVED***
-    this._ComputeCenterDetails=value;
-  ***REMOVED***
-  get ComputeCenter(): [string,number] ***REMOVED***
+
+  get ComputeCenter(): ComputecenterComponent ***REMOVED***
     return this._ComputeCenter
   ***REMOVED***
 
-  set ComputeCenter(value: [string,number]) ***REMOVED***
+  set ComputeCenter(value: ComputecenterComponent) ***REMOVED***
     this._ComputeCenter = value;
   ***REMOVED***
 

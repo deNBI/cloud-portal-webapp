@@ -36,7 +36,13 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
 
     data: string = "";
-
+    creating_vm_status = 'Creating..';
+    creating_vm_prograss_bar = 'progress-bar-animated';
+    checking_vm_status = '';
+    checking_vm_status_width = 0;
+    checking_vm_status_progress_bar = 'progress-bar-animated';
+    checking_vm_ssh_port = '';
+    checking_vm_ssh_port_width = 0;
 
     informationButton: string = "Show Details";
     informationButton2: string = "Show Details";
@@ -72,13 +78,13 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
 
-    getImages(): void ***REMOVED***
+    getImages(project_id: number): void ***REMOVED***
 
-        this.imageService.getImages().subscribe(images => this.images = images);
+        this.imageService.getImages(project_id).subscribe(images => this.images = images);
     ***REMOVED***
 
-    getFlavors(): void ***REMOVED***
-        this.flavorService.getFlavors().subscribe(flavors => this.flavors = flavors);
+    getFlavors(project_id: number): void ***REMOVED***
+        this.flavorService.getFlavors(project_id).subscribe(flavors => this.flavors = flavors);
 
     ***REMOVED***
 
@@ -96,8 +102,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
                 if (client.toString() === "true") ***REMOVED***
 
                     this.client_avaiable = true;
-                    this.getImages();
-                    this.getFlavors();
+
                 ***REMOVED***
                 else ***REMOVED***
                     this.client_avaiable = false;
@@ -146,13 +151,25 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
+    resetProgressBar() ***REMOVED***
+        this.creating_vm_status = 'Creating..';
+        this.creating_vm_prograss_bar = 'progress-bar-animated';
+        this.checking_vm_status = '';
+        this.checking_vm_status_width = 0;
+        this.checking_vm_status_progress_bar = 'progress-bar-animated';
+        this.checking_vm_ssh_port = '';
+        this.checking_vm_ssh_port_width = 0;
+    ***REMOVED***
+
     check_status_loop(id: string) ***REMOVED***
 
         setTimeout(() => ***REMOVED***
             this.virtualmachineservice.checkVmStatus(id).subscribe(res => ***REMOVED***
                 res = res;
+
                 if (res['Started'] || res['Error']) ***REMOVED***
-                    this.data = res
+                    this.resetProgressBar();
+                    this.data = res;
                     this.getSelectedProjectDiskspace();
                     this.getSelectedProjectVms();
                     this.getSelectedProjectVolumes();
@@ -160,6 +177,15 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
                 ***REMOVED***
                 else ***REMOVED***
+                    if (res['Waiting'] == 'PORT_CLOSED') ***REMOVED***
+                        this.checking_vm_status = 'Active.';
+                        this.checking_vm_status_progress_bar = '';
+                        this.creating_vm_prograss_bar = '';
+                        this.checking_vm_ssh_port = 'Checking port..';
+                        this.checking_vm_ssh_port_width = 34;
+
+
+                    ***REMOVED***
                     this.check_status_loop(id)
                 ***REMOVED***
 
@@ -175,9 +201,17 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
 
                 if (data['Created']) ***REMOVED***
+                    this.creating_vm_status = 'Created';
+                    this.creating_vm_prograss_bar = '';
+                    this.checking_vm_status = 'Checking status..';
+                    this.checking_vm_status_progress_bar = 'progress-bar-animated';
+                    this.checking_vm_status_width = 33;
+
                     this.check_status_loop(data['Created']);
                 ***REMOVED***
                 else ***REMOVED***
+                    this.creating_vm_status = 'Creating';
+
                     this.data = data
                 ***REMOVED***
 
@@ -186,6 +220,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
         ***REMOVED***
         else ***REMOVED***
+            this.creating_vm_status = 'Creating';
+
             this.data = "INVALID"
 
         ***REMOVED***
@@ -242,12 +278,10 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     initializeData() ***REMOVED***
-        forkJoin(this.imageService.getImages(), this.flavorService.getFlavors(), this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => ***REMOVED***
-            this.images = result[0];
-            this.flavors = result[1];
-            this.userinfo.PublicKey = result[3]['public_key'];
+        forkJoin(this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => ***REMOVED***
+            this.userinfo.PublicKey = result[1]['public_key'];
             this.validatePublicKey();
-            let membergroups = result[2];
+            let membergroups = result[0];
             for (let project of membergroups) ***REMOVED***
                 this.projects.push(project);
 

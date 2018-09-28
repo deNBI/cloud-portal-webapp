@@ -21,7 +21,7 @@ export class UserService ***REMOVED***
         let params = new HttpParams().set('facility', facility)
 
         ;
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'user/setUserPassword/', params, ***REMOVED***
+        return this.http.post(this.settings.getConnectorBaseUrl() + 'users/setUserPassword/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -29,14 +29,33 @@ export class UserService ***REMOVED***
 
     getLogins(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getLogins/',
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/logins/',
             ***REMOVED***
                 withCredentials: true,
             ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
+
+    getMemberDetailsByElixirId(elixir_id: string) ***REMOVED***
+        elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
+        return this.http.get(this.settings.getApiBaseURL() + 'users/' + elixir_id + '/member/',
+            ***REMOVED***
+                withCredentials: true,
+
+            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+
+    ***REMOVED***
+
+    isMember(userid: string) ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'users/' + userid + '/member/status/',
+            ***REMOVED***
+                withCredentials: true,
+            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+
+    ***REMOVED***
+
     getuserAffiliations(user_id: number) ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'user/' + user_id.toString() + '/affiliations/',
+        return this.http.get(this.settings.getApiBaseURL() + 'users/' + user_id.toString() + '/affiliations/',
             ***REMOVED***
                 withCredentials: true,
 
@@ -45,7 +64,7 @@ export class UserService ***REMOVED***
     ***REMOVED***
 
     getLoggedUser(): Observable<any> ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getLoggedUser/',
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/',
             ***REMOVED***
                 withCredentials: true,
 
@@ -54,7 +73,7 @@ export class UserService ***REMOVED***
 
     getMemberByUser(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByUser/`, ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + `users/current/member/`, ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
@@ -62,7 +81,7 @@ export class UserService ***REMOVED***
 
     getMemberByExtSourceNameAndExtLogin(ext_login: string): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + `user/getMemberByExtSourceNameAndExtLogin/`, ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + `users/current/extLogin/member/`, ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***
 
@@ -74,14 +93,14 @@ export class UserService ***REMOVED***
 
 
     getVosWhereUserIsAdmin(): Observable<any> ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getVosWhereUserIsAdmin/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/adminVos/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
         ;
     ***REMOVED***
 
     getGroupsWhereUserIsAdmin(): Observable<any> ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getGroupsWhereUserIsAdmin/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/adminGroups/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
         ;
@@ -90,7 +109,7 @@ export class UserService ***REMOVED***
     setNewsletterSubscription(subscribed: boolean): Observable<any> ***REMOVED***
         let params = new HttpParams().set('subscribed', subscribed.toString());
 
-        return this.http.post(this.settings.getApiBaseURL() + 'newsletter/setNewsletterSubscription/', params, ***REMOVED***
+        return this.http.post(this.settings.getApiBaseURL() + 'newsletter/subscription/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -99,7 +118,7 @@ export class UserService ***REMOVED***
 
     getNewsletterSubscription(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'newsletter/getNewsletterSubscription/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'newsletter/subscription/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
@@ -111,21 +130,19 @@ export class UserService ***REMOVED***
         let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'user/sendHelpMail/', params, ***REMOVED***
+        return this.http.post(this.settings.getApiBaseURL() + 'users/current/helpMail/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
     ***REMOVED***
 
-    getFilteredMembersOfdeNBIVo(firstname: string, lastName: string, groupid: string): Observable<any> ***REMOVED***
+    getFilteredMembersOfdeNBIVo(searchString: string,  groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'user/getFilteredMembers/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'users/filter/', ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***
-                firstName: firstname,
-                lastName: lastName,
-                groupid: groupid
+                searchString:searchString,
             ***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
