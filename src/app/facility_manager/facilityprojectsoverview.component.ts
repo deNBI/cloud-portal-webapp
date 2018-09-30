@@ -70,13 +70,12 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
             let facility_projects = result;
             let is_pi = false;
             let is_admin = false;
-            for (let key in facility_projects) ***REMOVED***
-                let group = facility_projects[key];
+            for (let group of facility_projects) ***REMOVED***
                 let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
                 let is_pi = group['is_pi'];
-                let groupid = key;
-                let facility = group['facility'];
+                let groupid = group['id'];
+                let facility = group['compute_center'];
                 let shortname = group['shortname'];
                 let details = facility['Details'];
                 let details_array = [];
@@ -106,7 +105,7 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
                     dateDayDifference,
                     is_pi,
                     is_admin,
-                   compute_center);
+                    compute_center);
                 newProject.Lifetime = lifetime;
                 newProject.LifetimeDays = lifetimeDays;
                 if (expirationDate) ***REMOVED***
@@ -132,13 +131,18 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
 
     sendMailToFacility(facility: number, subject: string, message: string, reply?: string) ***REMOVED***
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => ***REMOVED***
-            if (result == 1) ***REMOVED***
-                this.emailStatus = 1;
-            ***REMOVED***
-            else ***REMOVED***
+
+                if (result.status == 201) ***REMOVED***
+                    this.emailStatus = 1;
+                ***REMOVED***
+                else ***REMOVED***
+                    this.emailStatus = 2;
+                ***REMOVED***
+            ***REMOVED***,
+            error => ***REMOVED***
+                console.log(error);
                 this.emailStatus = 2;
-            ***REMOVED***
-        ***REMOVED***)
+            ***REMOVED***)
 
     ***REMOVED***
 
