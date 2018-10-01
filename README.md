@@ -3,8 +3,55 @@
 The use of this application is to provide access to the Portal-API and to the Perun API in one Application. 
 Simple request, that do not require administrative rights or special previliges can be done directly from the webapplicaiton
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:8002/`. The app will automatically reload if you change any of the source files.
+## Setup development server
+To start the angular developement server on an empty system follow the upcoming steps.
+
+1. Clone the cloud-portal-webapp repository then go into the cloud-portal-webapp folder and checkout the developement branch with:
+~~~BASH
+git clone https://github.com/deNBI/cloud-portal-webapp.git
+cd cloud-portal-webapp
+git checkout dev
+~~~
+
+2. Add this line to your /etc/hosts file 
+~~~BASH
+127.0.0.1 portal-dev.denbi.de
+~~~
+
+3. Install npm
+~~~BASH
+sudo apt install npm
+~~~
+
+4. Create symbolic link
+~~~BASH
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+~~~
+
+5. Install all needed npm packages and angular cli
+~~~BASH
+npm install 
+sudo chown -R $USER /usr/local
+npm install -g @angular/cli
+~~~
+
+6. Update and install the latest npm to use the latest angular cli
+~~~BASH
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+~~~
+
+7. Rebuild node-sass. Otherwise an error will occure
+~~~BASH
+npm rebuild node-sass ---force
+~~~
+
+8. start the angular server with
+~~~BASH
+ng serve
+~~~
+
+the dev server should run now on portal-dev.denbi.de:8001. The app will automatically reload if you change any of the source files.
 
 ### Options:
 
