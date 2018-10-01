@@ -118,15 +118,15 @@ export class OverviewComponent {
                 let groupid = group['id'];
                 let facility = group['compute_center'];
                 let shortname = group['shortname'];
-                let lifetime = group['lifetime'];
-                let lifetimeDays = -1;
+                //let lifetime = group['lifetime'];
+               // let lifetimeDays = -1;
                 let realname = group['name'];
 
                 let expirationDate = undefined;
-                if (lifetime != -1) {
+               /* if (lifetime != -1) {
                     lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
                     expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
-                }
+                }*/
                 let compute_center = null;
 
                 if (facility) {

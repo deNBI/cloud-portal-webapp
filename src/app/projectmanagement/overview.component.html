@@ -18,15 +18,15 @@
                                 <th>Description</th>
                                 <th>Facility</th>
                                 <th>Date created (d/m/y)</th>
-                                <th>Expiration Date (d/m/y)</th>
+                                <!--th>Expiration Date (d/m/y)</th-->
                                 <th>Days running</th>
-                                <th>Lifetime in Days</th>
+                                <!--th>Lifetime in Days</th-->
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr *ngFor="let project of projects"
-                                [ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}">
+                            <tr *ngFor="let project of projects">
+                                <!--[ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}"-->
                                 <td>{{ project.Id }}</td>
                                 <td>{{ project.Name }}</td>
                                 <td>
@@ -52,9 +52,9 @@
                                 </td>
 
                                 <td>{{ project.DateCreated }}</td>
-                                <td>{{project.DateEnd}}</td>
+                                <!--td>{{project.DateEnd}}</td-->
                                 <td>{{ project.DaysRunning }}</td>
-                                <td>{{project.LifetimeDays}}</td>
+                                <!--td>{{project.LifetimeDays}}</td-->
                                 <td>
                                     <div class="btn-group-vertical">
                                         <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
