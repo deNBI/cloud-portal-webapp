@@ -38,7 +38,7 @@
                                     <td>{{ application.Status }}</td>
                                     <td>
 
-                                        <button (click)="switchCollapseStatus('user_application-' + application.Id)"
+                                        <button (click)="switchCollapseStatus('user_application-' + application.Id);getFacilityProject(application);"
                                                 type="button" class="btn btn-secondary">
                                             <i class="fa fa-info-circle"></i>&nbsp;
                                             <span [hidden]="!getCollapseStatus('user_application-' + application.Id)">Show</span><span
@@ -69,6 +69,10 @@
                                              [class.collapse]="getCollapseStatus('user_application-' + application.Id)">
                                             <div class="table-responsive">
                                                 <table class="table table-striped">
+                                                    <tr [style.display]="application.Status != 'submitted' ? 'inherit' :'none'">
+                                                        <td>Facility</td>
+                                                        <td>{{application.ComputeCenter?.Name}}</td>
+                                                    </tr>
                                                     <tr>
                                                         <td>Description</td>
                                                         <td>{{ application.Description }}
@@ -195,7 +199,7 @@
 
 
                                         <td>
-                                            <select [style.display]="application.OpenStackProject? 'inherit' :'none'"
+                                            <select [style.display]="application.OpenStackProject && application.Status == 1 ? 'inherit' :'none'"
                                                     class="form-control" #selectedComputeCenter>
 
                                                 <option value="undefined" selected> no center</option>
@@ -203,6 +207,7 @@
                                                         value="{{computeCenter.FacilityId}}"> {{computeCenter.Name}}
                                                 </option>
                                             </select>
+                                            <span [style.display]="application.Status != 1 ? 'inherit' :'none'">{{application.ComputeCenter?.Name}}</span>
                                         </td>
 
 
@@ -231,8 +236,9 @@
                                             </button>
                                             <button *ngIf="application.Status == 4"
                                                     type="button" class="btn btn-secondary"
-                                                    (click)="setSelectedApplication(application);declineExtension(application.Id);resultModal.show();"><i
-                                                    class="fa fa-close"></i>&nbsp;
+                                                    (click)="setSelectedApplication(application);declineExtension(application.Id);resultModal.show();">
+                                                <i
+                                                        class="fa fa-close"></i>&nbsp;
                                                 Decline Modification
                                             </button>
 

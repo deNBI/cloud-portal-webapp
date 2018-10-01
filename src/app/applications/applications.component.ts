@@ -192,6 +192,7 @@ export class ApplicationsComponent {
             }
             this.isLoaded_userApplication = true;
 
+
         });
     }
 
@@ -295,13 +296,18 @@ export class ApplicationsComponent {
                             r.SpecialHardware = special_hardware;
                         }
                         a.ApplicationExtension = r;
-                    }
 
+                    }
                     this.all_applications.push(a);
 
                 }
 
                 this.isLoaded_AllApplication = true;
+                for (let app of this.all_applications){
+                    if( app.Status == 4){
+                        this.getFacilityProject(app);
+                    }
+                }
 
 
             });
@@ -316,7 +322,8 @@ export class ApplicationsComponent {
 
 
     public getFacilityProject(app: Application) {
-        if (!app.ComputeCenter) {
+
+        if (!app.ComputeCenter && app.Status != 'submitted') {
             this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe(res => {
                 let login = res['Login'];
                 let suport = res['Support'];
