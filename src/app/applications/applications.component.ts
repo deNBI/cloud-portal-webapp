@@ -303,8 +303,8 @@ export class ApplicationsComponent {
                 }
 
                 this.isLoaded_AllApplication = true;
-                for (let app of this.all_applications){
-                    if( app.Status == 4){
+                for (let app of this.all_applications) {
+                    if (app.Status == 4) {
                         this.getFacilityProject(app);
                     }
                 }
@@ -323,7 +323,7 @@ export class ApplicationsComponent {
 
     public getFacilityProject(app: Application) {
 
-        if (!app.ComputeCenter && app.Status != 'submitted') {
+        if (!app.ComputeCenter && app.Status.toString() != 'submitted') {
             this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe(res => {
                 let login = res['Login'];
                 let suport = res['Support'];
@@ -341,6 +341,7 @@ export class ApplicationsComponent {
 
     public getApplication(application: Application) {
         let index = this.all_applications.indexOf(application);
+
         this.applicataionsservice.getApplication(application.Id.toString()).subscribe(aj => {
             let a = new Application();
             a.Id = aj["project_application_id"];
@@ -410,8 +411,9 @@ export class ApplicationsComponent {
 
     public getUserApplication(application: Application) {
         let index = this.user_applications.indexOf(application);
+        console.log(application)
 
-        this.applicataionsservice.getUserApplication(application.PerunId.toString()).subscribe(aj => {
+        this.applicataionsservice.getUserApplication(application.Id.toString()).subscribe(aj => {
             let a = new Application();
             a.Id = aj["project_application_id"];
             a.Name = aj["project_application_name"];
@@ -465,7 +467,6 @@ export class ApplicationsComponent {
     }
 
     public requestExtension(data) {
-        console.log('request extnson');
         this.applicataionsservice.requestRenewal(data).subscribe(result => {
             if (result['Error']) {
                 this.extension_status = 2
@@ -602,7 +603,7 @@ export class ApplicationsComponent {
     }
 
 
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project, numberofVms, volumelimit, lifetime, longname, volumecounter) {
+    public createGroup(name, description, manager_elixir_id, application_id, compute_center) {
 
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
@@ -635,15 +636,27 @@ export class ApplicationsComponent {
             if (compute_center != 'undefined') {
                 this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
             }
-            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe()
+            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe();
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications
-            this.all_applications = [];
-            this.user_applications = [];
-            this.getUserApplications();
-            this.getAllApplications();
+            for (let app of this.user_applications) {
+                if (app.Id == application_id) {
+                    this.getUserApplication(app);
+                    break;
+
+                }
+
+            }
+            for (let app of this.all_applications) {
+                if (app.Id == application_id) {
+                    this.getApplication(app);
+                    break;
+
+                }
+            }
         }).catch(error => {
+            console.log(error)
             this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
         });
 

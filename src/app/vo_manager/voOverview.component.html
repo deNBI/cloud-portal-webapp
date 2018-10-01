@@ -38,15 +38,15 @@
                                 <th>Description</th>
 
                                 <th>Date created (d/m/y)</th>
-                                <th>Expiration Date (d/m/y)</th>
+                                <!--th>Expiration Date (d/m/y)</th-->
                                 <th>Days running</th>
-                                <th>Lifetime in Days</th>
+                                <!---th>Lifetime in Days</th-->
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr *ngFor="let project of projects"
-                                [ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}">
+                            <tr *ngFor="let project of projects">
+                               <!-- [ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}"-->
                                 <td>{{ project.Id }}</td>
                                 <td>{{ project.Name }}</td>
                                 <td>
@@ -57,10 +57,10 @@
 
 
                                 <td>{{ project.DateCreated }}</td>
-                                <td>{{project.DateEnd}}</td>
+                                <!--td>{{project.DateEnd}}</td-->
                                 <td>{{ project.DaysRunning }}</td>
 
-                                <td>{{project.LifetimeDays}}</td>
+                                <!--td>{{project.LifetimeDays}}</td-->
                                 <td>
                                     <button type="button" class="btn btn-secondary" data-toggle="modal"
                                             (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
