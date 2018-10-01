@@ -40,7 +40,7 @@ export class VoOverviewComponent {
 
 
     public managerFacilities: [string, number][];
-    public selectedFacility: [string, number]
+    public selectedFacility: [string, number];
 
 
     constructor(private voserice: VoService, private groupservice: GroupService) {
@@ -127,15 +127,14 @@ export class VoOverviewComponent {
     getVoProjects() {
         this.voserice.getAllGroupsWithDetails().subscribe(result => {
             let vo_projects = result;
-            for (let key in vo_projects) {
-                let group = vo_projects[key];
+            for (let group of vo_projects) {
                 let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
                 let is_pi = group['is_pi'];
-                let groupid = key;
-                let facility = group['facility'];
+                let groupid = group['id'];
+                // let facility = group['compute_center'];
                 let shortname = group['shortname'];
-                let details = facility['Details'];
+                //  let details = facility['Details'];
                 let details_array = [];
                 let lifetime = group['lifetime'];
                 let lifetimeDays = -1;
@@ -144,16 +143,16 @@ export class VoOverviewComponent {
                     lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
                     expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
                 }
-                for (let detail in details) {
-                    let detail_tuple = [detail, details[detail]];
-                    details_array.push(detail_tuple);
-                }
+                //  for (let detail in details) {
+                //    let detail_tuple = [detail, details[detail]];
+                //  details_array.push(detail_tuple);
+                //}
                 //check if user is a PI (group manager)
 
                 if (!shortname) {
                     shortname = group['name']
                 }
-                let compute_center = new ComputecenterComponent(facility['FacilityId'], facility['Facility'], facility['Login'], facility['Support']);
+              //  let compute_center = new ComputecenterComponent(facility['FacilityId'], facility['Facility'], facility['Login'], facility['Support']);
 
 
                 let newProject = new Project(
@@ -164,7 +163,7 @@ export class VoOverviewComponent {
                     dateDayDifference,
                     is_pi,
                     true,
-                    compute_center);
+                    null);
                 newProject.Lifetime = lifetime;
                 newProject.LifetimeDays = lifetimeDays;
                 if (expirationDate) {

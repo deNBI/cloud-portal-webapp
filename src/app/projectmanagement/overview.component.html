@@ -36,8 +36,8 @@
                                 </td>
 
                                 <td>
-                                    <p *ngIf="project.ComputeCenter.Name">{{project.ComputeCenter.Name}}</p>
-                                    <ul *ngIf="project.ComputeCenter.Name">
+                                    <p *ngIf="project.ComputeCenter?.Name">{{project.ComputeCenter.Name}}</p>
+                                    <ul *ngIf="project.ComputeCenter?.Name">
                                         <li *ngIf="project.OpenStackProject"><a target="_blank"
                                                                                 href="project.ComputeCenter.Login">Login:
                                             {{project.ComputeCenter.Login}}</a></li>

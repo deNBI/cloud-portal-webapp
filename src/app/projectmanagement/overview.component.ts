@@ -26,7 +26,7 @@ export class OverviewComponent {
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
     @Input() invitation_group_pre: string = environment.invitation_group_pre
     is_admin = false;
-    userprojects: {};
+    userprojects: {}[];
     member_id: number;
     admingroups: {};
     filteredMembers = null;
@@ -111,13 +111,12 @@ export class OverviewComponent {
 
         this.groupservice.getGroupDetails().subscribe(result => {
             this.userprojects = result;
-            for (let key in this.userprojects) {
-                let group = this.userprojects[key];
+            for (let group of this.userprojects) {
                 let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
                 let is_pi = group['is_pi'];
-                let groupid = key;
-                let facility = group['facility'];
+                let groupid = group['id'];
+                let facility = group['compute_center'];
                 let shortname = group['shortname'];
                 let lifetime = group['lifetime'];
                 let lifetimeDays = -1;
@@ -128,13 +127,11 @@ export class OverviewComponent {
                     lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
                     expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
                 }
-                //check if user is a PI (group manager)
+                let compute_center = null;
 
-                if (!shortname) {
-                    shortname = group['name']
+                if (facility) {
+                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
                 }
-
-                let compute_center = new ComputecenterComponent(facility['FacilityId'], facility['Facility'], facility['Login'], facility['Support']);
 
 
                 let newProject = new Project(
@@ -147,8 +144,8 @@ export class OverviewComponent {
                     this.is_admin,
                     compute_center);
                 newProject.OpenStackProject = group['openstack_project'];
-                newProject.Lifetime = lifetime;
-                newProject.LifetimeDays = lifetimeDays;
+                //newProject.Lifetime = lifetime;
+                //newProject.LifetimeDays = lifetimeDays;
                 newProject.RealName = realname;
                 if (expirationDate) {
                     newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
@@ -156,6 +153,17 @@ export class OverviewComponent {
                 this.projects.push(newProject);
             }
             this.isLoaded = true;
+            for (let group of this.projects) {
+                if (group.Name.length > 15 || group.Name.indexOf('_') > -1) {
+                    this.groupservice.getShortame(group.Id.toString()).subscribe(result => {
+                        if (result['shortname']) {
+                            group.Name = result['shortname']
+                        }
+
+                    })
+                }
+
+            }
 
         })
 
@@ -179,7 +187,7 @@ export class OverviewComponent {
         this.UserModalFacility = null;
     }
 
-    filterMembers(searchString:string, groupid: number) {
+    filterMembers(searchString: string, groupid: number) {
         this.userservice.getFilteredMembersOfdeNBIVo(searchString, groupid.toString()).subscribe(result => {
             this.filteredMembers = result;
         })
