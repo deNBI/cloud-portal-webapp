@@ -609,54 +609,60 @@ export class ApplicationsComponent ***REMOVED***
         let manager_member_user_id: number;
         let new_group_id: number;
 
-        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
-            .then(member_raw => ***REMOVED***
-                    let member = member_raw;
-                    manager_member_id = member["id"];
-                    manager_member_user_id = member["userId"];
-                    // create new group
-
-                    return this.groupservice.createGroup(name, description).toPromise();
-                ***REMOVED***
-            ).then(group_raw => ***REMOVED***
-            let group = group_raw;
-            new_group_id = group["id"];
-
-            //add the application user to the group
-            return this.groupservice.addMember(new_group_id, manager_member_id, compute_center).toPromise();
-
-        ***REMOVED***).then(null_result => ***REMOVED***
-            return this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).toPromise();
-        ***REMOVED***).then(null_result => ***REMOVED***
-            return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).toPromise();
-        ***REMOVED***).then(null_result => ***REMOVED***
-            //setting approved status for Perun Group
-
-            if (compute_center != 'undefined') ***REMOVED***
-                this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
-            ***REMOVED***
-            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe();
-            //update modal
-            this.updateNotificaitonModal("Success", "The new project was created", true, "success");
-            //update applications
-            for (let app of this.user_applications) ***REMOVED***
-                if (app.Id == application_id) ***REMOVED***
-                    this.getUserApplication(app);
-                    break;
-
-                ***REMOVED***
+        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).subscribe(result => ***REMOVED***
+            if (result['Error']) ***REMOVED***
+                this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
 
             ***REMOVED***
-            for (let app of this.all_applications) ***REMOVED***
-                if (app.Id == application_id) ***REMOVED***
-                    this.getApplication(app);
-                    break;
+            else ***REMOVED***
+                this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise().then(member_raw => ***REMOVED***
+                        let member = member_raw;
+                        manager_member_id = member["id"];
+                        manager_member_user_id = member["userId"];
+                        // create new group
 
-                ***REMOVED***
+                        return this.groupservice.createGroup(name, description).toPromise();
+                    ***REMOVED***
+                ).then(group_raw => ***REMOVED***
+                    let group = group_raw;
+                    new_group_id = group["id"];
+
+                    //add the application user to the group
+                    return this.groupservice.addMember(new_group_id, manager_member_id, compute_center).toPromise();
+
+                ***REMOVED***).then(null_result => ***REMOVED***
+                    return this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).toPromise();
+
+                ***REMOVED***).then(null_result => ***REMOVED***
+                    //setting approved status for Perun Group
+
+                    if (compute_center != 'undefined') ***REMOVED***
+                        this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
+                    ***REMOVED***
+                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe();
+                    //update modal
+                    this.updateNotificaitonModal("Success", "The new project was created", true, "success");
+                    //update applications
+                    for (let app of this.user_applications) ***REMOVED***
+                        if (app.Id == application_id) ***REMOVED***
+                            this.getUserApplication(app);
+                            break;
+
+                        ***REMOVED***
+
+                    ***REMOVED***
+                    for (let app of this.all_applications) ***REMOVED***
+                        if (app.Id == application_id) ***REMOVED***
+                            this.getApplication(app);
+                            break;
+
+                        ***REMOVED***
+                    ***REMOVED***
+                ***REMOVED***).catch(error => ***REMOVED***
+                    console.log(error)
+                    this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+                ***REMOVED***)
             ***REMOVED***
-        ***REMOVED***).catch(error => ***REMOVED***
-            console.log(error)
-            this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
         ***REMOVED***);
 
     ***REMOVED***
