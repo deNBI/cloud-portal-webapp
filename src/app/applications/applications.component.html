@@ -556,6 +556,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-{{ notificationModalType }}" role="alert">
@@ -578,7 +581,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Application</h4>
-                <button type="button" class="close" (click)="deleteModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="deleteModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -608,7 +611,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1>Modify Request: {{selectedApplication?.Name}}</h1>
-                <button type="button" class="close" (click)="extensionModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="extensionModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -833,7 +836,7 @@
                     Waiting </h4>
                 <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
-                <button type="button" class="close" (click)="resultModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="resultModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

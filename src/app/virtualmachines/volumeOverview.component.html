@@ -93,6 +93,9 @@
                     Success </h4>
                 <h4 class="modal-title" *ngIf="volume_status == 2"> Error </h4>
 
+              <button type="button" class="close" style="cursor:pointer" (click)="resultModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="volume_status == 7">
@@ -151,6 +154,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Volume</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
 
@@ -188,7 +194,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Attach Volume</h4>
-              <button type="button" class="close" (click)="attachModal.hide()" aria-label="Close">
+              <button type="button" class="close" style="cursor: pointer" (click)="attachModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -227,6 +233,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Rename Volume</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="renameModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <strong>Please enter a new name for the volume:</strong>
@@ -259,7 +268,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Create & Attach Volume</h4>
-              <button type="button" class="close" (click)="createModal.hide()" aria-label="Close">
+              <button type="button" class="close" style="cursor: pointer" (click)="createModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

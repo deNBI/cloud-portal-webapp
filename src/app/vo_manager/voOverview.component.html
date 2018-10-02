@@ -88,7 +88,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
                     ({{ usersModalProjectName }})</h4>
-                <button type="button" class="close" (click)="usersModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="usersModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -130,7 +130,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"> {{emailHeader}}</h4>
-                <button type="button" class="close" (click)="emailModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer;" (click)="emailModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -191,6 +191,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Send email</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
 
@@ -220,6 +223,9 @@
                 <h4 class="modal-title" *ngIf="emailStatus == 0"> Waiting </h4>
                 <h4 class="modal-title" *ngIf="emailStatus == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="emailStatus == 2"> Error </h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="successModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="emailStatus == 0">
@@ -249,7 +255,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Description</h4>
-                <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
