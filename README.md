@@ -17,35 +17,20 @@ cd cloud-portal-webapp
 127.0.0.1 portal-dev.denbi.de
 ~~~
 
-3. Install npm
+3. Install node version manager and node version 8
 ~~~BASH
-sudo apt install npm
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+# follow the commands printed by nvm
+nvm install node v8
 ~~~
 
-4. Create symbolic link
-~~~BASH
-sudo ln -s /usr/bin/nodejs /usr/bin/node
-~~~
-
-5. Install all needed npm packages and angular cli
+4. Install all needed npm packages and angular cli
 ~~~BASH
 npm install 
-sudo chown -R $USER /usr/local
 npm install -g @angular/cli
 ~~~
 
-6. Update and install the latest npm to use the latest angular cli
-~~~BASH
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-sudo apt-get install -y nodejs
-~~~
-
-7. Rebuild node-sass. Otherwise an error will occure
-~~~BASH
-npm rebuild node-sass ---force
-~~~
-
-8. start the angular server with
+5. start the angular server with
 ~~~BASH
 ng serve
 ~~~
