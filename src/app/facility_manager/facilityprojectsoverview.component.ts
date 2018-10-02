@@ -28,6 +28,7 @@ export class FacilityProjectsOverviewComponent {
     member_id: number;
     isLoaded: boolean = false;
     projects: Project[] = new Array();
+    details_loaded = false;
 
 
     // modal variables for User list
@@ -63,6 +64,32 @@ export class FacilityProjectsOverviewComponent {
         this.getFacilityProjects(this.selectedFacility['FacilityId'])
     }
 
+    getProjectLifetime(project) {
+        this.details_loaded = false;
+        if (!project.Lifetime) {
+            this.groupservice.getLifetime(project.Id).subscribe(res => {
+                let lifetime = res['lifetime'];
+                let dateCreated = project.DateCreated;
+
+                let expirationDate = undefined;
+                dateCreated = moment(dateCreated, "DD.MM.YYYY").toDate();
+                if (lifetime != -1) {
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
+                    let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
+
+                    project.LifetimeDays = lifetimeDays;
+                    project.DateEnd = expirationDate;
+                }
+                project.Lifetime = lifetime;
+                this.details_loaded = true;
+
+            })
+        }
+        else {
+            this.details_loaded = true;
+        }
+    }
+
     getFacilityProjects(facility) {
 
 
@@ -73,29 +100,17 @@ export class FacilityProjectsOverviewComponent {
             for (let group of facility_projects) {
                 let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                let is_pi = group['is_pi'];
                 let groupid = group['id'];
                 let facility = group['compute_center'];
                 let shortname = group['shortname'];
-                let details = facility['Details'];
-                let details_array = [];
-                let lifetime = group['lifetime'];
-                let lifetimeDays = -1;
-                let expirationDate = undefined;
-                if (lifetime != -1) {
-                    lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                    expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
-                }
-                for (let detail in details) {
-                    let detail_tuple = [detail, details[detail]];
-                    details_array.push(detail_tuple);
-                }
+                let compute_center=null;
 
                 if (!shortname) {
                     shortname = group['name']
                 }
-                let compute_center = new ComputecenterComponent(facility['FacilityId'], facility['Facility'], facility['Login'], facility['Support']);
-
+                if (facility) {
+                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
+                }
 
                 let newProject = new Project(
                     Number(groupid),
@@ -106,11 +121,7 @@ export class FacilityProjectsOverviewComponent {
                     is_pi,
                     is_admin,
                     compute_center);
-                newProject.Lifetime = lifetime;
-                newProject.LifetimeDays = lifetimeDays;
-                if (expirationDate) {
-                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                }
+
                 this.projects.push(newProject);
             }
             this.isLoaded = true;
