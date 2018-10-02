@@ -6,11 +6,10 @@ Simple request, that do not require administrative rights or special previliges 
 ## Setup development server
 To start the angular developement server on an empty system follow the upcoming steps.
 
-1. Clone the cloud-portal-webapp repository then go into the cloud-portal-webapp folder and checkout the developement branch with:
+1. Clone the cloud-portal-webapp repository then go into the cloud-portal-webapp folder.
 ~~~BASH
-git clone https://github.com/deNBI/cloud-portal-webapp.git
+git clone -b dev https://github.com/deNBI/cloud-portal-webapp.git
 cd cloud-portal-webapp
-git checkout dev
 ~~~
 
 2. Add this line to your /etc/hosts file 
