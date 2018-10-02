@@ -411,7 +411,6 @@ export class ApplicationsComponent {
 
     public getUserApplication(application: Application) {
         let index = this.user_applications.indexOf(application);
-        console.log(application)
 
         this.applicataionsservice.getUserApplication(application.Id.toString()).subscribe(aj => {
             let a = new Application();

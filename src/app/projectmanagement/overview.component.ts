@@ -36,6 +36,7 @@ export class OverviewComponent {
     application_action_success: boolean;
     projects: Project[] = new Array();
     loaded = true;
+    details_loaded = false;
 
 
     // modal variables for User list
@@ -107,6 +108,36 @@ export class OverviewComponent {
         })
     }
 
+    getProjectLifetime(project) {
+        this.details_loaded = false;
+        if (!project.Lifetime) {
+            this.groupservice.getLifetime(project.Id).subscribe(res => {
+                let lifetime = res['lifetime'];
+                console.log(lifetime)
+                let dateCreated = project.DateCreated;
+                console.log(dateCreated)
+
+                let expirationDate = undefined;
+                dateCreated = moment(dateCreated, "DD.MM.YYYY").toDate();
+                if (lifetime != -1) {
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
+                    let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
+
+                    project.LifetimeDays = lifetimeDays;
+                    project.DateEnd = expirationDate;
+                }
+                project.Lifetime = lifetime;
+                this.details_loaded = true;
+
+            })
+        }
+        else {
+            this.details_loaded = true;
+        }
+
+
+    }
+
     getUserProjects() {
 
         this.groupservice.getGroupDetails().subscribe(result => {
@@ -118,15 +149,8 @@ export class OverviewComponent {
                 let groupid = group['id'];
                 let facility = group['compute_center'];
                 let shortname = group['shortname'];
-                //let lifetime = group['lifetime'];
-               // let lifetimeDays = -1;
-                let realname = group['name'];
 
-                let expirationDate = undefined;
-               /* if (lifetime != -1) {
-                    lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                    expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
-                }*/
+                let realname = group['name'];
                 let compute_center = null;
 
                 if (facility) {
@@ -138,18 +162,12 @@ export class OverviewComponent {
                     Number(groupid),
                     shortname,
                     group["description"],
-                    dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                    moment(dateCreated).format("DD.MM.YYYY"),
                     dateDayDifference,
                     is_pi,
                     this.is_admin,
                     compute_center);
                 newProject.OpenStackProject = group['openstack_project'];
-                //newProject.Lifetime = lifetime;
-                //newProject.LifetimeDays = lifetimeDays;
-                newProject.RealName = realname;
-                if (expirationDate) {
-                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                }
                 this.projects.push(newProject);
             }
             this.isLoaded = true;
