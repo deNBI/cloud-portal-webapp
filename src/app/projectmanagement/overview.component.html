@@ -106,7 +106,7 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table class="table table-striped" style="margin: 5px">
                         <thead>
                         <tr>
                             <th>User ID</th>
@@ -124,23 +124,23 @@
 
                                 <button *ngIf="UserModalFacility === null" (click)="usersModal.hide();
                                                 removeMemberModal.show();
-                                                " class="btn btn-secondary" type="button">
+                                                " class="btn btn-secondary" type="button" style="margin: 2px">
                                     <i class="fa fa-trash"></i>&nbsp; Remove member
                                 </button>
 
                                 <button *ngIf="!member.IsPi" (click)="usersModal.hide();promoteAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility[1]);
                                                 notificationModal.show();
-                                               " class="btn btn-secondary" type="button">
-                                    <i class="fa fa-trash"></i>&nbsp; Set Admin status
+                                               " class="btn btn-secondary" type="button" style="margin: 2px">
+                                    <i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
                                 </button>
                                 <button *ngIf="member.IsPi" (click)="usersModal.hide();removeAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility[1]);
                                                 notificationModal.show();
-                                               " class="btn btn-secondary" type="button">
-                                    <i class="fa fa-trash"></i>&nbsp; Remove Admin status
+                                               " class="btn btn-secondary" type="button" style="margin: 2px">
+                                    <i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
                                 </button>
                                 <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username,UserModalFacility[1]);
                                                 notificationModal.show();
-                                               " class="btn btn-secondary" type="button">
+                                               " class="btn btn-secondary" type="button" style="margin: 2px">
 
                                     <i class="fa fa-trash"></i>&nbsp; Remove member
                                 </button>
