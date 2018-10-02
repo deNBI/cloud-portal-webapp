@@ -18,6 +18,7 @@ import ***REMOVED***forkJoin***REMOVED*** from 'rxjs';
 import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
 import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
+import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
 
 @Component(***REMOVED***
     templateUrl: 'applications.component.html',
@@ -141,7 +142,6 @@ export class ApplicationsComponent ***REMOVED***
             ***REMOVED***
             for (let key in res) ***REMOVED***
                 let aj = res[key];
-                console.log(aj)
                 let a = new Application();
                 a.Id = aj["project_application_id"];
                 a.Name = aj["project_application_name"];
@@ -159,6 +159,8 @@ export class ApplicationsComponent ***REMOVED***
                 a.SpecialHardware = aj["project_application_special_hardware"];
                 a.OpenStackProject = aj["project_application_openstack_project"];
                 a.Comment = aj["project_application_comment"];
+                a.PerunId = aj['project_application_perun_id'];
+
                 if (aj['projectapplicationrenewal']) ***REMOVED***
                     let r = new ApplicationExtension();
 
@@ -189,6 +191,7 @@ export class ApplicationsComponent ***REMOVED***
                 this.user_applications.push(a)
             ***REMOVED***
             this.isLoaded_userApplication = true;
+
 
         ***REMOVED***);
     ***REMOVED***
@@ -293,45 +296,19 @@ export class ApplicationsComponent ***REMOVED***
                             r.SpecialHardware = special_hardware;
                         ***REMOVED***
                         a.ApplicationExtension = r;
-                    ***REMOVED***
 
+                    ***REMOVED***
                     this.all_applications.push(a);
 
                 ***REMOVED***
-                let observable_list = [];
+
+                this.isLoaded_AllApplication = true;
                 for (let app of this.all_applications) ***REMOVED***
-                    // app.ComputeCenter = ['None', -1];
-                    if (app.Status !== 1 && app.PerunId) ***REMOVED***
-                        observable_list.push(this.groupservice.getFacilityByGroup(app.PerunId.toString()))
+                    if (app.Status == 4) ***REMOVED***
+                        this.getFacilityProject(app);
                     ***REMOVED***
-
                 ***REMOVED***
-                forkJoin(observable_list).subscribe(result => ***REMOVED***
-                    for (let res of result) ***REMOVED***
 
-                        let login = res['Login'];
-                        let suport = res['Support'];
-                        let facilityname = res['Facility'];
-                        let facilityId = res['FacilityId']
-
-                        let cc = new ComputecenterComponent(facilityId, facilityname, login, suport)
-                        for (let app of  this.all_applications) ***REMOVED***
-                            if (app.PerunId == res['Group']) ***REMOVED***
-                                app.ComputeCenter = cc
-                            ***REMOVED***
-
-                        ***REMOVED***
-
-
-                    ***REMOVED***
-                    this.isLoaded_AllApplication = true;
-
-
-                ***REMOVED***);
-                if (observable_list.length == 0) ***REMOVED***
-                    this.isLoaded_AllApplication = true;
-
-                ***REMOVED***
 
             ***REMOVED***);
         ***REMOVED***
@@ -343,8 +320,152 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
-    public requestExtension(data) ***REMOVED***
 
+    public getFacilityProject(app: Application) ***REMOVED***
+
+        if (!app.ComputeCenter && app.Status.toString() != 'submitted') ***REMOVED***
+            this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe(res => ***REMOVED***
+                let login = res['Login'];
+                let suport = res['Support'];
+                let facilityname = res['Facility'];
+                let facilityId = res['FacilityId'];
+
+                let cc = new ComputecenterComponent(facilityId, facilityname, login, suport);
+                app.ComputeCenter = cc
+
+
+            ***REMOVED***)
+        ***REMOVED***
+
+    ***REMOVED***
+
+    public getApplication(application: Application) ***REMOVED***
+        let index = this.all_applications.indexOf(application);
+
+        this.applicataionsservice.getApplication(application.Id.toString()).subscribe(aj => ***REMOVED***
+            let a = new Application();
+            a.Id = aj["project_application_id"];
+
+            a.Name = aj["project_application_name"];
+            a.Shortname = aj["project_application_shortname"];
+            a.Description = aj["project_application_description"];
+            a.Lifetime = aj["project_application_lifetime"];
+
+            a.VMsRequested = aj["project_application_vms_requested"];
+            a.RamPerVM = aj["project_application_ram_per_vm"];
+            a.CoresPerVM = aj["project_application_cores_per_vm"];
+            a.VolumeLimit = aj["project_application_volume_limit"];
+            a.VolumeCounter = aj["project_application_volume_counter"];
+
+            a.ObjectStorage = aj["project_application_object_storage"];
+            a.SpecialHardware = aj["project_application_special_hardware"];
+
+            a.Institute = aj["project_application_institute"];
+            a.Workgroup = aj["project_application_workgroup"];
+
+            a.DateSubmitted = aj["project_application_date_submitted"];
+            a.DateStatusChanged = aj["project_application_date_status_changed"];
+            a.User = aj["project_application_user"]["username"];
+            a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
+            a.UserEmail = aj["project_application_user"]["email"];
+            a.Status = aj["project_application_status"];
+            if (a.Status == this.APPROVED_STATUS) ***REMOVED***
+                a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
+
+
+            ***REMOVED***
+            a.Comment = aj["project_application_comment"];
+            a.PerunId = aj['project_application_perun_id'];
+            a.OpenStackProject = aj["project_application_openstack_project"];
+            if (aj['projectapplicationrenewal']) ***REMOVED***
+                let r = new ApplicationExtension();
+
+                r.Id = aj['projectapplicationrenewal']['project_application'];
+                r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                let special_hardware = [];
+                if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) ***REMOVED***
+                    let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
+
+                    for (let c = 0; c < special_hardware_string.length; c++) ***REMOVED***
+                        let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                        special_hardware.push(sh)
+
+                    ***REMOVED***
+
+                    r.SpecialHardware = special_hardware;
+                ***REMOVED***
+                a.ApplicationExtension = r;
+            ***REMOVED***
+            this.all_applications[index] = a;
+
+        ***REMOVED***)
+    ***REMOVED***
+
+    public getUserApplication(application: Application) ***REMOVED***
+        let index = this.user_applications.indexOf(application);
+
+        this.applicataionsservice.getUserApplication(application.Id.toString()).subscribe(aj => ***REMOVED***
+            let a = new Application();
+            a.Id = aj["project_application_id"];
+            a.Name = aj["project_application_name"];
+            a.Shortname = aj["project_application_shortname"];
+            a.Lifetime = aj["project_application_lifetime"];
+            a.DateSubmitted = aj["project_application_date_submitted"];
+            a.Status = aj["project_application_status"]["application_status_name"];
+            a.Description = aj["project_application_description"];
+            a.VMsRequested = aj["project_application_vms_requested"];
+            a.RamPerVM = aj["project_application_ram_per_vm"];
+            a.CoresPerVM = aj["project_application_cores_per_vm"];
+            a.VolumeLimit = aj["project_application_volume_limit"];
+            a.VolumeCounter = aj["project_application_volume_counter"];
+            a.ObjectStorage = aj["project_application_object_storage"];
+            a.SpecialHardware = aj["project_application_special_hardware"];
+            a.OpenStackProject = aj["project_application_openstack_project"];
+            a.Comment = aj["project_application_comment"];
+            if (aj['projectapplicationrenewal']) ***REMOVED***
+                let r = new ApplicationExtension();
+
+                r.Id = aj['projectapplicationrenewal']['project_application'];
+                r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                let special_hardware = [];
+                if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) ***REMOVED***
+                    let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
+
+                    for (let c = 0; c < special_hardware_string.length; c++) ***REMOVED***
+                        let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                        special_hardware.push(sh)
+
+                    ***REMOVED***
+
+                    r.SpecialHardware = special_hardware;
+                ***REMOVED***
+                a.ApplicationExtension = r;
+            ***REMOVED***
+            this.user_applications[index] = a;
+
+
+        ***REMOVED***)
+
+
+    ***REMOVED***
+
+    public requestExtension(data) ***REMOVED***
         this.applicataionsservice.requestRenewal(data).subscribe(result => ***REMOVED***
             if (result['Error']) ***REMOVED***
                 this.extension_status = 2
@@ -352,10 +473,15 @@ export class ApplicationsComponent ***REMOVED***
             else ***REMOVED***
                 this.extension_status = 1;
             ***REMOVED***
-            this.user_applications = [];
-            this.all_applications = [];
-            this.getUserApplications();
-            this.getAllApplications();
+            this.getUserApplication(this.selectedApplication);
+
+            for (let app of this.all_applications) ***REMOVED***
+                if (this.selectedApplication.PerunId == app.PerunId) ***REMOVED***
+                    this.getApplication(app);
+                    break;
+                ***REMOVED***
+
+            ***REMOVED***
         ***REMOVED***)
 
 
@@ -386,26 +512,36 @@ export class ApplicationsComponent ***REMOVED***
             else ***REMOVED***
                 this.extension_status = 3;
             ***REMOVED***
-            this.user_applications = [];
-            this.all_applications = [];
-            this.getUserApplications();
-            this.getAllApplications();
+            this.getApplication(this.selectedApplication);
+
+            for (let app of this.user_applications) ***REMOVED***
+                if (this.selectedApplication.PerunId == app.PerunId) ***REMOVED***
+                    this.getUserApplication(app);
+                    break;
+                ***REMOVED***
+
+            ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
 
     public declineExtension(application_id: number) ***REMOVED***
         this.applicataionsservice.declineRenewal(application_id).subscribe(result => ***REMOVED***
-            if (result['Error']) ***REMOVED***
+            if (result != null) ***REMOVED***
                 this.extension_status = 2
             ***REMOVED***
             else ***REMOVED***
                 this.extension_status = 4;
             ***REMOVED***
-            this.user_applications = [];
-            this.all_applications = [];
-            this.getUserApplications();
-            this.getAllApplications();
+            this.getApplication(this.selectedApplication);
+
+            for (let app of this.user_applications) ***REMOVED***
+                if (this.selectedApplication.PerunId == app.PerunId) ***REMOVED***
+                    this.getUserApplication(app);
+                    break;
+                ***REMOVED***
+
+            ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
@@ -466,7 +602,7 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***
 
 
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project, numberofVms, volumelimit, lifetime, longname, volumecounter) ***REMOVED***
+    public createGroup(name, description, manager_elixir_id, application_id, compute_center) ***REMOVED***
 
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
@@ -499,15 +635,27 @@ export class ApplicationsComponent ***REMOVED***
             if (compute_center != 'undefined') ***REMOVED***
                 this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
             ***REMOVED***
-            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe()
+            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe();
             //update modal
             this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             //update applications
-            this.all_applications = [];
-            this.user_applications = [];
-            this.getUserApplications();
-            this.getAllApplications();
+            for (let app of this.user_applications) ***REMOVED***
+                if (app.Id == application_id) ***REMOVED***
+                    this.getUserApplication(app);
+                    break;
+
+                ***REMOVED***
+
+            ***REMOVED***
+            for (let app of this.all_applications) ***REMOVED***
+                if (app.Id == application_id) ***REMOVED***
+                    this.getApplication(app);
+                    break;
+
+                ***REMOVED***
+            ***REMOVED***
         ***REMOVED***).catch(error => ***REMOVED***
+            console.log(error)
             this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
         ***REMOVED***);
 

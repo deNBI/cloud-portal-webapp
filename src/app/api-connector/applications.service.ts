@@ -31,6 +31,20 @@ export class ApplicationsService ***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
+    getUserApplication(project_id:string):Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/project_applications/' + project_id + '/', ***REMOVED***
+            headers: header_csrf,
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
+
+    getApplication(app_id:string):Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/', ***REMOVED***
+            headers: header_csrf,
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
+
     getAllApplications(): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', ***REMOVED***
             withCredentials: true,
