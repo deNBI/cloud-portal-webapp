@@ -59,7 +59,8 @@
                                     <div class="btn-group-vertical">
                                         <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
                                                 data-toggle="modal"
-                                                (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
+                                                (click)="this.usersModalProjectMembers = [];showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
+
 
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
                                             <i class="fa fa-users"></i>&nbsp;Show Members
