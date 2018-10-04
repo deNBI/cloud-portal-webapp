@@ -50,7 +50,8 @@
                                 <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
                                 <td>
                                     <button class="btn btn-secondary"
-                                            (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">Show Details
+                                            (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
+                                        Show Details
                                     </button>
                                 </td>
 
@@ -281,39 +282,40 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Details</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
             <div class="modal-body">
                 <div *ngIf="!details_loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
-                                                               style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
-            </div>
-              <div class="table-responsive">
-                <table *ngIf="details_loaded" class="table table-striped">
-                    <thead>
-                    <th>Description</th>
-                    <th>Date created (d/m/y)</th>
-                    <th>Expiration Date (d/m/y)</th>
-                    <th>Days running</th>
-                    <th>Lifetime in Days</th>
-                    </thead>
-                    <tbody>
-                    <td>
-                        <button class="btn btn-secondary"
-                                (click)="infoModal.hide();descriptionModal.show();">Show
-                            Description
-                        </button>
-                    </td>
+                                                                           style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+                </div>
+                <div class="table-responsive">
+                    <table *ngIf="details_loaded" class="table table-striped">
+                        <thead>
+                        <th>Description</th>
+                        <th>Date created (d/m/y)</th>
+                        <th>Expiration Date (d/m/y)</th>
+                        <th>Days running</th>
+                        <th>Lifetime in Days</th>
+                        </thead>
+                        <tbody>
+                        <td>
+                            <button class="btn btn-secondary"
+                                    (click)="infoModal.hide();descriptionModal.show();">Show
+                                Description
+                            </button>
+                        </td>
 
-                    <td>***REMOVED******REMOVED*** selectedProject?.DateCreated ***REMOVED******REMOVED***</td>
-                    <td>***REMOVED******REMOVED***selectedProject?.DateEnd***REMOVED******REMOVED***</td>
-                    <td>***REMOVED******REMOVED*** selectedProject?.DaysRunning ***REMOVED******REMOVED***</td>
-                    <td>***REMOVED******REMOVED***selectedProject?.LifetimeDays***REMOVED******REMOVED***</td>
-                    <td>
-                    </tbody>
-                </table>
+                        <td>***REMOVED******REMOVED*** selectedProject?.DateCreated ***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***selectedProject?.DateEnd***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED*** selectedProject?.DaysRunning ***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***selectedProject?.LifetimeDays***REMOVED******REMOVED***</td>
+                        <td>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="modal-footer">
