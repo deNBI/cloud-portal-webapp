@@ -311,7 +311,7 @@ export class GroupService ***REMOVED***
 
     getLifetime(groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/'+ groupid + '/attributes//lifetime/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'projects/'+ groupid + '/attributes/lifetime/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 

@@ -18,7 +18,6 @@ export class MemberGuardService implements CanActivate ***REMOVED***
         return new Promise((resolve, reject) => ***REMOVED***
             this.userservice.getLoggedUser().toPromise()
                 .then(result => ***REMOVED***
-                    console.log(result.status)
 
                     let res = result;
 
