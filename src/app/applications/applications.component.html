@@ -38,7 +38,7 @@
                                     <td>***REMOVED******REMOVED*** application.Status ***REMOVED******REMOVED***</td>
                                     <td>
 
-                                        <button (click)="switchCollapseStatus('user_application-' + application.Id)"
+                                        <button (click)="switchCollapseStatus('user_application-' + application.Id);getFacilityProject(application);"
                                                 type="button" class="btn btn-secondary">
                                             <i class="fa fa-info-circle"></i>&nbsp;
                                             <span [hidden]="!getCollapseStatus('user_application-' + application.Id)">Show</span><span
@@ -69,6 +69,10 @@
                                              [class.collapse]="getCollapseStatus('user_application-' + application.Id)">
                                             <div class="table-responsive">
                                                 <table class="table table-striped">
+                                                    <tr [style.display]="application.Status != 'submitted' ? 'inherit' :'none'">
+                                                        <td>Facility</td>
+                                                        <td>***REMOVED******REMOVED***application.ComputeCenter?.Name***REMOVED******REMOVED***</td>
+                                                    </tr>
                                                     <tr>
                                                         <td>Description</td>
                                                         <td>***REMOVED******REMOVED*** application.Description ***REMOVED******REMOVED***
@@ -195,7 +199,7 @@
 
 
                                         <td>
-                                            <select [style.display]="application.OpenStackProject? 'inherit' :'none'"
+                                            <select [style.display]="application.OpenStackProject && application.Status == 1 ? 'inherit' :'none'"
                                                     class="form-control" #selectedComputeCenter>
 
                                                 <option value="undefined" selected> no center</option>
@@ -203,13 +207,14 @@
                                                         value="***REMOVED******REMOVED***computeCenter.FacilityId***REMOVED******REMOVED***"> ***REMOVED******REMOVED***computeCenter.Name***REMOVED******REMOVED***
                                                 </option>
                                             </select>
+                                            <span [style.display]="application.Status != 1 ? 'inherit' :'none'">***REMOVED******REMOVED***application.ComputeCenter?.Name***REMOVED******REMOVED***</span>
                                         </td>
 
 
                                         <td>
                                             <button *ngIf="application.Status == 1"
 
-                                                    (click)='resetNotificationModal();createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value,application.OpenStackProject,application.VMsRequested,application.VolumeLimit,application.Lifetime,application.Name,application.VolumeCounter ); notificationModal.show();'
+                                                    (click)="resetNotificationModal();createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
 
 
                                                     type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
@@ -218,7 +223,7 @@
                                             </button>
                                             <button *ngIf="application.Status == 4"
 
-                                                    (click)="approveExtension(application.Id);resultModal.show();"
+                                                    (click)="setSelectedApplication(application);approveExtension(application.Id);resultModal.show();"
                                                     type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
                                                 Approve
                                                 Modification
@@ -231,8 +236,9 @@
                                             </button>
                                             <button *ngIf="application.Status == 4"
                                                     type="button" class="btn btn-secondary"
-                                                    (click)="declineExtension(application.Id);resultModal.show();"><i
-                                                    class="fa fa-close"></i>&nbsp;
+                                                    (click)="setSelectedApplication(application);declineExtension(application.Id);resultModal.show();">
+                                                <i
+                                                        class="fa fa-close"></i>&nbsp;
                                                 Decline Modification
                                             </button>
 
@@ -266,7 +272,7 @@
                                                             <td *ngIf="application.Status == 4">
                                                             </td>
                                                         </tr>
-                                                           <tr>
+                                                        <tr>
                                                             <td>User Email</td>
                                                             <td>***REMOVED******REMOVED***application_user[application.User]?.email***REMOVED******REMOVED***</td>
                                                             <td *ngIf="application.Status == 4">
@@ -410,7 +416,6 @@
                                 <th>Date submitted (d/m/y)</th>
                                 <th>User</th>
                                 <th>Institute</th>
-                                <th>Facility</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -424,14 +429,15 @@
                                         <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED*** application.User ***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED*** application.Institute ***REMOVED******REMOVED***</td>
-                                        <td>***REMOVED******REMOVED***application?.ComputeCenter?.Name***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED*** getStatusById(application.Status) ***REMOVED******REMOVED***</td>
                                         <td>
-                                            <button (click)="switchCollapseStatus('application_history-' + application.Id)"
+                                            <button (click)="switchCollapseStatus('application_history-' + application.Id);getFacilityProject(application);"
                                                     type="button" class="btn btn-secondary">
                                                 <i class="fa fa-info-circle"></i>&nbsp;
-                                                <span [hidden]="!getCollapseStatus('application_history-' + application.Id)">Show</span><span
-                                                    [hidden]="getCollapseStatus('application_history-' + application.Id)">Hide</span>
+                                                <span [hidden]="!getCollapseStatus('application_history-' + application.Id)"
+                                                >Show</span><span
+                                                    [hidden]="getCollapseStatus('application_history-' + application.Id)"
+                                                    style="margin-left: 5px">Hide</span>
                                                 Information
                                             </button>
                                             <button (click)="deleteModal.show();setDeleteId(application.Id)"
@@ -455,6 +461,10 @@
                                                         <tr>
                                                             <td>Comment</td>
                                                             <td>***REMOVED******REMOVED*** application.Comment ***REMOVED******REMOVED***</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Facility</td>
+                                                            <td>***REMOVED******REMOVED***application.ComputeCenter?.Name***REMOVED******REMOVED***</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Workgroup</td>
