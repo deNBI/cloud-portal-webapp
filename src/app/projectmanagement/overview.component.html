@@ -15,29 +15,29 @@
                             <tr>
                                 <th>Project ID</th>
                                 <th>Project Name</th>
-                                <th>Description</th>
+                                <th>Details</th>
                                 <th>Facility</th>
-                                <th>Date created (d/m/y)</th>
-                                <th>Expiration Date (d/m/y)</th>
-                                <th>Days running</th>
-                                <th>Lifetime in Days</th>
+                                <!--th>Date created (d/m/y)</th>
+                                <!--th>Expiration Date (d/m/y)</th-->
+                                <!--th>Days running</th-->
+                                <!--th>Lifetime in Days</th-->
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr *ngFor="let project of projects"
-                                [ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}">
+                            <tr *ngFor="let project of projects">
+                                <!--[ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}"-->
                                 <td>{{ project.Id }}</td>
                                 <td>{{ project.Name }}</td>
                                 <td>
                                     <button class="btn btn-secondary"
-                                            (click)="selectedProject=project;infoModal.show();">Show Description
+                                            (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">Show Details
                                     </button>
                                 </td>
 
                                 <td>
-                                    <p *ngIf="project.ComputeCenter.Name">{{project.ComputeCenter.Name}}</p>
-                                    <ul *ngIf="project.ComputeCenter.Name">
+                                    <p *ngIf="project.ComputeCenter?.Name">{{project.ComputeCenter.Name}}</p>
+                                    <ul *ngIf="project.ComputeCenter?.Name">
                                         <li *ngIf="project.OpenStackProject"><a target="_blank"
                                                                                 href="project.ComputeCenter.Login">Login:
                                             {{project.ComputeCenter.Login}}</a></li>
@@ -51,10 +51,10 @@
 
                                 </td>
 
-                                <td>{{ project.DateCreated }}</td>
-                                <td>{{project.DateEnd}}</td>
-                                <td>{{ project.DaysRunning }}</td>
-                                <td>{{project.LifetimeDays}}</td>
+                                <!--td>{{ project.DateCreated }}</td>
+                                <!--td>{{project.DateEnd}}</td-->
+                                <!--td>{{ project.DaysRunning }}</td-->
+                                <!--td>{{project.LifetimeDays}}</td-->
                                 <td>
                                     <div class="btn-group-vertical">
                                         <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
@@ -412,19 +412,71 @@
 </div><!-- /.modal -->
 
 
-<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+<div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-info" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Description</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()" aria-label="Close">
+
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
             <div class="modal-body">
                 <p>{{ selectedProject?.Description }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"
+                        (click)="selectedProject=undefined;descriptionModal.hide();">
+                    Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-info modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Details</h4>
+                <button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div *ngIf="!details_loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
+                                                               style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+            </div>
+              <div class="table-responsive">
+                <table *ngIf="details_loaded" class="table table-striped">
+                    <thead>
+                    <th>Description</th>
+                    <th>Date created (d/m/y)</th>
+                    <th>Expiration Date (d/m/y)</th>
+                    <th>Days running</th>
+                    <th>Lifetime in Days</th>
+                    </thead>
+                    <tbody>
+                    <td>
+                        <button class="btn btn-secondary"
+                                (click)="infoModal.hide();descriptionModal.show();">Show
+                            Description
+                        </button>
+                    </td>
+
+                    <td>{{ selectedProject?.DateCreated }}</td>
+                    <td>{{selectedProject?.DateEnd}}</td>
+                    <td>{{ selectedProject?.DaysRunning }}</td>
+                    <td>{{selectedProject?.LifetimeDays}}</td>
+                    <td>
+                    </tbody>
+                </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" (click)="selectedProject=undefined;infoModal.hide();">
