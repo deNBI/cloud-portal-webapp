@@ -100,7 +100,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
                     ({{ usersModalProjectName }})</h4>
-                <button type="button" class="close" (click)="usersModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer;" (click)="usersModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -166,7 +166,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Add member to the project {{ addUserModalProjectID }}
                     ({{ addUserModalProjectName }})</h4>
-                <button type="button" class="close" (click)="addUserModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="addUserModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -293,6 +293,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"></h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="removeMemberModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div *ngIf="UserModalFacility == null ">
@@ -321,6 +324,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-{{ notificationModalType }}" role="alert">
@@ -343,6 +349,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Change Password</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
 
@@ -371,6 +380,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">{{ passwordModalTitle }}</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="passwordModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-{{ passwordModalType }}" role="alert">
@@ -406,7 +418,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Description</h4>
-                <button type="button" class="close" (click)="descriptionModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()" aria-label="Close">
+
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -481,7 +494,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Applications for {{selectedProject?.Name}}</h4>
-                <button type="button" class="close" (click)="applicationModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
