@@ -26,7 +26,7 @@ export class OverviewComponent {
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
     @Input() invitation_group_pre: string = environment.invitation_group_pre
     is_admin = false;
-    userprojects: {};
+    userprojects: {}[];
     member_id: number;
     admingroups: {};
     filteredMembers = null;
@@ -36,6 +36,7 @@ export class OverviewComponent {
     application_action_success: boolean;
     projects: Project[] = new Array();
     loaded = true;
+    details_loaded = false;
 
 
     // modal variables for User list
@@ -107,55 +108,80 @@ export class OverviewComponent {
         })
     }
 
+    getProjectLifetime(project) {
+        this.details_loaded = false;
+        if (!project.Lifetime) {
+            this.groupservice.getLifetime(project.Id).subscribe(res => {
+                let lifetime = res['lifetime'];
+                console.log(lifetime)
+                let dateCreated = project.DateCreated;
+                console.log(dateCreated)
+
+                let expirationDate = undefined;
+                dateCreated = moment(dateCreated, "DD.MM.YYYY").toDate();
+                if (lifetime != -1) {
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
+                    let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
+
+                    project.LifetimeDays = lifetimeDays;
+                    project.DateEnd = expirationDate;
+                }
+                project.Lifetime = lifetime;
+                this.details_loaded = true;
+
+            })
+        }
+        else {
+            this.details_loaded = true;
+        }
+
+
+    }
+
     getUserProjects() {
 
         this.groupservice.getGroupDetails().subscribe(result => {
             this.userprojects = result;
-            for (let key in this.userprojects) {
-                let group = this.userprojects[key];
+            for (let group of this.userprojects) {
                 let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
                 let is_pi = group['is_pi'];
-                let groupid = key;
-                let facility = group['facility'];
+                let groupid = group['id'];
+                let facility = group['compute_center'];
                 let shortname = group['shortname'];
-                let lifetime = group['lifetime'];
-                let lifetimeDays = -1;
+
                 let realname = group['name'];
+                let compute_center = null;
 
-                let expirationDate = undefined;
-                if (lifetime != -1) {
-                    lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                    expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
+                if (facility) {
+                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
                 }
-                //check if user is a PI (group manager)
-
-                if (!shortname) {
-                    shortname = group['name']
-                }
-
-                let compute_center = new ComputecenterComponent(facility['FacilityId'], facility['Facility'], facility['Login'], facility['Support']);
 
 
                 let newProject = new Project(
                     Number(groupid),
                     shortname,
                     group["description"],
-                    dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                    moment(dateCreated).format("DD.MM.YYYY"),
                     dateDayDifference,
                     is_pi,
                     this.is_admin,
                     compute_center);
                 newProject.OpenStackProject = group['openstack_project'];
-                newProject.Lifetime = lifetime;
-                newProject.LifetimeDays = lifetimeDays;
-                newProject.RealName = realname;
-                if (expirationDate) {
-                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                }
                 this.projects.push(newProject);
             }
             this.isLoaded = true;
+            for (let group of this.projects) {
+                if (group.Name.length > 15 || group.Name.indexOf('_') > -1) {
+                    this.groupservice.getShortame(group.Id.toString()).subscribe(result => {
+                        if (result['shortname']) {
+                            group.Name = result['shortname']
+                        }
+
+                    })
+                }
+
+            }
 
         })
 
@@ -179,7 +205,7 @@ export class OverviewComponent {
         this.UserModalFacility = null;
     }
 
-    filterMembers(searchString:string, groupid: number) {
+    filterMembers(searchString: string, groupid: number) {
         this.userservice.getFilteredMembersOfdeNBIVo(searchString, groupid.toString()).subscribe(result => {
             this.filteredMembers = result;
         })

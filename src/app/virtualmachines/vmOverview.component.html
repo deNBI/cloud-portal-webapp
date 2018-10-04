@@ -52,21 +52,25 @@
                     <label>
                         <input type="checkbox"
                                (change)="changeFilterStatus('ACTIVE');applyFilter();" checked/>
-                        ACTIVE
+                        <span style="margin-left: 5px"
+                              class="badge badge-success">ACTIVE </span>
+
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox"
                                (change)="changeFilterStatus('SUSPENDED');applyFilter();" checked/>
-                        SUSPENDED
+                        <span style="margin-left: 5px"
+                              class="badge badge-warning">SUSPENDED </span>
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox"
                                (change)="changeFilterStatus('DELETED');applyFilter();"/>
-                        DELETED
+                        <span style="margin-left: 5px"
+                              class="badge badge-danger">DELETED </span>
                     </label>
                 </div>
             </td>
@@ -91,13 +95,21 @@
                         {{vm.project}}
                     </td>
                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-                        {{vm.status}}
+                         <span *ngIf="vm.status == 'DELETED'" style="margin-left: 5px"
+                               class="badge badge-danger"> {{vm.status}}</span>
+                        <span *ngIf="vm.status == 'ACTIVE'" style="margin-left: 5px"
+                              class="badge badge-success"> {{vm.status}}</span>
+                        <span *ngIf="vm.status == 'SUSPENDED'" style="margin-left: 5px"
+                              class="badge badge-warning"> {{vm.status}}</span>
+                        <span class="badge badge-info"
+                              *ngIf="vm.status != 'DELETED' && vm.status != 'ACTIVE' && vm.status != 'SUSPENDED'">{{vm.status}}</span>
                     </td>
                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
                         {{vm.created_at}}
                     </td>
                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-                        <button type="button" class="btn btn-secondary btn-block" style="white-space: normal; word-wrap: break-word;"
+                        <button type="button" class="btn btn-secondary btn-block"
+                                style="white-space: normal; word-wrap: break-word;"
                                 (click)="selected_command=vm.ssh_command;infoModal.show()"> Show Information
                         </button>
                     </td>
@@ -259,7 +271,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Vm</h4>
-              <button type="button" class="close" (click)="verifyModal.hide()" aria-label="Close">
+                <button type="button" class="close" (click)="verifyModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -290,7 +302,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Create Snapshot</h4>
-              <button type="button" class="close" (click)="snapshotModal.hide()" aria-label="Close">
+                <button type="button" class="close" (click)="snapshotModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

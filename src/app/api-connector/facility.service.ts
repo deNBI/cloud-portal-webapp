@@ -33,18 +33,11 @@ export class FacilityService {
 
     }
 
-    getFacilityAllowedGroups(facility): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/projects/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));
-
-
-    }
 
     getFacilityAllowedGroupsWithDetails(facility): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/projects/details/' , {
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/projects/' , {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -57,6 +50,7 @@ export class FacilityService {
         return this.http.post(this.settings.getApiBaseURL() + 'facilityManagers/current/facilityMail/', params, {
             withCredentials: true,
             headers: header,
+            observe: 'response'
         }).pipe(catchError((error: any) => throwError(error)));
 
 
