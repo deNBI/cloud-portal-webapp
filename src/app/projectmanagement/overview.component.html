@@ -31,7 +31,8 @@
                                 <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
                                 <td>
                                     <button class="btn btn-secondary"
-                                            (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">Show Details
+                                            (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
+                                        Show Details
                                     </button>
                                 </td>
 
@@ -101,7 +102,8 @@
             <div class="modal-header">
                 <h4 class="modal-title">Members of the Project ***REMOVED******REMOVED*** usersModalProjectID ***REMOVED******REMOVED***
                     (***REMOVED******REMOVED*** usersModalProjectName ***REMOVED******REMOVED***)</h4>
-                <button type="button" class="close" style="cursor: pointer;" (click)="usersModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer;" (click)="usersModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -167,7 +169,8 @@
             <div class="modal-header">
                 <h4 class="modal-title">Add member to the project ***REMOVED******REMOVED*** addUserModalProjectID ***REMOVED******REMOVED***
                     (***REMOVED******REMOVED*** addUserModalProjectName ***REMOVED******REMOVED***)</h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="addUserModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="addUserModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -294,7 +297,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"></h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="removeMemberModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="removeMemberModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -325,7 +329,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -350,7 +355,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Change Password</h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -381,7 +387,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">***REMOVED******REMOVED*** passwordModalTitle ***REMOVED******REMOVED***</h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="passwordModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="passwordModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -419,7 +426,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Description</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()"
+                        aria-label="Close">
 
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -444,39 +452,40 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Details</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
             <div class="modal-body">
                 <div *ngIf="!details_loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
-                                                               style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
-            </div>
-              <div class="table-responsive">
-                <table *ngIf="details_loaded" class="table table-striped">
-                    <thead>
-                    <th>Description</th>
-                    <th>Date created (d/m/y)</th>
-                    <th>Expiration Date (d/m/y)</th>
-                    <th>Days running</th>
-                    <th>Lifetime in Days</th>
-                    </thead>
-                    <tbody>
-                    <td>
-                        <button class="btn btn-secondary"
-                                (click)="infoModal.hide();descriptionModal.show();">Show
-                            Description
-                        </button>
-                    </td>
+                                                                           style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+                </div>
+                <div class="table-responsive">
+                    <table *ngIf="details_loaded" class="table table-striped">
+                        <thead>
+                        <th>Description</th>
+                        <th>Date created (d/m/y)</th>
+                        <th>Expiration Date (d/m/y)</th>
+                        <th>Days running</th>
+                        <th>Lifetime in Days</th>
+                        </thead>
+                        <tbody>
+                        <td>
+                            <button class="btn btn-secondary"
+                                    (click)="infoModal.hide();descriptionModal.show();">Show
+                                Description
+                            </button>
+                        </td>
 
-                    <td>***REMOVED******REMOVED*** selectedProject?.DateCreated ***REMOVED******REMOVED***</td>
-                    <td>***REMOVED******REMOVED***selectedProject?.DateEnd***REMOVED******REMOVED***</td>
-                    <td>***REMOVED******REMOVED*** selectedProject?.DaysRunning ***REMOVED******REMOVED***</td>
-                    <td>***REMOVED******REMOVED***selectedProject?.LifetimeDays***REMOVED******REMOVED***</td>
-                    <td>
-                    </tbody>
-                </table>
+                        <td>***REMOVED******REMOVED*** selectedProject?.DateCreated ***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***selectedProject?.DateEnd***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED*** selectedProject?.DaysRunning ***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***selectedProject?.LifetimeDays***REMOVED******REMOVED***</td>
+                        <td>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="modal-footer">
@@ -495,39 +504,43 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Applications for ***REMOVED******REMOVED***selectedProject?.Name***REMOVED******REMOVED***</h4>
-                <button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
-                                                               style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
-            </div>
+            <div class="modal-body">
 
-            <div *ngIf="loaded" class="table-responsive">
-                <table class="table table-bordered table-striped table-sm">
-                    <thead>
+                <div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
+                                                                   style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+                </div>
 
-                    <th>Name</th>
-                    <th>Date Submitted</th>
-                    <th>Actions</th>
-                    </thead>
-                    <tbody *ngFor="  let application of selectedProject?.ProjectMemberApplications">
+                <div *ngIf="loaded" class="table-responsive">
+                    <table class="table table-bordered table-striped table-sm" >
+                        <thead>
 
-                    <td>***REMOVED******REMOVED***application.Name***REMOVED******REMOVED***</td>
-                    <td>***REMOVED******REMOVED***application.DateCreated***REMOVED******REMOVED***</td>
-                    <td *ngIf="application.UserIsVoMember">
-                        <button
-                                (click)="approveMemberApplication(selectedProject?.Id,application.Id,application.Name); "
-                                class="btn btn-success"><i class="fa fa-check"></i> Approve
-                        </button>
-                        <button style="margin-left: 10px"
-                                (click)="application_action='rejected';application_member_name=application.Name;rejectMemberApplication(selectedProject?.Id,application.Id,application.Name); "
-                                class="btn btn-danger"><i class="fa fa-times"></i> Reject
-                        </button>
-                    </td>
-                    <td *ngIf="!application.UserIsVoMember"> Membership for the vo must be approved beforehand</td>
-                    </tbody>
-                </table>
+                        <th>Name</th>
+                        <th>Date Submitted</th>
+                        <th>Actions</th>
+                        </thead>
+                        <tbody *ngFor="  let application of selectedProject?.ProjectMemberApplications">
+
+                        <td>***REMOVED******REMOVED***application.Name***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***application.DateCreated***REMOVED******REMOVED***</td>
+                        <td *ngIf="application.UserIsVoMember">
+                            <button
+                                    (click)="approveMemberApplication(selectedProject?.Id,application.Id,application.Name); "
+                                    class="btn btn-success"><i class="fa fa-check"></i> Approve
+                            </button>
+                            <button style="margin-left: 10px"
+                                    (click)="application_action='rejected';application_member_name=application.Name;rejectMemberApplication(selectedProject?.Id,application.Id,application.Name); "
+                                    class="btn btn-danger"><i class="fa fa-times"></i> Reject
+                            </button>
+                        </td>
+                        <td *ngIf="!application.UserIsVoMember"> Membership for the vo must be approved beforehand</td>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
 
