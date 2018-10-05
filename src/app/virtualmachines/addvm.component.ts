@@ -178,7 +178,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
                 ***REMOVED***
                 else ***REMOVED***
                     if (res['Waiting'] == 'PORT_CLOSED') ***REMOVED***
-                        this.checking_vm_status = 'Active.';
+                        this.checking_vm_status = 'Active';
                         this.checking_vm_status_progress_bar = '';
                         this.creating_vm_prograss_bar = '';
                         this.checking_vm_ssh_port = 'Checking port..';
