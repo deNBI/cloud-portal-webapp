@@ -6,6 +6,7 @@ import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout
 import ***REMOVED***SimpleLayoutComponent***REMOVED*** from './layouts/simple-layout.component';
 import ***REMOVED***MemberGuardService***REMOVED*** from './member-guard.service';
 import ***REMOVED***RegistrationInfoComponent***REMOVED*** from "./registration-info.component";
+import ***REMOVED***ConsentInfoComponent***REMOVED*** from "./consent-info.component";
 
 export const routes: Routes = [
     ***REMOVED***
@@ -16,6 +17,11 @@ export const routes: Routes = [
     ***REMOVED***
         path: 'registration-info',
         component: RegistrationInfoComponent,
+        pathMatch: 'full'
+    ***REMOVED***,
+       ***REMOVED***
+        path: 'consent-info',
+        component: ConsentInfoComponent,
         pathMatch: 'full'
     ***REMOVED***,
     ***REMOVED***

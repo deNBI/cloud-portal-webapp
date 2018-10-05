@@ -13,6 +13,7 @@ import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED***map***REMOVED*** from 'rxjs/operators';
 
 import * as moment from 'moment';
+import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
 
 @Component(***REMOVED***
     templateUrl: 'facilityprojectsoverview.component.html',
@@ -27,6 +28,7 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
     member_id: number;
     isLoaded: boolean = false;
     projects: Project[] = new Array();
+    details_loaded = false;
 
 
     // modal variables for User list
@@ -62,6 +64,32 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
         this.getFacilityProjects(this.selectedFacility['FacilityId'])
     ***REMOVED***
 
+    getProjectLifetime(project) ***REMOVED***
+        this.details_loaded = false;
+        if (!project.Lifetime) ***REMOVED***
+            this.groupservice.getLifetime(project.Id).subscribe(res => ***REMOVED***
+                let lifetime = res['lifetime'];
+                let dateCreated = project.DateCreated;
+
+                let expirationDate = undefined;
+                dateCreated = moment(dateCreated, "DD.MM.YYYY").toDate();
+                if (lifetime != -1) ***REMOVED***
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
+                    let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
+
+                    project.LifetimeDays = lifetimeDays;
+                    project.DateEnd = expirationDate;
+                ***REMOVED***
+                project.Lifetime = lifetime;
+                this.details_loaded = true;
+
+            ***REMOVED***)
+        ***REMOVED***
+        else ***REMOVED***
+            this.details_loaded = true;
+        ***REMOVED***
+    ***REMOVED***
+
     getFacilityProjects(facility) ***REMOVED***
 
 
@@ -69,30 +97,19 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
             let facility_projects = result;
             let is_pi = false;
             let is_admin = false;
-            for (let key in facility_projects) ***REMOVED***
-                let group = facility_projects[key];
+            for (let group of facility_projects) ***REMOVED***
                 let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                let is_pi = group['is_pi'];
-                let groupid = key;
-                let facility = group['facility'];
+                let groupid = group['id'];
+                let facility = group['compute_center'];
                 let shortname = group['shortname'];
-                let details = facility['Details'];
-                let details_array = [];
-                let lifetime = group['lifetime'];
-                let lifetimeDays = -1;
-                let expirationDate = undefined;
-                if (lifetime != -1) ***REMOVED***
-                    lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                    expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
-                ***REMOVED***
-                for (let detail in details) ***REMOVED***
-                    let detail_tuple = [detail, details[detail]];
-                    details_array.push(detail_tuple);
-                ***REMOVED***
+                let compute_center=null;
 
                 if (!shortname) ***REMOVED***
                     shortname = group['name']
+                ***REMOVED***
+                if (facility) ***REMOVED***
+                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
                 ***REMOVED***
 
                 let newProject = new Project(
@@ -103,13 +120,8 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
                     dateDayDifference,
                     is_pi,
                     is_admin,
-                    [facility['Facility'], facility['FacilityId']]);
-                newProject.ComputecenterDetails = details_array;
-                newProject.Lifetime = lifetime;
-                newProject.LifetimeDays = lifetimeDays;
-                if (expirationDate) ***REMOVED***
-                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                ***REMOVED***
+                    compute_center);
+
                 this.projects.push(newProject);
             ***REMOVED***
             this.isLoaded = true;
@@ -130,13 +142,18 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
 
     sendMailToFacility(facility: number, subject: string, message: string, reply?: string) ***REMOVED***
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => ***REMOVED***
-            if (result == 1) ***REMOVED***
-                this.emailStatus = 1;
-            ***REMOVED***
-            else ***REMOVED***
+
+                if (result.status == 201) ***REMOVED***
+                    this.emailStatus = 1;
+                ***REMOVED***
+                else ***REMOVED***
+                    this.emailStatus = 2;
+                ***REMOVED***
+            ***REMOVED***,
+            error => ***REMOVED***
+                console.log(error);
                 this.emailStatus = 2;
-            ***REMOVED***
-        ***REMOVED***)
+            ***REMOVED***)
 
     ***REMOVED***
 
@@ -149,8 +166,8 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
                     let member_id = member["id"];
                     let user_id = member["userId"];
                     let fullName = member["firstName"] + " " + member["lastName"];
-                    let newMember=new ProjectMember(user_id, fullName, member_id);
-                    newMember.ElixirId=member['elixirId'];
+                    let newMember = new ProjectMember(user_id, fullName, member_id);
+                    newMember.ElixirId = member['elixirId'];
                     this.usersModalProjectMembers.push(newMember);
                 ***REMOVED***
 

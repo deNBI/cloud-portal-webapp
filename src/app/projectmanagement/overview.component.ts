@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 import ***REMOVED***ProjectMemberApplication***REMOVED*** from "./project_member_application";
+import ***REMOVED***ComputecenterComponent***REMOVED*** from "./computecenter.component";
 
 
 @Component(***REMOVED***
@@ -25,7 +26,7 @@ export class OverviewComponent ***REMOVED***
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
     @Input() invitation_group_pre: string = environment.invitation_group_pre
     is_admin = false;
-    userprojects: ***REMOVED******REMOVED***;
+    userprojects: ***REMOVED******REMOVED***[];
     member_id: number;
     admingroups: ***REMOVED******REMOVED***;
     filteredMembers = null;
@@ -35,6 +36,7 @@ export class OverviewComponent ***REMOVED***
     application_action_success: boolean;
     projects: Project[] = new Array();
     loaded = true;
+    details_loaded = false;
 
 
     // modal variables for User list
@@ -106,37 +108,53 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
+    getProjectLifetime(project) ***REMOVED***
+        this.details_loaded = false;
+        if (!project.Lifetime) ***REMOVED***
+            this.groupservice.getLifetime(project.Id).subscribe(res => ***REMOVED***
+                let lifetime = res['lifetime'];
+                console.log(lifetime)
+                let dateCreated = project.DateCreated;
+                console.log(dateCreated)
+
+                let expirationDate = undefined;
+                dateCreated = moment(dateCreated, "DD.MM.YYYY").toDate();
+                if (lifetime != -1) ***REMOVED***
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
+                    let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
+
+                    project.LifetimeDays = lifetimeDays;
+                    project.DateEnd = expirationDate;
+                ***REMOVED***
+                project.Lifetime = lifetime;
+                this.details_loaded = true;
+
+            ***REMOVED***)
+        ***REMOVED***
+        else ***REMOVED***
+            this.details_loaded = true;
+        ***REMOVED***
+
+
+    ***REMOVED***
+
     getUserProjects() ***REMOVED***
 
         this.groupservice.getGroupDetails().subscribe(result => ***REMOVED***
             this.userprojects = result;
-            for (let key in this.userprojects) ***REMOVED***
-                let group = this.userprojects[key];
+            for (let group of this.userprojects) ***REMOVED***
                 let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
                 let is_pi = group['is_pi'];
-                let groupid = key;
-                let facility = group['facility'];
+                let groupid = group['id'];
+                let facility = group['compute_center'];
                 let shortname = group['shortname'];
-                let details = facility['Details'];
-                let details_array = [];
-                let lifetime = group['lifetime'];
-                let lifetimeDays = -1;
+
                 let realname = group['name'];
+                let compute_center = null;
 
-                let expirationDate = undefined;
-                if (lifetime != -1) ***REMOVED***
-                    lifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(dateCreated).add(lifetime, 'months').toDate().getTime() - moment(dateCreated).valueOf())) / (1000 * 3600 * 24));
-                    expirationDate = moment(dateCreated).add(lifetime, 'months').toDate();
-                ***REMOVED***
-                for (let detail in details) ***REMOVED***
-                    let detail_tuple = [detail, details[detail]];
-                    details_array.push(detail_tuple);
-                ***REMOVED***
-                //check if user is a PI (group manager)
-
-                if (!shortname) ***REMOVED***
-                    shortname = group['name']
+                if (facility) ***REMOVED***
+                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
                 ***REMOVED***
 
 
@@ -144,35 +162,26 @@ export class OverviewComponent ***REMOVED***
                     Number(groupid),
                     shortname,
                     group["description"],
-                    dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                    moment(dateCreated).format("DD.MM.YYYY"),
                     dateDayDifference,
                     is_pi,
                     this.is_admin,
-                    [facility['Facility'], facility['FacilityId']]);
-                newProject.ComputecenterDetails = details_array;
-                newProject.Lifetime = lifetime;
-                newProject.LifetimeDays = lifetimeDays;
-                newProject.RealName = realname;
-                if (expirationDate) ***REMOVED***
-                    newProject.DateEnd = moment(expirationDate).date() + "." + (moment(expirationDate).month() + 1) + "." + moment(expirationDate).year();
-                ***REMOVED***
-
-                let newProjectApplications = [];
-                if (group['applications']) ***REMOVED***
-                    for (let application of group['applications']) ***REMOVED***
-                        let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
-                        let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
-                        let newMemberApplication = new ProjectMemberApplication(
-                            application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
-                        )
-                        newProjectApplications.push(newMemberApplication)
-                    ***REMOVED***
-                    newProject.ProjectMemberApplications = newProjectApplications;
-                ***REMOVED***
-
+                    compute_center);
+                newProject.OpenStackProject = group['openstack_project'];
                 this.projects.push(newProject);
             ***REMOVED***
             this.isLoaded = true;
+            for (let group of this.projects) ***REMOVED***
+                if (group.Name.length > 15 || group.Name.indexOf('_') > -1) ***REMOVED***
+                    this.groupservice.getShortame(group.Id.toString()).subscribe(result => ***REMOVED***
+                        if (result['shortname']) ***REMOVED***
+                            group.Name = result['shortname']
+                        ***REMOVED***
+
+                    ***REMOVED***)
+                ***REMOVED***
+
+            ***REMOVED***
 
         ***REMOVED***)
 
@@ -196,8 +205,8 @@ export class OverviewComponent ***REMOVED***
         this.UserModalFacility = null;
     ***REMOVED***
 
-    filterMembers(firstName: string, lastName: string, groupid: number) ***REMOVED***
-        this.userservice.getFilteredMembersOfdeNBIVo(firstName, lastName, groupid.toString()).subscribe(result => ***REMOVED***
+    filterMembers(searchString: string, groupid: number) ***REMOVED***
+        this.userservice.getFilteredMembersOfdeNBIVo(searchString, groupid.toString()).subscribe(result => ***REMOVED***
             this.filteredMembers = result;
         ***REMOVED***)
     ***REMOVED***
@@ -234,34 +243,61 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
+    loadProjectApplications(project: number) ***REMOVED***
+        this.loaded = false;
+
+        this.groupservice.getGroupApplications(project).subscribe(applications => ***REMOVED***
+
+            let newProjectApplications = [];
+            if (applications.length == 0) ***REMOVED***
+                this.loaded = true;
+
+            ***REMOVED***
+            for (let application of applications) ***REMOVED***
+                let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
+                let membername = application['user']['firstName'] + ' ' + application['user']['lastName'];
+                let userid = application['user']['id'];
+                this.userservice.isMember(userid).subscribe(isMember => ***REMOVED***
+
+                        let isMemberBool = isMember['isMember'];
+                        let newMemberApplication = new ProjectMemberApplication(
+                            application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(), userid, isMemberBool
+                        )
+                        newProjectApplications.push(newMemberApplication)
+
+                        this.selectedProject.ProjectMemberApplications = newProjectApplications;
+                        this.loaded = true;
+
+                    ***REMOVED***
+                )
+            ***REMOVED***
+
+
+        ***REMOVED***)
+
+
+    ***REMOVED***
+
+
     approveMemberApplication(project: number, application: number, membername: string) ***REMOVED***
         this.loaded = false;
         this.application_action_done = false;
         this.groupservice.approveGroupApplication(project, application).subscribe(result => ***REMOVED***
             let application = result;
-            this.groupservice.getGroupApplications(project).subscribe(result => ***REMOVED***
-                let newProjectApplications = [];
-                for (let application of result) ***REMOVED***
-                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS")
-                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName']
-                    let newMemberApplication = new ProjectMemberApplication(
-                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
-                    )
-                    newProjectApplications.push(newMemberApplication)
-                ***REMOVED***
-                this.selectedProject.ProjectMemberApplications = newProjectApplications;
-                if (application['state'] == 'APPROVED') ***REMOVED***
-                    this.application_action_success = true;
-                ***REMOVED***
-                else ***REMOVED***
-                    this.application_action_success = false;
-                ***REMOVED***
-                this.application_action = 'approved';
-                this.application_member_name = membername;
-                this.loaded = true;
-                this.application_action_done = true
+            this.selectedProject.ProjectMemberApplications = [];
 
-            ***REMOVED***)
+            if (application['state'] == 'APPROVED') ***REMOVED***
+                this.application_action_success = true;
+            ***REMOVED***
+            else ***REMOVED***
+                this.application_action_success = false;
+            ***REMOVED***
+            this.application_action = 'approved';
+            this.application_member_name = membername;
+            this.application_action_done = true
+            this.loadProjectApplications(project);
+
+
         ***REMOVED***);
     ***REMOVED***
 
@@ -271,31 +307,22 @@ export class OverviewComponent ***REMOVED***
 
         this.groupservice.rejectGroupApplication(project, application).subscribe(result => ***REMOVED***
             let application = result;
-
-            this.groupservice.getGroupApplications(project).subscribe(result => ***REMOVED***
-                let newProjectApplications = [];
-                for (let application of result) ***REMOVED***
-                    let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
-                    let membername = application['user']['firstName'] + ' ' + application['user']['lastName'];
-                    let newMemberApplication = new ProjectMemberApplication(
-                        application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(),
-                    )
-                    newProjectApplications.push(newMemberApplication)
-                ***REMOVED***
-                this.selectedProject.ProjectMemberApplications = newProjectApplications;
-                if (application['state'] == 'REJECTED') ***REMOVED***
-                    this.application_action_success = true;
-                ***REMOVED***
-                else ***REMOVED***
-                    this.application_action_success = false;
-                ***REMOVED***
-                this.application_action = 'rejected';
-                this.application_member_name = membername;
-                this.loaded = true;
-                this.application_action_done = true;
+            this.selectedProject.ProjectMemberApplications = [];
 
 
-            ***REMOVED***)
+            if (application['state'] == 'REJECTED') ***REMOVED***
+                this.application_action_success = true;
+
+            ***REMOVED***
+            else ***REMOVED***
+                this.application_action_success = false;
+            ***REMOVED***
+            this.application_action = 'rejected';
+            this.application_member_name = membername;
+            this.application_action_done = true;
+            this.loadProjectApplications(project);
+
+
         ***REMOVED***);
     ***REMOVED***
 
@@ -311,14 +338,19 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) ***REMOVED***
+    public showMembersOfTheProject(projectid: number, projectname: string, facility?: [string, number]) ***REMOVED***
         this.getMembesOfTheProject(projectid, projectname);
-        if (facility[0] === 'None') ***REMOVED***
-            this.UserModalFacility = null;
+
+        if (facility) ***REMOVED***
+            this.UserModalFacility = facility;
+
         ***REMOVED***
         else ***REMOVED***
-            this.UserModalFacility = facility;
+            this.UserModalFacility = null;
+
         ***REMOVED***
+
+
     ***REMOVED***
 
 
@@ -361,21 +393,28 @@ export class OverviewComponent ***REMOVED***
         this.notificationModalType = type;
     ***REMOVED***
 
-    public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility: [string, number]) ***REMOVED***
+    public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility?: [string, number]) ***REMOVED***
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
         this.addUserModalRealName = realname;
-        if (facility[0] === 'None') ***REMOVED***
-            this.UserModalFacility = null;
+        this.UserModalFacility = facility;
+
+        if (facility) ***REMOVED***
+            this.UserModalFacility = facility;
+
         ***REMOVED***
         else ***REMOVED***
-            this.UserModalFacility = facility;
+            this.UserModalFacility = null;
 
         ***REMOVED***
     ***REMOVED***
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id?: number) ***REMOVED***
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string) ***REMOVED***
+         let facility_id=null
+        if (this.UserModalFacility && this.UserModalFacility[1])***REMOVED***
+             facility_id=this.UserModalFacility[1]
+        ***REMOVED***
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => ***REMOVED***
                 if (result.status == 200) ***REMOVED***
@@ -401,7 +440,11 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id?: number) ***REMOVED***
+    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string) ***REMOVED***
+        let facility_id = null;
+        if (this.UserModalFacility && this.UserModalFacility[1])***REMOVED***
+            facility_id = this.UserModalFacility[1]
+        ***REMOVED***
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(result => ***REMOVED***
             this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
                 result => ***REMOVED***
@@ -442,7 +485,11 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public promoteAdmin(groupid: number, userid: number, username: string, facility_id?: number) ***REMOVED***
+    public promoteAdmin(groupid: number, userid: number, username: string) ***REMOVED***
+        let facility_id = null;
+        if (this.UserModalFacility && this.UserModalFacility[1])***REMOVED***
+            facility_id = this.UserModalFacility[1]
+        ***REMOVED***
         this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
@@ -458,7 +505,11 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    public removeAdmin(groupid: number, userid: number, name: string, facility_id?: number) ***REMOVED***
+    public removeAdmin(groupid: number, userid: number, name: string) ***REMOVED***
+        let facility_id = null;
+        if (this.UserModalFacility && this.UserModalFacility[1])***REMOVED***
+            facility_id = this.UserModalFacility[1]
+        ***REMOVED***
         this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
@@ -473,8 +524,12 @@ export class OverviewComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    public removeMember(groupid: number, memberid: number, userid: number, name: string, facility_id?: number) ***REMOVED***
-        this.groupservice.removeMember(groupid, memberid, userid, facility_id).subscribe(result => ***REMOVED***
+    public removeMember(groupid: number, memberid: number, name: string) ***REMOVED***
+        let facility_id = null
+        if (this.UserModalFacility && this.UserModalFacility[1])***REMOVED***
+            facility_id = this.UserModalFacility[1]
+        ***REMOVED***
+        this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
                     this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");

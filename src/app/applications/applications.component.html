@@ -38,7 +38,7 @@
                                     <td>***REMOVED******REMOVED*** application.Status ***REMOVED******REMOVED***</td>
                                     <td>
 
-                                        <button (click)="switchCollapseStatus('user_application-' + application.Id)"
+                                        <button (click)="switchCollapseStatus('user_application-' + application.Id);getFacilityProject(application);"
                                                 type="button" class="btn btn-secondary">
                                             <i class="fa fa-info-circle"></i>&nbsp;
                                             <span [hidden]="!getCollapseStatus('user_application-' + application.Id)">Show</span><span
@@ -69,6 +69,10 @@
                                              [class.collapse]="getCollapseStatus('user_application-' + application.Id)">
                                             <div class="table-responsive">
                                                 <table class="table table-striped">
+                                                    <tr [style.display]="application.Status != 'submitted' ? 'inherit' :'none'">
+                                                        <td>Facility</td>
+                                                        <td>***REMOVED******REMOVED***application.ComputeCenter?.Name***REMOVED******REMOVED***</td>
+                                                    </tr>
                                                     <tr>
                                                         <td>Description</td>
                                                         <td>***REMOVED******REMOVED*** application.Description ***REMOVED******REMOVED***
@@ -114,7 +118,7 @@
                                                     <tr>
                                                         <td>Volume Counter</td>
 
-                                                        <td>***REMOVED******REMOVED*** application.VolumeCounter ***REMOVED******REMOVED*** </td>
+                                                        <td>***REMOVED******REMOVED*** application.VolumeCounter ***REMOVED******REMOVED***</td>
                                                         <td *ngIf="application.Status == 'modification requested'">
 
 
@@ -194,23 +198,23 @@
                                         <td>***REMOVED******REMOVED***application.Institute***REMOVED******REMOVED***</td>
 
 
-                                        <td >
-                                            <select [style.display]="application.OpenStackProject? 'inherit' :'none'"
+                                        <td>
+                                            <select [style.display]="application.OpenStackProject && application.Status == 1 ? 'inherit' :'none'"
                                                     class="form-control" #selectedComputeCenter>
 
                                                 <option value="undefined" selected> no center</option>
                                                 <option *ngFor="let computeCenter of computeCenters"
-                                                        value="***REMOVED******REMOVED***computeCenter[1]***REMOVED******REMOVED***"> ***REMOVED******REMOVED***computeCenter[0]***REMOVED******REMOVED***
+                                                        value="***REMOVED******REMOVED***computeCenter.FacilityId***REMOVED******REMOVED***"> ***REMOVED******REMOVED***computeCenter.Name***REMOVED******REMOVED***
                                                 </option>
                                             </select>
+                                            <span [style.display]="application.Status != 1 ? 'inherit' :'none'">***REMOVED******REMOVED***application.ComputeCenter?.Name***REMOVED******REMOVED***</span>
                                         </td>
-
 
 
                                         <td>
                                             <button *ngIf="application.Status == 1"
 
-                                                    (click)='resetNotificationModal();createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value,application.OpenStackProject,application.VMsRequested,application.VolumeLimit,application.Lifetime,application.Name,application.VolumeCounter ); notificationModal.show();'
+                                                    (click)="resetNotificationModal();createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
 
 
                                                     type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
@@ -219,7 +223,7 @@
                                             </button>
                                             <button *ngIf="application.Status == 4"
 
-                                                    (click)="approveExtension(application.Id);resultModal.show();"
+                                                    (click)="setSelectedApplication(application);approveExtension(application.Id);resultModal.show();"
                                                     type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
                                                 Approve
                                                 Modification
@@ -232,13 +236,14 @@
                                             </button>
                                             <button *ngIf="application.Status == 4"
                                                     type="button" class="btn btn-secondary"
-                                                    (click)="declineExtension(application.Id);resultModal.show();"><i
-                                                    class="fa fa-close"></i>&nbsp;
+                                                    (click)="setSelectedApplication(application);declineExtension(application.Id);resultModal.show();">
+                                                <i
+                                                        class="fa fa-close"></i>&nbsp;
                                                 Decline Modification
                                             </button>
 
 
-                                            <button (click)="switchCollapseStatus('application_review-' + application.Id)"
+                                            <button (click)="switchCollapseStatus('application_review-' + application.Id);  getMemberDetailsByElixirIdIfCollapsed(application.User,'application_review-' + application.Id);"
                                                     type="button" class="btn btn-secondary">
                                                 <i class="fa fa-info-circle"></i>&nbsp;
                                                 <span [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
@@ -255,9 +260,21 @@
                                                  [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
                                                 <div class="table-responsive">
                                                     <table class="table table-striped">
-                                                         <tr>
+                                                        <tr>
                                                             <td>User Affiliations</td>
                                                             <td>***REMOVED******REMOVED*** application.UserAffiliations***REMOVED******REMOVED***</td>
+                                                            <td *ngIf="application.Status == 4">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>User Name</td>
+                                                            <td>***REMOVED******REMOVED***application_user[application.User]?.name***REMOVED******REMOVED***</td>
+                                                            <td *ngIf="application.Status == 4">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>User Email</td>
+                                                            <td>***REMOVED******REMOVED***application_user[application.User]?.email***REMOVED******REMOVED***</td>
                                                             <td *ngIf="application.Status == 4">
                                                             </td>
                                                         </tr>
@@ -399,7 +416,6 @@
                                 <th>Date submitted (d/m/y)</th>
                                 <th>User</th>
                                 <th>Institute</th>
-                                <th>Facility</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -413,14 +429,15 @@
                                         <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED*** application.User ***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED*** application.Institute ***REMOVED******REMOVED***</td>
-                                        <td>***REMOVED******REMOVED***application.ComputeCenter[0]***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED*** getStatusById(application.Status) ***REMOVED******REMOVED***</td>
                                         <td>
-                                            <button (click)="switchCollapseStatus('application_history-' + application.Id)"
+                                            <button (click)="switchCollapseStatus('application_history-' + application.Id);getFacilityProject(application);"
                                                     type="button" class="btn btn-secondary">
                                                 <i class="fa fa-info-circle"></i>&nbsp;
-                                                <span [hidden]="!getCollapseStatus('application_history-' + application.Id)">Show</span><span
-                                                    [hidden]="getCollapseStatus('application_history-' + application.Id)">Hide</span>
+                                                <span [hidden]="!getCollapseStatus('application_history-' + application.Id)"
+                                                >Show</span><span
+                                                    [hidden]="getCollapseStatus('application_history-' + application.Id)"
+                                                    style="margin-left: 5px">Hide</span>
                                                 Information
                                             </button>
                                             <button (click)="deleteModal.show();setDeleteId(application.Id)"
@@ -444,6 +461,10 @@
                                                         <tr>
                                                             <td>Comment</td>
                                                             <td>***REMOVED******REMOVED*** application.Comment ***REMOVED******REMOVED***</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Facility</td>
+                                                            <td>***REMOVED******REMOVED***application.ComputeCenter?.Name***REMOVED******REMOVED***</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Workgroup</td>
@@ -495,18 +516,23 @@
                                                             <td>***REMOVED******REMOVED***application.DaysRunning***REMOVED******REMOVED***</td>
 
                                                         </tr>
-                                                        <tr *ngIf="application.ComputeCenterDetails">
+                                                        <tr *ngIf="application.ComputeCenter">
 
                                                             <td>Facility Details</td>
                                                             <td>
-                                                                <ul>
-                                                                    <li>Name: ***REMOVED******REMOVED***application.ComputeCenter[0]***REMOVED******REMOVED***</li>
-                                                                    <li *ngFor="let details of application.ComputeCenterDetails">
-                                                                        ***REMOVED******REMOVED***details[0]***REMOVED******REMOVED***: <a target="_blank"
-                                                                                           *ngIf="details[0] == 'Login'"
-                                                                                           href="***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</a>
-                                                                        <span *ngIf="details[0] != 'Login'">***REMOVED******REMOVED***details[1]***REMOVED******REMOVED***</span>
+                                                                <ul *ngIf="application.ComputeCenter.Name">
+                                                                    <li *ngIf="application.OpenStackProject"><a
+                                                                            target="_blank"
+                                                                            href="application.ComputeCenter.Login">Login:
+                                                                        ***REMOVED******REMOVED***application.ComputeCenter.Login***REMOVED******REMOVED***</a></li>
+                                                                    <li>Support: ***REMOVED******REMOVED***application.ComputeCenter.Support***REMOVED******REMOVED***
                                                                     </li>
+
+                                                                    <!--button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
+                                                                            class="btn btn-primary">Set your OpenStack API password
+                                                                    </button-->
+
+
                                                                 </ul>
                                                             </td>
 
@@ -540,6 +566,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
@@ -562,7 +591,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Application</h4>
-              <button type="button" class="close" (click)="deleteModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="deleteModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -592,7 +621,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1>Modify Request: ***REMOVED******REMOVED***selectedApplication?.Name***REMOVED******REMOVED***</h1>
-              <button type="button" class="close" (click)="extensionModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="extensionModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -817,7 +846,7 @@
                     Waiting </h4>
                 <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
-                <button type="button" class="close" (click)="resultModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="resultModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -830,13 +859,14 @@
 
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
 
-                   Modify request successfully submitted!
+                    Modify request successfully submitted!
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 3">
-                   Modify request successfully approved!
+                    Modify request successfully approved!
                 </div>
-                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
-                   Modify request successfully declined!      </div>
+                <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+                    Modify request successfully declined!
+                </div>
 
                 <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
                     An error occured.

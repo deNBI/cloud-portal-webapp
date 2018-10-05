@@ -21,6 +21,7 @@ export class UserinfoComponent implements OnInit ***REMOVED***
     isLoaded = false;
     is_project_member= true;
     freemium_active = false;
+    freemium: boolean;
 
     constructor(private groupService: GroupService, private userservice: UserService, private keyService: keyService) ***REMOVED***
         this.userinfo = new Userinfo();
@@ -143,12 +144,7 @@ export class UserinfoComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     joinFreemium() ***REMOVED***
-        this.groupService.addMemberToFreemium().subscribe(result => ***REMOVED***
-            console.log(result)
-                    window.location.reload(true);
-
-        ***REMOVED***);
-
+        this.groupService.addMemberToFreemium().subscribe();
     ***REMOVED***
 
     is_vm_project_member() ***REMOVED***

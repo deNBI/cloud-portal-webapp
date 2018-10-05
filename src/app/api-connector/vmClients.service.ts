@@ -19,25 +19,19 @@ export class ClientService ***REMOVED***
     constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
     ***REMOVED***
 
-    getClientsUnchecked(): Observable<Vmclient[]> ***REMOVED***
 
-        return this.http.get<Vmclient[]>(this.clientURL + 'getUncheckedClients/', ***REMOVED***
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
-    ***REMOVED***
 
     isClientAvaiable(): Observable<Vmclient> ***REMOVED***
 
 
-        return this.http.get<Vmclient>(this.clientURL + 'isClientAvaiable/', ***REMOVED***
+        return this.http.get<Vmclient>(this.clientURL + 'active/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
     getClientsChecked(): Observable<Vmclient[]> ***REMOVED***
 
-        return this.http.get<Vmclient[]>(this.clientURL + 'getCheckedClients/', ***REMOVED***
+        return this.http.get<Vmclient[]>(this.clientURL, ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
@@ -59,20 +53,15 @@ export class ClientService ***REMOVED***
         let params = new HttpParams().set('host', host).set('port', port).set('location', location);
 
 
-        return this.http.post(this.clientURL + 'addClient/', params, ***REMOVED***
+        return this.http.post(this.clientURL , params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
     ***REMOVED***
 
-    deleteClient(host: string, port: string, location: string): Observable<any> ***REMOVED***
-
-        let params = new HttpParams().set('host', host).set('port', port).set('location', location);
-
-
-
-        return this.http.post(this.clientURL + 'deleteClient/', params, ***REMOVED***
+    deleteClient(client_id:number): Observable<any> ***REMOVED***
+        return this.http.delete(this.clientURL + client_id +'/', ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));

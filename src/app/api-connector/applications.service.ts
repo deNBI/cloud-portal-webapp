@@ -25,14 +25,28 @@ export class ApplicationsService ***REMOVED***
 
 
     getUserApplications(): Observable<any> ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/project_applications/', ***REMOVED***
+            headers: header_csrf,
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
+
+    getUserApplication(project_id:string):Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/project_applications/' + project_id + '/', ***REMOVED***
+            headers: header_csrf,
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
+
+    getApplication(app_id:string):Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/', ***REMOVED***
             headers: header_csrf,
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
     getAllApplications(): Observable<any> ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'all_applications/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', ***REMOVED***
             withCredentials: true,
             headers: header_csrf,
 
@@ -44,7 +58,7 @@ export class ApplicationsService ***REMOVED***
         let parameter = data;
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'add_application/', parameter,
+        return this.http.post(this.settings.getApiBaseURL() + 'project_applications/', parameter,
             ***REMOVED***
                 headers: header,
                 withCredentials: true
@@ -56,7 +70,7 @@ export class ApplicationsService ***REMOVED***
     requestRenewal(data): Observable<any> ***REMOVED***
         let parameter = data;
 
-        return this.http.post(this.settings.getApiBaseURL() + 'application/requestRenewal/', parameter,
+        return this.http.post(this.settings.getApiBaseURL() + 'applicationRenewals/', parameter,
             ***REMOVED***
                 headers: header,
                 withCredentials: true
@@ -67,7 +81,7 @@ export class ApplicationsService ***REMOVED***
     approveRenewal(application_id: number): Observable<any> ***REMOVED***
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'application/approveRenewal/', ***REMOVED***'project_application_id': application_id***REMOVED***, ***REMOVED***
+        return this.http.post(this.settings.getApiBaseURL() +  'applicationRenewals/'  + application_id + '/status/',null, ***REMOVED***
             headers: header_csrf,
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -77,7 +91,7 @@ export class ApplicationsService ***REMOVED***
     declineRenewal(application_id: number): Observable<any> ***REMOVED***
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'application/declineRenewal/', ***REMOVED***'project_application_id': application_id***REMOVED***,
+        return this.http.delete(this.settings.getApiBaseURL() + 'applicationRenewals/' +application_id + '/status/',
             ***REMOVED***
                 headers: header_csrf,
                 withCredentials: true,
@@ -87,7 +101,7 @@ export class ApplicationsService ***REMOVED***
 
 
     getAllApplicationsRenewalRequests(): Observable<any> ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'application/applicationRenewalRequests/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'applicationsRenewals/', ***REMOVED***
             withCredentials: true,
             headers: header_csrf,
 
@@ -96,11 +110,9 @@ export class ApplicationsService ***REMOVED***
     ***REMOVED***
 
     getApplicationsRenewalRequest(application_id: number): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('project_application_id', application_id.toString());
-        return this.http.get(this.settings.getApiBaseURL() + 'application/getApplicationRenewalRequestById/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'applicationsRenewals/' + application_id + '/', ***REMOVED***
             withCredentials: true,
             headers: header_csrf,
-            params: params
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
     ***REMOVED***
@@ -109,7 +121,7 @@ export class ApplicationsService ***REMOVED***
     deleteApplication(application_id: number): Observable<any> ***REMOVED***
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'application/deleteApplicationById/',***REMOVED***'project_application_id':application_id***REMOVED***,
+        return this.http.delete(this.settings.getApiBaseURL() +'project_applications/' + application_id +'/',
             ***REMOVED***
                 headers: header_csrf,
                 withCredentials: true,
