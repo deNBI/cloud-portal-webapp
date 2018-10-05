@@ -59,7 +59,8 @@
                                     <div class="btn-group-vertical">
                                         <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
                                                 data-toggle="modal"
-                                                (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
+                                                (click)="this.usersModalProjectMembers = [];showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
+
 
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
                                             <i class="fa fa-users"></i>&nbsp;Show Members
@@ -100,7 +101,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Members of the Project ***REMOVED******REMOVED*** usersModalProjectID ***REMOVED******REMOVED***
                     (***REMOVED******REMOVED*** usersModalProjectName ***REMOVED******REMOVED***)</h4>
-                <button type="button" class="close" (click)="usersModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer;" (click)="usersModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -128,17 +129,17 @@
                                     <i class="fa fa-trash"></i>&nbsp; Remove member
                                 </button>
 
-                                <button *ngIf="!member.IsPi" (click)="usersModal.hide();promoteAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility[1]);
+                                <button *ngIf="!member.IsPi" (click)="usersModal.hide();promoteAdmin( usersModalProjectID,member.Id,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button" style="margin: 2px">
                                     <i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
                                 </button>
-                                <button *ngIf="member.IsPi" (click)="usersModal.hide();removeAdmin( usersModalProjectID,member.Id,member.Username,UserModalFacility[1]);
+                                <button *ngIf="member.IsPi" (click)="usersModal.hide();removeAdmin( usersModalProjectID,member.Id,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button" style="margin: 2px">
                                     <i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
                                 </button>
-                                <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username,UserModalFacility[1]);
+                                <button *ngIf="UserModalFacility !== null" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button" style="margin: 2px">
 
@@ -166,7 +167,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Add member to the project ***REMOVED******REMOVED*** addUserModalProjectID ***REMOVED******REMOVED***
                     (***REMOVED******REMOVED*** addUserModalProjectName ***REMOVED******REMOVED***)</h4>
-                <button type="button" class="close" (click)="addUserModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="addUserModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -256,11 +257,11 @@
                             <tbody *ngFor="  let member of filteredMembers">
                             <td>
                                 <button
-                                        (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName'],UserModalFacility[1]);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                                        (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
                                         class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
                                 </button>
                                 <button style="padding-left: 10px;margin-left: 10px"
-                                        (click)="addAdmin(addUserModalProjectID,member['member_id'],member['user_id'],member['firstName'],member['lastName'],UserModalFacility[1]);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                                        (click)="addAdmin(addUserModalProjectID,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
                                         class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
                                 </button>
                             </td>
@@ -293,6 +294,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"></h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="removeMemberModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div *ngIf="UserModalFacility == null ">
@@ -321,6 +325,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
@@ -343,6 +350,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Change Password</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
 
@@ -371,6 +381,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">***REMOVED******REMOVED*** passwordModalTitle ***REMOVED******REMOVED***</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="passwordModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-***REMOVED******REMOVED*** passwordModalType ***REMOVED******REMOVED***" role="alert">
@@ -406,7 +419,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Description</h4>
-                <button type="button" class="close" (click)="descriptionModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()" aria-label="Close">
+
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -481,7 +495,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Applications for ***REMOVED******REMOVED***selectedProject?.Name***REMOVED******REMOVED***</h4>
-                <button type="button" class="close" (click)="applicationModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

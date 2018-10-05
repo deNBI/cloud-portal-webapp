@@ -178,6 +178,9 @@
                 <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="stopModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
@@ -210,6 +213,9 @@
                 <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="resumeModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
@@ -241,6 +247,9 @@
                 <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="deleteModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
@@ -271,7 +280,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Vm</h4>
-                <button type="button" class="close" (click)="verifyModal.hide()" aria-label="Close">
+                <button type="button" class="close"  style="cursor: pointer" (click)="verifyModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -302,7 +311,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Create Snapshot</h4>
-                <button type="button" class="close" (click)="snapshotModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="snapshotModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -341,6 +350,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Snapshot</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="snapshotResult.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="snapshotDone == 'Waiting' ">
@@ -377,7 +389,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">How to connect</h4>
-                <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="infoModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
