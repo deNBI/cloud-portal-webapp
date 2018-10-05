@@ -338,14 +338,19 @@ export class OverviewComponent {
     }
 
 
-    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) {
+    public showMembersOfTheProject(projectid: number, projectname: string, facility?: [string, number]) {
         this.getMembesOfTheProject(projectid, projectname);
-        if (facility[0] === 'None') {
-            this.UserModalFacility = null;
+
+        if (facility) {
+            this.UserModalFacility = facility;
+
         }
         else {
-            this.UserModalFacility = facility;
+            this.UserModalFacility = null;
+
         }
+
+
     }
 
 
@@ -388,21 +393,28 @@ export class OverviewComponent {
         this.notificationModalType = type;
     }
 
-    public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility: [string, number]) {
+    public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility?: [string, number]) {
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
         this.addUserModalRealName = realname;
-        if (facility[0] === 'None') {
-            this.UserModalFacility = null;
+        this.UserModalFacility = facility;
+
+        if (facility) {
+            this.UserModalFacility = facility;
+
         }
         else {
-            this.UserModalFacility = facility;
+            this.UserModalFacility = null;
 
         }
     }
 
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string, facility_id ?: number) {
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string) {
+         let facility_id=null
+        if (this.UserModalFacility && this.UserModalFacility[1]){
+             facility_id=this.UserModalFacility[1]
+        }
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => {
                 if (result.status == 200) {
@@ -428,7 +440,11 @@ export class OverviewComponent {
     }
 
 
-    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string, facility_id ?: number) {
+    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string) {
+        let facility_id = null;
+        if (this.UserModalFacility && this.UserModalFacility[1]){
+            facility_id = this.UserModalFacility[1]
+        }
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(result => {
             this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
                 result => {
@@ -469,7 +485,11 @@ export class OverviewComponent {
     }
 
 
-    public promoteAdmin(groupid: number, userid: number, username: string, facility_id ?: number) {
+    public promoteAdmin(groupid: number, userid: number, username: string) {
+        let facility_id = null;
+        if (this.UserModalFacility && this.UserModalFacility[1]){
+            facility_id = this.UserModalFacility[1]
+        }
         this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
             .then(result => {
 
@@ -485,7 +505,11 @@ export class OverviewComponent {
     }
 
 
-    public removeAdmin(groupid: number, userid: number, name: string, facility_id ?: number) {
+    public removeAdmin(groupid: number, userid: number, name: string) {
+        let facility_id = null;
+        if (this.UserModalFacility && this.UserModalFacility[1]){
+            facility_id = this.UserModalFacility[1]
+        }
         this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
             .then(result => {
 
@@ -500,7 +524,11 @@ export class OverviewComponent {
         });
     }
 
-    public removeMember(groupid: number, memberid: number, name: string, facility_id ?: number) {
+    public removeMember(groupid: number, memberid: number, name: string) {
+        let facility_id = null
+        if (this.UserModalFacility && this.UserModalFacility[1]){
+            facility_id = this.UserModalFacility[1]
+        }
         this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(result => {
 
                 if (result.status == 200) {
