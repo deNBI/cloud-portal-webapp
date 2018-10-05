@@ -31,6 +31,20 @@ export class ApplicationsService {
         }).pipe(catchError((error: any) => throwError(error)));
     }
 
+    getUserApplication(project_id:string):Observable<any> {
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/project_applications/' + project_id + '/', {
+            headers: header_csrf,
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error)));
+    }
+
+    getApplication(app_id:string):Observable<any> {
+        return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/', {
+            headers: header_csrf,
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error)));
+    }
+
     getAllApplications(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', {
             withCredentials: true,
