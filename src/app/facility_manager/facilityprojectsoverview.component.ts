@@ -91,6 +91,7 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
     ***REMOVED***
 
     getFacilityProjects(facility) ***REMOVED***
+        this.projects=[];
 
 
         this.facilityservice.getFacilityAllowedGroupsWithDetails(facility).subscribe(result => ***REMOVED***
