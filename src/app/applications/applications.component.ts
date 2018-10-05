@@ -16,12 +16,16 @@ import {ApplicationExtension} from "./application_extension.model";
 import {NgForm} from '@angular/forms';
 import {forkJoin} from 'rxjs';
 import {VoService} from "../api-connector/vo.service";
+import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
+import {FacilityService} from "../api-connector/facility.service";
+import {Project} from "../projectmanagement/project.model";
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
+    providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
+
 
     user_applications: Application[] = [];
     is_vo_admin = false;
@@ -29,12 +33,13 @@ export class ApplicationsComponent {
     application_status: ApplicationStatus[] = [];
     all_applications_renewal: ApplicationExtension[] = [];
     special_hardware: SpecialHardware[] = [];
-    computeCenters: [string, number][];
+    computeCenters: ComputecenterComponent[] = [];
     selectedApplication: Application;
     extension_status = 0;
     public deleteId: number;
     isLoaded_userApplication = false;
     isLoaded_AllApplication = false;
+    application_user: { [id: string]: { [id: string]: string } } = {};
 
 
     //notification Modal variables
@@ -57,26 +62,42 @@ export class ApplicationsComponent {
                 private perunsettings: PerunSettings,
                 private userservice: UserService,
                 private groupservice: GroupService,
-                private voService: VoService) {
+                private voService: VoService,
+                private facilityService: FacilityService) {
+
+        this.voService.isVo().subscribe(result => {
+
+            this.is_vo_admin = result['Is_Vo_Manager'];
+            this.getUserApplications();
+            this.getApplicationStatus();
+            this.getSpecialHardware();
+            if (this.is_vo_admin) {
+                this.getAllApplications();
+                this.getComputeCenters();
 
 
-        this.getUserApplications();
-        this.getAllApplications();
-        this.getApplicationStatus();
-        this.getSpecialHardware();
-        this.getComputeCenters()
+            }
+            else {
+                this.isLoaded_AllApplication = true;
+
+            }
+
+        })
 
 
     }
 
     getComputeCenters() {
-        this.groupservice.getComputeCenters().subscribe(result => {
-            this.computeCenters = result;
+        this.facilityService.getComputeCenters().subscribe(result => {
+            for (let cc of result) {
+                let compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
+                this.computeCenters.push(compute_center)
+            }
 
         })
     }
 
-    getUserAffilaitions(user:number){
+    getUserAffilaitions(user: number) {
         this.userservice.getuserAffiliations(user).subscribe()
     }
 
@@ -138,6 +159,8 @@ export class ApplicationsComponent {
                 a.SpecialHardware = aj["project_application_special_hardware"];
                 a.OpenStackProject = aj["project_application_openstack_project"];
                 a.Comment = aj["project_application_comment"];
+                a.PerunId = aj['project_application_perun_id'];
+
                 if (aj['projectapplicationrenewal']) {
                     let r = new ApplicationExtension();
 
@@ -168,6 +191,7 @@ export class ApplicationsComponent {
                 this.user_applications.push(a)
             }
             this.isLoaded_userApplication = true;
+
 
         });
     }
@@ -202,132 +226,246 @@ export class ApplicationsComponent {
 
     getAllApplications() {
         //todo check if user is VO Admin
-        this.voService.isVo().subscribe(result => {
 
-            this.is_vo_admin = result['Is_Vo_Manager'];
-            if (this.is_vo_admin) {
-                this.applicataionsservice.getAllApplications().subscribe(res => {
-                    if (Object.keys(res).length == 0) {
-                        this.isLoaded_AllApplication = true;
-                    }
+        if (this.is_vo_admin) {
+            this.applicataionsservice.getAllApplications().subscribe(res => {
+                if (Object.keys(res).length == 0) {
+                    this.isLoaded_AllApplication = true;
+                }
 
-                    for (let key in res) {
+                for (let key in res) {
 
-                        let aj = res[key];
-                        let a = new Application();
-                        a.Id = aj["project_application_id"];
+                    let aj = res[key];
+                    let a = new Application();
+                    a.Id = aj["project_application_id"];
 
-                        a.Name = aj["project_application_name"];
-                        a.Shortname = aj["project_application_shortname"];
-                        a.Description = aj["project_application_description"];
-                        a.Lifetime = aj["project_application_lifetime"];
+                    a.Name = aj["project_application_name"];
+                    a.Shortname = aj["project_application_shortname"];
+                    a.Description = aj["project_application_description"];
+                    a.Lifetime = aj["project_application_lifetime"];
 
-                        a.VMsRequested = aj["project_application_vms_requested"];
-                        a.RamPerVM = aj["project_application_ram_per_vm"];
-                        a.CoresPerVM = aj["project_application_cores_per_vm"];
-                        a.VolumeLimit = aj["project_application_volume_limit"];
-                        a.VolumeCounter = aj["project_application_volume_counter"];
+                    a.VMsRequested = aj["project_application_vms_requested"];
+                    a.RamPerVM = aj["project_application_ram_per_vm"];
+                    a.CoresPerVM = aj["project_application_cores_per_vm"];
+                    a.VolumeLimit = aj["project_application_volume_limit"];
+                    a.VolumeCounter = aj["project_application_volume_counter"];
 
-                        a.ObjectStorage = aj["project_application_object_storage"];
-                        a.SpecialHardware = aj["project_application_special_hardware"];
+                    a.ObjectStorage = aj["project_application_object_storage"];
+                    a.SpecialHardware = aj["project_application_special_hardware"];
 
-                        a.Institute = aj["project_application_institute"];
-                        a.Workgroup = aj["project_application_workgroup"];
+                    a.Institute = aj["project_application_institute"];
+                    a.Workgroup = aj["project_application_workgroup"];
 
-                        a.DateSubmitted = aj["project_application_date_submitted"];
-                        a.DateStatusChanged = aj["project_application_date_status_changed"];
-                        a.User = aj["project_application_user"]["username"];
-                        a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
-                        a.UserEmail = aj["project_application_user"]["email"];
-                        a.Status = aj["project_application_status"];
-                        if (a.Status == this.APPROVED_STATUS) {
-                            a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
+                    a.DateSubmitted = aj["project_application_date_submitted"];
+                    a.DateStatusChanged = aj["project_application_date_status_changed"];
+                    a.User = aj["project_application_user"]["username"];
+                    a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
+                    a.UserEmail = aj["project_application_user"]["email"];
+                    a.Status = aj["project_application_status"];
+                    if (a.Status == this.APPROVED_STATUS) {
+                        a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
-
-                        }
-                        a.Comment = aj["project_application_comment"];
-                        a.PerunId = aj['project_application_perun_id'];
-                        a.OpenStackProject = aj["project_application_openstack_project"];
-                        if (aj['projectapplicationrenewal']) {
-                            let r = new ApplicationExtension();
-
-                            r.Id = aj['projectapplicationrenewal']['project_application'];
-                            r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-                            r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-                            r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-                            r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-                            r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                            r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-                            r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-                            r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-                            r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                            let special_hardware = [];
-                            if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) {
-                                let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
-
-                                for (let c = 0; c < special_hardware_string.length; c++) {
-                                    let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
-                                    special_hardware.push(sh)
-
-                                }
-
-                                r.SpecialHardware = special_hardware;
-                            }
-                            a.ApplicationExtension = r;
-                        }
-                        a.ComputeCenter = ['', -1];
-
-                        this.all_applications.push(a);
 
                     }
-                    let observable_list = [];
-                    for (let app of this.all_applications) {
-                        // app.ComputeCenter = ['None', -1];
-                        if (app.Status !== 1 && app.PerunId) {
-                            observable_list.push(this.groupservice.getFacilityByGroup(app.PerunId.toString()))
-                        }
+                    a.Comment = aj["project_application_comment"];
+                    a.PerunId = aj['project_application_perun_id'];
+                    a.OpenStackProject = aj["project_application_openstack_project"];
+                    if (aj['projectapplicationrenewal']) {
+                        let r = new ApplicationExtension();
 
-                    }
-                    forkJoin(observable_list).subscribe(result => {
-                        for (let res of result) {
+                        r.Id = aj['projectapplicationrenewal']['project_application'];
+                        r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                        r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                        r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                        r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                        r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                        r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                        r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                        r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                        r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                        let special_hardware = [];
+                        if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) {
+                            let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
 
-                            let details = res['Details'];
-                            let details_array = [];
-                            for (let detail in details) {
-                                let detail_tuple = [detail, details[detail]];
-                                details_array.push(detail_tuple);
-                            }
-                            for (let app of  this.all_applications) {
-                                if (app.PerunId == res['Group']) {
-                                    app.ComputecenterDetails = details_array,
-                                        app.ComputeCenter = [res['Facility'], res['FacilityId']]
-                                }
+                            for (let c = 0; c < special_hardware_string.length; c++) {
+                                let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                                special_hardware.push(sh)
 
                             }
 
-
+                            r.SpecialHardware = special_hardware;
                         }
-                        this.isLoaded_AllApplication = true;
-
-
-                    });
-                    if (observable_list.length == 0) {
-                        this.isLoaded_AllApplication = true;
+                        a.ApplicationExtension = r;
 
                     }
+                    this.all_applications.push(a);
 
-                });
-            }
-            else {
+                }
+
                 this.isLoaded_AllApplication = true;
+                for (let app of this.all_applications) {
+                    if (app.Status == 4) {
+                        this.getFacilityProject(app);
+                    }
+                }
+
+
+            });
+        }
+        else {
+            this.isLoaded_AllApplication = true;
+
+        }
+
+
+    }
+
+
+    public getFacilityProject(app: Application) {
+
+        if (!app.ComputeCenter && app.Status.toString() != 'submitted') {
+            this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe(res => {
+                let login = res['Login'];
+                let suport = res['Support'];
+                let facilityname = res['Facility'];
+                let facilityId = res['FacilityId'];
+
+                let cc = new ComputecenterComponent(facilityId, facilityname, login, suport);
+                app.ComputeCenter = cc
+
+
+            })
+        }
+
+    }
+
+    public getApplication(application: Application) {
+        let index = this.all_applications.indexOf(application);
+
+        this.applicataionsservice.getApplication(application.Id.toString()).subscribe(aj => {
+            let a = new Application();
+            a.Id = aj["project_application_id"];
+
+            a.Name = aj["project_application_name"];
+            a.Shortname = aj["project_application_shortname"];
+            a.Description = aj["project_application_description"];
+            a.Lifetime = aj["project_application_lifetime"];
+
+            a.VMsRequested = aj["project_application_vms_requested"];
+            a.RamPerVM = aj["project_application_ram_per_vm"];
+            a.CoresPerVM = aj["project_application_cores_per_vm"];
+            a.VolumeLimit = aj["project_application_volume_limit"];
+            a.VolumeCounter = aj["project_application_volume_counter"];
+
+            a.ObjectStorage = aj["project_application_object_storage"];
+            a.SpecialHardware = aj["project_application_special_hardware"];
+
+            a.Institute = aj["project_application_institute"];
+            a.Workgroup = aj["project_application_workgroup"];
+
+            a.DateSubmitted = aj["project_application_date_submitted"];
+            a.DateStatusChanged = aj["project_application_date_status_changed"];
+            a.User = aj["project_application_user"]["username"];
+            a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
+            a.UserEmail = aj["project_application_user"]["email"];
+            a.Status = aj["project_application_status"];
+            if (a.Status == this.APPROVED_STATUS) {
+                a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
+
 
             }
+            a.Comment = aj["project_application_comment"];
+            a.PerunId = aj['project_application_perun_id'];
+            a.OpenStackProject = aj["project_application_openstack_project"];
+            if (aj['projectapplicationrenewal']) {
+                let r = new ApplicationExtension();
 
-        });
+                r.Id = aj['projectapplicationrenewal']['project_application'];
+                r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                let special_hardware = [];
+                if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) {
+                    let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
+
+                    for (let c = 0; c < special_hardware_string.length; c++) {
+                        let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                        special_hardware.push(sh)
+
+                    }
+
+                    r.SpecialHardware = special_hardware;
+                }
+                a.ApplicationExtension = r;
+            }
+            this.all_applications[index] = a;
+
+        })
+    }
+
+    public getUserApplication(application: Application) {
+        let index = this.user_applications.indexOf(application);
+
+        this.applicataionsservice.getUserApplication(application.Id.toString()).subscribe(aj => {
+            let a = new Application();
+            a.Id = aj["project_application_id"];
+            a.Name = aj["project_application_name"];
+            a.Shortname = aj["project_application_shortname"];
+            a.Lifetime = aj["project_application_lifetime"];
+            a.DateSubmitted = aj["project_application_date_submitted"];
+            a.Status = aj["project_application_status"]["application_status_name"];
+            a.Description = aj["project_application_description"];
+            a.VMsRequested = aj["project_application_vms_requested"];
+            a.RamPerVM = aj["project_application_ram_per_vm"];
+            a.CoresPerVM = aj["project_application_cores_per_vm"];
+            a.VolumeLimit = aj["project_application_volume_limit"];
+            a.VolumeCounter = aj["project_application_volume_counter"];
+            a.ObjectStorage = aj["project_application_object_storage"];
+            a.SpecialHardware = aj["project_application_special_hardware"];
+            a.OpenStackProject = aj["project_application_openstack_project"];
+            a.Comment = aj["project_application_comment"];
+            if (aj['projectapplicationrenewal']) {
+                let r = new ApplicationExtension();
+
+                r.Id = aj['projectapplicationrenewal']['project_application'];
+                r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                let special_hardware = [];
+                if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) {
+                    let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
+
+                    for (let c = 0; c < special_hardware_string.length; c++) {
+                        let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                        special_hardware.push(sh)
+
+                    }
+
+                    r.SpecialHardware = special_hardware;
+                }
+                a.ApplicationExtension = r;
+            }
+            this.user_applications[index] = a;
+
+
+        })
+
+
     }
 
     public requestExtension(data) {
-
         this.applicataionsservice.requestRenewal(data).subscribe(result => {
             if (result['Error']) {
                 this.extension_status = 2
@@ -335,11 +473,33 @@ export class ApplicationsComponent {
             else {
                 this.extension_status = 1;
             }
-            this.user_applications = [];
-            this.all_applications = [];
-            this.getUserApplications();
-            this.getAllApplications();
+            this.getUserApplication(this.selectedApplication);
+
+            for (let app of this.all_applications) {
+                if (this.selectedApplication.PerunId == app.PerunId) {
+                    this.getApplication(app);
+                    break;
+                }
+
+            }
         })
+
+
+    }
+
+    public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string) {
+        if (!this.getCollapseStatus(collapse_id)) {
+            if (!(elixir_id in this.application_user)) {
+                this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe(result => {
+
+                    let name = result['firstName'] + ' ' + result['lastName'];
+                    let appuser: { [id: string]: string } = {};
+                    appuser['name'] = name;
+                    appuser['email'] = result['email'];
+                    this.application_user[elixir_id] = appuser;
+                })
+            }
+        }
 
 
     }
@@ -352,26 +512,36 @@ export class ApplicationsComponent {
             else {
                 this.extension_status = 3;
             }
-            this.user_applications = [];
-            this.all_applications = [];
-            this.getUserApplications();
-            this.getAllApplications();
+            this.getApplication(this.selectedApplication);
+
+            for (let app of this.user_applications) {
+                if (this.selectedApplication.PerunId == app.PerunId) {
+                    this.getUserApplication(app);
+                    break;
+                }
+
+            }
         })
     }
 
 
     public declineExtension(application_id: number) {
         this.applicataionsservice.declineRenewal(application_id).subscribe(result => {
-            if (result['Error']) {
+            if (result != null) {
                 this.extension_status = 2
             }
             else {
                 this.extension_status = 4;
             }
-            this.user_applications = [];
-            this.all_applications = [];
-            this.getUserApplications();
-            this.getAllApplications();
+            this.getApplication(this.selectedApplication);
+
+            for (let app of this.user_applications) {
+                if (this.selectedApplication.PerunId == app.PerunId) {
+                    this.getUserApplication(app);
+                    break;
+                }
+
+            }
         })
     }
 
@@ -432,49 +602,67 @@ export class ApplicationsComponent {
     }
 
 
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center, openstack_project, numberofVms, volumelimit, lifetime, longname, volumecounter) {
+    public createGroup(name, description, manager_elixir_id, application_id, compute_center) {
 
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
 
-        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
-            .then(member_raw => {
-                    let member = member_raw;
-                    manager_member_id = member["id"];
-                    manager_member_user_id = member["userId"];
-                    // create new group
+        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).subscribe(result => {
+            if (result['Error']) {
+                this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
 
-                    return this.groupservice.createGroup(name, description).toPromise();
-                }
-            ).then(group_raw => {
-            let group = group_raw;
-            new_group_id = group["id"];
-
-            //add the application user to the group
-            return this.groupservice.addMember(new_group_id, manager_member_id, compute_center).toPromise();
-
-        }).then(null_result => {
-            return this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).toPromise();
-        }).then(null_result => {
-            return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).toPromise();
-        }).then(null_result => {
-            //setting approved status for Perun Group
-
-            if (compute_center != 'undefined') {
-                this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
             }
-            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe()
-            //update modal
-            this.updateNotificaitonModal("Success", "The new project was created", true, "success");
-            //update applications
-            this.all_applications = [];
-            this.user_applications = [];
-            this.getUserApplications();
-            this.getAllApplications();
-        }).catch(error => {
-            this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+            else {
+                this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise().then(member_raw => {
+                        let member = member_raw;
+                        manager_member_id = member["id"];
+                        manager_member_user_id = member["userId"];
+                        // create new group
+
+                        return this.groupservice.createGroup(name, description).toPromise();
+                    }
+                ).then(group_raw => {
+                    let group = group_raw;
+                    new_group_id = group["id"];
+
+                    //add the application user to the group
+                    return this.groupservice.addMember(new_group_id, manager_member_id, compute_center).toPromise();
+
+                }).then(null_result => {
+                    return this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).toPromise();
+
+                }).then(null_result => {
+                    //setting approved status for Perun Group
+
+                    if (compute_center != 'undefined') {
+                        this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
+                    }
+                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe();
+                    //update modal
+                    this.updateNotificaitonModal("Success", "The new project was created", true, "success");
+                    //update applications
+                    for (let app of this.user_applications) {
+                        if (app.Id == application_id) {
+                            this.getUserApplication(app);
+                            break;
+
+                        }
+
+                    }
+                    for (let app of this.all_applications) {
+                        if (app.Id == application_id) {
+                            this.getApplication(app);
+                            break;
+
+                        }
+                    }
+                }).catch(error => {
+                    console.log(error)
+                    this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+                })
+            }
         });
 
     }

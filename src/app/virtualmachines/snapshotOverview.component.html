@@ -4,9 +4,9 @@
 <div *ngIf="isLoaded" class="card">
     <div class="card-header">
         <strong>Snapshots</strong>
-        –Overview <div *ngIf="snapshots.length == 0"><p>No snapshots available. Click this <a href="https://cloud.denbi.de/wiki/portal/#snapshots/">link</a> to see how to use and create a snapshot.</p></div>
+        –Overview
     </div>
-    <div> 
+    <div>
         <div>
             <div class="table-responsive">
                 <table class="table table-striped ">
@@ -47,6 +47,7 @@
         </div>
     </div>
 </div>
+<div *ngIf="snapshots.length == 0"><h3 class="text-center">No snapshots available. Click this <a href="https://cloud.denbi.de/wiki/portal/#snapshots">link</a> to see how to use and create a snapshot.</h3></div>
 
 <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
@@ -56,6 +57,9 @@
                 <h4 class="modal-title" *ngIf="delete_status == 0"> Waiting </h4>
                 <h4 class="modal-title" *ngIf="delete_status == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="delete_status == 2"> Error </h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="deleteModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="delete_status == 0">
@@ -85,6 +89,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Snapshot</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
 

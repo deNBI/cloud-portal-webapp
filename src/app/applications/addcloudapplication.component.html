@@ -1,7 +1,7 @@
 <div class="animated fadeIn">
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
                     <strong>New Cloud Application</strong>
@@ -327,6 +327,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-{{ notificationModalType }}" role="alert">
@@ -367,6 +370,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"> {{acknowledgeModalTitle}}</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="acknowledgemodal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-{{ acknowledgeModalType }}" role="alert">

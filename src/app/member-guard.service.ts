@@ -18,7 +18,6 @@ export class MemberGuardService implements CanActivate {
         return new Promise((resolve, reject) => {
             this.userservice.getLoggedUser().toPromise()
                 .then(result => {
-                    console.log(result.status)
 
                     let res = result;
 

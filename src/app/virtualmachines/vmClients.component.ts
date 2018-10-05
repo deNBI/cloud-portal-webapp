@@ -6,23 +6,25 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {GroupService} from "../api-connector/group.service";
 import {UserService} from "../api-connector/user.service";
+import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
+import {FacilityService} from "../api-connector/facility.service";
 
 
 @Component({
     selector: 'client-overview',
     templateUrl: 'vmClients.component.html',
-    providers: [UserService, GroupService, ClientService, PerunSettings, ApiSettings]
+    providers: [FacilityService,UserService, GroupService, ClientService, PerunSettings, ApiSettings]
 })
 
 export class ClientOverviewComponent implements OnInit {
     clients: Vmclient[];
     is_vo_admin = false;
     checkStatus: string = 'Not checked';
-    computeCenters: [string, number][];
-    selectedComputeCenter: string;
+    computeCenters: ComputecenterComponent[]=[];
+    selectedComputeCenter: ComputecenterComponent;
     isLoaded = false;
 
-    constructor(private userservice: UserService, private groupservice: GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) {
+    constructor(private facilityService:FacilityService,private userservice: UserService, private groupservice: GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) {
 
     }
 
@@ -48,10 +50,7 @@ export class ClientOverviewComponent implements OnInit {
     }
 
 
-    getClientsUnchecked(): void {
-        this.clientservice.getClientsUnchecked().subscribe(clients => this.clients = clients);
 
-    }
 
     getClientsChecked(): void {
         this.clientservice.getClientsChecked().subscribe(clients => {
@@ -63,8 +62,11 @@ export class ClientOverviewComponent implements OnInit {
     }
 
     getComputeCenters() {
-        this.groupservice.getComputeCenters().subscribe(result => {
-            this.computeCenters = result;
+        this.facilityService.getComputeCenters().subscribe(result => {
+            for (let cc of result) {
+                let compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
+                this.computeCenters.push(compute_center)
+            }
 
         })
     }
@@ -99,8 +101,8 @@ export class ClientOverviewComponent implements OnInit {
         }
     }
 
-    deleteClient(host: string, port: string, location: string): void {
-        this.clientservice.deleteClient(host, port, location).subscribe(data => {
+    deleteClient(client_id:number): void {
+        this.clientservice.deleteClient(client_id).subscribe(data => {
 
             this.getClientsChecked();
         });

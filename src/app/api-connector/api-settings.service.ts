@@ -12,7 +12,7 @@ export class ApiSettings {
     return environment.apiBaseUrl;
   }
   getConnectorBaseUrl(): string {
-    return environment.connectorBaseUrl;
+    return environment.apiBaseUrl;
   }
 
   /*

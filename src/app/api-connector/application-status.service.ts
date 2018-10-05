@@ -28,7 +28,7 @@ export class ApplicationStatusService {
         let params = new HttpParams().set("project_application_status", status_id.toString()).set('compute_center',compute_center)
 
 
-        return this.http.patch(this.settings.getApiBaseURL() + 'update_application_status/' + application_id + "/", params,
+        return this.http.patch(this.settings.getApiBaseURL() + 'project_applications/' + application_id + "/", params,
             {
                 headers: header,
                 withCredentials: true
