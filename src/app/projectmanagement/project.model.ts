@@ -20,6 +20,7 @@ export class Project {
   private _Lifetime: number;
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
+  private _Status:number;
   private _ComputeCenter:ComputecenterComponent;
   private _PerunId:number;
   private _ProjectMemberApplications:ProjectMemberApplication[];
@@ -50,6 +51,15 @@ export class Project {
 
   set RealName(value:string){
     this._RealName=value;
+  }
+
+  get Status():number{
+    return this._Status;
+  }
+
+  set Status(value:number){
+    this._Status=value;
+
   }
   get ProjectMemberApplications():ProjectMemberApplication[]{
     return this._ProjectMemberApplications;
