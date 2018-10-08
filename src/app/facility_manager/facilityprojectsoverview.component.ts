@@ -91,7 +91,7 @@ export class FacilityProjectsOverviewComponent {
     }
 
     getFacilityProjects(facility) {
-        this.projects=[];
+        this.projects = [];
 
 
         this.facilityservice.getFacilityAllowedGroupsWithDetails(facility).subscribe(result => {
@@ -104,7 +104,10 @@ export class FacilityProjectsOverviewComponent {
                 let groupid = group['id'];
                 let facility = group['compute_center'];
                 let shortname = group['shortname'];
-                let compute_center=null;
+                let compute_center = null;
+                let lifetime = group['lifetime'];
+                let expirationDate = undefined;
+
 
                 if (!shortname) {
                     shortname = group['name']
@@ -122,6 +125,16 @@ export class FacilityProjectsOverviewComponent {
                     is_pi,
                     is_admin,
                     compute_center);
+                if (lifetime != -1) {
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
+                    let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
+
+                    newProject.LifetimeDays = lifetimeDays;
+                    newProject.DateEnd = expirationDate;
+
+                }
+                newProject.RealName=group['name'];
+                newProject.Lifetime = lifetime;
 
                 this.projects.push(newProject);
             }
