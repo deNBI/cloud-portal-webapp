@@ -23,8 +23,8 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let snapshot of snapshots">
-                        <td>***REMOVED******REMOVED***snapshot?.snapshot_name***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED***snapshot?.snapshot_project***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***snapshot.snapshot_name***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***snapshot.snapshot_project***REMOVED******REMOVED***</td>
                         <td>
                             <button *ngIf="snapshot.snapshot_created"
                                     (click)="setSelectedSnapshot(snapshot);verifyModal.show();"
@@ -47,7 +47,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="snapshots.length == 0 && isLoaded"><h3 class="text-center">No snapshots available. Click this <a href="https://cloud.denbi.de/wiki/portal/#snapshots">link</a> to see how to use and create a snapshot.</h3></div>
+<div *ngIf="snapshots.length == 0"><h3 class="text-center">No snapshots available. Click this <a href="https://cloud.denbi.de/wiki/portal/#snapshots">link</a> to see how to use and create a snapshot.</h3></div>
 
 <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
@@ -71,10 +71,6 @@
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="delete_status == 2">
                 When deleting ***REMOVED******REMOVED***selected_snapshot?.snapshot_name***REMOVED******REMOVED*** an error occured.
-            </div>
-            <div class="alert alert-warning" role="alert" *ngIf="delete_status == 3">
-                Could not delete <strong>***REMOVED******REMOVED***selected_snapshot?.snapshot_name***REMOVED******REMOVED*** </strong> because the Client is offline.
-                Please contact cloud@denbi.de if you got any questions.
             </div>
 
 

@@ -11,10 +11,10 @@ import ***REMOVED***SnapshotModel***REMOVED*** from "./virtualmachinemodels/snap
 ***REMOVED***)
 
 export class SnapshotOverviewComponent implements OnInit ***REMOVED***
-    snapshots: SnapshotModel[] = [];
+    snapshots: SnapshotModel[];
     selected_snapshot: SnapshotModel;
     delete_status = 0;
-    isLoaded = false;
+    isLoaded=false;
 
 
     constructor(private imageService: ImageService) ***REMOVED***
@@ -28,7 +28,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
     getSnapshots() ***REMOVED***
         this.imageService.getSnapshotsByUser().subscribe(result => ***REMOVED***
             this.snapshots = result;
-            this.isLoaded = true;
+            this.isLoaded=true;
         ***REMOVED***)
     ***REMOVED***
 
@@ -41,10 +41,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
             if (result['Deleted'] && result['Deleted'] === true) ***REMOVED***
                 this.delete_status = 1;
             ***REMOVED***
-            else if (result['Info']) ***REMOVED***
-                this.delete_status = 3;
-
-            ***REMOVED*** else ***REMOVED***
+            else ***REMOVED***
                 this.delete_status = 2;
             ***REMOVED***
 
