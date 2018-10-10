@@ -227,6 +227,23 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
+    getSelectedProjectClient(groupid: number) ***REMOVED***
+        this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => ***REMOVED***
+            if (res['status'] == 'Connected') ***REMOVED***
+                this.client_avaiable = true;
+                this.getSelectedProjectDiskspace();
+                this.getSelectedProjectVms();
+                this.getSelectedProjectVolumes();
+                this.getImages(this.selectedProject[1]);
+                this.getFlavors(this.selectedProject[1]);
+            ***REMOVED***
+            else ***REMOVED***
+                this.client_avaiable = false;
+
+            ***REMOVED***
+        ***REMOVED***)
+    ***REMOVED***
+
 
     resetData(): void ***REMOVED***
         if (this.data == 'INVALID') ***REMOVED***
@@ -370,7 +387,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     ngOnInit(): void ***REMOVED***
 
         this.userinfo = new Userinfo();
-        this.getClientData();
         this.initializeData();
 
 
