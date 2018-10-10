@@ -30,6 +30,9 @@ export class GroupService ***REMOVED***
     ***REMOVED***
 
 
+
+
+
     assignGroupToResource(groupid: string, computecenter: string): Observable<any> ***REMOVED***
         let params = new HttpParams().set('compute_center', computecenter)
 

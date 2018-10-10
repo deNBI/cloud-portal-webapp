@@ -43,12 +43,36 @@ export class VoService ***REMOVED***
 
     ***REMOVED***
 
+    removeResourceFromGroup(groupid: string): Observable<any> ***REMOVED***
+        return this.http.delete(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/resource/', ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+
+    ***REMOVED***
+
     getAllGroupsWithDetails(): Observable<any> ***REMOVED***
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/details/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
+    ***REMOVED***
+
+    getProjectStatus(groupid: number): Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+    ***REMOVED***
+
+     setProjectStatus(groupid: number,status:number): Observable<any> ***REMOVED***
+                let params = new HttpParams().set('status', status.toString());
+
+        return this.http.post(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', params,***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
     ***REMOVED***
 
     sendNewsletterToVo(subject, message, reply?): Observable<any> ***REMOVED***
