@@ -24,8 +24,10 @@ export class FullLayoutComponent implements OnInit {
     public login_name = '';
     navbar_state = 'closed';
     overview_state='closed';
+    client_avaiable;
 
     constructor(private voService:VoService,private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) {
+        this.is_client_avaiable();
         this.is_vm_project_member();
         this.get_is_facility_manager();
         this.getLoginName();
@@ -61,7 +63,24 @@ export class FullLayoutComponent implements OnInit {
         })
     }
 
+    is_client_avaiable() {
+        this.clientservice.isClientAvaiable().subscribe(result => {
+            try {
+                if (result.toString() === 'true') {
+                    this.client_avaiable = true;
+                    return
+                }
+                this.client_avaiable = false;
+                return;
+            }
+            catch (e) {
+                this.client_avaiable = false;
+                return;
+            }
 
+        })
+
+    }
 
     toggle_new_application() {
         if (this.navbar_state == 'closed') {

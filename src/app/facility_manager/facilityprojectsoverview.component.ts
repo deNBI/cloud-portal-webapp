@@ -91,7 +91,6 @@ export class FacilityProjectsOverviewComponent {
     }
 
     getFacilityProjects(facility) {
-        this.projects=[];
 
 
         this.facilityservice.getFacilityAllowedGroupsWithDetails(facility).subscribe(result => {
