@@ -168,6 +168,7 @@ export class OverviewComponent {
                     this.is_admin,
                     compute_center);
                 newProject.OpenStackProject = group['openstack_project'];
+                newProject.RealName=realname;
                 this.projects.push(newProject);
             }
             this.isLoaded = true;
