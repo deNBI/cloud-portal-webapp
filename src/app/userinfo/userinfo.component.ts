@@ -8,7 +8,9 @@ import {UserService} from "../api-connector/user.service";
 import {GroupService} from "../api-connector/group.service";
 
 
+
 @Component({
+    selector: 'app-userinfo',
     templateUrl: 'userinfo.component.html',
     providers: [GroupService, UserService, PerunSettings, ApiSettings, keyService]
 })
