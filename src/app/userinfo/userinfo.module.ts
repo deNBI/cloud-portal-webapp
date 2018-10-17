@@ -19,6 +19,7 @@ import { AlertModule } from 'ngx-bootstrap';
 
   declarations: [
     UserinfoComponent,
-  ]
+  ],
+    exports:[UserinfoComponent,UserinfoRoutingModule,TabsModule,CommonModule,FormsModule,ModalModule,AlertModule]
 })
 export class UserinfoModule { }

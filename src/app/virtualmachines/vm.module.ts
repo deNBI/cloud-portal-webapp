@@ -13,10 +13,12 @@ import {VmOverviewComponent} from "../virtualmachines/vmOverview.component";
 import {VolumeOverviewComponent} from "./volumeOverview.component";
 import {SnapshotOverviewComponent} from "./snapshotOverview.component";
 import {PaginationModule} from 'ngx-bootstrap/pagination'
+import {UserinfoModule} from "../userinfo/userinfo.module";
 
 
 @NgModule({
     imports: [
+        UserinfoModule,
         VmRoutingModule,
         TabsModule,
         CommonModule,
