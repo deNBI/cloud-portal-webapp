@@ -25,7 +25,9 @@ export class FlavorService {
     }
 
     getListOfFlavorsAvailable(): Observable<Flavor[]> {
-      return this.http.get<Flavor[]>('project_applications/flavors');
+      return this.http.get<Flavor[]>(this.settings.getConnectorBaseUrl() + 'project_applications/flavors/',{
+        withCredentials: true
+      }).pipe(catchError((error: any) => throwError(error)));
     }
 
 }

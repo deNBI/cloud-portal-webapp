@@ -46,10 +46,11 @@ export class AddcloudapplicationComponent {
     constructor(private specialhardwareservice: SpecialHardwareService,
                 private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) {
         this.getSpecialHardware();
+        this.getListOfFlavors();
     }
 
     getListOfFlavors() {
-      this.flavorservice.getListOfFlavorsAvailable()._subscribe(flavors => this.flavorList = flavors);
+      this.flavorservice.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
     }
 
 

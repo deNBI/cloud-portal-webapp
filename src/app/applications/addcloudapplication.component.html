@@ -114,8 +114,8 @@
                           </h5>
                         </div>
 
-                        <div *ngFor="" class="cl">
-                          <label class="col-md-4 form-control-label"><strong>hi</strong></label>
+                        <div *ngFor="let f of flavorList" class="cl">
+                          <label class="col-md-4 form-control-label"><strong>{{f.id}}</strong></label>
                         </div>
 
                         <div class="form-group row" [ngClass]="{
