@@ -11,7 +11,7 @@ import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 
 @Component({
     templateUrl: 'addcloudapplication.component.html',
-    providers: [SpecialHardwareService, ApiSettings, ApplicationsService]
+    providers: [SpecialHardwareService, ApiSettings, ApplicationsService,FlavorService]
 })
 
 export class AddcloudapplicationComponent {
