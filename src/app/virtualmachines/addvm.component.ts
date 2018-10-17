@@ -26,11 +26,12 @@ import {keyService} from "../api-connector/key.service";
 import {Project} from "../projectmanagement/project.model";
 import {GroupService} from "../api-connector/group.service";
 import {environment} from "../../environments/environment";
+import {UserinfoComponent} from '../userinfo/userinfo.component';
 
 @Component({
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService]
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService],
 })
 export class VirtualMachineComponent implements OnInit {
 
