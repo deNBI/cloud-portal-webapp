@@ -5,7 +5,7 @@ import ***REMOVED***PerunSettings***REMOVED*** from "../../perun-connector/conne
 import ***REMOVED***Userinfo***REMOVED*** from "../../userinfo/userinfo.model";
 
 @Component(***REMOVED***
-    selector: 'app-public-key',
+    selector: '[app-public-key]',
     templateUrl: './public-key.component.html',
     styleUrls: ['./public-key.component.scss'],
     providers: [ PerunSettings, ApiSettings, keyService]

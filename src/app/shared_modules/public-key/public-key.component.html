@@ -1,34 +1,33 @@
-<tr>
-    <td>Public Key</td>
-    <td>
-        <span *ngIf="userinfo.PublicKey == 'None'"> No public key is set</span>
-        <span *ngIf="userinfo.PublicKey != 'None'"
-              style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
+<td>Public Key</td>
+<td>
+    <span *ngIf="userinfo.PublicKey == 'None'"> No public key is set</span>
+    <span *ngIf="userinfo.PublicKey != 'None'"
+          style="word-wrap: break-word; max-width: 80px; white-space: normal">
         <button (click)="toggleKey()"
                 class="btn btn-primary">
             ***REMOVED******REMOVED***show_key_text***REMOVED******REMOVED***
         </button>
             <div *ngIf="key_visible"><br>***REMOVED******REMOVED***userinfo.PublicKey***REMOVED******REMOVED***</div></span>
-    </td>
-    <td>
+</td>
+<td>
 
-        <alert type="info">
-            <strong>Tutorial:</strong><a target="_blank"
-                                         href="https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys">
-            How
-            to generate a ssh keypair?</a>
-        </alert>
+    <alert type="info">
+        <strong>Tutorial:</strong><a target="_blank"
+                                     href="https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys">
+        How
+        to generate a ssh keypair?</a>
+    </alert>
 
-        <button class="btn btn-primary" type="button" (click)="pubKeyModal.show()">Set pub
-            key
-        </button>
-
-
-    </td>
-</tr>
+    <button class="btn btn-primary" type="button" (click)="public_key='';pubKeyModal.show()">Set pub
+        key
+    </button>
 
 
-<div bsModal #pubKeyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+</td>
+
+
+<div bsModal #pubKeyModal="bs-modal"  class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
