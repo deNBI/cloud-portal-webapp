@@ -26,11 +26,12 @@ import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***environment***REMOVED*** from "../../environments/environment";
+import ***REMOVED***UserinfoComponent***REMOVED*** from '../userinfo/userinfo.component';
 
 @Component(***REMOVED***
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService]
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService],
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
 

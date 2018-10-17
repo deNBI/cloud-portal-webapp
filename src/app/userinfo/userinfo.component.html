@@ -33,33 +33,8 @@
                                 <td>***REMOVED******REMOVED***userinfo.ElxirId***REMOVED******REMOVED***</td>
                                 <td></td>
                             </tr>
-                            <tr>
-                                <td>Public Key</td>
-                                <td *ngIf="userinfo.PublicKey == 'None'">No public key is set</td>
-                                <td *ngIf="userinfo.PublicKey != 'None'"
-                                    style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-                                    <button *ngIf="userinfo.PublicKey" (click)="toggleKey()"
-                                            class="btn btn-primary">
-                                        ***REMOVED******REMOVED***key***REMOVED******REMOVED***
-                                    </button>
-                                    <div *ngIf="key_visible"><br>***REMOVED******REMOVED***userinfo.PublicKey***REMOVED******REMOVED***</div>
-                                </td>
-                                <td>
+                            <tr app-public-key [userinfo]="userinfo"></tr>
 
-                                    <alert type="info">
-                                        <strong>Tutorial:</strong><a target="_blank"
-                                                                     href="https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys">
-                                        How
-                                        to generate a ssh keypair?</a>
-                                    </alert>
-
-                                    <button class="btn btn-primary" type="button" (click)="pubKeyModal.show()">Set pub
-                                        key
-                                    </button>
-
-
-                                </td>
-                            </tr>
                             <tr>
                                 <td>Newsletter</td>
                                 <td>
@@ -95,9 +70,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Change public key</h4>
-                      <button type="button" class="close" style="cursor: pointer;" (click)="pubKeyModal.hide()" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+                <button type="button" class="close" style="cursor: pointer;" (click)="pubKeyModal.hide()"
+                        data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
             </div>
             <div class="modal-body">
@@ -148,14 +124,17 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Join Freemium</h4>
-                      <button type="button" class="close" style="cursor: pointer;" (click)="freemiummodal.hide()" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+                <button type="button" class="close" style="cursor: pointer;" (click)="freemiummodal.hide()"
+                        data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
             </div>
             <div class="modal-body">
                 <alert type="info">
-                  <strong>Info: </strong> <p>After joining Freemiun you can reload your page to see a New Instance tab where you are able to start a virtual machine for a short time.</p>
+                    <strong>Info: </strong>
+                    <p>After joining Freemiun you can reload your page to see a New Instance tab where you are able to
+                        start a virtual machine for a short time.</p>
 
                 </alert>
 
@@ -165,7 +144,7 @@
             <div class="modal-footer">
 
 
-                <button  class="btn btn-success col-md4" type="button"
+                <button class="btn btn-success col-md4" type="button"
                         (click)="joinFreemium();freemiummodal.hide();">Join Freemium
                 </button>
                 <button class="btn  btn-primary col-md-4" type="reset" (click)="freemiummodal.hide();">Cancel
