@@ -1,16 +1,14 @@
 import {NgModule} from '@angular/core';
 
 import {TabsModule} from 'ngx-bootstrap/tabs';
-import {UserinfoComponent} from './userinfo.component';
-import {UserinfoRoutingModule} from './userinfo-routing.module';
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {AlertModule} from 'ngx-bootstrap';
+import {PublicKeyComponent} from "./public-key.component";
 
 @NgModule({
     imports: [
-        UserinfoRoutingModule,
         TabsModule,
         CommonModule,
         FormsModule, ModalModule.forRoot(),
@@ -18,9 +16,9 @@ import {AlertModule} from 'ngx-bootstrap';
     ],
 
     declarations: [
-        UserinfoComponent,
+        PublicKeyComponent,
     ],
-    exports: [UserinfoComponent, UserinfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
+    exports: [PublicKeyComponent,AlertModule,FormsModule,ModalModule,CommonModule,TabsModule]
 })
-export class UserinfoModule {
+export class PublicKeyModule {
 }

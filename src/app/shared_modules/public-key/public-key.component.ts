@@ -1,0 +1,73 @@
+import {Component, OnInit,Input} from '@angular/core';
+import {keyService} from "../../api-connector/key.service";
+import {ApiSettings} from "../../api-connector/api-settings.service";
+import {UserService} from "../../api-connector/user.service";
+import {PerunSettings} from "../../perun-connector/connector-settings.service";
+
+@Component({
+    selector: 'app-public-key',
+    templateUrl: './public-key.component.html',
+    styleUrls: ['./public-key.component.scss'],
+    providers: [ UserService, PerunSettings, ApiSettings, keyService]
+
+})
+export class PublicKeyComponent implements OnInit {
+
+    @Input() public_key: string ;
+    show_key_text: string = 'Show Public Key';
+    key_visible = false;
+
+
+    constructor( private userservice: UserService, private keyService: keyService) {
+    }
+
+    ngOnInit() {
+    }
+
+    importKey(publicKey: string) {
+
+        let re = /\+/gi;
+
+        let newstr = publicKey.replace(re, "%2B");
+
+        this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(result => {
+            this.getUserPublicKey();
+        });
+    }
+
+    validatePublicKey() {
+
+        if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key)) {
+            return true;
+        }
+        else {
+
+            return false;
+        }
+
+    }
+
+    getUserPublicKey() {
+        this.keyService.getKey().subscribe(result => {
+            this.userservice = result['public_key'];
+        })
+    }
+
+    show_key() {
+        if (this.key_visible == false) {
+            this.toggleKey();
+        }
+    }
+
+    toggleKey() {
+        if (this.show_key_text == 'Show Public Key') {
+            this.show_key_text = 'Hide Public Key';
+            this.key_visible = true;
+        } else {
+            this.show_key_text = 'Show Public Key';
+            this.key_visible = false;
+        }
+    }
+
+
+}
