@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded ">
+<div *ngIf="isLoaded && userinfo.PublicKey == 'None'">
     <div>
         <div class="card">
             <div class="card-header">
@@ -15,7 +15,7 @@
                 <div class="table-responsive" style="width: 100%">
                     <table class="table table-striped">
 
-                        <app-public-key [userinfo]="userinfo"></app-public-key>
+                        <tr app-public-key [userinfo]="userinfo"></tr>
                     </table>
                 </div>
             </div>
@@ -24,7 +24,7 @@
 </div>
 
 <div *ngIf=" isLoaded==false" class="loader"></div>
-<div *ngIf=" isLoaded && validPublickey">
+<div *ngIf=" isLoaded && userinfo.PublicKey != 'None'">
 
     <div class="row">
         <div class="col-md-12">

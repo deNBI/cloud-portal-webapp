@@ -5,7 +5,7 @@ import {PerunSettings} from "../../perun-connector/connector-settings.service";
 import {Userinfo} from "../../userinfo/userinfo.model";
 
 @Component({
-    selector: 'app-public-key',
+    selector: '[app-public-key]',
     templateUrl: './public-key.component.html',
     styleUrls: ['./public-key.component.scss'],
     providers: [ PerunSettings, ApiSettings, keyService]
