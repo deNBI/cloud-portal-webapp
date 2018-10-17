@@ -44,7 +44,7 @@
                         </div>
 
 
-                        <div class="form-group row  "
+                        <div class="form-group row"
                              [ngClass]="{
                                 'has-danger': f.controls.project_application_shortname?.invalid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched),
                                 'has-success': f.controls.project_application_shortname?.valid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched)
@@ -107,7 +107,15 @@
 
 
                         <div class="form-group row">
-                            <h5 class="col-md-12 form-control-label">Resources</h5>
+                          <h5 class="col-md-12 form-control-label">Resources
+                            <i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour" data-balloon-pos="down">
+                              <i class="icon-question"></i>
+                            </i>
+                          </h5>
+                        </div>
+
+                        <div *ngFor="" class="cl">
+                          <label class="col-md-4 form-control-label"><strong>hi</strong></label>
                         </div>
 
                         <div class="form-group row" [ngClass]="{

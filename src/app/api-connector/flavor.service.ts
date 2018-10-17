@@ -24,4 +24,8 @@ export class FlavorService {
 
     }
 
+    getListOfFlavorsAvailable(): Observable<Flavor[]> {
+      return this.http.get<Flavor[]>('project_applications/flavors');
+    }
+
 }

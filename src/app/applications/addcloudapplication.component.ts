@@ -5,6 +5,9 @@ import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {SpecialHardware} from './special_hardware.model'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {ApplicationsService} from '../api-connector/applications.service'
+import {Observable} from 'rxjs';
+import {FlavorService} from '../api-connector/flavor.service';
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 
 @Component({
     templateUrl: 'addcloudapplication.component.html',
@@ -15,6 +18,7 @@ export class AddcloudapplicationComponent {
 
     public wronginput: boolean = false;
 
+
     //notification Modal variables
     public notificationModalTitle: string = 'Notification';
     public notificationModalMessage: string = 'Please wait...';
@@ -23,6 +27,7 @@ export class AddcloudapplicationComponent {
     public notificationModalStay: boolean = true;
     public error: string[];
     public project_application_vms_requested=5;
+    public flavorList: Flavor[];
 
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
@@ -39,9 +44,12 @@ export class AddcloudapplicationComponent {
     special_hardware: SpecialHardware[] = new Array();
 
     constructor(private specialhardwareservice: SpecialHardwareService,
-                private  applicationsservice: ApplicationsService) {
+                private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) {
         this.getSpecialHardware();
+    }
 
+    getListOfFlavors() {
+      this.flavorservice.getListOfFlavorsAvailable()._subscribe(flavors => this.flavorList = flavors);
     }
 
 
