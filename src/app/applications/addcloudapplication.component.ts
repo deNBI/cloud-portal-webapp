@@ -46,10 +46,11 @@ export class AddcloudapplicationComponent ***REMOVED***
     constructor(private specialhardwareservice: SpecialHardwareService,
                 private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) ***REMOVED***
         this.getSpecialHardware();
+        this.getListOfFlavors();
     ***REMOVED***
 
     getListOfFlavors() ***REMOVED***
-      this.flavorservice.getListOfFlavorsAvailable()._subscribe(flavors => this.flavorList = flavors);
+      this.flavorservice.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
     ***REMOVED***
 
 
