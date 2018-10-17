@@ -19,6 +19,7 @@ import ***REMOVED*** AlertModule ***REMOVED*** from 'ngx-bootstrap';
 
   declarations: [
     UserinfoComponent,
-  ]
+  ],
+    exports:[UserinfoComponent,UserinfoRoutingModule,TabsModule,CommonModule,FormsModule,ModalModule,AlertModule]
 ***REMOVED***)
 export class UserinfoModule ***REMOVED*** ***REMOVED***
