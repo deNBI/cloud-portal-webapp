@@ -1,8 +1,8 @@
-<div *ngIf="isLoaded " class="row">
+<div *ngIf="isLoaded ">
     <div>
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Personal Information
+                <i class="fa fa-align-justify"></i> Public Key
             </div>
 
             <div class="card-block">
@@ -12,9 +12,10 @@
                     your <a
                             href="#/userinfo">personal data page</a>.
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive" style="width: 100%">
                     <table class="table table-striped">
-                        <app-public-key [public_key]="userinfo.PublicKey"></app-public-key>
+
+                        <app-public-key [userinfo]="userinfo"></app-public-key>
                     </table>
                 </div>
             </div>

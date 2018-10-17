@@ -1,13 +1,14 @@
 <tr>
     <td>Public Key</td>
-    <td *ngIf="public_key == 'None'">No public key is set</td>
-    <td *ngIf="public_key != 'None'"
-        style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-        <button *ngIf="public_key" (click)="toggleKey()"
+    <td>
+        <span *ngIf="userinfo.PublicKey == 'None'"> No public key is set</span>
+        <span *ngIf="userinfo.PublicKey != 'None'"
+              style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
+        <button (click)="toggleKey()"
                 class="btn btn-primary">
             {{show_key_text}}
         </button>
-        <div *ngIf="key_visible"><br>{{public_key}}</div>
+            <div *ngIf="key_visible"><br>{{userinfo.PublicKey}}</div></span>
     </td>
     <td>
 

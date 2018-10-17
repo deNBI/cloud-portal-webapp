@@ -1,24 +1,25 @@
-import {Component, OnInit,Input} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {keyService} from "../../api-connector/key.service";
 import {ApiSettings} from "../../api-connector/api-settings.service";
-import {UserService} from "../../api-connector/user.service";
 import {PerunSettings} from "../../perun-connector/connector-settings.service";
+import {Userinfo} from "../../userinfo/userinfo.model";
 
 @Component({
     selector: 'app-public-key',
     templateUrl: './public-key.component.html',
     styleUrls: ['./public-key.component.scss'],
-    providers: [ UserService, PerunSettings, ApiSettings, keyService]
+    providers: [ PerunSettings, ApiSettings, keyService]
 
 })
 export class PublicKeyComponent implements OnInit {
 
-    @Input() public_key: string ;
+    public_key: string;
+    @Input() userinfo: Userinfo;
     show_key_text: string = 'Show Public Key';
     key_visible = false;
 
 
-    constructor( private userservice: UserService, private keyService: keyService) {
+    constructor( private keyService: keyService) {
     }
 
     ngOnInit() {
@@ -49,7 +50,7 @@ export class PublicKeyComponent implements OnInit {
 
     getUserPublicKey() {
         this.keyService.getKey().subscribe(result => {
-            this.userservice = result['public_key'];
+            this.userinfo.PublicKey = result['public_key'];
         })
     }
 
