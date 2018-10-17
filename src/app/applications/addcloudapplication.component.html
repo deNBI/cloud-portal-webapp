@@ -114,11 +114,23 @@
                           </h5>
                         </div>
 
-                        <div *ngFor="let f of flavorList" class="cl">
+                        <div *ngFor="let f of flavorList" class="form-group row">
                           <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</strong></label>
+                           <div class="col-md-8">
+                                <div class="input-group">
+                                    <input required class="form-control" id=""
+                                           name="project_application_ram_per_vm"
+                                           placeholder="e.g. 5"
+                                           type="number" min="1" step="1"
+                                           [(ngModel)]="project_application_renewal_ram_per_vm">
+                                    <span class="input-group-addon"> VMs
+                                    </span>
+                                </div>
+                                <span class="help-block">Number of VMs you would like to run of type ***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</span>
+                            </div>
                         </div>
 
-                        <div class="form-group row" [ngClass]="***REMOVED***
+                        <!--<div class="form-group row" [ngClass]="***REMOVED***
                                 'has-danger': f.controls.project_application_vms_requested?.invalid ,
                                 'has-success': f.controls.project_application_vms_requested?.valid
                                 ***REMOVED***">
@@ -180,7 +192,7 @@
                                 </div>
                                 <span class="help-block">How much RAM should every VM have?</span>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-group row" [ngClass]="***REMOVED***
                                 'has-danger': f.controls.project_application_volume_limit?.invalid,
