@@ -5,6 +5,7 @@ Try to fulfill the following points before the Pull Request is merged:
 - [ ] It must be checked if any section in the wiki (https://cloud.denbi.de/wiki/) should be adjusted.
 - [ ] If the PR is merged in the master then a release should be be made.
 - [ ] The PR is responsive on smaller screens.
+- [ ] If the requirements.txt have changed, check if the patches still work
 
 For releases only:
 
