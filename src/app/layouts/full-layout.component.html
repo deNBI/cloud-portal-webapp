@@ -56,7 +56,7 @@
                 <li *ngIf="vm_project_member || get_is_vo_admin()" class="nav-title">
                     Virtual Machines
                 </li>
-                <li class="nav-item" *ngIf="client_avaiable && vm_project_member">
+                <li class="nav-item" *ngIf="vm_project_member">
                     <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/newVM']"><i
 
                             class="icon-screen-desktop"></i> New Instance</a>

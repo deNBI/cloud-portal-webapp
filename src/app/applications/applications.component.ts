@@ -635,11 +635,14 @@ export class ApplicationsComponent {
 
                 }).then(null_result => {
                     //setting approved status for Perun Group
+                    console.log(new_group_id)
 
-                    if (compute_center != 'undefined') {
-                        this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
-                    }
-                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe();
+
+                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
+                        if (compute_center != 'undefined') {
+                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
+                        }
+                    });
                     //update modal
                     this.updateNotificaitonModal("Success", "The new project was created", true, "success");
                     //update applications
