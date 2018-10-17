@@ -14,11 +14,12 @@ import ***REMOVED***VolumeOverviewComponent***REMOVED*** from "./volumeOverview.
 import ***REMOVED***SnapshotOverviewComponent***REMOVED*** from "./snapshotOverview.component";
 import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination'
 import ***REMOVED***UserinfoModule***REMOVED*** from "../userinfo/userinfo.module";
+import ***REMOVED***PublicKeyModule***REMOVED*** from "../shared_modules/public-key/public-key.module";
 
 
 @NgModule(***REMOVED***
     imports: [
-        UserinfoModule,
+        PublicKeyModule,
         VmRoutingModule,
         TabsModule,
         CommonModule,
