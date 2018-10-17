@@ -5,6 +5,9 @@ import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/s
 import ***REMOVED***SpecialHardware***REMOVED*** from './special_hardware.model'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
+import ***REMOVED***Observable***REMOVED*** from 'rxjs';
+import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
+import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 
 @Component(***REMOVED***
     templateUrl: 'addcloudapplication.component.html',
@@ -15,6 +18,7 @@ export class AddcloudapplicationComponent ***REMOVED***
 
     public wronginput: boolean = false;
 
+
     //notification Modal variables
     public notificationModalTitle: string = 'Notification';
     public notificationModalMessage: string = 'Please wait...';
@@ -23,6 +27,7 @@ export class AddcloudapplicationComponent ***REMOVED***
     public notificationModalStay: boolean = true;
     public error: string[];
     public project_application_vms_requested=5;
+    public flavorList: Flavor[];
 
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
@@ -39,9 +44,12 @@ export class AddcloudapplicationComponent ***REMOVED***
     special_hardware: SpecialHardware[] = new Array();
 
     constructor(private specialhardwareservice: SpecialHardwareService,
-                private  applicationsservice: ApplicationsService) ***REMOVED***
+                private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) ***REMOVED***
         this.getSpecialHardware();
+    ***REMOVED***
 
+    getListOfFlavors() ***REMOVED***
+      this.flavorservice.getListOfFlavorsAvailable()._subscribe(flavors => this.flavorList = flavors);
     ***REMOVED***
 
 
