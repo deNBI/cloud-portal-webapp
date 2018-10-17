@@ -11,7 +11,7 @@ import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinem
 
 @Component(***REMOVED***
     templateUrl: 'addcloudapplication.component.html',
-    providers: [SpecialHardwareService, ApiSettings, ApplicationsService]
+    providers: [SpecialHardwareService, ApiSettings, ApplicationsService,FlavorService]
 ***REMOVED***)
 
 export class AddcloudapplicationComponent ***REMOVED***
