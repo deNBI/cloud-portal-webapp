@@ -1,24 +1,25 @@
-import ***REMOVED***Component, OnInit,Input***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, OnInit, Input***REMOVED*** from '@angular/core';
 import ***REMOVED***keyService***REMOVED*** from "../../api-connector/key.service";
 import ***REMOVED***ApiSettings***REMOVED*** from "../../api-connector/api-settings.service";
-import ***REMOVED***UserService***REMOVED*** from "../../api-connector/user.service";
 import ***REMOVED***PerunSettings***REMOVED*** from "../../perun-connector/connector-settings.service";
+import ***REMOVED***Userinfo***REMOVED*** from "../../userinfo/userinfo.model";
 
 @Component(***REMOVED***
     selector: 'app-public-key',
     templateUrl: './public-key.component.html',
     styleUrls: ['./public-key.component.scss'],
-    providers: [ UserService, PerunSettings, ApiSettings, keyService]
+    providers: [ PerunSettings, ApiSettings, keyService]
 
 ***REMOVED***)
 export class PublicKeyComponent implements OnInit ***REMOVED***
 
-    @Input() public_key: string ;
+    public_key: string;
+    @Input() userinfo: Userinfo;
     show_key_text: string = 'Show Public Key';
     key_visible = false;
 
 
-    constructor( private userservice: UserService, private keyService: keyService) ***REMOVED***
+    constructor( private keyService: keyService) ***REMOVED***
     ***REMOVED***
 
     ngOnInit() ***REMOVED***
@@ -49,7 +50,7 @@ export class PublicKeyComponent implements OnInit ***REMOVED***
 
     getUserPublicKey() ***REMOVED***
         this.keyService.getKey().subscribe(result => ***REMOVED***
-            this.userservice = result['public_key'];
+            this.userinfo.PublicKey = result['public_key'];
         ***REMOVED***)
     ***REMOVED***
 
