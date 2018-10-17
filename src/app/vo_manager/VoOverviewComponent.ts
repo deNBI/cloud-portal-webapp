@@ -158,6 +158,8 @@ export class VoOverviewComponent ***REMOVED***
                 let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
                 let is_pi = group['is_pi'];
+                let lifetime = group['lifetime'];
+
                 let groupid = group['id'];
                 let facility = group['compute_center'];
                 let shortname = group['shortname'];
@@ -179,7 +181,17 @@ export class VoOverviewComponent ***REMOVED***
                     dateDayDifference,
                     is_pi,
                     true,
-                    null);
+                    compute_center);
+                newProject.Lifetime = lifetime;
+                newProject.Status = group['status'];
+                let expirationDate = undefined;
+                if (lifetime != -1) ***REMOVED***
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
+                    let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
+
+                    newProject.LifetimeDays = lifetimeDays;
+                    newProject.DateEnd = expirationDate;
+                ***REMOVED***
 
                 this.projects.push(newProject);
             ***REMOVED***
@@ -189,6 +201,28 @@ export class VoOverviewComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
+    getProjectStatus(project) ***REMOVED***
+        this.voserice.getProjectStatus(project.Id).subscribe(res => ***REMOVED***
+            project.Status = res['status']
+        ***REMOVED***)
+    ***REMOVED***
+
+    setProjectStatus(project, status: number) ***REMOVED***
+        /* 1:submitted
+        # 2: approved
+        # 3: declined
+        # 4: suspended */
+        this.voserice.setProjectStatus(project.Id, status).subscribe(res =>***REMOVED***
+            this.getProjectStatus(project)
+
+        ***REMOVED***)
+    ***REMOVED***
+
+
+    removeResourceFromGroup(groupid: number) ***REMOVED***
+        this.voserice.removeResourceFromGroup(groupid.toString()).subscribe(res => ***REMOVED***
+        ***REMOVED***)
+    ***REMOVED***
 
     lifeTimeReached(lifetimeDays: number, running: number): string ***REMOVED***
 

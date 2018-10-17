@@ -1,6 +1,8 @@
 Try to fulfill the following points before the Pull Request is merged:
 
 - [ ] The PR is reviewed by one of the team members.
+- [ ] It must be checked if anything in the Readme must be adjusted (development-, production-, setup).
+- [ ] It must be checked if any section in the wiki (https://cloud.denbi.de/wiki/) should be adjusted.
 - [ ] If the PR is merged in the master then a release should be be made.
 - [ ] The PR is responsive on smaller screens.
 
