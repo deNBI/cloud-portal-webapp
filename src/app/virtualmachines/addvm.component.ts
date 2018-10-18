@@ -26,11 +26,12 @@ import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
 import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***environment***REMOVED*** from "../../environments/environment";
+import ***REMOVED***UserinfoComponent***REMOVED*** from '../userinfo/userinfo.component';
 
 @Component(***REMOVED***
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService]
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService],
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
 
@@ -195,9 +196,12 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string): void ***REMOVED***
         if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) ***REMOVED***
+            let re = /\+/gi;
+
+            let flavor_fixed = flavor.replace(re, "%2B");
 
 
-            this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => ***REMOVED***
+            this.virtualmachineservice.startVM(flavor_fixed, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => ***REMOVED***
 
 
                 if (data['Created']) ***REMOVED***
@@ -225,6 +229,23 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
             this.data = "INVALID"
 
         ***REMOVED***
+    ***REMOVED***
+
+    getSelectedProjectClient(groupid: number) ***REMOVED***
+        this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => ***REMOVED***
+            if (res['status'] == 'Connected') ***REMOVED***
+                this.client_avaiable = true;
+                this.getSelectedProjectDiskspace();
+                this.getSelectedProjectVms();
+                this.getSelectedProjectVolumes();
+                this.getImages(this.selectedProject[1]);
+                this.getFlavors(this.selectedProject[1]);
+            ***REMOVED***
+            else ***REMOVED***
+                this.client_avaiable = false;
+
+            ***REMOVED***
+        ***REMOVED***)
     ***REMOVED***
 
 
@@ -370,7 +391,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     ngOnInit(): void ***REMOVED***
 
         this.userinfo = new Userinfo();
-        this.getClientData();
         this.initializeData();
 
 

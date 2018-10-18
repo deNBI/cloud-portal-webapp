@@ -635,11 +635,14 @@ export class ApplicationsComponent ***REMOVED***
 
                 ***REMOVED***).then(null_result => ***REMOVED***
                     //setting approved status for Perun Group
+                    console.log(new_group_id)
 
-                    if (compute_center != 'undefined') ***REMOVED***
-                        this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
-                    ***REMOVED***
-                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe();
+
+                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => ***REMOVED***
+                        if (compute_center != 'undefined') ***REMOVED***
+                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
+                        ***REMOVED***
+                    ***REMOVED***);
                     //update modal
                     this.updateNotificaitonModal("Success", "The new project was created", true, "success");
                     //update applications

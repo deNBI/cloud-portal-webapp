@@ -29,6 +29,17 @@ export class GroupService ***REMOVED***
 
     ***REMOVED***
 
+    getClient(groupid:string):Observable<any>***REMOVED***
+
+        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/client/', ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+
+    ***REMOVED***
+
+
+
 
     assignGroupToResource(groupid: string, computecenter: string): Observable<any> ***REMOVED***
         let params = new HttpParams().set('compute_center', computecenter)

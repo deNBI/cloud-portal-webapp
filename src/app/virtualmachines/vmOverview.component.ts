@@ -104,6 +104,12 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
+    public closeCollapse(id:string)***REMOVED***
+                    this.collapse_status[id] = '';
+
+
+    ***REMOVED***
+
     public switchCollapseStatus(id: string) ***REMOVED***
         this.collapse_status[id] == '' ? this.collapse_status[id] = 'open' : this.collapse_status[id] = '';
     ***REMOVED***

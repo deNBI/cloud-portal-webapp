@@ -1,0 +1,11 @@
+node ***REMOVED***
+    def image
+    stage('Clone repository') ***REMOVED***
+        checkout scm
+    ***REMOVED***
+ 
+    stage('build image')***REMOVED***
+         sh 'docker build --no-cache --rm --build-arg "ANGULAR_MODE=stage" -t denbicloud/cloud-portal-webapp:dev .'
+        ***REMOVED***
+                          
+***REMOVED***

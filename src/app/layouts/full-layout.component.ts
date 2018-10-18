@@ -24,10 +24,8 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     public login_name = '';
     navbar_state = 'closed';
     overview_state='closed';
-    client_avaiable;
 
     constructor(private voService:VoService,private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
-        this.is_client_avaiable();
         this.is_vm_project_member();
         this.get_is_facility_manager();
         this.getLoginName();
@@ -63,24 +61,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    is_client_avaiable() ***REMOVED***
-        this.clientservice.isClientAvaiable().subscribe(result => ***REMOVED***
-            try ***REMOVED***
-                if (result.toString() === 'true') ***REMOVED***
-                    this.client_avaiable = true;
-                    return
-                ***REMOVED***
-                this.client_avaiable = false;
-                return;
-            ***REMOVED***
-            catch (e) ***REMOVED***
-                this.client_avaiable = false;
-                return;
-            ***REMOVED***
 
-        ***REMOVED***)
-
-    ***REMOVED***
 
     toggle_new_application() ***REMOVED***
         if (this.navbar_state == 'closed') ***REMOVED***
