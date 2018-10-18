@@ -200,7 +200,7 @@ export class VirtualMachineComponent implements OnInit {
             let flavor_fixed = flavor.replace(re, "%2B");
 
 
-            this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => {
+            this.virtualmachineservice.startVM(flavor_fixed, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => {
 
 
                 if (data['Created']) {
