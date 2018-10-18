@@ -26,11 +26,12 @@ import {keyService} from "../api-connector/key.service";
 import {Project} from "../projectmanagement/project.model";
 import {GroupService} from "../api-connector/group.service";
 import {environment} from "../../environments/environment";
+import {UserinfoComponent} from '../userinfo/userinfo.component';
 
 @Component({
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService]
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService],
 })
 export class VirtualMachineComponent implements OnInit {
 
@@ -195,9 +196,12 @@ export class VirtualMachineComponent implements OnInit {
 
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string): void {
         if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
+            let re = /\+/gi;
+
+            let flavor_fixed = flavor.replace(re, "%2B");
 
 
-            this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => {
+            this.virtualmachineservice.startVM(flavor_fixed, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => {
 
 
                 if (data['Created']) {
@@ -225,6 +229,23 @@ export class VirtualMachineComponent implements OnInit {
             this.data = "INVALID"
 
         }
+    }
+
+    getSelectedProjectClient(groupid: number) {
+        this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => {
+            if (res['status'] == 'Connected') {
+                this.client_avaiable = true;
+                this.getSelectedProjectDiskspace();
+                this.getSelectedProjectVms();
+                this.getSelectedProjectVolumes();
+                this.getImages(this.selectedProject[1]);
+                this.getFlavors(this.selectedProject[1]);
+            }
+            else {
+                this.client_avaiable = false;
+
+            }
+        })
     }
 
 
@@ -370,7 +391,6 @@ export class VirtualMachineComponent implements OnInit {
     ngOnInit(): void {
 
         this.userinfo = new Userinfo();
-        this.getClientData();
         this.initializeData();
 
 

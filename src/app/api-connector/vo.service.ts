@@ -43,12 +43,36 @@ export class VoService {
 
     }
 
+    removeResourceFromGroup(groupid: string): Observable<any> {
+        return this.http.delete(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/resource/', {
+            withCredentials: true,
+            headers: header
+        }).pipe(catchError((error: any) => throwError(error.error)));
+
+    }
+
     getAllGroupsWithDetails(): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/details/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
+    }
+
+    getProjectStatus(groupid: number): Observable<any> {
+        return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', {
+            withCredentials: true,
+            headers: header
+        }).pipe(catchError((error: any) => throwError(error.error)));
+    }
+
+     setProjectStatus(groupid: number,status:number): Observable<any> {
+                let params = new HttpParams().set('status', status.toString());
+
+        return this.http.post(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', params,{
+            withCredentials: true,
+            headers: header
+        }).pipe(catchError((error: any) => throwError(error.error)));
     }
 
     sendNewsletterToVo(subject, message, reply?): Observable<any> {

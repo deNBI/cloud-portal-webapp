@@ -34,6 +34,7 @@
                             <tr>
                                 <th>Project ID</th>
                                 <th>Project Name</th>
+                                <th>Long Name</th>
                                 <th>Description</th>
 
                                 <!--th>Date created (d/m/y)</th>
@@ -48,6 +49,7 @@
                                 <!--[ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}"-->
                                 <td>{{ project.Id }}</td>
                                 <td>{{ project.Name }}</td>
+                                <td width="20%"><span style="word-break: break-all">{{ project.RealName}}</span></td>
                                 <td>
                                     <button class="btn btn-secondary"
                                             (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
@@ -87,7 +89,8 @@
             <div class="modal-header">
                 <h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
                     ({{ usersModalProjectName }})</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="usersModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="usersModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -130,7 +133,8 @@
             <div class="modal-header">
                 <h4 class="modal-title" *ngIf="selectedFacility"> Send email to all members of
                     {{selectedFacility['Facility']}}</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="emailModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="emailModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -193,7 +197,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Send email</h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -225,7 +230,8 @@
                 <h4 class="modal-title" *ngIf="emailStatus == 0"> Waiting </h4>
                 <h4 class="modal-title" *ngIf="emailStatus == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="emailStatus == 2"> Error </h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="successModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="successModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -257,7 +263,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Description</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()"  aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()"
+                        aria-label="Close">
 
                     <span aria-hidden="true">&times;</span>
                 </button>
