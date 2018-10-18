@@ -1,10 +1,30 @@
-<div class="allert alert-info" *ngIf="isLoaded && !validPublickey"><strong>Info</strong>You need to set a valid SSH Key
-    before
-    you
-    can start a machine. Please set a SSH Key on the User Information tab.
+<div *ngIf="isLoaded && userinfo.PublicKey == 'None'">
+    <div>
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> Public Key
+            </div>
+
+            <div class="card-block">
+
+                <div style="padding:5px" class="alert alert-info"><strong>Info: </strong>
+                    You need to set a valid SSH Key before you can start a machine. Please set a valid key below or on
+                    your <a
+                            href="#/userinfo">personal data page</a>.
+                </div>
+                <div class="table-responsive" style="width: 100%">
+                    <table class="table table-striped">
+
+                        <tr app-public-key [userinfo]="userinfo"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 <div *ngIf=" isLoaded==false" class="loader"></div>
-<div *ngIf=" isLoaded && validPublickey">
+<div *ngIf=" isLoaded && userinfo.PublicKey != 'None'">
 
     <div class="row">
         <div class="col-md-12">
