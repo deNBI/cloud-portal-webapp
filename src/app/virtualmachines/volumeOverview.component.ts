@@ -55,6 +55,13 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
+    public closeCollapse(id: string) ***REMOVED***
+        this.collapse_status[id] = '';
+
+
+    ***REMOVED***
+
+
     public switchCollapseStatus(id: string) ***REMOVED***
         this.collapse_status[id] == '' ? this.collapse_status[id] = 'open' : this.collapse_status[id] = '';
     ***REMOVED***
@@ -67,6 +74,7 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
 
         ***REMOVED***)
     ***REMOVED***
+
 
     getSelectedProjectDiskspace(): void ***REMOVED***
         this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
@@ -171,16 +179,16 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     renameVolume(volume_id: string, new_volume_name: string) ***REMOVED***
         this.volume_status = 9
         this.vmService.renameVolume(volume_id, new_volume_name).subscribe(result => ***REMOVED***
-            if (result['volume_name'] == new_volume_name) ***REMOVED***
-                this.volume_status = 10;
-            ***REMOVED***
-            else ***REMOVED***
-                this.volume_status = 2;
-            ***REMOVED***
-                    this.getVolumes();
+                if (result['volume_name'] == new_volume_name) ***REMOVED***
+                    this.volume_status = 10;
+                ***REMOVED***
+                else ***REMOVED***
+                    this.volume_status = 2;
+                ***REMOVED***
+                this.getVolumes();
 
-        ***REMOVED***
-    )
+            ***REMOVED***
+        )
 
 
     ***REMOVED***
