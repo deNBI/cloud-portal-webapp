@@ -195,6 +195,9 @@ export class VirtualMachineComponent implements OnInit {
 
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string): void {
         if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
+            let re = /\+/gi;
+
+            let flavor_fixed = flavor.replace(re, "%2B");
 
 
             this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => {
