@@ -48,7 +48,7 @@ import {ConsentInfoComponent} from "./consent-info.component";
         SIDEBAR_TOGGLE_DIRECTIVES,
         AsideToggleDirective,
         RegistrationInfoComponent,
-        ConsentInfoComponent
+        ConsentInfoComponent,
     ],
     providers: [{
         provide: LocationStrategy,

@@ -17,6 +17,7 @@
   bottom: 0;
   left: 0;
   z-index: $zindex-modal;
+  background-color: rgba(0,0,0,0.3);
   display: none;
   overflow: hidden;
   // Prevent Chrome on Windows from adding a focus outline. For details, see
@@ -61,7 +62,7 @@
 
 // Modal background
 .modal-backdrop {
-  position: fixed;
+  position: relative;
   top: 0;
   right: 0;
   bottom: 0;
