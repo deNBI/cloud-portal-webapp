@@ -104,6 +104,12 @@ export class VmOverviewComponent implements OnInit {
         }
     }
 
+    public closeCollapse(id:string){
+                    this.collapse_status[id] = '';
+
+
+    }
+
     public switchCollapseStatus(id: string) {
         this.collapse_status[id] == '' ? this.collapse_status[id] = 'open' : this.collapse_status[id] = '';
     }
