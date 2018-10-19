@@ -373,7 +373,7 @@
                     <div class="col-md-9">
                         <div class="input-group">
                             <input min="0" step="1" [value]="diskspace"
-                                   (input)="diskspace = $event.target.value" type="number" placeholder="e.g 8 "><span
+                                   (input)="diskspace = $event.target.value;calcDiskSpaceSum();" type="number" placeholder="e.g 8 "><span
                                 class="input-group-addon"> GB
                                     </span>
 
@@ -381,7 +381,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="selected_vm && (diskspace + selectedProjectDiskspaceUsed) > selectedProjectVolumesMax"
+                <div *ngIf="selected_vm && (selectedProjectDiskSpaceSum > selectedProjectDiskspaceMax)"
                      class="alert alert-danger">
                     The storage limit is exceeded
 
@@ -390,7 +390,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-6"
-                        [disabled]="selected_vm == undefined || diskspace <= 0 || volumeName.length == 0 || (diskspace + selectedProjectDiskspaceUsed) > selectedProjectVolumesMax"
+                        [disabled]="selected_vm == undefined || diskspace <= 0 || volumeName.length == 0 || (selectedProjectDiskSpaceSum > selectedProjectDiskspaceMax)"
                         (click)="createAndAttachvolume(volumeName,diskspace,selected_vm.openstackid);createModal.hide();resultModal.show()">
                     Create & Attach Volume
                 </button>
