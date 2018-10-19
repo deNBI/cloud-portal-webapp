@@ -11,7 +11,7 @@ import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinem
 
 @Component(***REMOVED***
     templateUrl: 'addcloudapplication.component.html',
-    providers: [SpecialHardwareService, ApiSettings, ApplicationsService,FlavorService]
+    providers: [SpecialHardwareService, ApiSettings, ApplicationsService, FlavorService]
 ***REMOVED***)
 
 export class AddcloudapplicationComponent ***REMOVED***
@@ -26,7 +26,7 @@ export class AddcloudapplicationComponent ***REMOVED***
     public notificationModalIsClosable: boolean = false;
     public notificationModalStay: boolean = true;
     public error: string[];
-    public project_application_vms_requested=5;
+    public project_application_vms_requested = 5;
     public flavorList: Flavor[];
 
 
@@ -37,7 +37,7 @@ export class AddcloudapplicationComponent ***REMOVED***
 
 
     showjustvm: boolean;
-    project_application_openstack_project: boolean=true;
+    project_application_openstack_project: boolean = true;
 
 
     csrf: Object = Cookie.get('csrftoken');
@@ -50,9 +50,8 @@ export class AddcloudapplicationComponent ***REMOVED***
     ***REMOVED***
 
     getListOfFlavors() ***REMOVED***
-      this.flavorservice.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
+        this.flavorservice.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
     ***REMOVED***
-
 
 
     getSpecialHardware() ***REMOVED***
@@ -71,8 +70,7 @@ export class AddcloudapplicationComponent ***REMOVED***
         if ('project_application_openstack_project' in values) ***REMOVED***
 
 
-            if ('project_application_cores_per_vm' in values && values['project_application_cores_per_vm'] > 0 && 'project_application_ram_per_vm' in values
-                && values['project_application_ram_per_vm'] > 0 && 'project_application_volume_limit' in values && values['project_application_volume_limit'] > 0) ***REMOVED***
+            if ('project_application_volume_limit' in values && values['project_application_volume_limit'] > 0) ***REMOVED***
                 return true;
             ***REMOVED***
 
@@ -86,26 +84,28 @@ export class AddcloudapplicationComponent ***REMOVED***
 
     onSubmit(f: NgForm) ***REMOVED***
         this.error = null;
+        console.log(f)
         if (this.wronginput == true) ***REMOVED***
 
             this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
         ***REMOVED***
         else ***REMOVED***
-            let values = ***REMOVED******REMOVED***;
+            let values:***REMOVED***[key:string]:any***REMOVED*** = ***REMOVED******REMOVED***;
             values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
-            values['project_application_openstack_project']=this.project_application_openstack_project;
+            values['project_application_openstack_project'] = this.project_application_openstack_project;
             for (let v in f.controls) ***REMOVED***
                 if (f.controls[v].value) ***REMOVED***
+                    
                     values[v] = f.controls[v].value;
                 ***REMOVED***
             ***REMOVED***
+            console.log(values)
             if (this.check_not_zero(values) == false) ***REMOVED***
                 this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
                 return;
             ***REMOVED***
-
 
 
             this.applicationsservice.addNewApplication(values).toPromise()
