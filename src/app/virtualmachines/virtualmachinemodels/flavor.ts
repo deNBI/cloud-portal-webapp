@@ -4,6 +4,9 @@ export class Flavor {
   vcpus: number;
   ram: number;
   rootdisk: number;
+  gpu:number;
+  epheremal_disk:number;
+  type:string;
 
 }
 
