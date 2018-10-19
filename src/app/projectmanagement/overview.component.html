@@ -39,8 +39,8 @@
                                 <td>
                                     <p *ngIf="project.ComputeCenter?.Name">***REMOVED******REMOVED***project.ComputeCenter.Name***REMOVED******REMOVED***</p>
                                     <ul *ngIf="project.ComputeCenter?.Name">
-                                        <li *ngIf="project.OpenStackProject"><a target="_blank"
-                                                                                href="***REMOVED******REMOVED***project.ComputeCenter.Login***REMOVED******REMOVED***">Login:
+                                        <li *ngIf="project.OpenStackProject"> Login: <a target="_blank"
+                                                                                       href="***REMOVED******REMOVED***project.ComputeCenter.Login***REMOVED******REMOVED***">
                                             ***REMOVED******REMOVED***project.ComputeCenter.Login***REMOVED******REMOVED***</a></li>
                                         <li>Support: ***REMOVED******REMOVED***project.ComputeCenter.Support***REMOVED******REMOVED***</li>
 
@@ -516,7 +516,7 @@
                 </div>
 
                 <div *ngIf="loaded" class="table-responsive">
-                    <table class="table table-bordered table-striped table-sm" >
+                    <table class="table table-bordered table-striped table-sm">
                         <thead>
 
                         <th>Name</th>
