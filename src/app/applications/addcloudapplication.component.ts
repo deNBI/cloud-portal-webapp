@@ -11,7 +11,7 @@ import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 
 @Component({
     templateUrl: 'addcloudapplication.component.html',
-    providers: [SpecialHardwareService, ApiSettings, ApplicationsService,FlavorService]
+    providers: [SpecialHardwareService, ApiSettings, ApplicationsService, FlavorService]
 })
 
 export class AddcloudapplicationComponent {
@@ -26,7 +26,7 @@ export class AddcloudapplicationComponent {
     public notificationModalIsClosable: boolean = false;
     public notificationModalStay: boolean = true;
     public error: string[];
-    public project_application_vms_requested=5;
+    public project_application_vms_requested = 5;
     public flavorList: Flavor[];
 
 
@@ -37,7 +37,7 @@ export class AddcloudapplicationComponent {
 
 
     showjustvm: boolean;
-    project_application_openstack_project: boolean=true;
+    project_application_openstack_project: boolean = true;
 
 
     csrf: Object = Cookie.get('csrftoken');
@@ -50,9 +50,8 @@ export class AddcloudapplicationComponent {
     }
 
     getListOfFlavors() {
-      this.flavorservice.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
+        this.flavorservice.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
     }
-
 
 
     getSpecialHardware() {
@@ -71,8 +70,7 @@ export class AddcloudapplicationComponent {
         if ('project_application_openstack_project' in values) {
 
 
-            if ('project_application_cores_per_vm' in values && values['project_application_cores_per_vm'] > 0 && 'project_application_ram_per_vm' in values
-                && values['project_application_ram_per_vm'] > 0 && 'project_application_volume_limit' in values && values['project_application_volume_limit'] > 0) {
+            if ('project_application_volume_limit' in values && values['project_application_volume_limit'] > 0) {
                 return true;
             }
 
@@ -86,26 +84,28 @@ export class AddcloudapplicationComponent {
 
     onSubmit(f: NgForm) {
         this.error = null;
+        console.log(f)
         if (this.wronginput == true) {
 
             this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
         }
         else {
-            let values = {};
+            let values:{[key:string]:any} = {};
             values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
-            values['project_application_openstack_project']=this.project_application_openstack_project;
+            values['project_application_openstack_project'] = this.project_application_openstack_project;
             for (let v in f.controls) {
                 if (f.controls[v].value) {
+                    
                     values[v] = f.controls[v].value;
                 }
             }
+            console.log(values)
             if (this.check_not_zero(values) == false) {
                 this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
                 return;
             }
-
 
 
             this.applicationsservice.addNewApplication(values).toPromise()
