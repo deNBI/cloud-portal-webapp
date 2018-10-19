@@ -23,6 +23,7 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     selectedProjectDiskspaceUsed: number;
     selectedProjectVolumesMax: number;
     selectedProjectVolumesUsed: number;
+    selectedProjectDiskSpaceSum:number;
     selectedProject: [string, number];
     projects: string[] = new Array();
     diskspace: number = 1;
@@ -73,6 +74,10 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
             this.isLoaded = true;
 
         ***REMOVED***)
+    ***REMOVED***
+
+    calcDiskSpaceSum():void***REMOVED***
+        this.selectedProjectDiskSpaceSum=parseInt(this.diskspace.toString()) + parseInt(this.selectedProjectDiskspaceUsed.toString());
     ***REMOVED***
 
 
