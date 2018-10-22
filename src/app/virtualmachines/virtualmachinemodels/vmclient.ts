@@ -3,5 +3,7 @@ export class Vmclient{
   host: string;
   status: string;
   port: string;
+  version:string;
+  features:string[];
   location: string;
 }
