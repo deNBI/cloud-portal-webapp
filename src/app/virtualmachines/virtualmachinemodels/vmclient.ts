@@ -3,5 +3,7 @@ export class Vmclient***REMOVED***
   host: string;
   status: string;
   port: string;
+  version:string;
+  features:string[];
   location: string;
 ***REMOVED***

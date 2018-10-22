@@ -54,6 +54,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     selectedFlavor: Flavor;
     userinfo: Userinfo;
     vmclient: Vmclient;
+    selectedProjectClient:Vmclient;
     selectedProjectDiskspaceMax: number;
     selectedProjectDiskspaceUsed: number;
     selectedProjectVolumesMax: number;
@@ -63,6 +64,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     selectedProject: [string, number];
     client_avaiable: boolean;
     validPublickey: boolean;
+    volumesFeature=false;
 
     volumeName: string = '';
 
@@ -233,8 +235,10 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
     getSelectedProjectClient(groupid: number) ***REMOVED***
         this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => ***REMOVED***
+            this.selectedProjectClient=res;
             if (res['status'] == 'Connected') ***REMOVED***
                 this.client_avaiable = true;
+                this.volumesFeature= this.selectedProjectClient.features.indexOf('Volume')> -1;
                 this.getSelectedProjectDiskspace();
                 this.getSelectedProjectVms();
                 this.getSelectedProjectVolumes();
