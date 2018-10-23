@@ -95,6 +95,7 @@
                         ***REMOVED******REMOVED***vm.project***REMOVED******REMOVED***
                     </td>
                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
+                        ***REMOVED******REMOVED***vm.DELETED***REMOVED******REMOVED***
                          <span *ngIf="vm.status == 'DELETED'" style="margin-left: 5px"
                                class="badge badge-danger"> ***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</span>
                         <span *ngIf="vm.status == 'ACTIVE'" style="margin-left: 5px"
@@ -125,12 +126,12 @@
                         <div (clickOutside)="closeCollapse(vm.openstackid)" *ngIf="vm.status !='DELETED'"
                              class="btn-group ***REMOVED******REMOVED***collapse_status[vm.openstackid]***REMOVED******REMOVED***">
 
-                            <button class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED'"
+                            <button  class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED' && vm.client?.features['Snapshot']"
                                     (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();">
 
                                 Create Snapshot
                             </button>
-                            <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                            <button  class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                     data-toggle="dropdown"
                                     type="button" aria-haspopup="true" aria-expanded="false"
                                     (click)="getCollapseStatus(vm.openstackid)"></button>

@@ -7,6 +7,7 @@ import ***REMOVED***VirtualMachine***REMOVED*** from "./virtualmachinemodels/vir
 import ***REMOVED***FullLayoutComponent***REMOVED*** from "../layouts/full-layout.component";
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.service";
+import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
 
 @Component(***REMOVED***
     selector: 'vm-overview',
@@ -349,7 +350,6 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
                     ***REMOVED***
                 ***REMOVED***
                 this.isLoaded=true;
-
                 this.applyFilter();
 
                 this.checkInactiveVms();

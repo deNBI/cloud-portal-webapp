@@ -64,8 +64,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     selectedProject: [string, number];
     client_avaiable: boolean;
     validPublickey: boolean;
-    volumesFeature=false;
-
     volumeName: string = '';
 
     optional_params = false;
@@ -238,7 +236,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
             this.selectedProjectClient=res;
             if (res['status'] == 'Connected') ***REMOVED***
                 this.client_avaiable = true;
-                this.volumesFeature= this.selectedProjectClient.features.indexOf('Volume')> -1;
+
                 this.getSelectedProjectDiskspace();
                 this.getSelectedProjectVms();
                 this.getSelectedProjectVolumes();
