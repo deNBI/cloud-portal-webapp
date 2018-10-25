@@ -106,93 +106,64 @@
                         </div>
 
 
-                        <div class="form-group row">
-                          <h5 class="col-md-12 form-control-label">Resources
-                            <i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour" data-balloon-pos="down">
-                              <i class="icon-question"></i>
-                            </i>
-                          </h5>
-                        </div>
+                      <div class="form-group row">
+                        <h5 class="col-md-12 form-control-label">Resources
+                          <i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour" data-balloon-pos="down">
+                            <i class="icon-question"></i></i>
+                        </h5>
+                      </div>
 
-                        <div *ngFor="let f of flavorList" class="form-group row">
-                          <label class="col-md-4 form-control-label"><strong>{{f.name}}</strong></label>
+                      <div class="alert alert-info">
+                         Click on the given flavor-categories to expand the form.
+                    </div>
+
+                      <div class="card">
+                        <div class="card-header" (click)="isCollapsed = !isCollapsed"> Standard Flavors</div>
+                        <div class="form-group card-body" *ngIf="!isCollapsed">
+                        <div *ngFor="let f of flavorList" >
+                          <div *ngIf="f.type == 'SF'" class="form-group row">
+                          <label class="col-md-4 form-control-label"><strong>{{f.name}}*</strong></label>
                            <div class="col-md-8">
                                 <div class="input-group">
                                     <input required class="form-control" id="project_application_{{f.name}}"
                                            name="project_application_{{f.name}}"
                                            placeholder="e.g. 5"
-                                           type="number" min="1" step="1"
+                                           type="number" min="0" step="1"
                                            (ngModel)="'project_application_' + f.name">
                                     <span class="input-group-addon"> VMs
                                     </span>
                                 </div>
                                 <span class="help-block">Number of VMs you would like to run of type {{f.name}}</span>
                             </div>
+                          </div>
                         </div>
+                        </div>
+                      </div>
 
-                        <!--<div class="form-group row" [ngClass]="{
-                                'has-danger': f.controls.project_application_vms_requested?.invalid ,
-                                'has-success': f.controls.project_application_vms_requested?.valid
-                                }">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of
-                                Virtual
-                                Machines* <i data-balloon="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."
-                                             data-balloon-pos="down" data-balloon-length="large"><i class="icon-question" style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
+                      <!-- demonstration only-->
+                       <div class="card">
+                        <div class="card-header" (click)="isCollapsed2 = !isCollapsed2"> Other Flavors</div>
+                        <div class="form-group card-body" *ngIf="!isCollapsed2">
+                        <div *ngFor="let f of flavorList" >
+                          <div *ngIf="f.type == 'SF'" class="form-group row">
+                          <label class="col-md-4 form-control-label"><strong>{{f.name}}*</strong></label>
+                           <div class="col-md-8">
                                 <div class="input-group">
-                                    <input required class="form-control" id="id_project_application_vms_requested"
-                                           name="project_application_vms_requested"
+                                    <input required class="form-control" id="project_application2_{{f.name}}"
+                                           name="project_application_{{f.name}}"
                                            placeholder="e.g. 5"
-                                           type="number" min="1" step="1"
-                                           [(ngModel)]="project_application_vms_requested">
+                                           type="number" min="0" step="1"
+                                           (ngModel)="'project_application_' + f.name">
                                     <span class="input-group-addon"> VMs
                                     </span>
                                 </div>
-                                <span class="help-block">How many VMs would you run simultaneously?</span>
+                                <span class="help-block">Number of VMs you would like to run of type {{f.name}}</span>
                             </div>
+                          </div>
                         </div>
-
-                        <div class="form-group row" [ngClass]="{
-                                'has-danger': f.controls.project_application_cores_per_vm?.invalid ,
-                                'has-success': f.controls.project_application_cores_per_vm?.valid
-                                }">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cores per VM* <i
-                                    data-balloon="A CPU core is the processing unit of your virtual machine." data-balloon-length="medium"
-                                    data-balloon-pos="down"><i class="icon-question" style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input required class="form-control" id="id_project_application_cores_per_vm"
-                                           name="project_application_cores_per_vm"
-                                           placeholder="e.g. 2"
-                                           type="number" min="1" step="1" [ngModel]="2">
-                                    <span class="input-group-addon"> VMs
-                                    </span>
-                                </div>
-                                <span class="help-block">How many cores should every VM have?</span>
-                            </div>
                         </div>
-
-
-                        <div class="form-group row"
-                             [ngClass]="{
-                                'has-danger': f.controls.project_application_ram_per_vm?.invalid,
-                                'has-success': f.controls.project_application_ram_per_vm?.valid
-                                }">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>RAM per VM* <i
-                                    data-balloon="RAM is where data is stored that is accessed by the CPU."
-                                    data-balloon-pos="down" data-balloon-length="medium"><i class="icon-question" style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input required class="form-control" id="id_project_application_ram_per_vm"
-                                           name="project_application_ram_per_vm"
-                                           placeholder="e.g. 8"
-                                           type="number" min="1" step="1" [ngModel]="8">
-                                    <span class="input-group-addon"> GB
-                                    </span>
-                                </div>
-                                <span class="help-block">How much RAM should every VM have?</span>
-                            </div>
-                        </div> -->
+                      </div>
+                      <!-- end of demo-->
 
                         <div class="form-group row" [ngClass]="{
                                 'has-danger': f.controls.project_application_volume_limit?.invalid,

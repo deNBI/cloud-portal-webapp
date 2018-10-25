@@ -17,6 +17,8 @@ import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 export class AddcloudapplicationComponent {
 
     public wronginput: boolean = false;
+    public isCollapsed: boolean = true;
+    public isCollapsed2: boolean = true; //for demonstration purposes
 
 
     //notification Modal variables
