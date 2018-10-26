@@ -7,12 +7,4 @@ export class Vmclient {
     features: string[];
     location: string;
 
-    public isInFeatures(feature: string) {
-        if (this.features.indexOf(feature) > -1) {
-            return true
-        }
-        else {
-            return false;
-        }
-    }
 }

@@ -95,7 +95,6 @@
                         {{vm.project}}
                     </td>
                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-                        {{vm.DELETED}}
                          <span *ngIf="vm.status == 'DELETED'" style="margin-left: 5px"
                                class="badge badge-danger"> {{vm.status}}</span>
                         <span *ngIf="vm.status == 'ACTIVE'" style="margin-left: 5px"
@@ -126,7 +125,7 @@
                         <div (clickOutside)="closeCollapse(vm.openstackid)" *ngIf="vm.status !='DELETED'"
                              class="btn-group {{collapse_status[vm.openstackid]}}">
 
-                            <button  class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED' && vm.client?.features['Snapshot']"
+                            <button  class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED'"
                                     (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();">
 
                                 Create Snapshot
