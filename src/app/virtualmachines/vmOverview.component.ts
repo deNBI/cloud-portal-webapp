@@ -21,9 +21,9 @@ export class VmOverviewComponent implements OnInit {
     vms_filtered: VirtualMachine[];
     vms_returned: VirtualMachine[];
     vmsPerPage = 5;
-    currentPage=1;
+    currentPage = 1;
     vmStart = 0;
-    selected_command:string;
+    selected_command: string;
     vmEnd = this.vmsPerPage;
     status_changed_vm: string;
     status_changed_vm_id: string;
@@ -46,7 +46,11 @@ export class VmOverviewComponent implements OnInit {
     filterproject: string;
     filterssh: string;
     collapse_status: { [id: string]: string } = {};
-    isLoaded=false;
+    isLoaded = false;
+    private checkStatusTimeout: number = 1500;
+    reboot_type: string;
+    status_check_error:boolean;
+    reboot_done:boolean;
 
 
     constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
@@ -85,7 +89,7 @@ export class VmOverviewComponent implements OnInit {
         this.vmEnd = this.vmsPerPage;
 
         this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
-        this.currentPage=1
+        this.currentPage = 1
 
 
     }
@@ -105,8 +109,8 @@ export class VmOverviewComponent implements OnInit {
         }
     }
 
-    public closeCollapse(id:string){
-                    this.collapse_status[id] = '';
+    public closeCollapse(id: string) {
+        this.collapse_status[id] = '';
 
 
     }
@@ -162,7 +166,7 @@ export class VmOverviewComponent implements OnInit {
     }
 
     resetSnapshotResult() {
-         this.snapshotDone = 'Waiting';
+        this.snapshotDone = 'Waiting';
     }
 
     checkStatus(openstackid: string) {
@@ -258,7 +262,7 @@ export class VmOverviewComponent implements OnInit {
     }
 
     isFilterstatus(vmstatus: string): boolean {
-        if (vmstatus == 'FREEMIUM'){
+        if (vmstatus == 'FREEMIUM') {
             return true
         }
         if (this.filterstatus_list[vmstatus]
@@ -309,6 +313,48 @@ export class VmOverviewComponent implements OnInit {
         })
     }
 
+    public rebootVm(openstack_id: string, reboot_type: string) {
+        this.virtualmachineservice.rebootVM(openstack_id, reboot_type).subscribe(result => {
+            this.status_changed = 0;
+
+
+            if (result['reboot']) {
+                this.status_changed = 1;
+                this.check_status_loop(openstack_id)
+            }
+            else {
+                this.status_changed = 2;
+            }
+
+
+        })
+    }
+
+    check_status_loop(id: string) {
+
+        setTimeout(() => {
+            this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
+                res = res;
+
+                if (res['Started']) {
+                    this.reboot_done=true
+
+
+                }
+                else {
+                    if (res['Error']) {
+                        this.status_check_error=true
+
+
+                    }
+                    this.check_status_loop(id)
+                }
+
+            })
+        }, this.checkStatusTimeout);
+    }
+
+
     stopVm(openstack_id: string): void {
         this.virtualmachineservice.stopVM(openstack_id).subscribe(result => {
 
@@ -349,7 +395,7 @@ export class VmOverviewComponent implements OnInit {
                         vm.stopped_at = ''
                     }
                 }
-                this.isLoaded=true;
+                this.isLoaded = true;
                 this.applyFilter();
 
                 this.checkInactiveVms();
