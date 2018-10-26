@@ -34,6 +34,7 @@ export class OverviewComponent ***REMOVED***
     application_member_name = '';
     application_action_done = false;
     application_action_success: boolean;
+    application_action_error_message: boolean;
     projects: Project[] = new Array();
     loaded = true;
     details_loaded = false;
@@ -168,7 +169,7 @@ export class OverviewComponent ***REMOVED***
                     this.is_admin,
                     compute_center);
                 newProject.OpenStackProject = group['openstack_project'];
-                newProject.RealName=realname;
+                newProject.RealName = realname;
                 this.projects.push(newProject);
             ***REMOVED***
             this.isLoaded = true;
@@ -246,7 +247,6 @@ export class OverviewComponent ***REMOVED***
 
     loadProjectApplications(project: number) ***REMOVED***
         this.loaded = false;
-
         this.groupservice.getGroupApplications(project).subscribe(applications => ***REMOVED***
 
             let newProjectApplications = [];
@@ -256,21 +256,17 @@ export class OverviewComponent ***REMOVED***
             ***REMOVED***
             for (let application of applications) ***REMOVED***
                 let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
-                let membername = application['user']['firstName'] + ' ' + application['user']['lastName'];
-                let userid = application['user']['id'];
-                this.userservice.isMember(userid).subscribe(isMember => ***REMOVED***
+                let membername = application['displayName'];
 
-                        let isMemberBool = isMember['isMember'];
-                        let newMemberApplication = new ProjectMemberApplication(
-                            application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year(), userid, isMemberBool
-                        )
-                        newProjectApplications.push(newMemberApplication)
+                let newMemberApplication = new ProjectMemberApplication(
+                    application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year()
+                );
+                newProjectApplications.push(newMemberApplication);
 
-                        this.selectedProject.ProjectMemberApplications = newProjectApplications;
-                        this.loaded = true;
+                this.selectedProject.ProjectMemberApplications = newProjectApplications;
+                this.loaded = true;
 
-                    ***REMOVED***
-                )
+
             ***REMOVED***
 
 
@@ -290,12 +286,20 @@ export class OverviewComponent ***REMOVED***
             if (application['state'] == 'APPROVED') ***REMOVED***
                 this.application_action_success = true;
             ***REMOVED***
+            else if (application['message']) ***REMOVED***
+                this.application_action_success = false;
+
+                this.application_action_error_message = application['message'];
+
+
+            ***REMOVED***
             else ***REMOVED***
                 this.application_action_success = false;
             ***REMOVED***
+
             this.application_action = 'approved';
             this.application_member_name = membername;
-            this.application_action_done = true
+            this.application_action_done = true;
             this.loadProjectApplications(project);
 
 
@@ -307,24 +311,33 @@ export class OverviewComponent ***REMOVED***
         this.application_action_done = false;
 
         this.groupservice.rejectGroupApplication(project, application).subscribe(result => ***REMOVED***
-            let application = result;
-            this.selectedProject.ProjectMemberApplications = [];
+                let application = result;
+                this.selectedProject.ProjectMemberApplications = [];
 
 
-            if (application['state'] == 'REJECTED') ***REMOVED***
-                this.application_action_success = true;
+                if (application['state'] == 'REJECTED') ***REMOVED***
+                    this.application_action_success = true;
+
+
+                ***REMOVED***
+                else if (application['message']) ***REMOVED***
+                    this.application_action_success = false;
+
+                    this.application_action_error_message = application['message'];
+                ***REMOVED***
+
+
+                else ***REMOVED***
+                    this.application_action_success = false;
+                ***REMOVED***
+                this.application_action = 'rejected';
+                this.application_member_name = membername;
+                this.application_action_done = true;
+                this.loadProjectApplications(project);
+
 
             ***REMOVED***
-            else ***REMOVED***
-                this.application_action_success = false;
-            ***REMOVED***
-            this.application_action = 'rejected';
-            this.application_member_name = membername;
-            this.application_action_done = true;
-            this.loadProjectApplications(project);
-
-
-        ***REMOVED***);
+        );
     ***REMOVED***
 
     isPi(member: ProjectMember): string ***REMOVED***
@@ -412,9 +425,9 @@ export class OverviewComponent ***REMOVED***
 
 
     public addMember(groupid: number, memberid: number, firstName: string, lastName: string) ***REMOVED***
-         let facility_id=null
-        if (this.UserModalFacility && this.UserModalFacility[1])***REMOVED***
-             facility_id=this.UserModalFacility[1]
+        let facility_id = null
+        if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
+            facility_id = this.UserModalFacility[1]
         ***REMOVED***
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => ***REMOVED***
@@ -443,7 +456,7 @@ export class OverviewComponent ***REMOVED***
 
     public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string) ***REMOVED***
         let facility_id = null;
-        if (this.UserModalFacility && this.UserModalFacility[1])***REMOVED***
+        if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
             facility_id = this.UserModalFacility[1]
         ***REMOVED***
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(result => ***REMOVED***
@@ -488,7 +501,7 @@ export class OverviewComponent ***REMOVED***
 
     public promoteAdmin(groupid: number, userid: number, username: string) ***REMOVED***
         let facility_id = null;
-        if (this.UserModalFacility && this.UserModalFacility[1])***REMOVED***
+        if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
             facility_id = this.UserModalFacility[1]
         ***REMOVED***
         this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
@@ -508,7 +521,7 @@ export class OverviewComponent ***REMOVED***
 
     public removeAdmin(groupid: number, userid: number, name: string) ***REMOVED***
         let facility_id = null;
-        if (this.UserModalFacility && this.UserModalFacility[1])***REMOVED***
+        if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
             facility_id = this.UserModalFacility[1]
         ***REMOVED***
         this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
@@ -527,7 +540,7 @@ export class OverviewComponent ***REMOVED***
 
     public removeMember(groupid: number, memberid: number, name: string) ***REMOVED***
         let facility_id = null
-        if (this.UserModalFacility && this.UserModalFacility[1])***REMOVED***
+        if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
             facility_id = this.UserModalFacility[1]
         ***REMOVED***
         this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(result => ***REMOVED***
