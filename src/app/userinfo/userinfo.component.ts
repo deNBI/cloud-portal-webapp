@@ -8,7 +8,9 @@ import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 
 
+
 @Component(***REMOVED***
+    selector: 'app-userinfo',
     templateUrl: 'userinfo.component.html',
     providers: [GroupService, UserService, PerunSettings, ApiSettings, keyService]
 ***REMOVED***)

@@ -20,6 +20,7 @@ export class Project ***REMOVED***
   private _Lifetime: number;
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
+  private _Status:number;
   private _ComputeCenter:ComputecenterComponent;
   private _PerunId:number;
   private _ProjectMemberApplications:ProjectMemberApplication[];
@@ -50,6 +51,15 @@ export class Project ***REMOVED***
 
   set RealName(value:string)***REMOVED***
     this._RealName=value;
+  ***REMOVED***
+
+  get Status():number***REMOVED***
+    return this._Status;
+  ***REMOVED***
+
+  set Status(value:number)***REMOVED***
+    this._Status=value;
+
   ***REMOVED***
   get ProjectMemberApplications():ProjectMemberApplication[]***REMOVED***
     return this._ProjectMemberApplications;

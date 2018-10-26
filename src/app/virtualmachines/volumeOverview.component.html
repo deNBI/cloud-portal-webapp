@@ -35,7 +35,8 @@
                         <td>***REMOVED******REMOVED***volume.volume_name***REMOVED******REMOVED***</td>
                         <td>***REMOVED******REMOVED***volume.volume_size ***REMOVED******REMOVED*** GB</td>
                         <td>
-                            <div class="btn-group ***REMOVED******REMOVED***collapse_status[volume.volume_openstackid]***REMOVED******REMOVED***">
+                            <div (clickOutside)="closeCollapse(volume.volume_openstackid)"
+                                 class="btn-group ***REMOVED******REMOVED***collapse_status[volume.volume_openstackid]***REMOVED******REMOVED***">
                                 <button class="btn btn-secondary"
                                         (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
                                         type="button">Delete Volume
@@ -93,7 +94,8 @@
                     Success </h4>
                 <h4 class="modal-title" *ngIf="volume_status == 2"> Error </h4>
 
-              <button type="button" class="close" style="cursor:pointer" (click)="resultModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="resultModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -154,7 +156,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Volume</h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -194,7 +197,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Attach Volume</h4>
-              <button type="button" class="close" style="cursor: pointer" (click)="attachModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="attachModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -233,14 +237,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Rename Volume</h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="renameModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="renameModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <strong>Please enter a new name for the volume:</strong>
 
-                <div >
+                <div>
                     <div class="input-group ">
                         <input type="text" placeholder="Name" #newName>
                     </div>
@@ -268,7 +273,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Create & Attach Volume</h4>
-              <button type="button" class="close" style="cursor: pointer" (click)="createModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="createModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -367,7 +373,7 @@
                     <div class="col-md-9">
                         <div class="input-group">
                             <input min="0" step="1" [value]="diskspace"
-                                   (input)="diskspace = $event.target.value" type="number" placeholder="e.g 8 "><span
+                                   (input)="diskspace = $event.target.value;calcDiskSpaceSum();" type="number" placeholder="e.g 8 "><span
                                 class="input-group-addon"> GB
                                     </span>
 
@@ -375,7 +381,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="selected_vm && (diskspace + selectedProjectDiskspaceUsed) > selectedProjectVolumesMax"
+                <div *ngIf="selected_vm && (selectedProjectDiskSpaceSum > selectedProjectDiskspaceMax)"
                      class="alert alert-danger">
                     The storage limit is exceeded
 
@@ -384,7 +390,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-6"
-                        [disabled]="selected_vm == undefined || diskspace <= 0 || volumeName.length == 0 || (diskspace + selectedProjectDiskspaceUsed) > selectedProjectVolumesMax"
+                        [disabled]="selected_vm == undefined || diskspace <= 0 || volumeName.length == 0 || (selectedProjectDiskSpaceSum > selectedProjectDiskspaceMax)"
                         (click)="createAndAttachvolume(volumeName,diskspace,selected_vm.openstackid);createModal.hide();resultModal.show()">
                     Create & Attach Volume
                 </button>

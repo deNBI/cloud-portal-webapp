@@ -48,7 +48,7 @@ import ***REMOVED***ConsentInfoComponent***REMOVED*** from "./consent-info.compo
         SIDEBAR_TOGGLE_DIRECTIVES,
         AsideToggleDirective,
         RegistrationInfoComponent,
-        ConsentInfoComponent
+        ConsentInfoComponent,
     ],
     providers: [***REMOVED***
         provide: LocationStrategy,

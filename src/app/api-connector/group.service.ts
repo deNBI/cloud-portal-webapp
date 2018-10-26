@@ -4,7 +4,7 @@ import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
-
+import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachines/virtualmachinemodels/vmclient";
 
 const header = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get("csrftoken")
@@ -28,6 +28,17 @@ export class GroupService ***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
     ***REMOVED***
+
+    getClient(groupid:string):Observable<any>***REMOVED***
+
+        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/client/', ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+
+    ***REMOVED***
+
+
 
 
     assignGroupToResource(groupid: string, computecenter: string): Observable<any> ***REMOVED***
