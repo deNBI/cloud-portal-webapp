@@ -7,6 +7,7 @@ import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 import {FullLayoutComponent} from "../layouts/full-layout.component";
 import {UserService} from "../api-connector/user.service";
 import {ImageService} from "../api-connector/image.service";
+import {Vmclient} from "./virtualmachinemodels/vmclient";
 
 @Component({
     selector: 'vm-overview',
@@ -349,7 +350,6 @@ export class VmOverviewComponent implements OnInit {
                     }
                 }
                 this.isLoaded=true;
-
                 this.applyFilter();
 
                 this.checkInactiveVms();

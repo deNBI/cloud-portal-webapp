@@ -3,16 +3,13 @@ export class ProjectMemberApplication {
     private _Id: number;
     private _Name: string;
     private _DateCreated: string;
-    private _UserId: string;
     private _UserIsVoMember:boolean;
 
 
-    constructor(Id: number, Name: string, DateCreated: string,UserId:string,UserIsVoMember:boolean) {
+    constructor(Id: number, Name: string, DateCreated: string) {
         this._Id = Id;
         this._Name = Name;
         this._DateCreated = DateCreated;
-        this._UserId=UserId;
-        this._UserIsVoMember=UserIsVoMember
 
 
     }
@@ -25,13 +22,6 @@ export class ProjectMemberApplication {
         this._UserIsVoMember=value;
     }
 
-    get UserId(): string {
-        return this._UserId
-    }
-
-    set UserId(value:string){
-        this._UserId=value
-    }
 
     get Id(): number {
         return this._Id;
