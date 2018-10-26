@@ -125,12 +125,12 @@
                         <div (clickOutside)="closeCollapse(vm.openstackid)" *ngIf="vm.status !='DELETED'"
                              class="btn-group ***REMOVED******REMOVED***collapse_status[vm.openstackid]***REMOVED******REMOVED***">
 
-                            <button class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED'"
+                            <button  class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED'"
                                     (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();">
 
                                 Create Snapshot
                             </button>
-                            <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                            <button  class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                     data-toggle="dropdown"
                                     type="button" aria-haspopup="true" aria-expanded="false"
                                     (click)="getCollapseStatus(vm.openstackid)"></button>

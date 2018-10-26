@@ -4,7 +4,7 @@ import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
-
+import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachines/virtualmachinemodels/vmclient";
 
 const header = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get("csrftoken")
