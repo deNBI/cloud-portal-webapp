@@ -49,8 +49,8 @@ export class VmOverviewComponent implements OnInit {
     isLoaded = false;
     private checkStatusTimeout: number = 1500;
     reboot_type: string;
-    status_check_error:boolean;
-    reboot_done:boolean;
+    status_check_error: boolean;
+    reboot_done: boolean;
 
 
     constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
@@ -337,13 +337,20 @@ export class VmOverviewComponent implements OnInit {
                 res = res;
 
                 if (res['Started']) {
-                    this.reboot_done=true
+                    this.reboot_done = true;
+                    if (this.tab === 'own') {
+                        this.getVms(this.elixir_id);
+                    }
+                    else if (this.tab === 'all') {
+                        this.getAllVms();
+
+                    }
 
 
                 }
                 else {
                     if (res['Error']) {
-                        this.status_check_error=true
+                        this.status_check_error = true
 
 
                     }
