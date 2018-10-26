@@ -163,7 +163,7 @@
                                         Reboot Vm
                                     </a>
                                 </li>
-                                <li *ngIf="vm.status !='DELETED'" role="menuitem">
+                                <li *ngIf="vm.status !='DELETED' && vm.status !='SUSPENDED'" role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="status_check_error=false;reboot_done=false;status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;reboot_type='SOFT';rebootModal.show();">Soft
                                         Reboot Vm
