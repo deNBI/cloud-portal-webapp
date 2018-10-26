@@ -1,7 +1,10 @@
-export class Vmclient{
-  id:string;
-  host: string;
-  status: string;
-  port: string;
-  location: string;
+export class Vmclient {
+    id: string;
+    host: string;
+    status: string;
+    port: string;
+    version: string;
+    features: string[];
+    location: string;
+
 }

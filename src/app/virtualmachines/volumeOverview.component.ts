@@ -23,6 +23,7 @@ export class VolumeOverviewComponent implements OnInit {
     selectedProjectDiskspaceUsed: number;
     selectedProjectVolumesMax: number;
     selectedProjectVolumesUsed: number;
+    selectedProjectDiskSpaceSum:number;
     selectedProject: [string, number];
     projects: string[] = new Array();
     diskspace: number = 1;
@@ -55,6 +56,13 @@ export class VolumeOverviewComponent implements OnInit {
         }
     }
 
+    public closeCollapse(id: string) {
+        this.collapse_status[id] = '';
+
+
+    }
+
+
     public switchCollapseStatus(id: string) {
         this.collapse_status[id] == '' ? this.collapse_status[id] = 'open' : this.collapse_status[id] = '';
     }
@@ -67,6 +75,11 @@ export class VolumeOverviewComponent implements OnInit {
 
         })
     }
+
+    calcDiskSpaceSum():void{
+        this.selectedProjectDiskSpaceSum=parseInt(this.diskspace.toString()) + parseInt(this.selectedProjectDiskspaceUsed.toString());
+    }
+
 
     getSelectedProjectDiskspace(): void {
         this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe(result => {
@@ -171,16 +184,16 @@ export class VolumeOverviewComponent implements OnInit {
     renameVolume(volume_id: string, new_volume_name: string) {
         this.volume_status = 9
         this.vmService.renameVolume(volume_id, new_volume_name).subscribe(result => {
-            if (result['volume_name'] == new_volume_name) {
-                this.volume_status = 10;
-            }
-            else {
-                this.volume_status = 2;
-            }
-                    this.getVolumes();
+                if (result['volume_name'] == new_volume_name) {
+                    this.volume_status = 10;
+                }
+                else {
+                    this.volume_status = 2;
+                }
+                this.getVolumes();
 
-        }
-    )
+            }
+        )
 
 
     }

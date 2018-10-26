@@ -39,8 +39,8 @@
                                 <td>
                                     <p *ngIf="project.ComputeCenter?.Name">{{project.ComputeCenter.Name}}</p>
                                     <ul *ngIf="project.ComputeCenter?.Name">
-                                        <li *ngIf="project.OpenStackProject"><a target="_blank"
-                                                                                href="project.ComputeCenter.Login">Login:
+                                        <li *ngIf="project.OpenStackProject"> Login: <a target="_blank"
+                                                                                        href="{{project.ComputeCenter.Login}}">
                                             {{project.ComputeCenter.Login}}</a></li>
                                         <li>Support: {{project.ComputeCenter.Support}}</li>
 
@@ -516,7 +516,7 @@
                 </div>
 
                 <div *ngIf="loaded" class="table-responsive">
-                    <table class="table table-bordered table-striped table-sm" >
+                    <table class="table table-bordered table-striped table-sm">
                         <thead>
 
                         <th>Name</th>
@@ -527,7 +527,7 @@
 
                         <td>{{application.Name}}</td>
                         <td>{{application.DateCreated}}</td>
-                        <td *ngIf="application.UserIsVoMember">
+                        <td>
                             <button
                                     (click)="approveMemberApplication(selectedProject?.Id,application.Id,application.Name); "
                                     class="btn btn-success"><i class="fa fa-check"></i> Approve
@@ -537,7 +537,6 @@
                                     class="btn btn-danger"><i class="fa fa-times"></i> Reject
                             </button>
                         </td>
-                        <td *ngIf="!application.UserIsVoMember"> Membership for the vo must be approved beforehand</td>
                         </tbody>
                     </table>
                 </div>
@@ -550,16 +549,22 @@
                     <strong>Success:</strong> Succesfully {{application_action}} the application of
                     {{application_member_name}}.
                 </p>
-                <p *ngIf="!application_action_success && application_action_done" class="alert alert-danger mr-auto">
+                <p *ngIf="!application_action_success && application_action_done && !application_action_error_message"
+                   class="alert alert-danger mr-auto">
                     <strong>Failed:</strong> The application of {{application_member_name}} could not be
                     {{application_action}} .
+                </p>
+                <p *ngIf="!application_action_success && application_action_done && application_action_error_message"
+                   class="alert alert-danger mr-auto">
+                    <strong>Failed:</strong> User didn't verify his email address yet. Please wait until the email is
+                    verified.
                 </p>
                 <button type="button" class="btn btn-primary"
                         (click)="loadProjectApplications(selectedProject?.Id)">
                     Refresh
                 </button>
                 <button type="button" class="btn btn-secondary"
-                        (click)="application_action_done=false;selectedProject=undefined;applicationModal.hide();">
+                        (click)="application_action_error_message=null;application_action_done=false;selectedProject=undefined;applicationModal.hide();">
                     Close
                 </button>
             </div>
