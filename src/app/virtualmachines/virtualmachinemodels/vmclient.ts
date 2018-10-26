@@ -7,12 +7,4 @@ export class Vmclient ***REMOVED***
     features: string[];
     location: string;
 
-    public isInFeatures(feature: string) ***REMOVED***
-        if (this.features.indexOf(feature) > -1) ***REMOVED***
-            return true
-        ***REMOVED***
-        else ***REMOVED***
-            return false;
-        ***REMOVED***
-    ***REMOVED***
 ***REMOVED***
