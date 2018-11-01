@@ -157,13 +157,14 @@
                                        (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();">Delete
                                         Vm</a>
                                 </li>
-                                <li *ngIf="vm.status !='DELETED'" role="menuitem">
+                                <li *ngIf="vm.status !='DELETED' && vm.client.features['VM_REBOOT']" role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="status_check_error=false;reboot_done=false;status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;reboot_type='HARD';rebootModal.show();">Hard
                                         Reboot Vm
                                     </a>
                                 </li>
-                                <li *ngIf="vm.status !='DELETED' && vm.status !='SUSPENDED'" role="menuitem">
+                                <li *ngIf="vm.status !='DELETED' && vm.status !='SUSPENDED' && vm.client.features['VM_REBOOT']"
+                                    role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="status_check_error=false;reboot_done=false;status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;reboot_type='SOFT';rebootModal.show();">Soft
                                         Reboot Vm
