@@ -117,12 +117,15 @@
                          Click on the given flavor-categories to expand the form.
                     </div>
 
+                      <div *ngFor="let t of typeList">
                       <div class="card">
-                        <div class="card-header" (click)="isCollapsed = !isCollapsed"> Standard Flavors</div>
-                        <div class="form-group card-body" *ngIf="!isCollapsed">
+                        <div id="flavor-card" class="card-header" (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]">{{t.long_name}}</div>
+                        <div class="form-group card-body" *ngIf="collapseList[typeList.indexOf(t)]">
                         <div *ngFor="let f of flavorList" >
-                          <div *ngIf="f.type == 'SF'" class="form-group row">
-                          <label class="col-md-4 form-control-label"><strong>{{f.name}}*</strong></label>
+                          <div *ngIf="f.type.shortcut == t.shortcut" class="form-group row">
+                          <label class="col-md-4 form-control-label"><strong>{{f.name}}*</strong><br>
+                          Number of cores: {{f.vcpus}}<br>
+                          MB of RAM: {{f.ram}}</label>
                            <div class="col-md-8">
                                 <div class="input-group">
                                     <input required class="form-control" id="project_application_{{f.name}}"
@@ -133,37 +136,15 @@
                                     <span class="input-group-addon"> VMs
                                     </span>
                                 </div>
-                                <span class="help-block">Number of VMs you would like to run of type {{f.name}}</span>
+                                <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
                             </div>
                           </div>
                         </div>
                         </div>
                       </div>
 
-                      <!-- demonstration only-->
-                       <div class="card">
-                        <div class="card-header" (click)="isCollapsed2 = !isCollapsed2"> Other Flavors</div>
-                        <div class="form-group card-body" *ngIf="!isCollapsed2">
-                        <div *ngFor="let f of flavorList" >
-                          <div *ngIf="f.type == 'SF'" class="form-group row">
-                          <label class="col-md-4 form-control-label"><strong>{{f.name}}*</strong></label>
-                           <div class="col-md-8">
-                                <div class="input-group">
-                                    <input required class="form-control" id="project_application2_{{f.name}}"
-                                           name="project_application_{{f.name}}"
-                                           placeholder="e.g. 5"
-                                           type="number" min="0" step="1"
-                                           (ngModel)="'project_application_' + f.name">
-                                    <span class="input-group-addon"> VMs
-                                    </span>
-                                </div>
-                                <span class="help-block">Number of VMs you would like to run of type {{f.name}}</span>
-                            </div>
-                          </div>
                         </div>
-                        </div>
-                      </div>
-                      <!-- end of demo-->
+
 
                         <div class="form-group row" [ngClass]="{
                                 'has-danger': f.controls.project_application_volume_limit?.invalid,
@@ -297,8 +278,8 @@
                             cloud
                             usage policy.</p>
                     </div>
-                    <button (click)="acknowledgemodal.show()"
-                            [disabled]="f.invalid"
+                    <button (click)="submitModal.show()"
+                            
                             class="btn btn-sm btn-primary"><i
                             class="fa fa-dot-circle-o"></i> Submit
                         Application
@@ -383,3 +364,40 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div bsModal #submitModal="bs-modal"  class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm Cloud-Application</h4>
+                <button type="button" class="close" style="cursor: pointer;" (click)="submitModal.hide()"
+                        data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <label type="info">
+                    <strong>Please check the data you have entered.</strong><br>
+                  If the entered data mismatches with your requirements close this confirmation and take changes.
+                </label>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+
+                <button  class="btn btn-success col-md4" type="button"
+                        (click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
+                </button>
+                <button class="btn  btn-primary col-md-4" type="reset" (click)="submitModal.hide();">Cancel
+                </button>
+
+            </div>
+        </div><!-- /.modal-content -->L
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+

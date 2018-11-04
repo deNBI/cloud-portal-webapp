@@ -8,17 +8,18 @@ import {ApplicationsService} from '../api-connector/applications.service'
 import {Observable} from 'rxjs';
 import {FlavorService} from '../api-connector/flavor.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 
 @Component({
     templateUrl: 'addcloudapplication.component.html',
-    providers: [SpecialHardwareService, ApiSettings, ApplicationsService, FlavorService]
+    providers: [SpecialHardwareService, ApiSettings, ApplicationsService, FlavorService],
+    styleUrls: ['addcloudapplication.component.css']
 })
 
 export class AddcloudapplicationComponent {
 
     public wronginput: boolean = false;
     public isCollapsed: boolean = true;
-    public isCollapsed2: boolean = true; //for demonstration purposes
 
 
     //notification Modal variables
@@ -30,6 +31,9 @@ export class AddcloudapplicationComponent {
     public error: string[];
     public project_application_vms_requested = 5;
     public flavorList: Flavor[];
+    public typeList: FlavorType[];
+    public collapseList: boolean[];
+
 
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
@@ -49,10 +53,26 @@ export class AddcloudapplicationComponent {
                 private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) {
         this.getSpecialHardware();
         this.getListOfFlavors();
+        this.getListOfTypes();
+
     }
 
     getListOfFlavors() {
         this.flavorservice.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
+    }
+
+    getListOfTypes() {
+        this.flavorservice.getListOfTypesAvailable().subscribe(types => this.setListOfTypes(types));
+    }
+
+
+    setListOfTypes(types: FlavorType[]) {
+      this.typeList = types;
+      this.collapseList = new Array(types.length) as Array<boolean>;
+      for (let i = 0; i < types.length; i++) {
+        this.collapseList.push(true);
+      }
+
     }
 
 
@@ -98,7 +118,7 @@ export class AddcloudapplicationComponent {
             values['project_application_openstack_project'] = this.project_application_openstack_project;
             for (let v in f.controls) {
                 if (f.controls[v].value) {
-                    
+
                     values[v] = f.controls[v].value;
                 }
             }
