@@ -8,17 +8,18 @@ import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/appl
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
+import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 
 @Component(***REMOVED***
     templateUrl: 'addcloudapplication.component.html',
-    providers: [SpecialHardwareService, ApiSettings, ApplicationsService, FlavorService]
+    providers: [SpecialHardwareService, ApiSettings, ApplicationsService, FlavorService],
+    styleUrls: ['addcloudapplication.component.css']
 ***REMOVED***)
 
 export class AddcloudapplicationComponent ***REMOVED***
 
     public wronginput: boolean = false;
     public isCollapsed: boolean = true;
-    public isCollapsed2: boolean = true; //for demonstration purposes
 
 
     //notification Modal variables
@@ -30,6 +31,9 @@ export class AddcloudapplicationComponent ***REMOVED***
     public error: string[];
     public project_application_vms_requested = 5;
     public flavorList: Flavor[];
+    public typeList: FlavorType[];
+    public collapseList: boolean[];
+
 
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
@@ -49,10 +53,26 @@ export class AddcloudapplicationComponent ***REMOVED***
                 private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) ***REMOVED***
         this.getSpecialHardware();
         this.getListOfFlavors();
+        this.getListOfTypes();
+
     ***REMOVED***
 
     getListOfFlavors() ***REMOVED***
         this.flavorservice.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
+    ***REMOVED***
+
+    getListOfTypes() ***REMOVED***
+        this.flavorservice.getListOfTypesAvailable().subscribe(types => this.setListOfTypes(types));
+    ***REMOVED***
+
+
+    setListOfTypes(types: FlavorType[]) ***REMOVED***
+      this.typeList = types;
+      this.collapseList = new Array(types.length) as Array<boolean>;
+      for (let i = 0; i < types.length; i++) ***REMOVED***
+        this.collapseList.push(true);
+      ***REMOVED***
+
     ***REMOVED***
 
 
@@ -98,7 +118,7 @@ export class AddcloudapplicationComponent ***REMOVED***
             values['project_application_openstack_project'] = this.project_application_openstack_project;
             for (let v in f.controls) ***REMOVED***
                 if (f.controls[v].value) ***REMOVED***
-                    
+
                     values[v] = f.controls[v].value;
                 ***REMOVED***
             ***REMOVED***
