@@ -99,6 +99,17 @@ export class VirtualmachineService ***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
+
+      rebootVM(openstack_id: string,reboot_type:string): Observable<any> ***REMOVED***
+                let params = new HttpParams().set('os_action', 'reboot').set('reboot_type',reboot_type);
+
+
+        return this.http.post(this.baseVmUrl + openstack_id + '/action/' , params,***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
+
     resumeVM(openstack_id: string): Observable<any> ***REMOVED***
 
         let params = new HttpParams().set('os_action', 'resume');

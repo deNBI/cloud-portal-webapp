@@ -21,9 +21,9 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     vms_filtered: VirtualMachine[];
     vms_returned: VirtualMachine[];
     vmsPerPage = 5;
-    currentPage=1;
+    currentPage = 1;
     vmStart = 0;
-    selected_command:string;
+    selected_command: string;
     vmEnd = this.vmsPerPage;
     status_changed_vm: string;
     status_changed_vm_id: string;
@@ -46,7 +46,11 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     filterproject: string;
     filterssh: string;
     collapse_status: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
-    isLoaded=false;
+    isLoaded = false;
+    private checkStatusTimeout: number = 1500;
+    reboot_type: string;
+    status_check_error: boolean;
+    reboot_done: boolean;
 
 
     constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) ***REMOVED***
@@ -85,7 +89,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         this.vmEnd = this.vmsPerPage;
 
         this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
-        this.currentPage=1
+        this.currentPage = 1
 
 
     ***REMOVED***
@@ -105,8 +109,8 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
-    public closeCollapse(id:string)***REMOVED***
-                    this.collapse_status[id] = '';
+    public closeCollapse(id: string) ***REMOVED***
+        this.collapse_status[id] = '';
 
 
     ***REMOVED***
@@ -162,7 +166,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     resetSnapshotResult() ***REMOVED***
-         this.snapshotDone = 'Waiting';
+        this.snapshotDone = 'Waiting';
     ***REMOVED***
 
     checkStatus(openstackid: string) ***REMOVED***
@@ -258,7 +262,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     isFilterstatus(vmstatus: string): boolean ***REMOVED***
-        if (vmstatus == 'FREEMIUM')***REMOVED***
+        if (vmstatus == 'FREEMIUM') ***REMOVED***
             return true
         ***REMOVED***
         if (this.filterstatus_list[vmstatus]
@@ -309,6 +313,55 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
+    public rebootVm(openstack_id: string, reboot_type: string) ***REMOVED***
+        this.virtualmachineservice.rebootVM(openstack_id, reboot_type).subscribe(result => ***REMOVED***
+            this.status_changed = 0;
+
+
+            if (result['reboot']) ***REMOVED***
+                this.status_changed = 1;
+                this.check_status_loop(openstack_id)
+            ***REMOVED***
+            else ***REMOVED***
+                this.status_changed = 2;
+            ***REMOVED***
+
+
+        ***REMOVED***)
+    ***REMOVED***
+
+    check_status_loop(id: string) ***REMOVED***
+
+        setTimeout(() => ***REMOVED***
+            this.virtualmachineservice.checkVmStatus(id).subscribe(res => ***REMOVED***
+                res = res;
+
+                if (res['Started']) ***REMOVED***
+                    this.reboot_done = true;
+                    if (this.tab === 'own') ***REMOVED***
+                        this.getVms(this.elixir_id);
+                    ***REMOVED***
+                    else if (this.tab === 'all') ***REMOVED***
+                        this.getAllVms();
+
+                    ***REMOVED***
+
+
+                ***REMOVED***
+                else ***REMOVED***
+                    if (res['Error']) ***REMOVED***
+                        this.status_check_error = true
+
+
+                    ***REMOVED***
+                    this.check_status_loop(id)
+                ***REMOVED***
+
+            ***REMOVED***)
+        ***REMOVED***, this.checkStatusTimeout);
+    ***REMOVED***
+
+
     stopVm(openstack_id: string): void ***REMOVED***
         this.virtualmachineservice.stopVM(openstack_id).subscribe(result => ***REMOVED***
 
@@ -349,7 +402,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
                         vm.stopped_at = ''
                     ***REMOVED***
                 ***REMOVED***
-                this.isLoaded=true;
+                this.isLoaded = true;
                 this.applyFilter();
 
                 this.checkInactiveVms();
