@@ -12,7 +12,7 @@
                         <strong>Please be aware:</strong> Only applications submitted by a principal investigator of a
                         german university or research facility will be accepted!
                     </div>
-                    <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
+                    <form id="application_form" #f="ngForm" (ngSubmit)="presentEnteredData(f);onSubmit(f)" class="form-horizontal">
                         <div class="form-group row">
                             <h5 class="col-md-6 form-control-label">General Information</h5>
                         </div>
@@ -130,8 +130,8 @@
                                 <div class="input-group">
                                     <input required class="form-control" id="project_application_{{f.name}}"
                                            name="project_application_{{f.name}}"
-                                           placeholder="e.g. 5"
                                            type="number" min="0" step="1"
+                                           value="0"
                                            (ngModel)="'project_application_' + f.name">
                                     <span class="input-group-addon"> VMs
                                     </span>
@@ -278,11 +278,9 @@
                             cloud
                             usage policy.</p>
                     </div>
-                    <button (click)="submitModal.show()"
-                            
-                            class="btn btn-sm btn-primary"><i
-                            class="fa fa-dot-circle-o"></i> Submit
-                        Application
+                    <button (click)="submitModal.show(); " class="btn btn-sm btn-primary">
+                      <i class="fa fa-dot-circle-o"></i>
+                      Submit Application
                     </button>
                 </div>
             </div>
@@ -379,10 +377,12 @@
 
             </div>
             <div class="modal-body">
-                <label type="info">
-                    <strong>Please check the data you have entered.</strong><br>
+                <div class="alert alert-info">
+                  <strong>Please check the data you have entered.</strong><br>
                   If the entered data mismatches with your requirements close this confirmation and take changes.
-                </label>
+                </div>
+
+                <label *ngFor="let str of test">{{str}}</label>
 
             </div>
 

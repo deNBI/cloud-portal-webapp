@@ -33,6 +33,9 @@ export class AddcloudapplicationComponent {
     public flavorList: Flavor[];
     public typeList: FlavorType[];
     public collapseList: boolean[];
+    public totalNumberOfCores = 0;
+    public totalRAM = 0;
+    public test: string[];
 
 
 
@@ -55,6 +58,12 @@ export class AddcloudapplicationComponent {
         this.getListOfFlavors();
         this.getListOfTypes();
 
+    }
+
+    presentEnteredData(f: NgForm) {
+      /**
+       * need to collect data from Form f so total number of cores and ram can be calculated, number of vms can be shown
+       */
     }
 
     getListOfFlavors() {
