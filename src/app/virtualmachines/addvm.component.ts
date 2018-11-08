@@ -54,6 +54,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     selectedFlavor: Flavor;
     userinfo: Userinfo;
     vmclient: Vmclient;
+    selectedProjectClient: Vmclient;
     selectedProjectDiskspaceMax: number;
     selectedProjectDiskspaceUsed: number;
     selectedProjectVolumesMax: number;
@@ -63,7 +64,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     selectedProject: [string, number];
     client_avaiable: boolean;
     validPublickey: boolean;
-
     volumeName: string = '';
 
     optional_params = false;
@@ -196,9 +196,12 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string): void ***REMOVED***
         if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) ***REMOVED***
+            let re = /\+/gi;
+
+            let flavor_fixed = flavor.replace(re, "%2B");
 
 
-            this.virtualmachineservice.startVM(flavor, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => ***REMOVED***
+            this.virtualmachineservice.startVM(flavor_fixed, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => ***REMOVED***
 
 
                 if (data['Created']) ***REMOVED***
@@ -232,6 +235,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
         this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => ***REMOVED***
             if (res['status'] == 'Connected') ***REMOVED***
                 this.client_avaiable = true;
+
                 this.getSelectedProjectDiskspace();
                 this.getSelectedProjectVms();
                 this.getSelectedProjectVolumes();
@@ -242,6 +246,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
                 this.client_avaiable = false;
 
             ***REMOVED***
+            this.selectedProjectClient = res;
+
         ***REMOVED***)
     ***REMOVED***
 

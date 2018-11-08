@@ -39,8 +39,8 @@
                                 <td>
                                     <p *ngIf="project.ComputeCenter?.Name">***REMOVED******REMOVED***project.ComputeCenter.Name***REMOVED******REMOVED***</p>
                                     <ul *ngIf="project.ComputeCenter?.Name">
-                                        <li *ngIf="project.OpenStackProject"><a target="_blank"
-                                                                                href="project.ComputeCenter.Login">Login:
+                                        <li *ngIf="project.OpenStackProject"> Login: <a target="_blank"
+                                                                                        href="***REMOVED******REMOVED***project.ComputeCenter.Login***REMOVED******REMOVED***">
                                             ***REMOVED******REMOVED***project.ComputeCenter.Login***REMOVED******REMOVED***</a></li>
                                         <li>Support: ***REMOVED******REMOVED***project.ComputeCenter.Support***REMOVED******REMOVED***</li>
 
@@ -516,7 +516,7 @@
                 </div>
 
                 <div *ngIf="loaded" class="table-responsive">
-                    <table class="table table-bordered table-striped table-sm" >
+                    <table class="table table-bordered table-striped table-sm">
                         <thead>
 
                         <th>Name</th>
@@ -527,7 +527,7 @@
 
                         <td>***REMOVED******REMOVED***application.Name***REMOVED******REMOVED***</td>
                         <td>***REMOVED******REMOVED***application.DateCreated***REMOVED******REMOVED***</td>
-                        <td *ngIf="application.UserIsVoMember">
+                        <td>
                             <button
                                     (click)="approveMemberApplication(selectedProject?.Id,application.Id,application.Name); "
                                     class="btn btn-success"><i class="fa fa-check"></i> Approve
@@ -537,7 +537,6 @@
                                     class="btn btn-danger"><i class="fa fa-times"></i> Reject
                             </button>
                         </td>
-                        <td *ngIf="!application.UserIsVoMember"> Membership for the vo must be approved beforehand</td>
                         </tbody>
                     </table>
                 </div>
@@ -550,16 +549,22 @@
                     <strong>Success:</strong> Succesfully ***REMOVED******REMOVED***application_action***REMOVED******REMOVED*** the application of
                     ***REMOVED******REMOVED***application_member_name***REMOVED******REMOVED***.
                 </p>
-                <p *ngIf="!application_action_success && application_action_done" class="alert alert-danger mr-auto">
+                <p *ngIf="!application_action_success && application_action_done && !application_action_error_message"
+                   class="alert alert-danger mr-auto">
                     <strong>Failed:</strong> The application of ***REMOVED******REMOVED***application_member_name***REMOVED******REMOVED*** could not be
                     ***REMOVED******REMOVED***application_action***REMOVED******REMOVED*** .
+                </p>
+                <p *ngIf="!application_action_success && application_action_done && application_action_error_message"
+                   class="alert alert-danger mr-auto">
+                    <strong>Failed:</strong> User didn't verify his email address yet. Please wait until the email is
+                    verified.
                 </p>
                 <button type="button" class="btn btn-primary"
                         (click)="loadProjectApplications(selectedProject?.Id)">
                     Refresh
                 </button>
                 <button type="button" class="btn btn-secondary"
-                        (click)="application_action_done=false;selectedProject=undefined;applicationModal.hide();">
+                        (click)="application_action_error_message=null;application_action_done=false;selectedProject=undefined;applicationModal.hide();">
                     Close
                 </button>
             </div>

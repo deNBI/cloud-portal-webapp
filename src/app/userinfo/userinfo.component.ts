@@ -8,7 +8,6 @@ import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 
 
-
 @Component(***REMOVED***
     selector: 'app-userinfo',
     templateUrl: 'userinfo.component.html',
@@ -21,21 +20,34 @@ export class UserinfoComponent implements OnInit ***REMOVED***
     newsletter_subscribed: boolean;
     public_key: string = '';
     isLoaded = false;
-    is_project_member= true;
+    is_project_member = true;
     freemium_active = false;
+    emailChange = '';
     freemium: boolean;
 
     constructor(private groupService: GroupService, private userservice: UserService, private keyService: keyService) ***REMOVED***
         this.userinfo = new Userinfo();
         this.getUserinfo();
 
-
     ***REMOVED***
 
+
+    requestChangePreferredMailUser(email: string) ***REMOVED***
+        this.userservice.requestChangePreferredMailUser(email).subscribe(res => ***REMOVED***
+            this.getPendingPreferredMailUser();
+        ***REMOVED***)
+    ***REMOVED***
+
+    getPendingPreferredMailUser() ***REMOVED***
+        this.userservice.getPendingPreferredMailUser().subscribe(res => ***REMOVED***
+            this.userinfo.PendingEmails = res['pendingEmails'];
+        ***REMOVED***)
+    ***REMOVED***
 
     ngOnInit(): void ***REMOVED***
         this.isFreemiumActive();
         this.is_vm_project_member();
+        this.getPreferredMail();
 
 
     ***REMOVED***
@@ -84,6 +96,13 @@ export class UserinfoComponent implements OnInit ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
+
+    // Returns the preffered Mail of the logged in User
+    getPreferredMail() ***REMOVED***
+        this.userservice.getPreferredMailUser().subscribe()
+    ***REMOVED***
+
+    // TODO: Refactor this Method
     getUserinfo() ***REMOVED***
         this.userservice.getLoggedUser().toPromise()
             .then(result => ***REMOVED***
@@ -110,7 +129,11 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
                 ***REMOVED***
 
-            ***REMOVED***).then(result => ***REMOVED***
+            ***REMOVED***).then(this.userservice.getPreferredMailUser().subscribe(res => ***REMOVED***
+                this.userinfo.Email = res['preferredEmail'];
+            ***REMOVED***)).then(this.userservice.getPendingPreferredMailUser().subscribe(res => ***REMOVED***
+                this.userinfo.PendingEmails = res['pendingEmails'];
+            ***REMOVED***)).then(result => ***REMOVED***
                 this.userservice.getNewsletterSubscription().subscribe(result => ***REMOVED***
                     result = result['subscribed'];
                     if (result.toString() == 'true') ***REMOVED***
