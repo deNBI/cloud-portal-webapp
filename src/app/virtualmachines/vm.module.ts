@@ -15,10 +15,11 @@ import {SnapshotOverviewComponent} from "./snapshotOverview.component";
 import {PaginationModule} from 'ngx-bootstrap/pagination'
 import {UserinfoModule} from "../userinfo/userinfo.module";
 import {PublicKeyModule} from "../shared_modules/public-key/public-key.module";
-
+import {ClickOutsideModule} from 'ng4-click-outside';
 
 @NgModule({
     imports: [
+        ClickOutsideModule,
         PublicKeyModule,
         VmRoutingModule,
         TabsModule,

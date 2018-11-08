@@ -17,8 +17,10 @@
                             <h5 class="col-md-6 form-control-label">General Information</h5>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-4"><strong>Cloud Project <i data-balloon="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."
-                                                                             data-balloon-pos="down" data-balloon-length="large"><i class="icon-question menu_links" style="cursor: pointer;"></i></i>
+                            <label class="col-md-4"><strong>Cloud Project <i
+                                    data-balloon="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."
+                                    data-balloon-pos="down" data-balloon-length="large"><i
+                                    class="icon-question menu_links" style="cursor: pointer;"></i></i>
                             </strong>
                             </label>
                             <div class="col-md-8">
@@ -32,7 +34,8 @@
                                 'has-success': f.controls.project_application_name?.valid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Project
-                                Name* <i data-balloon="Full name of your project" data-balloon-pos="down"><i class="icon-question" style="cursor: pointer;"></i></i></strong></label>
+                                Name* <i data-balloon="Full name of your project" data-balloon-pos="down"><i
+                                        class="icon-question" style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <input required type="text" id="id_project_application_name"
                                        name="project_application_name"
@@ -50,8 +53,10 @@
                                 'has-success': f.controls.project_application_shortname?.valid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Project
-                                Short Name* <i data-balloon="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"
-                                               data-balloon-pos="down" data-balloon-length="large"><i class="icon-question" style="cursor: pointer;"></i></i></strong></label>
+                                Short Name* <i
+                                        data-balloon="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"
+                                        data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
+                                                                                               style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <div *ngIf='wronginput'>
                                     <strong><font color="red">Umlauts and special characters are prohibited in the
@@ -74,8 +79,10 @@
                                 'has-success': f.controls.project_application_description?.valid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Project
-                                Description* <i data-balloon="Full description of your project including tools you might are going to use."
-                                                data-balloon-pos="down" data-balloon-length="large"><i class="icon-question" style="cursor: pointer;"></i></i></strong></label>
+                                Description* <i
+                                        data-balloon="Full description of your project including tools you might are going to use."
+                                        data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
+                                                                                               style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <textarea required id="id_project_application_description"
                                           name="project_application_description" rows="9"
@@ -91,18 +98,23 @@
                                 'has-success': f.controls.project_application_lifetime?.valid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Desired
+
                                 lifetime* <i data-balloon="Lifetime in months of your project. Currently the lifetime is limited to 12 months."
                                              data-balloon-length="large" data-balloon-pos="down">
                                 <i class="icon-question" style="cursor: pointer;"></i></i></strong></label>
+
                             <div class="col-md-8">
                                 <div class="input-group">
                                     <input class="form-control" id="id_project_application_lifetime"
                                            name="project_application_lifetime" placeholder="e.g 3"
-                                           type="number" min="1" step="1" max="12" ngModel required>
+
+                                           type="number" min="1" max="12" step="1" ngModel required
+                                           pattern="^([1-9]|1[012])$">
+                                  
                                     <span class="input-group-addon"> months
                                     </span>
                                 </div>
-                                <span class="help-block">How long would you like to run this project?</span>
+                                <span class="help-block">How long would you like to run this project (12 month is maximum)?</span>
                             </div>
                         </div>
 
@@ -128,6 +140,7 @@
                           Number of cores: {{f.vcpus}}<br>
                           MB of RAM: {{f.ram}}</label>
                            <div class="col-md-8">
+
                                 <div class="input-group">
                                     <input required class="form-control" id="project_application_{{f.name}}"
                                            name="project_application_{{f.name}}"
@@ -144,6 +157,7 @@
                         </div>
                       </div>
 
+
                         </div>
 
 
@@ -154,7 +168,8 @@
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage Limit*
                                 <i
                                         data-balloon="Storage limit is the sum of extra storage provided by volumes."
-                                        data-balloon-pos="down" data-balloon-length="medium"><i  class="icon-question" style="cursor: pointer;"></i></i></strong></label>
+                                        data-balloon-pos="down" data-balloon-length="medium"><i class="icon-question"
+                                                                                                style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
                                     <input class="form-control" id="id_project_application_volume_limit"
@@ -174,8 +189,9 @@
                                 }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of storage
                                 volumes*
-                                <i      data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
-                                        data-balloon-pos="down" data-balloon-length="large"><i class="icon-question" style="cursor: pointer;"></i></i></strong></label>
+                                <i data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+                                   data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
+                                                                                          style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
                                     <input required class="form-control" id="id_project_application_volume_counter"
@@ -194,7 +210,8 @@
                                 }">
                             <label class="col-md-4 form-control-label" for="textarea-input">Object Storage <i
                                     data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
-                                    data-balloon-pos="down" data-balloon-length="large"><i  class="icon-question" style="cursor: pointer;"></i></i></label>
+                                    data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
+                                                                                           style="cursor: pointer;"></i></i></label>
                             <div class="col-md-8">
                                 <div class="input-group">
                                     <input class="form-control" id="id_project_application_object_storage"
@@ -210,9 +227,11 @@
 
 
                         <div class="form-group row">
-                            <label class="col-md-4 form-control-label">Special Hardware <i data-balloon="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."
-                                                                                           data-balloon-pos="down"
-                                                                                           data-balloon-length="large"><i class="icon-question" style="cursor: pointer;"></i></i></label>
+                            <label class="col-md-4 form-control-label">Special Hardware <i
+                                    data-balloon="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."
+                                    data-balloon-pos="down"
+                                    data-balloon-length="large"><i class="icon-question"
+                                                                   style="cursor: pointer;"></i></i></label>
                             <div class="col-md-8">
                                 <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
                                     <label>
@@ -245,7 +264,8 @@
                                 'has-success': f.controls.project_application_institute?.valid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Institute Name* <i
-                                    data-balloon="Your institute" data-balloon-pos="down"><i class="icon-question" style="cursor: pointer;"></i></i></strong></label>
+                                    data-balloon="Your institute" data-balloon-pos="down"><i class="icon-question"
+                                                                                             style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <input required type="text" id="id_project_application_institute"
                                        name="project_application_institute" class="form-control"
@@ -260,7 +280,8 @@
                                 }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Workgroup Name* <i
                                     data-balloon="Your Workgroup"
-                                    data-balloon-pos="down"><i class="icon-question"  style="cursor: pointer;"></i></i></strong></label>
+                                    data-balloon-pos="down"><i class="icon-question"
+                                                               style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <input required type="text" id="id_project_application_workgroup"
                                        name="project_application_workgroup" class="form-control"
@@ -298,7 +319,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">{{ notificationModalTitle }}</h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -341,7 +363,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"> {{acknowledgeModalTitle}}</h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="acknowledgemodal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="acknowledgemodal.hide()"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
