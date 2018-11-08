@@ -5,15 +5,23 @@ import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {SpecialHardware} from './special_hardware.model'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {ApplicationsService} from '../api-connector/applications.service'
+import {Observable} from 'rxjs';
+import {FlavorService} from '../api-connector/flavor.service';
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
+import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
     templateUrl: 'addcloudapplication.component.html',
-    providers: [SpecialHardwareService, ApiSettings, ApplicationsService]
+    providers: [SpecialHardwareService, ApiSettings, ApplicationsService, FlavorService],
+    styleUrls: ['addcloudapplication.component.css']
 })
 
 export class AddcloudapplicationComponent {
 
     public wronginput: boolean = false;
+    public isCollapsed: boolean = true;
+
 
     //notification Modal variables
     public notificationModalTitle: string = 'Notification';
@@ -22,7 +30,16 @@ export class AddcloudapplicationComponent {
     public notificationModalIsClosable: boolean = false;
     public notificationModalStay: boolean = true;
     public error: string[];
-    public project_application_vms_requested=5;
+    public project_application_vms_requested = 5;
+    public flavorList: Flavor[];
+    public typeList: FlavorType[];
+    public collapseList: boolean[];
+    public totalNumberOfCores;
+    public totalRAM;
+    public valuesToConfirm: string[];
+    public constantStrings: Object;
+    public projectName: string;
+
 
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
@@ -32,18 +49,113 @@ export class AddcloudapplicationComponent {
 
 
     showjustvm: boolean;
-    project_application_openstack_project: boolean=true;
+    project_application_openstack_project: boolean = true;
 
 
     csrf: Object = Cookie.get('csrftoken');
     special_hardware: SpecialHardware[] = new Array();
 
     constructor(private specialhardwareservice: SpecialHardwareService,
-                private  applicationsservice: ApplicationsService) {
+                private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) {
         this.getSpecialHardware();
+        this.getListOfFlavors();
+        this.getListOfTypes();
+
 
     }
 
+    matchString(key: string, val: string ): string{
+
+      if (key in this.constantStrings)
+      {
+        switch (key) {
+          case 'project_application_lifetime': {
+            return (this.constantStrings[key] + val + ' months');
+            }
+          case ('project_application_volume_limit'): {
+            return (this.constantStrings[key] + val + ' GB');
+          }
+          case 'project_application_object_storage': {
+            return (this.constantStrings[key] + val + ' GB');
+          }
+          default: {
+            return (this.constantStrings[key] + val);
+          }
+        }
+      }
+    }
+
+    generateConstants() {
+        this.constantStrings = new Array();
+        this.constantStrings['project_application_lifetime'] = 'Lifetime of your project: ';
+        this.constantStrings['project_application_volume_counter'] = 'Number of volumes for additional storage: ';
+        this.constantStrings['project_application_object_storage'] = 'Additional object storage: ';
+        this.constantStrings['project_application_volume_limit'] = 'Additional storage space for your VMs: ';
+        this.constantStrings['project_application_institute'] = 'Your institute: ';
+        this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
+        for (let key in this.flavorList) {
+          if (key in this.flavorList) {
+            this.constantStrings['project_application_' + this.flavorList[key].name] =
+              'Number of VMs of type ' + this.flavorList[key].name + ': ';
+          }
+        }
+    }
+
+    keyIsVM(key: string): Flavor{
+      for (let fkey in this.flavorList) {
+        if (fkey in this.flavorList) {
+          if (this.flavorList[fkey].name === key.substring(20)) {
+            return this.flavorList[fkey];
+          }
+        }
+      }
+      return null;
+
+    }
+
+    filterEnteredData(f: NgForm) {
+      this.generateConstants();
+      this.totalNumberOfCores = 0;
+      this.totalRAM = 0;
+      this.valuesToConfirm = new Array();
+      for (let key in f.controls) {
+        if (f.controls[key].value) {
+          if (key === 'project_application_name') {
+              this.projectName = f.controls[key].value;
+              if (this.projectName.length > 50) {
+                this.projectName = this.projectName.substring(0, 50) + '...';
+              }
+            }
+          if (key in this.constantStrings) {
+              this.valuesToConfirm.push(this.matchString(key.toString(), f.controls[key].value.toString()));
+            var flavor: Flavor = this.keyIsVM(key.toString());
+            if (flavor != null) {
+              this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
+              this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value)
+            }
+          }
+        }
+      }
+
+    }
+
+    getListOfFlavors() {
+        this.flavorservice.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
+    }
+
+    getListOfTypes() {
+        this.flavorservice.getListOfTypesAvailable().subscribe(types => this.setListOfTypes(types));
+    }
+
+
+    setListOfTypes(types: FlavorType[]) {
+      this.typeList = types;
+      this.collapseList = new Array(types.length) as Array<boolean>;
+      for (let i = 0; i < types.length; i++) {
+        this.collapseList.push(true);
+      }
+
+    }
 
 
     getSpecialHardware() {
@@ -62,8 +174,7 @@ export class AddcloudapplicationComponent {
         if ('project_application_openstack_project' in values) {
 
 
-            if ('project_application_cores_per_vm' in values && values['project_application_cores_per_vm'] > 0 && 'project_application_ram_per_vm' in values
-                && values['project_application_ram_per_vm'] > 0 && 'project_application_volume_limit' in values && values['project_application_volume_limit'] > 0) {
+            if ('project_application_volume_limit' in values && values['project_application_volume_limit'] > 0) {
                 return true;
             }
 
@@ -77,26 +188,28 @@ export class AddcloudapplicationComponent {
 
     onSubmit(f: NgForm) {
         this.error = null;
+        console.log(f)
         if (this.wronginput == true) {
 
             this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
         }
         else {
-            let values = {};
+            let values:{[key:string]:any} = {};
             values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
-            values['project_application_openstack_project']=this.project_application_openstack_project;
+            values['project_application_openstack_project'] = this.project_application_openstack_project;
             for (let v in f.controls) {
                 if (f.controls[v].value) {
+
                     values[v] = f.controls[v].value;
                 }
             }
+            console.log(values)
             if (this.check_not_zero(values) == false) {
                 this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
                 return;
             }
-
 
 
             this.applicationsservice.addNewApplication(values).toPromise()

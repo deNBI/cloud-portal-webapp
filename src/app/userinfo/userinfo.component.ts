@@ -8,7 +8,6 @@ import {UserService} from "../api-connector/user.service";
 import {GroupService} from "../api-connector/group.service";
 
 
-
 @Component({
     selector: 'app-userinfo',
     templateUrl: 'userinfo.component.html',
@@ -21,21 +20,34 @@ export class UserinfoComponent implements OnInit {
     newsletter_subscribed: boolean;
     public_key: string = '';
     isLoaded = false;
-    is_project_member= true;
+    is_project_member = true;
     freemium_active = false;
+    emailChange = '';
     freemium: boolean;
 
     constructor(private groupService: GroupService, private userservice: UserService, private keyService: keyService) {
         this.userinfo = new Userinfo();
         this.getUserinfo();
 
-
     }
 
+
+    requestChangePreferredMailUser(email: string) {
+        this.userservice.requestChangePreferredMailUser(email).subscribe(res => {
+            this.getPendingPreferredMailUser();
+        })
+    }
+
+    getPendingPreferredMailUser() {
+        this.userservice.getPendingPreferredMailUser().subscribe(res => {
+            this.userinfo.PendingEmails = res['pendingEmails'];
+        })
+    }
 
     ngOnInit(): void {
         this.isFreemiumActive();
         this.is_vm_project_member();
+        this.getPreferredMail();
 
 
     }
@@ -84,6 +96,13 @@ export class UserinfoComponent implements OnInit {
         })
     }
 
+
+    // Returns the preffered Mail of the logged in User
+    getPreferredMail() {
+        this.userservice.getPreferredMailUser().subscribe()
+    }
+
+    // TODO: Refactor this Method
     getUserinfo() {
         this.userservice.getLoggedUser().toPromise()
             .then(result => {
@@ -110,7 +129,12 @@ export class UserinfoComponent implements OnInit {
 
                 }
 
-            }).then(result => {
+            })
+        });
+        this.userservice.getPreferredMailUser().subscribe(res => {
+            this.userinfo.Email = res['preferredEmail'];
+            this.userservice.getPendingPreferredMailUser().subscribe(res => {
+                this.userinfo.PendingEmails = res['pendingEmails']
                 this.userservice.getNewsletterSubscription().subscribe(result => {
                     result = result['subscribed'];
                     if (result.toString() == 'true') {
@@ -123,10 +147,10 @@ export class UserinfoComponent implements OnInit {
 
 
                 })
-
-            });
-
+            })
         })
+
+    
     }
 
     show_key() {

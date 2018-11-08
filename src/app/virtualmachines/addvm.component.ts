@@ -54,7 +54,7 @@ export class VirtualMachineComponent implements OnInit {
     selectedFlavor: Flavor;
     userinfo: Userinfo;
     vmclient: Vmclient;
-    selectedProjectClient:Vmclient;
+    selectedProjectClient: Vmclient;
     selectedProjectDiskspaceMax: number;
     selectedProjectDiskspaceUsed: number;
     selectedProjectVolumesMax: number;
@@ -247,6 +247,8 @@ export class VirtualMachineComponent implements OnInit {
                 this.client_avaiable = false;
 
             }
+            this.selectedProjectClient = res;
+
         })
     }
 

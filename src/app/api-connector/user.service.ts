@@ -36,6 +36,36 @@ export class UserService {
     }
 
 
+    getPreferredMailUser(): Observable<any> {
+
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/preferredEmail/',
+            {
+                withCredentials: true,
+            }).pipe(catchError((error: any) => throwError(error)));
+    }
+
+    requestChangePreferredMailUser(email: string): Observable<any> {
+        let params = new HttpParams().set('newPreferredEmail', email);
+
+
+        return this.http.post(this.settings.getApiBaseURL() + 'users/current/preferredEmail/', params,
+            {
+                withCredentials: true,
+                headers: header,
+            }).pipe(catchError((error: any) => throwError(error)));
+    }
+
+
+    getPendingPreferredMailUser(): Observable<any> {
+
+
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/pendingPreferredEmails/',
+            {
+                withCredentials: true,
+            }).pipe(catchError((error: any) => throwError(error)));
+    }
+
+
     getMemberDetailsByElixirId(elixir_id: string) {
         elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
         return this.http.get(this.settings.getApiBaseURL() + 'users/' + elixir_id + '/member/',
@@ -137,12 +167,12 @@ export class UserService {
 
     }
 
-    getFilteredMembersOfdeNBIVo(searchString: string,  groupid: string): Observable<any> {
+    getFilteredMembersOfdeNBIVo(searchString: string, groupid: string): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'users/filter/', {
             withCredentials: true,
             params: {
-                searchString:searchString,
+                searchString: searchString,
             }
         }).pipe(catchError((error: any) => throwError(error)));
 
