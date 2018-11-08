@@ -9,6 +9,7 @@ import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
+import ***REMOVED***forEach***REMOVED*** from '@angular/router/src/utils/collection';
 
 @Component(***REMOVED***
     templateUrl: 'addcloudapplication.component.html',
@@ -33,9 +34,11 @@ export class AddcloudapplicationComponent ***REMOVED***
     public flavorList: Flavor[];
     public typeList: FlavorType[];
     public collapseList: boolean[];
-    public totalNumberOfCores = 0;
-    public totalRAM = 0;
-    public test: string[];
+    public totalNumberOfCores;
+    public totalRAM;
+    public valuesToConfirm: string[];
+    public constantStrings: Object;
+    public projectName: string;
 
 
 
@@ -58,12 +61,82 @@ export class AddcloudapplicationComponent ***REMOVED***
         this.getListOfFlavors();
         this.getListOfTypes();
 
+
     ***REMOVED***
 
-    presentEnteredData(f: NgForm) ***REMOVED***
-      /**
-       * need to collect data from Form f so total number of cores and ram can be calculated, number of vms can be shown
-       */
+    matchString(key: string, val: string ): string***REMOVED***
+
+      if (key in this.constantStrings)
+      ***REMOVED***
+        switch (key) ***REMOVED***
+          case 'project_application_lifetime': ***REMOVED***
+            return (this.constantStrings[key] + val + ' months');
+            ***REMOVED***
+          case ('project_application_volume_limit'): ***REMOVED***
+            return (this.constantStrings[key] + val + ' GB');
+          ***REMOVED***
+          case 'project_application_object_storage': ***REMOVED***
+            return (this.constantStrings[key] + val + ' GB');
+          ***REMOVED***
+          default: ***REMOVED***
+            return (this.constantStrings[key] + val);
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+
+    generateConstants() ***REMOVED***
+        this.constantStrings = new Array();
+        this.constantStrings['project_application_lifetime'] = 'Lifetime of your project: ';
+        this.constantStrings['project_application_volume_counter'] = 'Number of volumes for additional storage: ';
+        this.constantStrings['project_application_object_storage'] = 'Additional object storage: ';
+        this.constantStrings['project_application_volume_limit'] = 'Additional storage space for your VMs: ';
+        this.constantStrings['project_application_institute'] = 'Your institute: ';
+        this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
+        for (let key in this.flavorList) ***REMOVED***
+          if (key in this.flavorList) ***REMOVED***
+            this.constantStrings['project_application_' + this.flavorList[key].name] =
+              'Number of VMs of type ' + this.flavorList[key].name + ': ';
+          ***REMOVED***
+        ***REMOVED***
+    ***REMOVED***
+
+    keyIsVM(key: string): Flavor***REMOVED***
+      for (let fkey in this.flavorList) ***REMOVED***
+        if (fkey in this.flavorList) ***REMOVED***
+          if (this.flavorList[fkey].name === key.substring(20)) ***REMOVED***
+            return this.flavorList[fkey];
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+      return null;
+
+    ***REMOVED***
+
+    filterEnteredData(f: NgForm) ***REMOVED***
+      this.generateConstants();
+      this.totalNumberOfCores = 0;
+      this.totalRAM = 0;
+      this.valuesToConfirm = new Array();
+      for (let key in f.controls) ***REMOVED***
+        if (f.controls[key].value) ***REMOVED***
+          if (key === 'project_application_name') ***REMOVED***
+              this.projectName = f.controls[key].value;
+              if (this.projectName.length > 50) ***REMOVED***
+                this.projectName = this.projectName.substring(0, 50) + '...';
+              ***REMOVED***
+            ***REMOVED***
+          if (key in this.constantStrings) ***REMOVED***
+              this.valuesToConfirm.push(this.matchString(key.toString(), f.controls[key].value.toString()));
+            var flavor: Flavor = this.keyIsVM(key.toString());
+            if (flavor != null) ***REMOVED***
+              this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
+              this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value)
+            ***REMOVED***
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+
     ***REMOVED***
 
     getListOfFlavors() ***REMOVED***
