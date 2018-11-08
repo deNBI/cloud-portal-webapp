@@ -51,7 +51,7 @@ export class UserService ***REMOVED***
         return this.http.post(this.settings.getApiBaseURL() + 'users/current/preferredEmail/', params,
             ***REMOVED***
                 withCredentials: true,
-                header: header,
+                headers: header,
             ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 

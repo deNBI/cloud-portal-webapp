@@ -129,12 +129,12 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
                 ***REMOVED***
 
-            ***REMOVED***).then(this.userservice.getPreferredMailUser().subscribe(res => ***REMOVED***
+            ***REMOVED***).then(this.userservice.getPreferredMailUser().toPromise().then(res => ***REMOVED***
                 this.userinfo.Email = res['preferredEmail'];
-            ***REMOVED***)).then(this.userservice.getPendingPreferredMailUser().subscribe(res => ***REMOVED***
+            ***REMOVED***)).then(this.userservice.getPendingPreferredMailUser().toPromise().then(res => ***REMOVED***
                 this.userinfo.PendingEmails = res['pendingEmails'];
             ***REMOVED***)).then(result => ***REMOVED***
-                this.userservice.getNewsletterSubscription().subscribe(result => ***REMOVED***
+                this.userservice.getNewsletterSubscription().toPromise().then()(result => ***REMOVED***
                     result = result['subscribed'];
                     if (result.toString() == 'true') ***REMOVED***
                         this.newsletter_subscribed = true;
