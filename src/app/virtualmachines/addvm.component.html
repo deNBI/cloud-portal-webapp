@@ -76,6 +76,10 @@
                                         <input required id="id_instance_name" name="instance_name" class="form-control"
                                                type="text" placeholder="Instancename" ngModel>
                                     </div>
+                                    <div style="color: dodgerblue">Info: The instancename will also be the hostname of the vm.
+                                    </div>
+
+
                                 </div>
                             </div>
                             <div *ngIf="selectedProject" class="form-group row"
@@ -116,7 +120,8 @@
                                             [(ngModel)]="selectedImage">
                                         <option value="undefined" disabled selected hidden> Please Select</option>
 
-                                        <option *ngFor="let image of images" [ngValue]="image"> ***REMOVED******REMOVED***image.name***REMOVED******REMOVED***</option>
+                                        <option *ngFor="let image of images" [ngValue]="image"> ***REMOVED******REMOVED***image.name***REMOVED******REMOVED***
+                                        </option>
 
                                     </select>
 
@@ -133,9 +138,11 @@
                             </div>
 
 
-                            <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID" class="form-group row">
+                            <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID"
+                                 class="form-group row">
 
-                                <label class="col-md-3 form-control-label"><strong>Optional parameters</strong></label>
+                                <label class="col-md-3 form-control-label"><strong>Optional
+                                    parameters</strong></label>
                                 <div class="col-md-6">
                                     <button type="button" class="btn btn-info .btn-pill"
                                             (click)="optional_params= !optional_params">
