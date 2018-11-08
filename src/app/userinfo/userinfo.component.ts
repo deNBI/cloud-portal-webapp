@@ -129,12 +129,12 @@ export class UserinfoComponent implements OnInit {
 
                 }
 
-            }).then(this.userservice.getPreferredMailUser().subscribe(res => {
+            }).then(this.userservice.getPreferredMailUser().toPromise().then(res => {
                 this.userinfo.Email = res['preferredEmail'];
-            })).then(this.userservice.getPendingPreferredMailUser().subscribe(res => {
+            })).then(this.userservice.getPendingPreferredMailUser().toPromise().then(res => {
                 this.userinfo.PendingEmails = res['pendingEmails'];
             })).then(result => {
-                this.userservice.getNewsletterSubscription().subscribe(result => {
+                this.userservice.getNewsletterSubscription().toPromise().then()(result => {
                     result = result['subscribed'];
                     if (result.toString() == 'true') {
                         this.newsletter_subscribed = true;

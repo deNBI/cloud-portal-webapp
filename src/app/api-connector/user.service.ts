@@ -51,7 +51,7 @@ export class UserService {
         return this.http.post(this.settings.getApiBaseURL() + 'users/current/preferredEmail/', params,
             {
                 withCredentials: true,
-                header: header,
+                headers: header,
             }).pipe(catchError((error: any) => throwError(error)));
     }
 
