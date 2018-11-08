@@ -33,6 +33,19 @@
                                 <td>***REMOVED******REMOVED***userinfo.ElxirId***REMOVED******REMOVED***</td>
                                 <td></td>
                             </tr>
+                            <tr>
+                                <td>Preferred Email</td>
+                                <td>***REMOVED******REMOVED***userinfo.Email***REMOVED******REMOVED***
+
+                                    <div style="color: red" *ngFor="  let pendingEmail of userinfo.PendingEmails">You
+                                        have pending change
+                                        request. Please check inbox of: ***REMOVED******REMOVED***pendingEmail***REMOVED******REMOVED*** for validation email.
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
+                                </td>
+                            </tr>
                             <tr app-public-key [userinfo]="userinfo"></tr>
 
                             <tr>
@@ -152,5 +165,47 @@
 
             </div>
         </div><!-- /.modal-content -->L
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #emailChangeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> Request preferred email change</h4>
+                <button type="button" class="close" style="cursor: pointer" (click)="emailChangeModal.hide()"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="email_form" #f="ngForm">
+
+
+                    <div class="form-group row" [ngClass]="***REMOVED***'has-danger':emailChang.invalid && (emailChang.dirty || emailChang.touched),
+                    'has-success':emailChang.valid && (emailChang.dirty || emailChang.touched)
+                    ***REMOVED***">
+                        <label class="col-md-12 control-label"><strong>New Email:</strong></label>
+                        <div class="col-md-12">
+                            <input required id="emailChange" name="emailChang" placeholder="" class="form-control"
+                                   type="text" [(ngModel)]="emailChange" #emailChang="ngModel"
+                                   pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`***REMOVED***|***REMOVED***~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" [disabled]="f.invalid" class="btn btn-primary"
+                        (click)="emailChangeModal.hide();requestChangePreferredMailUser(emailChange);">
+                    Request Change
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="emailChangeModal.hide();">Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

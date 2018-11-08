@@ -7,6 +7,8 @@ export class Userinfo ***REMOVED***
   private _ElixirId: string;
   private _PublicKey: string;
   private _UserLogin: string;
+  private _Email:string;
+  private _PendingEmails:string[];
 
   constructor() ***REMOVED***
     this.LastName = " ";
@@ -14,6 +16,21 @@ export class Userinfo ***REMOVED***
     this.Id = -1;
   ***REMOVED***
 
+  get PendingEmails():string[]***REMOVED***
+    return this._PendingEmails;
+  ***REMOVED***
+
+  set PendingEmails(value:string[])***REMOVED***
+    this._PendingEmails=value;
+  ***REMOVED***
+
+  get Email():string***REMOVED***
+    return this._Email;
+  ***REMOVED***
+
+  set Email(value:string)***REMOVED***
+    this._Email=value;
+  ***REMOVED***
   get Id(): number ***REMOVED***
     return this._Id;
   ***REMOVED***

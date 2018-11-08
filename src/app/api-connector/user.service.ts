@@ -36,6 +36,36 @@ export class UserService ***REMOVED***
     ***REMOVED***
 
 
+    getPreferredMailUser(): Observable<any> ***REMOVED***
+
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/preferredEmail/',
+            ***REMOVED***
+                withCredentials: true,
+            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
+
+    requestChangePreferredMailUser(email: string): Observable<any> ***REMOVED***
+        let params = new HttpParams().set('newPreferredEmail', email);
+
+
+        return this.http.post(this.settings.getApiBaseURL() + 'users/current/preferredEmail/', params,
+            ***REMOVED***
+                withCredentials: true,
+                headers: header,
+            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
+
+
+    getPendingPreferredMailUser(): Observable<any> ***REMOVED***
+
+
+        return this.http.get(this.settings.getApiBaseURL() + 'users/current/pendingPreferredEmails/',
+            ***REMOVED***
+                withCredentials: true,
+            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
+
+
     getMemberDetailsByElixirId(elixir_id: string) ***REMOVED***
         elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
         return this.http.get(this.settings.getApiBaseURL() + 'users/' + elixir_id + '/member/',
@@ -137,12 +167,12 @@ export class UserService ***REMOVED***
 
     ***REMOVED***
 
-    getFilteredMembersOfdeNBIVo(searchString: string,  groupid: string): Observable<any> ***REMOVED***
+    getFilteredMembersOfdeNBIVo(searchString: string, groupid: string): Observable<any> ***REMOVED***
 
         return this.http.get(this.settings.getApiBaseURL() + 'users/filter/', ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***
-                searchString:searchString,
+                searchString: searchString,
             ***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 

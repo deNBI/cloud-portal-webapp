@@ -122,7 +122,7 @@
                     </td>
 
                     <td>
-                        <div (clickOutside)="closeCollapse(vm.openstackid)" *ngIf="vm.status !='DELETED'"
+                        <div (clickOutside)="closeCollapse(vm.openstackid);" *ngIf="vm.status !='DELETED'"
                              class="btn-group ***REMOVED******REMOVED***collapse_status[vm.openstackid]***REMOVED******REMOVED***">
 
                             <button  class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED'"
@@ -156,6 +156,19 @@
                                     <a class="dropdown-item"
                                        (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();">Delete
                                         Vm</a>
+                                </li>
+                                <li *ngIf="vm.status !='DELETED' && vm.client.features['VM_REBOOT']" role="menuitem">
+                                    <a class="dropdown-item"
+                                       (click)="status_check_error=false;reboot_done=false;status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;reboot_type='HARD';rebootModal.show();">Hard
+                                        Reboot Vm
+                                    </a>
+                                </li>
+                                <li *ngIf="vm.status !='DELETED' && vm.status !='SUSPENDED' && vm.client.features['VM_REBOOT']"
+                                    role="menuitem">
+                                    <a class="dropdown-item"
+                                       (click)="status_check_error=false;reboot_done=false;status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;reboot_type='SOFT';rebootModal.show();">Soft
+                                        Reboot Vm
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -198,6 +211,84 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="status_changed=0;stopModal.hide()">Close
+                </button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #rebootModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><strong>***REMOVED******REMOVED***reboot_type***REMOVED******REMOVED***</strong> reboot ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** </h4>
+
+                <button type="button" class="close" style="cursor:pointer" (click)="rebootModal.hide()"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" role="alert">
+
+                    Restarted instances will lose any data not saved in persistent storage.
+                    Are you sure to <strong>***REMOVED******REMOVED***reboot_type***REMOVED******REMOVED***</strong> reboot ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***?
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-4"
+                        (click)="rebootVm(status_changed_vm_id,reboot_type);rebootModal.hide();rebootResultModal.show()">
+                    Yes
+                </button>
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="status_changed_vm_id='';rebootModal.hide();">Cancel
+                </button>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #rebootResultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><strong>***REMOVED******REMOVED***reboot_type***REMOVED******REMOVED***</strong> reboot ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** </h4>
+
+                <button type="button" class="close" style="cursor:pointer" (click)="rebootResultModal.hide()"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="!reboot_done">
+                    <div class="alert alert-info" role="alert">
+
+                        Waiting until rebooted..
+                    </div>
+                </div>
+                <div *ngIf="reboot_done">
+                    <div class="alert alert-success" role="alert">
+
+                        Sucessfully ***REMOVED******REMOVED***reboot_type***REMOVED******REMOVED*** rebooted ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***.
+                    </div>
+                </div>
+                <div *ngIf="status_check_error">
+                    <div class="alert alert-warning" role="alert">
+
+                        An error occured when checking the status of ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-4"
+                        (click)="status_changed_vm_id='';rebootResultModal.hide();">
+                    Close
                 </button>
             </div>
 
