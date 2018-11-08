@@ -9,6 +9,7 @@ import {Observable} from 'rxjs';
 import {FlavorService} from '../api-connector/flavor.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
+import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
     templateUrl: 'addcloudapplication.component.html',
@@ -33,9 +34,11 @@ export class AddcloudapplicationComponent {
     public flavorList: Flavor[];
     public typeList: FlavorType[];
     public collapseList: boolean[];
-    public totalNumberOfCores = 0;
-    public totalRAM = 0;
-    public test: string[];
+    public totalNumberOfCores;
+    public totalRAM;
+    public valuesToConfirm: string[];
+    public constantStrings: Object;
+    public projectName: string;
 
 
 
@@ -58,12 +61,82 @@ export class AddcloudapplicationComponent {
         this.getListOfFlavors();
         this.getListOfTypes();
 
+
     }
 
-    presentEnteredData(f: NgForm) {
-      /**
-       * need to collect data from Form f so total number of cores and ram can be calculated, number of vms can be shown
-       */
+    matchString(key: string, val: string ): string{
+
+      if (key in this.constantStrings)
+      {
+        switch (key) {
+          case 'project_application_lifetime': {
+            return (this.constantStrings[key] + val + ' months');
+            }
+          case ('project_application_volume_limit'): {
+            return (this.constantStrings[key] + val + ' GB');
+          }
+          case 'project_application_object_storage': {
+            return (this.constantStrings[key] + val + ' GB');
+          }
+          default: {
+            return (this.constantStrings[key] + val);
+          }
+        }
+      }
+    }
+
+    generateConstants() {
+        this.constantStrings = new Array();
+        this.constantStrings['project_application_lifetime'] = 'Lifetime of your project: ';
+        this.constantStrings['project_application_volume_counter'] = 'Number of volumes for additional storage: ';
+        this.constantStrings['project_application_object_storage'] = 'Additional object storage: ';
+        this.constantStrings['project_application_volume_limit'] = 'Additional storage space for your VMs: ';
+        this.constantStrings['project_application_institute'] = 'Your institute: ';
+        this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
+        for (let key in this.flavorList) {
+          if (key in this.flavorList) {
+            this.constantStrings['project_application_' + this.flavorList[key].name] =
+              'Number of VMs of type ' + this.flavorList[key].name + ': ';
+          }
+        }
+    }
+
+    keyIsVM(key: string): Flavor{
+      for (let fkey in this.flavorList) {
+        if (fkey in this.flavorList) {
+          if (this.flavorList[fkey].name === key.substring(20)) {
+            return this.flavorList[fkey];
+          }
+        }
+      }
+      return null;
+
+    }
+
+    filterEnteredData(f: NgForm) {
+      this.generateConstants();
+      this.totalNumberOfCores = 0;
+      this.totalRAM = 0;
+      this.valuesToConfirm = new Array();
+      for (let key in f.controls) {
+        if (f.controls[key].value) {
+          if (key === 'project_application_name') {
+              this.projectName = f.controls[key].value;
+              if (this.projectName.length > 50) {
+                this.projectName = this.projectName.substring(0, 50) + '...';
+              }
+            }
+          if (key in this.constantStrings) {
+              this.valuesToConfirm.push(this.matchString(key.toString(), f.controls[key].value.toString()));
+            var flavor: Flavor = this.keyIsVM(key.toString());
+            if (flavor != null) {
+              this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
+              this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value)
+            }
+          }
+        }
+      }
+
     }
 
     getListOfFlavors() {
