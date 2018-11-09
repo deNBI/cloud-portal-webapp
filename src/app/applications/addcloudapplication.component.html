@@ -99,9 +99,10 @@
                                 ***REMOVED***">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Desired
 
-                                lifetime* <i data-balloon="Lifetime in months of your project. Currently the lifetime is limited to 12 months."
-                                             data-balloon-length="large" data-balloon-pos="down">
-                                <i class="icon-question" style="cursor: pointer;"></i></i></strong></label>
+                                lifetime* <i
+                                        data-balloon="Lifetime in months of your project. Currently the lifetime is limited to 12 months."
+                                        data-balloon-length="large" data-balloon-pos="down">
+                                    <i class="icon-question" style="cursor: pointer;"></i></i></strong></label>
 
                             <div class="col-md-8">
                                 <div class="input-group">
@@ -110,7 +111,7 @@
 
                                            type="number" min="1" max="12" step="1" ngModel required
                                            pattern="^([1-9]|1[012])$">
-                                  
+
                                     <span class="input-group-addon"> months
                                     </span>
                                 </div>
@@ -119,43 +120,48 @@
                         </div>
 
 
-                      <div class="form-group row">
-                        <h5 class="col-md-12 form-control-label">Resources
-                          <i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour" data-balloon-pos="down">
-                            <i class="icon-question"></i></i>
-                        </h5>
-                      </div>
+                        <div class="form-group row">
+                            <h5 class="col-md-12 form-control-label">Resources
+                                <i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour"
+                                   data-balloon-pos="down">
+                                    <i class="icon-question"></i></i>
+                            </h5>
+                        </div>
 
-                      <div class="alert alert-info">
-                         Click on the given flavor-categories to expand the form.
-                    </div>
+                        <div class="alert alert-info">
+                            Click on the given flavor-categories to expand the form.
+                        </div>
 
-                      <div *ngFor="let t of typeList">
-                      <div class="card">
-                        <div id="flavor-card" class="card-header" (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]">***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***</div>
-                        <div class="form-group card-body" *ngIf="collapseList[typeList.indexOf(t)]">
-                        <div *ngFor="let f of flavorList" >
-                          <div *ngIf="f.type.shortcut == t.shortcut" class="form-group row">
-                          <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED****</strong><br>
-                          Number of cores: ***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***<br>
-                          MB of RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED***</label>
-                           <div class="col-md-8">
-
-                                <div class="input-group">
-                                    <input required class="form-control" id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
-                                           name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
-                                           type="number" min="0" step="1"
-                                           value="0"
-                                           (ngModel)="'project_application_' + f.name">
-                                    <span class="input-group-addon"> VMs
-                                    </span>
+                        <div *ngFor="let t of typeList">
+                            <div class="card">
+                                <div id="flavor-card" class="card-header"
+                                     (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]">
+                                    ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
                                 </div>
-                                <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
+                                <div class="form-group card-body" *ngIf="collapseList[typeList.indexOf(t)]">
+                                    <div *ngFor="let f of flavorList">
+                                        <div *ngIf="f.type.shortcut == t.shortcut" class="form-group row">
+                                            <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED****</strong><br>
+                                                Number of cores: ***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***<br>
+                                                MB of RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED***</label>
+                                            <div class="col-md-8">
+
+                                                <div class="input-group">
+                                                    <input required class="form-control"
+                                                           id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
+                                                           name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
+                                                           type="number" min="0" step="1"
+                                                           value="0"
+                                                           (ngModel)="'project_application_' + f.name">
+                                                    <span class="input-group-addon"> VMs
+                                    </span>
+                                                </div>
+                                                <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
-                        </div>
-                        </div>
-                      </div>
 
 
                         </div>
@@ -300,9 +306,9 @@
                             cloud
                             usage policy.</p>
                     </div>
-                    <button (click)="filterEnteredData(f); submitModal.show();" class="btn btn-sm btn-primary">
-                      <i class="fa fa-dot-circle-o"></i>
-                      Submit Application
+                    <button (click)="filterEnteredData(f); submitModal.show();" class="btn btn-sm btn-primary" [disabled]="f.invalid">
+                        <i class="fa fa-dot-circle-o"></i>
+                        Submit Application
                     </button>
                 </div>
             </div>
@@ -387,12 +393,12 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div bsModal #submitModal="bs-modal"  class="modal fade" tabindex="-1"
+<div bsModal #submitModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header" >
+            <div class="modal-header">
                 <h4 class="modal-title">***REMOVED******REMOVED***projectName***REMOVED******REMOVED***</h4>
                 <button type="button" class="close" style="cursor: pointer;" (click)="submitModal.hide()"
                         data-dismiss="modal" aria-label="Close">
@@ -402,21 +408,21 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info">
-                  <strong>Please check the data you have entered and confirm your application below.</strong><br>
-                  If the entered data mismatches with your requirements cancel this confirmation and take changes.
+                    <strong>Please check the data you have entered and confirm your application below.</strong><br>
+                    If the entered data mismatches with your requirements cancel this confirmation and take changes.
                 </div>
                 <div class="table-responsive">
-                   <table class="table table-striped">
-                    <tr *ngFor="let str of valuesToConfirm">
-                      <td >***REMOVED******REMOVED***str***REMOVED******REMOVED***</td>
-                    </tr>
-                     <tr>
-                       <td><strong>Number of cores in total: ***REMOVED******REMOVED***totalNumberOfCores.toString()***REMOVED******REMOVED***</strong></td>
-                     </tr>
-                     <tr>
-                       <td><strong>Value of RAM in total: ***REMOVED******REMOVED***totalRAM.toString()***REMOVED******REMOVED*** MBs</strong></td>
-                     </tr>
-                  </table>
+                    <table class="table table-striped">
+                        <tr *ngFor="let str of valuesToConfirm">
+                            <td>***REMOVED******REMOVED***str***REMOVED******REMOVED***</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Number of cores in total: ***REMOVED******REMOVED***totalNumberOfCores.toString()***REMOVED******REMOVED***</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Value of RAM in total: ***REMOVED******REMOVED***totalRAM.toString()***REMOVED******REMOVED*** MBs</strong></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
 
@@ -424,7 +430,7 @@
             <div class="modal-footer">
 
 
-                <button  class="btn btn-success col-md4" type="button"
+                <button class="btn btn-success col-md4" type="button"
                         (click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
                 </button>
                 <button class="btn  btn-primary col-md-4" type="reset" (click)="submitModal.hide();">Cancel
