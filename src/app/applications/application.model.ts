@@ -28,12 +28,30 @@ export class Application {
   private _DaysRunning: number;
   private _ApplicationExtension:ApplicationExtension;
   private _PerunId:number;
+  private _TotalCores: number;
+  private _TotalRam: number;
 
 
 
   constructor() {
   }
 
+
+  get TotalCores():number{
+    return this._TotalCores;
+  }
+
+  set TotalCores(value:number){
+    this._TotalCores=value;
+  }
+
+  get TotalRam():number{
+    return this._TotalRam;
+  }
+
+  set TotalRam(value:number){
+    this._TotalRam=value;
+  }
   get UserAffiliations():string[]{
     return this._UserAffiliations
   }
