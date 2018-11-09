@@ -128,17 +128,18 @@
                             </h5>
                         </div>
 
-                        <div class="alert alert-info">
+                        <!--<div class="alert alert-info">
                           Click on the given flavor-categories to expand the form. You have to choose <strong>at least one VM</strong>.
-                        </div>
+                        </div>-->
 
                         <div *ngFor="let t of typeList">
                             <div class="card">
-                                <div id="flavor-card" class="card-header"
-                                     (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]">
+                              <!--(click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"-->
+                                <div id="flavor-card" class="card-header">
                                     ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
                                 </div>
-                                <div class="form-group card-body" *ngIf="collapseList[typeList.indexOf(t)]">
+                               <!--*ngIf="collapseList[typeList.indexOf(t)]"-->
+                                <div class="form-group card-body">
                                     <div *ngFor="let f of flavorList">
                                         <div *ngIf="f.type.shortcut == t.shortcut" class="form-group row">
                                             <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</strong><br>
@@ -147,7 +148,7 @@
                                             <div class="col-md-8">
 
                                                 <div class="input-group">
-                                                    <input required class="form-control"
+                                                    <input class="form-control"
                                                            id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
                                                            name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
                                                            type="number" min="0" step="1"
