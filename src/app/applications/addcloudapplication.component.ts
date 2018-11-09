@@ -34,8 +34,8 @@ export class AddcloudapplicationComponent {
     public flavorList: Flavor[];
     public typeList: FlavorType[];
     public collapseList: boolean[];
-    public totalNumberOfCores;
-    public totalRAM;
+    public totalNumberOfCores=0;
+    public totalRAM=0;
     public valuesToConfirm: string[];
     public constantStrings: Object;
     public projectName: string;
@@ -188,7 +188,6 @@ export class AddcloudapplicationComponent {
 
     onSubmit(f: NgForm) {
         this.error = null;
-        console.log(f)
         if (this.wronginput == true) {
 
             this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
@@ -204,7 +203,6 @@ export class AddcloudapplicationComponent {
                     values[v] = f.controls[v].value;
                 }
             }
-            console.log(values)
             if (this.check_not_zero(values) == false) {
                 this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
