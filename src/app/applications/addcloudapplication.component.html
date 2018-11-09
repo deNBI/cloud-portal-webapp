@@ -121,7 +121,7 @@
 
 
                         <div class="form-group row">
-                            <h5 class="col-md-12 form-control-label">Resources
+                          <h5 class="col-md-12 form-control-label">Resources*
                                 <i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour"
                                    data-balloon-pos="down">
                                     <i class="icon-question"></i></i>
@@ -129,7 +129,7 @@
                         </div>
 
                         <div class="alert alert-info">
-                            Click on the given flavor-categories to expand the form.
+                          Click on the given flavor-categories to expand the form. You have to choose <strong>at least one VM</strong>.
                         </div>
 
                         <div *ngFor="let t of typeList">
@@ -141,9 +141,9 @@
                                 <div class="form-group card-body" *ngIf="collapseList[typeList.indexOf(t)]">
                                     <div *ngFor="let f of flavorList">
                                         <div *ngIf="f.type.shortcut == t.shortcut" class="form-group row">
-                                            <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED****</strong><br>
+                                            <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</strong><br>
                                                 Number of cores: ***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***<br>
-                                                GBs of RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED***</label>
+                                                RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED*** GB</label>
                                             <div class="col-md-8">
 
                                                 <div class="input-group">
@@ -151,7 +151,7 @@
                                                            id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
                                                            name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
                                                            type="number" min="0" step="1"
-                                                           value="0"
+                                                           value="0" placeholder="0"
                                                            (ngModel)="'project_application_' + f.name">
                                                     <span class="input-group-addon"> VMs
                                     </span>
