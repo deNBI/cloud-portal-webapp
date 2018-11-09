@@ -93,21 +93,23 @@
                                                             ***REMOVED******REMOVED***application.ApplicationExtension?.VMsRequested***REMOVED******REMOVED*** VMs
                                                         </td>
                                                     </tr>
-                                                    <tr *ngIf="application.OpenStackProject">
-                                                        <td>Cores/VM</td>
-                                                        <td>***REMOVED******REMOVED*** application.CoresPerVM ***REMOVED******REMOVED*** Cores per VM</td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.CoresPerVM***REMOVED******REMOVED*** Cores per
-                                                            VM
-                                                        </td>
-                                                    </tr>
-                                                    <tr *ngIf="application.OpenStackProject">
-                                                        <td>RAM</td>
-                                                        <td>***REMOVED******REMOVED*** application.RamPerVM ***REMOVED******REMOVED*** GB</td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.RamPerVM***REMOVED******REMOVED*** GB
-                                                        </td>
-                                                    </tr>
+                                                   <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
+                                                            <td>Cores/VM</td>
+                                                            <td>***REMOVED******REMOVED*** application.CoresPerVM ***REMOVED******REMOVED***</td>
+                                                        </tr>
+
+                                                           <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
+                                                            <td>Cores</td>
+                                                            <td>***REMOVED******REMOVED*** application.TotalCores ***REMOVED******REMOVED***</td>
+                                                        </tr>
+                                                        <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
+                                                            <td>RAM</td>
+                                                            <td>***REMOVED******REMOVED*** application.RamPerVM ***REMOVED******REMOVED***</td>
+                                                        </tr>
+                                                         <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
+                                                            <td>RAM</td>
+                                                            <td>***REMOVED******REMOVED*** application.TotalRam***REMOVED******REMOVED***</td>
+                                                        </tr>
                                                     <tr>
                                                         <td>Storage Limit</td>
                                                         <td>***REMOVED******REMOVED*** application.VolumeLimit ***REMOVED******REMOVED*** GB</td>
@@ -323,20 +325,22 @@
 
                                                         </tr>
 
-                                                        <tr *ngIf="application.OpenStackProject">
-                                                            <td>RAM</td>
-                                                            <td>***REMOVED******REMOVED*** application.RamPerVM ***REMOVED******REMOVED*** GB</td>
-                                                            <td *ngIf="application.Status == 4">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.RamPerVM***REMOVED******REMOVED*** GB
-                                                            </td>
-                                                        </tr>
-                                                        <tr *ngIf="application.OpenStackProject">
+                                                       <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
                                                             <td>Cores/VM</td>
-                                                            <td>***REMOVED******REMOVED*** application.CoresPerVM ***REMOVED******REMOVED*** Cores per VM</td>
-                                                            <td *ngIf="application.Status == 4">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.CoresPerVM***REMOVED******REMOVED*** Cores
-                                                                per VM
-                                                            </td>
+                                                            <td>***REMOVED******REMOVED*** application.CoresPerVM ***REMOVED******REMOVED***</td>
+                                                        </tr>
+
+                                                           <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
+                                                            <td>Cores</td>
+                                                            <td>***REMOVED******REMOVED*** application.TotalCores ***REMOVED******REMOVED***</td>
+                                                        </tr>
+                                                        <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
+                                                            <td>RAM</td>
+                                                            <td>***REMOVED******REMOVED*** application.RamPerVM ***REMOVED******REMOVED***</td>
+                                                        </tr>
+                                                         <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
+                                                            <td>RAM</td>
+                                                            <td>***REMOVED******REMOVED*** application.TotalRam***REMOVED******REMOVED***</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Storage Limit</td>
@@ -478,13 +482,22 @@
                                                             <td>VMs</td>
                                                             <td>***REMOVED******REMOVED*** application.VMsRequested ***REMOVED******REMOVED***</td>
                                                         </tr>
-                                                        <tr *ngIf="application.OpenStackProject">
-                                                            <td>Cores/VM</td>
+                                                        <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
+                                                            <td>Cores</td>
                                                             <td>***REMOVED******REMOVED*** application.CoresPerVM ***REMOVED******REMOVED***</td>
                                                         </tr>
-                                                        <tr *ngIf="application.OpenStackProject">
+
+                                                           <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
+                                                            <td>Cores</td>
+                                                            <td>***REMOVED******REMOVED*** application.TotalCores ***REMOVED******REMOVED***</td>
+                                                        </tr>
+                                                        <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
                                                             <td>RAM</td>
                                                             <td>***REMOVED******REMOVED*** application.RamPerVM ***REMOVED******REMOVED***</td>
+                                                        </tr>
+                                                         <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
+                                                            <td>RAM</td>
+                                                            <td>***REMOVED******REMOVED*** application.TotalRam***REMOVED******REMOVED***</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Storage Limit</td>
