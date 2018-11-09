@@ -152,7 +152,7 @@ export class AddcloudapplicationComponent ***REMOVED***
       this.typeList = types;
       this.collapseList = new Array(types.length) as Array<boolean>;
       for (let i = 0; i < types.length; i++) ***REMOVED***
-        this.collapseList.push(true);
+        this.collapseList.push(false); //AS FIX
       ***REMOVED***
 
     ***REMOVED***
