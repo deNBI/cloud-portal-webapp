@@ -152,6 +152,8 @@ export class ApplicationsComponent {
                 a.Description = aj["project_application_description"];
                 a.VMsRequested = aj["project_application_vms_requested"];
                 a.RamPerVM = aj["project_application_ram_per_vm"];
+                a.TotalRam = aj["project_application_total_ram"];
+                a.TotalCores = aj["project_application_total_cores"];
                 a.CoresPerVM = aj["project_application_cores_per_vm"];
                 a.VolumeLimit = aj["project_application_volume_limit"];
                 a.VolumeCounter = aj["project_application_volume_counter"];
@@ -246,6 +248,8 @@ export class ApplicationsComponent {
 
                     a.VMsRequested = aj["project_application_vms_requested"];
                     a.RamPerVM = aj["project_application_ram_per_vm"];
+                    a.TotalRam = aj["project_application_total_ram"];
+                    a.TotalCores = aj["project_application_total_cores"];
                     a.CoresPerVM = aj["project_application_cores_per_vm"];
                     a.VolumeLimit = aj["project_application_volume_limit"];
                     a.VolumeCounter = aj["project_application_volume_counter"];
@@ -353,6 +357,9 @@ export class ApplicationsComponent {
 
             a.VMsRequested = aj["project_application_vms_requested"];
             a.RamPerVM = aj["project_application_ram_per_vm"];
+
+            a.TotalRam = aj["project_application_total_ram"];
+            a.TotalCores = aj["project_application_total_cores"];
             a.CoresPerVM = aj["project_application_cores_per_vm"];
             a.VolumeLimit = aj["project_application_volume_limit"];
             a.VolumeCounter = aj["project_application_volume_counter"];
@@ -423,6 +430,8 @@ export class ApplicationsComponent {
             a.Description = aj["project_application_description"];
             a.VMsRequested = aj["project_application_vms_requested"];
             a.RamPerVM = aj["project_application_ram_per_vm"];
+            a.TotalRam = aj["project_application_total_ram"];
+            a.TotalCores = aj["project_application_total_cores"];
             a.CoresPerVM = aj["project_application_cores_per_vm"];
             a.VolumeLimit = aj["project_application_volume_limit"];
             a.VolumeCounter = aj["project_application_volume_counter"];
