@@ -64,8 +64,14 @@ export class AddcloudapplicationComponent ***REMOVED***
 
     ***REMOVED***
 
-    matchString(key: string, val: string ): string***REMOVED***
-
+  /**
+   * This function concatenates a given key combined with a given value to a string
+   * which is used on the confirmation-modal.
+   * @param key the key to access a string in the array constantStrings
+   * @param val the value that is concatenated with the string from the array and an optional addition (depending on the key)
+   * @returns the concatenated string for the confirmation-modal
+   */
+  matchString(key: string, val: string ): string***REMOVED***
       if (key in this.constantStrings)
       ***REMOVED***
         switch (key) ***REMOVED***
@@ -85,7 +91,10 @@ export class AddcloudapplicationComponent ***REMOVED***
       ***REMOVED***
     ***REMOVED***
 
-    generateConstants() ***REMOVED***
+  /**
+   * Fills the array constantStrings with values dependent of keys which are used to indicate inputs from the application-form
+   */
+  generateConstants() ***REMOVED***
         this.constantStrings = new Array();
         this.constantStrings['project_application_lifetime'] = 'Lifetime of your project: ';
         this.constantStrings['project_application_volume_counter'] = 'Number of volumes for additional storage: ';
@@ -113,7 +122,11 @@ export class AddcloudapplicationComponent ***REMOVED***
 
     ***REMOVED***
 
-    filterEnteredData(f: NgForm) ***REMOVED***
+  /**
+   * Uses the data from the application form to fill the confirmation-modal with information.
+   * @param f the application form with corresponding data
+   */
+  filterEnteredData(f: NgForm) ***REMOVED***
       this.generateConstants();
       this.totalNumberOfCores = 0;
       this.totalRAM = 0;
@@ -139,16 +152,27 @@ export class AddcloudapplicationComponent ***REMOVED***
 
     ***REMOVED***
 
-    getListOfFlavors() ***REMOVED***
+  /**
+   * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+   */
+  getListOfFlavors() ***REMOVED***
         this.flavorservice.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
     ***REMOVED***
 
+    /**
+    * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+    */
     getListOfTypes() ***REMOVED***
         this.flavorservice.getListOfTypesAvailable().subscribe(types => this.setListOfTypes(types));
     ***REMOVED***
 
 
-    setListOfTypes(types: FlavorType[]) ***REMOVED***
+  /**
+   * Uses the param types to safe the available FlavorTypes to the array typeList.
+   * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
+   * @param types array of all available FlavorTypes
+   */
+  setListOfTypes(types: FlavorType[]) ***REMOVED***
       this.typeList = types;
       this.collapseList = new Array(types.length) as Array<boolean>;
       for (let i = 0; i < types.length; i++) ***REMOVED***
