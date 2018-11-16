@@ -37,6 +37,40 @@ ng serve
 
 the dev server should run now on portal-dev.denbi.de:8001. The app will automatically reload if you change any of the source files.
 
+## Developement: 
+
+### Documentation
+
+Use [Compodoc](https://compodoc.app/guides/getting-started.html) to visualize the code written in TypeScript-files. 
+
+### Installation
+
+* If Compodoc is not already installed use npm. It will install Compodoc automatically.
+~~~BASH
+npm install
+~~~
+
+### Usage
+
+* Comment your code written in TypeScript-files. Comment-syntax is equivalent to Javascript.
+Example: 
+```javascrupt
+/**
+   * Uses the data from the application form to fill the confirmation-modal with information.
+   * @param f the application form with corresponding data
+   */
+  filterEnteredData(f: NgForm) ***REMOVED***
+  ...
+
+```
+
+* Use the following commands to let Compodoc analyze the written code and comments.
+Switch to the cloud-portal-webapp directory first.
+~~~BASH
+compodoc src
+~~~
+
+
 ### Options:
 
 * Use `--env=stage|production` for using staging or production environment. If no flag is provided, development environment is used. 
