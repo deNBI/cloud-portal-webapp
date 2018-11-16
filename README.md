@@ -68,7 +68,7 @@ Example:
 * Use the following commands to let Compodoc analyze the written code and comments.
 Switch to the cloud-portal-webapp directory first.
 ~~~BASH
-compodoc src
+npm run compodoc
 ~~~
 
 * To view the created documentations use your favorite webbrowser (e.g. firefox)
