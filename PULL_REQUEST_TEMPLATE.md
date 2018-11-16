@@ -6,6 +6,7 @@ Try to fulfill the following points before the Pull Request is merged:
 - [ ] If the PR is merged in the master then a release should be be made.
 - [ ] The PR is responsive on smaller screens.
 - [ ] If the requirements.txt have changed, check if the patches still work
+- [ ] If the new code is well commented
 
 For releases only:
 
