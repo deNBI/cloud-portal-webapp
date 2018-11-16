@@ -71,6 +71,10 @@ Switch to the cloud-portal-webapp directory first.
 compodoc src
 ~~~
 
+* To view the created documentations use your favorite webbrowser (e.g. firefox)
+~~~BASH
+firefox documentation/overview.html
+~~~
 
 ### Options:
 
