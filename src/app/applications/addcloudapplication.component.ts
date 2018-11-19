@@ -48,11 +48,7 @@ export class AddcloudapplicationComponent ***REMOVED***
     public acknowledgeModalType: string = 'info';
 
 
-    showjustvm: boolean;
     project_application_openstack_project: boolean = true;
-
-
-    csrf: Object = Cookie.get('csrftoken');
     special_hardware: SpecialHardware[] = new Array();
 
     constructor(private specialhardwareservice: SpecialHardwareService,
@@ -157,7 +153,9 @@ export class AddcloudapplicationComponent ***REMOVED***
 
     ***REMOVED***
 
-
+    /**
+     * Get all Special Hardware.
+     */
     getSpecialHardware() ***REMOVED***
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => ***REMOVED***
@@ -170,22 +168,12 @@ export class AddcloudapplicationComponent ***REMOVED***
             ***REMOVED***);
     ***REMOVED***
 
-    check_not_zero(values: ***REMOVED******REMOVED***) ***REMOVED***
-        if ('project_application_openstack_project' in values) ***REMOVED***
 
 
-            if ('project_application_volume_limit' in values && values['project_application_volume_limit'] > 0) ***REMOVED***
-                return true;
-            ***REMOVED***
-
-            return false;
-        ***REMOVED***
-        else ***REMOVED***
-
-            return true;
-        ***REMOVED***
-    ***REMOVED***
-
+    /**
+     * Submits a new cloud application.
+     * @param ***REMOVED***NgForm***REMOVED*** f
+     */
     onSubmit(f: NgForm) ***REMOVED***
         this.error = null;
         if (this.wronginput == true) ***REMOVED***
@@ -203,13 +191,6 @@ export class AddcloudapplicationComponent ***REMOVED***
                     values[v] = f.controls[v].value;
                 ***REMOVED***
             ***REMOVED***
-            if (this.check_not_zero(values) == false) ***REMOVED***
-                this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
-                this.notificationModalStay = true;
-                return;
-            ***REMOVED***
-
-
             this.applicationsservice.addNewApplication(values).toPromise()
                 .then(result => ***REMOVED***
                     this.updateNotificaitonModal('Success', 'The application was submitted', true, 'success');
@@ -229,7 +210,13 @@ export class AddcloudapplicationComponent ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
-
+    /**
+     * Update notification modal attributes.
+     * @param ***REMOVED***string***REMOVED*** title
+     * @param ***REMOVED***string***REMOVED*** message
+     * @param closable
+     * @param ***REMOVED***string***REMOVED*** type
+     */
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
         this.notificationModalTitle = title;
         this.notificationModalMessage = message;
@@ -237,6 +224,9 @@ export class AddcloudapplicationComponent ***REMOVED***
         this.notificationModalType = type;
     ***REMOVED***
 
+    /**
+     * Reset notificaton modal attributes.
+     */
     public resetNotificationModal() ***REMOVED***
 
         this.notificationModalTitle = 'Notification';
@@ -246,6 +236,10 @@ export class AddcloudapplicationComponent ***REMOVED***
         this.notificationModalStay = true;
     ***REMOVED***
 
+    /**
+     * Check if shortname is valid.
+     * @param ***REMOVED***string***REMOVED*** shortname
+     */
     public checkShortname(shortname: string) ***REMOVED***
         if (/^[a-zA-Z0-9\s]*$/.test(shortname) == false) ***REMOVED***
             this.wronginput = true;
