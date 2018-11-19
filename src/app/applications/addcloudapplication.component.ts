@@ -48,11 +48,7 @@ export class AddcloudapplicationComponent {
     public acknowledgeModalType: string = 'info';
 
 
-    showjustvm: boolean;
     project_application_openstack_project: boolean = true;
-
-
-    csrf: Object = Cookie.get('csrftoken');
     special_hardware: SpecialHardware[] = new Array();
 
     constructor(private specialhardwareservice: SpecialHardwareService,
@@ -157,7 +153,9 @@ export class AddcloudapplicationComponent {
 
     }
 
-
+    /**
+     * Get all Special Hardware.
+     */
     getSpecialHardware() {
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => {
@@ -170,22 +168,12 @@ export class AddcloudapplicationComponent {
             });
     }
 
-    check_not_zero(values: {}) {
-        if ('project_application_openstack_project' in values) {
 
 
-            if ('project_application_volume_limit' in values && values['project_application_volume_limit'] > 0) {
-                return true;
-            }
-
-            return false;
-        }
-        else {
-
-            return true;
-        }
-    }
-
+    /**
+     * Submits a new cloud application.
+     * @param {NgForm} f
+     */
     onSubmit(f: NgForm) {
         this.error = null;
         if (this.wronginput == true) {
@@ -203,13 +191,6 @@ export class AddcloudapplicationComponent {
                     values[v] = f.controls[v].value;
                 }
             }
-            if (this.check_not_zero(values) == false) {
-                this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
-                this.notificationModalStay = true;
-                return;
-            }
-
-
             this.applicationsservice.addNewApplication(values).toPromise()
                 .then(result => {
                     this.updateNotificaitonModal('Success', 'The application was submitted', true, 'success');
@@ -229,7 +210,13 @@ export class AddcloudapplicationComponent {
         }
     }
 
-
+    /**
+     * Update notification modal attributes.
+     * @param {string} title
+     * @param {string} message
+     * @param closable
+     * @param {string} type
+     */
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
         this.notificationModalTitle = title;
         this.notificationModalMessage = message;
@@ -237,6 +224,9 @@ export class AddcloudapplicationComponent {
         this.notificationModalType = type;
     }
 
+    /**
+     * Reset notificaton modal attributes.
+     */
     public resetNotificationModal() {
 
         this.notificationModalTitle = 'Notification';
@@ -246,6 +236,10 @@ export class AddcloudapplicationComponent {
         this.notificationModalStay = true;
     }
 
+    /**
+     * Check if shortname is valid.
+     * @param {string} shortname
+     */
     public checkShortname(shortname: string) {
         if (/^[a-zA-Z0-9\s]*$/.test(shortname) == false) {
             this.wronginput = true;
