@@ -168,30 +168,38 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div>
 
-                    <div>
+              <div class="container-fluid">
+                    <div class="row">
                         <p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
-                            four characters of his name or the exact name:</p>
-
-                        <input placeholder="" #searchString>
-                        <button style="margin-left: 10px" type="button" class="btn btn-primary"
+                            four characters of his name:</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                          <input style="width: 100%" placeholder="" #searchString>
+                        </div>
+                        <div class="col-md-4">
+                          <button type="button" class="btn btn-primary"
                                 (click)="filterMembers(searchString.value,addUserModalProjectID )"><i
                                 class="fa fa-search"></i> Search Member
-                        </button>
-
-                        <br>
-                        <br>
-                        <strong>Please note</strong> that if you can not find the user, he is not a member of the de.NBI
-                        vo. In that case you can invite him by sending him
-                        the following link:
+                          </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                        <strong>Please note</strong> that if you can not find the user, he is not registered for a
+                          a de.NBI Cloud account. In that case you can invite him by sending him the following link:
                         <br>
                         <br>
                         <ul>
-                            <li>Invite Member
-                                <pre>{{invitation_group_pre}}{{addUserModalRealName }}</pre>
+                            <li><pre>{{invitation_group_pre}}{{addUserModalRealName }}</pre>
                             </li>
                         </ul>
+                        <br>
+                        After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
+                      Read more about the process <a target="_blank" href="{{wiki_group_invitation}}">here</a>.
+                        </div>
                     </div>
 
                     <div class="table-responsive">
