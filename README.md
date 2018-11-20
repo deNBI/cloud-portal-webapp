@@ -21,16 +21,24 @@ cd cloud-portal-webapp
 ~~~BASH
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 # follow the commands printed by nvm
-nvm install node v8
+nvm install
 ~~~
 
-4. Install all needed npm packages and angular cli
+Note that the actual used node version is defined in .nvmrc.
+
+4. In order to use the node version install with nvm just run the following command. 
+
+~~~BASH
+nvm use --delete-prefix
+~~~
+
+5. Install all needed npm packages and angular cli
 ~~~BASH
 npm install 
 npm install -g @angular/cli
 ~~~
 
-5. start the angular server with
+6. start the angular server with
 ~~~BASH
 ng serve
 ~~~
