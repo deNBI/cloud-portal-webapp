@@ -19,25 +19,81 @@ import {forEach} from '@angular/router/src/utils/collection';
 
 export class AddcloudapplicationComponent {
 
+    /**
+     * If shortname is valid.
+     * @type {boolean}
+     */
     public wronginput: boolean = false;
-    public isCollapsed: boolean = true;
-
 
     //notification Modal variables
+    /**
+     * Notification Modal title.
+     * @type {string}
+     */
     public notificationModalTitle: string = 'Notification';
+    /**
+     *  Notification Modal message.
+     * @type {string}
+     */
     public notificationModalMessage: string = 'Please wait...';
+    /**
+     *  Notification Modal type.
+     * @type {string}
+     */
     public notificationModalType: string = 'info';
+    /**
+     * If  Notification Modal is closable.
+     * @type {boolean}
+     */
     public notificationModalIsClosable: boolean = false;
+    /**
+     * If  Notification Modal stays.
+     * @type {boolean}
+     */
     public notificationModalStay: boolean = true;
+    /**
+     * Contains errors recieved when submitting an application.
+     */
     public error: string[];
+    /**
+     * Default vms requested in form.
+     * @type {number}
+     */
     public project_application_vms_requested = 5;
+    /**
+     * List of flavors.
+     */
     public flavorList: Flavor[];
+    /**
+     * List of flavor types.
+     */
     public typeList: FlavorType[];
+    /**
+     * List of all collapse booleans.
+     */
     public collapseList: boolean[];
+    /**
+     * Total number of cores.
+     * @type {number}
+     */
     public totalNumberOfCores=0;
+    /**
+     * Total number of ram.
+     * @type {number}
+     */
     public totalRAM=0;
+    /**
+     * Values to confirm.
+     */
     public valuesToConfirm: string[];
+    /**
+     *
+     */
     public constantStrings: Object;
+
+    /**
+     * Name of the project.
+     */
     public projectName: string;
 
 
@@ -47,10 +103,24 @@ export class AddcloudapplicationComponent {
     public acknowledgeModalTitle: string = 'Acknowledge';
     public acknowledgeModalType: string = 'info';
 
-
+    /**
+     * If project is openstack project (everytime true)
+     * @type {boolean}
+     */
     project_application_openstack_project: boolean = true;
+    /**
+     * List of special hardwares.
+     * @type {any[]}
+     */
     special_hardware: SpecialHardware[] = new Array();
 
+    /**
+     * Constructor.
+     * Initialize special hardware and gets list of flavor and flavortypes.
+     * @param {SpecialHardwareService} specialhardwareservice
+     * @param {ApplicationsService} applicationsservice
+     * @param {FlavorService} flavorservice
+     */
     constructor(private specialhardwareservice: SpecialHardwareService,
                 private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) {
         this.getSpecialHardware();
@@ -196,6 +266,7 @@ export class AddcloudapplicationComponent {
 
     /**
      * Submits a new cloud application.
+     * Therefore checks if the different values are valid.
      * @param {NgForm} f
      */
     onSubmit(f: NgForm) {
