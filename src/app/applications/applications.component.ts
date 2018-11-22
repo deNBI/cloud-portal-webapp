@@ -26,24 +26,77 @@ import {Project} from "../projectmanagement/project.model";
 })
 export class ApplicationsComponent {
 
-
+    /**
+     * Applications of the user viewing the Application overview.
+     * @type {Array}
+     */
     user_applications: Application[] = [];
+
+    /**
+     * If the user is a vo admin.
+     * @type {boolean}
+     */
     is_vo_admin = false;
+
+    /**
+     * All Applications, just visibile for a vo admin.
+     * @type {Array}
+     */
     all_applications: Application[] = [];
+
+    /**
+     * Stati of the differen Applications.
+     * @type {Array}
+     */
+
     application_status: ApplicationStatus[] = [];
-    all_applications_renewal: ApplicationExtension[] = [];
+    /**
+     * Avaiable Special Hardwares.
+     * @type {Array}
+     */
     special_hardware: SpecialHardware[] = [];
+
+    /**
+     * All available compute centers.
+     * @type {Array}
+     */
     computeCenters: ComputecenterComponent[] = [];
+
+    /**
+     * Selected Application.
+     */
     selectedApplication: Application;
+
+    /**
+     * Id of the extension status.
+     * @type {number}
+     */
     extension_status = 0;
+    /**
+     * Id of Application set for deletion.
+     */
     public deleteId: number;
+
+    /**
+     * If all userApplications are loaded, important for the loader.
+     * @type {boolean}
+     */
     isLoaded_userApplication = false;
+
+    /**
+     * If all Applications are loaded, important for the loader.
+     * @type {boolean}
+     */
     isLoaded_AllApplication = false;
+
+    /**
+     * User which requested the Application {id: Elixir Id of user : {name and email}}.
+     * @type {{}}
+     */
     application_user: { [id: string]: { [id: string]: string } } = {};
 
 
     //notification Modal variables
-    public notificationModal;
     public notificationModalTitle: string = "Notification";
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
@@ -51,15 +104,38 @@ export class ApplicationsComponent {
     private APPROVED_STATUS = 2;
     private EXTENSION_STATUS = 4;
     private EXTENSTION_STATUS_STRING = 'modification requested';
+    /**
+     * Special hardware id for FPGA.
+     * @type {number}
+     */
     public FPGA = 1;
+
+    /**
+     * Special hardware id for GPU.
+     * @type {number}
+     */
     public GPU = 2;
 
+    /**
+     * Array if Applications are collapsed in the html or not.
+     * @type {{}}
+     */
     collapse_status: { [id: string]: boolean } = {};
 
+    /**
+     * Constructor.
+     * Loads all Applications if user is vo admin and all user_applications.
+     * @param {ApplicationsService} applicataionsservice
+     * @param {ApplicationStatusService} applicationstatusservice
+     * @param {SpecialHardwareService} specialhardwareservice
+     * @param {UserService} userservice
+     * @param {GroupService} groupservice
+     * @param {VoService} voService
+     * @param {FacilityService} facilityService
+     */
     constructor(private applicataionsservice: ApplicationsService,
                 private applicationstatusservice: ApplicationStatusService,
                 private specialhardwareservice: SpecialHardwareService,
-                private perunsettings: PerunSettings,
                 private userservice: UserService,
                 private groupservice: GroupService,
                 private voService: VoService,
@@ -87,6 +163,9 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Gets all available compute centers and saves them in the computeCenters attribute.
+     */
     getComputeCenters() {
         this.facilityService.getComputeCenters().subscribe(result => {
             for (let cc of result) {
@@ -97,14 +176,26 @@ export class ApplicationsComponent {
         })
     }
 
+    /**
+     * Gets all affialiations from a user.
+     * @param {number} user
+     */
     getUserAffilaitions(user: number) {
         this.userservice.getuserAffiliations(user).subscribe()
     }
 
+    /**
+     * Sets the selected application.
+     * @param application
+     */
     setSelectedApplication(application: any) {
         this.selectedApplication = application;
     }
 
+    /**
+     * Submits an renewal request for an application.
+     * @param {NgForm} f
+     */
     onSubmit(f: NgForm) {
         let values = {};
         values['project_application_renewal_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
@@ -118,6 +209,10 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Sets the default values in the request renewal form.
+     * @param {NgForm} f
+     */
     ngFormSetDefault(f: NgForm) {
         f.reset({
             project_application_renewal_vms_requested: this.selectedApplication.VMsRequested,
@@ -133,6 +228,10 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Gets all Application of the user viewing the application overview.
+     * Saves them in the userApplication array.
+     */
     getUserApplications() {
         this.applicataionsservice
             .getUserApplications().subscribe(result => {
@@ -198,6 +297,9 @@ export class ApplicationsComponent {
         });
     }
 
+    /**
+     * Get all possible application stati.
+     */
     getApplicationStatus() {
         this.applicationstatusservice.getAllApplicationStatus().toPromise()
             .then(result => {
@@ -210,6 +312,9 @@ export class ApplicationsComponent {
             });
     }
 
+    /**
+     * Get all available special hardware.
+     */
     getSpecialHardware() {
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => {
@@ -222,10 +327,9 @@ export class ApplicationsComponent {
             });
     }
 
-    getAllApplicationsExtensions() {
-
-    }
-
+    /**
+     * Get all Applications if user is admin.
+     */
     getAllApplications() {
         //todo check if user is VO Admin
 
@@ -324,7 +428,10 @@ export class ApplicationsComponent {
 
     }
 
-
+    /**
+     * Get the facility of an application.
+     * @param {Application} app
+     */
     public getFacilityProject(app: Application) {
 
         if (!app.ComputeCenter && app.Status.toString() != 'submitted') {
@@ -343,6 +450,10 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Updates an application with the actual values.
+     * @param {Application} application
+     */
     public getApplication(application: Application) {
         let index = this.all_applications.indexOf(application);
 
@@ -416,6 +527,10 @@ export class ApplicationsComponent {
         })
     }
 
+    /**
+     * Gets a user application with the actual values.
+     * @param {Application} application
+     */
     public getUserApplication(application: Application) {
         let index = this.user_applications.indexOf(application);
 
@@ -474,6 +589,10 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Request an extension from an application.
+     * @param data
+     */
     public requestExtension(data) {
         this.applicataionsservice.requestRenewal(data).subscribe(result => {
             if (result['Error']) {
@@ -496,6 +615,11 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Get details of member like name and email by elixir.
+     * @param {string} elixir_id
+     * @param {string} collapse_id
+     */
     public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string) {
         if (!this.getCollapseStatus(collapse_id)) {
             if (!(elixir_id in this.application_user)) {
@@ -513,6 +637,10 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Approve an extension request.
+     * @param {number} application_id
+     */
     public approveExtension(application_id: number) {
         this.applicataionsservice.approveRenewal(application_id).subscribe(result => {
             if (result['Error']) {
@@ -533,7 +661,10 @@ export class ApplicationsComponent {
         })
     }
 
-
+    /**
+     * Decline an extension request.
+     * @param {number} application_id
+     */
     public declineExtension(application_id: number) {
         this.applicataionsservice.declineRenewal(application_id).subscribe(result => {
             if (result != null) {
@@ -554,7 +685,11 @@ export class ApplicationsComponent {
         })
     }
 
-
+    /**
+     * Get a collapse status.
+     * @param {string} id
+     * @returns {boolean}
+     */
     public getCollapseStatus(id: string) {
         if (id in this.collapse_status) {
             return this.collapse_status[id];
@@ -564,11 +699,20 @@ export class ApplicationsComponent {
         }
     }
 
+    /**
+     * Switch status of collapse.
+     * @param {string} id
+     */
     public switchCollapseStatus(id: string) {
         this.collapse_status[id] = !this.getCollapseStatus(id);
     }
 
 
+    /**
+     * Get status name  by status id.
+     * @param {number} id
+     * @returns {string}
+     */
     public getStatusById(id: number): string {
         let s = "Unknown";
         for (let status of this.application_status) {
@@ -579,6 +723,13 @@ export class ApplicationsComponent {
         return s;
     }
 
+    /**
+     * Check if lifetime of a project is reached.
+     * @param {number} lifetime
+     * @param {number} running
+     * @param {string} status_changed_string
+     * @returns {string}
+     */
     public lifeTimeReached(lifetime: number, running: number, status_changed_string: string): string {
         let status_changed = new Date(status_changed_string);
         let LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(status_changed).add(lifetime, 'months').toDate().getTime() - status_changed.getTime())) / (1000 * 3600 * 24));
@@ -586,6 +737,11 @@ export class ApplicationsComponent {
         return (LifetimeDays - running) < 0 ? "red" : "black";
     }
 
+    /**
+     * Get id by status name.
+     * @param {string} name
+     * @returns {number}
+     */
     public getIdByStatus(name: string): number {
         let s = -1;
         for (let status of this.application_status) {
@@ -596,6 +752,9 @@ export class ApplicationsComponent {
         return s;
     }
 
+    /**
+     * Reset notification modal values to default.
+     */
     public resetNotificationModal() {
         this.notificationModalTitle = "Notification";
         this.notificationModalMessage = "Please wait...";
@@ -603,6 +762,13 @@ export class ApplicationsComponent {
         this.notificationModalIsClosable = false;
     }
 
+    /**
+     * Update notification modal with values submitted.
+     * @param {string} title
+     * @param {string} message
+     * @param closable
+     * @param {string} type
+     */
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
         this.notificationModalTitle = title;
         this.notificationModalMessage = message;
@@ -611,6 +777,14 @@ export class ApplicationsComponent {
     }
 
 
+    /**
+     * Create a new Group in perun with the specific attributes.
+     * @param name
+     * @param description
+     * @param manager_elixir_id
+     * @param application_id
+     * @param compute_center
+     */
     public createGroup(name, description, manager_elixir_id, application_id, compute_center) {
 
         //get memeber id in order to add the user later as the new member and manager of the group
@@ -679,6 +853,10 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Decline an application.
+     * @param application_id
+     */
     public declineApplication(application_id) {
         this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined"), '').toPromise()
             .then(result => {
@@ -693,6 +871,10 @@ export class ApplicationsComponent {
             });
     }
 
+    /**
+     * Delete an application.
+     * @param application_id
+     */
     public deleteApplication(application_id) {
         this.applicataionsservice.deleteApplication(application_id).toPromise()
             .then(result => {
@@ -708,6 +890,10 @@ export class ApplicationsComponent {
             });
     }
 
+    /**
+     * Check if active applications are available.
+     * @returns {boolean}
+     */
     public activeApplicationsAvailable(): boolean {
         for (let application of this.all_applications) {
             if (application.Status == 1 || application.Status == 4) {
@@ -717,11 +903,18 @@ export class ApplicationsComponent {
     }
 
 
+    /**
+     * Set the id of the application which should be deleted.
+     * @param applicationId
+     */
     public setDeleteId(applicationId) {
         this.deleteId = applicationId;
     }
 
 
+    /**
+     * Coming soon.
+     */
     public comingSoon() {
         alert("This functinality will be implemented soon!")
     }

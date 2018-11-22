@@ -12,7 +12,10 @@ import {ApplicationsService} from '../api-connector/applications.service'
 })
 
 export class AddsinglevmComponent {
-
+    /**
+     * Check if the shortname provided is valid.
+     * @type {boolean}
+     */
     public wronginput: boolean = false;
 
     //notification Modal variables
@@ -30,12 +33,10 @@ export class AddsinglevmComponent {
     public acknowledgeModalTitle: string = 'Acknowledge';
     public acknowledgeModalType: string = 'info';
 
-
-    showjustvm: boolean;
-    project_application_openstack_project: boolean;
-
-
-    csrf: Object = Cookie.get('csrftoken');
+    /**
+     * Available special hardware.
+      * @type {any[]}
+     */
     special_hardware: SpecialHardware[] = new Array();
 
     constructor(private specialhardwareservice: SpecialHardwareService,
@@ -44,21 +45,10 @@ export class AddsinglevmComponent {
 
     }
 
-    chosenProjectType(checkbox: number) {
 
-        if (checkbox == 0) {
-            if (this.project_application_openstack_project) {
-                this.showjustvm = false;
-            }
-        }
-
-        else if (checkbox == 1) {
-            if (this.showjustvm) {
-                this.project_application_openstack_project = false;
-            }
-        }
-    }
-
+    /**
+     * Get available special hardware.
+     */
     getSpecialHardware() {
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => {
@@ -71,23 +61,11 @@ export class AddsinglevmComponent {
             });
     }
 
-    check_not_zero(values: {}) {
-        if ('project_application_openstack_project' in values) {
 
-
-            if ('project_application_cores_per_vm' in values && values['project_application_cores_per_vm'] > 0 && 'project_application_ram_per_vm' in values
-                && values['project_application_ram_per_vm'] > 0 && 'project_application_disk_space' in values && values['project_application_disk_space'] > 0) {
-                return true;
-            }
-
-            return false;
-        }
-        else {
-
-            return true;
-        }
-    }
-
+    /**
+     * Submit simple vm application.
+     * @param {NgForm} f
+     */
     onSubmit(f: NgForm) {
         this.error = null;
         if (this.wronginput == true) {
@@ -100,22 +78,17 @@ export class AddsinglevmComponent {
             for (let v in f.controls) {
                 if (f.controls[v].value) {
                     values[v] = f.controls[v].value;
+                    console.log(values)
                 }
             }
-            if (this.check_not_zero(values) == false) {
-                this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
-                this.notificationModalStay = true;
-                return;
-            }
-
 
             this.applicationsservice.addNewApplication(values).toPromise()
                 .then(result => {
                     this.updateNotificaitonModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 }).catch(error => {
-                var error_json = error
-                this.error = []
+                var error_json = error;
+                this.error = [];
                 for (let key of Object.keys(error_json)) {
                     this.error.push(key.split('_',)[2])
 
@@ -128,7 +101,13 @@ export class AddsinglevmComponent {
         }
     }
 
-
+    /**
+     * Update notification modal attributes with values.
+     * @param {string} title
+     * @param {string} message
+     * @param closable
+     * @param {string} type
+     */
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
         this.notificationModalTitle = title;
         this.notificationModalMessage = message;
@@ -136,6 +115,9 @@ export class AddsinglevmComponent {
         this.notificationModalType = type;
     }
 
+    /**
+     * Reset notification modal.
+     */
     public resetNotificationModal() {
 
         this.notificationModalTitle = 'Notification';
@@ -145,6 +127,10 @@ export class AddsinglevmComponent {
         this.notificationModalStay = true;
     }
 
+    /**
+     * Check if shortname is valid.
+     * @param {string} shortname
+     */
     public checkShortname(shortname: string) {
         if (/^[a-zA-Z0-9\s]*$/.test(shortname) == false) {
             this.wronginput = true;
