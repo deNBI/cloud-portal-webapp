@@ -1,4 +1,5 @@
 export const environment = ***REMOVED***
+    wiki_group_invitations: 'https://cloud.denbi.de/wiki/portal/#inviting-members',
     vo: 3334,
     production: true,
     freemium_project_id: 10392,
