@@ -633,12 +633,18 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h1>Modify Request: ***REMOVED******REMOVED***selectedApplication?.Name***REMOVED******REMOVED***</h1>
+                <h1>Modification/Extension request for ***REMOVED******REMOVED***selectedApplication?.Shortname***REMOVED******REMOVED***</h1>
                 <button type="button" class="close" style="cursor: pointer" (click)="extensionModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+
+                <div class="alert alert-info">
+                        <strong>Please be aware:</strong>
+                  If your last renewal or initial application was dated before flavor-categories where introduced, the data which is
+                  shown in the "current"-column might be misleading. However it does not change the modification-request-process.
+                    </div>
                 <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
 
 
@@ -646,23 +652,164 @@
                                 'has-danger': f.controls.project_application_renewal_lifetime?.invalid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched),
                                 'has-success': f.controls.project_application_renewal_lifetime?.valid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched)
                                 ***REMOVED***">
-                        <label class="col-md-4 form-control-label" for="textarea-input"><strong>Additional
-                            lifetime* <i class="icon-question" data-toggle="tooltip" data-placement="auto"
-                                         title="Additional Lifetime in months of your project"></i></strong></label>
-                        <div class="col-md-8">
-                            <div class="input-group">
-                                <input class="form-control" id="id_project_application_renewal_lifetime"
-                                       name="project_application_renewal_lifetime" placeholder="e.g 3"
-                                       type="number" min="1" step="1" ngModel required>
-                                <span class="input-group-addon"> months
-                                    </span>
-                            </div>
-                            <span class="help-block">How many months should the project be extended?</span>
+                      <div class="col-3">
+                        <label class="col-md-4 form-control-label" for="textarea-input">
+                          <strong>Lifetime<i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                             title="Current timespan of your project">
+                            </i>
+                          </strong>
+                        </label>
+
+                      </div>
+
+                      <div class="col-3">
+
+                      </div>
+
+                      <div class="col-md-8">
+                        <div class="input-group">
+                          <input class="form-control" id="id_project_application_renewal_lifetime"
+                                 name="project_application_renewal_lifetime" placeholder="e.g 3"
+                                 type="number" min="1" step="1" ngModel required>
+                          <span class="input-group-addon"> months</span>
                         </div>
+                        <span class="help-block">How many months should the project be extended?</span>
+                      </div>
                     </div>
 
+                   <div class="form-group row">
+                          <h5 class="col-md-12 form-control-label">Resources*
+                                <i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour"
+                                   data-balloon-pos="down">
+                                    <i class="icon-question"></i></i>
+                            </h5>
+                        </div>
 
-                    <div class="form-group row">
+                        <!--<div class="alert alert-info">
+                          Click on the given flavor-categories to expand the form. You have to choose <strong>at least one VM</strong>.
+                        </div>-->
+
+                        <div *ngFor="let t of typeList">
+                            <div class="card">
+                              <!--(click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"-->
+                                <div id="flavor-card" class="card-header">
+                                    ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
+                                </div>
+                               <!--*ngIf="collapseList[typeList.indexOf(t)]"-->
+                                <div class="form-group card-body">
+                                    <div *ngFor="let f of flavorList">
+                                        <div *ngIf="f.type.shortcut == t.shortcut" class="form-group row">
+                                            <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</strong><br>
+                                                Number of cores: ***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***<br>
+                                                RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED*** GB</label>
+                                            <div class="col-md-8">
+
+                                                <div class="input-group">
+                                                    <input class="form-control"
+                                                           id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
+                                                           name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
+                                                           type="number" min="0" step="1"
+                                                           value="0" placeholder="0"
+                                                           (ngModel)="'project_application_' + f.name">
+                                                    <span class="input-group-addon"> VMs
+                                    </span>
+                                                </div>
+                                                <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="form-group row" [ngClass]="***REMOVED***
+                                'has-danger': f.controls.project_application_volume_limit?.invalid,
+                                'has-success': f.controls.project_application_volume_limit?.valid
+                                ***REMOVED***">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage Limit*
+                                <i
+                                        data-balloon="Storage limit is the sum of extra storage provided by volumes."
+                                        data-balloon-pos="down" data-balloon-length="medium"><i class="icon-question"
+                                                                                                style="cursor: pointer;"></i></i></strong></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input class="form-control" id="id_project_application_volume_limit"
+                                           name="project_application_volume_limit"
+                                           placeholder="e.g. 20"
+                                           type="number" min="1" step="1" [ngModel]="20">
+                                    <span class="input-group-addon"> GB
+                                    </span>
+                                </div>
+                                <span class="help-block">How many extra storage do you need for your VMs?</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" [ngClass]="***REMOVED***
+                                'has-danger': f.controls.project_application_volume_counter?.invalid,
+                                'has-success': f.controls.project_application_volume_counter?.valid
+                                ***REMOVED***">
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of storage
+                                volumes*
+                                <i data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+                                   data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
+                                                                                          style="cursor: pointer;"></i></i></strong></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input required class="form-control" id="id_project_application_volume_counter"
+                                           name="project_application_volume_counter"
+                                           placeholder="e.g. 20"
+                                           type="number" min="0" step="1" [ngModel]="project_application_vms_requested">
+                                </div>
+                                <span class="help-block">How many storage volumes do you want to use?</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row"
+                             [ngClass]="***REMOVED***
+                                'has-danger': f.controls.project_application_object_storage?.invalid ,
+                                'has-success': f.controls.project_application_object_storage?.valid
+                                ***REMOVED***">
+                            <label class="col-md-4 form-control-label" for="textarea-input">Object Storage <i
+                                    data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
+                                    data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
+                                                                                           style="cursor: pointer;"></i></i></label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input class="form-control" id="id_project_application_object_storage"
+                                           name="project_application_object_storage"
+                                           placeholder="e.g. 8"
+                                           type="number" min="0" step="1" [ngModel]="0">
+                                    <span class="input-group-addon"> GB
+                                    </span>
+                                </div>
+                                <span class="help-block">How much object storage would you need?</span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <label class="col-md-4 form-control-label">Special Hardware <i
+                                    data-balloon="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."
+                                    data-balloon-pos="down"
+                                    data-balloon-length="large"><i class="icon-question"
+                                                                   style="cursor: pointer;"></i></i></label>
+                            <div class="col-md-8">
+                                <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
+                                    <label>
+                                        <input type="checkbox"
+                                               [checked]="( checkboxValue === true ? sh.Checked : False )"
+                                               (change)="sh.Checked = $event.target.checked;"/>
+                                        ***REMOVED******REMOVED***sh.Name***REMOVED******REMOVED***
+                                    </label>
+                                </div>
+                                <span class="help-block">Which special Hardware would you need?</span>
+                            </div>
+                        </div>
+
+                    <!--<div class="form-group row">
                         <h5 class="col-md-12 form-control-label">Resources</h5>
                     </div>
 
@@ -809,7 +956,7 @@
                             </div>
                             <span class="help-block">Which special Hardware would you need?</span>
                         </div>
-                    </div>
+                    </div>-->
 
                     <div class="form-group row">
                         <label class="col-md-4 form-control-label"
