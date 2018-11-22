@@ -1,4 +1,5 @@
 export class ApplicationExtension ***REMOVED***
+
     private _Id: number;
     private _Lifetime: number;
     private _VMsRequested: number;
