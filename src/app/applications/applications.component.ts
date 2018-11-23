@@ -26,24 +26,77 @@ import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.mode
 ***REMOVED***)
 export class ApplicationsComponent ***REMOVED***
 
-
+    /**
+     * Applications of the user viewing the Application overview.
+     * @type ***REMOVED***Array***REMOVED***
+     */
     user_applications: Application[] = [];
+
+    /**
+     * If the user is a vo admin.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
     is_vo_admin = false;
+
+    /**
+     * All Applications, just visibile for a vo admin.
+     * @type ***REMOVED***Array***REMOVED***
+     */
     all_applications: Application[] = [];
+
+    /**
+     * Stati of the differen Applications.
+     * @type ***REMOVED***Array***REMOVED***
+     */
+
     application_status: ApplicationStatus[] = [];
-    all_applications_renewal: ApplicationExtension[] = [];
+    /**
+     * Avaiable Special Hardwares.
+     * @type ***REMOVED***Array***REMOVED***
+     */
     special_hardware: SpecialHardware[] = [];
+
+    /**
+     * All available compute centers.
+     * @type ***REMOVED***Array***REMOVED***
+     */
     computeCenters: ComputecenterComponent[] = [];
+
+    /**
+     * Selected Application.
+     */
     selectedApplication: Application;
+
+    /**
+     * Id of the extension status.
+     * @type ***REMOVED***number***REMOVED***
+     */
     extension_status = 0;
+    /**
+     * Id of Application set for deletion.
+     */
     public deleteId: number;
+
+    /**
+     * If all userApplications are loaded, important for the loader.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
     isLoaded_userApplication = false;
+
+    /**
+     * If all Applications are loaded, important for the loader.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
     isLoaded_AllApplication = false;
+
+    /**
+     * User which requested the Application ***REMOVED***id: Elixir Id of user : ***REMOVED***name and email***REMOVED******REMOVED***.
+     * @type ***REMOVED******REMOVED******REMOVED******REMOVED***
+     */
     application_user: ***REMOVED*** [id: string]: ***REMOVED*** [id: string]: string ***REMOVED*** ***REMOVED*** = ***REMOVED******REMOVED***;
 
 
     //notification Modal variables
-    public notificationModal;
     public notificationModalTitle: string = "Notification";
     public notificationModalMessage: string = "Please wait...";
     public notificationModalType: string = "info";
@@ -51,15 +104,38 @@ export class ApplicationsComponent ***REMOVED***
     private APPROVED_STATUS = 2;
     private EXTENSION_STATUS = 4;
     private EXTENSTION_STATUS_STRING = 'modification requested';
+    /**
+     * Special hardware id for FPGA.
+     * @type ***REMOVED***number***REMOVED***
+     */
     public FPGA = 1;
+
+    /**
+     * Special hardware id for GPU.
+     * @type ***REMOVED***number***REMOVED***
+     */
     public GPU = 2;
 
+    /**
+     * Array if Applications are collapsed in the html or not.
+     * @type ***REMOVED******REMOVED******REMOVED******REMOVED***
+     */
     collapse_status: ***REMOVED*** [id: string]: boolean ***REMOVED*** = ***REMOVED******REMOVED***;
 
+    /**
+     * Constructor.
+     * Loads all Applications if user is vo admin and all user_applications.
+     * @param ***REMOVED***ApplicationsService***REMOVED*** applicataionsservice
+     * @param ***REMOVED***ApplicationStatusService***REMOVED*** applicationstatusservice
+     * @param ***REMOVED***SpecialHardwareService***REMOVED*** specialhardwareservice
+     * @param ***REMOVED***UserService***REMOVED*** userservice
+     * @param ***REMOVED***GroupService***REMOVED*** groupservice
+     * @param ***REMOVED***VoService***REMOVED*** voService
+     * @param ***REMOVED***FacilityService***REMOVED*** facilityService
+     */
     constructor(private applicataionsservice: ApplicationsService,
                 private applicationstatusservice: ApplicationStatusService,
                 private specialhardwareservice: SpecialHardwareService,
-                private perunsettings: PerunSettings,
                 private userservice: UserService,
                 private groupservice: GroupService,
                 private voService: VoService,
@@ -87,6 +163,9 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Gets all available compute centers and saves them in the computeCenters attribute.
+     */
     getComputeCenters() ***REMOVED***
         this.facilityService.getComputeCenters().subscribe(result => ***REMOVED***
             for (let cc of result) ***REMOVED***
@@ -97,14 +176,26 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
+    /**
+     * Gets all affialiations from a user.
+     * @param ***REMOVED***number***REMOVED*** user
+     */
     getUserAffilaitions(user: number) ***REMOVED***
         this.userservice.getuserAffiliations(user).subscribe()
     ***REMOVED***
 
+    /**
+     * Sets the selected application.
+     * @param application
+     */
     setSelectedApplication(application: any) ***REMOVED***
         this.selectedApplication = application;
     ***REMOVED***
 
+    /**
+     * Submits an renewal request for an application.
+     * @param ***REMOVED***NgForm***REMOVED*** f
+     */
     onSubmit(f: NgForm) ***REMOVED***
         let values = ***REMOVED******REMOVED***;
         values['project_application_renewal_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
@@ -118,6 +209,10 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Sets the default values in the request renewal form.
+     * @param ***REMOVED***NgForm***REMOVED*** f
+     */
     ngFormSetDefault(f: NgForm) ***REMOVED***
         f.reset(***REMOVED***
             project_application_renewal_vms_requested: this.selectedApplication.VMsRequested,
@@ -133,6 +228,10 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Gets all Application of the user viewing the application overview.
+     * Saves them in the userApplication array.
+     */
     getUserApplications() ***REMOVED***
         this.applicataionsservice
             .getUserApplications().subscribe(result => ***REMOVED***
@@ -198,6 +297,9 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
+    /**
+     * Get all possible application stati.
+     */
     getApplicationStatus() ***REMOVED***
         this.applicationstatusservice.getAllApplicationStatus().toPromise()
             .then(result => ***REMOVED***
@@ -210,6 +312,9 @@ export class ApplicationsComponent ***REMOVED***
             ***REMOVED***);
     ***REMOVED***
 
+    /**
+     * Get all available special hardware.
+     */
     getSpecialHardware() ***REMOVED***
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => ***REMOVED***
@@ -222,10 +327,9 @@ export class ApplicationsComponent ***REMOVED***
             ***REMOVED***);
     ***REMOVED***
 
-    getAllApplicationsExtensions() ***REMOVED***
-
-    ***REMOVED***
-
+    /**
+     * Get all Applications if user is admin.
+     */
     getAllApplications() ***REMOVED***
         //todo check if user is VO Admin
 
@@ -324,7 +428,10 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
-
+    /**
+     * Get the facility of an application.
+     * @param ***REMOVED***Application***REMOVED*** app
+     */
     public getFacilityProject(app: Application) ***REMOVED***
 
         if (!app.ComputeCenter && app.Status.toString() != 'submitted') ***REMOVED***
@@ -343,6 +450,10 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Updates an application with the actual values.
+     * @param ***REMOVED***Application***REMOVED*** application
+     */
     public getApplication(application: Application) ***REMOVED***
         let index = this.all_applications.indexOf(application);
 
@@ -416,6 +527,10 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
+    /**
+     * Gets a user application with the actual values.
+     * @param ***REMOVED***Application***REMOVED*** application
+     */
     public getUserApplication(application: Application) ***REMOVED***
         let index = this.user_applications.indexOf(application);
 
@@ -474,6 +589,10 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Request an extension from an application.
+     * @param data
+     */
     public requestExtension(data) ***REMOVED***
         this.applicataionsservice.requestRenewal(data).subscribe(result => ***REMOVED***
             if (result['Error']) ***REMOVED***
@@ -496,6 +615,11 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Get details of member like name and email by elixir.
+     * @param ***REMOVED***string***REMOVED*** elixir_id
+     * @param ***REMOVED***string***REMOVED*** collapse_id
+     */
     public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string) ***REMOVED***
         if (!this.getCollapseStatus(collapse_id)) ***REMOVED***
             if (!(elixir_id in this.application_user)) ***REMOVED***
@@ -513,6 +637,10 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Approve an extension request.
+     * @param ***REMOVED***number***REMOVED*** application_id
+     */
     public approveExtension(application_id: number) ***REMOVED***
         this.applicataionsservice.approveRenewal(application_id).subscribe(result => ***REMOVED***
             if (result['Error']) ***REMOVED***
@@ -533,7 +661,10 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-
+    /**
+     * Decline an extension request.
+     * @param ***REMOVED***number***REMOVED*** application_id
+     */
     public declineExtension(application_id: number) ***REMOVED***
         this.applicataionsservice.declineRenewal(application_id).subscribe(result => ***REMOVED***
             if (result != null) ***REMOVED***
@@ -554,7 +685,11 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-
+    /**
+     * Get a collapse status.
+     * @param ***REMOVED***string***REMOVED*** id
+     * @returns ***REMOVED***boolean***REMOVED***
+     */
     public getCollapseStatus(id: string) ***REMOVED***
         if (id in this.collapse_status) ***REMOVED***
             return this.collapse_status[id];
@@ -564,11 +699,20 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
+    /**
+     * Switch status of collapse.
+     * @param ***REMOVED***string***REMOVED*** id
+     */
     public switchCollapseStatus(id: string) ***REMOVED***
         this.collapse_status[id] = !this.getCollapseStatus(id);
     ***REMOVED***
 
 
+    /**
+     * Get status name  by status id.
+     * @param ***REMOVED***number***REMOVED*** id
+     * @returns ***REMOVED***string***REMOVED***
+     */
     public getStatusById(id: number): string ***REMOVED***
         let s = "Unknown";
         for (let status of this.application_status) ***REMOVED***
@@ -579,6 +723,13 @@ export class ApplicationsComponent ***REMOVED***
         return s;
     ***REMOVED***
 
+    /**
+     * Check if lifetime of a project is reached.
+     * @param ***REMOVED***number***REMOVED*** lifetime
+     * @param ***REMOVED***number***REMOVED*** running
+     * @param ***REMOVED***string***REMOVED*** status_changed_string
+     * @returns ***REMOVED***string***REMOVED***
+     */
     public lifeTimeReached(lifetime: number, running: number, status_changed_string: string): string ***REMOVED***
         let status_changed = new Date(status_changed_string);
         let LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(status_changed).add(lifetime, 'months').toDate().getTime() - status_changed.getTime())) / (1000 * 3600 * 24));
@@ -586,6 +737,11 @@ export class ApplicationsComponent ***REMOVED***
         return (LifetimeDays - running) < 0 ? "red" : "black";
     ***REMOVED***
 
+    /**
+     * Get id by status name.
+     * @param ***REMOVED***string***REMOVED*** name
+     * @returns ***REMOVED***number***REMOVED***
+     */
     public getIdByStatus(name: string): number ***REMOVED***
         let s = -1;
         for (let status of this.application_status) ***REMOVED***
@@ -596,6 +752,9 @@ export class ApplicationsComponent ***REMOVED***
         return s;
     ***REMOVED***
 
+    /**
+     * Reset notification modal values to default.
+     */
     public resetNotificationModal() ***REMOVED***
         this.notificationModalTitle = "Notification";
         this.notificationModalMessage = "Please wait...";
@@ -603,6 +762,13 @@ export class ApplicationsComponent ***REMOVED***
         this.notificationModalIsClosable = false;
     ***REMOVED***
 
+    /**
+     * Update notification modal with values submitted.
+     * @param ***REMOVED***string***REMOVED*** title
+     * @param ***REMOVED***string***REMOVED*** message
+     * @param closable
+     * @param ***REMOVED***string***REMOVED*** type
+     */
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
         this.notificationModalTitle = title;
         this.notificationModalMessage = message;
@@ -611,6 +777,14 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***
 
 
+    /**
+     * Create a new Group in perun with the specific attributes.
+     * @param name
+     * @param description
+     * @param manager_elixir_id
+     * @param application_id
+     * @param compute_center
+     */
     public createGroup(name, description, manager_elixir_id, application_id, compute_center) ***REMOVED***
 
         //get memeber id in order to add the user later as the new member and manager of the group
@@ -679,6 +853,10 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Decline an application.
+     * @param application_id
+     */
     public declineApplication(application_id) ***REMOVED***
         this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined"), '').toPromise()
             .then(result => ***REMOVED***
@@ -693,6 +871,10 @@ export class ApplicationsComponent ***REMOVED***
             ***REMOVED***);
     ***REMOVED***
 
+    /**
+     * Delete an application.
+     * @param application_id
+     */
     public deleteApplication(application_id) ***REMOVED***
         this.applicataionsservice.deleteApplication(application_id).toPromise()
             .then(result => ***REMOVED***
@@ -708,6 +890,10 @@ export class ApplicationsComponent ***REMOVED***
             ***REMOVED***);
     ***REMOVED***
 
+    /**
+     * Check if active applications are available.
+     * @returns ***REMOVED***boolean***REMOVED***
+     */
     public activeApplicationsAvailable(): boolean ***REMOVED***
         for (let application of this.all_applications) ***REMOVED***
             if (application.Status == 1 || application.Status == 4) ***REMOVED***
@@ -717,11 +903,18 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***
 
 
+    /**
+     * Set the id of the application which should be deleted.
+     * @param applicationId
+     */
     public setDeleteId(applicationId) ***REMOVED***
         this.deleteId = applicationId;
     ***REMOVED***
 
 
+    /**
+     * Coming soon.
+     */
     public comingSoon() ***REMOVED***
         alert("This functinality will be implemented soon!")
     ***REMOVED***

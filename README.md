@@ -21,21 +21,68 @@ cd cloud-portal-webapp
 ~~~BASH
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 # follow the commands printed by nvm
-nvm install node v8
+nvm install
 ~~~
 
-4. Install all needed npm packages and angular cli
+Note that the actual used node version is defined in .nvmrc.
+
+4. In order to use the node version install with nvm just run the following command. 
+
+~~~BASH
+nvm use --delete-prefix
+~~~
+
+5. Install all needed npm packages and angular cli
 ~~~BASH
 npm install 
 npm install -g @angular/cli
 ~~~
 
-5. start the angular server with
+6. start the angular server with
 ~~~BASH
 ng serve
 ~~~
 
 the dev server should run now on portal-dev.denbi.de:8001. The app will automatically reload if you change any of the source files.
+
+## Developement
+
+### Documentation
+
+Use [Compodoc](https://compodoc.app/guides/getting-started.html) to visualize the code written in TypeScript-files. 
+
+### Installation
+
+* If Compodoc is not already installed use npm. It will install Compodoc automatically.
+Use the following command in the cloud-portal-webapp directory. 
+~~~BASH
+npm install
+~~~
+
+### Usage
+
+* Comment your code written in TypeScript-files. Comment-syntax is equivalent to Javascript.
+Example: 
+```javascript
+  /**
+   * Uses the data from the application form to fill the confirmation-modal with information.
+   * @param f the application form with corresponding data
+   */
+  filterEnteredData(f: NgForm) ***REMOVED***
+  ...
+
+```
+
+* Use the following commands to let Compodoc analyze the written code and comments.
+Switch to the cloud-portal-webapp directory first.
+~~~BASH
+npm run compodoc
+~~~
+
+* To view the created documentations use your favorite webbrowser (e.g. firefox)
+~~~BASH
+firefox documentation/overview.html
+~~~
 
 ### Options:
 

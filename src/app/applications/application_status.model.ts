@@ -1,5 +1,13 @@
 export class ApplicationStatus***REMOVED***
+
+    /**
+     * Id of the status.
+     */
   private _Id: number;
+
+    /**
+     * Name of the status.
+     */
   private _Name: string;
 
 
