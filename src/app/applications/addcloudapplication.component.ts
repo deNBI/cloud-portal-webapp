@@ -19,25 +19,81 @@ import {forEach} from '@angular/router/src/utils/collection';
 
 export class AddcloudapplicationComponent {
 
+    /**
+     * If shortname is valid.
+     * @type {boolean}
+     */
     public wronginput: boolean = false;
-    public isCollapsed: boolean = true;
-
 
     //notification Modal variables
+    /**
+     * Notification Modal title.
+     * @type {string}
+     */
     public notificationModalTitle: string = 'Notification';
+    /**
+     *  Notification Modal message.
+     * @type {string}
+     */
     public notificationModalMessage: string = 'Please wait...';
+    /**
+     *  Notification Modal type.
+     * @type {string}
+     */
     public notificationModalType: string = 'info';
+    /**
+     * If  Notification Modal is closable.
+     * @type {boolean}
+     */
     public notificationModalIsClosable: boolean = false;
+    /**
+     * If  Notification Modal stays.
+     * @type {boolean}
+     */
     public notificationModalStay: boolean = true;
+    /**
+     * Contains errors recieved when submitting an application.
+     */
     public error: string[];
+    /**
+     * Default vms requested in form.
+     * @type {number}
+     */
     public project_application_vms_requested = 5;
+    /**
+     * List of flavors.
+     */
     public flavorList: Flavor[];
+    /**
+     * List of flavor types.
+     */
     public typeList: FlavorType[];
+    /**
+     * List of all collapse booleans.
+     */
     public collapseList: boolean[];
+    /**
+     * Total number of cores.
+     * @type {number}
+     */
     public totalNumberOfCores=0;
+    /**
+     * Total number of ram.
+     * @type {number}
+     */
     public totalRAM=0;
+    /**
+     * Values to confirm.
+     */
     public valuesToConfirm: string[];
+    /**
+     *
+     */
     public constantStrings: Object;
+
+    /**
+     * Name of the project.
+     */
     public projectName: string;
 
 
@@ -47,14 +103,24 @@ export class AddcloudapplicationComponent {
     public acknowledgeModalTitle: string = 'Acknowledge';
     public acknowledgeModalType: string = 'info';
 
-
-    showjustvm: boolean;
+    /**
+     * If project is openstack project (everytime true)
+     * @type {boolean}
+     */
     project_application_openstack_project: boolean = true;
-
-
-    csrf: Object = Cookie.get('csrftoken');
+    /**
+     * List of special hardwares.
+     * @type {any[]}
+     */
     special_hardware: SpecialHardware[] = new Array();
 
+    /**
+     * Constructor.
+     * Initialize special hardware and gets list of flavor and flavortypes.
+     * @param {SpecialHardwareService} specialhardwareservice
+     * @param {ApplicationsService} applicationsservice
+     * @param {FlavorService} flavorservice
+     */
     constructor(private specialhardwareservice: SpecialHardwareService,
                 private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) {
         this.getSpecialHardware();
@@ -64,8 +130,14 @@ export class AddcloudapplicationComponent {
 
     }
 
-    matchString(key: string, val: string ): string{
-
+  /**
+   * This function concatenates a given key combined with a given value to a string
+   * which is used on the confirmation-modal.
+   * @param key the key to access a string in the array constantStrings
+   * @param val the value that is concatenated with the string from the array and an optional addition (depending on the key)
+   * @returns the concatenated string for the confirmation-modal
+   */
+  matchString(key: string, val: string ): string{
       if (key in this.constantStrings)
       {
         switch (key) {
@@ -85,7 +157,10 @@ export class AddcloudapplicationComponent {
       }
     }
 
-    generateConstants() {
+  /**
+   * Fills the array constantStrings with values dependent of keys which are used to indicate inputs from the application-form
+   */
+  generateConstants() {
         this.constantStrings = new Array();
         this.constantStrings['project_application_lifetime'] = 'Lifetime of your project: ';
         this.constantStrings['project_application_volume_counter'] = 'Number of volumes for additional storage: ';
@@ -113,7 +188,11 @@ export class AddcloudapplicationComponent {
 
     }
 
-    filterEnteredData(f: NgForm) {
+  /**
+   * Uses the data from the application form to fill the confirmation-modal with information.
+   * @param f the application form with corresponding data
+   */
+  filterEnteredData(f: NgForm) {
       this.generateConstants();
       this.totalNumberOfCores = 0;
       this.totalRAM = 0;
@@ -139,16 +218,27 @@ export class AddcloudapplicationComponent {
 
     }
 
-    getListOfFlavors() {
+  /**
+   * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+   */
+  getListOfFlavors() {
         this.flavorservice.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
     }
 
+    /**
+    * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+    */
     getListOfTypes() {
         this.flavorservice.getListOfTypesAvailable().subscribe(types => this.setListOfTypes(types));
     }
 
 
-    setListOfTypes(types: FlavorType[]) {
+  /**
+   * Uses the param types to safe the available FlavorTypes to the array typeList.
+   * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
+   * @param types array of all available FlavorTypes
+   */
+  setListOfTypes(types: FlavorType[]) {
       this.typeList = types;
       this.collapseList = new Array(types.length) as Array<boolean>;
       for (let i = 0; i < types.length; i++) {
@@ -157,7 +247,9 @@ export class AddcloudapplicationComponent {
 
     }
 
-
+    /**
+     * Get all Special Hardware.
+     */
     getSpecialHardware() {
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => {
@@ -170,22 +262,13 @@ export class AddcloudapplicationComponent {
             });
     }
 
-    check_not_zero(values: {}) {
-        if ('project_application_openstack_project' in values) {
 
 
-            if ('project_application_volume_limit' in values && values['project_application_volume_limit'] > 0) {
-                return true;
-            }
-
-            return false;
-        }
-        else {
-
-            return true;
-        }
-    }
-
+    /**
+     * Submits a new cloud application.
+     * Therefore checks if the different values are valid.
+     * @param {NgForm} f
+     */
     onSubmit(f: NgForm) {
         this.error = null;
         if (this.wronginput == true) {
@@ -203,13 +286,6 @@ export class AddcloudapplicationComponent {
                     values[v] = f.controls[v].value;
                 }
             }
-            if (this.check_not_zero(values) == false) {
-                this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
-                this.notificationModalStay = true;
-                return;
-            }
-
-
             this.applicationsservice.addNewApplication(values).toPromise()
                 .then(result => {
                     this.updateNotificaitonModal('Success', 'The application was submitted', true, 'success');
@@ -229,7 +305,13 @@ export class AddcloudapplicationComponent {
         }
     }
 
-
+    /**
+     * Update notification modal attributes.
+     * @param {string} title
+     * @param {string} message
+     * @param closable
+     * @param {string} type
+     */
     public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
         this.notificationModalTitle = title;
         this.notificationModalMessage = message;
@@ -237,6 +319,9 @@ export class AddcloudapplicationComponent {
         this.notificationModalType = type;
     }
 
+    /**
+     * Reset notificaton modal attributes.
+     */
     public resetNotificationModal() {
 
         this.notificationModalTitle = 'Notification';
@@ -246,6 +331,10 @@ export class AddcloudapplicationComponent {
         this.notificationModalStay = true;
     }
 
+    /**
+     * Check if shortname is valid.
+     * @param {string} shortname
+     */
     public checkShortname(shortname: string) {
         if (/^[a-zA-Z0-9\s]*$/.test(shortname) == false) {
             this.wronginput = true;
