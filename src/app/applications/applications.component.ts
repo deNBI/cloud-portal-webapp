@@ -792,7 +792,7 @@ export class ApplicationsComponent {
         let manager_member_user_id: number;
         let new_group_id: number;
 
-        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).subscribe(result => {
+        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("wait for confirmation"), compute_center).subscribe(result => {
             if (result['Error']) {
                 this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
 
@@ -818,9 +818,6 @@ export class ApplicationsComponent {
 
                 }).then(null_result => {
                     //setting approved status for Perun Group
-                    console.log(new_group_id)
-
-
                     this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
                         if (compute_center != 'undefined') {
                             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
