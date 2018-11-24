@@ -61,6 +61,16 @@ export class FacilityService {
 
 
     }
+    approveFacilityApplication(facility:number,application_id:number): Observable<any> {
+
+        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/applications/' + application_id +'/status/',null, {
+            withCredentials: true,
+            headers: header,
+            observe: 'response'
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
 
     sendMailToFacility(facility, subject, message, reply?): Observable<any> {
         let params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);

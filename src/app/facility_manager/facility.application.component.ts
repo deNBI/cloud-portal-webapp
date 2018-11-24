@@ -73,8 +73,7 @@ export class FacilityApplicationComponent implements OnInit {
         this.facilityService.getManagerFacilities().subscribe(result => {
             this.managerFacilities = result;
             this.selectedFacility = this.managerFacilities[0];
-            console.log(this.selectedFacility)
-            this.getAllApplications();
+            this.getAllApplications( this.selectedFacility ['FacilityId']);
 
         })
     }
@@ -109,9 +108,9 @@ export class FacilityApplicationComponent implements OnInit {
     }
 
 
-    getAllApplications() {
+    getAllApplications(facility:number) {
         //todo check if user is VO Admin
-        this.facilityService.getFacilityApplicationsWaitingForConfirmation(3385).subscribe(res => {
+        this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe(res => {
             if (Object.keys(res).length == 0) {
                 this.isLoaded = true;
             }
@@ -186,6 +185,13 @@ export class FacilityApplicationComponent implements OnInit {
 
 
         });
+    }
+
+    approveApplication(application_id:number){
+        this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'],application_id).subscribe(res => {
+            this.all_applications=[];
+            this.getAllApplications(this.selectedFacility['FacilityId'])
+        })
     }
 
     /**
@@ -292,11 +298,13 @@ export class FacilityApplicationComponent implements OnInit {
         }
         return s;
     }
+      onChangeSelectedFacility(value) {
+        this.getAllApplications(this.selectedFacility['FacilityId'])
+    }
+
 
 
     ngOnInit() {
-
-        this.getAllApplications()
     }
 
 }
