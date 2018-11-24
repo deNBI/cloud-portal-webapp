@@ -34,11 +34,29 @@ export class FacilityService {
     }
 
 
-
-    getFacilityAllowedGroupsWithDetails(facility): Observable<any> {
+    /**
+     * Get allowed groups from a facility with a specific status.
+     * @param {number} facility
+     * @param {number} status
+     * @returns {Observable<any>}
+     */
+    getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility:number,status:number): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/projects/' , {
             withCredentials: true,
+            params: {status: status}
+
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
+
+
+     getFacilityApplicationsWaitingForConfirmation(facility:number): Observable<any> {
+
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/applications/' , {
+            withCredentials: true,
+
         }).pipe(catchError((error: any) => throwError(error)));
 
 
