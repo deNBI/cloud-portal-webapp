@@ -194,6 +194,13 @@ export class FacilityApplicationComponent implements OnInit {
         })
     }
 
+     declineApplication(application_id:number){
+        this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'],application_id).subscribe(res => {
+            this.all_applications=[];
+            this.getAllApplications(this.selectedFacility['FacilityId'])
+        })
+    }
+
     /**
      * Get all possible application stati.
      */

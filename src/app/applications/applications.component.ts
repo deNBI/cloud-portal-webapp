@@ -25,6 +25,7 @@ import {Project} from "../projectmanagement/project.model";
     providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
 })
 export class ApplicationsComponent {
+    WAIT_FOR_CONFIRMATION = "wait for confirmation";
 
     /**
      * Applications of the user viewing the Application overview.
@@ -792,7 +793,7 @@ export class ApplicationsComponent {
         let manager_member_user_id: number;
         let new_group_id: number;
 
-        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("wait for confirmation"), compute_center).subscribe(result => {
+        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(result => {
             if (result['Error']) {
                 this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
 
@@ -850,6 +851,30 @@ export class ApplicationsComponent {
 
     }
 
+    assignGroupToFacility(group_id, application_id, compute_center) {
+        if (compute_center != 'undefined') {
+            this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(res => {
+                    this.updateNotificaitonModal("Success", "The  project was assigned to the facility.", true, "success");
+                    this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(res => {
+                        for (let app of this.all_applications) {
+                            if (app.Id == application_id) {
+                                this.getApplication(app);
+                                break;
+
+                            }
+                        }
+                    })
+
+
+                },
+                error => {
+                    console.log(error);
+                    this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+                });
+        }
+
+    }
+
     /**
      * Decline an application.
      * @param application_id
@@ -893,7 +918,7 @@ export class ApplicationsComponent {
      */
     public activeApplicationsAvailable(): boolean {
         for (let application of this.all_applications) {
-            if (application.Status == 1 || application.Status == 4) {
+            if (application.Status == 1 || application.Status == 4 || application.Status == 7) {
                 return true;
             }
         }

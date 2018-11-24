@@ -190,7 +190,7 @@
                             </thead>
                             <tbody>
                             <ng-container *ngFor="let application of all_applications">
-                                <ng-container *ngIf="application.Status == 1 || application.Status == 4">
+                                <ng-container *ngIf="application.Status == 1 || application.Status == 4 || application.Status == 7">
                                     <tr>
                                         <td>{{ application.Name }}</td>
                                         <td>{{application.Shortname}}</td>
@@ -202,10 +202,10 @@
 
 
                                         <td>
-                                            <select [style.display]="application.OpenStackProject && application.Status == 1 ? 'inherit' :'none'"
+                                            <select [style.display]="application.OpenStackProject && (application.Status == 1 || application.Status == 7)? 'inherit' :'none'"
                                                     class="form-control" #selectedComputeCenter>
 
-                                                <option value="undefined" selected> no center</option>
+                                                <!--option value="undefined" selected> no center</option-->
                                                 <option *ngFor="let computeCenter of computeCenters"
                                                         value="{{computeCenter.FacilityId}}"> {{computeCenter.Name}}
                                                 </option>
@@ -215,6 +215,14 @@
 
 
                                         <td>
+                                             <button *ngIf="application.Status == 7"
+
+                                                    (click)="resetNotificationModal();assignGroupToFacility(application.PerunId,application.Id,selectedComputeCenter.value); notificationModal.show();"
+
+
+                                                    type="button" class="btn btn-secondary"><i class="fa fa-check"></i>&nbsp;
+                                                Approve
+                                            </button>
                                             <button *ngIf="application.Status == 1"
 
                                                     (click)="resetNotificationModal();createGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"

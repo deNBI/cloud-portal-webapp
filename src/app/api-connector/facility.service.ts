@@ -16,7 +16,7 @@ export class FacilityService {
     }
 
 
-     getComputeCenters(): Observable<any> {
+    getComputeCenters(): Observable<any> {
 
 
         return this.http.get(this.settings.getApiBaseURL() + 'computecenters/', {
@@ -40,9 +40,9 @@ export class FacilityService {
      * @param {number} status
      * @returns {Observable<any>}
      */
-    getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility:number,status:number): Observable<any> {
+    getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number, status: number): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/projects/' , {
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/', {
             withCredentials: true,
             params: {status: status}
 
@@ -52,18 +52,34 @@ export class FacilityService {
     }
 
 
-     getFacilityApplicationsWaitingForConfirmation(facility:number): Observable<any> {
+    getFacilityApplicationsWaitingForConfirmation(facility: number): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/applications/' , {
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/', {
             withCredentials: true,
 
         }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
-    approveFacilityApplication(facility:number,application_id:number): Observable<any> {
 
-        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/applications/' + application_id +'/status/',null, {
+    approveFacilityApplication(facility: number, application_id: number): Observable<any> {
+        let params = new HttpParams().set('action', 'approve');
+
+
+        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/', params, {
+            withCredentials: true,
+            headers: header,
+            observe: 'response'
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
+
+    declineFacilityApplication(facility: number, application_id: number): Observable<any> {
+        let params = new HttpParams().set('action', 'decline');
+
+
+        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/', params, {
             withCredentials: true,
             headers: header,
             observe: 'response'
