@@ -19,10 +19,14 @@ import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
 import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
 import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
+import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
+import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
+import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
+
 
 @Component(***REMOVED***
     templateUrl: 'applications.component.html',
-    providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
+    providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings, FlavorService]
 ***REMOVED***)
 export class ApplicationsComponent ***REMOVED***
 
@@ -122,6 +126,29 @@ export class ApplicationsComponent ***REMOVED***
      */
     collapse_status: ***REMOVED*** [id: string]: boolean ***REMOVED*** = ***REMOVED******REMOVED***;
 
+     /**
+     * List of flavors.
+     */public flavorList: Flavor[];
+
+    /**
+     * List of flavor types.
+     */
+    public typeList: FlavorType[];
+    /**
+     * List of all collapse booleans.
+     */
+    public collapseList: boolean[];
+    /**
+     * Total number of cores.
+     * @type ***REMOVED***number***REMOVED***
+     */
+    public totalNumberOfCores=0;
+    /**
+     * Total number of ram.
+     * @type ***REMOVED***number***REMOVED***
+     */
+    public totalRAM=0;
+
     /**
      * Constructor.
      * Loads all Applications if user is vo admin and all user_applications.
@@ -139,7 +166,8 @@ export class ApplicationsComponent ***REMOVED***
                 private userservice: UserService,
                 private groupservice: GroupService,
                 private voService: VoService,
-                private facilityService: FacilityService) ***REMOVED***
+                private facilityService: FacilityService,
+                private flavorService: FlavorService) ***REMOVED***
 
         this.voService.isVo().subscribe(result => ***REMOVED***
 
@@ -160,6 +188,35 @@ export class ApplicationsComponent ***REMOVED***
 
         ***REMOVED***)
 
+
+    ***REMOVED***
+
+    /**
+   * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+   */
+    getListOfFlavors() ***REMOVED***
+        this.flavorService.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
+    ***REMOVED***
+
+    /**
+    * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+    */
+    getListOfTypes() ***REMOVED***
+        this.flavorService.getListOfTypesAvailable().subscribe(types => this.setListOfTypes(types));
+    ***REMOVED***
+
+
+  /**
+   * Uses the param types to safe the available FlavorTypes to the array typeList.
+   * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
+   * @param types array of all available FlavorTypes
+   */
+  setListOfTypes(types: FlavorType[]) ***REMOVED***
+      this.typeList = types;
+      this.collapseList = new Array(types.length) as Array<boolean>;
+      for (let i = 0; i < types.length; i++) ***REMOVED***
+        this.collapseList.push(false); //AS FIX
+      ***REMOVED***
 
     ***REMOVED***
 
@@ -190,7 +247,10 @@ export class ApplicationsComponent ***REMOVED***
      */
     setSelectedApplication(application: any) ***REMOVED***
         this.selectedApplication = application;
+        this.getListOfFlavors();
+        this.getListOfTypes();
     ***REMOVED***
+
 
     /**
      * Submits an renewal request for an application.
