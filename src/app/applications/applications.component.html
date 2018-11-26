@@ -661,21 +661,24 @@
                         </label>
                       </div>
 
+                      <div class="col">
+                        <div class="input-group">
+                          <input class="form-control"
+                                 name="project_application_lifetime" placeholder="nA"
+                                 type="text" value="test" disabled>
 
-
-
-                      <div class="col-3">
-
+                        </div>
+                        <span class="help-block">Current lifetime</span>
                       </div>
 
-                      <div class="col-md-8">
+                      <div class="col">
                         <div class="input-group">
                           <input class="form-control" id="id_project_application_renewal_lifetime"
                                  name="project_application_renewal_lifetime" placeholder="e.g 3"
                                  type="number" min="1" step="1" ngModel required>
                           <span class="input-group-addon"> months</span>
                         </div>
-                        <span class="help-block">How many months should the project be extended?</span>
+                        <span class="help-block">Number of months you want to extend the project</span>
                       </div>
                     </div>
 
@@ -709,10 +712,10 @@
                                                     <input class="form-control"
                                                            name="project_application_{{f.name}}_old"
                                                            type="text"
-                                                           value="0" placeholder="" disabled>
+                                                           value="{{selectedApplication.VMsRequested}}" placeholder="" disabled>
                                                     <span class="input-group-addon"> VMs</span>
                                                 </div>
-                                                <span class="help-block">Currently approved</span>
+                                                <span class="help-block">Currently approved of this type </span>
                                             </div>
                                           <div class="col">
                                                 <div class="input-group">
@@ -745,7 +748,18 @@
                                         data-balloon="Storage limit is the sum of extra storage provided by volumes."
                                         data-balloon-pos="down" data-balloon-length="medium"><i class="icon-question"
                                                                                                 style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
+                            <div class="col">
+                                <div class="input-group">
+                                    <input class="form-control"
+                                           name="project_application_volume_limit"
+                                           placeholder="{{selectedApplication.VolumeLimit}}"
+                                           type="text" disabled>
+                                    <span class="input-group-addon"> GB
+                                    </span>
+                                </div>
+                                <span class="help-block">Current extra storage</span>
+                            </div>
+                          <div class="col">
                                 <div class="input-group">
                                     <input class="form-control" id="id_project_application_volume_limit"
                                            name="project_application_volume_limit"
@@ -754,7 +768,7 @@
                                     <span class="input-group-addon"> GB
                                     </span>
                                 </div>
-                                <span class="help-block">How many extra storage do you need for your VMs?</span>
+                                <span class="help-block">How many extra storage do you need in the future?</span>
                             </div>
                         </div>
 
@@ -767,14 +781,24 @@
                                 <i data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
                                    data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
                                                                                           style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
+                            <div class="col">
+                                <div class="input-group">
+                                    <input required class="form-control"
+                                           name="project_application_volume_counter"
+                                           placeholder="{{selectedApplication.VolumeCounter}}"
+                                           type="text">
+                                </div>
+                                <span class="help-block">Current number of storage volumes</span>
+                            </div>
+
+                          <div class="col">
                                 <div class="input-group">
                                     <input required class="form-control" id="id_project_application_volume_counter"
                                            name="project_application_volume_counter"
                                            placeholder="e.g. 20"
                                            type="number" min="0" step="1" [ngModel]="project_application_vms_requested">
                                 </div>
-                                <span class="help-block">How many storage volumes do you want to use?</span>
+                                <span class="help-block">How many storage volumes do you need in the future?</span>
                             </div>
                         </div>
 
@@ -787,7 +811,20 @@
                                     data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
                                     data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
                                                                                            style="cursor: pointer;"></i></i></label>
-                            <div class="col-md-8">
+
+                          <div class="col">
+                                <div class="input-group">
+                                    <input class="form-control"
+                                           name="project_application_object_storage"
+                                           placeholder="{{selectedApplication.ObjectStorage}}"
+                                           type="text" disabled>
+                                    <span class="input-group-addon"> GB
+                                    </span>
+                                </div>
+                                <span class="help-block">Current Object Storage capacity</span>
+                          </div>
+
+                          <div class="col">
                                 <div class="input-group">
                                     <input class="form-control" id="id_project_application_object_storage"
                                            name="project_application_object_storage"
@@ -796,8 +833,8 @@
                                     <span class="input-group-addon"> GB
                                     </span>
                                 </div>
-                                <span class="help-block">How much object storage would you need?</span>
-                            </div>
+                                <span class="help-block">How many GB do you need in the future?</span>
+                          </div>
                         </div>
 
 
@@ -807,7 +844,16 @@
                                     data-balloon-pos="down"
                                     data-balloon-length="large"><i class="icon-question"
                                                                    style="cursor: pointer;"></i></i></label>
-                            <div class="col-md-8">
+                            <div class="col">
+                                <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
+                                    <label>
+                                        <input type="checkbox" [checked]="( true )"/>
+                                        {{sh.Name}}
+                                    </label>
+                                </div>
+                                <span class="help-block">Currently approved special hardware</span>
+                            </div>
+                          <div class="col">
                                 <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
                                     <label>
                                         <input type="checkbox"
@@ -816,7 +862,7 @@
                                         {{sh.Name}}
                                     </label>
                                 </div>
-                                <span class="help-block">Which special Hardware would you need?</span>
+                                <span class="help-block">Which special hardware do you need in the future?</span>
                             </div>
                         </div>
 
