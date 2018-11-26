@@ -23,6 +23,11 @@ import {SpecialHardwareService} from "../api-connector/special-hardware.service"
 
 })
 export class FacilityApplicationComponent implements OnInit {
+    //notification Modal variables
+    public notificationModalTitle: string = "Notification";
+    public notificationModalMessage: string = "Please wait...";
+    public notificationModalType: string = "info";
+    public notificationModalIsClosable: boolean = false;
 
     /**
      * User which requested the Application {id: Elixir Id of user : {name and email}}.
@@ -188,16 +193,35 @@ export class FacilityApplicationComponent implements OnInit {
     }
 
     approveApplication(application_id:number){
+
+
+        this.updateNotificaitonModal('Approving Application','Waiting..',true,'info')
         this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'],application_id).subscribe(res => {
+            this.updateNotificaitonModal('Success','Successfully approved the application.',true,'success');
+
             this.all_applications=[];
             this.getAllApplications(this.selectedFacility['FacilityId'])
+        },error => {
+                        this.updateNotificaitonModal('Failed','Failed to approve the application.',true,'danger');
+
+
+
         })
     }
 
      declineApplication(application_id:number){
+                this.updateNotificaitonModal('Decline Application','Waiting..',true,'info');
+
         this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'],application_id).subscribe(res => {
+                        this.updateNotificaitonModal('Success','Successfully declined the application.',true,'success');
+
             this.all_applications=[];
             this.getAllApplications(this.selectedFacility['FacilityId'])
+        },error => {
+                        this.updateNotificaitonModal('Failed','Failed to decline the application.',true,'danger');
+
+
+
         })
     }
 
@@ -289,6 +313,30 @@ export class FacilityApplicationComponent implements OnInit {
             }
         }
         return s;
+    }
+
+     /**
+     * Reset notification modal values to default.
+     */
+    public resetNotificationModal() {
+        this.notificationModalTitle = "Notification";
+        this.notificationModalMessage = "Please wait...";
+        this.notificationModalType = "info";
+        this.notificationModalIsClosable = false;
+    }
+
+    /**
+     * Update notification modal with values submitted.
+     * @param {string} title
+     * @param {string} message
+     * @param closable
+     * @param {string} type
+     */
+    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
+        this.notificationModalTitle = title;
+        this.notificationModalMessage = message;
+        this.notificationModalIsClosable = closable;
+        this.notificationModalType = type;
     }
 
     /**

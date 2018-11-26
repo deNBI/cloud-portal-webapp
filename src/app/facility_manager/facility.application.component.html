@@ -53,13 +53,13 @@
 
                                 <td>
                                     <button type="button"
-                                            (click)="approveApplication(application.Id)"
+                                            (click)="resetNotificationModal();notificationModal.show();approveApplication(application.Id)"
                                             class="btn btn-secondary"><i
                                             class="fa fa-check"></i>&nbsp;
                                         Approve
                                     </button>
                                     <button
-                                            (click)='declineApplication(application.Id)'
+                                            (click)='resetNotificationModal();notificationModal.show();declineApplication(application.Id)'
                                             type="button"
                                             class="btn btn-secondary"><i
                                             class="fa fa-close"></i>&nbsp;
@@ -259,4 +259,30 @@
 
     </div>
 </div>
+
+
+<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-{{ notificationModalType }}" role="alert">
+                    {{ notificationModalMessage }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="notificationModalIsClosable == true" type="button"
+                        (click)="notificationModal.hide();" type="reset"
+                        class="btn  btn-secondary"> Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
