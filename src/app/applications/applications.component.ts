@@ -19,10 +19,14 @@ import {VoService} from "../api-connector/vo.service";
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
 import {FacilityService} from "../api-connector/facility.service";
 import {Project} from "../projectmanagement/project.model";
+import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {FlavorService} from '../api-connector/flavor.service';
+
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
+    providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings, FlavorService]
 })
 export class ApplicationsComponent {
 
@@ -122,6 +126,29 @@ export class ApplicationsComponent {
      */
     collapse_status: { [id: string]: boolean } = {};
 
+     /**
+     * List of flavors.
+     */public flavorList: Flavor[];
+
+    /**
+     * List of flavor types.
+     */
+    public typeList: FlavorType[];
+    /**
+     * List of all collapse booleans.
+     */
+    public collapseList: boolean[];
+    /**
+     * Total number of cores.
+     * @type {number}
+     */
+    public totalNumberOfCores=0;
+    /**
+     * Total number of ram.
+     * @type {number}
+     */
+    public totalRAM=0;
+
     /**
      * Constructor.
      * Loads all Applications if user is vo admin and all user_applications.
@@ -139,7 +166,8 @@ export class ApplicationsComponent {
                 private userservice: UserService,
                 private groupservice: GroupService,
                 private voService: VoService,
-                private facilityService: FacilityService) {
+                private facilityService: FacilityService,
+                private flavorService: FlavorService) {
 
         this.voService.isVo().subscribe(result => {
 
@@ -160,6 +188,35 @@ export class ApplicationsComponent {
 
         })
 
+
+    }
+
+    /**
+   * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+   */
+    getListOfFlavors() {
+        this.flavorService.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
+    }
+
+    /**
+    * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+    */
+    getListOfTypes() {
+        this.flavorService.getListOfTypesAvailable().subscribe(types => this.setListOfTypes(types));
+    }
+
+
+  /**
+   * Uses the param types to safe the available FlavorTypes to the array typeList.
+   * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
+   * @param types array of all available FlavorTypes
+   */
+  setListOfTypes(types: FlavorType[]) {
+      this.typeList = types;
+      this.collapseList = new Array(types.length) as Array<boolean>;
+      for (let i = 0; i < types.length; i++) {
+        this.collapseList.push(false); //AS FIX
+      }
 
     }
 
@@ -190,7 +247,10 @@ export class ApplicationsComponent {
      */
     setSelectedApplication(application: any) {
         this.selectedApplication = application;
+        this.getListOfFlavors();
+        this.getListOfTypes();
     }
+
 
     /**
      * Submits an renewal request for an application.
