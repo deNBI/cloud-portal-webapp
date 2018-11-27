@@ -22,6 +22,7 @@ import {Project} from "../projectmanagement/project.model";
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
+import _date = moment.unitOfTime._date;
 
 
 @Component({
@@ -357,7 +358,26 @@ export class ApplicationsComponent {
         });
     }
 
-    /**
+
+    getEndDate(submit: string, months: number): string {
+      var date1 = new Date(Number(submit.substring(0, 4)), Number(submit.substring(5, 7)) - 1 , Number(submit.substring(8)));
+      var m = date1.getMonth();
+      if ((m + months) > 11) {
+       date1 = new Date(date1.getFullYear(), (m + months - 12), date1.getDate());
+      }
+        else {
+          date1.setMonth(date1.getMonth() + months);
+        }
+
+      return date1.getFullYear() + '-' + (date1.getMonth() + 1) + '-' + date1.getDate();
+    }
+
+    showLifetime(sa: Application): string {
+      return sa.DateSubmitted + ' - ' + this.getEndDate(sa.DateSubmitted, sa.Lifetime);
+  }
+
+
+  /**
      * Get all possible application stati.
      */
     getApplicationStatus() {

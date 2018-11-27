@@ -654,8 +654,8 @@
 
                     <div class="form-group row">
                       <div class="col">
-                        <label class="col-md-3 form-control-label" for="textarea-input">
-                          <strong>Lifetime<i class="icon-question" data-toggle="tooltip" data-placement="auto"
+                        <label class="col form-control-label" for="textarea-input">
+                          <strong>Lifetime* <i class="icon-question" data-toggle="tooltip"
                              title="Current timespan of your project. You can extend your project by a maximum of 12 months">
                             </i>
                           </strong>
@@ -665,8 +665,8 @@
                       <div class="col">
                         <div class="input-group">
                           <input class="form-control"
-                                 name="project_application_lifetime" placeholder="nA"
-                                 type="text" value="test" disabled>
+                                 name="project_application_lifetime" placeholder="NDA"
+                                 type="text" value="{{showLifetime(selectedApplication)}}" disabled>
 
                         </div>
                         <span class="help-block">Current lifetime</span>
@@ -727,9 +727,8 @@
                                                            id="project_application_{{f.name}}"
                                                            name="project_application_{{f.name}}"
                                                            type="number" min="0" step="1"
-                                                           value="0"
                                                            placeholder="e.g 1"
-                                                           (ngModel)="'project_application_' + f.name" required>
+                                                           (ngModel)="'project_application_' + f.name" + required>
                                                     <span class="input-group-addon"> VMs</span>
                                                 </div>
                                                 <span class="help-block">Number of VMs you would like to run in the future</span>
@@ -803,7 +802,7 @@
                                 }">
                                     <input required class="form-control" id="id_project_application_volume_counter"
                                            name="project_application_volume_counter"
-                                           placeholder="e.g. 20" value="1"
+                                           placeholder="e.g. 20"
                                            type="number" min="0" step="1"
                                       [ngModel]="selectedApplication?.VolumeCounter">
                                 </div>
@@ -812,7 +811,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="textarea-input">Object Storage <i
+                          <label class="col-md-4 form-control-label" for="textarea-input"><strong>Object Storage* </strong><i
                                     data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
                                     data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
                                                                                            style="cursor: pointer;"></i></i></label>
@@ -834,7 +833,7 @@
                                 <div class="input-group" [ngClass]="{
                                 'has-danger': f.controls.project_application_object_storage?.invalid ,
                                 'has-success': f.controls.project_application_object_storage?.valid
-                                }">
+                                }" required>
                                     <input class="form-control" id="id_project_application_object_storage"
                                            name="project_application_object_storage"
                                            placeholder="e.g. 8"
@@ -849,7 +848,7 @@
 
 
                         <div class="form-group row">
-                            <label class="col-md-4 form-control-label">Special Hardware <i
+                          <label class="col-md-4 form-control-label"><strong>Special Hardware </strong> <i
                                     data-balloon="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."
                                     data-balloon-pos="down"
                                     data-balloon-length="large"><i class="icon-question"
@@ -857,7 +856,7 @@
                             <div class="col">
                                 <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
                                     <label>
-                                        <input type="checkbox" [checked]="( true )"/>
+                                        <input type="checkbox"/>
                                         {{sh.Name}}
                                     </label>
                                 </div>
@@ -886,16 +885,12 @@
                             <span class="help-block">Additional information you want to share?</span>
                         </div>
                     </div>
-
-
-
                 </form>
 
 
                 <div class="modal-footer">
-                  <div class="label" >By submitting this application you agree to the
-                            cloud
-                            usage policy.</div>
+                  <div class="label">
+                    By submitting this application you agree to the cloud usage policy.</div>
                     <button type="button" c class="btn  btn-primary" type="submit" name="_save" form="application_form"
                             (click)="extensionModal.hide();resultModal.show()"
                             [disabled]="f.invalid"><i
