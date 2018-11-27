@@ -22,6 +22,7 @@ import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.mode
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
+import _date = moment.unitOfTime._date;
 
 
 @Component(***REMOVED***
@@ -357,7 +358,26 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    /**
+
+    getEndDate(submit: string, months: number): string ***REMOVED***
+      var date1 = new Date(Number(submit.substring(0, 4)), Number(submit.substring(5, 7)) - 1 , Number(submit.substring(8)));
+      var m = date1.getMonth();
+      if ((m + months) > 11) ***REMOVED***
+       date1 = new Date(date1.getFullYear(), (m + months - 12), date1.getDate());
+      ***REMOVED***
+        else ***REMOVED***
+          date1.setMonth(date1.getMonth() + months);
+        ***REMOVED***
+
+      return date1.getFullYear() + '-' + (date1.getMonth() + 1) + '-' + date1.getDate();
+    ***REMOVED***
+
+    showLifetime(sa: Application): string ***REMOVED***
+      return sa.DateSubmitted + ' - ' + this.getEndDate(sa.DateSubmitted, sa.Lifetime);
+  ***REMOVED***
+
+
+  /**
      * Get all possible application stati.
      */
     getApplicationStatus() ***REMOVED***
