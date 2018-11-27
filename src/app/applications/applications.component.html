@@ -190,7 +190,7 @@
                             </thead>
                             <tbody>
                             <ng-container *ngFor="let application of all_applications">
-                                <ng-container *ngIf="application.Status == 1 || application.Status == 4 || application.Status == 7">
+                                <ng-container *ngIf="application.Status == 1 || application.Status == 4 || application.Status == 6 || application.Status == 7">
                                     <tr>
                                         <td>{{ application.Name }}</td>
                                         <td>{{application.Shortname}}</td>

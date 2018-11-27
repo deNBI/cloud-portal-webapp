@@ -103,6 +103,7 @@ export class ApplicationsComponent {
     public notificationModalType: string = "info";
     public notificationModalIsClosable: boolean = false;
     private APPROVED_STATUS = 2;
+    private WAIT_FOR_EXTENSION_STATUS=6;
     private EXTENSION_STATUS = 4;
     private EXTENSTION_STATUS_STRING = 'modification requested';
     /**
@@ -376,6 +377,7 @@ export class ApplicationsComponent {
 
 
                     }
+
                     a.Comment = aj["project_application_comment"];
                     a.PerunId = aj['project_application_perun_id'];
                     a.OpenStackProject = aj["project_application_openstack_project"];
@@ -407,17 +409,17 @@ export class ApplicationsComponent {
                         a.ApplicationExtension = r;
 
                     }
+
                     this.all_applications.push(a);
 
                 }
 
                 this.isLoaded_AllApplication = true;
                 for (let app of this.all_applications) {
-                    if (app.Status == 4) {
+                    if (app.Status == 4 || app.Status == this.WAIT_FOR_EXTENSION_STATUS) {
                         this.getFacilityProject(app);
                     }
                 }
-
 
             });
         }
@@ -918,7 +920,7 @@ export class ApplicationsComponent {
      */
     public activeApplicationsAvailable(): boolean {
         for (let application of this.all_applications) {
-            if (application.Status == 1 || application.Status == 4 || application.Status == 7) {
+            if (application.Status == 1 || application.Status == 4 || application.Status == 7 || application.Status == 6) {
                 return true;
             }
         }
