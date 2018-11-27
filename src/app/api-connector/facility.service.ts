@@ -16,6 +16,10 @@ export class FacilityService {
     }
 
 
+    /**
+     * Get all available computecenters.
+     * @returns {Observable<any>}
+     */
     getComputeCenters(): Observable<any> {
 
 
@@ -25,6 +29,10 @@ export class FacilityService {
         }).pipe(catchError((error: any) => throwError(error.error)));
     }
 
+    /**
+     * Get all facility, where the current user is manager.
+     * @returns {Observable<any>}
+     */
     getManagerFacilities(): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'facilityManagers/current/facilities/', {
@@ -52,6 +60,11 @@ export class FacilityService {
     }
 
 
+    /**
+     * Gets all facility applications which are waiting for conirmation.
+     * @param {number} facility
+     * @returns {Observable<any>}
+     */
     getFacilityApplicationsWaitingForConfirmation(facility: number): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/', {
@@ -62,6 +75,12 @@ export class FacilityService {
 
     }
 
+    /**
+     * Approves an facility application.
+     * @param {number} facility
+     * @param {number} application_id
+     * @returns {Observable<any>}
+     */
     approveFacilityApplication(facility: number, application_id: number): Observable<any> {
         let params = new HttpParams().set('action', 'approve');
 
@@ -75,6 +94,12 @@ export class FacilityService {
 
     }
 
+    /**
+     * Declines an application for the facility
+     * @param {number} facility
+     * @param {number} application_id
+     * @returns {Observable<any>}
+     */
     declineFacilityApplication(facility: number, application_id: number): Observable<any> {
         let params = new HttpParams().set('action', 'decline');
 
@@ -88,6 +113,14 @@ export class FacilityService {
 
     }
 
+    /**
+     * Sends an email to all members of the facility.
+     * @param facility
+     * @param subject
+     * @param message
+     * @param reply
+     * @returns {Observable<any>}
+     */
     sendMailToFacility(facility, subject, message, reply?): Observable<any> {
         let params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
 

@@ -58,9 +58,23 @@ export class FacilityApplicationComponent implements OnInit {
      * Selected Application.
      */
     selectedApplication: Application;
+    /**
+     * Facilitties where the user is manager ['name',id].
+     */
     public managerFacilities: [string, number][];
+    /**
+     * Chosen facility.
+     */
     public selectedFacility: [string, number];
+    /**
+     * If the site is loaded with values.
+     * @type {boolean}
+     */
     isLoaded = false;
+    /**
+     * List of all applications.
+     * @type {Array}
+     */
     all_applications: Application[] = [];
     /**
      * Special hardware id for FPGA.
@@ -69,8 +83,7 @@ export class FacilityApplicationComponent implements OnInit {
     public FPGA = 1;
 
 
-    constructor(private userService: UserService, private groupservice: GroupService,
-                private applicataionsservice: ApplicationsService,
+    constructor(private userService: UserService,
                 private applicationstatusservice: ApplicationStatusService,
                 private specialhardwareservice: SpecialHardwareService,
                 private  facilityService: FacilityService) {
@@ -78,7 +91,7 @@ export class FacilityApplicationComponent implements OnInit {
         this.facilityService.getManagerFacilities().subscribe(result => {
             this.managerFacilities = result;
             this.selectedFacility = this.managerFacilities[0];
-            this.getAllApplications( this.selectedFacility ['FacilityId']);
+            this.getAllApplications(this.selectedFacility ['FacilityId']);
 
         })
     }
@@ -112,8 +125,11 @@ export class FacilityApplicationComponent implements OnInit {
         this.selectedApplication = application;
     }
 
-
-    getAllApplications(facility:number) {
+    /**
+     * Gets all applications for the facility.
+     * @param {number} facility
+     */
+    getAllApplications(facility: number) {
         //todo check if user is VO Admin
         this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe(res => {
             if (Object.keys(res).length == 0) {
@@ -192,34 +208,40 @@ export class FacilityApplicationComponent implements OnInit {
         });
     }
 
-    approveApplication(application_id:number){
+    /**
+     * Approves an  application.
+     * @param {number} application_id
+     */
+    approveApplication(application_id: number) {
 
 
-        this.updateNotificaitonModal('Approving Application','Waiting..',true,'info')
-        this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'],application_id).subscribe(res => {
-            this.updateNotificaitonModal('Success','Successfully approved the application.',true,'success');
+        this.updateNotificaitonModal('Approving Application', 'Waiting..', true, 'info')
+        this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'], application_id).subscribe(res => {
+            this.updateNotificaitonModal('Success', 'Successfully approved the application.', true, 'success');
 
-            this.all_applications=[];
+            this.all_applications = [];
             this.getAllApplications(this.selectedFacility['FacilityId'])
-        },error => {
-                        this.updateNotificaitonModal('Failed','Failed to approve the application.',true,'danger');
-
+        }, error => {
+            this.updateNotificaitonModal('Failed', 'Failed to approve the application.', true, 'danger');
 
 
         })
     }
 
-     declineApplication(application_id:number){
-                this.updateNotificaitonModal('Decline Application','Waiting..',true,'info');
+    /**
+     * Declines an Application.
+     * @param {number} application_id
+     */
+    declineApplication(application_id: number) {
+        this.updateNotificaitonModal('Decline Application', 'Waiting..', true, 'info');
 
-        this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'],application_id).subscribe(res => {
-                        this.updateNotificaitonModal('Success','Successfully declined the application.',true,'success');
+        this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'], application_id).subscribe(res => {
+            this.updateNotificaitonModal('Success', 'Successfully declined the application.', true, 'success');
 
-            this.all_applications=[];
+            this.all_applications = [];
             this.getAllApplications(this.selectedFacility['FacilityId'])
-        },error => {
-                        this.updateNotificaitonModal('Failed','Failed to decline the application.',true,'danger');
-
+        }, error => {
+            this.updateNotificaitonModal('Failed', 'Failed to decline the application.', true, 'danger');
 
 
         })
@@ -315,7 +337,7 @@ export class FacilityApplicationComponent implements OnInit {
         return s;
     }
 
-     /**
+    /**
      * Reset notification modal values to default.
      */
     public resetNotificationModal() {
@@ -353,10 +375,14 @@ export class FacilityApplicationComponent implements OnInit {
         }
         return s;
     }
-      onChangeSelectedFacility(value) {
+
+    /**
+     * If the selected facility changes, reload the applicatins.
+     * @param value
+     */
+    onChangeSelectedFacility(value) {
         this.getAllApplications(this.selectedFacility['FacilityId'])
     }
-
 
 
     ngOnInit() {
