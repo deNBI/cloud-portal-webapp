@@ -103,7 +103,7 @@ export class ApplicationsComponent {
     public notificationModalType: string = "info";
     public notificationModalIsClosable: boolean = false;
     private APPROVED_STATUS = 2;
-    private WAIT_FOR_EXTENSION_STATUS=6;
+    private WAIT_FOR_EXTENSION_STATUS = 6;
     private EXTENSION_STATUS = 4;
     private EXTENSTION_STATUS_STRING = 'modification requested';
     /**
@@ -525,6 +525,8 @@ export class ApplicationsComponent {
                 }
                 a.ApplicationExtension = r;
             }
+            this.getFacilityProject(a);
+
             this.all_applications[index] = a;
 
         })
