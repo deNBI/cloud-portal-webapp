@@ -30,12 +30,21 @@ export class Application {
   private _PerunId:number;
   private _TotalCores: number;
   private _TotalRam: number;
+  private _DateApproved: string
 
 
 
   constructor() {
   }
 
+
+  get DateApproved(): string {
+    return this._DateApproved;
+  }
+
+  set DateApproved(value: string) {
+    this._DateApproved = value;
+  }
 
   get TotalCores():number{
     return this._TotalCores;
