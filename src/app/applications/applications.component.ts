@@ -797,61 +797,64 @@ export class ApplicationsComponent {
         let manager_member_user_id: number;
         let new_group_id: number;
 
-        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(result => {
+
+        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise().then(member_raw => {
+                let member = member_raw;
+                manager_member_id = member["id"];
+                manager_member_user_id = member["userId"];
+                // create new group
+
+                return this.groupservice.createGroup(name, description).toPromise();
+            }
+        ).then(group_raw => {
+            let group = group_raw;
+            new_group_id = group["id"];
+
+            //add the application user to the group
+            return this.groupservice.addMember(new_group_id, manager_member_id, compute_center).toPromise();
+
+        }).then(null_result => {
+            return this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).toPromise();
+
+        }).then(null_result => {
+            //setting approved status for Perun Group
+            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
+                if (compute_center != 'undefined') {
+                    this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
+                    console.log('done')
+                }
+            });
+            //update modal
+            //update applications
+            for (let app of this.user_applications) {
+                if (app.Id == application_id) {
+                    this.getUserApplication(app);
+                    break;
+
+                }
+
+            }
+            for (let app of this.all_applications) {
+                if (app.Id == application_id) {
+                    this.getApplication(app);
+                    break;
+
+                }
+            }
+        }).then(this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(result => {
+            console.log('ddd')
             if (result['Error']) {
                 this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
 
             }
             else {
-                this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise().then(member_raw => {
-                        let member = member_raw;
-                        manager_member_id = member["id"];
-                        manager_member_user_id = member["userId"];
-                        // create new group
-
-                        return this.groupservice.createGroup(name, description).toPromise();
-                    }
-                ).then(group_raw => {
-                    let group = group_raw;
-                    new_group_id = group["id"];
-
-                    //add the application user to the group
-                    return this.groupservice.addMember(new_group_id, manager_member_id, compute_center).toPromise();
-
-                }).then(null_result => {
-                    return this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).toPromise();
-
-                }).then(null_result => {
-                    //setting approved status for Perun Group
-                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
-                        if (compute_center != 'undefined') {
-                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
-                        }
-                    });
-                    //update modal
-                    this.updateNotificaitonModal("Success", "The new project was created", true, "success");
-                    //update applications
-                    for (let app of this.user_applications) {
-                        if (app.Id == application_id) {
-                            this.getUserApplication(app);
-                            break;
-
-                        }
-
-                    }
-                    for (let app of this.all_applications) {
-                        if (app.Id == application_id) {
-                            this.getApplication(app);
-                            break;
-
-                        }
-                    }
-                }).catch(error => {
-                    console.log(error)
-                    this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
-                })
+                this.updateNotificaitonModal("Success", "The new project was created", true, "success");
             }
-        });
+        })).catch(error => {
+            console.log(error);
+            this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+        })
+
 
     }
 
