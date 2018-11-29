@@ -359,9 +359,13 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-
-    getEndDate(submit: string, months: number): string ***REMOVED***
-      var date1 = new Date(Number(submit.substring(0, 4)), Number(submit.substring(5, 7)) - 1 , Number(submit.substring(8)));
+  /**
+   * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
+   * @param approval date in string when the application was approved
+   * @param months number of months the application is permitted
+   */
+    getEndDate(approval: string, months: number): string ***REMOVED***
+      var date1 = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1 , Number(approval.substring(8)));
       var m = date1.getMonth();
       if ((m + months) > 11) ***REMOVED***
        date1 = new Date(date1.getFullYear(), (m + months - 12), date1.getDate());
@@ -375,6 +379,16 @@ export class ApplicationsComponent ***REMOVED***
 
     showLifetime(sa: Application): string ***REMOVED***
       return sa.DateApproved + ' - ' + this.getEndDate(sa.DateApproved, sa.Lifetime);
+  ***REMOVED***
+
+  /**
+   * Returns a boolean indicating if the special Hardware which is represented by nums is in use.
+   * @param nums number representing special Hardware
+   * @param application application where it might be in use
+   */
+  specialHardwareInUse(nums: number, application: Application): boolean ***REMOVED***
+    console.log(application.SpecialHardware.toString() + ' ' + nums.toString())
+      return (application.SpecialHardware.toString().includes(nums.toString()));
   ***REMOVED***
 
 

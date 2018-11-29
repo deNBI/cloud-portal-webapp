@@ -694,9 +694,6 @@
                             </h6>
                         </div>
 
-                        <!--<div class="alert alert-info">
-                          Click on the given flavor-categories to expand the form. You have to choose <strong>at least one VM</strong>.
-                        </div>-->
 
                         <div *ngFor="let t of typeList">
                             <div class="card">
@@ -715,7 +712,7 @@
                                                     <input class="form-control"
                                                            name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***_old"
                                                            type="text"
-                                                           value="***REMOVED******REMOVED***selectedApplication?.VMsRequested***REMOVED******REMOVED***" placeholder="NDA" disabled>
+                                                           value="***REMOVED******REMOVED***0***REMOVED******REMOVED***" placeholder="NDA" disabled>
                                                     <span class="input-group-addon"> VMs</span>
                                                 </div>
                                                 <span class="help-block">Currently approved of this type </span>
@@ -727,6 +724,7 @@
                                                            name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
                                                            type="number" min="0" step="1"
                                                            placeholder="e.g 1"
+                                                           value="***REMOVED******REMOVED***0***REMOVED******REMOVED***"
                                                            (ngModel)="'project_application_' + f.name" required>
                                                     <span class="input-group-addon"> VMs</span>
                                                 </div>
@@ -851,7 +849,15 @@
                                     data-balloon-pos="down"
                                     data-balloon-length="large"><i class="icon-question"
                                                                    style="cursor: pointer;"></i></i></label>
-
+                          <!-- not working properly yet
+                          <div class="col">
+                                <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">                                    <label>
+                                        <input type="checkbox" [checked]="(specialHardwareInUse(sh, selectedApplication))" disabled>
+                                        ***REMOVED******REMOVED***sh.Name***REMOVED******REMOVED***
+                                    </label>
+                                </div>
+                                <span class="help-block">Currently used special hardware</span>
+                            </div> -->
 
                           <div class="col">
                                 <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
