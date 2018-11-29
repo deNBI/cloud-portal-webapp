@@ -700,11 +700,10 @@
 
                         <div *ngFor="let t of typeList">
                             <div class="card">
-                              <!--(click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"-->
+
                                 <div id="flavor-card" class="card-header">
                                     {{t.long_name}}
                                 </div>
-                               <!--*ngIf="collapseList[typeList.indexOf(t)]"-->
                                 <div class="form-group card-body">
                                     <div *ngFor="let f of flavorList" class="form-group row">
                                         <div *ngIf="f.type.shortcut == t.shortcut" class="form-group row">
@@ -716,7 +715,7 @@
                                                     <input class="form-control"
                                                            name="project_application_{{f.name}}_old"
                                                            type="text"
-                                                           value="{{selectedApplication.VMsRequested}}" placeholder="NDA" disabled>
+                                                           value="{{selectedApplication?.VMsRequested}}" placeholder="NDA" disabled>
                                                     <span class="input-group-addon"> VMs</span>
                                                 </div>
                                                 <span class="help-block">Currently approved of this type </span>
@@ -728,7 +727,7 @@
                                                            name="project_application_{{f.name}}"
                                                            type="number" min="0" step="1"
                                                            placeholder="e.g 1"
-                                                           (ngModel)="'project_application_' + f.name" + required>
+                                                           (ngModel)="'project_application_' + f.name" required>
                                                     <span class="input-group-addon"> VMs</span>
                                                 </div>
                                                 <span class="help-block">Number of VMs you would like to run in the future</span>
@@ -738,7 +737,6 @@
                                     </div>
                                 </div>
                             </div>
-
 
                         </div>
 
@@ -752,7 +750,7 @@
                             <div class="col">
                                 <div class="input-group">
                                     <input class="form-control"
-                                           name="project_application_volume_limit"
+                                           name="project_application_renewal_volume_limit"
                                            value="{{selectedApplication.VolumeLimit}}"
                                            placeholder="NDA"
                                            type="text" disabled>
@@ -763,11 +761,11 @@
                             </div>
                           <div class="col">
                                 <div class="input-group"  [ngClass]="{
-                                'has-danger': f.controls.project_application_volume_limit?.invalid,
-                                'has-success': f.controls.project_application_volume_limit?.valid
+                                'has-danger': f.controls.project_application_renewal_volume_limit?.invalid,
+                                'has-success': f.controls.project_application_renewal_volume_limit?.valid
                                 }">
-                                    <input class="form-control" id="id_project_application_volume_limit"
-                                           name="project_application_volume_limit"
+                                    <input class="form-control" id="id_project_application_renewal_volume_limit"
+                                           name="project_application_renewal_volume_limit"
                                            placeholder="e.g. 20" value="{{selectedApplication.VolumeLimit}}"
                                            type="number" min="1" step="1" [ngModel]="20">
                                     <span class="input-group-addon"> GB
@@ -797,11 +795,11 @@
                           <div class="col">
                                 <div class="input-group"
                                      [ngClass]="{
-                                'has-danger': f.controls.project_application_volume_counter?.invalid,
-                                'has-success': f.controls.project_application_volume_counter?.valid
+                                'has-danger': f.controls.project_application_renewal_volume_counter?.invalid,
+                                'has-success': f.controls.project_application_renewal_volume_counter?.valid
                                 }">
-                                    <input required class="form-control" id="id_project_application_volume_counter"
-                                           name="project_application_volume_counter"
+                                    <input required class="form-control" id="id_project_application_renewal_volume_counter"
+                                           name="project_application_renewal_volume_counter"
                                            placeholder="e.g. 20"
                                            type="number" min="0" step="1"
                                       [ngModel]="selectedApplication?.VolumeCounter">
@@ -831,11 +829,11 @@
 
                           <div class="col">
                                 <div class="input-group" [ngClass]="{
-                                'has-danger': f.controls.project_application_object_storage?.invalid ,
-                                'has-success': f.controls.project_application_object_storage?.valid
+                                'has-danger': f.controls.project_application_renewal_object_storage?.invalid ,
+                                'has-success': f.controls.project_application_renewal_object_storage?.valid
                                 }" required>
-                                    <input class="form-control" id="id_project_application_object_storage"
-                                           name="project_application_object_storage"
+                                    <input class="form-control" id="id_project_application_renewal_object_storage"
+                                           name="project_application_renewal_object_storage"
                                            placeholder="e.g. 8"
                                            value="{{selectedApplication.ObjectStorage}}"
                                            type="number" min="0" step="1" [ngModel]="0">
@@ -853,15 +851,8 @@
                                     data-balloon-pos="down"
                                     data-balloon-length="large"><i class="icon-question"
                                                                    style="cursor: pointer;"></i></i></label>
-                            <div class="col">
-                                <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
-                                    <label>
-                                        <input type="checkbox"/>
-                                        {{sh.Name}}
-                                    </label>
-                                </div>
-                                <span class="help-block">Currently approved special hardware</span>
-                            </div>
+
+
                           <div class="col">
                                 <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
                                     <label>
@@ -891,7 +882,7 @@
                 <div class="modal-footer">
                   <div class="label">
                     By submitting this application you agree to the cloud usage policy.</div>
-                    <button type="button" c class="btn  btn-primary" type="submit" name="_save" form="application_form"
+                    <button type="button"  class="btn  btn-primary" type="submit" name="_save" form="application_form"
                             (click)="extensionModal.hide();resultModal.show()"
                             [disabled]="f.invalid"><i
                             class="fa fa-dot-circle-o">
