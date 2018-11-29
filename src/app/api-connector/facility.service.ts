@@ -52,7 +52,7 @@ export class FacilityService {
 
         return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/', {
             withCredentials: true,
-            params: {status: status}
+            params: {status: status.toString()}
 
         }).pipe(catchError((error: any) => throwError(error)));
 
