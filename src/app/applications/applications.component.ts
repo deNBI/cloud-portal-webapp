@@ -322,6 +322,7 @@ export class ApplicationsComponent ***REMOVED***
                 a.OpenStackProject = aj["project_application_openstack_project"];
                 a.Comment = aj["project_application_comment"];
                 a.PerunId = aj['project_application_perun_id'];
+                a.DateApproved = aj['project_application_date_approved'];
 
                 if (aj['projectapplicationrenewal']) ***REMOVED***
                     let r = new ApplicationExtension();
@@ -373,7 +374,7 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***
 
     showLifetime(sa: Application): string ***REMOVED***
-      return sa.DateSubmitted + ' - ' + this.getEndDate(sa.DateSubmitted, sa.Lifetime);
+      return sa.DateApproved + ' - ' + this.getEndDate(sa.DateApproved, sa.Lifetime);
   ***REMOVED***
 
 

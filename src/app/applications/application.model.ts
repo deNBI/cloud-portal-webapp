@@ -30,12 +30,21 @@ export class Application ***REMOVED***
   private _PerunId:number;
   private _TotalCores: number;
   private _TotalRam: number;
+  private _DateApproved: string
 
 
 
   constructor() ***REMOVED***
   ***REMOVED***
 
+
+  get DateApproved(): string ***REMOVED***
+    return this._DateApproved;
+  ***REMOVED***
+
+  set DateApproved(value: string) ***REMOVED***
+    this._DateApproved = value;
+  ***REMOVED***
 
   get TotalCores():number***REMOVED***
     return this._TotalCores;
