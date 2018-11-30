@@ -782,6 +782,64 @@ export class ApplicationsComponent {
     }
 
 
+    public createOpenStackProjectGroup(name, description, manager_elixir_id, application_id, compute_center) {
+        //get memeber id in order to add the user later as the new member and manager of the group
+        let manager_member_id: number;
+        let manager_member_user_id: number;
+        let new_group_id: number;
+
+        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => {
+                let member = member_raw;
+                manager_member_id = member["id"];
+                manager_member_user_id = member["userId"];
+                this.groupservice.createGroup(name, description).subscribe(group_raw => {
+                    let group = group_raw;
+                    new_group_id = group["id"];
+                    this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
+                    this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
+                        this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
+                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(res => {
+                                this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(result => {
+                                        if (result['Error']) {
+                                            this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
+
+                                        }
+                                        else {
+                                            this.updateNotificaitonModal("Success", "The new project was created", true, "success");
+                                        }
+                                        for (let app of this.user_applications) {
+                                            if (app.Id == application_id) {
+                                                this.getUserApplication(app);
+                                                break;
+
+                                            }
+
+
+                                        }
+                                        for (let app of this.all_applications) {
+                                            if (app.Id == application_id) {
+                                                this.getApplication(app);
+                                                break;
+
+                                            }
+                                        }
+                                    }
+                                )
+                            });
+                        })
+
+                    })
+
+                })
+            }
+
+            , error => {
+                console.log(error);
+                this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+            })
+
+    }
+
     /**
      * Create a new Group in perun with the specific attributes.
      * @param name
@@ -790,67 +848,68 @@ export class ApplicationsComponent {
      * @param application_id
      * @param compute_center
      */
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center) {
+    public createSimpleVmProjectGroup(name, description, manager_elixir_id, application_id, compute_center) {
 
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
-
-
-        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise().then(member_raw => {
-                let member = member_raw;
-                manager_member_id = member["id"];
-                manager_member_user_id = member["userId"];
-                // create new group
-
-                return this.groupservice.createGroup(name, description).toPromise();
-            }
-        ).then(group_raw => {
-            let group = group_raw;
-            new_group_id = group["id"];
-
-            //add the application user to the group
-            return this.groupservice.addMember(new_group_id, manager_member_id, compute_center).toPromise();
-
-        }).then(null_result => {
-            return this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).toPromise();
-
-        }).then(null_result => {
-            //setting approved status for Perun Group
-            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
-                if (compute_center != 'undefined') {
-                    this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
-                    console.log('done')
-                }
-            });
-            //update modal
-            //update applications
-            for (let app of this.user_applications) {
-                if (app.Id == application_id) {
-                    this.getUserApplication(app);
-                    break;
-
-                }
-
-            }
-            for (let app of this.all_applications) {
-                if (app.Id == application_id) {
-                    this.getApplication(app);
-                    break;
-
-                }
-            }
-        }).then(this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(result => {
-            console.log('ddd')
+        this.applicationstatusservice.setApplicationStatus(application_id, this.APPROVED_STATUS, compute_center).subscribe(result => {
             if (result['Error']) {
                 this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
+                this
 
             }
             else {
-                this.updateNotificaitonModal("Success", "The new project was created", true, "success");
+
+
+                this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => {
+                    let member = member_raw;
+                    manager_member_id = member["id"];
+                    manager_member_user_id = member["userId"];
+                    this.groupservice.createGroup(name, description).subscribe(group_raw => {
+                        let group = group_raw;
+                        new_group_id = group["id"];
+                        this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
+                        this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
+                            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
+                                    if (result['Error']) {
+                                        this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
+
+                                    }
+                                    else {
+                                        this.updateNotificaitonModal("Success", "The new project was created", true, "success");
+                                    }
+
+                                    for (let app of this.user_applications) {
+                                        if (app.Id == application_id) {
+                                            this.getUserApplication(app);
+                                            break;
+
+                                        }
+
+
+                                    }
+                                    for (let app of this.all_applications) {
+                                        if (app.Id == application_id) {
+                                            this.getApplication(app);
+                                            break;
+
+                                        }
+                                    }
+
+                                }
+                            )
+
+
+                        });
+
+                    });
+
+                })
             }
-        })).catch(error => {
+
+        }, error => {
             console.log(error);
             this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
         })
