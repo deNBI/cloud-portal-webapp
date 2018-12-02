@@ -1,0 +1,288 @@
+<div *ngIf="isLoaded==false" class="loader"></div>
+
+<div *ngIf="isLoaded" class="col-lg-12">
+    <div class="card">
+        <div class="card-header">
+            <h4 *ngIf="selectedFacility" >
+                <i class="fa fa-align-justify"></i>
+                Applications Overview:
+                {{selectedFacility['Facility']}}</h4>
+
+        </div>
+        <div class="card-block">
+            <div style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
+                         (ngModelChange)="onChangeSelectedFacility($event)"
+                         class="form-control col-md-1" name="selectedFacility">
+                <option *ngFor="  let facility of managerFacilities"
+                        [ngValue]="facility">
+                    {{facility['Facility']}}
+                </option>
+
+            </select></div>
+            <div class="alert alert-success"
+                 *ngIf="all_applications.length == 0" role="alert">
+                <strong>No new Applications!</strong> There are no new project
+                applications for review.
+            </div>
+        </div>
+
+        <div class="card-block"  *ngIf="all_applications.length != 0">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Project Name</th>
+                        <th>Short Name</th>
+                        <th>Date submitted</th>
+                        <th>User</th>
+                        <th>Institute</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ng-container *ngFor="let application of all_applications">
+                        <ng-container>
+                            <tr>
+                                <td>{{ application.Name }}</td>
+                                <td>{{application.Shortname}}</td>
+                                <td>{{ application.DateSubmitted }}</td>
+                                <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
+                                    {{ application.User }}
+                                </td>
+                                <td>{{application.Institute}}</td>
+
+                                <td>
+                                    <button type="button"
+                                            (click)="resetNotificationModal();notificationModal.show();approveApplication(application.Id)"
+                                            class="btn btn-secondary"><i
+                                            class="fa fa-check"></i>&nbsp;
+                                        Approve
+                                    </button>
+                                    <button
+                                            (click)='resetNotificationModal();notificationModal.show();declineApplication(application.Id)'
+                                            type="button"
+                                            class="btn btn-secondary"><i
+                                            class="fa fa-close"></i>&nbsp;
+                                        Decline
+                                    </button>
+
+                                    <button (click)="switchCollapseStatus('application_review-' + application.Id);  getMemberDetailsByElixirIdIfCollapsed(application.User,'application_review-' + application.Id);"
+                                            type="button"
+                                            class="btn btn-secondary">
+                                        <i class="fa fa-info-circle"></i>&nbsp;
+                                        <span [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
+                                            [hidden]="getCollapseStatus('application_review-' + application.Id)">Hide</span>
+                                        Information
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + application.Id)"
+                                    colspan="6">
+                                    <div id="application_review-{{ application.Id }}"
+                                         [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <tr>
+                                                    <td>User Affiliations</td>
+                                                    <td>{{
+                                                        application.UserAffiliations}}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>User Name</td>
+                                                    <td>
+                                                        {{application_user[application.User]?.name}}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>User Email</td>
+                                                    <td>
+                                                        {{application_user[application.User]?.email}}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Description</td>
+                                                    <td>{{
+                                                        application.Description
+                                                        }}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Workgroup</td>
+                                                    <td>{{
+                                                        application.Workgroup
+                                                        }}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>OpenStackProject</td>
+                                                    <td>
+                                                        {{application.OpenStackProject}}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Comment</td>
+                                                    <td>{{ application.Comment
+                                                        }}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                        {{application.ApplicationExtension?.Comment}}
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>Lifetime</td>
+                                                    <td>{{ application.Lifetime
+                                                        }} months
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                        {{application.ApplicationExtension?.Lifetime
+                                                        +
+                                                        application.Lifetime}}
+                                                        months
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>VMs</td>
+                                                    <td>{{
+                                                        application.VMsRequested
+                                                        }} VMs
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                        {{application.ApplicationExtension?.VMsRequested}}
+                                                        VMs
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
+                                                    <td>Cores/VM</td>
+                                                    <td>{{
+                                                        application.CoresPerVM
+                                                        }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
+                                                    <td>Cores</td>
+                                                    <td>{{
+                                                        application.TotalCores
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
+                                                    <td>RAM</td>
+                                                    <td>{{ application.RamPerVM
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
+                                                    <td>RAM</td>
+                                                    <td>{{
+                                                        application.TotalRam}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Storage Limit</td>
+                                                    <td>{{
+                                                        application.VolumeLimit
+                                                        }} GB
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                        {{application.ApplicationExtension?.VolumeLimit}}
+                                                        GB
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Volume Counter</td>
+                                                    <td>{{
+                                                        application.VolumeCounter
+                                                        }}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                        {{application.ApplicationExtension?.VolumeCounter}}
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="application.OpenStackProject">
+                                                    <td>ObjectStorage</td>
+                                                    <td>{{
+                                                        application.ObjectStorage
+                                                        }} GB
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                        {{application.ApplicationExtension?.ObjectStorage}}
+                                                        GB
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="application.OpenStackProject">
+                                                    <td>Special Hardware</td>
+                                                    <td><span
+                                                            style="margin-right: 5px;"
+                                                            class="badge badge-primary"
+                                                            *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
+                                                    </td>
+                                                    <td *ngIf="application.Status == 4">
+                                                       <span style="margin-right: 5px;"
+                                                             class="badge badge-primary"
+                                                             *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">{{ sh }}</span>
+                                                    </td>
+                                                </tr>
+
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+              <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-{{ notificationModalType }}" role="alert">
+                    {{ notificationModalMessage }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="notificationModalIsClosable == true" type="button"
+                        (click)="notificationModal.hide();" type="reset"
+                        class="btn  btn-secondary"> Close
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
