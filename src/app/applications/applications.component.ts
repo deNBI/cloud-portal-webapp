@@ -25,6 +25,7 @@ import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.mode
     providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
 ***REMOVED***)
 export class ApplicationsComponent ***REMOVED***
+    WAIT_FOR_CONFIRMATION = "wait for confirmation";
 
     /**
      * Applications of the user viewing the Application overview.
@@ -102,6 +103,7 @@ export class ApplicationsComponent ***REMOVED***
     public notificationModalType: string = "info";
     public notificationModalIsClosable: boolean = false;
     private APPROVED_STATUS = 2;
+    private WAIT_FOR_EXTENSION_STATUS = 6;
     private EXTENSION_STATUS = 4;
     private EXTENSTION_STATUS_STRING = 'modification requested';
     /**
@@ -375,6 +377,7 @@ export class ApplicationsComponent ***REMOVED***
 
 
                     ***REMOVED***
+
                     a.Comment = aj["project_application_comment"];
                     a.PerunId = aj['project_application_perun_id'];
                     a.OpenStackProject = aj["project_application_openstack_project"];
@@ -406,17 +409,17 @@ export class ApplicationsComponent ***REMOVED***
                         a.ApplicationExtension = r;
 
                     ***REMOVED***
+
                     this.all_applications.push(a);
 
                 ***REMOVED***
 
                 this.isLoaded_AllApplication = true;
                 for (let app of this.all_applications) ***REMOVED***
-                    if (app.Status == 4) ***REMOVED***
+                    if (app.Status == 4 || app.Status == this.WAIT_FOR_EXTENSION_STATUS) ***REMOVED***
                         this.getFacilityProject(app);
                     ***REMOVED***
                 ***REMOVED***
-
 
             ***REMOVED***);
         ***REMOVED***
@@ -522,6 +525,8 @@ export class ApplicationsComponent ***REMOVED***
                 ***REMOVED***
                 a.ApplicationExtension = r;
             ***REMOVED***
+            this.getFacilityProject(a);
+
             this.all_applications[index] = a;
 
         ***REMOVED***)
@@ -777,6 +782,64 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***
 
 
+    public createOpenStackProjectGroup(name, description, manager_elixir_id, application_id, compute_center) ***REMOVED***
+        //get memeber id in order to add the user later as the new member and manager of the group
+        let manager_member_id: number;
+        let manager_member_user_id: number;
+        let new_group_id: number;
+
+        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => ***REMOVED***
+                let member = member_raw;
+                manager_member_id = member["id"];
+                manager_member_user_id = member["userId"];
+                this.groupservice.createGroup(name, description).subscribe(group_raw => ***REMOVED***
+                    let group = group_raw;
+                    new_group_id = group["id"];
+                    this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
+                    this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => ***REMOVED***
+                        this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => ***REMOVED***
+                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(res => ***REMOVED***
+                                this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(result => ***REMOVED***
+                                        if (result['Error']) ***REMOVED***
+                                            this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
+
+                                        ***REMOVED***
+                                        else ***REMOVED***
+                                            this.updateNotificaitonModal("Success", "The new project was created", true, "success");
+                                        ***REMOVED***
+                                        for (let app of this.user_applications) ***REMOVED***
+                                            if (app.Id == application_id) ***REMOVED***
+                                                this.getUserApplication(app);
+                                                break;
+
+                                            ***REMOVED***
+
+
+                                        ***REMOVED***
+                                        for (let app of this.all_applications) ***REMOVED***
+                                            if (app.Id == application_id) ***REMOVED***
+                                                this.getApplication(app);
+                                                break;
+
+                                            ***REMOVED***
+                                        ***REMOVED***
+                                    ***REMOVED***
+                                )
+                            ***REMOVED***);
+                        ***REMOVED***)
+
+                    ***REMOVED***)
+
+                ***REMOVED***)
+            ***REMOVED***
+
+            , error => ***REMOVED***
+                console.log(error);
+                this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+            ***REMOVED***)
+
+    ***REMOVED***
+
     /**
      * Create a new Group in perun with the specific attributes.
      * @param name
@@ -785,71 +848,96 @@ export class ApplicationsComponent ***REMOVED***
      * @param application_id
      * @param compute_center
      */
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center) ***REMOVED***
+    public createSimpleVmProjectGroup(name, description, manager_elixir_id, application_id, compute_center) ***REMOVED***
 
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
-
-        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).subscribe(result => ***REMOVED***
+        this.applicationstatusservice.setApplicationStatus(application_id, this.APPROVED_STATUS, compute_center).subscribe(result => ***REMOVED***
             if (result['Error']) ***REMOVED***
                 this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
+                this
 
             ***REMOVED***
             else ***REMOVED***
-                this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise().then(member_raw => ***REMOVED***
-                        let member = member_raw;
-                        manager_member_id = member["id"];
-                        manager_member_user_id = member["userId"];
-                        // create new group
-
-                        return this.groupservice.createGroup(name, description).toPromise();
-                    ***REMOVED***
-                ).then(group_raw => ***REMOVED***
-                    let group = group_raw;
-                    new_group_id = group["id"];
-
-                    //add the application user to the group
-                    return this.groupservice.addMember(new_group_id, manager_member_id, compute_center).toPromise();
-
-                ***REMOVED***).then(null_result => ***REMOVED***
-                    return this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).toPromise();
-
-                ***REMOVED***).then(null_result => ***REMOVED***
-                    //setting approved status for Perun Group
-                    console.log(new_group_id)
 
 
-                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => ***REMOVED***
-                        if (compute_center != 'undefined') ***REMOVED***
-                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
-                        ***REMOVED***
+                this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => ***REMOVED***
+                    let member = member_raw;
+                    manager_member_id = member["id"];
+                    manager_member_user_id = member["userId"];
+                    this.groupservice.createGroup(name, description).subscribe(group_raw => ***REMOVED***
+                        let group = group_raw;
+                        new_group_id = group["id"];
+                        this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
+                        this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => ***REMOVED***
+                            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => ***REMOVED***
+                                    if (result['Error']) ***REMOVED***
+                                        this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
+
+                                    ***REMOVED***
+                                    else ***REMOVED***
+                                        this.updateNotificaitonModal("Success", "The new project was created", true, "success");
+                                    ***REMOVED***
+
+                                    for (let app of this.user_applications) ***REMOVED***
+                                        if (app.Id == application_id) ***REMOVED***
+                                            this.getUserApplication(app);
+                                            break;
+
+                                        ***REMOVED***
+
+
+                                    ***REMOVED***
+                                    for (let app of this.all_applications) ***REMOVED***
+                                        if (app.Id == application_id) ***REMOVED***
+                                            this.getApplication(app);
+                                            break;
+
+                                        ***REMOVED***
+                                    ***REMOVED***
+
+                                ***REMOVED***
+                            )
+
+
+                        ***REMOVED***);
+
                     ***REMOVED***);
-                    //update modal
-                    this.updateNotificaitonModal("Success", "The new project was created", true, "success");
-                    //update applications
-                    for (let app of this.user_applications) ***REMOVED***
-                        if (app.Id == application_id) ***REMOVED***
-                            this.getUserApplication(app);
-                            break;
 
-                        ***REMOVED***
-
-                    ***REMOVED***
-                    for (let app of this.all_applications) ***REMOVED***
-                        if (app.Id == application_id) ***REMOVED***
-                            this.getApplication(app);
-                            break;
-
-                        ***REMOVED***
-                    ***REMOVED***
-                ***REMOVED***).catch(error => ***REMOVED***
-                    console.log(error)
-                    this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
                 ***REMOVED***)
             ***REMOVED***
-        ***REMOVED***);
+
+        ***REMOVED***, error => ***REMOVED***
+            console.log(error);
+            this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+        ***REMOVED***)
+
+
+    ***REMOVED***
+
+    assignGroupToFacility(group_id, application_id, compute_center) ***REMOVED***
+        if (compute_center != 'undefined') ***REMOVED***
+            this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(res => ***REMOVED***
+                    this.updateNotificaitonModal("Success", "The  project was assigned to the facility.", true, "success");
+                    this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(res => ***REMOVED***
+                        for (let app of this.all_applications) ***REMOVED***
+                            if (app.Id == application_id) ***REMOVED***
+                                this.getApplication(app);
+                                break;
+
+                            ***REMOVED***
+                        ***REMOVED***
+                    ***REMOVED***)
+
+
+                ***REMOVED***,
+                error => ***REMOVED***
+                    console.log(error);
+                    this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+                ***REMOVED***);
+        ***REMOVED***
 
     ***REMOVED***
 
@@ -896,7 +984,7 @@ export class ApplicationsComponent ***REMOVED***
      */
     public activeApplicationsAvailable(): boolean ***REMOVED***
         for (let application of this.all_applications) ***REMOVED***
-            if (application.Status == 1 || application.Status == 4) ***REMOVED***
+            if (application.Status == 1 || application.Status == 4 || application.Status == 7 || application.Status == 6) ***REMOVED***
                 return true;
             ***REMOVED***
         ***REMOVED***
