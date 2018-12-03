@@ -24,7 +24,8 @@ export class OverviewComponent ***REMOVED***
     debug_module = false;
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
-    @Input() invitation_group_pre: string = environment.invitation_group_pre
+    @Input() invitation_group_pre: string = environment.invitation_group_pre;
+    @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
     is_admin = false;
     userprojects: ***REMOVED******REMOVED***[];
     member_id: number;

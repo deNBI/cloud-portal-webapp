@@ -29,6 +29,11 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
     isLoaded: boolean = false;
     projects: Project[] = new Array();
     details_loaded = false;
+    /**
+     * Approved group status.
+     * @type ***REMOVED***number***REMOVED***
+     */
+    STATUS_APPROVED = 2;
 
 
     // modal variables for User list
@@ -52,7 +57,7 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
                 private  facilityservice: FacilityService) ***REMOVED***
 
         this.facilityservice.getManagerFacilities().subscribe(result => ***REMOVED***
-            this.managerFacilities = result
+            this.managerFacilities = result;
             this.selectedFacility = this.managerFacilities[0]
             this.getFacilityProjects(this.managerFacilities[0]['FacilityId'])
 
@@ -94,7 +99,7 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
         this.projects = [];
 
 
-        this.facilityservice.getFacilityAllowedGroupsWithDetails(facility).subscribe(result => ***REMOVED***
+        this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility,this.STATUS_APPROVED).subscribe(result => ***REMOVED***
             let facility_projects = result;
             let is_pi = false;
             let is_admin = false;

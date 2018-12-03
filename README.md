@@ -17,28 +17,29 @@ cd cloud-portal-webapp
 127.0.0.1 portal-dev.denbi.de
 ~~~
 
-3. Install node version manager and node version 8
-~~~BASH
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-# follow the commands printed by nvm
-nvm install
-~~~
+3. Install nodejs virtual environment as decribed [here](https://github.com/ekalinin/nodeenv#install).
 
-Note that the actual used node version is defined in .nvmrc.
-
-4. In order to use the node version install with nvm just run the following command. 
+4. The environment can then be created with
 
 ~~~BASH
-nvm use --delete-prefix
+nodeenv -C .nodeenvrc env
 ~~~
 
-5. Install all needed npm packages and angular cli
+Note that the actual used node version is defined in .nodeenvrc.
+
+5. The environment can be activated with
+
+~~~BASH
+. env/bin/activate
+~~~
+
+6. Install all needed npm packages and angular cli
 ~~~BASH
 npm install 
 npm install -g @angular/cli
 ~~~
 
-6. start the angular server with
+7. start the angular server with
 ~~~BASH
 ng serve
 ~~~
