@@ -96,7 +96,11 @@
                 </li>
                 <li *ngIf="is_facility_manager" class="nav-item">
                     <a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/facilityProjects']"><i
-                            class="icon-list"></i> Facility Projects</a>
+                            class="icon-list"></i> Projects</a>
+                </li>
+                 <li *ngIf="is_facility_manager" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/facilityApplications']"><i
+                            class="icon-list"></i> Applications</a>
                 </li>
                 <li *ngIf="is_facility_manager" class="nav-item">
                     <a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/imageTags']"><i
