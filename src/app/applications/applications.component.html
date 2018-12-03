@@ -749,7 +749,7 @@
                                 <div class="input-group">
                                     <input class="form-control"
                                            name="project_application_renewal_volume_limit"
-                                           value="{{selectedApplication.VolumeLimit}}"
+                                           value="{{selectedApplication?.VolumeLimit}}"
                                            placeholder="NDA"
                                            type="text" disabled>
                                     <span class="input-group-addon"> GB
@@ -764,7 +764,7 @@
                                 }">
                                     <input class="form-control" id="id_project_application_renewal_volume_limit"
                                            name="project_application_renewal_volume_limit"
-                                           placeholder="e.g. 20" value="{{selectedApplication.VolumeLimit}}"
+                                           placeholder="e.g. 20" value="{{selectedApplication?.VolumeLimit}}"
                                            type="number" min="1" step="1" [ngModel]="20">
                                     <span class="input-group-addon"> GB
                                     </span>
@@ -784,7 +784,7 @@
                                     <input required class="form-control"
                                            name="project_application_volume_counter"
                                            placeholder="NDA"
-                                           value="{{selectedApplication.VolumeCounter}}"
+                                           value="{{selectedApplication?.VolumeCounter}}"
                                            type="text" disabled>
                                 </div>
                                 <span class="help-block">Current number of storage volumes</span>
@@ -817,7 +817,7 @@
                                     <input class="form-control"
                                            name="project_application_object_storage"
                                            placeholder="NDA"
-                                           value="{{selectedApplication.ObjectStorage}}"
+                                           value="{{selectedApplication?.ObjectStorage}}"
                                            type="text" disabled>
                                     <span class="input-group-addon"> GB
                                     </span>
@@ -833,7 +833,7 @@
                                     <input class="form-control" id="id_project_application_renewal_object_storage"
                                            name="project_application_renewal_object_storage"
                                            placeholder="e.g. 8"
-                                           value="{{selectedApplication.ObjectStorage}}"
+                                           value="{{selectedApplication?.ObjectStorage}}"
                                            type="number" min="0" step="1" [ngModel]="0">
                                     <span class="input-group-addon"> GB
                                     </span>
