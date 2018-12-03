@@ -127,7 +127,7 @@ export class ApplicationsComponent ***REMOVED***
      */
     collapse_status: ***REMOVED*** [id: string]: boolean ***REMOVED*** = ***REMOVED******REMOVED***;
 
-     /**
+    /**
      * List of flavors.
      */public flavorList: Flavor[];
 
@@ -143,12 +143,12 @@ export class ApplicationsComponent ***REMOVED***
      * Total number of cores.
      * @type ***REMOVED***number***REMOVED***
      */
-    public totalNumberOfCores=0;
+    public totalNumberOfCores = 0;
     /**
      * Total number of ram.
      * @type ***REMOVED***number***REMOVED***
      */
-    public totalRAM=0;
+    public totalRAM = 0;
 
     /**
      * Constructor.
@@ -193,31 +193,31 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***
 
     /**
-   * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
-   */
+     * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+     */
     getListOfFlavors() ***REMOVED***
         this.flavorService.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
     ***REMOVED***
 
     /**
-    * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
-    */
+     * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+     */
     getListOfTypes() ***REMOVED***
         this.flavorService.getListOfTypesAvailable().subscribe(types => this.setListOfTypes(types));
     ***REMOVED***
 
 
-  /**
-   * Uses the param types to safe the available FlavorTypes to the array typeList.
-   * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
-   * @param types array of all available FlavorTypes
-   */
-  setListOfTypes(types: FlavorType[]) ***REMOVED***
-      this.typeList = types;
-      this.collapseList = new Array(types.length) as Array<boolean>;
-      for (let i = 0; i < types.length; i++) ***REMOVED***
-        this.collapseList.push(false); //AS FIX
-      ***REMOVED***
+    /**
+     * Uses the param types to safe the available FlavorTypes to the array typeList.
+     * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
+     * @param types array of all available FlavorTypes
+     */
+    setListOfTypes(types: FlavorType[]) ***REMOVED***
+        this.typeList = types;
+        this.collapseList = new Array(types.length) as Array<boolean>;
+        for (let i = 0; i < types.length; i++) ***REMOVED***
+            this.collapseList.push(false); //AS FIX
+        ***REMOVED***
 
     ***REMOVED***
 
@@ -359,40 +359,43 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-  /**
-   * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
-   * @param approval date in string when the application was approved
-   * @param months number of months the application is permitted
-   */
+    /**
+     * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
+     * @param approval date in string when the application was approved
+     * @param months number of months the application is permitted
+     */
     getEndDate(approval: string, months: number): string ***REMOVED***
-      var date1 = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1 , Number(approval.substring(8)));
-      var m = date1.getMonth();
-      if ((m + months) > 11) ***REMOVED***
-       date1 = new Date(date1.getFullYear(), (m + months - 12), date1.getDate());
-      ***REMOVED***
+        var date1 = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
+        var m = date1.getMonth();
+        if ((m + months) > 11) ***REMOVED***
+            date1 = new Date(date1.getFullYear(), (m + months - 12), date1.getDate());
+        ***REMOVED***
         else ***REMOVED***
-          date1.setMonth(date1.getMonth() + months);
+            date1.setMonth(date1.getMonth() + months);
         ***REMOVED***
 
-      return date1.getFullYear() + '-' + (date1.getMonth() + 1) + '-' + date1.getDate();
+        return date1.getFullYear() + '-' + (date1.getMonth() + 1) + '-' + date1.getDate();
     ***REMOVED***
 
-    showLifetime(sa: Application): string ***REMOVED***
-      return sa.DateApproved + ' - ' + this.getEndDate(sa.DateApproved, sa.Lifetime);
-  ***REMOVED***
+    showLifetime(sa?: Application): string ***REMOVED***
+        if (!sa) ***REMOVED***
+            return
+        ***REMOVED***
+        return sa.DateApproved + ' - ' + this.getEndDate(sa.DateApproved, sa.Lifetime);
+    ***REMOVED***
 
-  /**
-   * Returns a boolean indicating if the special Hardware which is represented by nums is in use.
-   * @param nums number representing special Hardware
-   * @param application application where it might be in use
-   */
-  specialHardwareInUse(nums: number, application: Application): boolean ***REMOVED***
-    console.log(application.SpecialHardware.toString() + ' ' + nums.toString())
-      return (application.SpecialHardware.toString().includes(nums.toString()));
-  ***REMOVED***
+    /**
+     * Returns a boolean indicating if the special Hardware which is represented by nums is in use.
+     * @param nums number representing special Hardware
+     * @param application application where it might be in use
+     */
+    specialHardwareInUse(nums: number, application: Application): boolean ***REMOVED***
+        console.log(application.SpecialHardware.toString() + ' ' + nums.toString())
+        return (application.SpecialHardware.toString().includes(nums.toString()));
+    ***REMOVED***
 
 
-  /**
+    /**
      * Get all possible application stati.
      */
     getApplicationStatus() ***REMOVED***
@@ -458,6 +461,8 @@ export class ApplicationsComponent ***REMOVED***
 
                     a.Institute = aj["project_application_institute"];
                     a.Workgroup = aj["project_application_workgroup"];
+                    a.DateApproved = aj['project_application_date_approved'];
+
 
                     a.DateSubmitted = aj["project_application_date_submitted"];
                     a.DateStatusChanged = aj["project_application_date_status_changed"];
@@ -575,6 +580,8 @@ export class ApplicationsComponent ***REMOVED***
 
             a.Institute = aj["project_application_institute"];
             a.Workgroup = aj["project_application_workgroup"];
+            a.DateApproved = aj['project_application_date_approved'];
+
 
             a.DateSubmitted = aj["project_application_date_submitted"];
             a.DateStatusChanged = aj["project_application_date_status_changed"];
