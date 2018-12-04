@@ -115,9 +115,7 @@ export class OverviewComponent {
         if (!project.Lifetime) {
             this.groupservice.getLifetime(project.Id).subscribe(res => {
                 let lifetime = res['lifetime'];
-                console.log(lifetime)
                 let dateCreated = project.DateCreated;
-                console.log(dateCreated)
 
                 let expirationDate = undefined;
                 dateCreated = moment(dateCreated, "DD.MM.YYYY").toDate();
