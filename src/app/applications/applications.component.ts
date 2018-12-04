@@ -192,6 +192,40 @@ export class ApplicationsComponent ***REMOVED***
 
         ***REMOVED***)
 
+      this.getListOfFlavors();
+        this.getListOfTypes();
+    ***REMOVED***
+
+     keyIsVM(key: string): Flavor***REMOVED***
+      for (let fkey in this.flavorList) ***REMOVED***
+        if (fkey in this.flavorList) ***REMOVED***
+          if (this.flavorList[fkey].name === key.substring(20)) ***REMOVED***
+            return this.flavorList[fkey];
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+      return null;
+
+    ***REMOVED***
+
+    valuesChanged(f: NgForm, elemIDcores, elemIDram: string)
+    ***REMOVED***
+
+      this.totalRAM = 0;
+      this.totalNumberOfCores = 0;
+      for (let key in f.controls) ***REMOVED***
+        if (f.controls[key].value) ***REMOVED***
+          var flavor: Flavor = this.keyIsVM(key.toString());
+            if (flavor != null) ***REMOVED***
+              this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
+              this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value)
+              console.log('cores and ram changed');
+            ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+      document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
+      document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
+
 
     ***REMOVED***
 
@@ -252,8 +286,7 @@ export class ApplicationsComponent ***REMOVED***
      */
     setSelectedApplication(application: any) ***REMOVED***
         this.selectedApplication = application;
-        this.getListOfFlavors();
-        this.getListOfTypes();
+
     ***REMOVED***
 
 

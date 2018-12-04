@@ -925,15 +925,15 @@
                                     ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
                                 </div>
                                 <div class="form-group card-body">
-                                    <div *ngFor="let f of flavorList" class="form-group row">
-                                        <div *ngIf="f.type.shortcut == t.shortcut" class="form-group row">
-                                            <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</strong><br>
-                                                Number of cores: ***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***<br>
-                                                RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED*** GB</label>
+                                    <div *ngFor="let fl of flavorList" class="form-group row">
+                                        <div *ngIf="fl.type.shortcut == t.shortcut" class="form-group row">
+                                            <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***</strong><br>
+                                                Number of cores: ***REMOVED******REMOVED***fl.vcpus***REMOVED******REMOVED***<br>
+                                                RAM: ***REMOVED******REMOVED***fl.ram***REMOVED******REMOVED*** GB</label>
                                             <div class="col">
                                                 <div class="input-group">
                                                     <input class="form-control"
-                                                           name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***_old"
+                                                           name="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***_old"
                                                            type="text"
                                                            value="***REMOVED******REMOVED***0***REMOVED******REMOVED***" placeholder="NDA" disabled>
                                                     <span class="input-group-addon"> VMs</span>
@@ -942,13 +942,13 @@
                                             </div>
                                           <div class="col">
                                                 <div class="input-group">
-                                                    <input class="form-control"
-                                                           id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
-                                                           name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
+                                                    <input class="form-control" (change)="valuesChanged(f, corenumbers.id, ramnumbers.id)"
+                                                           id="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***"
+                                                           name="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***"
                                                            type="number" min="0" step="1"
                                                            placeholder="e.g 1"
                                                            value="***REMOVED******REMOVED***0***REMOVED******REMOVED***"
-                                                           (ngModel)="'project_application_' + f.name" required>
+                                                           (ngModel)="'project_application_' + fl.name" required>
                                                     <span class="input-group-addon"> VMs</span>
                                                 </div>
                                                 <span class="help-block">Number of VMs you would like to run in the future</span>
@@ -1104,6 +1104,13 @@
                           placeholder='' [ngModel]="selectedApplication?.Comment"></textarea>
                             <span class="help-block">Additional information you want to share?</span>
                         </div>
+                    </div>
+
+                  <div class="form-group row">
+                        <label #corenumbers id="corenumbers" class="col"></label>
+                    </div>
+                   <div class="form-group row">
+                        <label #ramnumbers id="ramnumbers" class="col" ></label>
                     </div>
                 </form>
 
