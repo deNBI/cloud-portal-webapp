@@ -783,20 +783,17 @@ export class ApplicationsComponent {
         this.notificationModalType = type;
     }
 
-    removeRessourceFromGroup(application: Application) {
-        console.log(application)
+    /**
+     * Remove Application from facility , where it is for confirmation
+     * @param {Application} application the application
+     */
+    removeApplicationFromFacilityConfirmation(application: Application) {
+        this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe(res => {
+            this.getApplication(application).subscribe()
+        })
 
-        this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe()
     }
 
-    changeApplicationStatusToSubmitted(application: Application) {
-        this.applicationstatusservice.setApplicationStatus(application.Id, this.SUBMITTED_STATUS, null).subscribe();
-
-    }
-
-    changePerunGroupStatusToSubmitted(application: Application) {
-        this.groupservice.setPerunGroupStatus(application.PerunId, this.SUBMITTED_STATUS).subscribe();
-    }
 
     public createOpenStackProjectGroup(name, description, manager_elixir_id, application_id, compute_center) {
         //get memeber id in order to add the user later as the new member and manager of the group
@@ -936,15 +933,17 @@ export class ApplicationsComponent {
     assignGroupToFacility(group_id, application_id, compute_center) {
         if (compute_center != 'undefined') {
             this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(res => {
-                    this.updateNotificaitonModal("Success", "The  project was assigned to the facility.", true, "success");
                     this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(res => {
                         for (let app of this.all_applications) {
                             if (app.Id == application_id) {
                                 this.getApplication(app);
+
                                 break;
 
                             }
                         }
+                        this.updateNotificaitonModal("Success", "The  project was assigned to the facility.", true, "success");
+
                     })
 
 
