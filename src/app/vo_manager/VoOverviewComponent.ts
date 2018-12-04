@@ -191,6 +191,8 @@ export class VoOverviewComponent {
 
                     newProject.LifetimeDays = lifetimeDays;
                     newProject.DateEnd = expirationDate;
+                    newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
+
                 }
 
                 this.projects.push(newProject);
@@ -212,7 +214,7 @@ export class VoOverviewComponent {
         # 2: approved
         # 3: declined
         # 4: suspended */
-        this.voserice.setProjectStatus(project.Id, status).subscribe(res =>{
+        this.voserice.setProjectStatus(project.Id, status).subscribe(res => {
             this.getProjectStatus(project)
 
         })
@@ -224,12 +226,21 @@ export class VoOverviewComponent {
         })
     }
 
-    lifeTimeReached(lifetimeDays: number, running: number): string {
-
-        if (lifetimeDays == -1) {
-            return "blue";
+    lifeTimeReached(lifetimeDays: number, running: number): number {
+        if ((lifetimeDays - running)< 0) {
+            // expired
+            return 0
         }
-        return (lifetimeDays - running) < 0 ? "red" : "black";
+        else if ((lifetimeDays - running) < 21) {
+            //expires soon
+            return 1
+        }
+        else {
+            //still valid
+            return 2
+        }
+
+
     }
 
     getMembesOfTheProject(projectid: number, projectname: string) {
