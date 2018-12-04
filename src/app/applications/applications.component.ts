@@ -192,6 +192,40 @@ export class ApplicationsComponent {
 
         })
 
+      this.getListOfFlavors();
+        this.getListOfTypes();
+    }
+
+     keyIsVM(key: string): Flavor{
+      for (let fkey in this.flavorList) {
+        if (fkey in this.flavorList) {
+          if (this.flavorList[fkey].name === key.substring(20)) {
+            return this.flavorList[fkey];
+          }
+        }
+      }
+      return null;
+
+    }
+
+    valuesChanged(f: NgForm, elemIDcores, elemIDram: string)
+    {
+
+      this.totalRAM = 0;
+      this.totalNumberOfCores = 0;
+      for (let key in f.controls) {
+        if (f.controls[key].value) {
+          var flavor: Flavor = this.keyIsVM(key.toString());
+            if (flavor != null) {
+              this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
+              this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value)
+              console.log('cores and ram changed');
+            }
+        }
+      }
+      document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
+      document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
+
 
     }
 
@@ -252,8 +286,7 @@ export class ApplicationsComponent {
      */
     setSelectedApplication(application: any) {
         this.selectedApplication = application;
-        this.getListOfFlavors();
-        this.getListOfTypes();
+
     }
 
 
