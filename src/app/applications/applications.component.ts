@@ -96,6 +96,8 @@ export class ApplicationsComponent {
      */
     application_user: { [id: string]: { [id: string]: string } } = {};
 
+    SUBMITTED_STATUS = 1;
+
 
     //notification Modal variables
     public notificationModalTitle: string = "Notification";
@@ -781,6 +783,20 @@ export class ApplicationsComponent {
         this.notificationModalType = type;
     }
 
+    removeRessourceFromGroup(application: Application) {
+        console.log(application)
+
+        this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe()
+    }
+
+    changeApplicationStatusToSubmitted(application: Application) {
+        this.applicationstatusservice.setApplicationStatus(application.Id, this.SUBMITTED_STATUS, null).subscribe();
+
+    }
+
+    changePerunGroupStatusToSubmitted(application: Application) {
+        this.groupservice.setPerunGroupStatus(application.PerunId, this.SUBMITTED_STATUS).subscribe();
+    }
 
     public createOpenStackProjectGroup(name, description, manager_elixir_id, application_id, compute_center) {
         //get memeber id in order to add the user later as the new member and manager of the group
