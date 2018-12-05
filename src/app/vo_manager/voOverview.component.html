@@ -119,10 +119,10 @@
                                 </td>
                                 <td>  <span *ngIf="project?.Status == 2" style="margin-left: 5px"
                                             class="badge badge-success">ACTIVE </span>
-                                    <span *ngIf="project?.LifetimeReached== 0"
+                                    <span *ngIf="project?.LifetimeReached== EXPIRED"
                                           style="margin-left: 5px"
                                           class="badge badge-danger">EXPIRED </span>
-                                    <span *ngIf="project?.LifetimeReached ==1"
+                                    <span *ngIf="project?.LifetimeReached == EXPIRES_SOON"
                                           style="margin-left: 5px"
                                           class="badge badge-warning">EXPIRES SOON</span>
                                     <span *ngIf="project?.Status == 4" style="margin-left: 5px"
