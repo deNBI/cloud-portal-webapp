@@ -50,7 +50,60 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr *ngFor="let project of projects">
+                            <td><input style="width: 110px;" type="text" placeholder="Filter"
+                                       name="filterid"
+                                       [(ngModel)]="filterid" (ngModelChange)="applyFilter();">
+                            </td>
+                            <td><input style="width: 110px;" type="text" placeholder="Filter"
+                                       name="filtername"
+                                       [(ngModel)]="filtername" (ngModelChange)="applyFilter();">
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"
+                                               (change)="changeFilterStatus(2);applyFilter();"
+                                               checked/>
+                                        <span style="margin-left: 5px"
+                                              class="badge badge-success">ACTIVE </span>
+
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"
+                                               (change)="changeFilterStatus(4);applyFilter();"
+                                               checked/>
+                                        <span style="margin-left: 5px"
+                                              class="badge badge-warning">SUSPENDED </span>
+                                    </label>
+                                </div>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"
+                                               (change)="changeFilterLifetime(EXPIRED);applyFilter();"
+                                               />
+                                        <span style="margin-left: 5px"
+                                              class="badge badge-danger">EXPIRED </span>
+
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"
+                                               (change)="changeFilterLifetime(EXPIRES_SOON);applyFilter();"
+                                               />
+                                        <span style="margin-left: 5px"
+                                              class="badge badge-warning">EXPIRES SOON </span>
+                                    </label>
+                                </div>
+
+                            </td>
+
+
+                            <tr *ngFor="let project of projects_filtered">
                                 <!-- [ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}"-->
                                 <td>{{ project.Id }}</td>
                                 <td>{{ project.Name }}</td>

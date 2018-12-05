@@ -5,6 +5,7 @@ import {ProjectMember} from "../projectmanagement/project_member.model";
 import {GroupService} from "../api-connector/group.service";
 import * as moment from 'moment';
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
+import {Application} from "../applications/application.model";
 
 @Component({
     selector: 'voOverview',
@@ -31,6 +32,7 @@ export class VoOverviewComponent {
 
     member_id: number;
     projects: Project[] = new Array();
+    projects_filtered: Project[] = new Array();
 
 
     // modal variables for User list
@@ -38,10 +40,23 @@ export class VoOverviewComponent {
     public usersModalProjectMembers: ProjectMember[] = new Array;
     public usersModalProjectID: number;
     public usersModalProjectName: string;
+    private EXPIRED = 0;
+    private EXPIRES_SOON = 1;
+    private VALID_LIFETIME = 2;
 
 
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
+
+    filtername: string;
+    filterid: number;
+    filterstatus_list: { [status: string]: boolean } = {
+        'ACTIVE': true,
+        'SUSPENDED': true,
+        'DELETED': false,
+        'EXPIRED': false,
+        'EXPIRES SOON': false
+    };
 
 
     constructor(private voserice: VoService, private groupservice: GroupService) {
@@ -51,6 +66,118 @@ export class VoOverviewComponent {
         });
 
 
+    }
+
+    applyFilter() {
+
+
+        this.projects_filtered = this.projects.filter(vm => this.filterProject(vm));
+
+    }
+
+    filterProject(project: Project) {
+        if (this.isFilterstatus(project.Status,project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
+            return true
+        }
+        else {
+            return false
+        }
+
+
+    }
+
+    /**
+     * Change the filter of a status.
+     * @param {string} status
+     */
+    changeFilterStatus(status_number: number) {
+        let status: string;
+        switch (status_number) {
+            case 2:
+                status = 'ACTIVE';
+                break;
+            case 4:
+                status = 'SUSPENDED';
+                break;
+            case 6:
+                status = 'EXPIRED';
+                break;
+            case 8:
+                status = 'EXPIRES SOON';
+
+        }
+        this.filterstatus_list[status] = !this.filterstatus_list[status];
+
+
+    }
+
+
+        changeFilterLifetime(lifetime_reached: number) {
+        let status: string;
+        switch (lifetime_reached) {
+            case this.EXPIRED:
+                status = 'EXPIRED';
+                break;
+            case this.EXPIRES_SOON:
+                status = 'EXPIRES SOON';
+
+        }
+        this.filterstatus_list[status] = !this.filterstatus_list[status];
+
+
+    }
+
+    isFilterProjectId(id: number): boolean {
+        if (!this.filterid) {
+            return true;
+        }
+        else if (id.toString().indexOf(this.filterid.toString()) === 0) {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+
+    isFilterProjectName(name: string): boolean {
+        if (!this.filtername) {
+            return true;
+        }
+        else if (name.indexOf(this.filtername) === 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    isFilterstatus(status_number: number, lifetime_reached: number): boolean {
+        let status: string;
+        switch (status_number) {
+            case 2:
+                status = 'ACTIVE';
+                break;
+            case 4:
+                status = 'SUSPENDED';
+                break;
+        }
+        switch (lifetime_reached) {
+            case this.EXPIRED:
+                status = 'EXPIRED';
+                break;
+            case this.EXPIRES_SOON:
+                status = 'EXPIRES SOON';
+        }
+
+
+        if (this.filterstatus_list[status]
+        ) {
+
+            return true
+        }
+        else {
+            return false
+        }
     }
 
 
@@ -197,6 +324,8 @@ export class VoOverviewComponent {
 
                 this.projects.push(newProject);
             }
+            this.applyFilter();
+
             this.isLoaded = true;
 
 
@@ -227,17 +356,17 @@ export class VoOverviewComponent {
     }
 
     lifeTimeReached(lifetimeDays: number, running: number): number {
-        if ((lifetimeDays - running)< 0) {
+        if ((lifetimeDays - running) < 0) {
             // expired
-            return 0
+            return this.EXPIRED
         }
         else if ((lifetimeDays - running) < 21) {
             //expires soon
-            return 1
+            return this.EXPIRES_SOON
         }
         else {
             //still valid
-            return 2
+            return this.VALID_LIFETIME
         }
 
 
