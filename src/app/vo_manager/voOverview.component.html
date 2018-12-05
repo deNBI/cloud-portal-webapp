@@ -60,44 +60,47 @@
                             </td>
                             <td></td>
                             <td>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox"
-                                               (change)="changeFilterStatus(2);applyFilter();"
-                                               checked/>
-                                        <span style="margin-left: 5px"
-                                              class="badge badge-success">ACTIVE </span>
+                                <div class="row">
+                                    <div class="checkbox col-sm" >
+                                        <label>
+                                            <input type="checkbox"
+                                                   (change)="changeFilterStatus(2);applyFilter();"
+                                                   checked/>
+                                            <span style="margin-left: 5px"
+                                                  class="badge badge-success">ACTIVE </span>
 
-                                    </label>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox col-sm">
+                                        <label>
+                                            <input type="checkbox"
+                                                   (change)="changeFilterStatus(4);applyFilter();"
+                                                   checked/>
+                                            <span style="margin-left: 5px"
+                                                  class="badge badge-warning">SUSPENDED </span>
+                                        </label>
+                                    </div>
                                 </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox"
-                                               (change)="changeFilterStatus(4);applyFilter();"
-                                               checked/>
-                                        <span style="margin-left: 5px"
-                                              class="badge badge-warning">SUSPENDED </span>
-                                    </label>
-                                </div>
+                                <div class="row">
+                                    <div class="checkbox col-sm">
+                                        <label>
+                                            <input type="checkbox"
+                                                   (change)="changeFilterLifetime(EXPIRED);applyFilter();"
+                                            />
+                                            <span style="margin-left: 5px"
+                                                  class="badge badge-danger">EXPIRED </span>
 
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox"
-                                               (change)="changeFilterLifetime(EXPIRED);applyFilter();"
-                                               />
-                                        <span style="margin-left: 5px"
-                                              class="badge badge-danger">EXPIRED </span>
-
-                                    </label>
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox"
-                                               (change)="changeFilterLifetime(EXPIRES_SOON);applyFilter();"
-                                               />
-                                        <span style="margin-left: 5px"
-                                              class="badge badge-warning">EXPIRES SOON </span>
-                                    </label>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox col-sm">
+                                        <label>
+                                            <input type="checkbox"
+                                                   (change)="changeFilterLifetime(EXPIRES_SOON);applyFilter();"
+                                            />
+                                            <span style="margin-left: 5px"
+                                                  class="badge badge-warning">EXPIRES SOON </span>
+                                        </label>
+                                    </div>
                                 </div>
 
                             </td>
