@@ -1,5 +1,23 @@
-##  (2018-11-23)
 
+
+
+#### Bug Fixes
+
+* **development:**  remove nvmrc file 
+
+#### Features
+
+* **applications:**
+  * facility applications now with approval
+  * now shows cc 
+  * now vo also sees wfc status
+  * added modal 
+  * added facility decline method and reassign 
+  * added facility applications overview 
+* **approval:** now sets status auf wait for confirmation 
+* **development:**  use nodeenv instead of nvm
+
+##  0.1.0-beta.0.3.4 Release
 
 #### Features
 
