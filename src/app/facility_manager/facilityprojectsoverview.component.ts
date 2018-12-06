@@ -185,23 +185,6 @@ export class FacilityProjectsOverviewComponent extends  FilterBaseClass{
 
     }
 
-    lifeTimeReached(lifetimeDays: number, running: number): number {
-        if ((lifetimeDays - running) < 0) {
-            // expired
-            return this.EXPIRED
-        }
-        else if ((lifetimeDays - running) < 21) {
-            //expires soon
-            return this.EXPIRES_SOON
-        }
-        else {
-            //still valid
-            return this.VALID_LIFETIME
-        }
-
-
-    }
-
     sendMailToFacility(facility: number, subject: string, message: string, reply?: string) {
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => {
 

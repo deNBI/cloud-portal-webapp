@@ -21,10 +21,15 @@ enum Application_Statuses {
 
 }
 
-enum Vm_Statuses{
-    ACTIVE=1,
-    SUSPENDED=2,
-    DELETED=3,
+enum Application_Statuses_Strings {
+    WAIT_FOR_CONFIRMATION = "wait for confirmation",
+
+}
+
+enum Vm_Statuses {
+    ACTIVE = 1,
+    SUSPENDED = 2,
+    DELETED = 3,
 }
 
 
@@ -33,9 +38,10 @@ export abstract class AbstractBaseClasse {
     lifetime_statuses = Lifetime_Statuses;
     project_statuses = Project_Statuses;
     application_statuses = Application_Statuses;
+    application_staatuses_strings = Application_Statuses_Strings;
     vm_statuses = Vm_Statuses;
 
-    collapse_status: { [id: string]: string } = {};
+    collapse_status: { [id: string]: boolean } = {};
     isLoaded = false;
 
 
@@ -77,23 +83,31 @@ export abstract class AbstractBaseClasse {
         this.notificationModalType = type;
     }
 
+
+
+    /**
+     * Get a collapse status.
+     * @param {string} id
+     * @returns {boolean}
+     */
     public getCollapseStatus(id: string) {
         if (id in this.collapse_status) {
-            this.switchCollapseStatus(id);
+            return this.collapse_status[id];
         } else {
-            this.collapse_status[id] = 'open';
+            this.collapse_status[id] = true;
+            return true;
         }
     }
 
-    public closeCollapse(id: string) {
-        this.collapse_status[id] = '';
-
-
-    }
-
+    /**
+     * Switch status of collapse.
+     * @param {string} id
+     */
     public switchCollapseStatus(id: string) {
-        this.collapse_status[id] == '' ? this.collapse_status[id] = 'open' : this.collapse_status[id] = '';
+        this.collapse_status[id] = !this.getCollapseStatus(id);
     }
+
+
 
     lifeTimeReached(lifetimeDays: number, running: number): Lifetime_Statuses {
         if ((lifetimeDays - running) < 0) {
