@@ -84,13 +84,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
     }
 
-    changeFilterStatus(status: string) {
-        this.filterstatus_list[status] = !this.filterstatus_list[status];
-
-
-    }
-
-
 
 
     toggleTab(tabString: string) {

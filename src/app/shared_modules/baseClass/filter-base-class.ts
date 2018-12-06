@@ -88,7 +88,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
                 status = this.project_statuses[this.project_statuses.ACTIVE];
                 break;
             case this.project_statuses.SUSPENDED:
-                status = this.project_statuses[this.project_statuses.SUSPENDED;
+                status = this.project_statuses[this.project_statuses.SUSPENDED];
                 break;
         }
         switch (lifetime_reached) {
@@ -200,5 +200,38 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
         else {
             return false;
         }
+    }
+
+    changeFilterStatus(status: string) {
+        this.filterstatus_list[status] = !this.filterstatus_list[status];
+
+
+    }
+
+    changeFilterProjectStatusAndLifetimeStatus(project_status?: number, lifetime_reached?: number): void {
+        let status: string;
+        if (project_status) {
+            switch (project_status) {
+                case this.project_statuses.ACTIVE:
+                    status = this.project_statuses[this.project_statuses.ACTIVE];
+                    break;
+                case this.project_statuses.SUSPENDED:
+                    status = this.project_statuses[this.project_statuses.SUSPENDED];
+                    break;
+            }
+            this.filterstatus_list[status] = !this.filterstatus_list[status];
+        }
+        if (lifetime_reached) {
+            switch (lifetime_reached) {
+                case this.lifetime_statuses.EXPIRED:
+                    status = this.lifetime_statuses[this.lifetime_statuses.EXPIRED];
+                    break;
+                case this.lifetime_statuses.EXPIRES_SOON:
+                    status = this.lifetime_statuses[this.lifetime_statuses.EXPIRES_SOON];
+            }
+            this.filterstatus_list[status] = !this.filterstatus_list[status];
+        }
+
+
     }
 }

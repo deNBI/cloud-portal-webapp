@@ -70,7 +70,7 @@ export class VoOverviewComponent extends FilterBaseClass{
     }
 
     checkFilter(project: Project) {
-        if (this.isFilterstatus(project.Status,project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
+        if (this.isFilterProjectStatus(project.Status,project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
             return true
         }
         else {
@@ -79,61 +79,6 @@ export class VoOverviewComponent extends FilterBaseClass{
 
 
     }
-
-    /**
-     * Change the filter of a status.
-     * @param {string} status
-     */
-    changeFilterStatus(status_number: number) {
-        let status: string;
-        switch (status_number) {
-            case 2:
-                status = 'ACTIVE';
-                break;
-            case 4:
-                status = 'SUSPENDED';
-                break;
-            case 6:
-                status = 'EXPIRED';
-                break;
-            case 8:
-                status = 'EXPIRES SOON';
-
-        }
-        this.filterstatus_list[status] = !this.filterstatus_list[status];
-
-
-    }
-
-
-
-
-    isFilterProjectId(id: number): boolean {
-        if (!this.filterid) {
-            return true;
-        }
-        else if (id.toString().indexOf(this.filterid.toString()) === 0) {
-            return true
-        }
-        else {
-            return false
-        }
-    }
-
-    isFilterProjectName(name: string): boolean {
-        if (!this.filtername) {
-            return true;
-        }
-        else if (name.indexOf(this.filtername) === 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-
-
 
     sendEmail(subject: string, message: string, reply?: string) {
         switch (this.emailType) {

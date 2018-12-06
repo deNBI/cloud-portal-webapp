@@ -92,31 +92,6 @@ export class FacilityProjectsOverviewComponent extends  FilterBaseClass{
 
     }
 
-    /**
-     * Change the filter of a status.
-     * @param {string} status
-     */
-    changeFilterStatus(status_number: number) {
-        let status: string;
-        switch (status_number) {
-            case 2:
-                status = 'ACTIVE';
-                break;
-            case 4:
-                status = 'SUSPENDED';
-                break;
-            case 6:
-                status = 'EXPIRED';
-                break;
-            case 8:
-                status = 'EXPIRES SOON';
-
-        }
-        this.filterstatus_list[status] = !this.filterstatus_list[status];
-
-
-    }
-
 
     onChangeSelectedFacility(value) {
         this.getFacilityProjects(this.selectedFacility['FacilityId'])

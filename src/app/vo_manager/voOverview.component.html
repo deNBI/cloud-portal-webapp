@@ -61,23 +61,23 @@
                             <td></td>
                             <td>
                                 <div class="row">
-                                    <div class="checkbox col-sm" >
+                                    <div class="checkbox col-sm">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(2);applyFilter();"
+                                                   (change)="changeFilterStatus(project_statuses[project_statuses.ACTIVE]);applyFilter();"
                                                    checked/>
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-success">ACTIVE </span>
+                                                  class="badge badge-success">{{project_statuses[project_statuses.ACTIVE]}} </span>
 
                                         </label>
                                     </div>
                                     <div class="checkbox col-sm">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(4);applyFilter();"
+                                                   (change)="changeFilterStatus(project_statuses[project_statuses.SUSPENDED]);applyFilter();"
                                                    checked/>
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-warning">SUSPENDED </span>
+                                                  class="badge badge-warning">{{project_statuses[project_statuses.SUSPENDED]}} </span>
                                         </label>
                                     </div>
                                 </div>
@@ -85,20 +85,20 @@
                                     <div class="checkbox col-sm">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterLifetime(EXPIRED);applyFilter();"
+                                                   (change)="changeFilterStatus(lifetime_statuses[lifetime_statuses.EXPIRED]);applyFilter();"
                                             />
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-danger">EXPIRED </span>
+                                                  class="badge badge-danger">{{lifetime_statuses[lifetime_statuses.EXPIRED]}}</span>
 
                                         </label>
                                     </div>
                                     <div class="checkbox col-sm">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterLifetime(EXPIRES_SOON);applyFilter();"
+                                                   (change)="changeFilterStatus(lifetime_statuses[lifetime_statuses.EXPIRES_SOON]);applyFilter();"
                                             />
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-warning">EXPIRES SOON </span>
+                                                  class="badge badge-warning">{{lifetime_statuses[lifetime_statuses.EXPIRES_SOON]}}</span>
                                         </label>
                                     </div>
                                 </div>
@@ -117,17 +117,19 @@
                                         Show Details
                                     </button>
                                 </td>
-                                <td>  <span *ngIf="project?.Status == 2" style="margin-left: 5px"
-                                            class="badge badge-success">ACTIVE </span>
-                                    <span *ngIf="project?.LifetimeReached== EXPIRED"
+                                <td>  <span *ngIf="project?.Status ==  project_statuses.ACTIVE"
+                                            style="margin-left: 5px"
+                                            class="badge badge-success">{{project_statuses[project_statuses.ACTIVE]}} </span>
+                                    <span *ngIf="project?.LifetimeReached==lifetime_statuses.EXPIRED"
                                           style="margin-left: 5px"
-                                          class="badge badge-danger">EXPIRED </span>
-                                    <span *ngIf="project?.LifetimeReached == EXPIRES_SOON"
+                                          class="badge badge-danger">{{lifetime_statuses[lifetime_statuses.EXPIRED]}} </span>
+                                    <span *ngIf="project?.LifetimeReached == lifetime_statuses.EXPIRES_SOON"
                                           style="margin-left: 5px"
-                                          class="badge badge-warning">EXPIRES SOON</span>
-                                    <span *ngIf="project?.Status == 4" style="margin-left: 5px"
-                                          class="badge badge-warning">SUSPENDED </span>
-                                    <span *ngIf="project?.Status != 4 && project?.Status != 2"
+                                          class="badge badge-warning">{{lifetime_statuses[lifetime_statuses.EXPIRES_SOON]}}</span>
+                                    <span *ngIf="project?.Status == project_statuses.SUSPENDED"
+                                          style="margin-left: 5px"
+                                          class="badge badge-warning">{{project_statuses[project_statuses.SUSPENDED]}} </span>
+                                    <span *ngIf="project?.Status !=  project_statuses.SUSPENDED && project?.Status !=  project_statuses.ACTIVE"
                                           style="margin-left: 5px"
                                           class="badge badge-danger">NOT SET </span>
                                 </td>
