@@ -6,6 +6,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import {FormsModule} from '@angular/forms';
 import {ImageTagComponent} from "../facility_manager/imagetags.component";
 import {FacilitymanagerRoutingModule} from "./facilitymanager-routing.module";
+import {FacilityApplicationComponent} from "./facility.application.component";
+
 @NgModule({
   imports: [
     FacilitymanagerRoutingModule,
@@ -16,7 +18,8 @@ import {FacilitymanagerRoutingModule} from "./facilitymanager-routing.module";
   ],
   declarations: [
       FacilityProjectsOverviewComponent,
-      ImageTagComponent
+      ImageTagComponent,
+      FacilityApplicationComponent
   ]
 })
 export class FacilitymanagerModule { }
