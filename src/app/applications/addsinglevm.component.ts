@@ -78,7 +78,6 @@ export class AddsinglevmComponent {
             for (let v in f.controls) {
                 if (f.controls[v].value) {
                     values[v] = f.controls[v].value;
-                    console.log(values)
                 }
             }
 

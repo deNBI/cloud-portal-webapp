@@ -254,7 +254,8 @@
 
 
                                         <td>
-                                            <select [style.display]="application.OpenStackProject && (application.Status == 1 || application.Status == 7)? 'inherit' :'none'"
+                                            <select
+                                                    [style.display]="application.OpenStackProject && (application.Status == 1 || application.Status == 7 || (!application.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
                                                     class="form-control"
                                                     #selectedComputeCenter>
 
@@ -269,7 +270,8 @@
 
 
                                         <td>
-                                            <button *ngIf="application.Status == 7"
+                                            <button
+                                                    *ngIf="application.Status == 7 || (application.Status == 6 && !application.ComputeCenter?.FacilityId )"
 
                                                     (click)="resetNotificationModal();assignGroupToFacility(application.PerunId,application.Id,selectedComputeCenter.value); notificationModal.show();"
 
@@ -278,6 +280,17 @@
                                                     class="btn btn-secondary">
                                                 <i class="fa fa-check"></i>&nbsp;
                                                 Approve
+                                            </button>
+                                            <button
+                                                    *ngIf="application.Status == 6 && application.ComputeCenter?.FacilityId"
+
+                                                    (click)="resetNotificationModal();removeApplicationFromFacilityConfirmation(application);"
+
+
+                                                    type="button"
+                                                    class="btn btn-secondary">
+                                                <i class="fa fa-check"></i>&nbsp;
+                                                Reassign
                                             </button>
                                             <button *ngIf="application.Status == 1 && application.OpenStackProject"
 
