@@ -21,10 +21,6 @@ enum Application_Statuses {
 
 }
 
-enum Application_Statuses_Strings {
-    WAIT_FOR_CONFIRMATION = "wait for confirmation",
-
-}
 
 enum Vm_Statuses {
     ACTIVE = 1,
@@ -38,7 +34,6 @@ export abstract class AbstractBaseClasse {
     lifetime_statuses = Lifetime_Statuses;
     project_statuses = Project_Statuses;
     application_statuses = Application_Statuses;
-    application_staatuses_strings = Application_Statuses_Strings;
     vm_statuses = Vm_Statuses;
 
     collapse_status: { [id: string]: boolean } = {};
@@ -53,7 +48,7 @@ export abstract class AbstractBaseClasse {
     public notificationModalInfoMessage: string = '';
     public notificationModalIsClosable: boolean = false;
 
-    public resetNotificaitonModal() {
+    public resetNotificationModal() {
         this.notificationModalTitle = "Notification";
         this.notificationModalMessage = "Please wait...";
         this.notificationModalIsClosable = false;
