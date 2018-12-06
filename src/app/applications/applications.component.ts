@@ -789,7 +789,7 @@ export class ApplicationsComponent {
      */
     removeApplicationFromFacilityConfirmation(application: Application) {
         this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe(res => {
-            this.getApplication(application).subscribe()
+            this.getApplication(application)
         })
 
     }
