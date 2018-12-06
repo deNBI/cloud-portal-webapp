@@ -78,7 +78,6 @@ export class AddsinglevmComponent ***REMOVED***
             for (let v in f.controls) ***REMOVED***
                 if (f.controls[v].value) ***REMOVED***
                     values[v] = f.controls[v].value;
-                    console.log(values)
                 ***REMOVED***
             ***REMOVED***
 

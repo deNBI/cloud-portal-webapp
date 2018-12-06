@@ -1,6 +1,4 @@
 
-
-
 #### Bug Fixes
 
 * **development:**  remove nvmrc file 
@@ -16,6 +14,17 @@
   * added facility applications overview 
 * **approval:** now sets status auf wait for confirmation 
 * **development:**  use nodeenv instead of nvm
+* **Approval:** added reassign method                                                                    │
+* **Filter:**                                                                                                                         │
+  * added filter at facility overview                                                                          │
+  * added filter at vo overview                                                                     │
+  * added filter at vo overview                                                                                 │
+* **Lifetime:** added badge                                                                                │
+* **approval:** reassign works                                                                         │
+* **development:**  use nodeenv instead of nvm                                                                │
+* **vo:**                                                                                                                             │
+  * fixed vo filter                                                                                  │
+                              
 
 ##  0.1.0-beta.0.3.4 Release
 
