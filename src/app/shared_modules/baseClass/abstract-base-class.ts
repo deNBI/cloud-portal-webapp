@@ -21,12 +21,19 @@ enum Application_Statuses {
 
 }
 
+enum Vm_Statuses{
+    ACTIVE=1,
+    SUSPENDED=2,
+    DELETED=3,
+}
+
 
 export abstract class AbstractBaseClasse {
 
     lifetime_statuses = Lifetime_Statuses;
     project_statuses = Project_Statuses;
     application_statuses = Application_Statuses;
+    vm_statuses = Vm_Statuses;
 
     collapse_status: { [id: string]: string } = {};
     isLoaded = false;
