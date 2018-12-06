@@ -14,12 +14,14 @@ import {map} from 'rxjs/operators';
 
 import * as moment from 'moment';
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
+import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
+import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
 
 @Component({
     templateUrl: 'facilityprojectsoverview.component.html',
     providers: [FacilityService, UserService, GroupService, PerunSettings, ApiSettings]
 })
-export class FacilityProjectsOverviewComponent {
+export class FacilityProjectsOverviewComponent extends  FilterBaseClass{
 
     debug_module = false;
 
@@ -57,20 +59,12 @@ export class FacilityProjectsOverviewComponent {
     public selectedFacility: [string, number];
     projects_filtered: Project[] = new Array();
 
-    filtername: string;
-    filterlongname: string;
-    filterid: number;
-    filterstatus_list: { [status: string]: boolean } = {
-        'ACTIVE': true,
-        'SUSPENDED': true,
-        'DELETED': false,
-        'EXPIRED': false,
-        'EXPIRES SOON': false
-    };
+
 
 
     constructor(private groupservice: GroupService,
                 private  facilityservice: FacilityService) {
+        super()
 
         this.facilityservice.getManagerFacilities().subscribe(result => {
             this.managerFacilities = result;
@@ -83,12 +77,12 @@ export class FacilityProjectsOverviewComponent {
     applyFilter() {
 
 
-        this.projects_filtered = this.projects.filter(vm => this.filterProject(vm));
+        this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
 
     }
 
-    filterProject(project: Project) {
-        if (this.isFilterLongProjectName(project.RealName) && this.isFilterstatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
+    checkFilter(project: Project) {
+        if (this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
             return true
         }
         else {
@@ -121,87 +115,6 @@ export class FacilityProjectsOverviewComponent {
         this.filterstatus_list[status] = !this.filterstatus_list[status];
 
 
-    }
-
-
-    changeFilterLifetime(lifetime_reached: number) {
-        let status: string;
-        switch (lifetime_reached) {
-            case this.EXPIRED:
-                status = 'EXPIRED';
-                break;
-            case this.EXPIRES_SOON:
-                status = 'EXPIRES SOON';
-
-        }
-        this.filterstatus_list[status] = !this.filterstatus_list[status];
-
-
-    }
-
-    isFilterProjectId(id: number): boolean {
-        if (!this.filterid) {
-            return true;
-        }
-        else if (id.toString().indexOf(this.filterid.toString()) === 0) {
-            return true
-        }
-        else {
-            return false
-        }
-    }
-
-    isFilterProjectName(name: string): boolean {
-        if (!this.filtername) {
-            return true;
-        }
-        else if (name.indexOf(this.filtername) === 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    isFilterLongProjectName(name: string): boolean {
-        if (!this.filterlongname) {
-            return true;
-        }
-        else if (name.indexOf(this.filterlongname) === 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    isFilterstatus(status_number: number, lifetime_reached: number): boolean {
-        let status: string;
-        switch (status_number) {
-            case 2:
-                status = 'ACTIVE';
-                break;
-            case 4:
-                status = 'SUSPENDED';
-                break;
-        }
-        switch (lifetime_reached) {
-            case this.EXPIRED:
-                status = 'EXPIRED';
-                break;
-            case this.EXPIRES_SOON:
-                status = 'EXPIRES SOON';
-        }
-
-
-        if (this.filterstatus_list[status]
-        ) {
-
-            return true
-        }
-        else {
-            return false
-        }
     }
 
 

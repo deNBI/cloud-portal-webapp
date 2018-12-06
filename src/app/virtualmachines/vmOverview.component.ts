@@ -8,6 +8,7 @@ import {FullLayoutComponent} from "../layouts/full-layout.component";
 import {UserService} from "../api-connector/user.service";
 import {ImageService} from "../api-connector/image.service";
 import {Vmclient} from "./virtualmachinemodels/vmclient";
+import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
 
 @Component({
     selector: 'vm-overview',
@@ -16,7 +17,7 @@ import {Vmclient} from "./virtualmachinemodels/vmclient";
 })
 
 
-export class VmOverviewComponent implements OnInit {
+export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     vms_content: VirtualMachine[];
     vms_filtered: VirtualMachine[];
     vms_returned: VirtualMachine[];
@@ -29,24 +30,13 @@ export class VmOverviewComponent implements OnInit {
     status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
-    snapshot_vm: VirtualMachine
+    snapshot_vm: VirtualMachine;
     validSnapshotNameBool: boolean;
     snapshotDone: string = 'Waiting';
     snapshotName: string;
     tab = 'own';
     status_changed: number = 0;
-    filterusername: string;
-    filterip: string;
-    filtername: string;
-    filterstatus: string;
-    filterstatus_list: { [status: string]: boolean } = {'ACTIVE': true, 'SUSPENDED': true, 'DELETED': false};
-    filtercreated_at: string;
-    filterelixir_id: string;
-    filterstopped_at: string;
-    filterproject: string;
-    filterssh: string;
-    collapse_status: { [id: string]: string } = {};
-    isLoaded = false;
+
     private checkStatusTimeout: number = 1500;
     reboot_type: string;
     status_check_error: boolean;
@@ -54,7 +44,7 @@ export class VmOverviewComponent implements OnInit {
 
 
     constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
-
+        super()
     }
 
     pageChanged(event): void {
@@ -68,8 +58,8 @@ export class VmOverviewComponent implements OnInit {
     }
 
 
-    filterVM(vm: VirtualMachine) {
-        if (this.isFilterstatus(vm.status) && this.isFilterProject(vm.project) && this.isFilterCreated_at(vm.created_at) && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at) && this.isFilterUsername(vm.username)) {
+    checkFilter(vm: VirtualMachine) {
+        if (this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at) && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at) && this.isFilterUsername(vm.username)) {
             return true
         }
         else {
@@ -83,7 +73,7 @@ export class VmOverviewComponent implements OnInit {
     applyFilter() {
 
 
-        this.vms_filtered = this.vms_content.filter(vm => this.filterVM(vm));
+        this.vms_filtered = this.vms_content.filter(vm => this.checkFilter(vm));
 
         this.vmStart = 0;
         this.vmEnd = this.vmsPerPage;
@@ -101,43 +91,10 @@ export class VmOverviewComponent implements OnInit {
     }
 
 
-    public getCollapseStatus(id: string) {
-        if (id in this.collapse_status) {
-            this.switchCollapseStatus(id);
-        } else {
-            this.collapse_status[id] = 'open';
-        }
-    }
 
-    public closeCollapse(id: string) {
-        this.collapse_status[id] = '';
-
-
-    }
-
-    public switchCollapseStatus(id: string) {
-        this.collapse_status[id] == '' ? this.collapse_status[id] = 'open' : this.collapse_status[id] = '';
-    }
 
     toggleTab(tabString: string) {
         this.tab = tabString;
-    }
-
-
-    isFilterProject(vmproject: string): boolean {
-
-        if (!this.filterproject) {
-            return true;
-        }
-        else if (vmproject.indexOf(this.filterproject) === 0) {
-
-            return true;
-
-        }
-        else {
-
-            return false;
-        }
     }
 
     checkInactiveVms() {
@@ -196,97 +153,6 @@ export class VmOverviewComponent implements OnInit {
         )
     }
 
-    isFilterStopped_at(vmstopped_at: string): boolean {
-        if (!this.filterstopped_at) {
-            return true;
-        }
-        else if (vmstopped_at.indexOf(this.filterstopped_at) === 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-
-    isFilterElixir_id(vmelixir_id: string): boolean {
-        if (!this.filterelixir_id) {
-            return true;
-        }
-        else if (vmelixir_id.indexOf(this.filterelixir_id) === 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    isFilterCreated_at(vmcreated_at: string): boolean {
-        if (!this.filtercreated_at) {
-            return true;
-        }
-        else if (vmcreated_at.indexOf(this.filtercreated_at) === 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    isFilterName(vmname: string): boolean {
-        if (!this.filtername) {
-            return true;
-        }
-        else if (vmname.indexOf(this.filtername) === 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    isFilterIP(vmip: string): boolean {
-        if (!this.filterip) {
-            return true;
-        }
-        else if (vmip == null) {
-            return false;
-        }
-        else if (vmip.indexOf(this.filterip) === 0) {
-
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    isFilterstatus(vmstatus: string): boolean {
-        if (vmstatus == 'FREEMIUM') {
-            return true
-        }
-        if (this.filterstatus_list[vmstatus]
-        ) {
-
-            return true
-        }
-        else {
-            return false
-        }
-    }
-
-    isFilterUsername(vmusername: string): boolean {
-        if (!this.filterusername) {
-            return true;
-        }
-        else if (vmusername.indexOf(this.filterusername) === 0) {
-
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
 
     deleteVm(openstack_id: string): void {
         this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => {

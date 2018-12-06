@@ -6,6 +6,8 @@ import {GroupService} from "../api-connector/group.service";
 import * as moment from 'moment';
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
 import {Application} from "../applications/application.model";
+import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
+import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
 
 @Component({
     selector: 'voOverview',
@@ -15,7 +17,7 @@ import {Application} from "../applications/application.model";
 
 })
 
-export class VoOverviewComponent {
+export class VoOverviewComponent extends FilterBaseClass{
 
     public emailSubject: string;
     public emailReply: string = '';
@@ -40,26 +42,18 @@ export class VoOverviewComponent {
     public usersModalProjectMembers: ProjectMember[] = new Array;
     public usersModalProjectID: number;
     public usersModalProjectName: string;
-    private EXPIRED = 0;
-    private EXPIRES_SOON = 1;
-    private VALID_LIFETIME = 2;
+
 
 
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
 
-    filtername: string;
-    filterid: number;
-    filterstatus_list: { [status: string]: boolean } = {
-        'ACTIVE': true,
-        'SUSPENDED': true,
-        'DELETED': false,
-        'EXPIRED': false,
-        'EXPIRES SOON': false
-    };
+
+
 
 
     constructor(private voserice: VoService, private groupservice: GroupService) {
+        super();
         this.getVoProjects();
         this.voserice.getNewsletterSubscriptionCounter().subscribe(result => {
             this.newsletterSubscriptionCounter = result['subscribed'];
@@ -71,11 +65,11 @@ export class VoOverviewComponent {
     applyFilter() {
 
 
-        this.projects_filtered = this.projects.filter(vm => this.filterProject(vm));
+        this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
 
     }
 
-    filterProject(project: Project) {
+    checkFilter(project: Project) {
         if (this.isFilterstatus(project.Status,project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
             return true
         }
@@ -112,20 +106,7 @@ export class VoOverviewComponent {
     }
 
 
-        changeFilterLifetime(lifetime_reached: number) {
-        let status: string;
-        switch (lifetime_reached) {
-            case this.EXPIRED:
-                status = 'EXPIRED';
-                break;
-            case this.EXPIRES_SOON:
-                status = 'EXPIRES SOON';
 
-        }
-        this.filterstatus_list[status] = !this.filterstatus_list[status];
-
-
-    }
 
     isFilterProjectId(id: number): boolean {
         if (!this.filterid) {
@@ -151,34 +132,7 @@ export class VoOverviewComponent {
         }
     }
 
-    isFilterstatus(status_number: number, lifetime_reached: number): boolean {
-        let status: string;
-        switch (status_number) {
-            case 2:
-                status = 'ACTIVE';
-                break;
-            case 4:
-                status = 'SUSPENDED';
-                break;
-        }
-        switch (lifetime_reached) {
-            case this.EXPIRED:
-                status = 'EXPIRED';
-                break;
-            case this.EXPIRES_SOON:
-                status = 'EXPIRES SOON';
-        }
 
-
-        if (this.filterstatus_list[status]
-        ) {
-
-            return true
-        }
-        else {
-            return false
-        }
-    }
 
 
     sendEmail(subject: string, message: string, reply?: string) {
@@ -339,10 +293,6 @@ export class VoOverviewComponent {
     }
 
     setProjectStatus(project, status: number) {
-        /* 1:submitted
-        # 2: approved
-        # 3: declined
-        # 4: suspended */
         this.voserice.setProjectStatus(project.Id, status).subscribe(res => {
             this.getProjectStatus(project)
 
@@ -355,22 +305,7 @@ export class VoOverviewComponent {
         })
     }
 
-    lifeTimeReached(lifetimeDays: number, running: number): number {
-        if ((lifetimeDays - running) < 0) {
-            // expired
-            return this.EXPIRED
-        }
-        else if ((lifetimeDays - running) < 21) {
-            //expires soon
-            return this.EXPIRES_SOON
-        }
-        else {
-            //still valid
-            return this.VALID_LIFETIME
-        }
 
-
-    }
 
     getMembesOfTheProject(projectid: number, projectname: string) {
         this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => {

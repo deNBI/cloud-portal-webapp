@@ -13,13 +13,14 @@ import {VoService} from "../api-connector/vo.service";
 import {catchError} from 'rxjs/operators';
 import {ProjectMemberApplication} from "./project_member_application";
 import {ComputecenterComponent} from "./computecenter.component";
+import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
 
 
 @Component({
     templateUrl: 'overview.component.html',
     providers: [VoService, UserService, GroupService, PerunSettings, ApiSettings]
 })
-export class OverviewComponent {
+export class OverviewComponent extends AbstractBaseClasse{
 
     debug_module = false;
 
@@ -59,13 +60,7 @@ export class OverviewComponent {
     public UserModalFacility: [string, number];
 
 
-    //notification Modal variables
-    public notificationModal;
-    public notificationModalTitle: string = "Notification";
-    public notificationModalMessage: string = "Please wait...";
-    public notificationModalType: string = "info";
-    public notificationModalInfoMessage: string = '';
-    public notificationModalIsClosable: boolean = false;
+
 
     public passwordModalTitle: string = "Changing Password";
     public passwordModalType: string = 'info';
@@ -77,6 +72,7 @@ export class OverviewComponent {
                 private groupservice: GroupService,
                 private userservice: UserService,
                 private voservice: VoService) {
+        super();
         this.getUserProjects();
 
     }
@@ -189,15 +185,6 @@ export class OverviewComponent {
     }
 
 
-    lifeTimeReached(lifetime: number, running: number): string {
-        if (!lifetime) {
-            return "red";
-        }
-        else if (lifetime == -1) {
-            return "blue";
-        }
-        return (lifetime - running) < 0 ? "red" : "black";
-    }
 
 
     resetAddUserModal() {
@@ -376,35 +363,7 @@ export class OverviewComponent {
 
     }
 
-    public resetNotificaitonModal() {
-        this.notificationModalTitle = "Notification";
-        this.notificationModalMessage = "Please wait...";
-        this.notificationModalIsClosable = false;
-        this.notificationModalType = "info";
-    }
 
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    }
-
-    public makeNotificationModalClosable(closable: boolean) {
-        this.notificationModalIsClosable = closable;
-    }
-
-    public changeNotificationModalTitle(title: string) {
-        this.notificationModalTitle = title;
-    }
-
-    public changeNotificationModalMessage(message: string) {
-        this.notificationModalMessage = message;
-    }
-
-    public changeNotificationModalType(type: string) {
-        this.notificationModalType = type;
-    }
 
     public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility?: [string, number]) {
         this.addUserModalProjectID = projectid;
