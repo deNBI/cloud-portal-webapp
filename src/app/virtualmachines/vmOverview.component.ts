@@ -85,7 +85,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     }
 
 
-
     toggleTab(tabString: string) {
         this.tab = tabString;
     }
@@ -249,7 +248,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     getVms(elixir_id: string): void {
         this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
                 this.vms_content = vms;
+
                 for (let vm of this.vms_content) {
+                    this.setCollapseStatus(vm.openstackid, false)
+
                     if (vm.created_at != '') {
                         vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
                     }
@@ -300,6 +302,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         this.virtualmachineservice.getAllVM().subscribe(vms => {
                 this.vms_content = vms;
                 for (let vm of this.vms_content) {
+                    this.setCollapseStatus(vm.openstackid, false)
+
 
                     if (vm.created_at != '') {
                         vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();

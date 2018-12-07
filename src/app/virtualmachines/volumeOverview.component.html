@@ -1,7 +1,8 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 <div *ngIf="isLoaded">
     <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
-            (click)="selectedProject = undefined;selected_vm=undefined; createModal.show();">Create & Attach Volume
+            (click)="selectedProject = undefined;selected_vm=undefined; createModal.show();">Create
+        & Attach Volume
     </button>
 </div>
 
@@ -30,13 +31,16 @@
                     <tbody>
                     <tr *ngFor="let volume of volumes">
                         <td>{{volume.volume_project}}</td>
-                        <td *ngIf="volume.volume_virtualmachine">{{volume.volume_virtualmachine.name}}</td>
+                        <td *ngIf="volume.volume_virtualmachine">
+                            {{volume.volume_virtualmachine.name}}
+                        </td>
                         <td *ngIf="!volume.volume_virtualmachine"></td>
                         <td>{{volume.volume_name}}</td>
                         <td>{{volume.volume_size }} GB</td>
                         <td>
-                            <div (clickOutside)="closeCollapse(volume.volume_openstackid)"
-                                 class="btn-group {{collapse_status[volume.volume_openstackid]}}">
+                            <div
+                                    (clickOutside)="setCollapseStatus(volume.volume_openstackid,false)"
+                                    [ngClass]="getCollapseStatus(volume.volume_openstackid) ? 'btn-group open': 'btn-group'">
                                 <button class="btn btn-secondary"
                                         (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
                                         type="button">Delete Volume
@@ -82,19 +86,22 @@
     </div>
 </div>
 
-<div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" *ngIf="volume_status == 0 || volume_status == 3 || volume_status == 5">
+                <h4 class="modal-title"
+                    *ngIf="volume_status == 0 || volume_status == 3 || volume_status == 5">
                     Waiting </h4>
                 <h4 class="modal-title"
                     *ngIf="volume_status == 1 || volume_status == 4 || volume_status == 6 || volume_status == 8">
                     Success </h4>
                 <h4 class="modal-title" *ngIf="volume_status == 2"> Error </h4>
 
-                <button type="button" class="close" style="cursor:pointer" (click)="resultModal.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="resultModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -110,7 +117,8 @@
                 </div>
 
                 <div class="alert alert-info" role="alert" *ngIf="volume_status == 5">
-                    Attaching Volume {{selected_volume?.volume_name}} to Virtualmachine {{selected_vm.name}}...
+                    Attaching Volume {{selected_volume?.volume_name}} to Virtualmachine
+                    {{selected_vm.name}}...
                     <i class="fa fa-spinner fa-spin"
                        style="font-size:24px"></i>
                 </div>
@@ -142,7 +150,8 @@
 
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="volume_status = 0;resultModal.hide()">Close
+                <button type="button" class="btn btn-secondary"
+                        (click)="volume_status = 0;resultModal.hide()">Close
                 </button>
             </div>
 
@@ -150,13 +159,15 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Volume</h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="verifyModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -191,13 +202,15 @@
 </div><!-- /.modal -->
 
 
-<div bsModal #attachModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #attachModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Attach Volume</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="attachModal.hide()"
+                <button type="button" class="close" style="cursor: pointer"
+                        (click)="attachModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -231,13 +244,15 @@
 </div><!-- /.modal -->
 
 
-<div bsModal #renameModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #renameModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Rename Volume</h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="renameModal.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="renameModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -260,20 +275,23 @@
                 </button>
 
                 <button class="btn  btn-danger col-md-4" type="reset"
-                        (click)="selected_volume=undefined;newName.value='';renameModal.hide();">Cancel
+                        (click)="selected_volume=undefined;newName.value='';renameModal.hide();">
+                    Cancel
                 </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Create & Attach Volume</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="createModal.hide()"
+                <button type="button" class="close" style="cursor: pointer"
+                        (click)="createModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -282,7 +300,8 @@
                 <div class="form-group row">
 
 
-                    <label class="col-md-12"> <strong>For which Project the Volume should be created?</strong></label>
+                    <label class="col-md-12"> <strong>For which Project the Volume should be
+                        created?</strong></label>
 
                 </div>
 
@@ -293,8 +312,10 @@
                         <select class="form-control"
                                 name="selectedProject" [(ngModel)]="selectedProject"
                                 (ngModelChange)="getActiveVmsByProject(selectedProject[1]);getSelectedProjectDiskspace();getSelectedProjectVolumes();">
-                            <option value="undefined" disabled selected hidden> Please Select</option>
-                            <option *ngFor="let project of projects" [ngValue]="project"> {{project[0]}}
+                            <option value="undefined" disabled selected hidden> Please Select
+                            </option>
+                            <option *ngFor="let project of projects" [ngValue]="project">
+                                {{project[0]}}
                             </option>
 
                         </select>
@@ -337,7 +358,8 @@
                      *ngIf="selectedProject && !(selectedProjectVolumesUsed == selectedProjectVolumesMax || selectedProjectDiskspaceUsed == selectedProjectDiskspaceMax)">
 
 
-                    <label class="col-md-12"><strong>To which Vm the Volume should be attached?</strong></label>
+                    <label class="col-md-12"><strong>To which Vm the Volume should be
+                        attached?</strong></label>
                 </div>
                 <div *ngIf="selectedProject && !(selectedProjectVolumesUsed == selectedProjectVolumesMax || selectedProjectDiskspaceUsed == selectedProjectDiskspaceMax)"
                      class="form-group row">
@@ -346,7 +368,8 @@
                     <div class="col-md-9">
                         <select class="form-control col-md-6" name="selected_vm"
                                 [(ngModel)]="selected_vm">
-                            <option value="undefined" disabled selected hidden> Please Select</option>
+                            <option value="undefined" disabled selected hidden> Please Select
+                            </option>
                             <option *ngFor="let vm of project_vms" [ngValue]="vm"> {{vm.name}}
                             </option>
 
@@ -373,7 +396,8 @@
                     <div class="col-md-9">
                         <div class="input-group">
                             <input min="0" step="1" [value]="diskspace"
-                                   (input)="diskspace = $event.target.value;calcDiskSpaceSum();" type="number" placeholder="e.g 8 "><span
+                                   (input)="diskspace = $event.target.value;calcDiskSpaceSum();"
+                                   type="number" placeholder="e.g 8 "><span
                                 class="input-group-addon"> GB
                                     </span>
 

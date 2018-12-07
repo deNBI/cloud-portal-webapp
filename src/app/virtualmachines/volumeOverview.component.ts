@@ -3,6 +3,7 @@ import {Volume} from "./virtualmachinemodels/volume";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 import {GroupService} from "../api-connector/group.service";
+import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
 
 
 @Component({
@@ -12,11 +13,10 @@ import {GroupService} from "../api-connector/group.service";
     providers: [GroupService, VirtualmachineService]
 })
 
-export class VolumeOverviewComponent implements OnInit {
+export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit {
     volumes: Volume[];
     project_vms: VirtualMachine[];
     selected_vm: VirtualMachine;
-    collapse_status: { [id: string]: string } = {};
     isLoaded = false;
     selected_volume: Volume;
     selectedProjectDiskspaceMax: number;
@@ -36,7 +36,7 @@ export class VolumeOverviewComponent implements OnInit {
     request_status: number; // 0=Delete ,1 =Detach
 
 
-    constructor(private groupService: GroupService, private vmService: VirtualmachineService) {
+    constructor(private groupService: GroupService, private vmService: VirtualmachineService) {super();
 
     }
 
@@ -46,25 +46,6 @@ export class VolumeOverviewComponent implements OnInit {
 
     setSelectedVolume(volume: Volume) {
         this.selected_volume = volume;
-    }
-
-    public getCollapseStatus(id: string) {
-        if (id in this.collapse_status) {
-            this.switchCollapseStatus(id);
-        } else {
-            this.collapse_status[id] = 'open';
-        }
-    }
-
-    public closeCollapse(id: string) {
-        this.collapse_status[id] = '';
-
-
-    }
-
-
-    public switchCollapseStatus(id: string) {
-        this.collapse_status[id] == '' ? this.collapse_status[id] = 'open' : this.collapse_status[id] = '';
     }
 
 
