@@ -10,6 +10,7 @@ import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.ser
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 import ***REMOVED***forEach***REMOVED*** from '@angular/router/src/utils/collection';
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
 
 @Component(***REMOVED***
     templateUrl: 'addcloudapplication.component.html',
@@ -17,7 +18,7 @@ import ***REMOVED***forEach***REMOVED*** from '@angular/router/src/utils/collect
     styleUrls: ['addcloudapplication.component.css']
 ***REMOVED***)
 
-export class AddcloudapplicationComponent ***REMOVED***
+export class AddcloudapplicationComponent extends AbstractBaseClasse***REMOVED***
 
     /**
      * If shortname is valid.
@@ -25,32 +26,7 @@ export class AddcloudapplicationComponent ***REMOVED***
      */
     public wronginput: boolean = false;
 
-    //notification Modal variables
-    /**
-     * Notification Modal title.
-     * @type ***REMOVED***string***REMOVED***
-     */
-    public notificationModalTitle: string = 'Notification';
-    /**
-     *  Notification Modal message.
-     * @type ***REMOVED***string***REMOVED***
-     */
-    public notificationModalMessage: string = 'Please wait...';
-    /**
-     *  Notification Modal type.
-     * @type ***REMOVED***string***REMOVED***
-     */
-    public notificationModalType: string = 'info';
-    /**
-     * If  Notification Modal is closable.
-     * @type ***REMOVED***boolean***REMOVED***
-     */
-    public notificationModalIsClosable: boolean = false;
-    /**
-     * If  Notification Modal stays.
-     * @type ***REMOVED***boolean***REMOVED***
-     */
-    public notificationModalStay: boolean = true;
+
     /**
      * Contains errors recieved when submitting an application.
      */
@@ -123,6 +99,7 @@ export class AddcloudapplicationComponent ***REMOVED***
      */
     constructor(private specialhardwareservice: SpecialHardwareService,
                 private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) ***REMOVED***
+        super();
         this.getSpecialHardware();
         this.getListOfFlavors();
         this.getListOfTypes();
@@ -273,7 +250,7 @@ export class AddcloudapplicationComponent ***REMOVED***
         this.error = null;
         if (this.wronginput == true) ***REMOVED***
 
-            this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
         ***REMOVED***
         else ***REMOVED***
@@ -288,7 +265,7 @@ export class AddcloudapplicationComponent ***REMOVED***
             ***REMOVED***
             this.applicationsservice.addNewApplication(values).toPromise()
                 .then(result => ***REMOVED***
-                    this.updateNotificaitonModal('Success', 'The application was submitted', true, 'success');
+                    this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 ***REMOVED***).catch(error => ***REMOVED***
                 var error_json = error
@@ -299,37 +276,12 @@ export class AddcloudapplicationComponent ***REMOVED***
                 ***REMOVED***
 
 
-                this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+                this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
             ***REMOVED***)
         ***REMOVED***
     ***REMOVED***
 
-    /**
-     * Update notification modal attributes.
-     * @param ***REMOVED***string***REMOVED*** title
-     * @param ***REMOVED***string***REMOVED*** message
-     * @param closable
-     * @param ***REMOVED***string***REMOVED*** type
-     */
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    ***REMOVED***
-
-    /**
-     * Reset notificaton modal attributes.
-     */
-    public resetNotificationModal() ***REMOVED***
-
-        this.notificationModalTitle = 'Notification';
-        this.notificationModalMessage = 'Please wait...';
-        this.notificationModalType = 'info';
-        this.notificationModalIsClosable = false;
-        this.notificationModalStay = true;
-    ***REMOVED***
 
     /**
      * Check if shortname is valid.

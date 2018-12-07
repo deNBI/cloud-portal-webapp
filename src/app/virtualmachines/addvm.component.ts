@@ -27,6 +27,7 @@ import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.mode
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***environment***REMOVED*** from "../../environments/environment";
 import ***REMOVED***UserinfoComponent***REMOVED*** from '../userinfo/userinfo.component';
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
 
 @Component(***REMOVED***
     selector: 'new-vm',

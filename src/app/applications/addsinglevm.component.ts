@@ -5,25 +5,20 @@ import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/s
 import ***REMOVED***SpecialHardware***REMOVED*** from './special_hardware.model'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
 
 @Component(***REMOVED***
     templateUrl: 'addsinglevm.component.html',
     providers: [SpecialHardwareService, ApiSettings, ApplicationsService]
 ***REMOVED***)
 
-export class AddsinglevmComponent ***REMOVED***
+export class AddsinglevmComponent extends AbstractBaseClasse***REMOVED***
     /**
      * Check if the shortname provided is valid.
      * @type ***REMOVED***boolean***REMOVED***
      */
     public wronginput: boolean = false;
 
-    //notification Modal variables
-    public notificationModalTitle: string = 'Notification';
-    public notificationModalMessage: string = 'Please wait...';
-    public notificationModalType: string = 'info';
-    public notificationModalIsClosable: boolean = false;
-    public notificationModalStay: boolean = true;
     public error: string[];
     public project_application_vms_requested=3;
 
@@ -41,6 +36,7 @@ export class AddsinglevmComponent ***REMOVED***
 
     constructor(private specialhardwareservice: SpecialHardwareService,
                 private  applicationsservice: ApplicationsService) ***REMOVED***
+        super();
         this.getSpecialHardware();
 
     ***REMOVED***
@@ -69,7 +65,7 @@ export class AddsinglevmComponent ***REMOVED***
     onSubmit(f: NgForm) ***REMOVED***
         this.error = null;
         if (this.wronginput == true) ***REMOVED***
-            this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
         ***REMOVED***
         else ***REMOVED***
@@ -83,7 +79,7 @@ export class AddsinglevmComponent ***REMOVED***
 
             this.applicationsservice.addNewApplication(values).toPromise()
                 .then(result => ***REMOVED***
-                    this.updateNotificaitonModal('Success', 'The application was submitted', true, 'success');
+                    this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 ***REMOVED***).catch(error => ***REMOVED***
                 var error_json = error;
@@ -94,37 +90,12 @@ export class AddsinglevmComponent ***REMOVED***
                 ***REMOVED***
 
 
-                this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+                this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
             ***REMOVED***)
         ***REMOVED***
     ***REMOVED***
 
-    /**
-     * Update notification modal attributes with values.
-     * @param ***REMOVED***string***REMOVED*** title
-     * @param ***REMOVED***string***REMOVED*** message
-     * @param closable
-     * @param ***REMOVED***string***REMOVED*** type
-     */
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    ***REMOVED***
-
-    /**
-     * Reset notification modal.
-     */
-    public resetNotificationModal() ***REMOVED***
-
-        this.notificationModalTitle = 'Notification';
-        this.notificationModalMessage = 'Please wait...';
-        this.notificationModalType = 'info';
-        this.notificationModalIsClosable = false;
-        this.notificationModalStay = true;
-    ***REMOVED***
 
     /**
      * Check if shortname is valid.

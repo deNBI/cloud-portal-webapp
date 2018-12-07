@@ -740,11 +740,11 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(res => ***REMOVED***
                                 this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => ***REMOVED***
                                         if (result['Error']) ***REMOVED***
-                                            this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
+                                            this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
                                         ***REMOVED***
                                         else ***REMOVED***
-                                            this.updateNotificaitonModal("Success", "The new project was created", true, "success");
+                                            this.updateNotificationModal("Success", "The new project was created", true, "success");
                                         ***REMOVED***
                                         for (let app of this.user_applications) ***REMOVED***
                                             if (app.Id == application_id) ***REMOVED***
@@ -774,7 +774,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
             , error => ***REMOVED***
                 console.log(error);
-                this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+                this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
             ***REMOVED***)
 
     ***REMOVED***
@@ -795,7 +795,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
         let new_group_id: number;
         this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => ***REMOVED***
             if (result['Error']) ***REMOVED***
-                this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
+                this.updateNotificationModal("Failed", result['Error'], true, "danger");
                 this
 
             ***REMOVED***
@@ -813,11 +813,11 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                         this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => ***REMOVED***
                             this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => ***REMOVED***
                                     if (result['Error']) ***REMOVED***
-                                        this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
+                                        this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
                                     ***REMOVED***
                                     else ***REMOVED***
-                                        this.updateNotificaitonModal("Success", "The new project was created", true, "success");
+                                        this.updateNotificationModal("Success", "The new project was created", true, "success");
                                     ***REMOVED***
 
                                     for (let app of this.user_applications) ***REMOVED***
@@ -850,7 +850,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
         ***REMOVED***, error => ***REMOVED***
             console.log(error);
-            this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+            this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
         ***REMOVED***)
 
 
@@ -868,7 +868,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
                             ***REMOVED***
                         ***REMOVED***
-                        this.updateNotificaitonModal("Success", "The  project was assigned to the facility.", true, "success");
+                        this.updateNotificationModal("Success", "The  project was assigned to the facility.", true, "success");
 
                     ***REMOVED***)
 
@@ -876,7 +876,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                 ***REMOVED***,
                 error => ***REMOVED***
                     console.log(error);
-                    this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+                    this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
                 ***REMOVED***);
         ***REMOVED***
 
@@ -893,10 +893,10 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                 this.user_applications = [];
                 this.getUserApplications();
                 this.getAllApplications();
-                this.updateNotificaitonModal("Success", "The Application was declined", true, "success");
+                this.updateNotificationModal("Success", "The Application was declined", true, "success");
             ***REMOVED***)
             .catch(error => ***REMOVED***
-                this.updateNotificaitonModal("Failed", "Application could be declined!", true, "danger");
+                this.updateNotificationModal("Failed", "Application could be declined!", true, "danger");
             ***REMOVED***);
     ***REMOVED***
 
@@ -907,7 +907,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
     public deleteApplication(application_id) ***REMOVED***
         this.applicataionsservice.deleteApplication(application_id).toPromise()
             .then(result => ***REMOVED***
-                this.updateNotificaitonModal('Success', 'The application has been successfully removed', true, 'success');
+                this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
             ***REMOVED***).then(result => ***REMOVED***
             this.user_applications = [];
             this.all_applications = [];
@@ -915,7 +915,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
             this.getAllApplications();
         ***REMOVED***)
             .catch(error => ***REMOVED***
-                this.updateNotificaitonModal("Failed", "Application could not be removed!", true, "danger");
+                this.updateNotificationModal("Failed", "Application could not be removed!", true, "danger");
             ***REMOVED***);
     ***REMOVED***
 
