@@ -10,6 +10,7 @@ import {FlavorService} from '../api-connector/flavor.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {forEach} from '@angular/router/src/utils/collection';
+import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
 
 @Component({
     templateUrl: 'addcloudapplication.component.html',
@@ -17,7 +18,7 @@ import {forEach} from '@angular/router/src/utils/collection';
     styleUrls: ['addcloudapplication.component.css']
 })
 
-export class AddcloudapplicationComponent {
+export class AddcloudapplicationComponent extends AbstractBaseClasse{
 
     /**
      * If shortname is valid.
@@ -25,32 +26,7 @@ export class AddcloudapplicationComponent {
      */
     public wronginput: boolean = false;
 
-    //notification Modal variables
-    /**
-     * Notification Modal title.
-     * @type {string}
-     */
-    public notificationModalTitle: string = 'Notification';
-    /**
-     *  Notification Modal message.
-     * @type {string}
-     */
-    public notificationModalMessage: string = 'Please wait...';
-    /**
-     *  Notification Modal type.
-     * @type {string}
-     */
-    public notificationModalType: string = 'info';
-    /**
-     * If  Notification Modal is closable.
-     * @type {boolean}
-     */
-    public notificationModalIsClosable: boolean = false;
-    /**
-     * If  Notification Modal stays.
-     * @type {boolean}
-     */
-    public notificationModalStay: boolean = true;
+
     /**
      * Contains errors recieved when submitting an application.
      */
@@ -123,6 +99,7 @@ export class AddcloudapplicationComponent {
      */
     constructor(private specialhardwareservice: SpecialHardwareService,
                 private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) {
+        super();
         this.getSpecialHardware();
         this.getListOfFlavors();
         this.getListOfTypes();
@@ -273,7 +250,7 @@ export class AddcloudapplicationComponent {
         this.error = null;
         if (this.wronginput == true) {
 
-            this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
         }
         else {
@@ -288,7 +265,7 @@ export class AddcloudapplicationComponent {
             }
             this.applicationsservice.addNewApplication(values).toPromise()
                 .then(result => {
-                    this.updateNotificaitonModal('Success', 'The application was submitted', true, 'success');
+                    this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 }).catch(error => {
                 var error_json = error
@@ -299,37 +276,12 @@ export class AddcloudapplicationComponent {
                 }
 
 
-                this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+                this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
             })
         }
     }
 
-    /**
-     * Update notification modal attributes.
-     * @param {string} title
-     * @param {string} message
-     * @param closable
-     * @param {string} type
-     */
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    }
-
-    /**
-     * Reset notificaton modal attributes.
-     */
-    public resetNotificationModal() {
-
-        this.notificationModalTitle = 'Notification';
-        this.notificationModalMessage = 'Please wait...';
-        this.notificationModalType = 'info';
-        this.notificationModalIsClosable = false;
-        this.notificationModalStay = true;
-    }
 
     /**
      * Check if shortname is valid.

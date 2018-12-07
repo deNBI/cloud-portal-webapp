@@ -740,11 +740,11 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(res => {
                                 this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => {
                                         if (result['Error']) {
-                                            this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
+                                            this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
                                         }
                                         else {
-                                            this.updateNotificaitonModal("Success", "The new project was created", true, "success");
+                                            this.updateNotificationModal("Success", "The new project was created", true, "success");
                                         }
                                         for (let app of this.user_applications) {
                                             if (app.Id == application_id) {
@@ -774,7 +774,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
             , error => {
                 console.log(error);
-                this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+                this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
             })
 
     }
@@ -795,7 +795,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         let new_group_id: number;
         this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => {
             if (result['Error']) {
-                this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
+                this.updateNotificationModal("Failed", result['Error'], true, "danger");
                 this
 
             }
@@ -813,11 +813,11 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                         this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
                             this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
                                     if (result['Error']) {
-                                        this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
+                                        this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
                                     }
                                     else {
-                                        this.updateNotificaitonModal("Success", "The new project was created", true, "success");
+                                        this.updateNotificationModal("Success", "The new project was created", true, "success");
                                     }
 
                                     for (let app of this.user_applications) {
@@ -850,7 +850,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
         }, error => {
             console.log(error);
-            this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+            this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
         })
 
 
@@ -868,7 +868,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
                             }
                         }
-                        this.updateNotificaitonModal("Success", "The  project was assigned to the facility.", true, "success");
+                        this.updateNotificationModal("Success", "The  project was assigned to the facility.", true, "success");
 
                     })
 
@@ -876,7 +876,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 },
                 error => {
                     console.log(error);
-                    this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+                    this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
                 });
         }
 
@@ -893,10 +893,10 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 this.user_applications = [];
                 this.getUserApplications();
                 this.getAllApplications();
-                this.updateNotificaitonModal("Success", "The Application was declined", true, "success");
+                this.updateNotificationModal("Success", "The Application was declined", true, "success");
             })
             .catch(error => {
-                this.updateNotificaitonModal("Failed", "Application could be declined!", true, "danger");
+                this.updateNotificationModal("Failed", "Application could be declined!", true, "danger");
             });
     }
 
@@ -907,7 +907,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     public deleteApplication(application_id) {
         this.applicataionsservice.deleteApplication(application_id).toPromise()
             .then(result => {
-                this.updateNotificaitonModal('Success', 'The application has been successfully removed', true, 'success');
+                this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
             }).then(result => {
             this.user_applications = [];
             this.all_applications = [];
@@ -915,7 +915,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             this.getAllApplications();
         })
             .catch(error => {
-                this.updateNotificaitonModal("Failed", "Application could not be removed!", true, "danger");
+                this.updateNotificationModal("Failed", "Application could not be removed!", true, "danger");
             });
     }
 
