@@ -3,6 +3,7 @@ import ***REMOVED***Volume***REMOVED*** from "./virtualmachinemodels/volume";
 import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
 import ***REMOVED***VirtualMachine***REMOVED*** from "./virtualmachinemodels/virtualmachine";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
 
 
 @Component(***REMOVED***
@@ -12,11 +13,10 @@ import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.servi
     providers: [GroupService, VirtualmachineService]
 ***REMOVED***)
 
-export class VolumeOverviewComponent implements OnInit ***REMOVED***
+export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit ***REMOVED***
     volumes: Volume[];
     project_vms: VirtualMachine[];
     selected_vm: VirtualMachine;
-    collapse_status: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
     isLoaded = false;
     selected_volume: Volume;
     selectedProjectDiskspaceMax: number;
@@ -36,7 +36,7 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
     request_status: number; // 0=Delete ,1 =Detach
 
 
-    constructor(private groupService: GroupService, private vmService: VirtualmachineService) ***REMOVED***
+    constructor(private groupService: GroupService, private vmService: VirtualmachineService) ***REMOVED***super();
 
     ***REMOVED***
 
@@ -46,25 +46,6 @@ export class VolumeOverviewComponent implements OnInit ***REMOVED***
 
     setSelectedVolume(volume: Volume) ***REMOVED***
         this.selected_volume = volume;
-    ***REMOVED***
-
-    public getCollapseStatus(id: string) ***REMOVED***
-        if (id in this.collapse_status) ***REMOVED***
-            this.switchCollapseStatus(id);
-        ***REMOVED*** else ***REMOVED***
-            this.collapse_status[id] = 'open';
-        ***REMOVED***
-    ***REMOVED***
-
-    public closeCollapse(id: string) ***REMOVED***
-        this.collapse_status[id] = '';
-
-
-    ***REMOVED***
-
-
-    public switchCollapseStatus(id: string) ***REMOVED***
-        this.collapse_status[id] == '' ? this.collapse_status[id] = 'open' : this.collapse_status[id] = '';
     ***REMOVED***
 
 

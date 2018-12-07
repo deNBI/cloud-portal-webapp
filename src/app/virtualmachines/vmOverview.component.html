@@ -133,9 +133,10 @@
                     </td>
 
                     <td>
-                        <div (clickOutside)="closeCollapse(vm.openstackid);"
+                        <div (clickOutside)="setCollapseStatus(vm.openstackid,false)"
                              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
-                             class="btn-group ***REMOVED******REMOVED***collapse_status[vm.openstackid]***REMOVED******REMOVED***">
+                             [ngClass]="getCollapseStatus(vm.openstackid) ? 'btn-group open': 'btn-group'"
+                             >
 
                             <button class="btn btn-secondary" type="button"
                                     *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
@@ -143,10 +144,10 @@
 
                                 Create Snapshot
                             </button>
-                            <button  class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                            <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                     data-toggle="dropdown"
                                     type="button" aria-haspopup="true" aria-expanded="false"
-                                    (click)="getCollapseStatus(vm.openstackid)"></button>
+                                    (click)="switchCollapseStatus(vm.openstackid)"></button>
                             <ul class="dropdown-menu " role="menu">
                                 <li role="menuitem"
                                     *ngIf="vm.status ==vm_statuses[vm_statuses.ACTIVE]">

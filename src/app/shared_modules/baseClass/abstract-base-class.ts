@@ -94,12 +94,21 @@ export abstract class AbstractBaseClasse ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
+    public setCollapseStatus(id:string,status:boolean):void***REMOVED***
+
+            this.collapse_status[id] = status;
+
+    ***REMOVED***
+
+
+
     /**
      * Switch status of collapse.
      * @param ***REMOVED***string***REMOVED*** id
      */
     public switchCollapseStatus(id: string) ***REMOVED***
         this.collapse_status[id] = !this.getCollapseStatus(id);
+        console.log(this.collapse_status[id])
     ***REMOVED***
 
 
