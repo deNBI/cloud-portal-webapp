@@ -390,22 +390,22 @@ export class OverviewComponent extends AbstractBaseClasse***REMOVED***
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => ***REMOVED***
                 if (result.status == 200) ***REMOVED***
-                    this.updateNotificaitonModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
+                    this.updateNotificationModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
 
 
-                    this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+                    this.updateNotificationModal("Failed", "Member could not be added!", true, "danger");
                 ***REMOVED***
             ***REMOVED***,
             error => ***REMOVED***
 
                 if (error['name'] == 'AlreadyMemberException') ***REMOVED***
-                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
+                    this.updateNotificationModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
                 ***REMOVED***
 
                 else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+                    this.updateNotificationModal("Failed", "Member could not be added!", true, "danger");
                 ***REMOVED***
             ***REMOVED***);
 
@@ -422,17 +422,17 @@ export class OverviewComponent extends AbstractBaseClasse***REMOVED***
                 result => ***REMOVED***
 
                     if (result.status == 200) ***REMOVED***
-                        this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+                        this.updateNotificationModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
 
                     ***REMOVED*** else ***REMOVED***
-                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
                     ***REMOVED***
                 ***REMOVED***, error => ***REMOVED***
                     if (error['name'] == 'AlreadyAdminException') ***REMOVED***
-                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                        this.updateNotificationModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
                     ***REMOVED***
                     else ***REMOVED***
-                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
                     ***REMOVED***
                 ***REMOVED***)
         ***REMOVED***, error => ***REMOVED***
@@ -440,17 +440,17 @@ export class OverviewComponent extends AbstractBaseClasse***REMOVED***
                 result => ***REMOVED***
 
                     if (result.status == 200) ***REMOVED***
-                        this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+                        this.updateNotificationModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
 
                     ***REMOVED*** else ***REMOVED***
-                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
                     ***REMOVED***
                 ***REMOVED***, error => ***REMOVED***
                     if (error['name'] == 'AlreadyAdminException') ***REMOVED***
-                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                        this.updateNotificationModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
                     ***REMOVED***
                     else ***REMOVED***
-                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
                     ***REMOVED***
                 ***REMOVED***)
         ***REMOVED***)
@@ -466,13 +466,13 @@ export class OverviewComponent extends AbstractBaseClasse***REMOVED***
             .then(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
-                    this.updateNotificaitonModal("Success", username + " promoted to Admin", true, "success");
+                    this.updateNotificationModal("Success", username + " promoted to Admin", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+                    this.updateNotificationModal("Failed", username + " could not be promoted to Admin!", true, "danger");
                 ***REMOVED***
             ***REMOVED***).catch(error => ***REMOVED***
-            this.updateNotificaitonModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+            this.updateNotificationModal("Failed", username + " could not be promoted to Admin!", true, "danger");
         ***REMOVED***);
     ***REMOVED***
 
@@ -486,13 +486,13 @@ export class OverviewComponent extends AbstractBaseClasse***REMOVED***
             .then(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
-                    this.updateNotificaitonModal("Success", name + " was removed as Admin", true, "success");
+                    this.updateNotificationModal("Success", name + " was removed as Admin", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
+                    this.updateNotificationModal("Failed", name + " could not be removed as Admin!", true, "danger");
                 ***REMOVED***
             ***REMOVED***).catch(error => ***REMOVED***
-            this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
+            this.updateNotificationModal("Failed", name + " could not be removed as Admin!", true, "danger");
         ***REMOVED***);
     ***REMOVED***
 
@@ -504,14 +504,14 @@ export class OverviewComponent extends AbstractBaseClasse***REMOVED***
         this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
-                    this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
+                    this.updateNotificationModal("Success", "Member " + name + " removed from the group", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
+                    this.updateNotificationModal("Failed", "Member" + name + " could not be removed !", true, "danger");
                 ***REMOVED***
             ***REMOVED***,
             error => ***REMOVED***
-                this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
+                this.updateNotificationModal("Failed", "Member" + name + " could not be removed !", true, "danger");
             ***REMOVED***);
     ***REMOVED***
 

@@ -14,6 +14,7 @@ import ***REMOVED***ApplicationStatus***REMOVED*** from "../applications/applica
 import ***REMOVED***ApplicationStatusService***REMOVED*** from "../api-connector/application-status.service";
 import ***REMOVED***ApplicationsService***REMOVED*** from "../api-connector/applications.service";
 import ***REMOVED***SpecialHardwareService***REMOVED*** from "../api-connector/special-hardware.service";
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
 
 @Component(***REMOVED***
     selector: 'app-facility.application',
@@ -22,12 +23,7 @@ import ***REMOVED***SpecialHardwareService***REMOVED*** from "../api-connector/s
     providers: [FacilityService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
 
 ***REMOVED***)
-export class FacilityApplicationComponent implements OnInit ***REMOVED***
-    //notification Modal variables
-    public notificationModalTitle: string = "Notification";
-    public notificationModalMessage: string = "Please wait...";
-    public notificationModalType: string = "info";
-    public notificationModalIsClosable: boolean = false;
+export class FacilityApplicationComponent extends AbstractBaseClasse implements OnInit ***REMOVED***
 
     /**
      * User which requested the Application ***REMOVED***id: Elixir Id of user : ***REMOVED***name and email***REMOVED******REMOVED***.
@@ -87,6 +83,7 @@ export class FacilityApplicationComponent implements OnInit ***REMOVED***
                 private applicationstatusservice: ApplicationStatusService,
                 private specialhardwareservice: SpecialHardwareService,
                 private  facilityService: FacilityService) ***REMOVED***
+        super();
 
         this.facilityService.getManagerFacilities().subscribe(result => ***REMOVED***
             this.managerFacilities = result;
@@ -215,14 +212,14 @@ export class FacilityApplicationComponent implements OnInit ***REMOVED***
     approveApplication(application_id: number) ***REMOVED***
 
 
-        this.updateNotificaitonModal('Approving Application', 'Waiting..', true, 'info')
+        this.updateNotificationModal('Approving Application', 'Waiting..', true, 'info')
         this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'], application_id).subscribe(res => ***REMOVED***
-            this.updateNotificaitonModal('Success', 'Successfully approved the application.', true, 'success');
+            this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
 
             this.all_applications = [];
             this.getAllApplications(this.selectedFacility['FacilityId'])
         ***REMOVED***, error => ***REMOVED***
-            this.updateNotificaitonModal('Failed', 'Failed to approve the application.', true, 'danger');
+            this.updateNotificationModal('Failed', 'Failed to approve the application.', true, 'danger');
 
 
         ***REMOVED***)
@@ -233,15 +230,15 @@ export class FacilityApplicationComponent implements OnInit ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** application_id
      */
     declineApplication(application_id: number) ***REMOVED***
-        this.updateNotificaitonModal('Decline Application', 'Waiting..', true, 'info');
+        this.updateNotificationModal('Decline Application', 'Waiting..', true, 'info');
 
         this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'], application_id).subscribe(res => ***REMOVED***
-            this.updateNotificaitonModal('Success', 'Successfully declined the application.', true, 'success');
+            this.updateNotificationModal('Success', 'Successfully declined the application.', true, 'success');
 
             this.all_applications = [];
             this.getAllApplications(this.selectedFacility['FacilityId'])
         ***REMOVED***, error => ***REMOVED***
-            this.updateNotificaitonModal('Failed', 'Failed to decline the application.', true, 'danger');
+            this.updateNotificationModal('Failed', 'Failed to decline the application.', true, 'danger');
 
 
         ***REMOVED***)
@@ -337,29 +334,6 @@ export class FacilityApplicationComponent implements OnInit ***REMOVED***
         return s;
     ***REMOVED***
 
-    /**
-     * Reset notification modal values to default.
-     */
-    public resetNotificationModal() ***REMOVED***
-        this.notificationModalTitle = "Notification";
-        this.notificationModalMessage = "Please wait...";
-        this.notificationModalType = "info";
-        this.notificationModalIsClosable = false;
-    ***REMOVED***
-
-    /**
-     * Update notification modal with values submitted.
-     * @param ***REMOVED***string***REMOVED*** title
-     * @param ***REMOVED***string***REMOVED*** message
-     * @param closable
-     * @param ***REMOVED***string***REMOVED*** type
-     */
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    ***REMOVED***
 
     /**
      * Get id by status name.
