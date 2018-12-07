@@ -27,6 +27,7 @@ import {Project} from "../projectmanagement/project.model";
 import {GroupService} from "../api-connector/group.service";
 import {environment} from "../../environments/environment";
 import {UserinfoComponent} from '../userinfo/userinfo.component';
+import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
 
 @Component({
     selector: 'new-vm',

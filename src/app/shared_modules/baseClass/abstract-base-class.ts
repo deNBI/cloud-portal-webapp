@@ -47,6 +47,7 @@ export abstract class AbstractBaseClasse {
     public notificationModalType: string = "info";
     public notificationModalInfoMessage: string = '';
     public notificationModalIsClosable: boolean = false;
+    public notificationModalStay: boolean;
 
     public resetNotificationModal() {
         this.notificationModalTitle = "Notification";
@@ -55,7 +56,7 @@ export abstract class AbstractBaseClasse {
         this.notificationModalType = "info";
     }
 
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
+    public updateNotificationModal(title: string, message: string, closable: true, type: string) {
         this.notificationModalTitle = title;
         this.notificationModalMessage = message;
         this.notificationModalIsClosable = closable;
@@ -79,7 +80,6 @@ export abstract class AbstractBaseClasse {
     }
 
 
-
     /**
      * Get a collapse status.
      * @param {string} id
@@ -101,7 +101,6 @@ export abstract class AbstractBaseClasse {
     public switchCollapseStatus(id: string) {
         this.collapse_status[id] = !this.getCollapseStatus(id);
     }
-
 
 
     lifeTimeReached(lifetimeDays: number, running: number): Lifetime_Statuses {
