@@ -13,13 +13,14 @@ import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 import ***REMOVED***ProjectMemberApplication***REMOVED*** from "./project_member_application";
 import ***REMOVED***ComputecenterComponent***REMOVED*** from "./computecenter.component";
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
 
 
 @Component(***REMOVED***
     templateUrl: 'overview.component.html',
     providers: [VoService, UserService, GroupService, PerunSettings, ApiSettings]
 ***REMOVED***)
-export class OverviewComponent ***REMOVED***
+export class OverviewComponent extends AbstractBaseClasse***REMOVED***
 
     debug_module = false;
 
@@ -59,13 +60,7 @@ export class OverviewComponent ***REMOVED***
     public UserModalFacility: [string, number];
 
 
-    //notification Modal variables
-    public notificationModal;
-    public notificationModalTitle: string = "Notification";
-    public notificationModalMessage: string = "Please wait...";
-    public notificationModalType: string = "info";
-    public notificationModalInfoMessage: string = '';
-    public notificationModalIsClosable: boolean = false;
+
 
     public passwordModalTitle: string = "Changing Password";
     public passwordModalType: string = 'info';
@@ -77,6 +72,7 @@ export class OverviewComponent ***REMOVED***
                 private groupservice: GroupService,
                 private userservice: UserService,
                 private voservice: VoService) ***REMOVED***
+        super();
         this.getUserProjects();
 
     ***REMOVED***
@@ -115,9 +111,7 @@ export class OverviewComponent ***REMOVED***
         if (!project.Lifetime) ***REMOVED***
             this.groupservice.getLifetime(project.Id).subscribe(res => ***REMOVED***
                 let lifetime = res['lifetime'];
-                console.log(lifetime)
                 let dateCreated = project.DateCreated;
-                console.log(dateCreated)
 
                 let expirationDate = undefined;
                 dateCreated = moment(dateCreated, "DD.MM.YYYY").toDate();
@@ -191,15 +185,6 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    lifeTimeReached(lifetime: number, running: number): string ***REMOVED***
-        if (!lifetime) ***REMOVED***
-            return "red";
-        ***REMOVED***
-        else if (lifetime == -1) ***REMOVED***
-            return "blue";
-        ***REMOVED***
-        return (lifetime - running) < 0 ? "red" : "black";
-    ***REMOVED***
 
 
     resetAddUserModal() ***REMOVED***
@@ -378,35 +363,7 @@ export class OverviewComponent ***REMOVED***
 
     ***REMOVED***
 
-    public resetNotificaitonModal() ***REMOVED***
-        this.notificationModalTitle = "Notification";
-        this.notificationModalMessage = "Please wait...";
-        this.notificationModalIsClosable = false;
-        this.notificationModalType = "info";
-    ***REMOVED***
 
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    ***REMOVED***
-
-    public makeNotificationModalClosable(closable: boolean) ***REMOVED***
-        this.notificationModalIsClosable = closable;
-    ***REMOVED***
-
-    public changeNotificationModalTitle(title: string) ***REMOVED***
-        this.notificationModalTitle = title;
-    ***REMOVED***
-
-    public changeNotificationModalMessage(message: string) ***REMOVED***
-        this.notificationModalMessage = message;
-    ***REMOVED***
-
-    public changeNotificationModalType(type: string) ***REMOVED***
-        this.notificationModalType = type;
-    ***REMOVED***
 
     public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility?: [string, number]) ***REMOVED***
         this.addUserModalProjectID = projectid;

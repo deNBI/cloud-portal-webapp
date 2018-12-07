@@ -52,6 +52,16 @@ export class GroupService ***REMOVED***
 
     ***REMOVED***
 
+     removeGroupFromResource(groupid: string): Observable<any> ***REMOVED***
+
+        return this.http.delete(this.settings.getApiBaseURL() + 'projects/' + groupid +'/resource/', ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+
+
+    ***REMOVED***
+
     isUserAdminOfGroup(groupid: string, userid: string): Observable<any> ***REMOVED***
 
         return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/members/' + userid + '/manager/', ***REMOVED***

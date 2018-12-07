@@ -19,13 +19,13 @@ import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
 import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
 import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
 
 @Component(***REMOVED***
     templateUrl: 'applications.component.html',
     providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
 ***REMOVED***)
-export class ApplicationsComponent ***REMOVED***
-    WAIT_FOR_CONFIRMATION = "wait for confirmation";
+export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
     /**
      * Applications of the user viewing the Application overview.
@@ -96,16 +96,6 @@ export class ApplicationsComponent ***REMOVED***
      */
     application_user: ***REMOVED*** [id: string]: ***REMOVED*** [id: string]: string ***REMOVED*** ***REMOVED*** = ***REMOVED******REMOVED***;
 
-
-    //notification Modal variables
-    public notificationModalTitle: string = "Notification";
-    public notificationModalMessage: string = "Please wait...";
-    public notificationModalType: string = "info";
-    public notificationModalIsClosable: boolean = false;
-    private APPROVED_STATUS = 2;
-    private WAIT_FOR_EXTENSION_STATUS = 6;
-    private EXTENSION_STATUS = 4;
-    private EXTENSTION_STATUS_STRING = 'modification requested';
     /**
      * Special hardware id for FPGA.
      * @type ***REMOVED***number***REMOVED***
@@ -118,11 +108,6 @@ export class ApplicationsComponent ***REMOVED***
      */
     public GPU = 2;
 
-    /**
-     * Array if Applications are collapsed in the html or not.
-     * @type ***REMOVED******REMOVED******REMOVED******REMOVED***
-     */
-    collapse_status: ***REMOVED*** [id: string]: boolean ***REMOVED*** = ***REMOVED******REMOVED***;
 
     /**
      * Constructor.
@@ -142,6 +127,7 @@ export class ApplicationsComponent ***REMOVED***
                 private groupservice: GroupService,
                 private voService: VoService,
                 private facilityService: FacilityService) ***REMOVED***
+        super()
 
         this.voService.isVo().subscribe(result => ***REMOVED***
 
@@ -372,7 +358,7 @@ export class ApplicationsComponent ***REMOVED***
                     a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
                     a.UserEmail = aj["project_application_user"]["email"];
                     a.Status = aj["project_application_status"];
-                    if (a.Status == this.APPROVED_STATUS) ***REMOVED***
+                    if (a.Status == this.application_statuses.APPROVED) ***REMOVED***
                         a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
 
@@ -416,7 +402,7 @@ export class ApplicationsComponent ***REMOVED***
 
                 this.isLoaded_AllApplication = true;
                 for (let app of this.all_applications) ***REMOVED***
-                    if (app.Status == 4 || app.Status == this.WAIT_FOR_EXTENSION_STATUS) ***REMOVED***
+                    if (app.Status == 4 || app.Status == this.application_statuses.MODIFICATION_REQUESTED) ***REMOVED***
                         this.getFacilityProject(app);
                     ***REMOVED***
                 ***REMOVED***
@@ -490,7 +476,7 @@ export class ApplicationsComponent ***REMOVED***
             a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
             a.UserEmail = aj["project_application_user"]["email"];
             a.Status = aj["project_application_status"];
-            if (a.Status == this.APPROVED_STATUS) ***REMOVED***
+            if (a.Status == this.application_statuses.APPROVED) ***REMOVED***
                 a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
 
@@ -690,28 +676,6 @@ export class ApplicationsComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    /**
-     * Get a collapse status.
-     * @param ***REMOVED***string***REMOVED*** id
-     * @returns ***REMOVED***boolean***REMOVED***
-     */
-    public getCollapseStatus(id: string) ***REMOVED***
-        if (id in this.collapse_status) ***REMOVED***
-            return this.collapse_status[id];
-        ***REMOVED*** else ***REMOVED***
-            this.collapse_status[id] = true;
-            return true;
-        ***REMOVED***
-    ***REMOVED***
-
-    /**
-     * Switch status of collapse.
-     * @param ***REMOVED***string***REMOVED*** id
-     */
-    public switchCollapseStatus(id: string) ***REMOVED***
-        this.collapse_status[id] = !this.getCollapseStatus(id);
-    ***REMOVED***
-
 
     /**
      * Get status name  by status id.
@@ -728,19 +692,6 @@ export class ApplicationsComponent ***REMOVED***
         return s;
     ***REMOVED***
 
-    /**
-     * Check if lifetime of a project is reached.
-     * @param ***REMOVED***number***REMOVED*** lifetime
-     * @param ***REMOVED***number***REMOVED*** running
-     * @param ***REMOVED***string***REMOVED*** status_changed_string
-     * @returns ***REMOVED***string***REMOVED***
-     */
-    public lifeTimeReached(lifetime: number, running: number, status_changed_string: string): string ***REMOVED***
-        let status_changed = new Date(status_changed_string);
-        let LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(status_changed).add(lifetime, 'months').toDate().getTime() - status_changed.getTime())) / (1000 * 3600 * 24));
-
-        return (LifetimeDays - running) < 0 ? "red" : "black";
-    ***REMOVED***
 
     /**
      * Get id by status name.
@@ -757,28 +708,16 @@ export class ApplicationsComponent ***REMOVED***
         return s;
     ***REMOVED***
 
-    /**
-     * Reset notification modal values to default.
-     */
-    public resetNotificationModal() ***REMOVED***
-        this.notificationModalTitle = "Notification";
-        this.notificationModalMessage = "Please wait...";
-        this.notificationModalType = "info";
-        this.notificationModalIsClosable = false;
-    ***REMOVED***
 
     /**
-     * Update notification modal with values submitted.
-     * @param ***REMOVED***string***REMOVED*** title
-     * @param ***REMOVED***string***REMOVED*** message
-     * @param closable
-     * @param ***REMOVED***string***REMOVED*** type
+     * Remove Application from facility , where it is for confirmation
+     * @param ***REMOVED***Application***REMOVED*** application the application
      */
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
+    removeApplicationFromFacilityConfirmation(application: Application) ***REMOVED***
+        this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe(res => ***REMOVED***
+            this.getApplication(application)
+        ***REMOVED***)
+
     ***REMOVED***
 
 
@@ -799,7 +738,7 @@ export class ApplicationsComponent ***REMOVED***
                     this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => ***REMOVED***
                         this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => ***REMOVED***
                             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(res => ***REMOVED***
-                                this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(result => ***REMOVED***
+                                this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => ***REMOVED***
                                         if (result['Error']) ***REMOVED***
                                             this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
 
@@ -854,7 +793,7 @@ export class ApplicationsComponent ***REMOVED***
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
-        this.applicationstatusservice.setApplicationStatus(application_id, this.APPROVED_STATUS, compute_center).subscribe(result => ***REMOVED***
+        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => ***REMOVED***
             if (result['Error']) ***REMOVED***
                 this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
                 this
@@ -920,15 +859,17 @@ export class ApplicationsComponent ***REMOVED***
     assignGroupToFacility(group_id, application_id, compute_center) ***REMOVED***
         if (compute_center != 'undefined') ***REMOVED***
             this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(res => ***REMOVED***
-                    this.updateNotificaitonModal("Success", "The  project was assigned to the facility.", true, "success");
-                    this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(res => ***REMOVED***
+                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(res => ***REMOVED***
                         for (let app of this.all_applications) ***REMOVED***
                             if (app.Id == application_id) ***REMOVED***
                                 this.getApplication(app);
+
                                 break;
 
                             ***REMOVED***
                         ***REMOVED***
+                        this.updateNotificaitonModal("Success", "The  project was assigned to the facility.", true, "success");
+
                     ***REMOVED***)
 
 

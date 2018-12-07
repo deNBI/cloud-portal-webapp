@@ -9,11 +9,13 @@
     <div *ngIf="is_vo_admin">
 
 
-        <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px" class="btn btn-primary"
+        <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
+                class="btn btn-primary"
                 (click)="getVms(elixir_id);toggleTab('own');">Own Machines
         </button>
 
-        <button style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px" class="btn btn-primary"
+        <button style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
+                class="btn btn-primary"
                 (click)="getAllVms();toggleTab('all')">All Machines
         </button>
 
@@ -42,46 +44,51 @@
 
             </thead>
             <tbody>
-            <td><input style="width: 110px;" type="text" placeholder="Filter" name="filtername"
-                       [(ngModel)]="filtername" (ngModelChange)="applyFilter();"></td>
-            <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterproject"
-                       [(ngModel)]="filterproject" (ngModelChange)="applyFilter();"></td>
+            <td><input style="width: 110px;" type="text" placeholder="Filter" name="filterVmName"
+                       [(ngModel)]="filterVmName" (ngModelChange)="applyFilter();"></td>
+            <td><input style="width: 110px;" t type="text" placeholder="Filter"
+                       name="filterProjectName"
+                       [(ngModel)]="filterProjectName" (ngModelChange)="applyFilter();"></td>
             <td>
 
                 <div class="checkbox">
                     <label>
                         <input type="checkbox"
-                               (change)="changeFilterStatus('ACTIVE');applyFilter();" checked/>
+                               (change)="changeFilterStatus(vm_statuses[vm_statuses.ACTIVE]);applyFilter();"
+                               checked/>
                         <span style="margin-left: 5px"
-                              class="badge badge-success">ACTIVE </span>
+                              class="badge badge-success">***REMOVED******REMOVED***vm_statuses[vm_statuses.ACTIVE]***REMOVED******REMOVED***  </span>
 
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox"
-                               (change)="changeFilterStatus('SUSPENDED');applyFilter();" checked/>
+                               (change)="changeFilterStatus(vm_statuses[vm_statuses.SUSPENDED]);applyFilter();"
+                               checked/>
                         <span style="margin-left: 5px"
-                              class="badge badge-warning">SUSPENDED </span>
+                              class="badge badge-warning">***REMOVED******REMOVED***vm_statuses[vm_statuses.SUSPENDED]***REMOVED******REMOVED***</span>
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox"
-                               (change)="changeFilterStatus('DELETED');applyFilter();"/>
+                               (change)="changeFilterStatus(vm_statuses[vm_statuses.DELETED]);applyFilter();"/>
                         <span style="margin-left: 5px"
-                              class="badge badge-danger">DELETED </span>
+                              class="badge badge-danger">***REMOVED******REMOVED***vm_statuses[vm_statuses.DELETED]***REMOVED******REMOVED***</span>
                     </label>
                 </div>
             </td>
-            <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filtercreated_at"
-                       [(ngModel)]="filtercreated_at" (ngModelChange)="applyFilter();"></td>
+            <td><input style="width: 110px;" t type="text" placeholder="Filter"
+                       name="filterVmCreated_at"
+                       [(ngModel)]="filterVmCreated_at" (ngModelChange)="applyFilter();"></td>
             <td></td>
             <td *ngIf="is_vo_admin"><input style="width: 110px;" t type="text" placeholder="Filter"
-                                           name="filterelixir_id" [(ngModel)]="filterelixir_id"
+                                           name="filterVmElixir_id" [(ngModel)]="filterVmElixir_id"
                                            (ngModelChange)="applyFilter();"></td>
-            <td><input style="width: 110px;" t type="text" placeholder="Filter" name="filterstopped_at"
-                       [(ngModel)]="filterstopped_at" (ngModelChange)="applyFilter();"></td>
+            <td><input style="width: 110px;" t type="text" placeholder="Filter"
+                       name="filterVmStopped_at"
+                       [(ngModel)]="filterVmStopped_at" (ngModelChange)="applyFilter();"></td>
 
 
             <ng-container *ngFor="let vm of vms_returned">
@@ -95,14 +102,17 @@
                         ***REMOVED******REMOVED***vm.project***REMOVED******REMOVED***
                     </td>
                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-                         <span *ngIf="vm.status == 'DELETED'" style="margin-left: 5px"
+                         <span *ngIf="vm.status == vm_statuses[vm_statuses.DELETED]"
+                               style="margin-left: 5px"
                                class="badge badge-danger"> ***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</span>
-                        <span *ngIf="vm.status == 'ACTIVE'" style="margin-left: 5px"
+                        <span *ngIf="vm.status == vm_statuses[vm_statuses.ACTIVE]"
+                              style="margin-left: 5px"
                               class="badge badge-success"> ***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</span>
-                        <span *ngIf="vm.status == 'SUSPENDED'" style="margin-left: 5px"
+                        <span *ngIf="vm.status == vm_statuses[vm_statuses.SUSPENDED]"
+                              style="margin-left: 5px"
                               class="badge badge-warning"> ***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</span>
                         <span class="badge badge-info"
-                              *ngIf="vm.status != 'DELETED' && vm.status != 'ACTIVE' && vm.status != 'SUSPENDED'">***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</span>
+                              *ngIf="vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.SUSPENDED]">***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</span>
                     </td>
                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
                         ***REMOVED******REMOVED***vm.created_at***REMOVED******REMOVED***
@@ -110,7 +120,8 @@
                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
                         <button type="button" class="btn btn-secondary btn-block"
                                 style="white-space: normal; word-wrap: break-word;"
-                                (click)="selected_command=vm.ssh_command;infoModal.show()"> Show Information
+                                (click)="selected_command=vm.ssh_command;infoModal.show()"> Show
+                            Information
                         </button>
                     </td>
                     <td *ngIf="is_vo_admin"
@@ -122,10 +133,12 @@
                     </td>
 
                     <td>
-                        <div (clickOutside)="closeCollapse(vm.openstackid);" *ngIf="vm.status !='DELETED'"
+                        <div (clickOutside)="closeCollapse(vm.openstackid);"
+                             *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
                              class="btn-group ***REMOVED******REMOVED***collapse_status[vm.openstackid]***REMOVED******REMOVED***">
 
-                            <button  class="btn btn-secondary" type="button" *ngIf="vm.status !='DELETED'"
+                            <button class="btn btn-secondary" type="button"
+                                    *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
                                     (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();">
 
                                 Create Snapshot
@@ -135,35 +148,39 @@
                                     type="button" aria-haspopup="true" aria-expanded="false"
                                     (click)="getCollapseStatus(vm.openstackid)"></button>
                             <ul class="dropdown-menu " role="menu">
-                                <li role="menuitem" *ngIf="vm.status =='ACTIVE'">
+                                <li role="menuitem"
+                                    *ngIf="vm.status ==vm_statuses[vm_statuses.ACTIVE]">
                                     <a class="dropdown-item"
                                        (click)="status_changed_vm=vm.name;stopVm(vm.openstackid,vm.name);stopModal.show();">Stop
                                         Vm</a>
                                 </li>
 
-                                <li *ngIf="vm.status =='SUSPENDED'" role="menuitem">
+                                <li *ngIf="vm.status ==vm_statuses[vm_statuses.SUSPENDED]"
+                                    role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();">Resume
                                         Vm</a>
                                 </li>
-                                <li *ngIf="vm.status !='SUSPENDED' && vm.status != 'ACTIVE' && vm.status != 'DELETED' && vm.status != 'FREEMIUM'"
+                                <li *ngIf="vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != 'FREEMIUM'"
                                     role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="checkStatus(vm.openstackid);">Check Status
                                     </a>
                                 </li>
-                                <li *ngIf="vm.status !='DELETED'" role="menuitem">
+                                <li *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
+                                    role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();">Delete
                                         Vm</a>
                                 </li>
-                                <li *ngIf="vm.status !='DELETED' && vm.client.features['VM_REBOOT']" role="menuitem">
+                                <li *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.client.features['VM_REBOOT']"
+                                    role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="status_check_error=false;reboot_done=false;status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;reboot_type='HARD';rebootModal.show();">Hard
                                         Reboot Vm
                                     </a>
                                 </li>
-                                <li *ngIf="vm.status !='DELETED' && vm.status !='SUSPENDED' && vm.client.features['VM_REBOOT']"
+                                <li *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.client.features['VM_REBOOT']"
                                     role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="status_check_error=false;reboot_done=false;status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;reboot_type='SOFT';rebootModal.show();">Soft
@@ -183,7 +200,8 @@
 </div>
 
 
-<div bsModal #stopModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #stopModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -191,14 +209,16 @@
                 <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="stopModal.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="stopModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-                    Stopping ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+                    Stopping ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
+                                                         style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
                     ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** was succesfully stopped.
@@ -210,7 +230,8 @@
 
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="status_changed=0;stopModal.hide()">Close
+                <button type="button" class="btn btn-secondary"
+                        (click)="status_changed=0;stopModal.hide()">Close
                 </button>
             </div>
 
@@ -219,14 +240,17 @@
 </div><!-- /.modal -->
 
 
-<div bsModal #rebootModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #rebootModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"><strong>***REMOVED******REMOVED***reboot_type***REMOVED******REMOVED***</strong> reboot ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** </h4>
+                <h4 class="modal-title"><strong>***REMOVED******REMOVED***reboot_type***REMOVED******REMOVED***</strong> reboot
+                    ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** </h4>
 
-                <button type="button" class="close" style="cursor:pointer" (click)="rebootModal.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="rebootModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -253,14 +277,17 @@
 </div><!-- /.modal -->
 
 
-<div bsModal #rebootResultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #rebootResultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"><strong>***REMOVED******REMOVED***reboot_type***REMOVED******REMOVED***</strong> reboot ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** </h4>
+                <h4 class="modal-title"><strong>***REMOVED******REMOVED***reboot_type***REMOVED******REMOVED***</strong> reboot
+                    ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** </h4>
 
-                <button type="button" class="close" style="cursor:pointer" (click)="rebootResultModal.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="rebootResultModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -297,7 +324,8 @@
 </div><!-- /.modal -->
 
 
-<div bsModal #resumeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #resumeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -305,14 +333,16 @@
                 <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="resumeModal.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="resumeModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-                    Resuming ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+                    Resuming ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
+                                                         style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
                     ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** was succesfully resumed.
@@ -324,7 +354,8 @@
 
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="status_changed=0;resumeModal.hide()">Close
+                <button type="button" class="btn btn-secondary"
+                        (click)="status_changed=0;resumeModal.hide()">Close
                 </button>
             </div>
 
@@ -332,7 +363,8 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -340,14 +372,16 @@
                 <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="deleteModal.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="deleteModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-                    Deleting ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+                    Deleting ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
+                                                         style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
                     ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** was succesfully deleted.
@@ -359,7 +393,8 @@
 
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="status_changed=0;deleteModal.hide()">Close
+                <button type="button" class="btn btn-secondary"
+                        (click)="status_changed=0;deleteModal.hide()">Close
                 </button>
             </div>
 
@@ -368,13 +403,15 @@
 </div><!-- /.modal -->
 
 
-<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Vm</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="verifyModal.hide()"
+                <button type="button" class="close" style="cursor: pointer"
+                        (click)="verifyModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -400,13 +437,15 @@
 </div><!-- /.modal -->
 
 
-<div bsModal #snapshotModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #snapshotModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Create Snapshot</h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="snapshotModal.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="snapshotModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -432,7 +471,8 @@
                     Create Snapshot
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"
-                        (click)="snapshotName=''; validSnapshotNameBool=false;snapshotModal.hide()">Cancel
+                        (click)="snapshotName=''; validSnapshotNameBool=false;snapshotModal.hide()">
+                    Cancel
                 </button>
             </div>
         </div><!-- /.modal-content -->
@@ -440,13 +480,15 @@
 </div><!-- /.modal -->
 
 
-<div bsModal #snapshotResult="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #snapshotResult="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Snapshot</h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="snapshotResult.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="snapshotResult.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -472,7 +514,8 @@
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-danger col-md-4" type="reset"
-                        (click)="snapshotName=''; validSnapshotNameBool=false;snapshotResult.hide();">Close
+                        (click)="snapshotName=''; validSnapshotNameBool=false;snapshotResult.hide();">
+                    Close
                 </button>
             </div>
         </div><!-- /.modal-content -->
@@ -486,7 +529,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">How to connect</h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="infoModal.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="infoModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -497,7 +541,8 @@
                 <pre><code>***REMOVED******REMOVED***selected_command***REMOVED******REMOVED***</code></pre>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="infoModal.hide();">Close</button>
+                <button type="button" class="btn btn-secondary" (click)="infoModal.hide();">Close
+                </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

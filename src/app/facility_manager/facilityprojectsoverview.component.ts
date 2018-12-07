@@ -14,12 +14,14 @@ import ***REMOVED***map***REMOVED*** from 'rxjs/operators';
 
 import * as moment from 'moment';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
+import ***REMOVED***FilterBaseClass***REMOVED*** from "../shared_modules/baseClass/filter-base-class";
 
 @Component(***REMOVED***
     templateUrl: 'facilityprojectsoverview.component.html',
     providers: [FacilityService, UserService, GroupService, PerunSettings, ApiSettings]
 ***REMOVED***)
-export class FacilityProjectsOverviewComponent ***REMOVED***
+export class FacilityProjectsOverviewComponent extends  FilterBaseClass***REMOVED***
 
     debug_module = false;
 
@@ -34,6 +36,10 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
      * @type ***REMOVED***number***REMOVED***
      */
     STATUS_APPROVED = 2;
+
+    private EXPIRED = 0;
+    private EXPIRES_SOON = 1;
+    private VALID_LIFETIME = 2;
 
 
     // modal variables for User list
@@ -50,18 +56,40 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
     public emailReply: string = '';
 
     public managerFacilities: [string, number][];
-    public selectedFacility: [string, number]
+    public selectedFacility: [string, number];
+    projects_filtered: Project[] = new Array();
+
+
 
 
     constructor(private groupservice: GroupService,
                 private  facilityservice: FacilityService) ***REMOVED***
+        super()
 
         this.facilityservice.getManagerFacilities().subscribe(result => ***REMOVED***
             this.managerFacilities = result;
-            this.selectedFacility = this.managerFacilities[0]
+            this.selectedFacility = this.managerFacilities[0];
             this.getFacilityProjects(this.managerFacilities[0]['FacilityId'])
 
         ***REMOVED***)
+    ***REMOVED***
+
+    applyFilter() ***REMOVED***
+
+
+        this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
+
+    ***REMOVED***
+
+    checkFilter(project: Project) ***REMOVED***
+        if (this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) ***REMOVED***
+            return true
+        ***REMOVED***
+        else ***REMOVED***
+            return false
+        ***REMOVED***
+
+
     ***REMOVED***
 
 
@@ -99,7 +127,7 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
         this.projects = [];
 
 
-        this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility,this.STATUS_APPROVED).subscribe(result => ***REMOVED***
+        this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe(result => ***REMOVED***
             let facility_projects = result;
             let is_pi = false;
             let is_admin = false;
@@ -130,33 +158,31 @@ export class FacilityProjectsOverviewComponent ***REMOVED***
                     is_pi,
                     is_admin,
                     compute_center);
+                newProject.Status = group['status'];
+
                 if (lifetime != -1) ***REMOVED***
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
                     let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
 
                     newProject.LifetimeDays = lifetimeDays;
                     newProject.DateEnd = expirationDate;
+                    newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
+
 
                 ***REMOVED***
-                newProject.RealName=group['name'];
+                newProject.RealName = group['name'];
                 newProject.Lifetime = lifetime;
+
 
                 this.projects.push(newProject);
             ***REMOVED***
+            this.applyFilter();
             this.isLoaded = true;
 
 
         ***REMOVED***)
 
 
-    ***REMOVED***
-
-    lifeTimeReached(lifetime: number, running: number): string ***REMOVED***
-
-        if (lifetime == -1) ***REMOVED***
-            return "blue";
-        ***REMOVED***
-        return (lifetime - running) < 0 ? "red" : "black";
     ***REMOVED***
 
     sendMailToFacility(facility: number, subject: string, message: string, reply?: string) ***REMOVED***

@@ -8,6 +8,7 @@ import ***REMOVED***FullLayoutComponent***REMOVED*** from "../layouts/full-layou
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.service";
 import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
+import ***REMOVED***FilterBaseClass***REMOVED*** from "../shared_modules/baseClass/filter-base-class";
 
 @Component(***REMOVED***
     selector: 'vm-overview',
@@ -16,7 +17,7 @@ import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient"
 ***REMOVED***)
 
 
-export class VmOverviewComponent implements OnInit ***REMOVED***
+export class VmOverviewComponent extends FilterBaseClass implements OnInit ***REMOVED***
     vms_content: VirtualMachine[];
     vms_filtered: VirtualMachine[];
     vms_returned: VirtualMachine[];
@@ -29,24 +30,13 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     status_changed_vm_id: string;
     elixir_id: string;
     is_vo_admin: boolean;
-    snapshot_vm: VirtualMachine
+    snapshot_vm: VirtualMachine;
     validSnapshotNameBool: boolean;
     snapshotDone: string = 'Waiting';
     snapshotName: string;
     tab = 'own';
     status_changed: number = 0;
-    filterusername: string;
-    filterip: string;
-    filtername: string;
-    filterstatus: string;
-    filterstatus_list: ***REMOVED*** [status: string]: boolean ***REMOVED*** = ***REMOVED***'ACTIVE': true, 'SUSPENDED': true, 'DELETED': false***REMOVED***;
-    filtercreated_at: string;
-    filterelixir_id: string;
-    filterstopped_at: string;
-    filterproject: string;
-    filterssh: string;
-    collapse_status: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
-    isLoaded = false;
+
     private checkStatusTimeout: number = 1500;
     reboot_type: string;
     status_check_error: boolean;
@@ -54,7 +44,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
 
     constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) ***REMOVED***
-
+        super()
     ***REMOVED***
 
     pageChanged(event): void ***REMOVED***
@@ -68,8 +58,8 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
 
-    filterVM(vm: VirtualMachine) ***REMOVED***
-        if (this.isFilterstatus(vm.status) && this.isFilterProject(vm.project) && this.isFilterCreated_at(vm.created_at) && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at) && this.isFilterUsername(vm.username)) ***REMOVED***
+    checkFilter(vm: VirtualMachine) ***REMOVED***
+        if (this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at) && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at) && this.isFilterUsername(vm.username)) ***REMOVED***
             return true
         ***REMOVED***
         else ***REMOVED***
@@ -83,7 +73,7 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
     applyFilter() ***REMOVED***
 
 
-        this.vms_filtered = this.vms_content.filter(vm => this.filterVM(vm));
+        this.vms_filtered = this.vms_content.filter(vm => this.checkFilter(vm));
 
         this.vmStart = 0;
         this.vmEnd = this.vmsPerPage;
@@ -94,50 +84,10 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
-    changeFilterStatus(status: string) ***REMOVED***
-        this.filterstatus_list[status] = !this.filterstatus_list[status];
 
-
-    ***REMOVED***
-
-
-    public getCollapseStatus(id: string) ***REMOVED***
-        if (id in this.collapse_status) ***REMOVED***
-            this.switchCollapseStatus(id);
-        ***REMOVED*** else ***REMOVED***
-            this.collapse_status[id] = 'open';
-        ***REMOVED***
-    ***REMOVED***
-
-    public closeCollapse(id: string) ***REMOVED***
-        this.collapse_status[id] = '';
-
-
-    ***REMOVED***
-
-    public switchCollapseStatus(id: string) ***REMOVED***
-        this.collapse_status[id] == '' ? this.collapse_status[id] = 'open' : this.collapse_status[id] = '';
-    ***REMOVED***
 
     toggleTab(tabString: string) ***REMOVED***
         this.tab = tabString;
-    ***REMOVED***
-
-
-    isFilterProject(vmproject: string): boolean ***REMOVED***
-
-        if (!this.filterproject) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else if (vmproject.indexOf(this.filterproject) === 0) ***REMOVED***
-
-            return true;
-
-        ***REMOVED***
-        else ***REMOVED***
-
-            return false;
-        ***REMOVED***
     ***REMOVED***
 
     checkInactiveVms() ***REMOVED***
@@ -196,97 +146,6 @@ export class VmOverviewComponent implements OnInit ***REMOVED***
         )
     ***REMOVED***
 
-    isFilterStopped_at(vmstopped_at: string): boolean ***REMOVED***
-        if (!this.filterstopped_at) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else if (vmstopped_at.indexOf(this.filterstopped_at) === 0) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else ***REMOVED***
-            return false;
-        ***REMOVED***
-    ***REMOVED***
-
-
-    isFilterElixir_id(vmelixir_id: string): boolean ***REMOVED***
-        if (!this.filterelixir_id) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else if (vmelixir_id.indexOf(this.filterelixir_id) === 0) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else ***REMOVED***
-            return false;
-        ***REMOVED***
-    ***REMOVED***
-
-    isFilterCreated_at(vmcreated_at: string): boolean ***REMOVED***
-        if (!this.filtercreated_at) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else if (vmcreated_at.indexOf(this.filtercreated_at) === 0) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else ***REMOVED***
-            return false;
-        ***REMOVED***
-    ***REMOVED***
-
-    isFilterName(vmname: string): boolean ***REMOVED***
-        if (!this.filtername) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else if (vmname.indexOf(this.filtername) === 0) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else ***REMOVED***
-            return false;
-        ***REMOVED***
-    ***REMOVED***
-
-    isFilterIP(vmip: string): boolean ***REMOVED***
-        if (!this.filterip) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else if (vmip == null) ***REMOVED***
-            return false;
-        ***REMOVED***
-        else if (vmip.indexOf(this.filterip) === 0) ***REMOVED***
-
-            return true;
-        ***REMOVED***
-        else ***REMOVED***
-            return false;
-        ***REMOVED***
-    ***REMOVED***
-
-    isFilterstatus(vmstatus: string): boolean ***REMOVED***
-        if (vmstatus == 'FREEMIUM') ***REMOVED***
-            return true
-        ***REMOVED***
-        if (this.filterstatus_list[vmstatus]
-        ) ***REMOVED***
-
-            return true
-        ***REMOVED***
-        else ***REMOVED***
-            return false
-        ***REMOVED***
-    ***REMOVED***
-
-    isFilterUsername(vmusername: string): boolean ***REMOVED***
-        if (!this.filterusername) ***REMOVED***
-            return true;
-        ***REMOVED***
-        else if (vmusername.indexOf(this.filterusername) === 0) ***REMOVED***
-
-            return true;
-        ***REMOVED***
-        else ***REMOVED***
-            return false;
-        ***REMOVED***
-    ***REMOVED***
 
     deleteVm(openstack_id: string): void ***REMOVED***
         this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => ***REMOVED***
