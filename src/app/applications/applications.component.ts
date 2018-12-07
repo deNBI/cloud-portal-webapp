@@ -19,13 +19,13 @@ import {VoService} from "../api-connector/vo.service";
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
 import {FacilityService} from "../api-connector/facility.service";
 import {Project} from "../projectmanagement/project.model";
+import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
 
 @Component({
     templateUrl: 'applications.component.html',
     providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
 })
-export class ApplicationsComponent {
-    WAIT_FOR_CONFIRMATION = "wait for confirmation";
+export class ApplicationsComponent extends AbstractBaseClasse {
 
     /**
      * Applications of the user viewing the Application overview.
@@ -96,16 +96,6 @@ export class ApplicationsComponent {
      */
     application_user: { [id: string]: { [id: string]: string } } = {};
 
-
-    //notification Modal variables
-    public notificationModalTitle: string = "Notification";
-    public notificationModalMessage: string = "Please wait...";
-    public notificationModalType: string = "info";
-    public notificationModalIsClosable: boolean = false;
-    private APPROVED_STATUS = 2;
-    private WAIT_FOR_EXTENSION_STATUS = 6;
-    private EXTENSION_STATUS = 4;
-    private EXTENSTION_STATUS_STRING = 'modification requested';
     /**
      * Special hardware id for FPGA.
      * @type {number}
@@ -118,11 +108,6 @@ export class ApplicationsComponent {
      */
     public GPU = 2;
 
-    /**
-     * Array if Applications are collapsed in the html or not.
-     * @type {{}}
-     */
-    collapse_status: { [id: string]: boolean } = {};
 
     /**
      * Constructor.
@@ -142,6 +127,7 @@ export class ApplicationsComponent {
                 private groupservice: GroupService,
                 private voService: VoService,
                 private facilityService: FacilityService) {
+        super()
 
         this.voService.isVo().subscribe(result => {
 
@@ -372,7 +358,7 @@ export class ApplicationsComponent {
                     a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
                     a.UserEmail = aj["project_application_user"]["email"];
                     a.Status = aj["project_application_status"];
-                    if (a.Status == this.APPROVED_STATUS) {
+                    if (a.Status == this.application_statuses.APPROVED) {
                         a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
 
@@ -416,7 +402,7 @@ export class ApplicationsComponent {
 
                 this.isLoaded_AllApplication = true;
                 for (let app of this.all_applications) {
-                    if (app.Status == 4 || app.Status == this.WAIT_FOR_EXTENSION_STATUS) {
+                    if (app.Status == 4 || app.Status == this.application_statuses.MODIFICATION_REQUESTED) {
                         this.getFacilityProject(app);
                     }
                 }
@@ -490,7 +476,7 @@ export class ApplicationsComponent {
             a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
             a.UserEmail = aj["project_application_user"]["email"];
             a.Status = aj["project_application_status"];
-            if (a.Status == this.APPROVED_STATUS) {
+            if (a.Status == this.application_statuses.APPROVED) {
                 a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
 
@@ -690,28 +676,6 @@ export class ApplicationsComponent {
         })
     }
 
-    /**
-     * Get a collapse status.
-     * @param {string} id
-     * @returns {boolean}
-     */
-    public getCollapseStatus(id: string) {
-        if (id in this.collapse_status) {
-            return this.collapse_status[id];
-        } else {
-            this.collapse_status[id] = true;
-            return true;
-        }
-    }
-
-    /**
-     * Switch status of collapse.
-     * @param {string} id
-     */
-    public switchCollapseStatus(id: string) {
-        this.collapse_status[id] = !this.getCollapseStatus(id);
-    }
-
 
     /**
      * Get status name  by status id.
@@ -728,19 +692,6 @@ export class ApplicationsComponent {
         return s;
     }
 
-    /**
-     * Check if lifetime of a project is reached.
-     * @param {number} lifetime
-     * @param {number} running
-     * @param {string} status_changed_string
-     * @returns {string}
-     */
-    public lifeTimeReached(lifetime: number, running: number, status_changed_string: string): string {
-        let status_changed = new Date(status_changed_string);
-        let LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(status_changed).add(lifetime, 'months').toDate().getTime() - status_changed.getTime())) / (1000 * 3600 * 24));
-
-        return (LifetimeDays - running) < 0 ? "red" : "black";
-    }
 
     /**
      * Get id by status name.
@@ -757,28 +708,16 @@ export class ApplicationsComponent {
         return s;
     }
 
-    /**
-     * Reset notification modal values to default.
-     */
-    public resetNotificationModal() {
-        this.notificationModalTitle = "Notification";
-        this.notificationModalMessage = "Please wait...";
-        this.notificationModalType = "info";
-        this.notificationModalIsClosable = false;
-    }
 
     /**
-     * Update notification modal with values submitted.
-     * @param {string} title
-     * @param {string} message
-     * @param closable
-     * @param {string} type
+     * Remove Application from facility , where it is for confirmation
+     * @param {Application} application the application
      */
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
+    removeApplicationFromFacilityConfirmation(application: Application) {
+        this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe(res => {
+            this.getApplication(application)
+        })
+
     }
 
 
@@ -799,7 +738,7 @@ export class ApplicationsComponent {
                     this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
                         this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
                             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(res => {
-                                this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(result => {
+                                this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => {
                                         if (result['Error']) {
                                             this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
 
@@ -854,7 +793,7 @@ export class ApplicationsComponent {
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
-        this.applicationstatusservice.setApplicationStatus(application_id, this.APPROVED_STATUS, compute_center).subscribe(result => {
+        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => {
             if (result['Error']) {
                 this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
                 this
@@ -920,15 +859,17 @@ export class ApplicationsComponent {
     assignGroupToFacility(group_id, application_id, compute_center) {
         if (compute_center != 'undefined') {
             this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(res => {
-                    this.updateNotificaitonModal("Success", "The  project was assigned to the facility.", true, "success");
-                    this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus(this.WAIT_FOR_CONFIRMATION), compute_center).subscribe(res => {
+                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(res => {
                         for (let app of this.all_applications) {
                             if (app.Id == application_id) {
                                 this.getApplication(app);
+
                                 break;
 
                             }
                         }
+                        this.updateNotificaitonModal("Success", "The  project was assigned to the facility.", true, "success");
+
                     })
 
 
