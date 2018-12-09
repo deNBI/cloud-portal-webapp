@@ -402,7 +402,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
                 this.isLoaded_AllApplication = true;
                 for (let app of this.all_applications) ***REMOVED***
-                    if (app.Status == 4 || app.Status == this.application_statuses.MODIFICATION_REQUESTED) ***REMOVED***
+                    if (app.Status == this.application_statuses.WAIT_FOR_CONFIRMATION || app.Status == this.application_statuses.MODIFICATION_REQUESTED) ***REMOVED***
                         this.getFacilityProject(app);
                     ***REMOVED***
                 ***REMOVED***
