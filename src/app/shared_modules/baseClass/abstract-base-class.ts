@@ -10,6 +10,7 @@ enum Project_Statuses {
 
 }
 
+
 enum Application_Statuses {
     SUBMITTED = 1,
     APPROVED = 2,

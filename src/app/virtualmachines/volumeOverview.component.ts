@@ -5,6 +5,29 @@ import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 import {GroupService} from "../api-connector/group.service";
 import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
 
+/**
+ * Enum of all possible volume action statuses.
+ */
+enum Volume_Action_Statuses {
+    WAITING = 0,
+    SUCCESS = 1,
+    ERROR = 2,
+    DETACHING_VOLUME = 3,
+    SUCCESSFULLY_DETACHED_VOLUME = 4,
+    ATTACHING = 5,
+    ATTACHING_SUCCESSFULL = 6,
+    WAIT_CREATION = 7,
+    SUCCESSFULLY_CREATED_ATTACHED = 8,
+    CHANGING_NAME = 9,
+    CHANGING_NAME_SUCESSFULL = 10
+
+}
+
+enum Volume_Request_Statuses {
+    DELETE = 0,
+    DETACH = 1,
+
+}
 
 @Component({
 
@@ -14,29 +37,73 @@ import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-clas
 })
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit {
+    /**
+     * Array of all volumes.
+     */
     volumes: Volume[];
+    /**
+     * Array of volumes from the selected Project.
+     */
     project_vms: VirtualMachine[];
+    /**
+     * Selected vm.
+     */
     selected_vm: VirtualMachine;
+    /**
+     * If the site is loaded.
+     * @type {boolean}
+     */
     isLoaded = false;
+    /**
+     * Selected volume.
+     */
     selected_volume: Volume;
+    /**
+     * Diskspace max from selected Project.
+     */
     selectedProjectDiskspaceMax: number;
+    /**
+     * Diskspace used from selected Project.
+     */
     selectedProjectDiskspaceUsed: number;
+    /**
+     * Volumes max from selected Project.
+     */
     selectedProjectVolumesMax: number;
+    /**
+     * Volumes used from selected Project.
+     */
     selectedProjectVolumesUsed: number;
-    selectedProjectDiskSpaceSum:number;
+    /**
+     * Diskspace actual + addition if new volume would be created for selected Project.
+     */
+    selectedProjectDiskSpaceSum: number;
+    /**
+     * The selected Project [name,id].
+     */
     selectedProject: [string, number];
+    /**
+     * List of all projects from the user.
+     * @type {any[]}
+     */
     projects: string[] = new Array();
+    /**
+     * Default diskspace.
+     * @type {number}
+     */
     diskspace: number = 1;
+    /**
+     * Default volumename.
+     * @type {string}
+     */
     volumeName: string = '';
 
-    volume_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume ,
-    // 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,7:wait creation 8:succesfully attached and created
-    // 9 = Changing Name 10 = changing name successfull
-
-    request_status: number; // 0=Delete ,1 =Detach
+    volume_action_status: number;
+    request_status: number;
 
 
-    constructor(private groupService: GroupService, private vmService: VirtualmachineService) {super();
+    constructor(private groupService: GroupService, private vmService: VirtualmachineService) {
+        super();
 
     }
 
@@ -57,8 +124,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         })
     }
 
-    calcDiskSpaceSum():void{
-        this.selectedProjectDiskSpaceSum=parseInt(this.diskspace.toString()) + parseInt(this.selectedProjectDiskspaceUsed.toString());
+    calcDiskSpaceSum(): void {
+        this.selectedProjectDiskSpaceSum = parseInt(this.diskspace.toString()) + parseInt(this.selectedProjectDiskspaceUsed.toString());
     }
 
 
@@ -110,23 +177,24 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         })
     }
 
+
     deleteVolume(volume_id: string, instance_id?: string) {
-        this.volume_status = 0;
+        this.volume_action_status = Volume_Action_Statuses.WAITING;
 
 
         if (instance_id) {
-            this.volume_status = 3;
+            this.volume_action_status = Volume_Action_Statuses.DETACHING_VOLUME;
             this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
                 if (result['Deleted'] && result['Deleted'] === true) {
-                    this.volume_status = 0;
+                    this.volume_action_status = Volume_Action_Statuses.WAITING;
                 }
 
                 this.vmService.deleteVolume(volume_id).subscribe(result => {
                     if (result['Deleted'] && result['Deleted'] === true) {
-                        this.volume_status = 1;
+                        this.volume_action_status = Volume_Action_Statuses.SUCCESS;
                     }
                     else {
-                        this.volume_status = 2;
+                        this.volume_action_status = Volume_Action_Statuses.ERROR;
                     }
                     this.getVolumes();
                 })
@@ -136,10 +204,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         else {
             this.vmService.deleteVolume(volume_id).subscribe(result => {
                 if (result['Deleted'] && result['Deleted'] === true) {
-                    this.volume_status = 1;
+                    this.volume_action_status = Volume_Action_Statuses.SUCCESS;
                 }
                 else {
-                    this.volume_status = 2;
+                    this.volume_action_status = Volume_Action_Statuses.ERROR;
                 }
                 this.getVolumes();
 
@@ -147,29 +215,31 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         }
     }
 
+
     attachVolume(volume_id: string, instance_id: string) {
-        this.volume_status = 5;
+        this.volume_action_status = Volume_Action_Statuses.ATTACHING;
 
         this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
 
             if (result['Attached'] && result['Attached'] === true) {
-                this.volume_status = 6;
+                this.volume_action_status = Volume_Action_Statuses.ATTACHING_SUCCESSFULL;
             }
             else {
-                this.volume_status = 2;
+                this.volume_action_status = Volume_Action_Statuses.ERROR;
             }
             this.getVolumes();
         })
     }
 
+
     renameVolume(volume_id: string, new_volume_name: string) {
-        this.volume_status = 9
+        this.volume_action_status = Volume_Action_Statuses.CHANGING_NAME;
         this.vmService.renameVolume(volume_id, new_volume_name).subscribe(result => {
                 if (result['volume_name'] == new_volume_name) {
-                    this.volume_status = 10;
+                    this.volume_action_status = Volume_Action_Statuses.CHANGING_NAME_SUCESSFULL;
                 }
                 else {
-                    this.volume_status = 2;
+                    this.volume_action_status = Volume_Action_Statuses.ERROR;
                 }
                 this.getVolumes();
 
@@ -179,40 +249,42 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
     }
 
+
     createVolume(volume_name: string, diskspace: number, instance_id: string) {
-        this.volume_status = 0;
+        this.volume_action_status = Volume_Action_Statuses.WAITING;
         this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
             if (result['Created']) {
-                this.volume_status = 7;
+                this.volume_action_status = Volume_Action_Statuses.WAIT_CREATION;
             }
             else {
-                this.volume_status = 2;
+                this.volume_action_status = Volume_Action_Statuses.ERROR;
             }
             this.getVolumes();
 
         })
     }
 
+
     createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string) {
-        this.volume_status = 7;
+        this.volume_action_status = 7;
         this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
             if (result['Created']) {
-                let volume_id = result['Created']
-                this.volume_status = 5;
+                let volume_id = result['Created'];
+                this.volume_action_status = Volume_Action_Statuses.ATTACHING;
 
                 this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
 
                     if (result['Attached'] && result['Attached'] === true) {
-                        this.volume_status = 8;
+                        this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED;
                     }
                     else {
-                        this.volume_status = 2;
+                        this.volume_action_status = Volume_Action_Statuses.ERROR;
                     }
                     this.getVolumes();
                 })
             }
             else {
-                this.volume_status = 2;
+                this.volume_action_status = Volume_Action_Statuses.ERROR;
             }
             this.getVolumes();
 
@@ -229,14 +301,15 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         })
     }
 
+
     detachVolume(volume_id: string, instance_id: string) {
-        this.volume_status = 3;
+        this.volume_action_status = Volume_Action_Statuses.DETACHING_VOLUME;
         this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
             if (result['Deleted'] && result['Deleted'] === true) {
-                this.volume_status = 4;
+                this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_DETACHED_VOLUME;
             }
             else {
-                this.volume_status = 2;
+                this.volume_action_status = Volume_Action_Statuses.ERROR;
             }
             this.getVolumes();
         })
@@ -253,11 +326,9 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
 
     ngOnInit(): void {
-        this.getVolumes()
+        this.getVolumes();
         this.getUserApprovedProjects();
 
-        // this.vmService.attachVolumetoServer('ae05210e-7a40-451a-8ed2-98c868c2ef8b','5302d0df-7409-45c9-8c84-33d087f067a8').subscribe()
-        // this.vmService.deleteVolume('ae05210e-7a40-451a-8ed2-98c868c2ef8b').subscribe()
 
     }
 
