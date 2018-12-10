@@ -1,5 +1,7 @@
 import ***REMOVED***ApplicationExtension***REMOVED*** from "./application_extension.model";
 import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
+import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
+
 
 export class Application ***REMOVED***
   private _Id: number;
@@ -30,13 +32,26 @@ export class Application ***REMOVED***
   private _PerunId:number;
   private _TotalCores: number;
   private _TotalRam: number;
-  private _DateApproved: string
+  private _DateApproved: string;
+  private _CurrentFlavors: ***REMOVED*** [id: string]: ***REMOVED***counter:number***REMOVED******REMOVED***;
 
 
 
   constructor() ***REMOVED***
+    this._CurrentFlavors=***REMOVED******REMOVED***;
   ***REMOVED***
 
+ public  addFlavorToCurrent(name: string, counter:number ):void ***REMOVED***
+    this._CurrentFlavors[name]=***REMOVED***counter:counter***REMOVED***;
+ ***REMOVED***
+
+  get CurrentFlavors(): ***REMOVED*** [id: string]: ***REMOVED***counter:number***REMOVED******REMOVED*** ***REMOVED***
+    return this._CurrentFlavors
+  ***REMOVED***
+
+  set CurrentFlavors(value: ***REMOVED*** [id: string]: ***REMOVED***counter:number***REMOVED******REMOVED*** )***REMOVED***
+    this._CurrentFlavors  = value;
+  ***REMOVED***
 
   get DateApproved(): string ***REMOVED***
     return this._DateApproved;

@@ -6,7 +6,7 @@ import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings
 import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
 import ***REMOVED***Application***REMOVED*** from "./application.model";
 import ***REMOVED***ApplicationStatus***REMOVED*** from "./application_status.model";
-import ***REMOVED***SpecialHardware***REMOVED*** from "./special_hardware.model";
+import ***REMOVED***SpecialHardware***REMOVED*** from "./special_hardware.model"
 import ***REMOVED***ModalDirective***REMOVED*** from "ngx-bootstrap";
 import ***REMOVED***ResourcesManager***REMOVED*** from "../perun-connector/resources_manager";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
@@ -156,7 +156,7 @@ export class ApplicationsComponent ***REMOVED***
     /**
      * Constructor.
      * Loads all Applications if user is vo admin and all user_applications.
-     * @param ***REMOVED***ApplicationsService***REMOVED*** applicataionsservice
+     * @param ***REMOVED***ApplicationsService***REMOVED*** applicationsservice
      * @param ***REMOVED***ApplicationStatusService***REMOVED*** applicationstatusservice
      * @param ***REMOVED***SpecialHardwareService***REMOVED*** specialhardwareservice
      * @param ***REMOVED***UserService***REMOVED*** userservice
@@ -164,7 +164,7 @@ export class ApplicationsComponent ***REMOVED***
      * @param ***REMOVED***VoService***REMOVED*** voService
      * @param ***REMOVED***FacilityService***REMOVED*** facilityService
      */
-    constructor(private applicataionsservice: ApplicationsService,
+    constructor(private applicationsservice: ApplicationsService,
                 private applicationstatusservice: ApplicationStatusService,
                 private specialhardwareservice: SpecialHardwareService,
                 private userservice: UserService,
@@ -191,9 +191,13 @@ export class ApplicationsComponent ***REMOVED***
             ***REMOVED***
 
         ***REMOVED***)
+          this.getListOfFlavors();
+          this.getListOfTypes();
+    ***REMOVED***
 
-      this.getListOfFlavors();
-        this.getListOfTypes();
+    getCurrentValueByVM(name: string, id: string): string
+    ***REMOVED***
+      return '0';
     ***REMOVED***
 
      keyIsVM(key: string): Flavor***REMOVED***
@@ -218,11 +222,11 @@ export class ApplicationsComponent ***REMOVED***
           var flavor: Flavor = this.keyIsVM(key.toString());
             if (flavor != null) ***REMOVED***
               this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
-              this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value)
-              console.log('cores and ram changed');
+              this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value);
             ***REMOVED***
         ***REMOVED***
       ***REMOVED***
+
       document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
       document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
 
@@ -287,6 +291,7 @@ export class ApplicationsComponent ***REMOVED***
     setSelectedApplication(application: any) ***REMOVED***
         this.selectedApplication = application;
 
+
     ***REMOVED***
 
 
@@ -331,7 +336,7 @@ export class ApplicationsComponent ***REMOVED***
      * Saves them in the userApplication array.
      */
     getUserApplications() ***REMOVED***
-        this.applicataionsservice
+        this.applicationsservice
             .getUserApplications().subscribe(result => ***REMOVED***
             let res = result;
             if (Object.keys(res).length == 0) ***REMOVED***
@@ -360,6 +365,11 @@ export class ApplicationsComponent ***REMOVED***
                 a.Comment = aj["project_application_comment"];
                 a.PerunId = aj['project_application_perun_id'];
                 a.DateApproved = aj['project_application_date_approved'];
+
+                for(let f of aj['flavors'])***REMOVED***
+                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+
+                ***REMOVED***
 
                 if (aj['projectapplicationrenewal']) ***REMOVED***
                     let r = new ApplicationExtension();
@@ -397,7 +407,6 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***
 
     /**
-<<<<<<< HEAD
      * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
      * @param approval date in string when the application was approved
      * @param months number of months the application is permitted
@@ -412,7 +421,15 @@ export class ApplicationsComponent ***REMOVED***
             date1.setMonth(date1.getMonth() + months);
         ***REMOVED***
 
-        return date1.getFullYear() + '-' + (date1.getMonth() + 1) + '-' + date1.getDate();
+        return date1.getFullYear() + '-' + this.fillUp((date1.getMonth() + 1).toString()) + '-' + this.fillUp(date1.getDate().toString());
+    ***REMOVED***
+
+    fillUp(date: string): string
+    ***REMOVED***
+      if (date.length === 1) ***REMOVED***
+        return '0' + date;
+      ***REMOVED***
+      return date;
     ***REMOVED***
 
     showLifetime(sa?: Application): string ***REMOVED***
@@ -470,7 +487,7 @@ export class ApplicationsComponent ***REMOVED***
         //todo check if user is VO Admin
 
         if (this.is_vo_admin) ***REMOVED***
-            this.applicataionsservice.getAllApplications().subscribe(res => ***REMOVED***
+            this.applicationsservice.getAllApplications().subscribe(res => ***REMOVED***
                 if (Object.keys(res).length == 0) ***REMOVED***
                     this.isLoaded_AllApplication = true;
                 ***REMOVED***
@@ -508,6 +525,10 @@ export class ApplicationsComponent ***REMOVED***
                     a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
                     a.UserEmail = aj["project_application_user"]["email"];
                     a.Status = aj["project_application_status"];
+                      for(let f of aj['flavors'])***REMOVED***
+                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+
+                ***REMOVED***
                     if (a.Status == this.APPROVED_STATUS) ***REMOVED***
                         a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
@@ -596,7 +617,7 @@ export class ApplicationsComponent ***REMOVED***
     public getApplication(application: Application) ***REMOVED***
         let index = this.all_applications.indexOf(application);
 
-        this.applicataionsservice.getApplication(application.Id.toString()).subscribe(aj => ***REMOVED***
+        this.applicationsservice.getApplication(application.Id.toString()).subscribe(aj => ***REMOVED***
             let a = new Application();
             a.Id = aj["project_application_id"];
 
@@ -635,7 +656,10 @@ export class ApplicationsComponent ***REMOVED***
             ***REMOVED***
             a.Comment = aj["project_application_comment"];
             a.PerunId = aj['project_application_perun_id'];
-            a.OpenStackProject = aj["project_application_openstack_project"];
+                 for(let f of aj['flavors'])***REMOVED***
+                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+
+                ***REMOVED***
             if (aj['projectapplicationrenewal']) ***REMOVED***
                 let r = new ApplicationExtension();
 
@@ -677,7 +701,7 @@ export class ApplicationsComponent ***REMOVED***
     public getUserApplication(application: Application) ***REMOVED***
         let index = this.user_applications.indexOf(application);
 
-        this.applicataionsservice.getUserApplication(application.Id.toString()).subscribe(aj => ***REMOVED***
+        this.applicationsservice.getUserApplication(application.Id.toString()).subscribe(aj => ***REMOVED***
             let a = new Application();
             a.Id = aj["project_application_id"];
             a.Name = aj["project_application_name"];
@@ -697,6 +721,10 @@ export class ApplicationsComponent ***REMOVED***
             a.SpecialHardware = aj["project_application_special_hardware"];
             a.OpenStackProject = aj["project_application_openstack_project"];
             a.Comment = aj["project_application_comment"];
+                  for(let f of aj['flavors'])***REMOVED***
+                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+
+                ***REMOVED***
             if (aj['projectapplicationrenewal']) ***REMOVED***
                 let r = new ApplicationExtension();
 
@@ -737,7 +765,7 @@ export class ApplicationsComponent ***REMOVED***
      * @param data
      */
     public requestExtension(data) ***REMOVED***
-        this.applicataionsservice.requestRenewal(data).subscribe(result => ***REMOVED***
+        this.applicationsservice.requestRenewal(data).subscribe(result => ***REMOVED***
             if (result['Error']) ***REMOVED***
                 this.extension_status = 2
             ***REMOVED***
@@ -785,7 +813,7 @@ export class ApplicationsComponent ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** application_id
      */
     public approveExtension(application_id: number) ***REMOVED***
-        this.applicataionsservice.approveRenewal(application_id).subscribe(result => ***REMOVED***
+        this.applicationsservice.approveRenewal(application_id).subscribe(result => ***REMOVED***
             if (result['Error']) ***REMOVED***
                 this.extension_status = 2
             ***REMOVED***
@@ -809,7 +837,7 @@ export class ApplicationsComponent ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** application_id
      */
     public declineExtension(application_id: number) ***REMOVED***
-        this.applicataionsservice.declineRenewal(application_id).subscribe(result => ***REMOVED***
+        this.applicationsservice.declineRenewal(application_id).subscribe(result => ***REMOVED***
             if (result != null) ***REMOVED***
                 this.extension_status = 2
             ***REMOVED***
@@ -1110,7 +1138,7 @@ export class ApplicationsComponent ***REMOVED***
      * @param application_id
      */
     public deleteApplication(application_id) ***REMOVED***
-        this.applicataionsservice.deleteApplication(application_id).toPromise()
+        this.applicationsservice.deleteApplication(application_id).toPromise()
             .then(result => ***REMOVED***
                 this.updateNotificaitonModal('Success', 'The application has been successfully removed', true, 'success');
             ***REMOVED***).then(result => ***REMOVED***
