@@ -917,7 +917,7 @@
                             </h6>
                         </div>
 
-
+                     <div *ngIf="selectedApplication?.OpenStackProject">
                         <div *ngFor="let t of typeList">
                             <div class="card">
 
@@ -935,7 +935,7 @@
                                                     <input class="form-control"
                                                            name="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***_old"
                                                            type="text"
-                                                           value="***REMOVED******REMOVED***0***REMOVED******REMOVED***" placeholder="NDA" disabled>
+                                                           value="***REMOVED******REMOVED***selectedApplication?.CurrentFlavors[fl.name]?.counter***REMOVED******REMOVED***" placeholder="NDA" disabled>
                                                     <span class="input-group-addon"> VMs</span>
                                                 </div>
                                                 <span class="help-block">Currently approved of this type </span>
@@ -960,6 +960,7 @@
                             </div>
 
                         </div>
+                  </div>
 
 
                         <div class="form-group row">
@@ -1106,13 +1107,20 @@
                         </div>
                     </div>
 
+
+                    <strong>
                   <div class="form-group row">
-                        <label #corenumbers id="corenumbers" class="col"></label>
+                        <label #corenumbers id="corenumbers" class="col">Number of total cores:</label>
                     </div>
                    <div class="form-group row">
-                        <label #ramnumbers id="ramnumbers" class="col" ></label>
+                        <label #ramnumbers id="ramnumbers" class="col" >Amount of total RAM: </label>
                     </div>
+                      </strong>
+
+
                 </form>
+
+
 
 
                 <div class="modal-footer">
@@ -1126,7 +1134,7 @@
                     </i>
                         Submit
                     </button>
-                    <button type="button" class="btn btn-danger" (click)="extensionModal.hide()">Close</button>
+                    <button type="button" class="btn btn-danger" (click)="extensionModal.hide(); unsetValues(corenumbers.id, ramnumbers.id)">Close</button>
 
                 </div>
 
