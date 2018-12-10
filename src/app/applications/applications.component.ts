@@ -212,6 +212,16 @@ export class ApplicationsComponent {
 
     }
 
+    unsetValues(elemIDcores, elemIDram: string)
+    {
+      this.totalRAM = 0;
+      this.totalNumberOfCores = 0;
+      document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
+      document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
+
+
+    }
+
     valuesChanged(f: NgForm, elemIDcores, elemIDram: string)
     {
 
