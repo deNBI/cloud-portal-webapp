@@ -1,5 +1,7 @@
 import {ApplicationExtension} from "./application_extension.model";
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+
 
 export class Application {
   private _Id: number;
@@ -30,13 +32,26 @@ export class Application {
   private _PerunId:number;
   private _TotalCores: number;
   private _TotalRam: number;
-  private _DateApproved: string
+  private _DateApproved: string;
+  private _CurrentFlavors: { [id: string]: {counter:number}};
 
 
 
   constructor() {
+    this._CurrentFlavors={};
   }
 
+ public  addFlavorToCurrent(name: string, counter:number ):void {
+    this._CurrentFlavors[name]={counter:counter};
+ }
+
+  get CurrentFlavors(): { [id: string]: {counter:number}} {
+    return this._CurrentFlavors
+  }
+
+  set CurrentFlavors(value: { [id: string]: {counter:number}} ){
+    this._CurrentFlavors  = value;
+  }
 
   get DateApproved(): string {
     return this._DateApproved;

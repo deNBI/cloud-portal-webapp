@@ -6,7 +6,7 @@ import {ApiSettings} from '../api-connector/api-settings.service'
 import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Application} from "./application.model";
 import {ApplicationStatus} from "./application_status.model";
-import {SpecialHardware} from "./special_hardware.model";
+import {SpecialHardware} from "./special_hardware.model"
 import {ModalDirective} from "ngx-bootstrap";
 import {ResourcesManager} from "../perun-connector/resources_manager";
 import {GroupService} from "../api-connector/group.service";
@@ -156,7 +156,7 @@ export class ApplicationsComponent {
     /**
      * Constructor.
      * Loads all Applications if user is vo admin and all user_applications.
-     * @param {ApplicationsService} applicataionsservice
+     * @param {ApplicationsService} applicationsservice
      * @param {ApplicationStatusService} applicationstatusservice
      * @param {SpecialHardwareService} specialhardwareservice
      * @param {UserService} userservice
@@ -164,7 +164,7 @@ export class ApplicationsComponent {
      * @param {VoService} voService
      * @param {FacilityService} facilityService
      */
-    constructor(private applicataionsservice: ApplicationsService,
+    constructor(private applicationsservice: ApplicationsService,
                 private applicationstatusservice: ApplicationStatusService,
                 private specialhardwareservice: SpecialHardwareService,
                 private userservice: UserService,
@@ -191,9 +191,13 @@ export class ApplicationsComponent {
             }
 
         })
+          this.getListOfFlavors();
+          this.getListOfTypes();
+    }
 
-      this.getListOfFlavors();
-        this.getListOfTypes();
+    getCurrentValueByVM(name: string, id: string): string
+    {
+      return '0';
     }
 
      keyIsVM(key: string): Flavor{
@@ -218,11 +222,11 @@ export class ApplicationsComponent {
           var flavor: Flavor = this.keyIsVM(key.toString());
             if (flavor != null) {
               this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
-              this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value)
-              console.log('cores and ram changed');
+              this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value);
             }
         }
       }
+
       document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
       document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
 
@@ -287,6 +291,7 @@ export class ApplicationsComponent {
     setSelectedApplication(application: any) {
         this.selectedApplication = application;
 
+
     }
 
 
@@ -331,7 +336,7 @@ export class ApplicationsComponent {
      * Saves them in the userApplication array.
      */
     getUserApplications() {
-        this.applicataionsservice
+        this.applicationsservice
             .getUserApplications().subscribe(result => {
             let res = result;
             if (Object.keys(res).length == 0) {
@@ -360,6 +365,11 @@ export class ApplicationsComponent {
                 a.Comment = aj["project_application_comment"];
                 a.PerunId = aj['project_application_perun_id'];
                 a.DateApproved = aj['project_application_date_approved'];
+
+                for(let f of aj['flavors']){
+                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+
+                }
 
                 if (aj['projectapplicationrenewal']) {
                     let r = new ApplicationExtension();
@@ -397,7 +407,6 @@ export class ApplicationsComponent {
     }
 
     /**
-<<<<<<< HEAD
      * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
      * @param approval date in string when the application was approved
      * @param months number of months the application is permitted
@@ -412,7 +421,15 @@ export class ApplicationsComponent {
             date1.setMonth(date1.getMonth() + months);
         }
 
-        return date1.getFullYear() + '-' + (date1.getMonth() + 1) + '-' + date1.getDate();
+        return date1.getFullYear() + '-' + this.fillUp((date1.getMonth() + 1).toString()) + '-' + this.fillUp(date1.getDate().toString());
+    }
+
+    fillUp(date: string): string
+    {
+      if (date.length === 1) {
+        return '0' + date;
+      }
+      return date;
     }
 
     showLifetime(sa?: Application): string {
@@ -470,7 +487,7 @@ export class ApplicationsComponent {
         //todo check if user is VO Admin
 
         if (this.is_vo_admin) {
-            this.applicataionsservice.getAllApplications().subscribe(res => {
+            this.applicationsservice.getAllApplications().subscribe(res => {
                 if (Object.keys(res).length == 0) {
                     this.isLoaded_AllApplication = true;
                 }
@@ -508,6 +525,10 @@ export class ApplicationsComponent {
                     a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
                     a.UserEmail = aj["project_application_user"]["email"];
                     a.Status = aj["project_application_status"];
+                      for(let f of aj['flavors']){
+                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+
+                }
                     if (a.Status == this.APPROVED_STATUS) {
                         a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
@@ -596,7 +617,7 @@ export class ApplicationsComponent {
     public getApplication(application: Application) {
         let index = this.all_applications.indexOf(application);
 
-        this.applicataionsservice.getApplication(application.Id.toString()).subscribe(aj => {
+        this.applicationsservice.getApplication(application.Id.toString()).subscribe(aj => {
             let a = new Application();
             a.Id = aj["project_application_id"];
 
@@ -635,7 +656,10 @@ export class ApplicationsComponent {
             }
             a.Comment = aj["project_application_comment"];
             a.PerunId = aj['project_application_perun_id'];
-            a.OpenStackProject = aj["project_application_openstack_project"];
+                 for(let f of aj['flavors']){
+                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+
+                }
             if (aj['projectapplicationrenewal']) {
                 let r = new ApplicationExtension();
 
@@ -677,7 +701,7 @@ export class ApplicationsComponent {
     public getUserApplication(application: Application) {
         let index = this.user_applications.indexOf(application);
 
-        this.applicataionsservice.getUserApplication(application.Id.toString()).subscribe(aj => {
+        this.applicationsservice.getUserApplication(application.Id.toString()).subscribe(aj => {
             let a = new Application();
             a.Id = aj["project_application_id"];
             a.Name = aj["project_application_name"];
@@ -697,6 +721,10 @@ export class ApplicationsComponent {
             a.SpecialHardware = aj["project_application_special_hardware"];
             a.OpenStackProject = aj["project_application_openstack_project"];
             a.Comment = aj["project_application_comment"];
+                  for(let f of aj['flavors']){
+                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+
+                }
             if (aj['projectapplicationrenewal']) {
                 let r = new ApplicationExtension();
 
@@ -737,7 +765,7 @@ export class ApplicationsComponent {
      * @param data
      */
     public requestExtension(data) {
-        this.applicataionsservice.requestRenewal(data).subscribe(result => {
+        this.applicationsservice.requestRenewal(data).subscribe(result => {
             if (result['Error']) {
                 this.extension_status = 2
             }
@@ -785,7 +813,7 @@ export class ApplicationsComponent {
      * @param {number} application_id
      */
     public approveExtension(application_id: number) {
-        this.applicataionsservice.approveRenewal(application_id).subscribe(result => {
+        this.applicationsservice.approveRenewal(application_id).subscribe(result => {
             if (result['Error']) {
                 this.extension_status = 2
             }
@@ -809,7 +837,7 @@ export class ApplicationsComponent {
      * @param {number} application_id
      */
     public declineExtension(application_id: number) {
-        this.applicataionsservice.declineRenewal(application_id).subscribe(result => {
+        this.applicationsservice.declineRenewal(application_id).subscribe(result => {
             if (result != null) {
                 this.extension_status = 2
             }
@@ -1110,7 +1138,7 @@ export class ApplicationsComponent {
      * @param application_id
      */
     public deleteApplication(application_id) {
-        this.applicataionsservice.deleteApplication(application_id).toPromise()
+        this.applicationsservice.deleteApplication(application_id).toPromise()
             .then(result => {
                 this.updateNotificaitonModal('Success', 'The application has been successfully removed', true, 'success');
             }).then(result => {
