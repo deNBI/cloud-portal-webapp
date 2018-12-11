@@ -37,6 +37,8 @@ enum Volume_Request_Statuses {
 })
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit {
+    Volume_Action_Statuses=Volume_Action_Statuses;
+    Volume_Request_Statuses=Volume_Request_Statuses;
     /**
      * Array of all volumes.
      */
@@ -208,22 +210,22 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * @param {string} instance_id oopenstack_id of instance
      */
     deleteVolume(volume_id: string, instance_id?: string) {
-        this.volume_action_status = Volume_Action_Statuses.WAITING;
+        this.volume_action_status = this.Volume_Action_Statuses.WAITING;
 
 
         if (instance_id) {
-            this.volume_action_status = Volume_Action_Statuses.DETACHING_VOLUME;
+            this.volume_action_status = this.Volume_Action_Statuses.DETACHING_VOLUME;
             this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
                 if (result['Deleted'] && result['Deleted'] === true) {
-                    this.volume_action_status = Volume_Action_Statuses.WAITING;
+                    this.volume_action_status = this.Volume_Action_Statuses.WAITING;
                 }
 
                 this.vmService.deleteVolume(volume_id).subscribe(result => {
                     if (result['Deleted'] && result['Deleted'] === true) {
-                        this.volume_action_status = Volume_Action_Statuses.SUCCESS;
+                        this.volume_action_status = this.Volume_Action_Statuses.SUCCESS;
                     }
                     else {
-                        this.volume_action_status = Volume_Action_Statuses.ERROR;
+                        this.volume_action_status = this.Volume_Action_Statuses.ERROR;
                     }
                     this.getVolumes();
                 })
@@ -233,10 +235,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         else {
             this.vmService.deleteVolume(volume_id).subscribe(result => {
                 if (result['Deleted'] && result['Deleted'] === true) {
-                    this.volume_action_status = Volume_Action_Statuses.SUCCESS;
+                    this.volume_action_status = this.Volume_Action_Statuses.SUCCESS;
                 }
                 else {
-                    this.volume_action_status = Volume_Action_Statuses.ERROR;
+                    this.volume_action_status = this.Volume_Action_Statuses.ERROR;
                 }
                 this.getVolumes();
 
@@ -250,15 +252,15 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * @param {string} instance_id openstack_id of the instance
      */
     attachVolume(volume_id: string, instance_id: string) {
-        this.volume_action_status = Volume_Action_Statuses.ATTACHING;
+        this.volume_action_status = this.Volume_Action_Statuses.ATTACHING;
 
         this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
 
             if (result['Attached'] && result['Attached'] === true) {
-                this.volume_action_status = Volume_Action_Statuses.ATTACHING_SUCCESSFULL;
+                this.volume_action_status = this.Volume_Action_Statuses.ATTACHING_SUCCESSFULL;
             }
             else {
-                this.volume_action_status = Volume_Action_Statuses.ERROR;
+                this.volume_action_status = this.Volume_Action_Statuses.ERROR;
             }
             this.getVolumes();
         })
@@ -270,13 +272,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * @param {string} new_volume_name the new name
      */
     renameVolume(volume_id: string, new_volume_name: string) {
-        this.volume_action_status = Volume_Action_Statuses.CHANGING_NAME;
+        this.volume_action_status = this.Volume_Action_Statuses.CHANGING_NAME;
         this.vmService.renameVolume(volume_id, new_volume_name).subscribe(result => {
                 if (result['volume_name'] == new_volume_name) {
-                    this.volume_action_status = Volume_Action_Statuses.CHANGING_NAME_SUCESSFULL;
+                    this.volume_action_status = this.Volume_Action_Statuses.CHANGING_NAME_SUCESSFULL;
                 }
                 else {
-                    this.volume_action_status = Volume_Action_Statuses.ERROR;
+                    this.volume_action_status = this.Volume_Action_Statuses.ERROR;
                 }
                 this.getVolumes();
 
