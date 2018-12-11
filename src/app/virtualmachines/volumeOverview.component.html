@@ -48,7 +48,7 @@
                                 <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                         data-toggle="dropdown"
                                         type="button" aria-haspopup="true" aria-expanded="false"
-                                        (click)="getCollapseStatus(volume.volume_openstackid)"></button>
+                                        (click)="switchCollapseStatus(volume.volume_openstackid)"></button>
                                 <ul class="dropdown-menu " role="menu">
                                     <li *ngIf="volume.volume_virtualmachine" role="menuitem">
                                         <a class="dropdown-item"

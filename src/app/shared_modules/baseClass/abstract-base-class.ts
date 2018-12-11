@@ -109,7 +109,6 @@ export abstract class AbstractBaseClasse {
      */
     public switchCollapseStatus(id: string) {
         this.collapse_status[id] = !this.getCollapseStatus(id);
-        console.log(this.collapse_status[id])
     }
 
 

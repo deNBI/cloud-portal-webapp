@@ -37,8 +37,8 @@ enum Volume_Request_Statuses {
 })
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit {
-    Volume_Action_Statuses=Volume_Action_Statuses;
-    Volume_Request_Statuses=Volume_Request_Statuses;
+    Volume_Action_Statuses = Volume_Action_Statuses;
+    Volume_Request_Statuses = Volume_Request_Statuses;
     /**
      * Array of all volumes.
      */
@@ -137,6 +137,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     getVolumes() {
         this.vmService.getVolumesByUser().subscribe(result => {
             this.volumes = result;
+            for (let volume of this.volumes) {
+                this.setCollapseStatus(volume.volume_openstackid, false);
+            }
+
             this.isLoaded = true;
 
         })
