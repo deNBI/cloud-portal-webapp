@@ -879,6 +879,9 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                     this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
                 });
         }
+        else{
+             this.updateNotificationModal("Failed", "You need to select an compute center!", true, "danger");
+        }
 
     }
 
