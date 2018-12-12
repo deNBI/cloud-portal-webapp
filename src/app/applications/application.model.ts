@@ -33,7 +33,7 @@ export class Application {
   private _TotalCores: number;
   private _TotalRam: number;
   private _DateApproved: string;
-  private _CurrentFlavors: { [id: string]: {counter:number}};
+  private _CurrentFlavors: { [id: string]: {counter: number}};
 
 
 

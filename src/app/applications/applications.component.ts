@@ -23,6 +23,7 @@ import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
 import _date = moment.unitOfTime._date;
+import {forEach} from '@angular/router/src/utils/collection';
 
 
 @Component({
@@ -195,11 +196,6 @@ export class ApplicationsComponent {
           this.getListOfTypes();
     }
 
-    getCurrentValueByVM(name: string, id: string): string
-    {
-      return '0';
-    }
-
      keyIsVM(key: string): Flavor{
       for (let fkey in this.flavorList) {
         if (fkey in this.flavorList) {
@@ -212,8 +208,16 @@ export class ApplicationsComponent {
 
     }
 
-    unsetValues(elemIDcores, elemIDram: string)
-    {
+    flavorTuples(app: Application): [string, number][] {
+      let cur_flavors: [string, number][];
+      for (let entry in app.CurrentFlavors){
+        cur_flavors.push([entry, app.CurrentFlavors[entry].counter]);
+        console.log(entry);
+      }
+      return cur_flavors;
+    }
+
+    unsetValues(elemIDcores, elemIDram: string) {
       this.totalRAM = 0;
       this.totalNumberOfCores = 0;
       document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
