@@ -5,6 +5,29 @@ import ***REMOVED***VirtualMachine***REMOVED*** from "./virtualmachinemodels/vir
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
 
+/**
+ * Enum of all possible volume action statuses.
+ */
+enum Volume_Action_Statuses ***REMOVED***
+    WAITING = 0,
+    SUCCESS = 1,
+    ERROR = 2,
+    DETACHING_VOLUME = 3,
+    SUCCESSFULLY_DETACHED_VOLUME = 4,
+    ATTACHING = 5,
+    ATTACHING_SUCCESSFULL = 6,
+    WAIT_CREATION = 7,
+    SUCCESSFULLY_CREATED_ATTACHED = 8,
+    CHANGING_NAME = 9,
+    CHANGING_NAME_SUCESSFULL = 10
+
+***REMOVED***
+
+enum Volume_Request_Statuses ***REMOVED***
+    DELETE = 0,
+    DETACH = 1,
+
+***REMOVED***
 
 @Component(***REMOVED***
 
@@ -14,54 +37,126 @@ import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/base
 ***REMOVED***)
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit ***REMOVED***
+    Volume_Action_Statuses = Volume_Action_Statuses;
+    Volume_Request_Statuses = Volume_Request_Statuses;
+    /**
+     * Array of all volumes.
+     */
     volumes: Volume[];
+    /**
+     * Array of volumes from the selected Project.
+     */
     project_vms: VirtualMachine[];
+    /**
+     * Selected vm.
+     */
     selected_vm: VirtualMachine;
+    /**
+     * If the site is loaded.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
     isLoaded = false;
+    /**
+     * Selected volume.
+     */
     selected_volume: Volume;
+    /**
+     * Diskspace max from selected Project.
+     */
     selectedProjectDiskspaceMax: number;
+    /**
+     * Diskspace used from selected Project.
+     */
     selectedProjectDiskspaceUsed: number;
+    /**
+     * Volumes max from selected Project.
+     */
     selectedProjectVolumesMax: number;
+    /**
+     * Volumes used from selected Project.
+     */
     selectedProjectVolumesUsed: number;
-    selectedProjectDiskSpaceSum:number;
+    /**
+     * Diskspace actual + addition if new volume would be created for selected Project.
+     */
+    selectedProjectDiskSpaceSum: number;
+    /**
+     * The selected Project [name,id].
+     */
     selectedProject: [string, number];
+    /**
+     * List of all projects from the user.
+     * @type ***REMOVED***any[]***REMOVED***
+     */
     projects: string[] = new Array();
+    /**
+     * Default diskspace.
+     * @type ***REMOVED***number***REMOVED***
+     */
     diskspace: number = 1;
+    /**
+     * Default volumename.
+     * @type ***REMOVED***string***REMOVED***
+     */
     volumeName: string = '';
+    /**
+     * Action which is performed with a volume.
+     */
+    volume_action_status: number;
 
-    volume_status = 0; // 0 = Waiting ,1 = Succes , 2 = Error ,3 = Detaching Volume ,
-    // 4 = Succesfully detached Volume, 5 = Attaching  ,6 :Attahing Succesfull ,7:wait creation 8:succesfully attached and created
-    // 9 = Changing Name 10 = changing name successfull
+    /**
+     * Type of request.
+     */
+    request_status: number;
 
-    request_status: number; // 0=Delete ,1 =Detach
 
-
-    constructor(private groupService: GroupService, private vmService: VirtualmachineService) ***REMOVED***super();
+    constructor(private groupService: GroupService, private vmService: VirtualmachineService) ***REMOVED***
+        super();
 
     ***REMOVED***
 
+    /**
+     * Set request status.
+     * @param ***REMOVED***number***REMOVED*** status
+     */
     setRequestStatus(status: number) ***REMOVED***
         this.request_status = status;
     ***REMOVED***
 
+    /**
+     * Set selected volume.
+     * @param ***REMOVED***Volume***REMOVED*** volume
+     */
     setSelectedVolume(volume: Volume) ***REMOVED***
         this.selected_volume = volume;
     ***REMOVED***
 
-
+    /**
+     * Get all volumes from user.
+     */
     getVolumes() ***REMOVED***
         this.vmService.getVolumesByUser().subscribe(result => ***REMOVED***
             this.volumes = result;
+            for (let volume of this.volumes) ***REMOVED***
+                this.setCollapseStatus(volume.volume_openstackid, false);
+            ***REMOVED***
+
             this.isLoaded = true;
 
         ***REMOVED***)
     ***REMOVED***
 
-    calcDiskSpaceSum():void***REMOVED***
-        this.selectedProjectDiskSpaceSum=parseInt(this.diskspace.toString()) + parseInt(this.selectedProjectDiskspaceUsed.toString());
+    /**
+     * Calc diskspace sum of selected project diskspace and additional diskspace of new volume.
+     */
+    calcDiskSpaceSum(): void ***REMOVED***
+        this.selectedProjectDiskSpaceSum = parseInt(this.diskspace.toString()) + parseInt(this.selectedProjectDiskspaceUsed.toString());
     ***REMOVED***
 
 
+    /**
+     * Get diskspace of selected project.
+     */
     getSelectedProjectDiskspace(): void ***REMOVED***
         this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
             if (result['Diskspace']) ***REMOVED***
@@ -74,7 +169,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
                 this.selectedProjectDiskspaceMax = 0;
             ***REMOVED***
 
-        ***REMOVED***)
+        ***REMOVED***);
         this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
             if (result['Diskspace']) ***REMOVED***
 
@@ -89,6 +184,9 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
     ***REMOVED***
 
+    /**
+     * Get volumes of selected project.
+     */
     getSelectedProjectVolumes(): void ***REMOVED***
         this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
             if (result['VolumeCounter']) ***REMOVED***
@@ -97,7 +195,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) ***REMOVED***
                 this.selectedProjectVolumesMax = 0;
             ***REMOVED***
-        ***REMOVED***)
+        ***REMOVED***);
         this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
             if (result['UsedVolumes']) ***REMOVED***
                 this.selectedProjectVolumesUsed = result['UsedVolumes'];
@@ -110,23 +208,28 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         ***REMOVED***)
     ***REMOVED***
 
+    /**
+     * Delete Volume (detach first if attached).
+     * @param ***REMOVED***string***REMOVED*** volume_id openstack_id of volume
+     * @param ***REMOVED***string***REMOVED*** instance_id oopenstack_id of instance
+     */
     deleteVolume(volume_id: string, instance_id?: string) ***REMOVED***
-        this.volume_status = 0;
+        this.volume_action_status = this.Volume_Action_Statuses.WAITING;
 
 
         if (instance_id) ***REMOVED***
-            this.volume_status = 3;
+            this.volume_action_status = this.Volume_Action_Statuses.DETACHING_VOLUME;
             this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => ***REMOVED***
                 if (result['Deleted'] && result['Deleted'] === true) ***REMOVED***
-                    this.volume_status = 0;
+                    this.volume_action_status = this.Volume_Action_Statuses.WAITING;
                 ***REMOVED***
 
                 this.vmService.deleteVolume(volume_id).subscribe(result => ***REMOVED***
                     if (result['Deleted'] && result['Deleted'] === true) ***REMOVED***
-                        this.volume_status = 1;
+                        this.volume_action_status = this.Volume_Action_Statuses.SUCCESS;
                     ***REMOVED***
                     else ***REMOVED***
-                        this.volume_status = 2;
+                        this.volume_action_status = this.Volume_Action_Statuses.ERROR;
                     ***REMOVED***
                     this.getVolumes();
                 ***REMOVED***)
@@ -136,10 +239,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         else ***REMOVED***
             this.vmService.deleteVolume(volume_id).subscribe(result => ***REMOVED***
                 if (result['Deleted'] && result['Deleted'] === true) ***REMOVED***
-                    this.volume_status = 1;
+                    this.volume_action_status = this.Volume_Action_Statuses.SUCCESS;
                 ***REMOVED***
                 else ***REMOVED***
-                    this.volume_status = 2;
+                    this.volume_action_status = this.Volume_Action_Statuses.ERROR;
                 ***REMOVED***
                 this.getVolumes();
 
@@ -147,29 +250,39 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         ***REMOVED***
     ***REMOVED***
 
+    /**
+     * Attach a volume to an instance.
+     * @param ***REMOVED***string***REMOVED*** volume_id openstack_id of the volume
+     * @param ***REMOVED***string***REMOVED*** instance_id openstack_id of the instance
+     */
     attachVolume(volume_id: string, instance_id: string) ***REMOVED***
-        this.volume_status = 5;
+        this.volume_action_status = this.Volume_Action_Statuses.ATTACHING;
 
         this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => ***REMOVED***
 
             if (result['Attached'] && result['Attached'] === true) ***REMOVED***
-                this.volume_status = 6;
+                this.volume_action_status = this.Volume_Action_Statuses.ATTACHING_SUCCESSFULL;
             ***REMOVED***
             else ***REMOVED***
-                this.volume_status = 2;
+                this.volume_action_status = this.Volume_Action_Statuses.ERROR;
             ***REMOVED***
             this.getVolumes();
         ***REMOVED***)
     ***REMOVED***
 
+    /**
+     * Rename a volume ( just in Django DB not in OpenStack).
+     * @param ***REMOVED***string***REMOVED*** volume_id openstack_id of volume
+     * @param ***REMOVED***string***REMOVED*** new_volume_name the new name
+     */
     renameVolume(volume_id: string, new_volume_name: string) ***REMOVED***
-        this.volume_status = 9
+        this.volume_action_status = this.Volume_Action_Statuses.CHANGING_NAME;
         this.vmService.renameVolume(volume_id, new_volume_name).subscribe(result => ***REMOVED***
                 if (result['volume_name'] == new_volume_name) ***REMOVED***
-                    this.volume_status = 10;
+                    this.volume_action_status = this.Volume_Action_Statuses.CHANGING_NAME_SUCESSFULL;
                 ***REMOVED***
                 else ***REMOVED***
-                    this.volume_status = 2;
+                    this.volume_action_status = this.Volume_Action_Statuses.ERROR;
                 ***REMOVED***
                 this.getVolumes();
 
@@ -179,40 +292,52 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
     ***REMOVED***
 
+    /**
+     * Create an volume.
+     * @param ***REMOVED***string***REMOVED*** volume_name name of the volume.
+     * @param ***REMOVED***number***REMOVED*** diskspace diskspace of the new volume
+     * @param ***REMOVED***string***REMOVED*** instance_id openstack_id of instance.
+     */
     createVolume(volume_name: string, diskspace: number, instance_id: string) ***REMOVED***
-        this.volume_status = 0;
+        this.volume_action_status = Volume_Action_Statuses.WAITING;
         this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => ***REMOVED***
             if (result['Created']) ***REMOVED***
-                this.volume_status = 7;
+                this.volume_action_status = Volume_Action_Statuses.WAIT_CREATION;
             ***REMOVED***
             else ***REMOVED***
-                this.volume_status = 2;
+                this.volume_action_status = Volume_Action_Statuses.ERROR;
             ***REMOVED***
             this.getVolumes();
 
         ***REMOVED***)
     ***REMOVED***
 
+    /**
+     * Create an volume and attach to an instance.
+     * @param ***REMOVED***string***REMOVED*** volume_name name of the volume
+     * @param ***REMOVED***number***REMOVED*** diskspace diskspace of the volume
+     * @param ***REMOVED***string***REMOVED*** instance_id opentack_id of the instance
+     */
     createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string) ***REMOVED***
-        this.volume_status = 7;
+        this.volume_action_status = 7;
         this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => ***REMOVED***
             if (result['Created']) ***REMOVED***
-                let volume_id = result['Created']
-                this.volume_status = 5;
+                let volume_id = result['Created'];
+                this.volume_action_status = Volume_Action_Statuses.ATTACHING;
 
                 this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => ***REMOVED***
 
                     if (result['Attached'] && result['Attached'] === true) ***REMOVED***
-                        this.volume_status = 8;
+                        this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED;
                     ***REMOVED***
                     else ***REMOVED***
-                        this.volume_status = 2;
+                        this.volume_action_status = Volume_Action_Statuses.ERROR;
                     ***REMOVED***
                     this.getVolumes();
                 ***REMOVED***)
             ***REMOVED***
             else ***REMOVED***
-                this.volume_status = 2;
+                this.volume_action_status = Volume_Action_Statuses.ERROR;
             ***REMOVED***
             this.getVolumes();
 
@@ -220,7 +345,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
     ***REMOVED***
 
-
+    /**
+     * Get all active vms from a project.
+     * @param ***REMOVED***number***REMOVED*** groupid id of the perun group from the project.
+     */
     getActiveVmsByProject(groupid: number) ***REMOVED***
         this.vmService.getActiveVmsByProject(groupid.toString()).subscribe(result => ***REMOVED***
 
@@ -229,19 +357,28 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         ***REMOVED***)
     ***REMOVED***
 
+
+    /**
+     * Detach volume from instance.
+     * @param ***REMOVED***string***REMOVED*** volume_id openstack_id of the volume
+     * @param ***REMOVED***string***REMOVED*** instance_id openstack_id of the  instance
+     */
     detachVolume(volume_id: string, instance_id: string) ***REMOVED***
-        this.volume_status = 3;
+        this.volume_action_status = Volume_Action_Statuses.DETACHING_VOLUME;
         this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => ***REMOVED***
             if (result['Deleted'] && result['Deleted'] === true) ***REMOVED***
-                this.volume_status = 4;
+                this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_DETACHED_VOLUME;
             ***REMOVED***
             else ***REMOVED***
-                this.volume_status = 2;
+                this.volume_action_status = Volume_Action_Statuses.ERROR;
             ***REMOVED***
             this.getVolumes();
         ***REMOVED***)
     ***REMOVED***
 
+    /**
+     * Get all approved projects from the user.
+     */
     getUserApprovedProjects() ***REMOVED***
         this.groupService.getMemberGroupsStatus().subscribe(membergroups => ***REMOVED***
             for (let project of membergroups) ***REMOVED***
@@ -253,11 +390,9 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
 
     ngOnInit(): void ***REMOVED***
-        this.getVolumes()
+        this.getVolumes();
         this.getUserApprovedProjects();
 
-        // this.vmService.attachVolumetoServer('ae05210e-7a40-451a-8ed2-98c868c2ef8b','5302d0df-7409-45c9-8c84-33d087f067a8').subscribe()
-        // this.vmService.deleteVolume('ae05210e-7a40-451a-8ed2-98c868c2ef8b').subscribe()
 
     ***REMOVED***
 

@@ -10,6 +10,7 @@ enum Project_Statuses ***REMOVED***
 
 ***REMOVED***
 
+
 enum Application_Statuses ***REMOVED***
     SUBMITTED = 1,
     APPROVED = 2,
@@ -108,7 +109,6 @@ export abstract class AbstractBaseClasse ***REMOVED***
      */
     public switchCollapseStatus(id: string) ***REMOVED***
         this.collapse_status[id] = !this.getCollapseStatus(id);
-        console.log(this.collapse_status[id])
     ***REMOVED***
 
 
