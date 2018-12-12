@@ -3,6 +3,11 @@ import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.service";
 import ***REMOVED***SnapshotModel***REMOVED*** from "./virtualmachinemodels/snapshot.model";
 
+enum Snapshot_Delete_Statuses ***REMOVED***
+    WAITING = 0,
+    SUCCESS = 1,
+    ERROR = 2
+***REMOVED***
 
 @Component(***REMOVED***
     selector: 'snapshot-overview',
@@ -11,9 +16,29 @@ import ***REMOVED***SnapshotModel***REMOVED*** from "./virtualmachinemodels/snap
 ***REMOVED***)
 
 export class SnapshotOverviewComponent implements OnInit ***REMOVED***
+    /**
+     * All snapshots.
+     * @type ***REMOVED***Array***REMOVED***
+     */
     snapshots: SnapshotModel[] = [];
+    /**
+     * Selected snapshot.
+     */
     selected_snapshot: SnapshotModel;
-    delete_status = 0;
+    /**
+     * All possible statuses when deleting.
+     * @type ***REMOVED***Snapshot_Delete_Statuses***REMOVED***
+     */
+    delete_statuses = Snapshot_Delete_Statuses;
+    /**
+     * Actual delete status.
+     * @type ***REMOVED***Snapshot_Delete_Statuses***REMOVED***
+     */
+    delete_status = this.delete_statuses.WAITING;
+    /**
+     * If site was initialized.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
     isLoaded = false;
 
 
@@ -21,10 +46,17 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Set selected Snapshot.
+     * @param ***REMOVED***SnapshotModel***REMOVED*** snapshot
+     */
     setSelectedSnapshot(snapshot: SnapshotModel) ***REMOVED***
         this.selected_snapshot = snapshot;
     ***REMOVED***
 
+    /**
+     * Get snapshots by user.
+     */
     getSnapshots() ***REMOVED***
         this.imageService.getSnapshotsByUser().subscribe(result => ***REMOVED***
             this.snapshots = result;
@@ -32,6 +64,10 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
+    /**
+     * Delete snapshot.
+     * @param ***REMOVED***string***REMOVED*** snapshot_id
+     */
     deleteSnapshot(snapshot_id: string) ***REMOVED***
         this.imageService.deleteSnapshot(snapshot_id).subscribe(result => ***REMOVED***
 

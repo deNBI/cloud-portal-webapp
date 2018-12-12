@@ -1,6 +1,6 @@
 
 #### Bug Fixes
-
+* **volume:** fixed volume bug
 * **development:**  remove nvmrc file 
 
 #### Features
