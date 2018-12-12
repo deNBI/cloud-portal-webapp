@@ -18,28 +18,102 @@ import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
 
 
 export class VmOverviewComponent extends FilterBaseClass implements OnInit {
+    /**
+     * All unfiltered vms.
+     */
     vms_content: VirtualMachine[];
+    /**
+     * All vms filtered.
+     */
     vms_filtered: VirtualMachine[];
+    /**
+     * All vms returned with paging.
+     */
     vms_returned: VirtualMachine[];
+    /**
+     * How many vms are shown per page.
+     * @type {number}
+     */
     vmsPerPage = 5;
+    /**
+     * Current page.
+     * @type {number}
+     */
     currentPage = 1;
+    /**
+     * Index where the vm list starts.
+     * @type {number}
+     */
     vmStart = 0;
-    selected_command: string;
+    /**
+     * How to connect for specific vm.
+     */
+    how_to_connect: string;
+    /**
+     * End of the vms.
+     * @type {number}
+     */
     vmEnd = this.vmsPerPage;
+    /**
+     * Name of vm which changed status.
+     */
     status_changed_vm: string;
+    /**
+     * Id of vm which changed status.
+     */
     status_changed_vm_id: string;
+    /**
+     * Elixir-Id of the user.
+     */
     elixir_id: string;
+    /**
+     * If user is vo admin.
+     */
     is_vo_admin: boolean;
+    /**
+     * Vm which is used to create a snapshot.
+     */
     snapshot_vm: VirtualMachine;
+    /**
+     * If the snapshot name is valid.
+     */
     validSnapshotNameBool: boolean;
+    /**
+     * String if the snapshot is done.
+     * @type {string}
+     */
     snapshotDone: string = 'Waiting';
+    /**
+     * Name of the snapshot.
+     */
     snapshotName: string;
+    /**
+     * Tab which is shown own|all.
+     * @type {string}
+     */
     tab = 'own';
+    /**
+     * The changed status.
+     * @type {number}
+     */
     status_changed: number = 0;
 
+    /**
+     * Timeout for checking vm status.
+     * @type {number}
+     */
     private checkStatusTimeout: number = 1500;
+    /**
+     * Type of reboot HARD|SOFT.
+     */
     reboot_type: string;
+    /**
+     * If an error appeared when checking vm status.
+     */
     status_check_error: boolean;
+    /**
+     * IF reboot is done.
+     */
     reboot_done: boolean;
 
 
@@ -47,6 +121,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         super()
     }
 
+    /**
+     * Load vms depending on page.
+     * @param event
+     */
     pageChanged(event): void {
 
         const startItem = (event.page - 1) * event.itemsPerPage;
@@ -57,7 +135,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
     }
 
-
+    /**
+     * Check if vm corresponds the filter.
+     * @param {VirtualMachine} vm vm which is checked
+     * @returns {boolean} True if it matches the filter
+     */
     checkFilter(vm: VirtualMachine) {
         if (this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at) && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at) && this.isFilterUsername(vm.username)) {
             return true
@@ -69,7 +151,9 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
     }
 
-
+    /**
+     * Apply filter to all vms.
+     */
     applyFilter() {
 
 
@@ -84,11 +168,17 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
     }
 
-
+    /**
+     * Toggle tab own|all.
+     * @param {string} tabString
+     */
     toggleTab(tabString: string) {
         this.tab = tabString;
     }
 
+    /**
+     * Check status of all inactive vms.
+     */
     checkInactiveVms() {
         this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => {
             this.vms_content = vms;
@@ -108,16 +198,27 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         })
     }
 
+    /**
+     * Check if the snapshot name is valid.
+     * @param e
+     */
     validSnapshotName(e) {
         this.validSnapshotNameBool = this.snapshotName.length > 0 ? true : false;
 
 
     }
 
+    /**
+     * Reset the snapshotDone to waiting.
+     */
     resetSnapshotResult() {
         this.snapshotDone = 'Waiting';
     }
 
+    /**
+     * Check status of vm.
+     * @param {string} openstackid  of the instance
+     */
     checkStatus(openstackid: string) {
         this.virtualmachineservice.checkVmStatus(openstackid).subscribe(res => {
 
@@ -145,7 +246,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         )
     }
 
-
+    /**
+     * Delete Vm.
+     * @param {string} openstack_id of instance
+     */
     deleteVm(openstack_id: string): void {
         this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => {
 
@@ -171,6 +275,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         })
     }
 
+    /**
+     * Reboot a vm.
+     * @param {string} openstack_id of the instance
+     * @param {string} reboot_type HARD|SOFT
+     */
     public rebootVm(openstack_id: string, reboot_type: string) {
         this.virtualmachineservice.rebootVM(openstack_id, reboot_type).subscribe(result => {
             this.status_changed = 0;
@@ -188,6 +297,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         })
     }
 
+    /**
+     * Check Status of vm in loop till active.
+     * @param {string} id of instance.
+     */
     check_status_loop(id: string) {
 
         setTimeout(() => {
@@ -219,7 +332,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         }, this.checkStatusTimeout);
     }
 
-
+    /**
+     * Stop a vm.
+     * @param {string} openstack_id of instance.
+     */
     stopVm(openstack_id: string): void {
         this.virtualmachineservice.stopVM(openstack_id).subscribe(result => {
 
@@ -245,6 +361,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         })
     }
 
+    /**
+     * Get all vms of user.
+     * @param {string} elixir_id of user
+     */
     getVms(elixir_id: string): void {
         this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
                 this.vms_content = vms;
@@ -271,6 +391,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         );
     }
 
+    /**
+     * Resume a vm.
+     * @param {string} openstack_id of instance.
+     */
     resumeVM(openstack_id: string): void {
 
         this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => {
@@ -297,7 +421,9 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         })
     }
 
-
+    /**
+     * Get all vms.
+     */
     getAllVms(): void {
         this.virtualmachineservice.getAllVM().subscribe(vms => {
                 this.vms_content = vms;
@@ -329,6 +455,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
     }
 
+    /**
+     * Check vm status.
+     * @param {UserService} userservice
+     */
     checkVOstatus(userservice: UserService) {
         let user_id: number;
         let admin_vos: {};
@@ -350,6 +480,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         });
     }
 
+    /**
+     * Create snapshot.
+     * @param {string} snapshot_instance which is used for creating the snapshot
+     * @param {string} snapshot_name name of the snapshot
+     */
     createSnapshot(snapshot_instance: string, snapshot_name: string) {
         this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => {
             if (result['Error']) {
@@ -362,7 +497,9 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         })
     }
 
-
+    /**
+     * Get elixir id of logged in user.
+     */
     getElixirId() {
         this.userservice.getLoggedUser().toPromise()
             .then(result => {

@@ -1,4 +1,3 @@
-
 <div *ngIf="isLoaded==false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="card">
@@ -47,23 +46,30 @@
         </div>
     </div>
 </div>
-<div *ngIf="snapshots.length == 0 && isLoaded"><h3 class="text-center">No snapshots available. Click this <a href="https://cloud.denbi.de/wiki/portal/#snapshots">link</a> to see how to use and create a snapshot.</h3></div>
+<div *ngIf="snapshots.length == 0 && isLoaded"><h3 class="text-center">No snapshots available. Click
+    this <a href="https://cloud.denbi.de/wiki/portal/#snapshots">link</a> to see how to use and
+    create a snapshot.</h3></div>
 
-<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" *ngIf="delete_status == 0"> Waiting </h4>
-                <h4 class="modal-title" *ngIf="delete_status == 1"> Success </h4>
-                <h4 class="modal-title" *ngIf="delete_status == 2"> Error </h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="deleteModal.hide()" aria-label="Close">
+                <h4 class="modal-title" *ngIf="delete_status == delete_statuses.WAITING ">
+                    Waiting </h4>
+                <h4 class="modal-title" *ngIf="delete_status == delete_statuses.SUCCESS">
+                    Success </h4>
+                <h4 class="modal-title" *ngIf="delete_status == delete_statuses.ERROR"> Error </h4>
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="deleteModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="delete_status == 0">
-                    Deleting {{selected_snapshot?.snapshot_name}}... <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+                    Deleting {{selected_snapshot?.snapshot_name}}... <i
+                        class="fa fa-spinner fa-spin" style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="delete_status == 1">
                     {{selected_snapshot?.snapshot_name}} was succesfully deleted.
@@ -73,13 +79,15 @@
                 When deleting {{selected_snapshot?.snapshot_name}} an error occured.
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="delete_status == 3">
-                Could not delete <strong>{{selected_snapshot?.snapshot_name}} </strong> because the Client is offline.
+                Could not delete <strong>{{selected_snapshot?.snapshot_name}} </strong> because the
+                Client is offline.
                 Please contact cloud@denbi.de if you got any questions.
             </div>
 
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="delete_status = 0;deleteModal.hide()">Close
+                <button type="button" class="btn btn-secondary"
+                        (click)="delete_status = 0;deleteModal.hide()">Close
                 </button>
             </div>
 
@@ -87,13 +95,15 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Snapshot</h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="verifyModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

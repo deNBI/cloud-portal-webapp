@@ -3,6 +3,11 @@ import {FormsModule} from '@angular/forms';
 import {ImageService} from "../api-connector/image.service";
 import {SnapshotModel} from "./virtualmachinemodels/snapshot.model";
 
+enum Snapshot_Delete_Statuses {
+    WAITING = 0,
+    SUCCESS = 1,
+    ERROR = 2
+}
 
 @Component({
     selector: 'snapshot-overview',
@@ -11,9 +16,29 @@ import {SnapshotModel} from "./virtualmachinemodels/snapshot.model";
 })
 
 export class SnapshotOverviewComponent implements OnInit {
+    /**
+     * All snapshots.
+     * @type {Array}
+     */
     snapshots: SnapshotModel[] = [];
+    /**
+     * Selected snapshot.
+     */
     selected_snapshot: SnapshotModel;
-    delete_status = 0;
+    /**
+     * All possible statuses when deleting.
+     * @type {Snapshot_Delete_Statuses}
+     */
+    delete_statuses = Snapshot_Delete_Statuses;
+    /**
+     * Actual delete status.
+     * @type {Snapshot_Delete_Statuses}
+     */
+    delete_status = this.delete_statuses.WAITING;
+    /**
+     * If site was initialized.
+     * @type {boolean}
+     */
     isLoaded = false;
 
 
@@ -21,10 +46,17 @@ export class SnapshotOverviewComponent implements OnInit {
 
     }
 
+    /**
+     * Set selected Snapshot.
+     * @param {SnapshotModel} snapshot
+     */
     setSelectedSnapshot(snapshot: SnapshotModel) {
         this.selected_snapshot = snapshot;
     }
 
+    /**
+     * Get snapshots by user.
+     */
     getSnapshots() {
         this.imageService.getSnapshotsByUser().subscribe(result => {
             this.snapshots = result;
@@ -32,6 +64,10 @@ export class SnapshotOverviewComponent implements OnInit {
         })
     }
 
+    /**
+     * Delete snapshot.
+     * @param {string} snapshot_id
+     */
     deleteSnapshot(snapshot_id: string) {
         this.imageService.deleteSnapshot(snapshot_id).subscribe(result => {
 
