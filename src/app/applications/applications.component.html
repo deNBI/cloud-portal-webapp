@@ -101,24 +101,36 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>VMs</td>
+                                                        <td><b *ngIf="application.OpenStackProject">VMs</b></td>
                                                         <td *ngIf="!application.OpenStackProject">
                                                             {{application.VMsRequested}}
                                                         </td>
+                                                        <td *ngIf="application.OpenStackProject">
+                                                          Current number
                                                         <td *ngIf="application.Status == 'modification requested' && !application.OpenStackProject">
                                                             {{application.ApplicationExtension?.VMsRequested}}
                                                         </td>
+                                                        <td *ngIf="application.Status == 'modification requested' && application.OpenStackProject">
+                                                          Requested
+                                                        </td>
                                                     </tr>
-                                                    <!--p *ngFor="let flavor of application.CurrentFlavors">
-                                                        <!-- p for testing, iteration not working yet -->
-                                                    <!--/p-->
+                                                    <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
+                                                      <td>Flavor: {{item.key}}</td>
+                                                      <td>{{item.value.counter}}</td>
+                                                      <td *ngIf="application.Status == 'modification requested' && application.OpenStackProject">
+                                                        {{application.ApplicationExtension.VMsRequested}}
+                                                      </td>
 
+                                                    </tr>
                                                     <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
                                                         <td>Cores</td>
                                                         <td>{{
                                                             application.TotalCores
                                                             }}
                                                         </td>
+                                                      <td *ngIf="application.OpenStackProject && application.Status == 'modification requested'">
+                                                        {{application.ApplicationExtension.CoresPerVM}}
+                                                      </td>
                                                     </tr>
                                                     <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
                                                         <td>RAM</td>
@@ -132,6 +144,9 @@
                                                         <td>{{
                                                             application.TotalRam}}
                                                         </td>
+                                                      <td *ngIf="application.OpenStackProject && application.Status == 'modification requested'">
+                                                        {{application.ApplicationExtension?.RamPerVM}}
+                                                      </td>
                                                     </tr>
                                                     <tr>
                                                         <td>Storage Limit</td>
@@ -188,6 +203,9 @@
                                                         <td>
                                                             {{application.OpenStackProject}}
                                                         </td>
+                                                      <td *ngIf="application.Status == 'modification requested'">
+                                                        {{application.OpenStackProject}}
+                                                      </td>
                                                     </tr>
                                                 </table>
                                             </div>
