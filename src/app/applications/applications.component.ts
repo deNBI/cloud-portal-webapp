@@ -131,7 +131,7 @@ export class ApplicationsComponent {
     collapse_status: { [id: string]: boolean } = {};
 
     /**
-<<<<<<< HEAD
+     <<<<<<< HEAD
      * List of flavors.
      */public flavorList: Flavor[];
 
@@ -192,63 +192,62 @@ export class ApplicationsComponent {
             }
 
         })
-          this.getListOfFlavors();
-          this.getListOfTypes();
+        this.getListOfFlavors();
+        this.getListOfTypes();
     }
 
-     keyIsVM(key: string): Flavor{
-      for (let fkey in this.flavorList) {
-        if (fkey in this.flavorList) {
-          if (this.flavorList[fkey].name === key.substring(20)) {
-            return this.flavorList[fkey];
-          }
+    keyIsVM(key: string): Flavor {
+        for (let fkey in this.flavorList) {
+            if (fkey in this.flavorList) {
+                if (this.flavorList[fkey].name === key.substring(20)) {
+                    return this.flavorList[fkey];
+                }
+            }
         }
-      }
-      return null;
+        return null;
 
     }
 
     flavorTuples(app: Application): [string, number][] {
-      let cur_flavors: [string, number][];
-      for (let entry in app.CurrentFlavors){
-        cur_flavors.push([entry, app.CurrentFlavors[entry].counter]);
-        console.log(entry);
-      }
-      return cur_flavors;
+        let cur_flavors: [string, number][];
+        for (let entry in app.CurrentFlavors) {
+            cur_flavors.push([entry, app.CurrentFlavors[entry].counter]);
+            console.log(entry);
+        }
+        return cur_flavors;
     }
 
     unsetValues(elemIDcores, elemIDram: string) {
-      this.totalRAM = 0;
-      this.totalNumberOfCores = 0;
-      document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
-      document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
+        this.totalRAM = 0;
+        this.totalNumberOfCores = 0;
+        document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
+        document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
 
 
     }
 
-    valuesChanged(f: NgForm, elemIDcores, elemIDram: string)
-    {
+    valuesChanged(f: NgForm, elemIDcores, elemIDram: string) {
 
-      this.totalRAM = 0;
-      this.totalNumberOfCores = 0;
-      for (let key in f.controls) {
-        if (f.controls[key].value) {
-          var flavor: Flavor = this.keyIsVM(key.toString());
-            if (flavor != null) {
-              this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
-              this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value);
+        this.totalRAM = 0;
+        this.totalNumberOfCores = 0;
+        for (let key in f.controls) {
+            if (f.controls[key].value) {
+                var flavor: Flavor = this.keyIsVM(key.toString());
+                if (flavor != null) {
+                    this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
+                    this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value);
+                }
             }
         }
-      }
 
-      document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
-      document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
+        document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
+        document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
 
 
     }
 
     /**
-<<<<<<< HEAD
+     <<<<<<< HEAD
      * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
      */
     getListOfFlavors() {
@@ -380,8 +379,8 @@ export class ApplicationsComponent {
                 a.PerunId = aj['project_application_perun_id'];
                 a.DateApproved = aj['project_application_date_approved'];
 
-                for(let f of aj['flavors']){
-                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+                for (let f of aj['flavors']) {
+                    a.addFlavorToCurrent(f.flavor_name, f.counter)
 
                 }
 
@@ -438,12 +437,11 @@ export class ApplicationsComponent {
         return date1.getFullYear() + '-' + this.fillUp((date1.getMonth() + 1).toString()) + '-' + this.fillUp(date1.getDate().toString());
     }
 
-    fillUp(date: string): string
-    {
-      if (date.length === 1) {
-        return '0' + date;
-      }
-      return date;
+    fillUp(date: string): string {
+        if (date.length === 1) {
+            return '0' + date;
+        }
+        return date;
     }
 
     showLifetime(sa?: Application): string {
@@ -539,10 +537,10 @@ export class ApplicationsComponent {
                     a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
                     a.UserEmail = aj["project_application_user"]["email"];
                     a.Status = aj["project_application_status"];
-                      for(let f of aj['flavors']){
-                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+                    for (let f of aj['flavors']) {
+                        a.addFlavorToCurrent(f.flavor_name, f.counter)
 
-                }
+                    }
                     if (a.Status == this.APPROVED_STATUS) {
                         a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
@@ -670,10 +668,10 @@ export class ApplicationsComponent {
             }
             a.Comment = aj["project_application_comment"];
             a.PerunId = aj['project_application_perun_id'];
-                 for(let f of aj['flavors']){
-                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+            for (let f of aj['flavors']) {
+                a.addFlavorToCurrent(f.flavor_name, f.counter)
 
-                }
+            }
             if (aj['projectapplicationrenewal']) {
                 let r = new ApplicationExtension();
 
@@ -734,11 +732,13 @@ export class ApplicationsComponent {
             a.ObjectStorage = aj["project_application_object_storage"];
             a.SpecialHardware = aj["project_application_special_hardware"];
             a.OpenStackProject = aj["project_application_openstack_project"];
-            a.Comment = aj["project_application_comment"];
-                  for(let f of aj['flavors']){
-                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+            a.DateApproved = aj['project_application_date_approved'];
 
-                }
+            a.Comment = aj["project_application_comment"];
+            for (let f of aj['flavors']) {
+                a.addFlavorToCurrent(f.flavor_name, f.counter)
+
+            }
             if (aj['projectapplicationrenewal']) {
                 let r = new ApplicationExtension();
 
