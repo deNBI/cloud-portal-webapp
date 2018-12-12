@@ -131,7 +131,7 @@ export class ApplicationsComponent ***REMOVED***
     collapse_status: ***REMOVED*** [id: string]: boolean ***REMOVED*** = ***REMOVED******REMOVED***;
 
     /**
-<<<<<<< HEAD
+     <<<<<<< HEAD
      * List of flavors.
      */public flavorList: Flavor[];
 
@@ -192,63 +192,62 @@ export class ApplicationsComponent ***REMOVED***
             ***REMOVED***
 
         ***REMOVED***)
-          this.getListOfFlavors();
-          this.getListOfTypes();
+        this.getListOfFlavors();
+        this.getListOfTypes();
     ***REMOVED***
 
-     keyIsVM(key: string): Flavor***REMOVED***
-      for (let fkey in this.flavorList) ***REMOVED***
-        if (fkey in this.flavorList) ***REMOVED***
-          if (this.flavorList[fkey].name === key.substring(20)) ***REMOVED***
-            return this.flavorList[fkey];
-          ***REMOVED***
+    keyIsVM(key: string): Flavor ***REMOVED***
+        for (let fkey in this.flavorList) ***REMOVED***
+            if (fkey in this.flavorList) ***REMOVED***
+                if (this.flavorList[fkey].name === key.substring(20)) ***REMOVED***
+                    return this.flavorList[fkey];
+                ***REMOVED***
+            ***REMOVED***
         ***REMOVED***
-      ***REMOVED***
-      return null;
+        return null;
 
     ***REMOVED***
 
     flavorTuples(app: Application): [string, number][] ***REMOVED***
-      let cur_flavors: [string, number][];
-      for (let entry in app.CurrentFlavors)***REMOVED***
-        cur_flavors.push([entry, app.CurrentFlavors[entry].counter]);
-        console.log(entry);
-      ***REMOVED***
-      return cur_flavors;
+        let cur_flavors: [string, number][];
+        for (let entry in app.CurrentFlavors) ***REMOVED***
+            cur_flavors.push([entry, app.CurrentFlavors[entry].counter]);
+            console.log(entry);
+        ***REMOVED***
+        return cur_flavors;
     ***REMOVED***
 
     unsetValues(elemIDcores, elemIDram: string) ***REMOVED***
-      this.totalRAM = 0;
-      this.totalNumberOfCores = 0;
-      document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
-      document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
+        this.totalRAM = 0;
+        this.totalNumberOfCores = 0;
+        document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
+        document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
 
 
     ***REMOVED***
 
-    valuesChanged(f: NgForm, elemIDcores, elemIDram: string)
-    ***REMOVED***
+    valuesChanged(f: NgForm, elemIDcores, elemIDram: string) ***REMOVED***
 
-      this.totalRAM = 0;
-      this.totalNumberOfCores = 0;
-      for (let key in f.controls) ***REMOVED***
-        if (f.controls[key].value) ***REMOVED***
-          var flavor: Flavor = this.keyIsVM(key.toString());
-            if (flavor != null) ***REMOVED***
-              this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
-              this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value);
+        this.totalRAM = 0;
+        this.totalNumberOfCores = 0;
+        for (let key in f.controls) ***REMOVED***
+            if (f.controls[key].value) ***REMOVED***
+                var flavor: Flavor = this.keyIsVM(key.toString());
+                if (flavor != null) ***REMOVED***
+                    this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
+                    this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value);
+                ***REMOVED***
             ***REMOVED***
         ***REMOVED***
-      ***REMOVED***
 
-      document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
-      document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
+        document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
+        document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
 
 
     ***REMOVED***
 
     /**
-<<<<<<< HEAD
+     <<<<<<< HEAD
      * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
      */
     getListOfFlavors() ***REMOVED***
@@ -380,8 +379,8 @@ export class ApplicationsComponent ***REMOVED***
                 a.PerunId = aj['project_application_perun_id'];
                 a.DateApproved = aj['project_application_date_approved'];
 
-                for(let f of aj['flavors'])***REMOVED***
-                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+                for (let f of aj['flavors']) ***REMOVED***
+                    a.addFlavorToCurrent(f.flavor_name, f.counter)
 
                 ***REMOVED***
 
@@ -438,12 +437,11 @@ export class ApplicationsComponent ***REMOVED***
         return date1.getFullYear() + '-' + this.fillUp((date1.getMonth() + 1).toString()) + '-' + this.fillUp(date1.getDate().toString());
     ***REMOVED***
 
-    fillUp(date: string): string
-    ***REMOVED***
-      if (date.length === 1) ***REMOVED***
-        return '0' + date;
-      ***REMOVED***
-      return date;
+    fillUp(date: string): string ***REMOVED***
+        if (date.length === 1) ***REMOVED***
+            return '0' + date;
+        ***REMOVED***
+        return date;
     ***REMOVED***
 
     showLifetime(sa?: Application): string ***REMOVED***
@@ -539,10 +537,10 @@ export class ApplicationsComponent ***REMOVED***
                     a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
                     a.UserEmail = aj["project_application_user"]["email"];
                     a.Status = aj["project_application_status"];
-                      for(let f of aj['flavors'])***REMOVED***
-                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+                    for (let f of aj['flavors']) ***REMOVED***
+                        a.addFlavorToCurrent(f.flavor_name, f.counter)
 
-                ***REMOVED***
+                    ***REMOVED***
                     if (a.Status == this.APPROVED_STATUS) ***REMOVED***
                         a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
@@ -670,10 +668,10 @@ export class ApplicationsComponent ***REMOVED***
             ***REMOVED***
             a.Comment = aj["project_application_comment"];
             a.PerunId = aj['project_application_perun_id'];
-                 for(let f of aj['flavors'])***REMOVED***
-                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+            for (let f of aj['flavors']) ***REMOVED***
+                a.addFlavorToCurrent(f.flavor_name, f.counter)
 
-                ***REMOVED***
+            ***REMOVED***
             if (aj['projectapplicationrenewal']) ***REMOVED***
                 let r = new ApplicationExtension();
 
@@ -734,11 +732,13 @@ export class ApplicationsComponent ***REMOVED***
             a.ObjectStorage = aj["project_application_object_storage"];
             a.SpecialHardware = aj["project_application_special_hardware"];
             a.OpenStackProject = aj["project_application_openstack_project"];
-            a.Comment = aj["project_application_comment"];
-                  for(let f of aj['flavors'])***REMOVED***
-                  a.addFlavorToCurrent(f.flavor_name,f.counter)
+            a.DateApproved = aj['project_application_date_approved'];
 
-                ***REMOVED***
+            a.Comment = aj["project_application_comment"];
+            for (let f of aj['flavors']) ***REMOVED***
+                a.addFlavorToCurrent(f.flavor_name, f.counter)
+
+            ***REMOVED***
             if (aj['projectapplicationrenewal']) ***REMOVED***
                 let r = new ApplicationExtension();
 
