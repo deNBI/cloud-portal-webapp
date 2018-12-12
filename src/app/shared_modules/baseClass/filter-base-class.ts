@@ -97,7 +97,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
                 lifetime_status = this.lifetime_statuses[this.lifetime_statuses.EXPIRED];
                 break;
             case this.lifetime_statuses.EXPIRES_SOON:
-                lifetime_status = this.lifetime_statuses[this.lifetime_statuses.EXPIRES_SOON];
+                lifetime_status = this.lifetime_statuses[this.lifetime_statuses.EXPIRES_SOON];break;
         }
 
 
