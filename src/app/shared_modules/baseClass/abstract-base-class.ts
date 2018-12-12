@@ -10,6 +10,7 @@ enum Project_Statuses {
 
 }
 
+
 enum Application_Statuses {
     SUBMITTED = 1,
     APPROVED = 2,
@@ -108,7 +109,6 @@ export abstract class AbstractBaseClasse {
      */
     public switchCollapseStatus(id: string) {
         this.collapse_status[id] = !this.getCollapseStatus(id);
-        console.log(this.collapse_status[id])
     }
 
 

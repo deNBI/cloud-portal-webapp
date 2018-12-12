@@ -17,17 +17,43 @@ import {FacilityService} from "../api-connector/facility.service";
 })
 
 export class ClientOverviewComponent implements OnInit {
+    /**
+     * All clients.
+     */
     clients: Vmclient[];
+    /**
+     * If user is vo.
+     * @type {boolean}
+     */
     is_vo_admin = false;
+    /**
+     * Default status not added client.
+     * @type {string}
+     */
     checkStatus: string = 'Not checked';
+    /**
+     * All computecenters.
+     * @type {Array}
+     */
     computeCenters: ComputecenterComponent[]=[];
+    /**
+     * Selected computecenter.
+     */
     selectedComputeCenter: ComputecenterComponent;
+    /**
+     * If site is initialized with data.
+     * @type {boolean}
+     */
     isLoaded = false;
 
     constructor(private facilityService:FacilityService,private userservice: UserService, private groupservice: GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) {
 
     }
 
+    /**
+     * Check if user is vo.
+     * @param {UserService} userservice
+     */
     checkVOstatus(userservice: UserService) {
         let user_id: number;
         let admin_vos: {};
@@ -50,8 +76,9 @@ export class ClientOverviewComponent implements OnInit {
     }
 
 
-
-
+    /**
+     * Get all clients status checked.
+     */
     getClientsChecked(): void {
         this.clientservice.getClientsChecked().subscribe(clients => {
             this.clients = clients;
@@ -61,6 +88,9 @@ export class ClientOverviewComponent implements OnInit {
 
     }
 
+    /**
+     * Get all computecenters.
+     */
     getComputeCenters() {
         this.facilityService.getComputeCenters().subscribe(result => {
             for (let cc of result) {
@@ -71,6 +101,11 @@ export class ClientOverviewComponent implements OnInit {
         })
     }
 
+    /**
+     * Check status of client.
+     * @param {string} host of client
+     * @param {string} port of client
+     */
     checkClient(host: string, port: string): void {
         if (host && port) {
             this.clientservice.checkClient(host, port).subscribe(data => {
@@ -90,6 +125,12 @@ export class ClientOverviewComponent implements OnInit {
         }
     }
 
+    /**
+     * Add a new client.
+     * @param {string} host
+     * @param {string} port
+     * @param {string} location
+     */
     postClient(host: string, port: string, location: string): void {
 
 
@@ -101,6 +142,10 @@ export class ClientOverviewComponent implements OnInit {
         }
     }
 
+    /**
+     * Delete a client.
+     * @param {number} client_id
+     */
     deleteClient(client_id:number): void {
         this.clientservice.deleteClient(client_id).subscribe(data => {
 
