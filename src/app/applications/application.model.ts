@@ -33,7 +33,7 @@ export class Application ***REMOVED***
   private _TotalCores: number;
   private _TotalRam: number;
   private _DateApproved: string;
-  private _CurrentFlavors: ***REMOVED*** [id: string]: ***REMOVED***counter:number***REMOVED******REMOVED***;
+  private _CurrentFlavors: ***REMOVED*** [id: string]: ***REMOVED***counter: number***REMOVED******REMOVED***;
 
 
 

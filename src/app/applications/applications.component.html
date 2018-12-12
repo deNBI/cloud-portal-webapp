@@ -102,22 +102,13 @@
                                                     </tr>
                                                     <tr>
                                                         <td>VMs</td>
-                                                        <td>***REMOVED******REMOVED***
-                                                            application.VMsRequested
-                                                            ***REMOVED******REMOVED*** VMs
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.VMsRequested***REMOVED******REMOVED***
-                                                            VMs
-                                                        </td>
+                                                          <td *ngIf="!application.OpenStackProject">
+                                                            ***REMOVED******REMOVED***application.VMsRequested***REMOVED******REMOVED***
+                                                          </td>
                                                     </tr>
-                                                    <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
-                                                        <td>Cores/VM</td>
-                                                        <td>***REMOVED******REMOVED***
-                                                            application.CoresPerVM
-                                                            ***REMOVED******REMOVED***
-                                                        </td>
-                                                    </tr>
+                                                    <p *ngFor="let flavor of application.CurrentFlavors">
+                                                          <!-- p for testing, iteration not working yet -->
+                                                    </p>
 
                                                     <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
                                                         <td>Cores</td>
@@ -902,7 +893,7 @@
                                 ***REMOVED***">
                           <input class="form-control" id="id_project_application_renewal_lifetime"
                                  name="project_application_renewal_lifetime" placeholder="e.g 3"
-                                 type="number" min="1" step="1" ngModel required>
+                                 type="number" min="0" step="1" ngModel required>
                           <span class="input-group-addon"> months</span>
                         </div>
                         <span class="help-block">Number of months you want to extend the project</span>

@@ -23,6 +23,7 @@ import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmach
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import _date = moment.unitOfTime._date;
+import ***REMOVED***forEach***REMOVED*** from '@angular/router/src/utils/collection';
 
 
 @Component(***REMOVED***
@@ -195,11 +196,6 @@ export class ApplicationsComponent ***REMOVED***
           this.getListOfTypes();
     ***REMOVED***
 
-    getCurrentValueByVM(name: string, id: string): string
-    ***REMOVED***
-      return '0';
-    ***REMOVED***
-
      keyIsVM(key: string): Flavor***REMOVED***
       for (let fkey in this.flavorList) ***REMOVED***
         if (fkey in this.flavorList) ***REMOVED***
@@ -212,8 +208,16 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
-    unsetValues(elemIDcores, elemIDram: string)
+    flavorTuples(app: Application): [string, number][] ***REMOVED***
+      let cur_flavors: [string, number][];
+      for (let entry in app.CurrentFlavors)***REMOVED***
+        cur_flavors.push([entry, app.CurrentFlavors[entry].counter]);
+        console.log(entry);
+      ***REMOVED***
+      return cur_flavors;
     ***REMOVED***
+
+    unsetValues(elemIDcores, elemIDram: string) ***REMOVED***
       this.totalRAM = 0;
       this.totalNumberOfCores = 0;
       document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
