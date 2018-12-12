@@ -259,7 +259,7 @@
                                                     class="form-control"
                                                     #selectedComputeCenter>
 
-                                                <!--option value="undefined" selected> no center</option-->
+                                                <option value="undefined" selected> no center</option>
                                                 <option *ngFor="let computeCenter of computeCenters"
                                                         value="***REMOVED******REMOVED***computeCenter.FacilityId***REMOVED******REMOVED***">
                                                     ***REMOVED******REMOVED***computeCenter.Name***REMOVED******REMOVED***
@@ -279,7 +279,7 @@
                                                     type="button"
                                                     class="btn btn-secondary">
                                                 <i class="fa fa-check"></i>&nbsp;
-                                                Approve
+                                                Assign
                                             </button>
                                             <button
                                                     *ngIf="application.Status == 6 && application.ComputeCenter?.FacilityId"

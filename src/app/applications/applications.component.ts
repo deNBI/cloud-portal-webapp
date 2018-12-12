@@ -879,6 +879,9 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                     this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
                 ***REMOVED***);
         ***REMOVED***
+        else***REMOVED***
+             this.updateNotificationModal("Failed", "You need to select an compute center!", true, "danger");
+        ***REMOVED***
 
     ***REMOVED***
 
