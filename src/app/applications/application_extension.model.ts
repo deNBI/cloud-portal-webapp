@@ -12,6 +12,8 @@ export class ApplicationExtension ***REMOVED***
     private _Comment: string;
     private _DateSubmitted: string;
     private _OpenStackProject: boolean;
+    private _TotalCores: number;
+    private _TotalRAM: number;
 
     constructor() ***REMOVED***
     ***REMOVED***

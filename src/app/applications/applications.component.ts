@@ -226,7 +226,7 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
-    valuesChanged(f: NgForm, elemIDcores, elemIDram: string) ***REMOVED***
+    valuesChanged(f: NgForm) ***REMOVED***
 
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
@@ -240,8 +240,8 @@ export class ApplicationsComponent ***REMOVED***
             ***REMOVED***
         ***REMOVED***
 
-        document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
-        document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
+        document.getElementById('corenumbers').innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
+        document.getElementById('ramnumbers').innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
 
 
     ***REMOVED***

@@ -462,7 +462,9 @@
                                                           <td *ngIf="application.Status == 4 && application.OpenStackProject">
                                                             ***REMOVED******REMOVED***application.ApplicationExtension.VMsRequested***REMOVED******REMOVED***
                                                           </td>
-
+                                                      </tr>
+                                                      <tr *ngIf="application.TotalCores == 0">
+                                                        No VMs requested!
                                                       </tr>
 
 
@@ -1093,13 +1095,11 @@
                                             </div>
                                             <div class="col">
                                                 <div class="input-group">
-                                                    <input class="form-control"
-                                                           (change)="valuesChanged(f, corenumbers.id, ramnumbers.id)"
+                                                    <input class="form-control" (change)="valuesChanged(f)"
                                                            id="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***"
                                                            name="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***"
                                                            type="number" min="0" step="1"
                                                            placeholder="e.g 1"
-                                                           value="***REMOVED******REMOVED***0***REMOVED******REMOVED***"
                                                            (ngModel)="'project_application_' + fl.name"
                                                            required>
                                                     <span class="input-group-addon"> VMs</span>
