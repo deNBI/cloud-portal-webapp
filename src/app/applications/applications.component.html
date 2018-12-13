@@ -483,26 +483,17 @@
                                                                 }}
                                                             </td>
                                                             <td *ngIf="application.Status == 4">
-                                                              {{application.ApplicationExtension.CoresPerVM}}
+                                                              {{application.ApplicationExtension.TotalCores}}
                                                             </td>
                                                         </tr>
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
-                                                            <td>Total RAM</td>
-                                                            <td>{{
-                                                                application.RamPerVM
-                                                                }}
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                              {{application.ApplicationExtension.RamPerVM}}
-                                                            </td>
-                                                        </tr>
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
+
+                                                        <tr *ngIf="application.OpenStackProject">
                                                             <td>Total RAM</td>
                                                             <td>{{
                                                                 application.TotalRam}}
                                                             </td>
                                                           <td *ngIf="application.Status == 4">
-                                                            {{application.ApplicationExtension.RamPerVM}}
+                                                            {{application.ApplicationExtension.TotalRAM}}
                                                           </td>
                                                         </tr>
                                                         <tr>

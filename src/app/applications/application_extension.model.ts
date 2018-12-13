@@ -14,26 +14,41 @@ export class ApplicationExtension {
     private _OpenStackProject: boolean;
     private _TotalCores: number;
     private _TotalRAM: number;
-    private _RequestedFlavors: { [id: string]: {counter: number}};
+    private _RequestedFlavors: { [id: string]: {counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number} };
 
     constructor() {
-      this._RequestedFlavors={};
+      this._RequestedFlavors= {};
 
     }
 
-  public  addFlavorToRequested(name: string, counter:number ):void {
-    this._RequestedFlavors[name]={counter:counter};
+  public  addFlavorToRequested(name: string, counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number ):void {
+    this._RequestedFlavors[name]={counter:counter,tag: tag,ram: ram,rootdisk:rootdisk,vcpus:vcpus,gpu:gpu,epheremal_disk:epheremal_disk};
   }
 
-  get RequestedFlavors(): { [id: string]: {counter:number}} {
+  get RequestedFlavors(): { [id: string]: {counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number} } {
     return this._RequestedFlavors
   }
 
-  set RequestedFlavors(value: { [id: string]: {counter:number}} ){
+  set RequestedFlavors(value:{ [id: string]: {counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu : number, epheremal_disk: number} }) {
     this._RequestedFlavors  = value;
   }
 
 
+  get TotalCores(): number {
+    return this._TotalCores;
+  }
+
+  set TotalCores(value: number) {
+    this._TotalCores = value;
+  }
+
+  get TotalRAM(): number {
+    return this._TotalRAM;
+  }
+
+  set TotalRAM(value: number) {
+    this._TotalRAM = value;
+  }
 
   get Lifetime(): number {
         return this._Lifetime;
