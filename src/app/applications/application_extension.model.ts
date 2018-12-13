@@ -14,12 +14,28 @@ export class ApplicationExtension ***REMOVED***
     private _OpenStackProject: boolean;
     private _TotalCores: number;
     private _TotalRAM: number;
+    private _RequestedFlavors: ***REMOVED*** [id: string]: ***REMOVED***counter: number***REMOVED******REMOVED***;
 
     constructor() ***REMOVED***
+      this._RequestedFlavors=***REMOVED******REMOVED***;
+
     ***REMOVED***
 
+  public  addFlavorToRequested(name: string, counter:number ):void ***REMOVED***
+    this._RequestedFlavors[name]=***REMOVED***counter:counter***REMOVED***;
+  ***REMOVED***
 
-    get Lifetime(): number ***REMOVED***
+  get RequestedFlavors(): ***REMOVED*** [id: string]: ***REMOVED***counter:number***REMOVED******REMOVED*** ***REMOVED***
+    return this._RequestedFlavors
+  ***REMOVED***
+
+  set RequestedFlavors(value: ***REMOVED*** [id: string]: ***REMOVED***counter:number***REMOVED******REMOVED*** )***REMOVED***
+    this._RequestedFlavors  = value;
+  ***REMOVED***
+
+
+
+  get Lifetime(): number ***REMOVED***
         return this._Lifetime;
     ***REMOVED***
 
