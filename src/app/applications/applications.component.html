@@ -77,10 +77,10 @@
                                                 <table class="table table-striped">
                                                     <tr [style.display]="application.Status != 'submitted' ? 'inherit' :'none'">
                                                         <td>Facility</td>
-
                                                         <td>
                                                             {{application.ComputeCenter?.Name}}
                                                         </td>
+
                                                     </tr>
                                                     <tr>
                                                         <td>Description</td>
@@ -441,17 +441,30 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td>VMs</td>
-                                                            <td>{{
-                                                                application.VMsRequested
-                                                                }} VMs
+                                                            <td *ngIf="application.Status == 4"><b>VMs</b></td>
+                                                            <td *ngIf="application.Status != 4">VMs</td>
+                                                            <td *ngIf="application.Status == 4">Current Number</td>
+                                                            <td *ngIf="application.Status == 4 && application.OpenStackProject">
+                                                                Requested
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                                {{application.ApplicationExtension?.VMsRequested}}
-                                                                VMs
-                                                            </td>
+                                                          <td *ngIf="!application.OpenStackProject">
+                                                            {{application.VMsRequested}}
+                                                          </td>
+                                                          <td *ngIf="!application.OpenStackProject && application.Status == 4">
+                                                              Requested: {{application.ApplicationExtension.VMsRequested}}
+                                                          </td>
 
                                                         </tr>
+
+                                                      <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
+                                                          <td>Flavor: {{item.key}}</td>
+                                                          <td>{{item.value.counter}}</td>
+                                                          <td *ngIf="application.Status == 4 && application.OpenStackProject">
+                                                            {{application.ApplicationExtension.VMsRequested}}
+                                                          </td>
+
+                                                      </tr>
+
 
                                                         <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
                                                             <td>Cores/VM</td>
@@ -462,24 +475,33 @@
                                                         </tr>
 
                                                         <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
-                                                            <td>Cores</td>
+                                                            <td>Total Cores</td>
                                                             <td>{{
                                                                 application.TotalCores
                                                                 }}
                                                             </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                              {{application.ApplicationExtension.CoresPerVM}}
+                                                            </td>
                                                         </tr>
                                                         <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
-                                                            <td>RAM</td>
+                                                            <td>Total RAM</td>
                                                             <td>{{
                                                                 application.RamPerVM
                                                                 }}
                                                             </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                              {{application.ApplicationExtension.RamPerVM}}
+                                                            </td>
                                                         </tr>
                                                         <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
-                                                            <td>RAM</td>
+                                                            <td>Total RAM</td>
                                                             <td>{{
                                                                 application.TotalRam}}
                                                             </td>
+                                                          <td *ngIf="application.Status == 4">
+                                                            {{application.ApplicationExtension.RamPerVM}}
+                                                          </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Storage Limit
@@ -517,21 +539,20 @@
                                                                 GB
                                                             </td>
                                                         </tr>
-                                                        <tr *ngIf="application.OpenStackProject">
-                                                            <td>Special
-                                                                Hardware
-                                                            </td>
-                                                            <td><span
-                                                                    style="margin-right: 5px;"
-                                                                    class="badge badge-primary"
-                                                                    *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                      <tr *ngIf="application.OpenStackProject">
+                                                        <td>Special Hardware
+                                                        </td>
+                                                        <td><span
+                                                          style="margin-right: 5px;"
+                                                          class="badge badge-primary"
+                                                          *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
                                                        <span style="margin-right: 5px;"
                                                              class="badge badge-primary"
                                                              *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">{{ sh }}</span>
-                                                            </td>
-                                                        </tr>
+                                                        </td>
+                                                      </tr>
 
                                                         <tr>
                                                             <td>Last status
@@ -628,121 +649,186 @@
                                                  [class.collapse]="getCollapseStatus('application_history-' + application.Id)">
                                                 <div class="table-responsive">
                                                     <table class="table table-striped">
-                                                        <tr>
-                                                            <td>Description
-                                                            </td>
-                                                            <td>{{
-                                                                application.Description
-                                                                }}
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Comment</td>
-                                                            <td>{{
-                                                                application.Comment
-                                                                }}
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Facility</td>
-                                                            <td>
-                                                                {{application.ComputeCenter?.Name}}
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Workgroup</td>
-                                                            <td>{{
-                                                                application.Workgroup
-                                                                }}
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Lifetime</td>
-                                                            <td>{{
-                                                                application.Lifetime
-                                                                }}
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>VMs</td>
-                                                            <td>{{
-                                                                application.VMsRequested
-                                                                }}
-                                                            </td>
-                                                        </tr>
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
-                                                            <td>Cores</td>
-                                                            <td>{{
-                                                                application.CoresPerVM
-                                                                }}
-                                                            </td>
-                                                        </tr>
+                                                      <tr>
+                                                        <td>Description
+                                                        </td>
+                                                        <td>{{
+                                                          application.Description
+                                                          }}
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                        </td>
+                                                      </tr>
 
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
-                                                            <td>Cores</td>
-                                                            <td>{{
-                                                                application.TotalCores
-                                                                }}
-                                                            </td>
-                                                        </tr>
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
-                                                            <td>RAM</td>
-                                                            <td>{{
-                                                                application.RamPerVM
-                                                                }}
-                                                            </td>
-                                                        </tr>
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
-                                                            <td>RAM</td>
-                                                            <td>{{
-                                                                application.TotalRam}}
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Storage Limit
-                                                            </td>
-                                                            <td>{{
-                                                                application.VolumeLimit
-                                                                }}
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Volume
-                                                                Counter
-                                                            </td>
-                                                            <td>{{
-                                                                application.VolumeCounter
-                                                                }}
-                                                            </td>
-                                                        </tr>
-                                                        <tr *ngIf="application.OpenStackProject">
-                                                            <td>ObjectStorage
-                                                            </td>
-                                                            <td>{{
-                                                                application.ObjectStorage
-                                                                }}
-                                                            </td>
-                                                        </tr>
+                                                      <tr>
+                                                        <td>Workgroup</td>
+                                                        <td>{{
+                                                          application.Workgroup
+                                                          }}
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>
+                                                          OpenStackProject
+                                                        </td>
+                                                        <td>
+                                                          {{application.OpenStackProject}}
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                        </td>
+                                                      </tr>
 
-                                                        <tr *ngIf="application.OpenStackProject">
-                                                            <td>Special
-                                                                Hardware
-                                                            </td>
-                                                            <td><span
-                                                                    style="margin-right: 5px;"
-                                                                    class="badge badge-primary"
-                                                                    *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Last status
-                                                                changed
-                                                            </td>
-                                                            <td>{{
-                                                                application.DateStatusChanged
-                                                                }}
-                                                            </td>
-                                                        </tr>
+                                                      <tr>
+                                                        <td>Comment</td>
+                                                        <td>{{
+                                                          application.Comment
+                                                          }}
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                          {{application.ApplicationExtension?.Comment}}
+                                                        </td>
+
+                                                      </tr>
+                                                      <tr>
+                                                        <td>Lifetime</td>
+                                                        <td>{{
+                                                          application.Lifetime
+                                                          }} months
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                          {{application.ApplicationExtension?.Lifetime
+                                                        +
+                                                        application.Lifetime}}
+                                                          months
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td *ngIf="application.Status == 4"><b>VMs</b></td>
+                                                        <td *ngIf="application.Status != 4">VMs</td>
+                                                        <td *ngIf="application.Status == 4">Current Number</td>
+                                                        <td *ngIf="application.Status == 4 && application.OpenStackProject">
+                                                          Requested
+                                                        </td>
+                                                        <td *ngIf="!application.OpenStackProject">
+                                                          {{application.VMsRequested}}
+                                                        </td>
+                                                        <td *ngIf="!application.OpenStackProject && application.Status == 4">
+                                                          Requested: {{application.ApplicationExtension.VMsRequested}}
+                                                        </td>
+
+                                                      </tr>
+
+                                                      <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
+                                                        <td>Flavor: {{item.key}}</td>
+                                                        <td>{{item.value.counter}}</td>
+                                                        <td *ngIf="application.Status == 4 && application.OpenStackProject">
+                                                          {{application.ApplicationExtension.VMsRequested}}
+                                                        </td>
+
+                                                      </tr>
+
+
+                                                      <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
+                                                        <td>Cores/VM</td>
+                                                        <td>{{
+                                                          application.CoresPerVM
+                                                          }}
+                                                        </td>
+                                                      </tr>
+
+                                                      <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
+                                                        <td>Total Cores</td>
+                                                        <td>{{
+                                                          application.TotalCores
+                                                          }}
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                          {{application.ApplicationExtension.CoresPerVM}}
+                                                        </td>
+                                                      </tr>
+                                                      <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
+                                                        <td>Total RAM</td>
+                                                        <td>{{
+                                                          application.RamPerVM
+                                                          }}
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                          {{application.ApplicationExtension.RamPerVM}}
+                                                        </td>
+                                                      </tr>
+                                                      <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
+                                                        <td>Total RAM</td>
+                                                        <td>{{
+                                                          application.TotalRam}}
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                          {{application.ApplicationExtension.RamPerVM}}
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>Storage Limit
+                                                        </td>
+                                                        <td>{{
+                                                          application.VolumeLimit
+                                                          }} GB
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                          {{application.ApplicationExtension?.VolumeLimit}}
+                                                          GB
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>Volume
+                                                          Counter
+                                                        </td>
+                                                        <td>{{
+                                                          application.VolumeCounter
+                                                          }}
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                          {{application.ApplicationExtension?.VolumeCounter}}
+                                                        </td>
+                                                      </tr>
+                                                      <tr *ngIf="application.OpenStackProject">
+                                                        <td>ObjectStorage
+                                                        </td>
+                                                        <td>{{
+                                                          application.ObjectStorage
+                                                          }} GB
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                          {{application.ApplicationExtension?.ObjectStorage}}
+                                                          GB
+                                                        </td>
+                                                      </tr>
+                                                      <tr *ngIf="application.OpenStackProject">
+                                                        <td>Special Hardware
+                                                        </td>
+                                                        <td><span
+                                                          style="margin-right: 5px;"
+                                                          class="badge badge-primary"
+                                                          *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                       <span style="margin-right: 5px;"
+                                                             class="badge badge-primary"
+                                                             *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">{{ sh }}</span>
+                                                        </td>
+                                                      </tr>
+
+                                                      <tr>
+                                                        <td>Last status
+                                                          changed
+                                                        </td>
+                                                        <td>{{
+                                                          application.DateStatusChanged
+                                                          }}
+                                                        </td>
+                                                        <td *ngIf="application.Status == 4">
+                                                        </td>
+                                                      </tr>
                                                         <tr *ngIf="application.Status == 2">
                                                             <td>DaysRunning
                                                             </td>
