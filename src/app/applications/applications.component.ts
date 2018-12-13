@@ -404,7 +404,7 @@ export class ApplicationsComponent ***REMOVED***
                     r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                     r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
                     let special_hardware = [];
-                    if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) ***REMOVED***
+                    if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) ***REMOVED***
                         let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
 
                         for (let c = 0; c < special_hardware_string.length; c++) ***REMOVED***
@@ -574,8 +574,9 @@ export class ApplicationsComponent ***REMOVED***
                         r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                         r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
                         let special_hardware = [];
-                        if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) ***REMOVED***
+                        if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) ***REMOVED***
                             let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
+                            console.log(special_hardware_string)
 
                             for (let c = 0; c < special_hardware_string.length; c++) ***REMOVED***
                                 let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
@@ -700,7 +701,7 @@ export class ApplicationsComponent ***REMOVED***
                 r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                 r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
                 let special_hardware = [];
-                if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) ***REMOVED***
+                if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) ***REMOVED***
                     let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
 
                     for (let c = 0; c < special_hardware_string.length; c++) ***REMOVED***
@@ -771,7 +772,7 @@ export class ApplicationsComponent ***REMOVED***
                 r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                 r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
                 let special_hardware = [];
-                if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) ***REMOVED***
+                if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) ***REMOVED***
                     let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
 
                     for (let c = 0; c < special_hardware_string.length; c++) ***REMOVED***
