@@ -321,6 +321,8 @@ export class ApplicationsComponent {
             }
         }
         values['project_application_id'] = this.selectedApplication.Id;
+        values['total_cores_new'] = this.totalNumberOfCores;
+        values['total_ram_new'] = this.totalRAM;
         this.requestExtension(values);
 
     }
@@ -386,6 +388,10 @@ export class ApplicationsComponent {
 
                 if (aj['projectapplicationrenewal']) {
                     let r = new ApplicationExtension();
+                  for (let f of aj['projectapplicationrenewal']['flavors']) {
+                    r.addFlavorToRequested(f.flavor_name, f.counter)
+
+                  }
 
                     r.Id = aj['projectapplicationrenewal']['project_application'];
                     r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
@@ -552,6 +558,10 @@ export class ApplicationsComponent {
                     a.OpenStackProject = aj["project_application_openstack_project"];
                     if (aj['projectapplicationrenewal']) {
                         let r = new ApplicationExtension();
+                      for (let f of aj['projectapplicationrenewal']['flavors']) {
+                        r.addFlavorToRequested(f.flavor_name, f.counter)
+
+                      }
 
                         r.Id = aj['projectapplicationrenewal']['project_application'];
                         r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
@@ -674,6 +684,10 @@ export class ApplicationsComponent {
             }
             if (aj['projectapplicationrenewal']) {
                 let r = new ApplicationExtension();
+              for (let f of aj['projectapplicationrenewal']['flavors']) {
+                r.addFlavorToRequested(f.flavor_name, f.counter)
+
+              }
 
                 r.Id = aj['projectapplicationrenewal']['project_application'];
                 r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
@@ -741,6 +755,10 @@ export class ApplicationsComponent {
             }
             if (aj['projectapplicationrenewal']) {
                 let r = new ApplicationExtension();
+              for (let f of aj['projectapplicationrenewal']['flavors']) {
+                r.addFlavorToRequested(f.flavor_name, f.counter)
+
+              }
 
                 r.Id = aj['projectapplicationrenewal']['project_application'];
                 r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];

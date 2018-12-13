@@ -118,7 +118,7 @@
                                                       <td>Flavor: {{item.key}}</td>
                                                       <td>{{item.value.counter}}</td>
                                                       <td *ngIf="application.Status == 'modification requested' && application.OpenStackProject">
-                                                        {{application.ApplicationExtension.VMsRequested}}
+                                                        {{application.ApplicationExtension?.RequestedFlavors[item.key].counter}}
                                                       </td>
 
                                                     </tr>
@@ -460,7 +460,7 @@
                                                           <td>Flavor: {{item.key}}</td>
                                                           <td>{{item.value.counter}}</td>
                                                           <td *ngIf="application.Status == 4 && application.OpenStackProject">
-                                                            {{application.ApplicationExtension.VMsRequested}}
+                                                            {{application.ApplicationExtension?.RequestedFlavors[item.key].counter}}
                                                           </td>
                                                       </tr>
                                                       <tr *ngIf="application.TotalCores == 0">
@@ -726,7 +726,7 @@
                                                         <td>Flavor: {{item.key}}</td>
                                                         <td>{{item.value.counter}}</td>
                                                         <td *ngIf="application.Status == 4 && application.OpenStackProject">
-                                                          {{application.ApplicationExtension.VMsRequested}}
+                                                          {{application.ApplicationExtension?.RequestedFlavors[item.key].counter}}
                                                         </td>
 
                                                       </tr>

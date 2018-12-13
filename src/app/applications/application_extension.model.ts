@@ -14,12 +14,28 @@ export class ApplicationExtension {
     private _OpenStackProject: boolean;
     private _TotalCores: number;
     private _TotalRAM: number;
+    private _RequestedFlavors: { [id: string]: {counter: number}};
 
     constructor() {
+      this._RequestedFlavors={};
+
     }
 
+  public  addFlavorToRequested(name: string, counter:number ):void {
+    this._RequestedFlavors[name]={counter:counter};
+  }
 
-    get Lifetime(): number {
+  get RequestedFlavors(): { [id: string]: {counter:number}} {
+    return this._RequestedFlavors
+  }
+
+  set RequestedFlavors(value: { [id: string]: {counter:number}} ){
+    this._RequestedFlavors  = value;
+  }
+
+
+
+  get Lifetime(): number {
         return this._Lifetime;
     }
 
