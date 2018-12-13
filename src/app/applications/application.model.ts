@@ -33,7 +33,7 @@ export class Application ***REMOVED***
   private _TotalCores: number;
   private _TotalRam: number;
   private _DateApproved: string;
-  private _CurrentFlavors: ***REMOVED*** [id: string]: ***REMOVED***counter: number***REMOVED******REMOVED***;
+  private _CurrentFlavors: ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number***REMOVED*** ***REMOVED***;
 
 
 
@@ -41,15 +41,15 @@ export class Application ***REMOVED***
     this._CurrentFlavors=***REMOVED******REMOVED***;
   ***REMOVED***
 
- public  addFlavorToCurrent(name: string, counter:number ):void ***REMOVED***
-    this._CurrentFlavors[name]=***REMOVED***counter:counter***REMOVED***;
+ public  addFlavorToCurrent(name: string, counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number ):void ***REMOVED***
+    this._CurrentFlavors[name]=***REMOVED***counter:counter,tag: tag,ram: ram,rootdisk:rootdisk,vcpus:vcpus,gpu:gpu,epheremal_disk:epheremal_disk***REMOVED***;
  ***REMOVED***
 
-  get CurrentFlavors(): ***REMOVED*** [id: string]: ***REMOVED***counter:number***REMOVED******REMOVED*** ***REMOVED***
+  get CurrentFlavors(): ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number***REMOVED*** ***REMOVED*** ***REMOVED***
     return this._CurrentFlavors
   ***REMOVED***
 
-  set CurrentFlavors(value: ***REMOVED*** [id: string]: ***REMOVED***counter:number***REMOVED******REMOVED*** )***REMOVED***
+  set CurrentFlavors(value: ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number***REMOVED*** ***REMOVED*** )***REMOVED***
     this._CurrentFlavors  = value;
   ***REMOVED***
 

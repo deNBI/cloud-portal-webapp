@@ -382,16 +382,27 @@ export class ApplicationsComponent ***REMOVED***
                 a.DateApproved = aj['project_application_date_approved'];
 
                 for (let f of aj['flavors']) ***REMOVED***
-                    a.addFlavorToCurrent(f.flavor_name, f.counter)
+                    a.addFlavorToCurrent(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
 
                 ***REMOVED***
 
                 if (aj['projectapplicationrenewal']) ***REMOVED***
                     let r = new ApplicationExtension();
+                  let requestExtensionTotalCores =0;
+                  let requestExtensionTotalRam =0;
+
+
+
                   for (let f of aj['projectapplicationrenewal']['flavors']) ***REMOVED***
-                    r.addFlavorToRequested(f.flavor_name, f.counter)
+                    r.addFlavorToRequested(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
+                    requestExtensionTotalCores += f.vcpus * f.counter;
+                    requestExtensionTotalRam +=  f.ram * f.counter
 
                   ***REMOVED***
+
+
+                  r.TotalRAM = requestExtensionTotalRam;
+                  r.TotalCores = requestExtensionTotalCores;
 
                     r.Id = aj['projectapplicationrenewal']['project_application'];
                     r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
@@ -544,7 +555,7 @@ export class ApplicationsComponent ***REMOVED***
                     a.UserEmail = aj["project_application_user"]["email"];
                     a.Status = aj["project_application_status"];
                     for (let f of aj['flavors']) ***REMOVED***
-                        a.addFlavorToCurrent(f.flavor_name, f.counter)
+                        a.addFlavorToCurrent(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
 
                     ***REMOVED***
                     if (a.Status == this.APPROVED_STATUS) ***REMOVED***
@@ -558,10 +569,21 @@ export class ApplicationsComponent ***REMOVED***
                     a.OpenStackProject = aj["project_application_openstack_project"];
                     if (aj['projectapplicationrenewal']) ***REMOVED***
                         let r = new ApplicationExtension();
+                      let requestExtensionTotalCores =0;
+                      let requestExtensionTotalRam =0;
+
+
+
                       for (let f of aj['projectapplicationrenewal']['flavors']) ***REMOVED***
-                        r.addFlavorToRequested(f.flavor_name, f.counter)
+                        r.addFlavorToRequested(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
+                        requestExtensionTotalCores += f.vcpus * f.counter;
+                        requestExtensionTotalRam +=  f.ram * f.counter
 
                       ***REMOVED***
+
+
+                      r.TotalRAM = requestExtensionTotalRam;
+                      r.TotalCores = requestExtensionTotalCores;
 
                         r.Id = aj['projectapplicationrenewal']['project_application'];
                         r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
@@ -680,15 +702,26 @@ export class ApplicationsComponent ***REMOVED***
             a.Comment = aj["project_application_comment"];
             a.PerunId = aj['project_application_perun_id'];
             for (let f of aj['flavors']) ***REMOVED***
-                a.addFlavorToCurrent(f.flavor_name, f.counter)
+                a.addFlavorToCurrent(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
 
             ***REMOVED***
             if (aj['projectapplicationrenewal']) ***REMOVED***
                 let r = new ApplicationExtension();
+              let requestExtensionTotalCores =0;
+              let requestExtensionTotalRam =0;
+
+
+
               for (let f of aj['projectapplicationrenewal']['flavors']) ***REMOVED***
-                r.addFlavorToRequested(f.flavor_name, f.counter)
+                r.addFlavorToRequested(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
+                requestExtensionTotalCores += f.vcpus * f.counter;
+                requestExtensionTotalRam +=  f.ram * f.counter
 
               ***REMOVED***
+
+
+              r.TotalRAM = requestExtensionTotalRam;
+              r.TotalCores = requestExtensionTotalCores;
 
                 r.Id = aj['projectapplicationrenewal']['project_application'];
                 r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
@@ -751,16 +784,26 @@ export class ApplicationsComponent ***REMOVED***
 
             a.Comment = aj["project_application_comment"];
             for (let f of aj['flavors']) ***REMOVED***
-                a.addFlavorToCurrent(f.flavor_name, f.counter)
+                a.addFlavorToCurrent(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
 
             ***REMOVED***
             if (aj['projectapplicationrenewal']) ***REMOVED***
                 let r = new ApplicationExtension();
+                let requestExtensionTotalCores =0;
+                let requestExtensionTotalRam =0;
+
+
+
               for (let f of aj['projectapplicationrenewal']['flavors']) ***REMOVED***
-                r.addFlavorToRequested(f.flavor_name, f.counter)
+                r.addFlavorToRequested(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
+                requestExtensionTotalCores += f.vcpus * f.counter;
+                requestExtensionTotalRam +=  f.ram * f.counter
 
               ***REMOVED***
 
+
+                r.TotalRAM = requestExtensionTotalRam;
+               r.TotalCores = requestExtensionTotalCores;
                 r.Id = aj['projectapplicationrenewal']['project_application'];
                 r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
                 r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
