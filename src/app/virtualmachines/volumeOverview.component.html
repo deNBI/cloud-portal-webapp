@@ -94,12 +94,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"
-                    *ngIf="volume_status == Volume_Action_Statuses.WAITING || volume_status == Volume_Action_Statuses.DETACHING_VOLUME || volume_status == Volume_Action_Statuses.ATTACHING">
+                    *ngIf="volume_action_status == Volume_Action_Statuses.WAITING || volume_action_status == Volume_Action_Statuses.DETACHING_VOLUME || volume_action_status == Volume_Action_Statuses.ATTACHING">
                     Waiting </h4>
                 <h4 class="modal-title"
-                    *ngIf="volume_status == Volume_Action_Statuses.SUCCESS || volume_status == Volume_Action_Statuses.SUCCESSFULLY_DETACHED_VOLUME || volume_status == Volume_Action_Statuses.ATTACHING_SUCESSFULL || volume_status == Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED">
+                    *ngIf="volume_action_status == Volume_Action_Statuses.SUCCESS || volume_action_status == Volume_Action_Statuses.SUCCESSFULLY_DETACHED_VOLUME || volume_action_status == Volume_Action_Statuses.ATTACHING_SUCCESSFULL || volume_action_status == Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED">
                     Success </h4>
-                <h4 class="modal-title" *ngIf="volume_status == Volume_Action_Statuses.ERROR"> Error </h4>
+                <h4 class="modal-title" *ngIf="volume_action_status == Volume_Action_Statuses.ERROR"> Error </h4>
 
                 <button type="button" class="close" style="cursor:pointer"
                         (click)="resultModal.hide()"
@@ -109,51 +109,51 @@
             </div>
 
             <div class="modal-body">
-                <div class="alert alert-info" role="alert" *ngIf="volume_status == Volume_Action_Statuses.WAIT_CREATION">
+                <div class="alert alert-info" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.WAIT_CREATION">
                     Creating Volume... <i class="fa fa-spinner fa-spin"
                                           style="font-size:24px"></i>
                 </div>
-                <div class="alert alert-info" role="alert" *ngIf="volume_status == Volume_Action_Statuses.DETACHING_VOLUME">
+                <div class="alert alert-info" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.DETACHING_VOLUME">
                     Detaching ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
                                                                      style="font-size:24px"></i>
                 </div>
 
-                <div class="alert alert-info" role="alert" *ngIf="volume_status == Volume_Action_Statuses.ATTACHING">
+                <div class="alert alert-info" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.ATTACHING">
                     Attaching Volume ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED*** to Virtualmachine
                     ***REMOVED******REMOVED***selected_vm.name***REMOVED******REMOVED***...
                     <i class="fa fa-spinner fa-spin"
                        style="font-size:24px"></i>
                 </div>
-                <div class="alert alert-info" role="alert" *ngIf="volume_status == Volume_Action_Statuses.WAITING">
+                <div class="alert alert-info" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.WAITING">
                     Deleting ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
                                                                     style="font-size:24px"></i>
                 </div>
-                <div class="alert alert-success" role="alert" *ngIf="volume_status == Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED">
+                <div class="alert alert-success" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED">
                     Sucessfully created and attached Volume.
 
                 </div>
-                <div class="alert alert-success" role="alert" *ngIf="volume_status == Volume_Action_Statuses.CHANGING_NAME_SUCESSFULL">
+                <div class="alert alert-success" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.CHANGING_NAME_SUCESSFULL">
                     Sucessfully renamed Volume.
 
                 </div>
-                <div class="alert alert-success" role="alert" *ngIf="volume_status == Volume_Action_Statuses.SUCCESS">
+                <div class="alert alert-success" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.SUCCESS">
                     ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED*** was succesfully deleted.
                 </div>
-                <div class="alert alert-success" role="alert" *ngIf="volume_status == Volume_Action_Statuses.SUCCESSFULLY_DETACHED_VOLUME">
+                <div class="alert alert-success" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.SUCCESSFULLY_DETACHED_VOLUME">
                     ***REMOVED******REMOVED***selected_volume?.volume_openstackid***REMOVED******REMOVED*** was succesfully detached.
                 </div>
-                <div class="alert alert-success" role="alert" *ngIf="volume_status == Volume_Action_Statuses.ATTACHING_SUCCESSFULL">
+                <div class="alert alert-success" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.ATTACHING_SUCCESSFULL">
                     ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED*** was succesfully attached.
                 </div>
             </div>
-            <div class="alert alert-warning" role="alert" *ngIf="volume_status == Volume_Action_Statuses.ERROR">
+            <div class="alert alert-warning" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.ERROR">
                 An error occured.
             </div>
 
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
-                        (click)="volume_status = Volume_Action_Statuses.WAITING;resultModal.hide()">Close
+                        (click)="volume_action_status = Volume_Action_Statuses.WAITING;resultModal.hide()">Close
                 </button>
             </div>
 
