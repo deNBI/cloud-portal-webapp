@@ -738,32 +738,65 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                     this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
                         this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
                             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(res => {
-                                this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => {
-                                        if (result['Error']) {
-                                            this.updateNotificationModal("Failed", result['Error'], true, "danger");
+                                if (compute_center != 'undefined') {
 
-                                        }
-                                        else {
-                                            this.updateNotificationModal("Success", "The new project was created", true, "success");
-                                        }
-                                        for (let app of this.user_applications) {
-                                            if (app.Id == application_id) {
-                                                this.getUserApplication(app);
-                                                break;
+                                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => {
+                                            if (result['Error']) {
+                                                this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
                                             }
+                                            else {
+                                                this.updateNotificationModal("Success", "The new project was created", true, "success");
+                                            }
+                                            for (let app of this.user_applications) {
+                                                if (app.Id == application_id) {
+                                                    this.getUserApplication(app);
+                                                    break;
 
+                                                }
 
-                                        }
-                                        for (let app of this.all_applications) {
-                                            if (app.Id == application_id) {
-                                                this.getApplication(app);
-                                                break;
 
                                             }
+                                            for (let app of this.all_applications) {
+                                                if (app.Id == application_id) {
+                                                    this.getApplication(app);
+                                                    break;
+
+                                                }
+                                            }
                                         }
-                                    }
-                                )
+                                    )
+                                } else {
+                                    this.groupservice.setPerunGroupStatus(new_group_id, this.application_statuses.APPROVED).subscribe(res => {
+                                        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => {
+                                            if (result['Error']) {
+                                                this.updateNotificationModal("Failed", result['Error'], true, "danger");
+
+                                            }
+                                            else {
+                                                this.updateNotificationModal("Success", "The new project was created", true, "success");
+                                            }
+                                            for (let app of this.user_applications) {
+                                                if (app.Id == application_id) {
+                                                    this.getUserApplication(app);
+                                                    break;
+
+                                                }
+
+
+                                            }
+                                            for (let app of this.all_applications) {
+                                                if (app.Id == application_id) {
+                                                    this.getApplication(app);
+                                                    break;
+
+                                                }
+                                            }
+                                        })
+
+                                    })
+
+                                }
                             });
                         })
 
@@ -878,6 +911,9 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                     console.log(error);
                     this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
                 });
+        }
+        else {
+            this.updateNotificationModal("Failed", "You need to select an compute center!", true, "danger");
         }
 
     }
