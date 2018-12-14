@@ -1,4 +1,17 @@
 
+
+#### Bug Fixes
+
+* **Application:** fixed ram gb 
+
+#### Features
+
+* **Application:**
+  * if without faciltiy approve 
+  * vo can approve without facility 
+
+
+------
 #### Bug Fixes
 * **volume:** fixed volume bug
 * **development:**  remove nvmrc file 
