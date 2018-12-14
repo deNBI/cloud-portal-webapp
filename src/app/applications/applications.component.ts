@@ -738,32 +738,65 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                     this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => ***REMOVED***
                         this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => ***REMOVED***
                             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(res => ***REMOVED***
-                                this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => ***REMOVED***
-                                        if (result['Error']) ***REMOVED***
-                                            this.updateNotificationModal("Failed", result['Error'], true, "danger");
+                                if (compute_center != 'undefined') ***REMOVED***
 
-                                        ***REMOVED***
-                                        else ***REMOVED***
-                                            this.updateNotificationModal("Success", "The new project was created", true, "success");
-                                        ***REMOVED***
-                                        for (let app of this.user_applications) ***REMOVED***
-                                            if (app.Id == application_id) ***REMOVED***
-                                                this.getUserApplication(app);
-                                                break;
+                                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => ***REMOVED***
+                                            if (result['Error']) ***REMOVED***
+                                                this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
                                             ***REMOVED***
+                                            else ***REMOVED***
+                                                this.updateNotificationModal("Success", "The new project was created", true, "success");
+                                            ***REMOVED***
+                                            for (let app of this.user_applications) ***REMOVED***
+                                                if (app.Id == application_id) ***REMOVED***
+                                                    this.getUserApplication(app);
+                                                    break;
 
+                                                ***REMOVED***
 
-                                        ***REMOVED***
-                                        for (let app of this.all_applications) ***REMOVED***
-                                            if (app.Id == application_id) ***REMOVED***
-                                                this.getApplication(app);
-                                                break;
 
                                             ***REMOVED***
+                                            for (let app of this.all_applications) ***REMOVED***
+                                                if (app.Id == application_id) ***REMOVED***
+                                                    this.getApplication(app);
+                                                    break;
+
+                                                ***REMOVED***
+                                            ***REMOVED***
                                         ***REMOVED***
-                                    ***REMOVED***
-                                )
+                                    )
+                                ***REMOVED*** else ***REMOVED***
+                                    this.groupservice.setPerunGroupStatus(new_group_id, this.application_statuses.APPROVED).subscribe(res => ***REMOVED***
+                                        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => ***REMOVED***
+                                            if (result['Error']) ***REMOVED***
+                                                this.updateNotificationModal("Failed", result['Error'], true, "danger");
+
+                                            ***REMOVED***
+                                            else ***REMOVED***
+                                                this.updateNotificationModal("Success", "The new project was created", true, "success");
+                                            ***REMOVED***
+                                            for (let app of this.user_applications) ***REMOVED***
+                                                if (app.Id == application_id) ***REMOVED***
+                                                    this.getUserApplication(app);
+                                                    break;
+
+                                                ***REMOVED***
+
+
+                                            ***REMOVED***
+                                            for (let app of this.all_applications) ***REMOVED***
+                                                if (app.Id == application_id) ***REMOVED***
+                                                    this.getApplication(app);
+                                                    break;
+
+                                                ***REMOVED***
+                                            ***REMOVED***
+                                        ***REMOVED***)
+
+                                    ***REMOVED***)
+
+                                ***REMOVED***
                             ***REMOVED***);
                         ***REMOVED***)
 
@@ -878,6 +911,9 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                     console.log(error);
                     this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
                 ***REMOVED***);
+        ***REMOVED***
+        else ***REMOVED***
+            this.updateNotificationModal("Failed", "You need to select an compute center!", true, "danger");
         ***REMOVED***
 
     ***REMOVED***
