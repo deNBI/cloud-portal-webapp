@@ -130,13 +130,13 @@
                                                         <td>RAM</td>
                                                         <td>***REMOVED******REMOVED***
                                                             application.RamPerVM
-                                                            ***REMOVED******REMOVED***
+                                                            ***REMOVED******REMOVED*** GB
                                                         </td>
                                                     </tr>
                                                     <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
                                                         <td>RAM</td>
                                                         <td>***REMOVED******REMOVED***
-                                                            application.TotalRam***REMOVED******REMOVED***
+                                                            application.TotalRam***REMOVED******REMOVED*** GB
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -259,7 +259,7 @@
                                                     class="form-control"
                                                     #selectedComputeCenter>
 
-                                                <!--option value="undefined" selected> no center</option-->
+                                                <option value="undefined" selected> no center</option>
                                                 <option *ngFor="let computeCenter of computeCenters"
                                                         value="***REMOVED******REMOVED***computeCenter.FacilityId***REMOVED******REMOVED***">
                                                     ***REMOVED******REMOVED***computeCenter.Name***REMOVED******REMOVED***
@@ -279,7 +279,7 @@
                                                     type="button"
                                                     class="btn btn-secondary">
                                                 <i class="fa fa-check"></i>&nbsp;
-                                                Approve
+                                                Assign
                                             </button>
                                             <button
                                                     *ngIf="application.Status == 6 && application.ComputeCenter?.FacilityId"
@@ -472,14 +472,14 @@
                                                         <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
                                                             <td>RAM</td>
                                                             <td>***REMOVED******REMOVED***
-                                                                application.RamPerVM
-                                                                ***REMOVED******REMOVED***
+                                                                application.RamPerVM 
+                                                                ***REMOVED******REMOVED*** GB
                                                             </td>
                                                         </tr>
                                                         <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
                                                             <td>RAM</td>
                                                             <td>***REMOVED******REMOVED***
-                                                                application.TotalRam***REMOVED******REMOVED***
+                                                                application.TotalRam***REMOVED******REMOVED*** GB
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -690,13 +690,13 @@
                                                             <td>RAM</td>
                                                             <td>***REMOVED******REMOVED***
                                                                 application.RamPerVM
-                                                                ***REMOVED******REMOVED***
+                                                                ***REMOVED******REMOVED*** GB
                                                             </td>
                                                         </tr>
                                                         <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
                                                             <td>RAM</td>
                                                             <td>***REMOVED******REMOVED***
-                                                                application.TotalRam***REMOVED******REMOVED***
+                                                                application.TotalRam***REMOVED******REMOVED*** GB
                                                             </td>
                                                         </tr>
                                                         <tr>

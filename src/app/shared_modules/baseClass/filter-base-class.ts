@@ -83,6 +83,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
 
     isFilterProjectStatus(status_number: number, lifetime_reached: number): boolean ***REMOVED***
         let status: string;
+        let lifetime_status: string;
         switch (status_number) ***REMOVED***
             case this.project_statuses.ACTIVE:
                 status = this.project_statuses[this.project_statuses.ACTIVE];
@@ -93,14 +94,14 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***
         switch (lifetime_reached) ***REMOVED***
             case this.lifetime_statuses.EXPIRED:
-                status = this.lifetime_statuses[this.lifetime_statuses.EXPIRED];
+                lifetime_status = this.lifetime_statuses[this.lifetime_statuses.EXPIRED];
                 break;
             case this.lifetime_statuses.EXPIRES_SOON:
-                status = this.lifetime_statuses[this.lifetime_statuses.EXPIRES_SOON];
+                lifetime_status = this.lifetime_statuses[this.lifetime_statuses.EXPIRES_SOON];break;
         ***REMOVED***
 
 
-        if (this.filterstatus_list[status]
+        if (this.filterstatus_list[status] || this.filterstatus_list[lifetime_status]
         ) ***REMOVED***
 
             return true
