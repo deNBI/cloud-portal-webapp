@@ -98,6 +98,11 @@ export class VoService ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Get members of a project with emails.
+     * @param ***REMOVED***number***REMOVED*** groupid id of the the group
+     * @returns ***REMOVED***Observable<any>***REMOVED***
+     */
      getVoGroupRichMembers(groupid: number): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/members/', ***REMOVED***
             withCredentials: true,
