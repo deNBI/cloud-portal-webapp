@@ -98,5 +98,11 @@ export class VoService ***REMOVED***
 
     ***REMOVED***
 
+     getVoGroupRichMembers(groupid: number): Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/members/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+    ***REMOVED***
+
 
 ***REMOVED***
