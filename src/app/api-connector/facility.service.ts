@@ -133,7 +133,12 @@ export class FacilityService {
 
     }
 
-
+    /**
+     * Get Members of a project with emails.
+     * @param {number} groupid id of the group
+     * @param {number} facility id of the facility
+     * @returns {Observable<any>}
+     */
       getFacilityGroupRichMembers(groupid: number,facility:number): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/' + groupid + '/members/', {
             withCredentials: true,
