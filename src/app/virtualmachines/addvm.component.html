@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="card-body">
-                  
+
                     <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
                           class="form-horizontal">
                         <div class="form-group row"
@@ -318,7 +318,7 @@
                 Parameters missing
             </div>
             <div class="modal-footer">
-                <button
+                <button *ngIf="data['Started']"
                         routerLinkActive="active"
                         [routerLink]="['/virtualmachines/vmOverview']"
                         type="button" class="btn btn-info nav-link"
