@@ -9,16 +9,19 @@
                 </div>
                 <div class="card-body">
                     <div class="alert alert-info">
-                        <strong>Please be aware:</strong> Only applications submitted by a principal investigator of a
+                        <strong>Please be aware:</strong> Only applications submitted by a principal
+                        investigator of a
                         german university or research facility will be accepted!
                     </div>
                     <div class="alert alert-info">
-                        This project mode is a beta version. Virtual machines might get lost or can not be
+                        This project mode is a beta version. Virtual machines might get lost or can
+                        not be
                         started
                         temporarily.
                     </div>
 
-                    <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
+                    <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+                          class="form-horizontal">
                         <div class="form-group row">
                             <h5 class="col-md-6 form-control-label">General Information</h5>
                         </div>
@@ -33,7 +36,8 @@
 
                             </label>
                             <div class="col-md-8">
-                                This type of project allows you to start virtual machines with SSH access.
+                                This type of project allows you to start virtual machines with SSH
+                                access.
 
 
                             </div>
@@ -44,13 +48,16 @@
                                 'has-success': f.controls.project_application_name?.valid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Project
-                                Name* <i data-balloon="Full name of your project" data-balloon-pos="down"><i
-                                        class="icon-question" style="cursor: pointer;"></i></i></strong></label>
+                                Name* <i data-balloon="Full name of your project"
+                                         data-balloon-pos="down"><i
+                                        class="icon-question"
+                                        style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <input required type="text" id="id_project_application_name"
                                        name="project_application_name"
                                        class="form-control" maxlength="128"
-                                       placeholder="e.g. Assembler benchmarking based on A. thaliana genome" ngModel>
+                                       placeholder="e.g. Assembler benchmarking based on A. thaliana genome"
+                                       ngModel>
                                 <span class="help-block">Name your project.</span>
                             </div>
                         </div>
@@ -63,11 +70,13 @@
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Project
                                 Short Name* <i
                                         data-balloon="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"
-                                        data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
-                                                                                               style="cursor: pointer;"></i></i></strong></label>
+                                        data-balloon-pos="down" data-balloon-length="large"><i
+                                        class="icon-question"
+                                        style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <div *ngIf='wronginput'>
-                                    <strong><font color="red">Umlauts and special characters are prohibited in the
+                                    <strong><font color="red">Umlauts and special characters are
+                                        prohibited in the
                                         shortname.</font></strong>
                                 </div>
                                 <input required type="text" id="id_project_application_shortname"
@@ -89,8 +98,9 @@
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Project
                                 Description* <i
                                         data-balloon="Full description of your project including tools you might are going to use."
-                                        data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
-                                                                                               style="cursor: pointer;"></i></i></strong></label>
+                                        data-balloon-pos="down" data-balloon-length="large"><i
+                                        class="icon-question"
+                                        style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <textarea required id="id_project_application_description"
                                           name="project_application_description" rows="9"
@@ -106,8 +116,10 @@
                                 'has-success': f.controls.project_application_lifetime?.valid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched)
                                 }">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Desired
-                                lifetime* <i data-balloon="Lifetime in months of your project" data-balloon-pos="down">
-                                    <i class="icon-question" style="cursor: pointer;"></i></i></strong></label>
+                                lifetime* <i data-balloon="Lifetime in months of your project"
+                                             data-balloon-pos="down">
+                                    <i class="icon-question"
+                                       style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
                                     <input class="form-control" id="id_project_application_lifetime"
@@ -131,14 +143,17 @@
                                 'has-danger': f.controls.project_application_vms_requested?.invalid ,
                                 'has-success': f.controls.project_application_vms_requested?.valid
                                 }">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of Virtual
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
+                                of Virtual
                                 Machines* <i
                                         data-balloon="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."
-                                        data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
-                                                                                               style="cursor: pointer;"></i></i></strong></label>
+                                        data-balloon-pos="down" data-balloon-length="large"><i
+                                        class="icon-question"
+                                        style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <input required class="form-control" id="id_project_application_vms_requested"
+                                    <input required class="form-control"
+                                           id="id_project_application_vms_requested"
                                            name="project_application_vms_requested"
                                            placeholder="e.g. 5"
                                            type="number" min="1" step="1"
@@ -153,7 +168,8 @@
                                 'has-danger': f.controls.project_application_volume_limit?.invalid,
                                 'has-success': f.controls.project_application_volume_limit?.valid
                                 }">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage Limit*
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage
+                                Limit*
                                 <i
                                         data-balloon="Storage limit is the sum of extra storage provided by volumes."
                                         data-balloon-pos="down"
@@ -161,7 +177,8 @@
                                                                        style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <input required class="form-control" id="id_project_application_volume_limit"
+                                    <input required class="form-control"
+                                           id="id_project_application_volume_limit"
                                            name="project_application_volume_limit"
                                            placeholder="e.g. 20"
                                            type="number" min="1" step="1" [ngModel]="20">
@@ -176,18 +193,22 @@
                                 'has-danger': f.controls.project_application_volume_counter?.invalid,
                                 'has-success': f.controls.project_application_volume_counter?.valid
                                 }">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number of storage
+                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
+                                of storage
                                 volumes*
                                 <i
                                         data-balloon="The number of storage volumes allowed to create. Each vm is allowed to mount only one storage volume. The sum of the volumes size equals the value provided in the sotrage limit field"
-                                        data-balloon-pos="down" data-balloon-length="large"><i class="icon-question"
-                                                                                               style="cursor: pointer;"></i></i></strong></label>
+                                        data-balloon-pos="down" data-balloon-length="large"><i
+                                        class="icon-question"
+                                        style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <input required class="form-control" id="id_project_application_volume_counter"
+                                    <input required class="form-control"
+                                           id="id_project_application_volume_counter"
                                            name="project_application_volume_counter"
                                            placeholder="e.g. 20"
-                                           type="number" min="0" step="1" [ngModel]="project_application_vms_requested">
+                                           type="number" min="0" step="1"
+                                           [ngModel]="project_application_vms_requested">
                                 </div>
                                 <span class="help-block">How many storage volumes do you want to use?</span>
                             </div>
@@ -195,15 +216,23 @@
 
 
                         <div class="form-group row">
-                            <label class="col-md-4 form-control-label">You are able to start machines of the
+                            <label class="col-md-4 form-control-label">You are able to start
+                                machines of the
                                 type:</label>
                             <div class="col-md-8">
-                                <ul>
-                                    <li>de.NBI Large (CPUs:32, RAM:64 GB)</li>
-                                    <li>de.NBI Medium (CPUs:16, RAM:32 GB)</li>
-                                    <li>de.NBI Small (CPUs:8, RAM:16 GB)</li>
+                                <ul *ngFor="let f of flavorList">
+
+                                    <li *ngIf="f.simple_vm">
+                                        {{f.name}}
+                                        (CPUs:{{f.vcpus}}, RAM:{{f.ram}} GB)
+                                    
+                                    </li>
+
                                 </ul>
+                                <span class="help-block">More flavors can be enabled on demand.</span>
+
                             </div>
+
                         </div>
 
                         <br>
@@ -225,13 +254,16 @@
                                 'has-danger': f.controls.project_application_institute?.invalid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched),
                                 'has-success': f.controls.project_application_institute?.valid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched)
                                 }">
-                            <label class="col-md-4 form-control-label" for="text-input"><strong>Institute Name* <i
-                                    data-balloon="Your institute" data-balloon-pos="down"><i class="icon-question"
-                                                                                             style="cursor: pointer;"></i></i></strong></label>
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>Institute
+                                Name* <i
+                                        data-balloon="Your institute" data-balloon-pos="down"><i
+                                        class="icon-question"
+                                        style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <input required type="text" id="id_project_application_institute"
                                        name="project_application_institute" class="form-control"
-                                       placeholder="e.g. Center for Biotechnology, Bielefeld" ngModel>
+                                       placeholder="e.g. Center for Biotechnology, Bielefeld"
+                                       ngModel>
                                 <span class="help-block">To which institute do you belong?</span>
                             </div>
                         </div>
@@ -240,10 +272,11 @@
                                 'has-danger': f.controls.project_application_workgroup?.invalid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched),
                                 'has-success': f.controls.project_application_workgroup?.valid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched)
                                 }">
-                            <label class="col-md-4 form-control-label" for="text-input"><strong>Workgroup Name* <i
-                                    data-balloon="Your Workgroup"
-                                    data-balloon-pos="down"><i class="icon-question"
-                                                               style="cursor: pointer;"></i></i></strong></label>
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>Workgroup
+                                Name* <i
+                                        data-balloon="Your Workgroup"
+                                        data-balloon-pos="down"><i class="icon-question"
+                                                                   style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
                                 <input required type="text" id="id_project_application_workgroup"
                                        name="project_application_workgroup" class="form-control"
@@ -258,7 +291,8 @@
                 </div>
                 <div class="card-footer">
                     <div class="form-group row">
-                        <p class="col-md-12 form-control-label">By submitting this application you agree to the
+                        <p class="col-md-12 form-control-label">By submitting this application you
+                            agree to the
                             cloud
                             usage policy.</p>
                     </div>
@@ -277,13 +311,15 @@
 </div>
 
 
-<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">{{ notificationModalTitle }}</h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="notificationModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -305,7 +341,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)" type="button"
+                <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
+                        type="button"
                         (click)="notificationModal.hide();resetNotificationModal()"
                         class="btn  btn-secondary"> Close
                 </button>
@@ -321,13 +358,15 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div bsModal #acknowledgemodal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+<div bsModal #acknowledgemodal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"> {{acknowledgeModalTitle}}</h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="acknowledgemodal.hide()"
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="acknowledgemodal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -338,12 +377,15 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" (click)="acknowledgemodal.hide(); notificationModal.show();" type="reset"
-                        class="btn  btn-success" type="submit" name="_save" form="application_form"> Accept
+                <button type="button" (click)="acknowledgemodal.hide(); notificationModal.show();"
+                        type="reset"
+                        class="btn  btn-success" type="submit" name="_save" form="application_form">
+                    Accept
                 </button>
 
 
-                <button type="button" (click)="acknowledgemodal.hide();" type="reset" class="btn  btn-info"> Close
+                <button type="button" (click)="acknowledgemodal.hide();" type="reset"
+                        class="btn  btn-info"> Close
                 </button>
 
             </div>
