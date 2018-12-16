@@ -133,4 +133,11 @@ export class FacilityService {
 
     }
 
+
+      getFacilityGroupRichMembers(groupid: number,facility:number): Observable<any> {
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/' + groupid + '/members/', {
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error.error)));
+    }
+
 }
