@@ -23,7 +23,7 @@ import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/base
 export class OverviewComponent extends AbstractBaseClasse***REMOVED***
 
     debug_module = false;
-    @Input() inivtation_group_post:string=environment.inivtation_group_post;
+    @Input() invitation_group_post:string=environment.invitation_group_post;
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
     @Input() invitation_group_pre: string = environment.invitation_group_pre;
     @Input() wiki_group_invitation: string = environment.wiki_group_invitations;

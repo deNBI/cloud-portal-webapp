@@ -8,7 +8,7 @@ export const environment = ***REMOVED***
     vo: 3334,
     freemium_project_id: 10392,
     invitation_group_pre: 'https://perun.elixir-czech.cz/fed/registrar/?vo=elixir&targetnew=https://perun.elixir-czech.cz/fed/registrar/?vo=denbi-dev&group=',
-    inivtation_group_post: '&targetexisting=https://perun.elixir-czech.cz/fed/registrar/?vo=denb-devi&group=',
+    invitation_group_post: '&targetexisting=https://perun.elixir-czech.cz/fed/registrar/?vo=denb-devi&group=',
     wiki_group_invitations: 'https://cloud.denbi.de/wiki/portal/#inviting-members',
     apiBaseUrl: 'http://portal-dev.denbi.de:8000/api/v0/',
     voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev',
