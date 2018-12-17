@@ -196,7 +196,11 @@ export class ApplicationsComponent {
         this.getListOfTypes();
     }
 
-    keyIsVM(key: string): Flavor {
+  /**
+   * Checks if the key given represents a flavor and if so returns the respective Flavor
+   * @param key the key which is checked
+   */
+  keyIsVM(key: string): Flavor {
         for (let fkey in this.flavorList) {
             if (fkey in this.flavorList) {
                 if (this.flavorList[fkey].name === key.substring(20)) {
@@ -208,7 +212,11 @@ export class ApplicationsComponent {
 
     }
 
-    flavorTuples(app: Application): [string, number][] {
+  /**
+   * unused yet
+   * @param app
+   */
+  flavorTuples(app: Application): [string, number][] {
         let cur_flavors: [string, number][];
         for (let entry in app.CurrentFlavors) {
             cur_flavors.push([entry, app.CurrentFlavors[entry].counter]);
@@ -217,6 +225,11 @@ export class ApplicationsComponent {
         return cur_flavors;
     }
 
+  /**
+   * Resets the values of totalRAM und totalNumberOfCores to 0 and changes the text at the end of the extension form.
+   * @param elemIDcores the ID of the label containing the number of cores
+   * @param elemIDram the ID of the label containing the amount of RAM
+   */
     unsetValues(elemIDcores, elemIDram: string) {
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
@@ -226,7 +239,11 @@ export class ApplicationsComponent {
 
     }
 
-    valuesChanged(f: NgForm) {
+  /**
+   * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
+   * @param f the form which contains the input-fields
+   */
+  valuesChanged(f: NgForm) {
 
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
@@ -247,7 +264,6 @@ export class ApplicationsComponent {
     }
 
     /**
-     <<<<<<< HEAD
      * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
      */
     getListOfFlavors() {
