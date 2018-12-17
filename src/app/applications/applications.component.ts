@@ -196,11 +196,11 @@ export class ApplicationsComponent {
         this.getListOfTypes();
     }
 
-  /**
-   * Checks if the key given represents a flavor and if so returns the respective Flavor
-   * @param key the key which is checked
-   */
-  keyIsVM(key: string): Flavor {
+    /**
+     * Checks if the key given represents a flavor and if so returns the respective Flavor
+     * @param key the key which is checked
+     */
+    keyIsVM(key: string): Flavor {
         for (let fkey in this.flavorList) {
             if (fkey in this.flavorList) {
                 if (this.flavorList[fkey].name === key.substring(20)) {
@@ -212,11 +212,11 @@ export class ApplicationsComponent {
 
     }
 
-  /**
-   * unused yet
-   * @param app
-   */
-  flavorTuples(app: Application): [string, number][] {
+    /**
+     * unused yet
+     * @param app
+     */
+    flavorTuples(app: Application): [string, number][] {
         let cur_flavors: [string, number][];
         for (let entry in app.CurrentFlavors) {
             cur_flavors.push([entry, app.CurrentFlavors[entry].counter]);
@@ -225,11 +225,11 @@ export class ApplicationsComponent {
         return cur_flavors;
     }
 
-  /**
-   * Resets the values of totalRAM und totalNumberOfCores to 0 and changes the text at the end of the extension form.
-   * @param elemIDcores the ID of the label containing the number of cores
-   * @param elemIDram the ID of the label containing the amount of RAM
-   */
+    /**
+     * Resets the values of totalRAM und totalNumberOfCores to 0 and changes the text at the end of the extension form.
+     * @param elemIDcores the ID of the label containing the number of cores
+     * @param elemIDram the ID of the label containing the amount of RAM
+     */
     unsetValues(elemIDcores, elemIDram: string) {
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
@@ -239,11 +239,11 @@ export class ApplicationsComponent {
 
     }
 
-  /**
-   * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
-   * @param f the form which contains the input-fields
-   */
-  valuesChanged(f: NgForm) {
+    /**
+     * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
+     * @param f the form which contains the input-fields
+     */
+    valuesChanged(f: NgForm) {
 
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
@@ -398,27 +398,26 @@ export class ApplicationsComponent {
                 a.DateApproved = aj['project_application_date_approved'];
 
                 for (let f of aj['flavors']) {
-                    a.addFlavorToCurrent(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
+                    a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
 
                 }
 
                 if (aj['projectapplicationrenewal']) {
                     let r = new ApplicationExtension();
-                  let requestExtensionTotalCores =0;
-                  let requestExtensionTotalRam =0;
+                    let requestExtensionTotalCores = 0;
+                    let requestExtensionTotalRam = 0;
 
 
+                    for (let f of aj['projectapplicationrenewal']['flavors']) {
+                        r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+                        requestExtensionTotalCores += f.vcpus * f.counter;
+                        requestExtensionTotalRam += f.ram * f.counter
 
-                  for (let f of aj['projectapplicationrenewal']['flavors']) {
-                    r.addFlavorToRequested(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
-                    requestExtensionTotalCores += f.vcpus * f.counter;
-                    requestExtensionTotalRam +=  f.ram * f.counter
-
-                  }
+                    }
 
 
-                  r.TotalRAM = requestExtensionTotalRam;
-                  r.TotalCores = requestExtensionTotalCores;
+                    r.TotalRAM = requestExtensionTotalRam;
+                    r.TotalCores = requestExtensionTotalCores;
 
                     r.Id = aj['projectapplicationrenewal']['project_application'];
                     r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
@@ -571,7 +570,7 @@ export class ApplicationsComponent {
                     a.UserEmail = aj["project_application_user"]["email"];
                     a.Status = aj["project_application_status"];
                     for (let f of aj['flavors']) {
-                        a.addFlavorToCurrent(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
+                        a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
 
                     }
                     if (a.Status == this.APPROVED_STATUS) {
@@ -585,21 +584,20 @@ export class ApplicationsComponent {
                     a.OpenStackProject = aj["project_application_openstack_project"];
                     if (aj['projectapplicationrenewal']) {
                         let r = new ApplicationExtension();
-                      let requestExtensionTotalCores =0;
-                      let requestExtensionTotalRam =0;
+                        let requestExtensionTotalCores = 0;
+                        let requestExtensionTotalRam = 0;
 
 
+                        for (let f of aj['projectapplicationrenewal']['flavors']) {
+                            r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+                            requestExtensionTotalCores += f.vcpus * f.counter;
+                            requestExtensionTotalRam += f.ram * f.counter
 
-                      for (let f of aj['projectapplicationrenewal']['flavors']) {
-                        r.addFlavorToRequested(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
-                        requestExtensionTotalCores += f.vcpus * f.counter;
-                        requestExtensionTotalRam +=  f.ram * f.counter
-
-                      }
+                        }
 
 
-                      r.TotalRAM = requestExtensionTotalRam;
-                      r.TotalCores = requestExtensionTotalCores;
+                        r.TotalRAM = requestExtensionTotalRam;
+                        r.TotalCores = requestExtensionTotalCores;
 
                         r.Id = aj['projectapplicationrenewal']['project_application'];
                         r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
@@ -718,26 +716,25 @@ export class ApplicationsComponent {
             a.Comment = aj["project_application_comment"];
             a.PerunId = aj['project_application_perun_id'];
             for (let f of aj['flavors']) {
-                a.addFlavorToCurrent(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
+                a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
 
             }
             if (aj['projectapplicationrenewal']) {
                 let r = new ApplicationExtension();
-              let requestExtensionTotalCores =0;
-              let requestExtensionTotalRam =0;
+                let requestExtensionTotalCores = 0;
+                let requestExtensionTotalRam = 0;
 
 
+                for (let f of aj['projectapplicationrenewal']['flavors']) {
+                    r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+                    requestExtensionTotalCores += f.vcpus * f.counter;
+                    requestExtensionTotalRam += f.ram * f.counter
 
-              for (let f of aj['projectapplicationrenewal']['flavors']) {
-                r.addFlavorToRequested(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
-                requestExtensionTotalCores += f.vcpus * f.counter;
-                requestExtensionTotalRam +=  f.ram * f.counter
-
-              }
+                }
 
 
-              r.TotalRAM = requestExtensionTotalRam;
-              r.TotalCores = requestExtensionTotalCores;
+                r.TotalRAM = requestExtensionTotalRam;
+                r.TotalCores = requestExtensionTotalCores;
 
                 r.Id = aj['projectapplicationrenewal']['project_application'];
                 r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
@@ -776,6 +773,7 @@ export class ApplicationsComponent {
      */
     public getUserApplication(application: Application) {
         let index = this.user_applications.indexOf(application);
+        console.log(index)
 
         this.applicationsservice.getUserApplication(application.Id.toString()).subscribe(aj => {
             let a = new Application();
@@ -797,29 +795,30 @@ export class ApplicationsComponent {
             a.SpecialHardware = aj["project_application_special_hardware"];
             a.OpenStackProject = aj["project_application_openstack_project"];
             a.DateApproved = aj['project_application_date_approved'];
+            a.PerunId = aj['project_application_perun_id'];
+
 
             a.Comment = aj["project_application_comment"];
             for (let f of aj['flavors']) {
-                a.addFlavorToCurrent(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
+                a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
 
             }
             if (aj['projectapplicationrenewal']) {
                 let r = new ApplicationExtension();
-                let requestExtensionTotalCores =0;
-                let requestExtensionTotalRam =0;
+                let requestExtensionTotalCores = 0;
+                let requestExtensionTotalRam = 0;
 
 
+                for (let f of aj['projectapplicationrenewal']['flavors']) {
+                    r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+                    requestExtensionTotalCores += f.vcpus * f.counter;
+                    requestExtensionTotalRam += f.ram * f.counter
 
-              for (let f of aj['projectapplicationrenewal']['flavors']) {
-                r.addFlavorToRequested(f.flavor_name, f.counter,f.tag,f.ram,f.rootdisk,f.vcpus,f.gpu,f.epheremal_disk)
-                requestExtensionTotalCores += f.vcpus * f.counter;
-                requestExtensionTotalRam +=  f.ram * f.counter
-
-              }
+                }
 
 
                 r.TotalRAM = requestExtensionTotalRam;
-               r.TotalCores = requestExtensionTotalCores;
+                r.TotalCores = requestExtensionTotalCores;
                 r.Id = aj['projectapplicationrenewal']['project_application'];
                 r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
                 r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
