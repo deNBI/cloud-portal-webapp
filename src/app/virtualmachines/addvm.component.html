@@ -318,6 +318,12 @@
                 Parameters missing
             </div>
             <div class="modal-footer">
+                <button *ngIf="data['Started']"
+                        routerLinkActive="active"
+                        [routerLink]="['/virtualmachines/vmOverview']"
+                        type="button" class="btn btn-info nav-link"
+                        (click)="infoModal.hide();resetData()">Instance Overview
+                </button>
                 <button type="button" class="btn btn-secondary"
                         (click)="infoModal.hide();resetData()">Close
                 </button>
