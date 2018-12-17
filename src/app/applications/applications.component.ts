@@ -196,7 +196,11 @@ export class ApplicationsComponent ***REMOVED***
         this.getListOfTypes();
     ***REMOVED***
 
-    keyIsVM(key: string): Flavor ***REMOVED***
+  /**
+   * Checks if the key given represents a flavor and if so returns the respective Flavor
+   * @param key the key which is checked
+   */
+  keyIsVM(key: string): Flavor ***REMOVED***
         for (let fkey in this.flavorList) ***REMOVED***
             if (fkey in this.flavorList) ***REMOVED***
                 if (this.flavorList[fkey].name === key.substring(20)) ***REMOVED***
@@ -208,7 +212,11 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
-    flavorTuples(app: Application): [string, number][] ***REMOVED***
+  /**
+   * unused yet
+   * @param app
+   */
+  flavorTuples(app: Application): [string, number][] ***REMOVED***
         let cur_flavors: [string, number][];
         for (let entry in app.CurrentFlavors) ***REMOVED***
             cur_flavors.push([entry, app.CurrentFlavors[entry].counter]);
@@ -217,6 +225,11 @@ export class ApplicationsComponent ***REMOVED***
         return cur_flavors;
     ***REMOVED***
 
+  /**
+   * Resets the values of totalRAM und totalNumberOfCores to 0 and changes the text at the end of the extension form.
+   * @param elemIDcores the ID of the label containing the number of cores
+   * @param elemIDram the ID of the label containing the amount of RAM
+   */
     unsetValues(elemIDcores, elemIDram: string) ***REMOVED***
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
@@ -226,7 +239,11 @@ export class ApplicationsComponent ***REMOVED***
 
     ***REMOVED***
 
-    valuesChanged(f: NgForm) ***REMOVED***
+  /**
+   * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
+   * @param f the form which contains the input-fields
+   */
+  valuesChanged(f: NgForm) ***REMOVED***
 
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
@@ -247,7 +264,6 @@ export class ApplicationsComponent ***REMOVED***
     ***REMOVED***
 
     /**
-     <<<<<<< HEAD
      * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
      */
     getListOfFlavors() ***REMOVED***
