@@ -18,9 +18,9 @@
                                 <th>Details</th>
                                 <th>Facility</th>
                                 <!--th>Date created (d/m/y)</th>
-                                <!--th>Expiration Date (d/m/y)</th-->
-                                <!--th>Days running</th-->
-                                <!--th>Lifetime in Days</th-->
+                                th>Expiration Date (d/m/y)</th
+                                th>Days running</th
+                                th>Lifetime in Days</th-->
                                 <th></th>
                             </tr>
                             </thead>
@@ -52,7 +52,7 @@
 
                                 </td>
 
-                                <!--td>{{ project.DateCreated }}</td>
+                                <!--td>{{ project.DateCreated }}</td>-->
                                 <!--td>{{project.DateEnd}}</td-->
                                 <!--td>{{ project.DaysRunning }}</td-->
                                 <!--td>{{project.LifetimeDays}}</td-->
@@ -193,7 +193,9 @@
                         <br>
                         <br>
                         <ul>
-                            <li><pre>{{invitation_group_pre}}{{addUserModalRealName }}</pre>
+
+                            <li><pre>{{invitation_group_pre}}{{addUserModalRealName}}{{invitation_group_post}}{{addUserModalRealName}}</pre>
+
                             </li>
                         </ul>
                         <br>
@@ -263,7 +265,7 @@
             </div>
             <div class="modal-footer">
                 <button *ngIf="notificationModalIsClosable == true" type="button"
-                        (click)="resetNotificaitonModal(); notificationModal.hide();" type="reset"
+                        (click)="resetNotificationModal(); notificationModal.hide();" type="reset"
                         class="btn  btn-secondary"> Close
                 </button>
             </div>

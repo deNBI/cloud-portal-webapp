@@ -19,51 +19,115 @@ import {VoService} from "../api-connector/vo.service";
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
 import {FacilityService} from "../api-connector/facility.service";
 import {Project} from "../projectmanagement/project.model";
+import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
 
 @Component({
     templateUrl: 'applications.component.html',
     providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
 })
-export class ApplicationsComponent {
+export class ApplicationsComponent extends AbstractBaseClasse {
 
-
+    /**
+     * Applications of the user viewing the Application overview.
+     * @type {Array}
+     */
     user_applications: Application[] = [];
+
+    /**
+     * If the user is a vo admin.
+     * @type {boolean}
+     */
     is_vo_admin = false;
+
+    /**
+     * All Applications, just visibile for a vo admin.
+     * @type {Array}
+     */
     all_applications: Application[] = [];
+
+    /**
+     * Stati of the differen Applications.
+     * @type {Array}
+     */
+
     application_status: ApplicationStatus[] = [];
-    all_applications_renewal: ApplicationExtension[] = [];
+    /**
+     * Avaiable Special Hardwares.
+     * @type {Array}
+     */
     special_hardware: SpecialHardware[] = [];
+
+    /**
+     * All available compute centers.
+     * @type {Array}
+     */
     computeCenters: ComputecenterComponent[] = [];
+
+    /**
+     * Selected Application.
+     */
     selectedApplication: Application;
+
+    /**
+     * Id of the extension status.
+     * @type {number}
+     */
     extension_status = 0;
+    /**
+     * Id of Application set for deletion.
+     */
     public deleteId: number;
+
+    /**
+     * If all userApplications are loaded, important for the loader.
+     * @type {boolean}
+     */
     isLoaded_userApplication = false;
+
+    /**
+     * If all Applications are loaded, important for the loader.
+     * @type {boolean}
+     */
     isLoaded_AllApplication = false;
+
+    /**
+     * User which requested the Application {id: Elixir Id of user : {name and email}}.
+     * @type {{}}
+     */
     application_user: { [id: string]: { [id: string]: string } } = {};
 
-
-    //notification Modal variables
-    public notificationModal;
-    public notificationModalTitle: string = "Notification";
-    public notificationModalMessage: string = "Please wait...";
-    public notificationModalType: string = "info";
-    public notificationModalIsClosable: boolean = false;
-    private APPROVED_STATUS = 2;
-    private EXTENSION_STATUS = 4;
-    private EXTENSTION_STATUS_STRING = 'modification requested';
+    /**
+     * Special hardware id for FPGA.
+     * @type {number}
+     */
     public FPGA = 1;
+
+    /**
+     * Special hardware id for GPU.
+     * @type {number}
+     */
     public GPU = 2;
 
-    collapse_status: { [id: string]: boolean } = {};
 
+    /**
+     * Constructor.
+     * Loads all Applications if user is vo admin and all user_applications.
+     * @param {ApplicationsService} applicataionsservice
+     * @param {ApplicationStatusService} applicationstatusservice
+     * @param {SpecialHardwareService} specialhardwareservice
+     * @param {UserService} userservice
+     * @param {GroupService} groupservice
+     * @param {VoService} voService
+     * @param {FacilityService} facilityService
+     */
     constructor(private applicataionsservice: ApplicationsService,
                 private applicationstatusservice: ApplicationStatusService,
                 private specialhardwareservice: SpecialHardwareService,
-                private perunsettings: PerunSettings,
                 private userservice: UserService,
                 private groupservice: GroupService,
                 private voService: VoService,
                 private facilityService: FacilityService) {
+        super()
 
         this.voService.isVo().subscribe(result => {
 
@@ -87,6 +151,9 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Gets all available compute centers and saves them in the computeCenters attribute.
+     */
     getComputeCenters() {
         this.facilityService.getComputeCenters().subscribe(result => {
             for (let cc of result) {
@@ -97,14 +164,26 @@ export class ApplicationsComponent {
         })
     }
 
+    /**
+     * Gets all affialiations from a user.
+     * @param {number} user
+     */
     getUserAffilaitions(user: number) {
         this.userservice.getuserAffiliations(user).subscribe()
     }
 
+    /**
+     * Sets the selected application.
+     * @param application
+     */
     setSelectedApplication(application: any) {
         this.selectedApplication = application;
     }
 
+    /**
+     * Submits an renewal request for an application.
+     * @param {NgForm} f
+     */
     onSubmit(f: NgForm) {
         let values = {};
         values['project_application_renewal_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
@@ -118,6 +197,10 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Sets the default values in the request renewal form.
+     * @param {NgForm} f
+     */
     ngFormSetDefault(f: NgForm) {
         f.reset({
             project_application_renewal_vms_requested: this.selectedApplication.VMsRequested,
@@ -133,6 +216,10 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Gets all Application of the user viewing the application overview.
+     * Saves them in the userApplication array.
+     */
     getUserApplications() {
         this.applicataionsservice
             .getUserApplications().subscribe(result => {
@@ -198,6 +285,9 @@ export class ApplicationsComponent {
         });
     }
 
+    /**
+     * Get all possible application stati.
+     */
     getApplicationStatus() {
         this.applicationstatusservice.getAllApplicationStatus().toPromise()
             .then(result => {
@@ -210,6 +300,9 @@ export class ApplicationsComponent {
             });
     }
 
+    /**
+     * Get all available special hardware.
+     */
     getSpecialHardware() {
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => {
@@ -222,10 +315,9 @@ export class ApplicationsComponent {
             });
     }
 
-    getAllApplicationsExtensions() {
-
-    }
-
+    /**
+     * Get all Applications if user is admin.
+     */
     getAllApplications() {
         //todo check if user is VO Admin
 
@@ -266,11 +358,12 @@ export class ApplicationsComponent {
                     a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
                     a.UserEmail = aj["project_application_user"]["email"];
                     a.Status = aj["project_application_status"];
-                    if (a.Status == this.APPROVED_STATUS) {
+                    if (a.Status == this.application_statuses.APPROVED) {
                         a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
 
                     }
+
                     a.Comment = aj["project_application_comment"];
                     a.PerunId = aj['project_application_perun_id'];
                     a.OpenStackProject = aj["project_application_openstack_project"];
@@ -302,17 +395,17 @@ export class ApplicationsComponent {
                         a.ApplicationExtension = r;
 
                     }
+
                     this.all_applications.push(a);
 
                 }
 
                 this.isLoaded_AllApplication = true;
                 for (let app of this.all_applications) {
-                    if (app.Status == 4) {
+                    if (app.Status == this.application_statuses.WAIT_FOR_CONFIRMATION || app.Status == this.application_statuses.MODIFICATION_REQUESTED) {
                         this.getFacilityProject(app);
                     }
                 }
-
 
             });
         }
@@ -324,7 +417,10 @@ export class ApplicationsComponent {
 
     }
 
-
+    /**
+     * Get the facility of an application.
+     * @param {Application} app
+     */
     public getFacilityProject(app: Application) {
 
         if (!app.ComputeCenter && app.Status.toString() != 'submitted') {
@@ -343,6 +439,10 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Updates an application with the actual values.
+     * @param {Application} application
+     */
     public getApplication(application: Application) {
         let index = this.all_applications.indexOf(application);
 
@@ -376,7 +476,7 @@ export class ApplicationsComponent {
             a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
             a.UserEmail = aj["project_application_user"]["email"];
             a.Status = aj["project_application_status"];
-            if (a.Status == this.APPROVED_STATUS) {
+            if (a.Status == this.application_statuses.APPROVED) {
                 a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
 
@@ -411,11 +511,17 @@ export class ApplicationsComponent {
                 }
                 a.ApplicationExtension = r;
             }
+            this.getFacilityProject(a);
+
             this.all_applications[index] = a;
 
         })
     }
 
+    /**
+     * Gets a user application with the actual values.
+     * @param {Application} application
+     */
     public getUserApplication(application: Application) {
         let index = this.user_applications.indexOf(application);
 
@@ -474,6 +580,10 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Request an extension from an application.
+     * @param data
+     */
     public requestExtension(data) {
         this.applicataionsservice.requestRenewal(data).subscribe(result => {
             if (result['Error']) {
@@ -496,6 +606,11 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Get details of member like name and email by elixir.
+     * @param {string} elixir_id
+     * @param {string} collapse_id
+     */
     public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string) {
         if (!this.getCollapseStatus(collapse_id)) {
             if (!(elixir_id in this.application_user)) {
@@ -513,6 +628,10 @@ export class ApplicationsComponent {
 
     }
 
+    /**
+     * Approve an extension request.
+     * @param {number} application_id
+     */
     public approveExtension(application_id: number) {
         this.applicataionsservice.approveRenewal(application_id).subscribe(result => {
             if (result['Error']) {
@@ -533,7 +652,10 @@ export class ApplicationsComponent {
         })
     }
 
-
+    /**
+     * Decline an extension request.
+     * @param {number} application_id
+     */
     public declineExtension(application_id: number) {
         this.applicataionsservice.declineRenewal(application_id).subscribe(result => {
             if (result != null) {
@@ -555,20 +677,11 @@ export class ApplicationsComponent {
     }
 
 
-    public getCollapseStatus(id: string) {
-        if (id in this.collapse_status) {
-            return this.collapse_status[id];
-        } else {
-            this.collapse_status[id] = true;
-            return true;
-        }
-    }
-
-    public switchCollapseStatus(id: string) {
-        this.collapse_status[id] = !this.getCollapseStatus(id);
-    }
-
-
+    /**
+     * Get status name  by status id.
+     * @param {number} id
+     * @returns {string}
+     */
     public getStatusById(id: number): string {
         let s = "Unknown";
         for (let status of this.application_status) {
@@ -579,13 +692,12 @@ export class ApplicationsComponent {
         return s;
     }
 
-    public lifeTimeReached(lifetime: number, running: number, status_changed_string: string): string {
-        let status_changed = new Date(status_changed_string);
-        let LifetimeDays = Math.ceil(Math.ceil(Math.abs(moment(status_changed).add(lifetime, 'months').toDate().getTime() - status_changed.getTime())) / (1000 * 3600 * 24));
 
-        return (LifetimeDays - running) < 0 ? "red" : "black";
-    }
-
+    /**
+     * Get id by status name.
+     * @param {string} name
+     * @returns {number}
+     */
     public getIdByStatus(name: string): number {
         let s = -1;
         for (let status of this.application_status) {
@@ -596,89 +708,220 @@ export class ApplicationsComponent {
         return s;
     }
 
-    public resetNotificationModal() {
-        this.notificationModalTitle = "Notification";
-        this.notificationModalMessage = "Please wait...";
-        this.notificationModalType = "info";
-        this.notificationModalIsClosable = false;
+
+    /**
+     * Remove Application from facility , where it is for confirmation
+     * @param {Application} application the application
+     */
+    removeApplicationFromFacilityConfirmation(application: Application) {
+        this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe(res => {
+            this.getApplication(application)
+        })
+
     }
 
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    }
 
-
-    public createGroup(name, description, manager_elixir_id, application_id, compute_center) {
-
+    public createOpenStackProjectGroup(name, description, manager_elixir_id, application_id, compute_center) {
         //get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
 
-        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved"), compute_center).subscribe(result => {
-            if (result['Error']) {
-                this.updateNotificaitonModal("Failed", result['Error'], true, "danger");
-
-            }
-            else {
-                this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise().then(member_raw => {
-                        let member = member_raw;
-                        manager_member_id = member["id"];
-                        manager_member_user_id = member["userId"];
-                        // create new group
-
-                        return this.groupservice.createGroup(name, description).toPromise();
-                    }
-                ).then(group_raw => {
+        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => {
+                let member = member_raw;
+                manager_member_id = member["id"];
+                manager_member_user_id = member["userId"];
+                this.groupservice.createGroup(name, description).subscribe(group_raw => {
                     let group = group_raw;
                     new_group_id = group["id"];
+                    this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
+                    this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
+                        this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
+                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(res => {
+                                if (compute_center != 'undefined') {
 
-                    //add the application user to the group
-                    return this.groupservice.addMember(new_group_id, manager_member_id, compute_center).toPromise();
+                                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => {
+                                            if (result['Error']) {
+                                                this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
-                }).then(null_result => {
-                    return this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).toPromise();
+                                            }
+                                            else {
+                                                this.updateNotificationModal("Success", "The new project was created", true, "success");
+                                            }
+                                            for (let app of this.user_applications) {
+                                                if (app.Id == application_id) {
+                                                    this.getUserApplication(app);
+                                                    break;
 
-                }).then(null_result => {
-                    //setting approved status for Perun Group
-                    console.log(new_group_id)
+                                                }
 
 
-                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
-                        if (compute_center != 'undefined') {
-                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
-                        }
-                    });
-                    //update modal
-                    this.updateNotificaitonModal("Success", "The new project was created", true, "success");
-                    //update applications
-                    for (let app of this.user_applications) {
-                        if (app.Id == application_id) {
-                            this.getUserApplication(app);
-                            break;
+                                            }
+                                            for (let app of this.all_applications) {
+                                                if (app.Id == application_id) {
+                                                    this.getApplication(app);
+                                                    break;
 
-                        }
+                                                }
+                                            }
+                                        }
+                                    )
+                                } else {
+                                    this.groupservice.setPerunGroupStatus(new_group_id, this.application_statuses.APPROVED).subscribe(res => {
+                                        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => {
+                                            if (result['Error']) {
+                                                this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
-                    }
-                    for (let app of this.all_applications) {
-                        if (app.Id == application_id) {
-                            this.getApplication(app);
-                            break;
+                                            }
+                                            else {
+                                                this.updateNotificationModal("Success", "The new project was created", true, "success");
+                                            }
+                                            for (let app of this.user_applications) {
+                                                if (app.Id == application_id) {
+                                                    this.getUserApplication(app);
+                                                    break;
 
-                        }
-                    }
-                }).catch(error => {
-                    console.log(error)
-                    this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
+                                                }
+
+
+                                            }
+                                            for (let app of this.all_applications) {
+                                                if (app.Id == application_id) {
+                                                    this.getApplication(app);
+                                                    break;
+
+                                                }
+                                            }
+                                        })
+
+                                    })
+
+                                }
+                            });
+                        })
+
+                    })
+
                 })
             }
-        });
+
+            , error => {
+                console.log(error);
+                this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
+            })
 
     }
 
+    /**
+     * Create a new Group in perun with the specific attributes.
+     * @param name
+     * @param description
+     * @param manager_elixir_id
+     * @param application_id
+     * @param compute_center
+     */
+    public createSimpleVmProjectGroup(name, description, manager_elixir_id, application_id, compute_center) {
+
+        //get memeber id in order to add the user later as the new member and manager of the group
+        let manager_member_id: number;
+        let manager_member_user_id: number;
+        let new_group_id: number;
+        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => {
+            if (result['Error']) {
+                this.updateNotificationModal("Failed", result['Error'], true, "danger");
+                this
+
+            }
+            else {
+
+
+                this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => {
+                    let member = member_raw;
+                    manager_member_id = member["id"];
+                    manager_member_user_id = member["userId"];
+                    this.groupservice.createGroup(name, description).subscribe(group_raw => {
+                        let group = group_raw;
+                        new_group_id = group["id"];
+                        this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
+                        this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
+                            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
+                                    if (result['Error']) {
+                                        this.updateNotificationModal("Failed", result['Error'], true, "danger");
+
+                                    }
+                                    else {
+                                        this.updateNotificationModal("Success", "The new project was created", true, "success");
+                                    }
+
+                                    for (let app of this.user_applications) {
+                                        if (app.Id == application_id) {
+                                            this.getUserApplication(app);
+                                            break;
+
+                                        }
+
+
+                                    }
+                                    for (let app of this.all_applications) {
+                                        if (app.Id == application_id) {
+                                            this.getApplication(app);
+                                            break;
+
+                                        }
+                                    }
+
+                                }
+                            )
+
+
+                        });
+
+                    });
+
+                })
+            }
+
+        }, error => {
+            console.log(error);
+            this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
+        })
+
+
+    }
+
+    assignGroupToFacility(group_id, application_id, compute_center) {
+        if (compute_center != 'undefined') {
+            this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(res => {
+                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(res => {
+                        for (let app of this.all_applications) {
+                            if (app.Id == application_id) {
+                                this.getApplication(app);
+
+                                break;
+
+                            }
+                        }
+                        this.updateNotificationModal("Success", "The  project was assigned to the facility.", true, "success");
+
+                    })
+
+
+                },
+                error => {
+                    console.log(error);
+                    this.updateNotificationModal("Failed", "Project could not be created!", true, "danger");
+                });
+        }
+        else {
+            this.updateNotificationModal("Failed", "You need to select an compute center!", true, "danger");
+        }
+
+    }
+
+    /**
+     * Decline an application.
+     * @param application_id
+     */
     public declineApplication(application_id) {
         this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined"), '').toPromise()
             .then(result => {
@@ -686,17 +929,21 @@ export class ApplicationsComponent {
                 this.user_applications = [];
                 this.getUserApplications();
                 this.getAllApplications();
-                this.updateNotificaitonModal("Success", "The Application was declined", true, "success");
+                this.updateNotificationModal("Success", "The Application was declined", true, "success");
             })
             .catch(error => {
-                this.updateNotificaitonModal("Failed", "Application could be declined!", true, "danger");
+                this.updateNotificationModal("Failed", "Application could be declined!", true, "danger");
             });
     }
 
+    /**
+     * Delete an application.
+     * @param application_id
+     */
     public deleteApplication(application_id) {
         this.applicataionsservice.deleteApplication(application_id).toPromise()
             .then(result => {
-                this.updateNotificaitonModal('Success', 'The application has been successfully removed', true, 'success');
+                this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
             }).then(result => {
             this.user_applications = [];
             this.all_applications = [];
@@ -704,24 +951,35 @@ export class ApplicationsComponent {
             this.getAllApplications();
         })
             .catch(error => {
-                this.updateNotificaitonModal("Failed", "Application could not be removed!", true, "danger");
+                this.updateNotificationModal("Failed", "Application could not be removed!", true, "danger");
             });
     }
 
+    /**
+     * Check if active applications are available.
+     * @returns {boolean}
+     */
     public activeApplicationsAvailable(): boolean {
         for (let application of this.all_applications) {
-            if (application.Status == 1 || application.Status == 4) {
+            if (application.Status == 1 || application.Status == 4 || application.Status == 7 || application.Status == 6) {
                 return true;
             }
         }
     }
 
 
+    /**
+     * Set the id of the application which should be deleted.
+     * @param applicationId
+     */
     public setDeleteId(applicationId) {
         this.deleteId = applicationId;
     }
 
 
+    /**
+     * Coming soon.
+     */
     public comingSoon() {
         alert("This functinality will be implemented soon!")
     }

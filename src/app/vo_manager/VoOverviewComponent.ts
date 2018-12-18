@@ -5,6 +5,9 @@ import {ProjectMember} from "../projectmanagement/project_member.model";
 import {GroupService} from "../api-connector/group.service";
 import * as moment from 'moment';
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
+import {Application} from "../applications/application.model";
+import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
+import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
 
 @Component({
     selector: 'voOverview',
@@ -14,7 +17,7 @@ import {ComputecenterComponent} from "../projectmanagement/computecenter.compone
 
 })
 
-export class VoOverviewComponent {
+export class VoOverviewComponent extends FilterBaseClass{
 
     public emailSubject: string;
     public emailReply: string = '';
@@ -31,6 +34,7 @@ export class VoOverviewComponent {
 
     member_id: number;
     projects: Project[] = new Array();
+    projects_filtered: Project[] = new Array();
 
 
     // modal variables for User list
@@ -40,11 +44,16 @@ export class VoOverviewComponent {
     public usersModalProjectName: string;
 
 
+
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
 
 
+
+
+
     constructor(private voserice: VoService, private groupservice: GroupService) {
+        super();
         this.getVoProjects();
         this.voserice.getNewsletterSubscriptionCounter().subscribe(result => {
             this.newsletterSubscriptionCounter = result['subscribed'];
@@ -53,6 +62,23 @@ export class VoOverviewComponent {
 
     }
 
+    applyFilter() {
+
+
+        this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
+
+    }
+
+    checkFilter(project: Project) {
+        if (this.isFilterProjectStatus(project.Status,project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
+            return true
+        }
+        else {
+            return false
+        }
+
+
+    }
 
     sendEmail(subject: string, message: string, reply?: string) {
         switch (this.emailType) {
@@ -191,10 +217,14 @@ export class VoOverviewComponent {
 
                     newProject.LifetimeDays = lifetimeDays;
                     newProject.DateEnd = expirationDate;
+                    newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
+
                 }
 
                 this.projects.push(newProject);
             }
+            this.applyFilter();
+
             this.isLoaded = true;
 
 
@@ -208,11 +238,7 @@ export class VoOverviewComponent {
     }
 
     setProjectStatus(project, status: number) {
-        /* 1:submitted
-        # 2: approved
-        # 3: declined
-        # 4: suspended */
-        this.voserice.setProjectStatus(project.Id, status).subscribe(res =>{
+        this.voserice.setProjectStatus(project.Id, status).subscribe(res => {
             this.getProjectStatus(project)
 
         })
@@ -224,13 +250,7 @@ export class VoOverviewComponent {
         })
     }
 
-    lifeTimeReached(lifetimeDays: number, running: number): string {
 
-        if (lifetimeDays == -1) {
-            return "blue";
-        }
-        return (lifetimeDays - running) < 0 ? "red" : "black";
-    }
 
     getMembesOfTheProject(projectid: number, projectname: string) {
         this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => {

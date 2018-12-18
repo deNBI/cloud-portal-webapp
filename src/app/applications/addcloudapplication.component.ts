@@ -10,6 +10,7 @@ import {FlavorService} from '../api-connector/flavor.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {forEach} from '@angular/router/src/utils/collection';
+import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
 
 @Component({
     templateUrl: 'addcloudapplication.component.html',
@@ -17,27 +18,58 @@ import {forEach} from '@angular/router/src/utils/collection';
     styleUrls: ['addcloudapplication.component.css']
 })
 
-export class AddcloudapplicationComponent {
+export class AddcloudapplicationComponent extends AbstractBaseClasse{
 
+    /**
+     * If shortname is valid.
+     * @type {boolean}
+     */
     public wronginput: boolean = false;
-    public isCollapsed: boolean = true;
 
 
-    //notification Modal variables
-    public notificationModalTitle: string = 'Notification';
-    public notificationModalMessage: string = 'Please wait...';
-    public notificationModalType: string = 'info';
-    public notificationModalIsClosable: boolean = false;
-    public notificationModalStay: boolean = true;
+    /**
+     * Contains errors recieved when submitting an application.
+     */
     public error: string[];
+    /**
+     * Default vms requested in form.
+     * @type {number}
+     */
     public project_application_vms_requested = 5;
+    /**
+     * List of flavors.
+     */
     public flavorList: Flavor[];
+    /**
+     * List of flavor types.
+     */
     public typeList: FlavorType[];
+    /**
+     * List of all collapse booleans.
+     */
     public collapseList: boolean[];
+    /**
+     * Total number of cores.
+     * @type {number}
+     */
     public totalNumberOfCores=0;
+    /**
+     * Total number of ram.
+     * @type {number}
+     */
     public totalRAM=0;
+    /**
+     * Values to confirm.
+     */
     public valuesToConfirm: string[];
+    /**
+     *
+     */
     public constantStrings: Object;
+
+    /**
+     * Name of the project.
+     */
     public projectName: string;
 
 
@@ -47,16 +79,27 @@ export class AddcloudapplicationComponent {
     public acknowledgeModalTitle: string = 'Acknowledge';
     public acknowledgeModalType: string = 'info';
 
-
-    showjustvm: boolean;
+    /**
+     * If project is openstack project (everytime true)
+     * @type {boolean}
+     */
     project_application_openstack_project: boolean = true;
-
-
-    csrf: Object = Cookie.get('csrftoken');
+    /**
+     * List of special hardwares.
+     * @type {any[]}
+     */
     special_hardware: SpecialHardware[] = new Array();
 
+    /**
+     * Constructor.
+     * Initialize special hardware and gets list of flavor and flavortypes.
+     * @param {SpecialHardwareService} specialhardwareservice
+     * @param {ApplicationsService} applicationsservice
+     * @param {FlavorService} flavorservice
+     */
     constructor(private specialhardwareservice: SpecialHardwareService,
                 private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) {
+        super();
         this.getSpecialHardware();
         this.getListOfFlavors();
         this.getListOfTypes();
@@ -181,7 +224,9 @@ export class AddcloudapplicationComponent {
 
     }
 
-
+    /**
+     * Get all Special Hardware.
+     */
     getSpecialHardware() {
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => {
@@ -194,27 +239,18 @@ export class AddcloudapplicationComponent {
             });
     }
 
-    check_not_zero(values: {}) {
-        if ('project_application_openstack_project' in values) {
 
 
-            if ('project_application_volume_limit' in values && values['project_application_volume_limit'] > 0) {
-                return true;
-            }
-
-            return false;
-        }
-        else {
-
-            return true;
-        }
-    }
-
+    /**
+     * Submits a new cloud application.
+     * Therefore checks if the different values are valid.
+     * @param {NgForm} f
+     */
     onSubmit(f: NgForm) {
         this.error = null;
         if (this.wronginput == true) {
 
-            this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
         }
         else {
@@ -227,16 +263,9 @@ export class AddcloudapplicationComponent {
                     values[v] = f.controls[v].value;
                 }
             }
-            if (this.check_not_zero(values) == false) {
-                this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
-                this.notificationModalStay = true;
-                return;
-            }
-
-
             this.applicationsservice.addNewApplication(values).toPromise()
                 .then(result => {
-                    this.updateNotificaitonModal('Success', 'The application was submitted', true, 'success');
+                    this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 }).catch(error => {
                 var error_json = error
@@ -247,29 +276,17 @@ export class AddcloudapplicationComponent {
                 }
 
 
-                this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+                this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
             })
         }
     }
 
 
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    }
-
-    public resetNotificationModal() {
-
-        this.notificationModalTitle = 'Notification';
-        this.notificationModalMessage = 'Please wait...';
-        this.notificationModalType = 'info';
-        this.notificationModalIsClosable = false;
-        this.notificationModalStay = true;
-    }
-
+    /**
+     * Check if shortname is valid.
+     * @param {string} shortname
+     */
     public checkShortname(shortname: string) {
         if (/^[a-zA-Z0-9\s]*$/.test(shortname) == false) {
             this.wronginput = true;

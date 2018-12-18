@@ -14,12 +14,14 @@ import {map} from 'rxjs/operators';
 
 import * as moment from 'moment';
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
+import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
+import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
 
 @Component({
     templateUrl: 'facilityprojectsoverview.component.html',
     providers: [FacilityService, UserService, GroupService, PerunSettings, ApiSettings]
 })
-export class FacilityProjectsOverviewComponent {
+export class FacilityProjectsOverviewComponent extends  FilterBaseClass{
 
     debug_module = false;
 
@@ -29,6 +31,15 @@ export class FacilityProjectsOverviewComponent {
     isLoaded: boolean = false;
     projects: Project[] = new Array();
     details_loaded = false;
+    /**
+     * Approved group status.
+     * @type {number}
+     */
+    STATUS_APPROVED = 2;
+
+    private EXPIRED = 0;
+    private EXPIRES_SOON = 1;
+    private VALID_LIFETIME = 2;
 
 
     // modal variables for User list
@@ -45,18 +56,40 @@ export class FacilityProjectsOverviewComponent {
     public emailReply: string = '';
 
     public managerFacilities: [string, number][];
-    public selectedFacility: [string, number]
+    public selectedFacility: [string, number];
+    projects_filtered: Project[] = new Array();
+
+
 
 
     constructor(private groupservice: GroupService,
                 private  facilityservice: FacilityService) {
+        super()
 
         this.facilityservice.getManagerFacilities().subscribe(result => {
-            this.managerFacilities = result
-            this.selectedFacility = this.managerFacilities[0]
+            this.managerFacilities = result;
+            this.selectedFacility = this.managerFacilities[0];
             this.getFacilityProjects(this.managerFacilities[0]['FacilityId'])
 
         })
+    }
+
+    applyFilter() {
+
+
+        this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
+
+    }
+
+    checkFilter(project: Project) {
+        if (this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
+            return true
+        }
+        else {
+            return false
+        }
+
+
     }
 
 
@@ -94,7 +127,7 @@ export class FacilityProjectsOverviewComponent {
         this.projects = [];
 
 
-        this.facilityservice.getFacilityAllowedGroupsWithDetails(facility).subscribe(result => {
+        this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe(result => {
             let facility_projects = result;
             let is_pi = false;
             let is_admin = false;
@@ -125,33 +158,31 @@ export class FacilityProjectsOverviewComponent {
                     is_pi,
                     is_admin,
                     compute_center);
+                newProject.Status = group['status'];
+
                 if (lifetime != -1) {
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
                     let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
 
                     newProject.LifetimeDays = lifetimeDays;
                     newProject.DateEnd = expirationDate;
+                    newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
+
 
                 }
-                newProject.RealName=group['name'];
+                newProject.RealName = group['name'];
                 newProject.Lifetime = lifetime;
+
 
                 this.projects.push(newProject);
             }
+            this.applyFilter();
             this.isLoaded = true;
 
 
         })
 
 
-    }
-
-    lifeTimeReached(lifetime: number, running: number): string {
-
-        if (lifetime == -1) {
-            return "blue";
-        }
-        return (lifetime - running) < 0 ? "red" : "black";
     }
 
     sendMailToFacility(facility: number, subject: string, message: string, reply?: string) {

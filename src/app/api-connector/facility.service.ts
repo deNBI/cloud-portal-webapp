@@ -16,7 +16,11 @@ export class FacilityService {
     }
 
 
-     getComputeCenters(): Observable<any> {
+    /**
+     * Get all available computecenters.
+     * @returns {Observable<any>}
+     */
+    getComputeCenters(): Observable<any> {
 
 
         return this.http.get(this.settings.getApiBaseURL() + 'computecenters/', {
@@ -25,6 +29,10 @@ export class FacilityService {
         }).pipe(catchError((error: any) => throwError(error.error)));
     }
 
+    /**
+     * Get all facility, where the current user is manager.
+     * @returns {Observable<any>}
+     */
     getManagerFacilities(): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'facilityManagers/current/facilities/', {
@@ -34,16 +42,85 @@ export class FacilityService {
     }
 
 
+    /**
+     * Get allowed groups from a facility with a specific status.
+     * @param {number} facility
+     * @param {number} status
+     * @returns {Observable<any>}
+     */
+    getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number, status: number): Observable<any> {
 
-    getFacilityAllowedGroupsWithDetails(facility): Observable<any> {
-
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/'+facility + '/projects/' , {
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/', {
             withCredentials: true,
+            params: {status: status.toString()}
+
         }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
 
+
+    /**
+     * Gets all facility applications which are waiting for conirmation.
+     * @param {number} facility
+     * @returns {Observable<any>}
+     */
+    getFacilityApplicationsWaitingForConfirmation(facility: number): Observable<any> {
+
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/', {
+            withCredentials: true,
+
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
+
+    /**
+     * Approves an facility application.
+     * @param {number} facility
+     * @param {number} application_id
+     * @returns {Observable<any>}
+     */
+    approveFacilityApplication(facility: number, application_id: number): Observable<any> {
+        let params = new HttpParams().set('action', 'approve');
+
+
+        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/', params, {
+            withCredentials: true,
+            headers: header,
+            observe: 'response'
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
+
+    /**
+     * Declines an application for the facility
+     * @param {number} facility
+     * @param {number} application_id
+     * @returns {Observable<any>}
+     */
+    declineFacilityApplication(facility: number, application_id: number): Observable<any> {
+        let params = new HttpParams().set('action', 'decline');
+
+
+        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/', params, {
+            withCredentials: true,
+            headers: header,
+            observe: 'response'
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
+
+    /**
+     * Sends an email to all members of the facility.
+     * @param facility
+     * @param subject
+     * @param message
+     * @param reply
+     * @returns {Observable<any>}
+     */
     sendMailToFacility(facility, subject, message, reply?): Observable<any> {
         let params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
 

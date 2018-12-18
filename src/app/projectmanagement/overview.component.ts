@@ -13,16 +13,17 @@ import {VoService} from "../api-connector/vo.service";
 import {catchError} from 'rxjs/operators';
 import {ProjectMemberApplication} from "./project_member_application";
 import {ComputecenterComponent} from "./computecenter.component";
+import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
 
 
 @Component({
     templateUrl: 'overview.component.html',
     providers: [VoService, UserService, GroupService, PerunSettings, ApiSettings]
 })
-export class OverviewComponent {
+export class OverviewComponent extends AbstractBaseClasse{
 
     debug_module = false;
-
+    @Input() invitation_group_post:string=environment.invitation_group_post;
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
     @Input() invitation_group_pre: string = environment.invitation_group_pre;
     @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
@@ -59,13 +60,7 @@ export class OverviewComponent {
     public UserModalFacility: [string, number];
 
 
-    //notification Modal variables
-    public notificationModal;
-    public notificationModalTitle: string = "Notification";
-    public notificationModalMessage: string = "Please wait...";
-    public notificationModalType: string = "info";
-    public notificationModalInfoMessage: string = '';
-    public notificationModalIsClosable: boolean = false;
+
 
     public passwordModalTitle: string = "Changing Password";
     public passwordModalType: string = 'info';
@@ -77,6 +72,7 @@ export class OverviewComponent {
                 private groupservice: GroupService,
                 private userservice: UserService,
                 private voservice: VoService) {
+        super();
         this.getUserProjects();
 
     }
@@ -115,9 +111,7 @@ export class OverviewComponent {
         if (!project.Lifetime) {
             this.groupservice.getLifetime(project.Id).subscribe(res => {
                 let lifetime = res['lifetime'];
-                console.log(lifetime)
                 let dateCreated = project.DateCreated;
-                console.log(dateCreated)
 
                 let expirationDate = undefined;
                 dateCreated = moment(dateCreated, "DD.MM.YYYY").toDate();
@@ -191,15 +185,6 @@ export class OverviewComponent {
     }
 
 
-    lifeTimeReached(lifetime: number, running: number): string {
-        if (!lifetime) {
-            return "red";
-        }
-        else if (lifetime == -1) {
-            return "blue";
-        }
-        return (lifetime - running) < 0 ? "red" : "black";
-    }
 
 
     resetAddUserModal() {
@@ -378,35 +363,7 @@ export class OverviewComponent {
 
     }
 
-    public resetNotificaitonModal() {
-        this.notificationModalTitle = "Notification";
-        this.notificationModalMessage = "Please wait...";
-        this.notificationModalIsClosable = false;
-        this.notificationModalType = "info";
-    }
 
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) {
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    }
-
-    public makeNotificationModalClosable(closable: boolean) {
-        this.notificationModalIsClosable = closable;
-    }
-
-    public changeNotificationModalTitle(title: string) {
-        this.notificationModalTitle = title;
-    }
-
-    public changeNotificationModalMessage(message: string) {
-        this.notificationModalMessage = message;
-    }
-
-    public changeNotificationModalType(type: string) {
-        this.notificationModalType = type;
-    }
 
     public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility?: [string, number]) {
         this.addUserModalProjectID = projectid;
@@ -433,22 +390,22 @@ export class OverviewComponent {
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => {
                 if (result.status == 200) {
-                    this.updateNotificaitonModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
+                    this.updateNotificationModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
 
                 } else {
 
 
-                    this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+                    this.updateNotificationModal("Failed", "Member could not be added!", true, "danger");
                 }
             },
             error => {
 
                 if (error['name'] == 'AlreadyMemberException') {
-                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
+                    this.updateNotificationModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
                 }
 
                 else {
-                    this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+                    this.updateNotificationModal("Failed", "Member could not be added!", true, "danger");
                 }
             });
 
@@ -465,17 +422,17 @@ export class OverviewComponent {
                 result => {
 
                     if (result.status == 200) {
-                        this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+                        this.updateNotificationModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
 
                     } else {
-                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
                     }
                 }, error => {
                     if (error['name'] == 'AlreadyAdminException') {
-                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                        this.updateNotificationModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
                     }
                     else {
-                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
                     }
                 })
         }, error => {
@@ -483,17 +440,17 @@ export class OverviewComponent {
                 result => {
 
                     if (result.status == 200) {
-                        this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+                        this.updateNotificationModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
 
                     } else {
-                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
                     }
                 }, error => {
                     if (error['name'] == 'AlreadyAdminException') {
-                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                        this.updateNotificationModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
                     }
                     else {
-                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
                     }
                 })
         })
@@ -509,13 +466,13 @@ export class OverviewComponent {
             .then(result => {
 
                 if (result.status == 200) {
-                    this.updateNotificaitonModal("Success", username + " promoted to Admin", true, "success");
+                    this.updateNotificationModal("Success", username + " promoted to Admin", true, "success");
 
                 } else {
-                    this.updateNotificaitonModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+                    this.updateNotificationModal("Failed", username + " could not be promoted to Admin!", true, "danger");
                 }
             }).catch(error => {
-            this.updateNotificaitonModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+            this.updateNotificationModal("Failed", username + " could not be promoted to Admin!", true, "danger");
         });
     }
 
@@ -529,13 +486,13 @@ export class OverviewComponent {
             .then(result => {
 
                 if (result.status == 200) {
-                    this.updateNotificaitonModal("Success", name + " was removed as Admin", true, "success");
+                    this.updateNotificationModal("Success", name + " was removed as Admin", true, "success");
 
                 } else {
-                    this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
+                    this.updateNotificationModal("Failed", name + " could not be removed as Admin!", true, "danger");
                 }
             }).catch(error => {
-            this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
+            this.updateNotificationModal("Failed", name + " could not be removed as Admin!", true, "danger");
         });
     }
 
@@ -547,14 +504,14 @@ export class OverviewComponent {
         this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(result => {
 
                 if (result.status == 200) {
-                    this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
+                    this.updateNotificationModal("Success", "Member " + name + " removed from the group", true, "success");
 
                 } else {
-                    this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
+                    this.updateNotificationModal("Failed", "Member" + name + " could not be removed !", true, "danger");
                 }
             },
             error => {
-                this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
+                this.updateNotificationModal("Failed", "Member" + name + " could not be removed !", true, "danger");
             });
     }
 

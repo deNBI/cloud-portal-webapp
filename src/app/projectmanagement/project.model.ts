@@ -2,158 +2,170 @@ import {ProjectMemberApplication} from "./project_member_application";
 import {ComputecenterComponent} from "./computecenter.component";
 
 export class Project {
-  get UserIsAdmin(): boolean {
-    return this._UserIsAdmin;
-  }
+    get UserIsAdmin(): boolean {
+        return this._UserIsAdmin;
+    }
 
-  set UserIsAdmin(value: boolean) {
-    this._UserIsAdmin = value;
-  }
+    set UserIsAdmin(value: boolean) {
+        this._UserIsAdmin = value;
+    }
 
-  private _Id: number;
-  private _Name: string;
-  private _Description: string;
-  private _DateCreated: string;
-  private _DateEnd: string;
-  private _DaysRunning: number;
-  private _LifetimeDays: number;
-  private _Lifetime: number;
-  private _UserIsAdmin: boolean;
-  private _UserIsPi: boolean;
-  private _Status:number;
-  private _ComputeCenter:ComputecenterComponent;
-  private _PerunId:number;
-  private _ProjectMemberApplications:ProjectMemberApplication[];
-  private _RealName:string;
+    private _Id: number;
+    private _Name: string;
+    private _Description: string;
+    private _DateCreated: string;
+    private _DateEnd: string;
+    private _DaysRunning: number;
+    private _LifetimeDays: number;
+    private _Lifetime: number;
+    private _UserIsAdmin: boolean;
+    private _UserIsPi: boolean;
+    private _Status: number;
+    private _ComputeCenter: ComputecenterComponent;
+    private _PerunId: number;
+    private _ProjectMemberApplications: ProjectMemberApplication[];
+    private _RealName: string;
     private _OpenStackProject: boolean;
+    private _LifetimeReached: number;
 
 
+    constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) {
+        this._Id = Id;
+        this._Name = Name;
+        this._Description = Description;
+        this._DateCreated = DateCreated;
+        this._DaysRunning = DaysRunning;
+        this._UserIsAdmin = UserIsAdmin;
+        this._UserIsPi = UserIsPi;
+        this._ComputeCenter = ComputeCenter;
 
-  constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: ComputecenterComponent) {
-    this._Id = Id;
-    this._Name = Name;
-    this._Description = Description;
-    this._DateCreated = DateCreated;
-    this._DaysRunning = DaysRunning;
-    this._UserIsAdmin = UserIsAdmin;
-    this._UserIsPi = UserIsPi;
-    this._ComputeCenter= ComputeCenter;
-
-  }
+    }
 
 //todo exdend with additional information
 
-  get RealName():string{
+    get LifetimeReached(): number {
+        return this._LifetimeReached
+    }
 
-    return this._RealName
-  }
+    set LifetimeReached(value: number) {
+        this._LifetimeReached = value;
+    }
+
+    get RealName(): string {
+
+        return this._RealName
+    }
 
 
-  set RealName(value:string){
-    this._RealName=value;
-  }
+    set RealName(value: string) {
+        this._RealName = value;
+    }
 
-  get Status():number{
-    return this._Status;
-  }
+    get Status(): number {
+        return this._Status;
+    }
 
-  set Status(value:number){
-    this._Status=value;
+    set Status(value: number) {
+        this._Status = value;
 
-  }
-  get ProjectMemberApplications():ProjectMemberApplication[]{
-    return this._ProjectMemberApplications;
-  }
+    }
 
-  set ProjectMemberApplications(value:ProjectMemberApplication[]){
-    this._ProjectMemberApplications=value;
-  }
+    get ProjectMemberApplications(): ProjectMemberApplication[] {
+        return this._ProjectMemberApplications;
+    }
 
-  get LifetimeDays():number{
-    return this._LifetimeDays
-  }
-   set LifetimeDays(value:number){
-    this._LifetimeDays=value;
-  }
+    set ProjectMemberApplications(value: ProjectMemberApplication[]) {
+        this._ProjectMemberApplications = value;
+    }
+
+    get LifetimeDays(): number {
+        return this._LifetimeDays
+    }
+
+    set LifetimeDays(value: number) {
+        this._LifetimeDays = value;
+    }
+
     get OpenStackProject(): boolean {
-    return this._OpenStackProject
-  }
+        return this._OpenStackProject
+    }
 
-  set OpenStackProject(value: boolean) {
-    this._OpenStackProject = value;
-  }
+    set OpenStackProject(value: boolean) {
+        this._OpenStackProject = value;
+    }
 
-  get Lifetime():number{
-    return this._Lifetime;
-  }
-  set Lifetime(value:number){
-    this._Lifetime=value;
-  }
+    get Lifetime(): number {
+        return this._Lifetime;
+    }
 
-  get ComputeCenter(): ComputecenterComponent {
-    return this._ComputeCenter
-  }
+    set Lifetime(value: number) {
+        this._Lifetime = value;
+    }
 
-  set ComputeCenter(value: ComputecenterComponent) {
-    this._ComputeCenter = value;
-  }
+    get ComputeCenter(): ComputecenterComponent {
+        return this._ComputeCenter
+    }
 
-  get Id(): number {
-    return this._Id;
-  }
+    set ComputeCenter(value: ComputecenterComponent) {
+        this._ComputeCenter = value;
+    }
 
-  set Id(value: number) {
-    this._Id = value;
-  }
+    get Id(): number {
+        return this._Id;
+    }
 
-  get Name(): string {
-    return this._Name;
-  }
+    set Id(value: number) {
+        this._Id = value;
+    }
 
-  set Name(value: string) {
-    this._Name = value;
-  }
+    get Name(): string {
+        return this._Name;
+    }
 
-  get Description(): string {
-    return this._Description;
-  }
+    set Name(value: string) {
+        this._Name = value;
+    }
 
-  set Description(value: string) {
-    this._Description = value;
-  }
+    get Description(): string {
+        return this._Description;
+    }
 
-  get DateCreated(): string {
-    return this._DateCreated;
-  }
+    set Description(value: string) {
+        this._Description = value;
+    }
 
-  set DateCreated(value: string) {
-    this._DateCreated = value;
-  }
+    get DateCreated(): string {
+        return this._DateCreated;
+    }
 
-   get DateEnd(): string {
-    return this._DateEnd;
-  }
+    set DateCreated(value: string) {
+        this._DateCreated = value;
+    }
 
-  set DateEnd(value: string) {
-    this._DateEnd = value;
-  }
+    get DateEnd(): string {
+        return this._DateEnd;
+    }
 
-  get DaysRunning(): number {
-    return this._DaysRunning;
-  }
+    set DateEnd(value: string) {
+        this._DateEnd = value;
+    }
 
-  set DaysRunning(value: number) {
-    this._DaysRunning = value;
-  }
+    get DaysRunning(): number {
+        return this._DaysRunning;
+    }
+
+    set DaysRunning(value: number) {
+        this._DaysRunning = value;
+    }
 
 
-  get UserIsPi(): boolean {
-    return this._UserIsPi;
-  }
+    get UserIsPi(): boolean {
+        return this._UserIsPi;
+    }
 
-  set UserIsPi(value: boolean) {
-    this._UserIsPi = value;
-  }
+    set UserIsPi(value: boolean) {
+        this._UserIsPi = value;
+    }
 
 
 }
