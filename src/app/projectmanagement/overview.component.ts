@@ -13,16 +13,17 @@ import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 import ***REMOVED***ProjectMemberApplication***REMOVED*** from "./project_member_application";
 import ***REMOVED***ComputecenterComponent***REMOVED*** from "./computecenter.component";
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
 
 
 @Component(***REMOVED***
     templateUrl: 'overview.component.html',
     providers: [VoService, UserService, GroupService, PerunSettings, ApiSettings]
 ***REMOVED***)
-export class OverviewComponent ***REMOVED***
+export class OverviewComponent extends AbstractBaseClasse***REMOVED***
 
     debug_module = false;
-
+    @Input() invitation_group_post:string=environment.invitation_group_post;
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
     @Input() invitation_group_pre: string = environment.invitation_group_pre;
     @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
@@ -59,13 +60,7 @@ export class OverviewComponent ***REMOVED***
     public UserModalFacility: [string, number];
 
 
-    //notification Modal variables
-    public notificationModal;
-    public notificationModalTitle: string = "Notification";
-    public notificationModalMessage: string = "Please wait...";
-    public notificationModalType: string = "info";
-    public notificationModalInfoMessage: string = '';
-    public notificationModalIsClosable: boolean = false;
+
 
     public passwordModalTitle: string = "Changing Password";
     public passwordModalType: string = 'info';
@@ -77,6 +72,7 @@ export class OverviewComponent ***REMOVED***
                 private groupservice: GroupService,
                 private userservice: UserService,
                 private voservice: VoService) ***REMOVED***
+        super();
         this.getUserProjects();
 
     ***REMOVED***
@@ -115,9 +111,7 @@ export class OverviewComponent ***REMOVED***
         if (!project.Lifetime) ***REMOVED***
             this.groupservice.getLifetime(project.Id).subscribe(res => ***REMOVED***
                 let lifetime = res['lifetime'];
-                console.log(lifetime)
                 let dateCreated = project.DateCreated;
-                console.log(dateCreated)
 
                 let expirationDate = undefined;
                 dateCreated = moment(dateCreated, "DD.MM.YYYY").toDate();
@@ -191,15 +185,6 @@ export class OverviewComponent ***REMOVED***
     ***REMOVED***
 
 
-    lifeTimeReached(lifetime: number, running: number): string ***REMOVED***
-        if (!lifetime) ***REMOVED***
-            return "red";
-        ***REMOVED***
-        else if (lifetime == -1) ***REMOVED***
-            return "blue";
-        ***REMOVED***
-        return (lifetime - running) < 0 ? "red" : "black";
-    ***REMOVED***
 
 
     resetAddUserModal() ***REMOVED***
@@ -378,35 +363,7 @@ export class OverviewComponent ***REMOVED***
 
     ***REMOVED***
 
-    public resetNotificaitonModal() ***REMOVED***
-        this.notificationModalTitle = "Notification";
-        this.notificationModalMessage = "Please wait...";
-        this.notificationModalIsClosable = false;
-        this.notificationModalType = "info";
-    ***REMOVED***
 
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    ***REMOVED***
-
-    public makeNotificationModalClosable(closable: boolean) ***REMOVED***
-        this.notificationModalIsClosable = closable;
-    ***REMOVED***
-
-    public changeNotificationModalTitle(title: string) ***REMOVED***
-        this.notificationModalTitle = title;
-    ***REMOVED***
-
-    public changeNotificationModalMessage(message: string) ***REMOVED***
-        this.notificationModalMessage = message;
-    ***REMOVED***
-
-    public changeNotificationModalType(type: string) ***REMOVED***
-        this.notificationModalType = type;
-    ***REMOVED***
 
     public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility?: [string, number]) ***REMOVED***
         this.addUserModalProjectID = projectid;
@@ -433,22 +390,22 @@ export class OverviewComponent ***REMOVED***
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => ***REMOVED***
                 if (result.status == 200) ***REMOVED***
-                    this.updateNotificaitonModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
+                    this.updateNotificationModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
 
 
-                    this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+                    this.updateNotificationModal("Failed", "Member could not be added!", true, "danger");
                 ***REMOVED***
             ***REMOVED***,
             error => ***REMOVED***
 
                 if (error['name'] == 'AlreadyMemberException') ***REMOVED***
-                    this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
+                    this.updateNotificationModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
                 ***REMOVED***
 
                 else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", "Member could not be added!", true, "danger");
+                    this.updateNotificationModal("Failed", "Member could not be added!", true, "danger");
                 ***REMOVED***
             ***REMOVED***);
 
@@ -465,17 +422,17 @@ export class OverviewComponent ***REMOVED***
                 result => ***REMOVED***
 
                     if (result.status == 200) ***REMOVED***
-                        this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+                        this.updateNotificationModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
 
                     ***REMOVED*** else ***REMOVED***
-                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
                     ***REMOVED***
                 ***REMOVED***, error => ***REMOVED***
                     if (error['name'] == 'AlreadyAdminException') ***REMOVED***
-                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                        this.updateNotificationModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
                     ***REMOVED***
                     else ***REMOVED***
-                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
                     ***REMOVED***
                 ***REMOVED***)
         ***REMOVED***, error => ***REMOVED***
@@ -483,17 +440,17 @@ export class OverviewComponent ***REMOVED***
                 result => ***REMOVED***
 
                     if (result.status == 200) ***REMOVED***
-                        this.updateNotificaitonModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+                        this.updateNotificationModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
 
                     ***REMOVED*** else ***REMOVED***
-                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
                     ***REMOVED***
                 ***REMOVED***, error => ***REMOVED***
                     if (error['name'] == 'AlreadyAdminException') ***REMOVED***
-                        this.updateNotificaitonModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
+                        this.updateNotificationModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
                     ***REMOVED***
                     else ***REMOVED***
-                        this.updateNotificaitonModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
                     ***REMOVED***
                 ***REMOVED***)
         ***REMOVED***)
@@ -509,13 +466,13 @@ export class OverviewComponent ***REMOVED***
             .then(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
-                    this.updateNotificaitonModal("Success", username + " promoted to Admin", true, "success");
+                    this.updateNotificationModal("Success", username + " promoted to Admin", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+                    this.updateNotificationModal("Failed", username + " could not be promoted to Admin!", true, "danger");
                 ***REMOVED***
             ***REMOVED***).catch(error => ***REMOVED***
-            this.updateNotificaitonModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+            this.updateNotificationModal("Failed", username + " could not be promoted to Admin!", true, "danger");
         ***REMOVED***);
     ***REMOVED***
 
@@ -529,13 +486,13 @@ export class OverviewComponent ***REMOVED***
             .then(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
-                    this.updateNotificaitonModal("Success", name + " was removed as Admin", true, "success");
+                    this.updateNotificationModal("Success", name + " was removed as Admin", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
+                    this.updateNotificationModal("Failed", name + " could not be removed as Admin!", true, "danger");
                 ***REMOVED***
             ***REMOVED***).catch(error => ***REMOVED***
-            this.updateNotificaitonModal("Failed", name + " could not be removed as Admin!", true, "danger");
+            this.updateNotificationModal("Failed", name + " could not be removed as Admin!", true, "danger");
         ***REMOVED***);
     ***REMOVED***
 
@@ -547,14 +504,14 @@ export class OverviewComponent ***REMOVED***
         this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(result => ***REMOVED***
 
                 if (result.status == 200) ***REMOVED***
-                    this.updateNotificaitonModal("Success", "Member " + name + " removed from the group", true, "success");
+                    this.updateNotificationModal("Success", "Member " + name + " removed from the group", true, "success");
 
                 ***REMOVED*** else ***REMOVED***
-                    this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
+                    this.updateNotificationModal("Failed", "Member" + name + " could not be removed !", true, "danger");
                 ***REMOVED***
             ***REMOVED***,
             error => ***REMOVED***
-                this.updateNotificaitonModal("Failed", "Member" + name + " could not be removed !", true, "danger");
+                this.updateNotificationModal("Failed", "Member" + name + " could not be removed !", true, "danger");
             ***REMOVED***);
     ***REMOVED***
 

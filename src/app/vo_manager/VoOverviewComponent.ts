@@ -5,6 +5,9 @@ import ***REMOVED***ProjectMember***REMOVED*** from "../projectmanagement/projec
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import * as moment from 'moment';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
+import ***REMOVED***Application***REMOVED*** from "../applications/application.model";
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
+import ***REMOVED***FilterBaseClass***REMOVED*** from "../shared_modules/baseClass/filter-base-class";
 
 @Component(***REMOVED***
     selector: 'voOverview',
@@ -14,7 +17,7 @@ import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanageme
 
 ***REMOVED***)
 
-export class VoOverviewComponent ***REMOVED***
+export class VoOverviewComponent extends FilterBaseClass***REMOVED***
 
     public emailSubject: string;
     public emailReply: string = '';
@@ -31,6 +34,7 @@ export class VoOverviewComponent ***REMOVED***
 
     member_id: number;
     projects: Project[] = new Array();
+    projects_filtered: Project[] = new Array();
 
 
     // modal variables for User list
@@ -40,11 +44,16 @@ export class VoOverviewComponent ***REMOVED***
     public usersModalProjectName: string;
 
 
+
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
 
 
+
+
+
     constructor(private voserice: VoService, private groupservice: GroupService) ***REMOVED***
+        super();
         this.getVoProjects();
         this.voserice.getNewsletterSubscriptionCounter().subscribe(result => ***REMOVED***
             this.newsletterSubscriptionCounter = result['subscribed'];
@@ -53,6 +62,23 @@ export class VoOverviewComponent ***REMOVED***
 
     ***REMOVED***
 
+    applyFilter() ***REMOVED***
+
+
+        this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
+
+    ***REMOVED***
+
+    checkFilter(project: Project) ***REMOVED***
+        if (this.isFilterProjectStatus(project.Status,project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) ***REMOVED***
+            return true
+        ***REMOVED***
+        else ***REMOVED***
+            return false
+        ***REMOVED***
+
+
+    ***REMOVED***
 
     sendEmail(subject: string, message: string, reply?: string) ***REMOVED***
         switch (this.emailType) ***REMOVED***
@@ -191,10 +217,14 @@ export class VoOverviewComponent ***REMOVED***
 
                     newProject.LifetimeDays = lifetimeDays;
                     newProject.DateEnd = expirationDate;
+                    newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
+
                 ***REMOVED***
 
                 this.projects.push(newProject);
             ***REMOVED***
+            this.applyFilter();
+
             this.isLoaded = true;
 
 
@@ -208,11 +238,7 @@ export class VoOverviewComponent ***REMOVED***
     ***REMOVED***
 
     setProjectStatus(project, status: number) ***REMOVED***
-        /* 1:submitted
-        # 2: approved
-        # 3: declined
-        # 4: suspended */
-        this.voserice.setProjectStatus(project.Id, status).subscribe(res =>***REMOVED***
+        this.voserice.setProjectStatus(project.Id, status).subscribe(res => ***REMOVED***
             this.getProjectStatus(project)
 
         ***REMOVED***)
@@ -224,13 +250,7 @@ export class VoOverviewComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    lifeTimeReached(lifetimeDays: number, running: number): string ***REMOVED***
 
-        if (lifetimeDays == -1) ***REMOVED***
-            return "blue";
-        ***REMOVED***
-        return (lifetimeDays - running) < 0 ? "red" : "black";
-    ***REMOVED***
 
     getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
         this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => ***REMOVED***

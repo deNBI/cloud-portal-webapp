@@ -17,17 +17,43 @@ import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility
 ***REMOVED***)
 
 export class ClientOverviewComponent implements OnInit ***REMOVED***
+    /**
+     * All clients.
+     */
     clients: Vmclient[];
+    /**
+     * If user is vo.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
     is_vo_admin = false;
+    /**
+     * Default status not added client.
+     * @type ***REMOVED***string***REMOVED***
+     */
     checkStatus: string = 'Not checked';
+    /**
+     * All computecenters.
+     * @type ***REMOVED***Array***REMOVED***
+     */
     computeCenters: ComputecenterComponent[]=[];
+    /**
+     * Selected computecenter.
+     */
     selectedComputeCenter: ComputecenterComponent;
+    /**
+     * If site is initialized with data.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
     isLoaded = false;
 
     constructor(private facilityService:FacilityService,private userservice: UserService, private groupservice: GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Check if user is vo.
+     * @param ***REMOVED***UserService***REMOVED*** userservice
+     */
     checkVOstatus(userservice: UserService) ***REMOVED***
         let user_id: number;
         let admin_vos: ***REMOVED******REMOVED***;
@@ -50,8 +76,9 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
 
-
-
+    /**
+     * Get all clients status checked.
+     */
     getClientsChecked(): void ***REMOVED***
         this.clientservice.getClientsChecked().subscribe(clients => ***REMOVED***
             this.clients = clients;
@@ -61,6 +88,9 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Get all computecenters.
+     */
     getComputeCenters() ***REMOVED***
         this.facilityService.getComputeCenters().subscribe(result => ***REMOVED***
             for (let cc of result) ***REMOVED***
@@ -71,6 +101,11 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
+    /**
+     * Check status of client.
+     * @param ***REMOVED***string***REMOVED*** host of client
+     * @param ***REMOVED***string***REMOVED*** port of client
+     */
     checkClient(host: string, port: string): void ***REMOVED***
         if (host && port) ***REMOVED***
             this.clientservice.checkClient(host, port).subscribe(data => ***REMOVED***
@@ -90,6 +125,12 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
+    /**
+     * Add a new client.
+     * @param ***REMOVED***string***REMOVED*** host
+     * @param ***REMOVED***string***REMOVED*** port
+     * @param ***REMOVED***string***REMOVED*** location
+     */
     postClient(host: string, port: string, location: string): void ***REMOVED***
 
 
@@ -101,6 +142,10 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
+    /**
+     * Delete a client.
+     * @param ***REMOVED***number***REMOVED*** client_id
+     */
     deleteClient(client_id:number): void ***REMOVED***
         this.clientservice.deleteClient(client_id).subscribe(data => ***REMOVED***
 

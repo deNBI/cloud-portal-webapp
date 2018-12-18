@@ -5,22 +5,20 @@ import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/s
 import ***REMOVED***SpecialHardware***REMOVED*** from './special_hardware.model'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
 
 @Component(***REMOVED***
     templateUrl: 'addsinglevm.component.html',
     providers: [SpecialHardwareService, ApiSettings, ApplicationsService]
 ***REMOVED***)
 
-export class AddsinglevmComponent ***REMOVED***
-
+export class AddsinglevmComponent extends AbstractBaseClasse***REMOVED***
+    /**
+     * Check if the shortname provided is valid.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
     public wronginput: boolean = false;
 
-    //notification Modal variables
-    public notificationModalTitle: string = 'Notification';
-    public notificationModalMessage: string = 'Please wait...';
-    public notificationModalType: string = 'info';
-    public notificationModalIsClosable: boolean = false;
-    public notificationModalStay: boolean = true;
     public error: string[];
     public project_application_vms_requested=3;
 
@@ -30,35 +28,23 @@ export class AddsinglevmComponent ***REMOVED***
     public acknowledgeModalTitle: string = 'Acknowledge';
     public acknowledgeModalType: string = 'info';
 
-
-    showjustvm: boolean;
-    project_application_openstack_project: boolean;
-
-
-    csrf: Object = Cookie.get('csrftoken');
+    /**
+     * Available special hardware.
+      * @type ***REMOVED***any[]***REMOVED***
+     */
     special_hardware: SpecialHardware[] = new Array();
 
     constructor(private specialhardwareservice: SpecialHardwareService,
                 private  applicationsservice: ApplicationsService) ***REMOVED***
+        super();
         this.getSpecialHardware();
 
     ***REMOVED***
 
-    chosenProjectType(checkbox: number) ***REMOVED***
 
-        if (checkbox == 0) ***REMOVED***
-            if (this.project_application_openstack_project) ***REMOVED***
-                this.showjustvm = false;
-            ***REMOVED***
-        ***REMOVED***
-
-        else if (checkbox == 1) ***REMOVED***
-            if (this.showjustvm) ***REMOVED***
-                this.project_application_openstack_project = false;
-            ***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
-
+    /**
+     * Get available special hardware.
+     */
     getSpecialHardware() ***REMOVED***
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => ***REMOVED***
@@ -71,27 +57,15 @@ export class AddsinglevmComponent ***REMOVED***
             ***REMOVED***);
     ***REMOVED***
 
-    check_not_zero(values: ***REMOVED******REMOVED***) ***REMOVED***
-        if ('project_application_openstack_project' in values) ***REMOVED***
 
-
-            if ('project_application_cores_per_vm' in values && values['project_application_cores_per_vm'] > 0 && 'project_application_ram_per_vm' in values
-                && values['project_application_ram_per_vm'] > 0 && 'project_application_disk_space' in values && values['project_application_disk_space'] > 0) ***REMOVED***
-                return true;
-            ***REMOVED***
-
-            return false;
-        ***REMOVED***
-        else ***REMOVED***
-
-            return true;
-        ***REMOVED***
-    ***REMOVED***
-
+    /**
+     * Submit simple vm application.
+     * @param ***REMOVED***NgForm***REMOVED*** f
+     */
     onSubmit(f: NgForm) ***REMOVED***
         this.error = null;
         if (this.wronginput == true) ***REMOVED***
-            this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
         ***REMOVED***
         else ***REMOVED***
@@ -102,49 +76,31 @@ export class AddsinglevmComponent ***REMOVED***
                     values[v] = f.controls[v].value;
                 ***REMOVED***
             ***REMOVED***
-            if (this.check_not_zero(values) == false) ***REMOVED***
-                this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
-                this.notificationModalStay = true;
-                return;
-            ***REMOVED***
-
 
             this.applicationsservice.addNewApplication(values).toPromise()
                 .then(result => ***REMOVED***
-                    this.updateNotificaitonModal('Success', 'The application was submitted', true, 'success');
+                    this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 ***REMOVED***).catch(error => ***REMOVED***
-                var error_json = error
-                this.error = []
+                var error_json = error;
+                this.error = [];
                 for (let key of Object.keys(error_json)) ***REMOVED***
                     this.error.push(key.split('_',)[2])
 
                 ***REMOVED***
 
 
-                this.updateNotificaitonModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+                this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
                 this.notificationModalStay = true;
             ***REMOVED***)
         ***REMOVED***
     ***REMOVED***
 
 
-    public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
-        this.notificationModalTitle = title;
-        this.notificationModalMessage = message;
-        this.notificationModalIsClosable = closable;
-        this.notificationModalType = type;
-    ***REMOVED***
-
-    public resetNotificationModal() ***REMOVED***
-
-        this.notificationModalTitle = 'Notification';
-        this.notificationModalMessage = 'Please wait...';
-        this.notificationModalType = 'info';
-        this.notificationModalIsClosable = false;
-        this.notificationModalStay = true;
-    ***REMOVED***
-
+    /**
+     * Check if shortname is valid.
+     * @param ***REMOVED***string***REMOVED*** shortname
+     */
     public checkShortname(shortname: string) ***REMOVED***
         if (/^[a-zA-Z0-9\s]*$/.test(shortname) == false) ***REMOVED***
             this.wronginput = true;

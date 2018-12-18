@@ -1,10 +1,28 @@
 export class SpecialHardware ***REMOVED***
 
+    /**
+     * Id of the special hardware.
+     */
   private _Id: number;
+    /**
+     * Key of the special hardware.
+     */
   private _Key: string;
+    /**
+     * Name of the special hardware.
+     */
   private _Name: string;
+    /**
+     * If the special hardware was checked in a form.
+     */
   private _Checked: boolean;
 
+    /**
+     * Initialize the special hardware with values.
+     * @param ***REMOVED***number***REMOVED*** Id
+     * @param ***REMOVED***string***REMOVED*** Key
+     * @param ***REMOVED***string***REMOVED*** Name
+     */
   constructor(Id: number, Key: string, Name: string) ***REMOVED***
     this._Id = Id;
     this._Key = Key;

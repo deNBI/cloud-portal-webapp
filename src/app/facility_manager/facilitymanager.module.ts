@@ -6,6 +6,8 @@ import ***REMOVED*** ModalModule ***REMOVED*** from 'ngx-bootstrap/modal';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED***ImageTagComponent***REMOVED*** from "../facility_manager/imagetags.component";
 import ***REMOVED***FacilitymanagerRoutingModule***REMOVED*** from "./facilitymanager-routing.module";
+import ***REMOVED***FacilityApplicationComponent***REMOVED*** from "./facility.application.component";
+
 @NgModule(***REMOVED***
   imports: [
     FacilitymanagerRoutingModule,
@@ -16,7 +18,8 @@ import ***REMOVED***FacilitymanagerRoutingModule***REMOVED*** from "./facilityma
   ],
   declarations: [
       FacilityProjectsOverviewComponent,
-      ImageTagComponent
+      ImageTagComponent,
+      FacilityApplicationComponent
   ]
 ***REMOVED***)
 export class FacilitymanagerModule ***REMOVED*** ***REMOVED***

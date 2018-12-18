@@ -1,12 +1,26 @@
-# Cloud Portal Webapplication 
+# Cloud Portal Web App 
 
-The use of this application is to provide access to the Portal-API and to the Perun API in one Application. 
-Simple request, that do not require administrative rights or special previliges can be done directly from the webapplicaiton
+This app provides access to the Portal-API and to the Perun API. 
 
-## Setup development server
-To start the angular developement server on an empty system follow the upcoming steps.
+## Production
 
-1. Clone the cloud-portal-webapp repository then go into the cloud-portal-webapp folder.
+### Run
+
+You can run the webapp using docker:
+
+~~~BASH
+docker run -e ANGULAR_MODE=prod -p 80:80 denbicloud/cloud-portal-webapp:RELEASE
+~~~
+
+You can find current releases on GitHub.
+
+**Note**: The cloud-api server must also be running.
+
+## Development
+
+### Project Setup
+
+1. Clone the cloud-portal-webapp repository.
 ~~~BASH
 git clone -b dev https://github.com/deNBI/cloud-portal-webapp.git
 cd cloud-portal-webapp
@@ -17,51 +31,72 @@ cd cloud-portal-webapp
 127.0.0.1 portal-dev.denbi.de
 ~~~
 
-3. Install node version manager and node version 8
-~~~BASH
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-# follow the commands printed by nvm
-nvm install
-~~~
+3. Install nodejs virtual environment as decribed [here](https://github.com/ekalinin/nodeenv#install).
 
-Note that the actual used node version is defined in .nvmrc.
-
-4. In order to use the node version install with nvm just run the following command. 
+4. The environment can then be created with
 
 ~~~BASH
-nvm use --delete-prefix
+nodeenv -C .nodeenvrc env
 ~~~
 
-5. Install all needed npm packages and angular cli
+Note that the actual used node version is defined in .nodeenvrc.
+
+5. The environment can be activated with
+
+~~~BASH
+. env/bin/activate
+~~~
+
+6. Install all needed npm packages and angular cli
 ~~~BASH
 npm install 
 npm install -g @angular/cli
 ~~~
 
-6. start the angular server with
+7. start the angular server with
 ~~~BASH
 ng serve
 ~~~
 
-the dev server should run now on portal-dev.denbi.de:8001. The app will automatically reload if you change any of the source files.
+the dev server should run now on portal-dev.denbi.de:8001. 
+The app will automatically reload if you update any of the source files.
 
-## Developement
+### Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. 
+
+### Code scaffolding
+
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+
+### Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+### Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Before running the tests make sure you are serving the app via `ng serve`.
+
+### Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 ### Documentation
 
-Use [Compodoc](https://compodoc.app/guides/getting-started.html) to visualize the code written in TypeScript-files. 
+We are using [Compodoc](https://compodoc.app/guides/getting-started.html) to visualize the code written in TypeScript-files. 
 
-### Installation
+#### Installation
 
-* If Compodoc is not already installed use npm. It will install Compodoc automatically.
-Use the following command in the cloud-portal-webapp directory. 
+* You can install Compodoc with npm:
 ~~~BASH
 npm install
 ~~~
 
-### Usage
+#### Usage
 
 * Comment your code written in TypeScript-files. Comment-syntax is equivalent to Javascript.
+
 Example: 
 ```javascript
   /**
@@ -70,49 +105,14 @@ Example:
    */
   filterEnteredData(f: NgForm) ***REMOVED***
   ...
-
 ```
 
 * Use the following commands to let Compodoc analyze the written code and comments.
-Switch to the cloud-portal-webapp directory first.
 ~~~BASH
 npm run compodoc
 ~~~
 
-* To view the created documentations use your favorite webbrowser (e.g. firefox)
+* To view the created documentation, use your favorite webbrowser (e.g. firefox)
 ~~~BASH
 firefox documentation/overview.html
 ~~~
-
-### Options:
-
-* Use `--env=stage|production` for using staging or production environment. If no flag is provided, development environment is used. 
-
-* Use `--host` for setting the hostname. (e.g: cloud.denbi.de)
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. 
-
-### Options
-
-* Use the `-prod` flag for a production build.
-
-* Use `--env=stage/prod` for setting staging or production environment. 
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
