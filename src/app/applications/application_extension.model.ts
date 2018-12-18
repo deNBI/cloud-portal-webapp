@@ -12,12 +12,45 @@ export class ApplicationExtension ***REMOVED***
     private _Comment: string;
     private _DateSubmitted: string;
     private _OpenStackProject: boolean;
+    private _TotalCores: number;
+    private _TotalRAM: number;
+    private _RequestedFlavors: ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number***REMOVED*** ***REMOVED***;
 
     constructor() ***REMOVED***
+      this._RequestedFlavors= ***REMOVED******REMOVED***;
+
     ***REMOVED***
 
+  public  addFlavorToRequested(name: string, counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number ):void ***REMOVED***
+    this._RequestedFlavors[name]=***REMOVED***counter:counter,tag: tag,ram: ram,rootdisk:rootdisk,vcpus:vcpus,gpu:gpu,epheremal_disk:epheremal_disk***REMOVED***;
+  ***REMOVED***
 
-    get Lifetime(): number ***REMOVED***
+  get RequestedFlavors(): ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number***REMOVED*** ***REMOVED*** ***REMOVED***
+    return this._RequestedFlavors
+  ***REMOVED***
+
+  set RequestedFlavors(value:***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu : number, epheremal_disk: number***REMOVED*** ***REMOVED***) ***REMOVED***
+    this._RequestedFlavors  = value;
+  ***REMOVED***
+
+
+  get TotalCores(): number ***REMOVED***
+    return this._TotalCores;
+  ***REMOVED***
+
+  set TotalCores(value: number) ***REMOVED***
+    this._TotalCores = value;
+  ***REMOVED***
+
+  get TotalRAM(): number ***REMOVED***
+    return this._TotalRAM;
+  ***REMOVED***
+
+  set TotalRAM(value: number) ***REMOVED***
+    this._TotalRAM = value;
+  ***REMOVED***
+
+  get Lifetime(): number ***REMOVED***
         return this._Lifetime;
     ***REMOVED***
 
