@@ -14,7 +14,6 @@ const header = new HttpHeaders({
 export class keyService {
 
 
-
     constructor(private http: HttpClient, private settings: ApiSettings) {
     }
 
@@ -27,6 +26,7 @@ export class keyService {
     }
 
     postKey(public_key: string): Observable<any> {
+        public_key = public_key.replace(/\r?\n|\r/gi, '');
         let params = new HttpParams().set('public_key', public_key);
 
         return this.http.put(this.settings.getApiBaseURL() + 'users/current/public_key/', params, {
