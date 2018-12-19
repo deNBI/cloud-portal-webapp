@@ -17,7 +17,7 @@ import ***REMOVED***FilterBaseClass***REMOVED*** from "../shared_modules/baseCla
 
 ***REMOVED***)
 
-export class VoOverviewComponent extends FilterBaseClass***REMOVED***
+export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
 
     public emailSubject: string;
     public emailReply: string = '';
@@ -44,12 +44,8 @@ export class VoOverviewComponent extends FilterBaseClass***REMOVED***
     public usersModalProjectName: string;
 
 
-
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
-
-
-
 
 
     constructor(private voserice: VoService, private groupservice: GroupService) ***REMOVED***
@@ -70,7 +66,7 @@ export class VoOverviewComponent extends FilterBaseClass***REMOVED***
     ***REMOVED***
 
     checkFilter(project: Project) ***REMOVED***
-        if (this.isFilterProjectStatus(project.Status,project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) ***REMOVED***
+        if (this.isFilterProjectStatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) ***REMOVED***
             return true
         ***REMOVED***
         else ***REMOVED***
@@ -251,9 +247,8 @@ export class VoOverviewComponent extends FilterBaseClass***REMOVED***
     ***REMOVED***
 
 
-
     getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
-        this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => ***REMOVED***
+        this.voserice.getVoGroupRichMembers(projectid).subscribe(members => ***REMOVED***
                 this.usersModalProjectID = projectid;
                 this.usersModalProjectName = projectname;
                 this.usersModalProjectMembers = new Array();
@@ -263,6 +258,7 @@ export class VoOverviewComponent extends FilterBaseClass***REMOVED***
                     let fullName = member["firstName"] + " " + member["lastName"];
                     let newMember = new ProjectMember(user_id, fullName, member_id);
                     newMember.ElixirId = member['elixirId'];
+                    newMember.Email = member['email'];
                     this.usersModalProjectMembers.push(newMember);
                 ***REMOVED***
 

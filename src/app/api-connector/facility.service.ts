@@ -133,4 +133,16 @@ export class FacilityService ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Get Members of a project with emails.
+     * @param ***REMOVED***number***REMOVED*** groupid id of the group
+     * @param ***REMOVED***number***REMOVED*** facility id of the facility
+     * @returns ***REMOVED***Observable<any>***REMOVED***
+     */
+      getFacilityGroupRichMembers(groupid: number,facility:number): Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/' + groupid + '/members/', ***REMOVED***
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+    ***REMOVED***
+
 ***REMOVED***
