@@ -9,8 +9,8 @@
 * **Application:**
   * if without faciltiy approve 
   * vo can approve without facility 
-
-
+  * added Additional Information header 
+  * added report fields 
 ------
 #### Bug Fixes
 * **volume:** fixed volume bug
