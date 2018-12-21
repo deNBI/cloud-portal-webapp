@@ -1116,69 +1116,90 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
-        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => ***REMOVED***
-            if (result['Error']) ***REMOVED***
-                this.updateNotificationModal("Failed", result['Error'], true, "danger");
-
+        this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(res => ***REMOVED***
+            if (res['Info']) ***REMOVED***
+                for (let client of res['Clients']) ***REMOVED***
+                    let newClient = new Vmclient();
+                    newClient.location = client.location;
+                    newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
+                    newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
+                    newClient.maxVMs = client.max_ressources.maxTotalInstances;
+                    newClient.assignedVMs = client.assigned_ressources.vms;
+                    newClient.assignedVolumes = client.assigned_ressources.volumes;
+                    newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
+                    this.notificationClientInfo.push(newClient);
+                ***REMOVED***
+                this.updateNotificationModal("Failed", res['Info'], true, "danger");
 
             ***REMOVED***
             else ***REMOVED***
+                this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => ***REMOVED***
+                    if (result['Error']) ***REMOVED***
+
+                        this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
 
-                this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => ***REMOVED***
-                    let member = member_raw;
-                    manager_member_id = member["id"];
-                    manager_member_user_id = member["userId"];
-                    this.groupservice.createGroup(name, description).subscribe(group_raw => ***REMOVED***
-                        let group = group_raw;
-                        new_group_id = group["id"];
-                        this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
-                        this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => ***REMOVED***
-                            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => ***REMOVED***
-                                    if (result['Info']) ***REMOVED***
-                                        this.updateNotificationModal("Failed", result['Info'], true, "danger");
+                    ***REMOVED***
+                    else ***REMOVED***
 
-                                    ***REMOVED***
-                                    else ***REMOVED***
-                                        this.applicationsservice.getApplicationClient(application_id).subscribe(client => ***REMOVED***
-                                            let newClient = new Vmclient();
-                                            newClient.location = client.location;
-                                            newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
-                                            newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
-                                            newClient.maxVMs = client.max_ressources.maxTotalInstances;
-                                            newClient.assignedVMs = client.assigned_ressources.vms;
-                                            newClient.assignedVolumes = client.assigned_ressources.volumes;
-                                            newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
-                                            this.notificationClientInfo.push(newClient);
-                                            this.updateNotificationModal("Success", "The new project was created and assigned to " + client.location + '.', true, "success");
 
-                                        ***REMOVED***);
-                                    ***REMOVED***
+                        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => ***REMOVED***
+                            let member = member_raw;
+                            manager_member_id = member["id"];
+                            manager_member_user_id = member["userId"];
+                            this.groupservice.createGroup(name, description).subscribe(group_raw => ***REMOVED***
+                                let group = group_raw;
+                                new_group_id = group["id"];
+                                this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
+                                this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => ***REMOVED***
+                                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => ***REMOVED***
+                                            if (result['Info']) ***REMOVED***
+                                                this.updateNotificationModal("Failed", result['Info'], true, "danger");
 
-                                    for (let app of this.user_applications) ***REMOVED***
-                                        if (app.Id == application_id) ***REMOVED***
-                                            this.getUserApplication(app);
-                                            break;
+                                            ***REMOVED***
+                                            else ***REMOVED***
+                                                this.applicationsservice.getApplicationClient(application_id).subscribe(client => ***REMOVED***
+                                                    let newClient = new Vmclient();
+                                                    newClient.location = client.location;
+                                                    newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
+                                                    newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
+                                                    newClient.maxVMs = client.max_ressources.maxTotalInstances;
+                                                    newClient.assignedVMs = client.assigned_ressources.vms;
+                                                    newClient.assignedVolumes = client.assigned_ressources.volumes;
+                                                    newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
+                                                    this.notificationClientInfo.push(newClient);
+                                                    this.updateNotificationModal("Success", "The new project was created and assigned to " + client.location + '.', true, "success");
+
+                                                ***REMOVED***);
+                                            ***REMOVED***
+
+                                            for (let app of this.user_applications) ***REMOVED***
+                                                if (app.Id == application_id) ***REMOVED***
+                                                    this.getUserApplication(app);
+                                                    break;
+
+                                                ***REMOVED***
+
+
+                                            ***REMOVED***
+                                            for (let app of this.all_applications) ***REMOVED***
+                                                if (app.Id == application_id) ***REMOVED***
+                                                    this.getApplication(app);
+                                                    break;
+
+                                                ***REMOVED***
+                                            ***REMOVED***
 
                                         ***REMOVED***
+                                    )
 
 
-                                    ***REMOVED***
-                                    for (let app of this.all_applications) ***REMOVED***
-                                        if (app.Id == application_id) ***REMOVED***
-                                            this.getApplication(app);
-                                            break;
+                                ***REMOVED***);
 
-                                        ***REMOVED***
-                                    ***REMOVED***
+                            ***REMOVED***);
 
-                                ***REMOVED***
-                            )
-
-
-                        ***REMOVED***);
-
-                    ***REMOVED***);
+                        ***REMOVED***)
+                    ***REMOVED***
 
                 ***REMOVED***)
             ***REMOVED***
