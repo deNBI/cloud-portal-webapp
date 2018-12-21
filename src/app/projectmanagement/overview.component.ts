@@ -20,10 +20,10 @@ import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/base
     templateUrl: 'overview.component.html',
     providers: [VoService, UserService, GroupService, PerunSettings, ApiSettings]
 ***REMOVED***)
-export class OverviewComponent extends AbstractBaseClasse***REMOVED***
+export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
     debug_module = false;
-    @Input() invitation_group_post:string=environment.invitation_group_post;
+    @Input() invitation_group_post: string = environment.invitation_group_post;
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
     @Input() invitation_group_pre: string = environment.invitation_group_pre;
     @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
@@ -56,10 +56,10 @@ export class OverviewComponent extends AbstractBaseClasse***REMOVED***
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
     public addUserModalRealName: string;
+    public addUserModalInvitationLink: string;
+
     public UserModalFacilityDetails: [string, string][];
     public UserModalFacility: [string, number];
-
-
 
 
     public passwordModalTitle: string = "Changing Password";
@@ -80,6 +80,12 @@ export class OverviewComponent extends AbstractBaseClasse***REMOVED***
     public updateUserProjects() ***REMOVED***
         this.projects = [];
 
+
+    ***REMOVED***
+
+    setAddUserInvitationLink(): void ***REMOVED***
+        let uri = this.invitation_group_pre + this.addUserModalRealName + this.invitation_group_post + this.addUserModalRealName;
+        this.addUserModalInvitationLink = uri
 
     ***REMOVED***
 
@@ -183,8 +189,6 @@ export class OverviewComponent extends AbstractBaseClasse***REMOVED***
         ***REMOVED***)
 
     ***REMOVED***
-
-
 
 
     resetAddUserModal() ***REMOVED***
@@ -362,7 +366,6 @@ export class OverviewComponent extends AbstractBaseClasse***REMOVED***
         this.passwordModalEmail = '';
 
     ***REMOVED***
-
 
 
     public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility?: [string, number]) ***REMOVED***
