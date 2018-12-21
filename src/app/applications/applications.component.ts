@@ -1119,7 +1119,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => {
             if (result['Error']) {
                 this.updateNotificationModal("Failed", result['Error'], true, "danger");
-                this
+
 
             }
             else {
@@ -1135,8 +1135,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                         this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
                         this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
                             this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
-                                    if (result['Error']) {
-                                        this.updateNotificationModal("Failed", result['Error'], true, "danger");
+                                    if (result['Info']) {
+                                        this.updateNotificationModal("Failed", result['Info'], true, "danger");
 
                                     }
                                     else {
