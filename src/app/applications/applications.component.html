@@ -104,7 +104,7 @@
                                                         <td><b>VMs</b>
                                                         </td>
                                                         <td *ngIf="!application.OpenStackProject">
-                                                            Current:
+                                                            <span *ngIf="application.Status == 'modification requested'"> Current: </span>
                                                             ***REMOVED******REMOVED***application.VMsRequested***REMOVED******REMOVED***
                                                         </td>
                                                         <td *ngIf="application.OpenStackProject">
@@ -270,7 +270,8 @@
                                                     class="form-control"
                                                     #selectedComputeCenter>
 
-                                                <option value="undefined" selected> no center</option>
+                                                <option value="undefined" selected> no center
+                                                </option>
                                                 <option *ngFor="let computeCenter of computeCenters"
                                                         value="***REMOVED******REMOVED***computeCenter.FacilityId***REMOVED******REMOVED***">
                                                     ***REMOVED******REMOVED***computeCenter.Name***REMOVED******REMOVED***
@@ -453,7 +454,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td *ngIf="application.Status == 4"><b>VMs</b>
+                                                            <td><b>VMs</b>
                                                             </td>
                                                             <td *ngIf="application.Status == 4 && application.OpenStackProject">
                                                                 Current Number
@@ -462,7 +463,7 @@
                                                                 Requested
                                                             </td>
                                                             <td *ngIf="!application.OpenStackProject">
-                                                                Current:
+                                                                <span *ngIf="application.Status == 4">Current:</span>
                                                                 ***REMOVED******REMOVED***application.VMsRequested***REMOVED******REMOVED***
                                                             </td>
                                                             <td *ngIf="!application.OpenStackProject && application.Status == 4">
@@ -888,7 +889,8 @@
 <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document"
+         [ngClass]="notificationClientInfo.length > 0 ? 'modal-lg':''">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
@@ -902,11 +904,46 @@
                      role="alert">
                     ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
                 </div>
+                <div *ngIf="notificationClientInfo.length > 0">
+                    <div *ngFor="let c of notificationClientInfo">
+                        <br>
+                        <p>Client: ***REMOVED******REMOVED***c.location***REMOVED******REMOVED***</p>
+                        <table class="table table-responsive table-striped">
+                            <thead>
+                            <tr>
+                                <td></td>
+                                <td>Assigned Ressources</td>
+                                <td>Max Ressources</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>VMs</td>
+                                <td>***REMOVED******REMOVED***c.assignedVMs***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED***c.maxVMs***REMOVED******REMOVED***</td>
+                            </tr>
+                            <tr>
+                                <td>Volumes</td>
+                                <td>***REMOVED******REMOVED***c.assignedVolumes***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED***c.maxVolumes***REMOVED******REMOVED***</td>
+                            </tr>
+                            <tr>
+                                <td>Volume Storage</td>
+                                <td>***REMOVED******REMOVED***c.assignedVolumesStorage***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED***c.maxVolumeLimit***REMOVED******REMOVED***</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button *ngIf="notificationModalIsClosable == true"
                         type="button"
-                        (click)="notificationModal.hide();" type="reset"
+                        (click)="resetNotificationModal();notificationModal.hide();" type="reset"
                         class="btn  btn-secondary"> Close
                 </button>
             </div>
