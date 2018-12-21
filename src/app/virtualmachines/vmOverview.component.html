@@ -27,7 +27,7 @@
         <pagination [totalItems]="vms_filtered?.length" [itemsPerPage]="vmsPerPage"
                     (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"></pagination>
 
-        <table class="table table-striped col-md-12">
+        <table class="table table-striped col-md-12 table-responsive">
             <thead>
             <tr>
                 <th>Name</th>
