@@ -67,7 +67,7 @@
                                             <i class="fa fa-users"></i>&nbsp;Show Members
                                         </button>
                                         <button
-                                                (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.RealName,project.ComputeCenter); addUserModal.show();"
+                                                (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.RealName,project.ComputeCenter);setAddUserInvitationLink(); addUserModal.show();"
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
                                                 type="button" style="margin-bottom: 5px"
                                                 class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
@@ -194,8 +194,7 @@
                         <br>
                         <ul>
 
-                            <li><pre>{{invitation_group_pre}}{{addUserModalRealName}}{{invitation_group_post}}{{addUserModalRealName}}</pre>
-
+                            <li><pre>{{addUserModalInvitationLink}}</pre>
                             </li>
                         </ul>
                         <br>

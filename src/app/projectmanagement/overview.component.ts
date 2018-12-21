@@ -20,10 +20,10 @@ import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-clas
     templateUrl: 'overview.component.html',
     providers: [VoService, UserService, GroupService, PerunSettings, ApiSettings]
 })
-export class OverviewComponent extends AbstractBaseClasse{
+export class OverviewComponent extends AbstractBaseClasse {
 
     debug_module = false;
-    @Input() invitation_group_post:string=environment.invitation_group_post;
+    @Input() invitation_group_post: string = environment.invitation_group_post;
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
     @Input() invitation_group_pre: string = environment.invitation_group_pre;
     @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
@@ -56,10 +56,10 @@ export class OverviewComponent extends AbstractBaseClasse{
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
     public addUserModalRealName: string;
+    public addUserModalInvitationLink: string;
+
     public UserModalFacilityDetails: [string, string][];
     public UserModalFacility: [string, number];
-
-
 
 
     public passwordModalTitle: string = "Changing Password";
@@ -80,6 +80,12 @@ export class OverviewComponent extends AbstractBaseClasse{
     public updateUserProjects() {
         this.projects = [];
 
+
+    }
+
+    setAddUserInvitationLink(): void {
+        let uri = this.invitation_group_pre + this.addUserModalRealName + this.invitation_group_post + this.addUserModalRealName;
+        this.addUserModalInvitationLink = uri
 
     }
 
@@ -183,8 +189,6 @@ export class OverviewComponent extends AbstractBaseClasse{
         })
 
     }
-
-
 
 
     resetAddUserModal() {
@@ -362,7 +366,6 @@ export class OverviewComponent extends AbstractBaseClasse{
         this.passwordModalEmail = '';
 
     }
-
 
 
     public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility?: [string, number]) {
