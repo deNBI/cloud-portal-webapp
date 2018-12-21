@@ -20,7 +20,7 @@
                 </div>
                 <div *ngIf="user_applications.length > 0" class="card-block">
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table class="table table-striped table-responsive">
                             <thead>
                             <tr>
                                 <th>Project Name</th>
@@ -74,7 +74,7 @@
                                         <div id="user_application-{{ application.Id }}"
                                              [class.collapse]="getCollapseStatus('user_application-' + application.Id)">
                                             <div class="table-responsive">
-                                                <table class="table table-striped">
+                                                <table class="table table-striped table-responsive">
                                                     <tr [style.display]="application.Status != 'submitted' ? 'inherit' :'none'">
                                                         <td>Facility</td>
                                                         <td>
@@ -235,8 +235,8 @@
 
                 <div *ngIf="this.activeApplicationsAvailable() == true"
                      class="card-block">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
+                    <div >
+                        <table class="table table-striped table-responsive">
                             <thead>
                             <tr>
                                 <th>Project Name</th>
@@ -369,8 +369,8 @@
                                             colspan="6">
                                             <div id="application_review-{{ application.Id }}"
                                                  [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
-                                                <div class="table-responsive">
-                                                    <table class="table table-striped">
+                                                <div >
+                                                    <table class="table table-striped" table-responsive>
                                                         <tr>
                                                             <td>User
                                                                 Affiliations
@@ -605,8 +605,8 @@
                 </div>
 
                 <div *ngIf="all_applications.length > 0" class="card-block">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
+                    <div>
+                        <table class="table table-responsive table-striped table-hover">
                             <thead>
                             <tr>
 
@@ -657,8 +657,8 @@
                                             colspan="6">
                                             <div id="application_history-{{ application.Id }}"
                                                  [class.collapse]="getCollapseStatus('application_history-' + application.Id)">
-                                                <div class="table-responsive">
-                                                    <table class="table table-striped">
+                                                <div>
+                                                    <table class="table table-striped table-responsive">
                                                         <tr>
                                                             <td>Description
                                                             </td>
