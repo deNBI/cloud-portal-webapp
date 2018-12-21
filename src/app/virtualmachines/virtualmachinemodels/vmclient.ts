@@ -5,7 +5,6 @@ export class Vmclient ***REMOVED***
     private _port: string;
     private _version: string;
     private _features: string[];
-    private location: string;
     private _maxVolumes: number;
     private _assignedVolumes: number;
     private _maxVMs: number;

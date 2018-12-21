@@ -1149,7 +1149,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                                             newClient.assignedVMs = client.assigned_ressources.vms;
                                             newClient.assignedVolumes = client.assigned_ressources.volumes;
                                             newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
-                                            console.log(newClient);
                                             this.notificationClientInfo.push(newClient);
                                             this.updateNotificationModal("Success", "The new project was created and assigned to " + client.location + '.', true, "success");
 
