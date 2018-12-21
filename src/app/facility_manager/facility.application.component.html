@@ -26,9 +26,9 @@
             </div>
         </div>
 
-        <div class="card-block"  *ngIf="all_applications.length != 0">
-            <div class="table-responsive">
-                <table class="table table-striped">
+        <div  *ngIf="all_applications.length != 0">
+            <div>
+                <table class="table  table-responsive table-striped">
                     <thead>
                     <tr>
                         <th>Project Name</th>
@@ -82,8 +82,8 @@
                                     colspan="6">
                                     <div id="application_review-{{ application.Id }}"
                                          [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped">
+                                        <div >
+                                            <table class="table  table-responsive table-striped">
                                                 <tr>
                                                     <td>User Affiliations</td>
                                                     <td>{{
