@@ -25,6 +25,7 @@ import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
 import _date = moment.unitOfTime._date;
 import {forEach} from '@angular/router/src/utils/collection';
+import {Vmclient} from "../virtualmachines/virtualmachinemodels/vmclient";
 
 
 @Component({
@@ -32,6 +33,11 @@ import {forEach} from '@angular/router/src/utils/collection';
     providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings, FlavorService]
 })
 export class ApplicationsComponent extends AbstractBaseClasse {
+
+    /**
+     * Limits information for Client tested/used for Simple Vm Project creation.
+     */
+    notificationClientInfo: Vmclient[] = [];
 
     /**
      * Applications of the user viewing the Application overview.
@@ -168,7 +174,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 private facilityService: FacilityService,
                 private flavorService: FlavorService) {
 
-      super();
+        super();
         this.voService.isVo().subscribe(result => {
 
             this.is_vo_admin = result['Is_Vo_Manager'];
@@ -1088,6 +1094,14 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
     }
 
+    public resetNotificationModal() {
+        this.notificationModalTitle = "Notification";
+        this.notificationModalMessage = "Please wait...";
+        this.notificationModalIsClosable = false;
+        this.notificationModalType = "info";
+        this.notificationClientInfo = [];
+    }
+
     /**
      * Create a new Group in perun with the specific attributes.
      * @param name
@@ -1126,7 +1140,20 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
                                     }
                                     else {
-                                        this.updateNotificationModal("Success", "The new project was created", true, "success");
+                                        this.applicationsservice.getApplicationClient(application_id).subscribe(client => {
+                                            let newClient = new Vmclient();
+                                            newClient.location = client.location;
+                                            newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
+                                            newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
+                                            newClient.maxVMs = client.max_ressources.maxTotalInstances;
+                                            newClient.assignedVMs = client.assigned_ressources.vms;
+                                            newClient.assignedVolumes = client.assigned_ressources.volumes;
+                                            newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
+                                            console.log(newClient);
+                                            this.notificationClientInfo.push(newClient);
+                                            this.updateNotificationModal("Success", "The new project was created and assigned to " + client.location + '.', true, "success");
+
+                                        });
                                     }
 
                                     for (let app of this.user_applications) {

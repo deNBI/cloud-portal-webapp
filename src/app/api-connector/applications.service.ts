@@ -45,6 +45,13 @@ export class ApplicationsService {
         }).pipe(catchError((error: any) => throwError(error)));
     }
 
+     getApplicationClient(app_id:string):Observable<any> {
+        return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/client/', {
+            headers: header_csrf,
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error)));
+    }
+
     getAllApplications(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', {
             withCredentials: true,
