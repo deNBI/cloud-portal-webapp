@@ -220,12 +220,19 @@
                                 machines of the
                                 type:</label>
                             <div class="col-md-8">
-                                <ul>
-                                    <li>de.NBI Large (CPUs:32, RAM:64 GB)</li>
-                                    <li>de.NBI Medium (CPUs:16, RAM:32 GB)</li>
-                                    <li>de.NBI Small (CPUs:8, RAM:16 GB)</li>
+                                <ul *ngFor="let f of flavorList">
+
+                                    <li *ngIf="f.simple_vm">
+                                        ***REMOVED******REMOVED***f.name***REMOVED******REMOVED***
+                                        (CPUs:***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***, RAM:***REMOVED******REMOVED***f.ram***REMOVED******REMOVED*** GB)
+                                    
+                                    </li>
+
                                 </ul>
+                                <span class="help-block">More flavors can be enabled on demand.</span>
+
                             </div>
+
                         </div>
 
                         <br>
