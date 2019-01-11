@@ -30,6 +30,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
 
     public error: string[];
     public project_application_vms_requested = 3;
+    public project_application_report_allowed=false;
 
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
