@@ -1089,6 +1089,13 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     }
 
     /**
+     * Bugfix not scrollable site after closing modal
+     */
+    removeModalOpen(){
+        document.body.classList.remove('modal-open');
+    }
+
+    /**
      * Create a new Group in perun with the specific attributes.
      * @param name
      * @param description
