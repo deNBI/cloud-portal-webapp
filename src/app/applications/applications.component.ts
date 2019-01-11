@@ -25,6 +25,7 @@ import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
 import _date = moment.unitOfTime._date;
 import {forEach} from '@angular/router/src/utils/collection';
+import {Vmclient} from "../virtualmachines/virtualmachinemodels/vmclient";
 
 
 @Component({
@@ -32,6 +33,11 @@ import {forEach} from '@angular/router/src/utils/collection';
     providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings, FlavorService]
 })
 export class ApplicationsComponent extends AbstractBaseClasse {
+
+    /**
+     * Limits information for Client tested/used for Simple Vm Project creation.
+     */
+    notificationClientInfo: Vmclient[] = [];
 
     /**
      * Applications of the user viewing the Application overview.
@@ -168,7 +174,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 private facilityService: FacilityService,
                 private flavorService: FlavorService) {
 
-      super();
+        super();
         this.voService.isVo().subscribe(result => {
 
             this.is_vo_admin = result['Is_Vo_Manager'];
@@ -1088,6 +1094,14 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
     }
 
+    public resetNotificationModal() {
+        this.notificationModalTitle = "Notification";
+        this.notificationModalMessage = "Please wait...";
+        this.notificationModalIsClosable = false;
+        this.notificationModalType = "info";
+        this.notificationClientInfo = [];
+    }
+
     /**
      * Bugfix not scrollable site after closing modal
      */
@@ -1109,57 +1123,90 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         let manager_member_id: number;
         let manager_member_user_id: number;
         let new_group_id: number;
-        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => {
-            if (result['Error']) {
-                this.updateNotificationModal("Failed", result['Error'], true, "danger");
-                this
+        this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(res => {
+            if (res['Info']) {
+                for (let client of res['Clients']) {
+                    let newClient = new Vmclient();
+                    newClient.location = client.location;
+                    newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
+                    newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
+                    newClient.maxVMs = client.max_ressources.maxTotalInstances;
+                    newClient.assignedVMs = client.assigned_ressources.vms;
+                    newClient.assignedVolumes = client.assigned_ressources.volumes;
+                    newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
+                    this.notificationClientInfo.push(newClient);
+                }
+                this.updateNotificationModal("Failed", res['Info'], true, "danger");
 
             }
             else {
+                this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => {
+                    if (result['Error']) {
+
+                        this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
 
-                this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => {
-                    let member = member_raw;
-                    manager_member_id = member["id"];
-                    manager_member_user_id = member["userId"];
-                    this.groupservice.createGroup(name, description).subscribe(group_raw => {
-                        let group = group_raw;
-                        new_group_id = group["id"];
-                        this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
-                        this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
-                            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
-                                    if (result['Error']) {
-                                        this.updateNotificationModal("Failed", result['Error'], true, "danger");
+                    }
+                    else {
 
-                                    }
-                                    else {
-                                        this.updateNotificationModal("Success", "The new project was created", true, "success");
-                                    }
 
-                                    for (let app of this.user_applications) {
-                                        if (app.Id == application_id) {
-                                            this.getUserApplication(app);
-                                            break;
+                        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => {
+                            let member = member_raw;
+                            manager_member_id = member["id"];
+                            manager_member_user_id = member["userId"];
+                            this.groupservice.createGroup(name, description).subscribe(group_raw => {
+                                let group = group_raw;
+                                new_group_id = group["id"];
+                                this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
+                                this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
+                                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
+                                            if (result['Info']) {
+                                                this.updateNotificationModal("Failed", result['Info'], true, "danger");
+
+                                            }
+                                            else {
+                                                this.applicationsservice.getApplicationClient(application_id).subscribe(client => {
+                                                    let newClient = new Vmclient();
+                                                    newClient.location = client.location;
+                                                    newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
+                                                    newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
+                                                    newClient.maxVMs = client.max_ressources.maxTotalInstances;
+                                                    newClient.assignedVMs = client.assigned_ressources.vms;
+                                                    newClient.assignedVolumes = client.assigned_ressources.volumes;
+                                                    newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
+                                                    this.notificationClientInfo.push(newClient);
+                                                    this.updateNotificationModal("Success", "The new project was created and assigned to " + client.location + '.', true, "success");
+
+                                                });
+                                            }
+
+                                            for (let app of this.user_applications) {
+                                                if (app.Id == application_id) {
+                                                    this.getUserApplication(app);
+                                                    break;
+
+                                                }
+
+
+                                            }
+                                            for (let app of this.all_applications) {
+                                                if (app.Id == application_id) {
+                                                    this.getApplication(app);
+                                                    break;
+
+                                                }
+                                            }
 
                                         }
+                                    )
 
 
-                                    }
-                                    for (let app of this.all_applications) {
-                                        if (app.Id == application_id) {
-                                            this.getApplication(app);
-                                            break;
+                                });
 
-                                        }
-                                    }
+                            });
 
-                                }
-                            )
-
-
-                        });
-
-                    });
+                        })
+                    }
 
                 })
             }
