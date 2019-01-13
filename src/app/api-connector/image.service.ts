@@ -18,12 +18,20 @@ export class ImageService ***REMOVED***
     ***REMOVED***
 
     getImages(project_id:number): Observable<Image[]> ***REMOVED***
-        let params = new HttpParams().set('project_id', project_id.toString())
+        let params = new HttpParams().set('project_id', project_id.toString());
 
 
         return this.http.get<Image[]>(this.settings.getConnectorBaseUrl() + 'images/', ***REMOVED***
             withCredentials: true,
             params:params,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+
+
+    ***REMOVED***
+    getImagesSnapshotsNames(): Observable<any> ***REMOVED***
+
+        return this.http.get<Image[]>(this.settings.getConnectorBaseUrl() + 'snapshots/names/', ***REMOVED***
+            withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
 

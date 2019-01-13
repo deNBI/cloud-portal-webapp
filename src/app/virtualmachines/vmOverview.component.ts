@@ -9,6 +9,7 @@ import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service
 import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.service";
 import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
 import ***REMOVED***FilterBaseClass***REMOVED*** from "../shared_modules/baseClass/filter-base-class";
+import ***REMOVED***Image***REMOVED*** from "./virtualmachinemodels/image";
 
 @Component(***REMOVED***
     selector: 'vm-overview',
@@ -77,6 +78,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
     /**
      * If the snapshot name is valid.
      */
+
+    /**
+     * All Images from the projects clients (for checking names)
+     */
+    images: String[];
+
+
     validSnapshotNameBool: boolean;
     /**
      * String if the snapshot is done.
@@ -86,7 +94,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
     /**
      * Name of the snapshot.
      */
-    snapshotName: string;
+    snapshotName: string='';
     /**
      * Tab which is shown own|all.
      * @type ***REMOVED***string***REMOVED***
@@ -133,6 +141,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
         this.vmEnd = endItem;
         this.vms_returned = this.vms_filtered.slice(startItem, endItem)
 
+    ***REMOVED***
+
+
+    getImages() ***REMOVED***
+        this.imageService.getImagesSnapshotsNames().subscribe(res => ***REMOVED***
+            this.images = res;
+        ***REMOVED***)
     ***REMOVED***
 
     /**
@@ -203,9 +218,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * @param e
      */
     validSnapshotName(e) ***REMOVED***
-        this.validSnapshotNameBool = this.snapshotName.length > 0 ? true : false;
+        this.validSnapshotNameBool = this.snapshotName.length > 0 && this.checkSnapShotNameUnused()
 
 
+    ***REMOVED***
+
+    checkSnapShotNameUnused()***REMOVED***
+        return this.images.indexOf(this.snapshotName) == -1
     ***REMOVED***
 
     /**
@@ -450,6 +469,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
     ***REMOVED***
 
     ngOnInit(): void ***REMOVED***
+        this.getImages();
         this.getElixirId();
         this.checkVOstatus(this.userservice)
 
