@@ -9,6 +9,7 @@ import {UserService} from "../api-connector/user.service";
 import {ImageService} from "../api-connector/image.service";
 import {Vmclient} from "./virtualmachinemodels/vmclient";
 import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
+import {Image} from "./virtualmachinemodels/image";
 
 @Component({
     selector: 'vm-overview',
@@ -77,6 +78,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     /**
      * If the snapshot name is valid.
      */
+
+    /**
+     * All Images from the projects clients (for checking names)
+     */
+    images: String[];
+
+
     validSnapshotNameBool: boolean;
     /**
      * String if the snapshot is done.
@@ -86,7 +94,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     /**
      * Name of the snapshot.
      */
-    snapshotName: string;
+    snapshotName: string='';
     /**
      * Tab which is shown own|all.
      * @type {string}
@@ -133,6 +141,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         this.vmEnd = endItem;
         this.vms_returned = this.vms_filtered.slice(startItem, endItem)
 
+    }
+
+
+    getImages() {
+        this.imageService.getImagesSnapshotsNames().subscribe(res => {
+            this.images = res;
+        })
     }
 
     /**
@@ -203,9 +218,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * @param e
      */
     validSnapshotName(e) {
-        this.validSnapshotNameBool = this.snapshotName.length > 0 ? true : false;
+        this.validSnapshotNameBool = this.snapshotName.length > 0 && this.checkSnapShotNameUnused()
 
 
+    }
+
+    checkSnapShotNameUnused(){
+        return this.images.indexOf(this.snapshotName) == -1
     }
 
     /**
@@ -450,6 +469,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     }
 
     ngOnInit(): void {
+        this.getImages();
         this.getElixirId();
         this.checkVOstatus(this.userservice)
 

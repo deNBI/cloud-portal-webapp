@@ -2,6 +2,7 @@ import {Component, OnInit, TemplateRef} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ImageService} from "../api-connector/image.service";
 import {SnapshotModel} from "./virtualmachinemodels/snapshot.model";
+import {Image} from "./virtualmachinemodels/image";
 
 enum Snapshot_Delete_Statuses {
     WAITING = 0,
@@ -42,6 +43,8 @@ export class SnapshotOverviewComponent implements OnInit {
     isLoaded = false;
 
 
+
+
     constructor(private imageService: ImageService) {
 
     }
@@ -54,6 +57,7 @@ export class SnapshotOverviewComponent implements OnInit {
         this.selected_snapshot = snapshot;
     }
 
+
     /**
      * Get snapshots by user.
      */
@@ -63,6 +67,8 @@ export class SnapshotOverviewComponent implements OnInit {
             this.isLoaded = true;
         })
     }
+
+
 
     /**
      * Delete snapshot.

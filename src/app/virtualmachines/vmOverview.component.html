@@ -136,7 +136,7 @@
                         <div (clickOutside)="setCollapseStatus(vm.openstackid,false)"
                              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
                              [ngClass]="getCollapseStatus(vm.openstackid) ? 'btn-group open': 'btn-group'"
-                             >
+                        >
 
                             <button class="btn btn-secondary" type="button"
                                     *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
@@ -458,7 +458,12 @@
                 <div class="input-group">
                     <input type="text" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
                            (ngModelChange)="validSnapshotName($event);">
+
                 </div>
+                <div><p *ngIf="!validSnapshotNameBool && snapshotName.length > 0"
+                        style="color: red">This name is already in use, please use a different
+                    one.</p></div>
+
                 <br>
                 <div class="alert alert-info" role="alert">
                     A snapshot is an image which preserves the disk state of a running instance.
