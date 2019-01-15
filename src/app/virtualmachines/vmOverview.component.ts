@@ -78,23 +78,17 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     /**
      * If the snapshot name is valid.
      */
-
-    /**
-     * All Images from the projects clients (for checking names)
-     */
-    images: String[];
-
-
     validSnapshotNameBool: boolean;
     /**
      * String if the snapshot is done.
      * @type {string}
      */
+    snapshotNameCheckDone = false;
     snapshotDone: string = 'Waiting';
     /**
      * Name of the snapshot.
      */
-    snapshotName: string='';
+    snapshotName: string = '';
     /**
      * Tab which is shown own|all.
      * @type {string}
@@ -143,12 +137,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
     }
 
-
-    getImages() {
-        this.imageService.getImagesSnapshotsNames().subscribe(res => {
-            this.images = res;
-        })
-    }
 
     /**
      * Check if vm corresponds the filter.
@@ -218,14 +206,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * @param e
      */
     validSnapshotName(e) {
-        this.validSnapshotNameBool = this.snapshotName.length > 0 && this.checkSnapShotNameUnused()
+        this.snapshotNameCheckDone = false;
+        this.imageService.checkSnapshotNameVaiable(this.snapshotName).subscribe(res => {
+
+            this.validSnapshotNameBool = this.snapshotName.length > 0 && res['valid']
+            this.snapshotNameCheckDone = true;
+        })
 
 
     }
 
-    checkSnapShotNameUnused(){
-        return this.images.indexOf(this.snapshotName) == -1
-    }
 
     /**
      * Reset the snapshotDone to waiting.
@@ -469,7 +459,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     }
 
     ngOnInit(): void {
-        this.getImages();
         this.getElixirId();
         this.checkVOstatus(this.userservice)
 
@@ -510,9 +499,12 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
             if (result['Error']) {
                 this.snapshotDone = result['Error'].toString();
             }
-            else if (result['Created'])
+            else if (result['Created']) {
+                this.imageService.getSnapshot(result['Created']).subscribe(res => {
+                    console.log(res)
+                })
                 this.snapshotDone = 'true';
-
+            }
 
         })
     }
