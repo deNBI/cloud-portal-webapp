@@ -78,23 +78,17 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
     /**
      * If the snapshot name is valid.
      */
-
-    /**
-     * All Images from the projects clients (for checking names)
-     */
-    images: String[];
-
-
     validSnapshotNameBool: boolean;
     /**
      * String if the snapshot is done.
      * @type ***REMOVED***string***REMOVED***
      */
+    snapshotNameCheckDone = false;
     snapshotDone: string = 'Waiting';
     /**
      * Name of the snapshot.
      */
-    snapshotName: string='';
+    snapshotName: string = '';
     /**
      * Tab which is shown own|all.
      * @type ***REMOVED***string***REMOVED***
@@ -143,12 +137,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
     ***REMOVED***
 
-
-    getImages() ***REMOVED***
-        this.imageService.getImagesSnapshotsNames().subscribe(res => ***REMOVED***
-            this.images = res;
-        ***REMOVED***)
-    ***REMOVED***
 
     /**
      * Check if vm corresponds the filter.
@@ -218,14 +206,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * @param e
      */
     validSnapshotName(e) ***REMOVED***
-        this.validSnapshotNameBool = this.snapshotName.length > 0 && this.checkSnapShotNameUnused()
+        this.snapshotNameCheckDone = false;
+        this.imageService.checkSnapshotNameVaiable(this.snapshotName).subscribe(res => ***REMOVED***
+
+            this.validSnapshotNameBool = this.snapshotName.length > 0 && res['valid']
+            this.snapshotNameCheckDone = true;
+        ***REMOVED***)
 
 
     ***REMOVED***
 
-    checkSnapShotNameUnused()***REMOVED***
-        return this.images.indexOf(this.snapshotName) == -1
-    ***REMOVED***
 
     /**
      * Reset the snapshotDone to waiting.
@@ -469,7 +459,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
     ***REMOVED***
 
     ngOnInit(): void ***REMOVED***
-        this.getImages();
         this.getElixirId();
         this.checkVOstatus(this.userservice)
 
@@ -510,9 +499,12 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
             if (result['Error']) ***REMOVED***
                 this.snapshotDone = result['Error'].toString();
             ***REMOVED***
-            else if (result['Created'])
+            else if (result['Created']) ***REMOVED***
+                this.imageService.getSnapshot(result['Created']).subscribe(res => ***REMOVED***
+                    console.log(res)
+                ***REMOVED***)
                 this.snapshotDone = 'true';
-
+            ***REMOVED***
 
         ***REMOVED***)
     ***REMOVED***
