@@ -320,7 +320,7 @@ export class GroupService {
     }
 
     createGroup(group_name: string, group_description: string): Observable<any> {
-        let params = new HttpParams().set('group_name', group_name).set('group_description', group_description.substring(0, 512));
+        let params = new HttpParams().set('name', group_name).set('description', group_description.substring(0, 512));
 
         return this.http.post(this.settings.getApiBaseURL() + 'projects/', params,
             {
