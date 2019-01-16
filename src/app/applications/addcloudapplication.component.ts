@@ -128,6 +128,14 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
                 case 'project_application_object_storage': {
                     return (this.constantStrings[key] + val + ' GB');
                 }
+                case 'project_application_report_allowed': {
+                    if (val) {
+                        return (this.constantStrings[key] + 'Yes');
+                    }
+                    else {
+                        return (this.constantStrings[key] + 'No');
+                    }
+                }
                 default: {
                     return (this.constantStrings[key] + val);
                 }
@@ -146,6 +154,8 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
         this.constantStrings['project_application_volume_limit'] = 'Additional storage space for your VMs: ';
         this.constantStrings['project_application_institute'] = 'Your institute: ';
         this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
+        this.constantStrings['project_application_report_allowed'] = 'Dissemination allowed: ';
+
         for (let key in this.flavorList) {
             if (key in this.flavorList) {
                 this.constantStrings['project_application_' + this.flavorList[key].name] =
@@ -184,7 +194,9 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
                     }
                 }
                 if (key in this.constantStrings) {
+                    console.log(key)
                     this.valuesToConfirm.push(this.matchString(key.toString(), f.controls[key].value.toString()));
+
                     var flavor: Flavor = this.keyIsVM(key.toString());
                     if (flavor != null) {
                         this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
@@ -192,6 +204,9 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
                     }
                 }
             }
+        }
+        if (!this.project_application_report_allowed) {
+            this.valuesToConfirm.push("Dissemination allowed: No")
         }
 
     }
