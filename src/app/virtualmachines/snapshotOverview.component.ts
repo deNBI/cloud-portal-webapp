@@ -2,6 +2,8 @@ import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/c
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.service";
 import ***REMOVED***SnapshotModel***REMOVED*** from "./virtualmachinemodels/snapshot.model";
+import ***REMOVED***Image***REMOVED*** from "./virtualmachinemodels/image";
+import ***REMOVED***forkJoin***REMOVED*** from 'rxjs';
 
 enum Snapshot_Delete_Statuses ***REMOVED***
     WAITING = 0,
@@ -41,6 +43,8 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
      */
     isLoaded = false;
 
+    private checkStatusTimeout: number = 5000;
+
 
     constructor(private imageService: ImageService) ***REMOVED***
 
@@ -54,6 +58,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
         this.selected_snapshot = snapshot;
     ***REMOVED***
 
+
     /**
      * Get snapshots by user.
      */
@@ -61,7 +66,38 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
         this.imageService.getSnapshotsByUser().subscribe(result => ***REMOVED***
             this.snapshots = result;
             this.isLoaded = true;
+            this.checkSnapShotsStatus()
         ***REMOVED***)
+    ***REMOVED***
+
+
+    checkSnapShotsStatus() ***REMOVED***
+        let all_active = true;
+
+        setTimeout(() => ***REMOVED***
+            let observables = [];
+            for (let s of this.snapshots) ***REMOVED***
+
+                observables.push(this.imageService.getSnapshot(s.snapshot_openstackid));
+
+            ***REMOVED***
+            forkJoin(observables).subscribe(res => ***REMOVED***
+                for (let i of res) ***REMOVED***
+                    this.snapshots[res.indexOf(i)].snapshot_status = i['status'];
+                    if (i['status'] != 'active') ***REMOVED***
+                        all_active = false;
+                    ***REMOVED***
+
+                ***REMOVED***
+                if (all_active) ***REMOVED***
+                    return;
+                ***REMOVED***
+                else ***REMOVED***
+                    this.checkSnapShotsStatus();
+                ***REMOVED***
+            ***REMOVED***)
+        ***REMOVED***, this.checkStatusTimeout);
+
     ***REMOVED***
 
     /**
