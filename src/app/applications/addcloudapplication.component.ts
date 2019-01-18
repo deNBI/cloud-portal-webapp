@@ -128,6 +128,14 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
                 case 'project_application_object_storage': ***REMOVED***
                     return (this.constantStrings[key] + val + ' GB');
                 ***REMOVED***
+                case 'project_application_report_allowed': ***REMOVED***
+                    if (val) ***REMOVED***
+                        return (this.constantStrings[key] + 'Yes');
+                    ***REMOVED***
+                    else ***REMOVED***
+                        return (this.constantStrings[key] + 'No');
+                    ***REMOVED***
+                ***REMOVED***
                 default: ***REMOVED***
                     return (this.constantStrings[key] + val);
                 ***REMOVED***
@@ -146,6 +154,8 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
         this.constantStrings['project_application_volume_limit'] = 'Additional storage space for your VMs: ';
         this.constantStrings['project_application_institute'] = 'Your institute: ';
         this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
+        this.constantStrings['project_application_report_allowed'] = 'Dissemination allowed: ';
+
         for (let key in this.flavorList) ***REMOVED***
             if (key in this.flavorList) ***REMOVED***
                 this.constantStrings['project_application_' + this.flavorList[key].name] =
@@ -184,7 +194,9 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
                     ***REMOVED***
                 ***REMOVED***
                 if (key in this.constantStrings) ***REMOVED***
+                    console.log(key)
                     this.valuesToConfirm.push(this.matchString(key.toString(), f.controls[key].value.toString()));
+
                     var flavor: Flavor = this.keyIsVM(key.toString());
                     if (flavor != null) ***REMOVED***
                         this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
@@ -192,6 +204,9 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
                     ***REMOVED***
                 ***REMOVED***
             ***REMOVED***
+        ***REMOVED***
+        if (!this.project_application_report_allowed) ***REMOVED***
+            this.valuesToConfirm.push("Dissemination allowed: No")
         ***REMOVED***
 
     ***REMOVED***
