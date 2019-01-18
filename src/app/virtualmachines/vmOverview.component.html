@@ -136,7 +136,7 @@
                         <div (clickOutside)="setCollapseStatus(vm.openstackid,false)"
                              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
                              [ngClass]="getCollapseStatus(vm.openstackid) ? 'btn-group open': 'btn-group'"
-                             >
+                        >
 
                             <button class="btn btn-secondary" type="button"
                                     *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
@@ -458,7 +458,13 @@
                 <div class="input-group">
                     <input type="text" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
                            (ngModelChange)="validSnapshotName($event);">
+
                 </div>
+                <div>
+                    <p *ngIf="!validSnapshotNameBool && snapshotName.length > 0 && snapshotNameCheckDone"
+                       style="color: red">This name is already in use, please use a different
+                        one.</p></div>
+
                 <br>
                 <div class="alert alert-info" role="alert">
                     A snapshot is an image which preserves the disk state of a running instance.
@@ -496,13 +502,16 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="snapshotDone == 'Waiting' ">
-                    Wait until Snapshot is created....
+                    Wait until Snapshot is queued....
                 </div>
 
 
                 <div class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' ">
-                    Successfully created Snapshot.
+                    Successfully queued Snapshot.
                     It might take some minutes till you can use it for starting a new instance.
+                    You can see the current status in the<a
+                        routerLinkActive="active"
+                        [routerLink]="['/virtualmachines/snapshotOverview']"> Snapshot Overview </a>.
                 </div>
                 <div class="alert alert-danger" role="alert"
                      *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">

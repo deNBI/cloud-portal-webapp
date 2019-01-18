@@ -9,6 +9,7 @@ import {UserService} from "../api-connector/user.service";
 import {ImageService} from "../api-connector/image.service";
 import {Vmclient} from "./virtualmachinemodels/vmclient";
 import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
+import {Image} from "./virtualmachinemodels/image";
 
 @Component({
     selector: 'vm-overview',
@@ -82,11 +83,12 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * String if the snapshot is done.
      * @type {string}
      */
+    snapshotNameCheckDone = false;
     snapshotDone: string = 'Waiting';
     /**
      * Name of the snapshot.
      */
-    snapshotName: string;
+    snapshotName: string = '';
     /**
      * Tab which is shown own|all.
      * @type {string}
@@ -134,6 +136,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         this.vms_returned = this.vms_filtered.slice(startItem, endItem)
 
     }
+
 
     /**
      * Check if vm corresponds the filter.
@@ -203,10 +206,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * @param e
      */
     validSnapshotName(e) {
-        this.validSnapshotNameBool = this.snapshotName.length > 0 ? true : false;
+        this.snapshotNameCheckDone = false;
+        this.imageService.checkSnapshotNameVaiable(this.snapshotName).subscribe(res => {
+
+            this.validSnapshotNameBool = this.snapshotName.length > 0 && res['valid']
+            this.snapshotNameCheckDone = true;
+        })
 
 
     }
+
 
     /**
      * Reset the snapshotDone to waiting.
@@ -490,9 +499,12 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
             if (result['Error']) {
                 this.snapshotDone = result['Error'].toString();
             }
-            else if (result['Created'])
+            else if (result['Created']) {
+                this.imageService.getSnapshot(result['Created']).subscribe(res => {
+                    console.log(res)
+                })
                 this.snapshotDone = 'true';
-
+            }
 
         })
     }

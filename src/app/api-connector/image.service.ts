@@ -17,13 +17,45 @@ export class ImageService {
     constructor(private http: HttpClient, private settings: ApiSettings) {
     }
 
-    getImages(project_id:number): Observable<Image[]> {
-        let params = new HttpParams().set('project_id', project_id.toString())
+    getImages(project_id: number): Observable<Image[]> {
+        let params = new HttpParams().set('project_id', project_id.toString());
 
 
         return this.http.get<Image[]>(this.settings.getConnectorBaseUrl() + 'images/', {
             withCredentials: true,
-            params:params,
+            params: params,
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
+
+    getImagesSnapshotsNames(): Observable<any> {
+
+        return this.http.get<Image[]>(this.settings.getConnectorBaseUrl() + 'snapshots/names/', {
+            withCredentials: true,
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
+
+
+    checkSnapshotNameVaiable(snapshot_name: string): Observable<any> {
+
+
+        return this.http.get<Image[]>(this.settings.getConnectorBaseUrl() + 'snapshots/names/', {
+            withCredentials: true,
+            params: {snapshot_name: snapshot_name}
+
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
+
+
+    getSnapshot(openstack_id: string): Observable<Image> {
+
+        return this.http.get<Image>(this.settings.getConnectorBaseUrl() + 'snapshots/' + openstack_id + '/status/', {
+            withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
 
@@ -55,7 +87,7 @@ export class ImageService {
     deleteImageTag(imageTag: string): Observable<any> {
 
 
-        return this.http.delete(this.settings.getConnectorBaseUrl() + 'imageTags/' + imageTag +'/',  {
+        return this.http.delete(this.settings.getConnectorBaseUrl() + 'imageTags/' + imageTag + '/', {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error)));
@@ -78,7 +110,7 @@ export class ImageService {
     }
 
     deleteSnapshot(snapshot_id: string): Observable<any> {
-        return this.http.delete(this.settings.getConnectorBaseUrl() + 'snapshots/' + snapshot_id + '/',  {
+        return this.http.delete(this.settings.getConnectorBaseUrl() + 'snapshots/' + snapshot_id + '/', {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error)));
