@@ -240,6 +240,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
 
     ***REMOVED***
 
+
     /**
      * Get all Special Hardware.
      */
@@ -295,6 +296,43 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
                 this.notificationModalStay = true;
             ***REMOVED***)
         ***REMOVED***
+    ***REMOVED***
+
+
+    sendTestApplication() ***REMOVED***
+        let values: ***REMOVED*** [key: string]: any ***REMOVED*** = ***REMOVED******REMOVED***;
+
+        values['project_application_comment'] = 'TestApplication';
+        values['project_application_description'] = 'TestApplication';
+        values['project_application_institute'] = 'TestApplication';
+        values['project_application_lifetime'] = 3;
+        values['project_application_name'] = 'TestApplication';
+        values['project_application_openstack_project'] = true;
+        values['project_application_report_allowed'] = true;
+        values['project_application_shortname'] = 'TestApplication';
+        values['project_application_special_hardware'] = [1, 2];
+        values['project_application_volume_counter'] = 5;
+        values['project_application_volume_limit'] = 20;
+        values['project_application_workgroup'] = 'TestApplication'
+
+        this.applicationsservice.addNewApplication(values).toPromise()
+            .then(result => ***REMOVED***
+                this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
+                this.notificationModalStay = false;
+            ***REMOVED***).catch(error => ***REMOVED***
+            var error_json = error
+            this.error = []
+            for (let key of Object.keys(error_json)) ***REMOVED***
+                this.error.push(key.split('_',)[2])
+
+            ***REMOVED***
+
+
+            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+            this.notificationModalStay = true;
+        ***REMOVED***)
+
+
     ***REMOVED***
 
 

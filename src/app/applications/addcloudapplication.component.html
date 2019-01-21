@@ -13,6 +13,9 @@
                         investigator of a
                         german university or research facility will be accepted!
                     </div>
+                    <div>
+                        <button (click)="sendTestApplication();notificationModal.show();">Test</button>
+                    </div>
                     <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
                           class="form-horizontal">
                         <div class="form-group row">
@@ -339,7 +342,8 @@
                                     >
                                     <span class="switch-label" data-on="Yes" data-off="No"></span>
                                     <span class="switch-handle"></span></label>
-                                <p> Do you permit the de.NBI Cloud to publicly mention your project's participation?</p>
+                                <p> Do you permit the de.NBI Cloud to publicly mention your
+                                    project's participation?</p>
 
                             </div>
 
