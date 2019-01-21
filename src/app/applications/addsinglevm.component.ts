@@ -8,6 +8,7 @@ import {ApplicationsService} from '../api-connector/applications.service'
 import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
 import {Flavor} from "../virtualmachines/virtualmachinemodels/flavor";
 import {FlavorService} from "../api-connector/flavor.service";
+import {environment} from "../../environments/environment";
 
 @Component({
     templateUrl: 'addsinglevm.component.html',
@@ -28,9 +29,12 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
     public flavorList: Flavor[];
 
 
+    public production = environment.production;
+
+
     public error: string[];
     public project_application_vms_requested = 3;
-    public project_application_report_allowed=false;
+    public project_application_report_allowed = false;
 
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
@@ -112,7 +116,9 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
      * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
      */
     getListOfFlavors() {
-        this.flavorService.getListOfFlavorsAvailable().subscribe(flavors => {this.flavorList = flavors;console.log(this.flavorList)});
+        this.flavorService.getListOfFlavorsAvailable().subscribe(flavors => {
+            this.flavorList = flavors;
+        });
     }
 
 
@@ -127,6 +133,45 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
         else {
             this.wronginput = false;
         }
+    }
+
+     sendTestApplication() {
+        let values: { [key: string]: any } = {};
+
+        values['project_application_comment'] = 'TestApplication';
+        values['project_application_description'] = 'TestApplication';
+        values['project_application_institute'] = 'TestApplication';
+        values['project_application_lifetime'] = 3;
+        values['project_application_name'] = 'TestApplication';
+        values['project_application_openstack_project'] = false;
+        for (let f of this.flavorList) {
+            let fname = 'project_application_' + f.name;
+            values[fname] = 1;
+        }
+        values['project_application_report_allowed'] = true;
+        values['project_application_shortname'] = 'TestApplication';
+        values['project_application_volume_counter'] = 5;
+        values['project_application_volume_limit'] = 20;
+        values['project_application_workgroup'] = 'TestApplication';
+
+        this.applicationsservice.addNewApplication(values).toPromise()
+            .then(result => {
+                this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
+                this.notificationModalStay = false;
+            }).catch(error => {
+            var error_json = error
+            this.error = []
+            for (let key of Object.keys(error_json)) {
+                this.error.push(key.split('_',)[2])
+
+            }
+
+
+            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+            this.notificationModalStay = true;
+        })
+
+
     }
 }
 

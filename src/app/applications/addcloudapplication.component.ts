@@ -11,6 +11,7 @@ import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {forEach} from '@angular/router/src/utils/collection';
 import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
+import {environment} from "../../environments/environment";
 
 @Component({
     templateUrl: 'addcloudapplication.component.html',
@@ -19,6 +20,8 @@ import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-clas
 })
 
 export class AddcloudapplicationComponent extends AbstractBaseClasse {
+
+    public production=environment.production;
 
     public project_application_report_allowed = false;
 

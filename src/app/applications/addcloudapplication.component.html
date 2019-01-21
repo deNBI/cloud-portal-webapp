@@ -13,8 +13,8 @@
                         investigator of a
                         german university or research facility will be accepted!
                     </div>
-                    <div>
-                        <button (click)="sendTestApplication();notificationModal.show();">Test</button>
+                    <div *ngIf="!production">
+                        <button (click)="sendTestApplication();notificationModal.show();">Test Application</button>
                     </div>
                     <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
                           class="form-horizontal">
