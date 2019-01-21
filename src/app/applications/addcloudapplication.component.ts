@@ -308,12 +308,16 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
         values['project_application_lifetime'] = 3;
         values['project_application_name'] = 'TestApplication';
         values['project_application_openstack_project'] = true;
+        for (let f of this.flavorList) ***REMOVED***
+            let fname = 'project_application_' + f.name;
+            values[fname] = 1;
+        ***REMOVED***
         values['project_application_report_allowed'] = true;
         values['project_application_shortname'] = 'TestApplication';
         values['project_application_special_hardware'] = [1, 2];
         values['project_application_volume_counter'] = 5;
         values['project_application_volume_limit'] = 20;
-        values['project_application_workgroup'] = 'TestApplication'
+        values['project_application_workgroup'] = 'TestApplication';
 
         this.applicationsservice.addNewApplication(values).toPromise()
             .then(result => ***REMOVED***
