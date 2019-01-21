@@ -1061,48 +1061,9 @@
                         </h6>
                     </div>
 
-                    <div *ngIf="!selectedApplication?.OpenStackProject" class="form-group row"
-                         [ngClass]="***REMOVED***
-                                'has-danger': f.controls.project_application_renewal_vms_requested?.invalid ,
-                                'has-success': f.controls.project_application_renewal_vms_requested?.valid
-                                ***REMOVED***">
-                        <label class="col-md-4 form-control-label"
-                               for="textarea-input"><strong>Number of
-                            Virtual
-                            Machines* <i class="icon-question"
-                                         data-toggle="tooltip"
-                                         data-placement="auto"
-                                         title="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."></i></strong></label>
-
-                        <div class="col">
-                            <div class="input-group">
-                                <input class="form-control"
-                                       name="project_application_vms_requested_old"
-                                       value="***REMOVED******REMOVED***selectedApplication?.VMsRequested***REMOVED******REMOVED***"
-                                       placeholder="NDA"
-                                       type="text" disabled>
-                                <span class="input-group-addon"> VMs
-                                    </span>
-
-                            </div>
-                            <span class="help-block">Current vms requested</span></div>
-                        <div class="col">
-                            <div class="input-group">
-                                <input required class="form-control"
-                                       id="id_project_application_renewal_vms_requested"
-                                       name="project_application_renewal_vms_requested"
-                                       placeholder="e.g. 5"
-                                       type="number" min="1" step="1"
-                                       [ngModel]="selectedApplication?.VMsRequested">
-                                <span class="input-group-addon"> VMs
-                                    </span>
-                            </div>
-                            <span class="help-block">How many VMs would you run simultaneously?</span>
-                        </div>
-                    </div>
 
 
-                    <div *ngIf="selectedApplication?.OpenStackProject">
+                    <div>
                         <div *ngFor="let t of typeList">
                             <div class="card">
 
@@ -1308,7 +1269,7 @@
                     </div>
 
 
-                    <strong *ngIf="selectedApplication?.OpenStackProject">
+                    <strong >
                         <div class="form-group row">
                             <label #corenumbers id="corenumbers" class="col">Number of total
                                 cores:</label>

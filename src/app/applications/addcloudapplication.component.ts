@@ -11,6 +11,7 @@ import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinem
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 import ***REMOVED***forEach***REMOVED*** from '@angular/router/src/utils/collection';
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
+import ***REMOVED***environment***REMOVED*** from "../../environments/environment";
 
 @Component(***REMOVED***
     templateUrl: 'addcloudapplication.component.html',
@@ -19,6 +20,8 @@ import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/base
 ***REMOVED***)
 
 export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED***
+
+    public production=environment.production;
 
     public project_application_report_allowed = false;
 
