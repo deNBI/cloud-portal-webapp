@@ -221,7 +221,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
         let cur_flavors: [string, number][];
         for (let entry in app.CurrentFlavors) ***REMOVED***
             cur_flavors.push([entry, app.CurrentFlavors[entry].counter]);
-            console.log(entry);
         ***REMOVED***
         return cur_flavors;
     ***REMOVED***
@@ -490,7 +489,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * @param application application where it might be in use
      */
     specialHardwareInUse(nums: number, application: Application): boolean ***REMOVED***
-        console.log(application.SpecialHardware.toString() + ' ' + nums.toString())
         return (application.SpecialHardware.toString().includes(nums.toString()));
     ***REMOVED***
 
@@ -615,7 +613,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                         let special_hardware = [];
                         if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) ***REMOVED***
                             let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
-                            console.log(special_hardware_string)
 
                             for (let c = 0; c < special_hardware_string.length; c++) ***REMOVED***
                                 let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
@@ -776,7 +773,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      */
     public getUserApplication(application: Application) ***REMOVED***
         let index = this.user_applications.indexOf(application);
-        console.log(index)
 
         this.applicationsservice.getUserApplication(application.Id.toString()).subscribe(aj => ***REMOVED***
             let a = new Application();
@@ -993,6 +989,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***)
 
     ***REMOVED***
+
 
 
     /**
