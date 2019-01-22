@@ -61,6 +61,20 @@ ng serve
 the dev server should run now on portal-dev.denbi.de:8001. 
 The app will automatically reload if you update any of the source files.
 
+### Debug with Intellij
+
+#### 1.Setup
+
+You must first setup and start the project as described in the **Project Setup** section.
+
+#### 2.Enable Javascript debugging
+
+Enable Javascript debugging by choosing JavaScript Debug in your Run/Debug configurations
+
+![Debug Configurations](images/run_debug_configuration.png)
+
+#### 3. Once you start the Debug mode a browser window should pop up. 
+
 ### Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. 
