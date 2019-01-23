@@ -1097,7 +1097,7 @@
                                                            type="number" min="0" step="1"
                                                            placeholder="e.g 1"
                                                            (ngModel)="'project_application_' + fl.name"
-                                                           required>
+                                                           >
                                                     <span class="input-group-addon"> VMs</span>
                                                 </div>
                                                 <span class="help-block">Number of VMs you would like to run in the future</span>
@@ -1313,7 +1313,7 @@
 <div  bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document" (clickOutside)="removeModalOpen();">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" *ngIf="extension_status == 0">
