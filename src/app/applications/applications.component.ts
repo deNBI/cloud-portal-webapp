@@ -991,7 +991,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     }
 
 
-
     /**
      * Create a new Group in perun with the specific attributes.
      * @param name
@@ -1102,7 +1101,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     /**
      * Bugfix not scrollable site after closing modal
      */
-    removeModalOpen(){
+    removeModalOpen() {
         document.body.classList.remove('modal-open');
     }
 
@@ -1122,16 +1121,18 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         let new_group_id: number;
         this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(res => {
             if (res['Info']) {
-                for (let client of res['Clients']) {
-                    let newClient = new Vmclient();
-                    newClient.location = client.location;
-                    newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
-                    newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
-                    newClient.maxVMs = client.max_ressources.maxTotalInstances;
-                    newClient.assignedVMs = client.assigned_ressources.vms;
-                    newClient.assignedVolumes = client.assigned_ressources.volumes;
-                    newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
-                    this.notificationClientInfo.push(newClient);
+                if (res['Clients']) {
+                    for (let client of res['Clients']) {
+                        let newClient = new Vmclient();
+                        newClient.location = client.location;
+                        newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
+                        newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
+                        newClient.maxVMs = client.max_ressources.maxTotalInstances;
+                        newClient.assignedVMs = client.assigned_ressources.vms;
+                        newClient.assignedVolumes = client.assigned_ressources.volumes;
+                        newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
+                        this.notificationClientInfo.push(newClient);
+                    }
                 }
                 this.updateNotificationModal("Failed", res['Info'], true, "danger");
 
