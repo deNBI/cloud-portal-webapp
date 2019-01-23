@@ -477,20 +477,11 @@
                                                                 <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
                                                         </tr>
-                                                        <tr *ngIf="application.TotalCores == 0">
-                                                            No VMs requested!
-                                                        </tr>
 
 
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
-                                                            <td>Cores/VM</td>
-                                                            <td>{{
-                                                                application.CoresPerVM
-                                                                }}
-                                                            </td>
-                                                        </tr>
 
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
+
+                                                        <tr *ngIf="application.OpenStackProject">
                                                             <td>Total Cores</td>
                                                             <td>{{
                                                                 application.TotalCores
@@ -498,7 +489,7 @@
                                                             </td>
 
                                                             <td *ngIf="application.Status == 4">
-                                                                {{application.ApplicationExtension.TotalCores}}
+                                                                {{application.ApplicationExtension?.TotalCores}}
                                                             </td>
                                                         </tr>
 
@@ -717,7 +708,7 @@
                                                             </td>
 
                                                             <td>
-                                                                Current: 
+                                                                Current:
                                                                 {{application.VMsRequested}}
                                                             </td>
                                                             <td *ngIf="application.Status == 4 ">
