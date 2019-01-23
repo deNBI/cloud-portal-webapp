@@ -103,29 +103,28 @@
                                                     <tr>
                                                         <td><b>VMs</b>
                                                         </td>
-                                                        <td *ngIf="!application.OpenStackProject">
-                                                            <span *ngIf="application.Status == 'modification requested'"> Current: </span>
+                                                        <td>
+                                                            <span> Current: </span>
                                                             ***REMOVED******REMOVED***application.VMsRequested***REMOVED******REMOVED***
                                                         </td>
-                                                        <td *ngIf="application.OpenStackProject">
-                                                            Current number
-                                                        <td *ngIf="application.Status == 'modification requested' && !application.OpenStackProject">
+
+                                                        <td *ngIf="application.Status == 'modification requested'">
                                                             Requested:
                                                             ***REMOVED******REMOVED***application.ApplicationExtension?.VMsRequested***REMOVED******REMOVED***
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested' && application.OpenStackProject">
-                                                            Requested
                                                         </td>
                                                     </tr>
                                                     <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
                                                         <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
                                                         <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
-                                                        <td *ngIf="application.Status == 'modification requested' && application.OpenStackProject">
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key].counter***REMOVED******REMOVED***
+                                                        <td *ngIf="application.Status == 'modification requested'">
+                                                            <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
+                                                            <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                               0</span>
                                                         </td>
 
                                                     </tr>
-                                                    <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
+                                                    <tr *ngIf="application.OpenStackProject">
                                                         <td>Cores</td>
                                                         <td>***REMOVED******REMOVED***
                                                             application.TotalCores
@@ -133,7 +132,7 @@
                                                         </td>
 
                                                         <td *ngIf="application.OpenStackProject && application.Status == 'modification requested'">
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension.CoresPerVM***REMOVED******REMOVED***
+                                                            ***REMOVED******REMOVED***application.ApplicationExtension.TotalCores***REMOVED******REMOVED***
 
                                                         </td>
                                                     </tr>
@@ -457,19 +456,14 @@
                                                         <tr>
                                                             <td><b>VMs</b>
                                                             </td>
-                                                            <td *ngIf="application.Status == 4 && application.OpenStackProject">
-                                                                Current Number
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4 && application.OpenStackProject">
-                                                                Requested
-                                                            </td>
-                                                            <td *ngIf="!application.OpenStackProject">
-                                                                <span *ngIf="application.Status == 4">Current:</span>
+
+                                                            <td>
+                                                                <span>Current:</span>
                                                                 ***REMOVED******REMOVED***application.VMsRequested***REMOVED******REMOVED***
                                                             </td>
-                                                            <td *ngIf="!application.OpenStackProject && application.Status == 4">
+                                                            <td *ngIf="application.Status == 4">
                                                                 Requested:
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension.VMsRequested***REMOVED******REMOVED***
+                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.VMsRequested***REMOVED******REMOVED***
                                                             </td>
 
                                                         </tr>
@@ -477,11 +471,13 @@
                                                         <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
                                                             <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
                                                             <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
-                                                            <td *ngIf="application.Status == 4 && application.OpenStackProject">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key].counter***REMOVED******REMOVED***
-                                                            </td>
+                                                            <td *ngIf="application.Status == 4 ">
+ <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
+                                                                <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                               0</span></td>
                                                         </tr>
-                                                        <tr *ngIf="application.TotalCores == 0 && application.OpenStackProject">
+                                                        <tr *ngIf="application.TotalCores == 0">
                                                             No VMs requested!
                                                         </tr>
 
@@ -717,33 +713,29 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td *ngIf="application.Status == 4"><b>VMs</b>
+                                                            <td><b>VMs</b>
                                                             </td>
-                                                            <td *ngIf="application.Status != 4">
-                                                                VMs
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                                Current Number
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4 && application.OpenStackProject">
-                                                                Requested
-                                                            </td>
-                                                            <td *ngIf="!application.OpenStackProject">
+
+                                                            <td>
+                                                                Current: 
                                                                 ***REMOVED******REMOVED***application.VMsRequested***REMOVED******REMOVED***
                                                             </td>
-                                                            <td *ngIf="!application.OpenStackProject && application.Status == 4">
+                                                            <td *ngIf="application.Status == 4 ">
                                                                 Requested:
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension.VMsRequested***REMOVED******REMOVED***
                                                             </td>
+
 
                                                         </tr>
 
                                                         <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
                                                             <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
                                                             <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
-                                                            <td *ngIf="application.Status == 4 && application.OpenStackProject">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key].counter***REMOVED******REMOVED***
-                                                            </td>
+                                                            <td *ngIf="application.Status == 4">
+ <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
+                                                                <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                               0</span></td>
 
                                                         </tr>
 
@@ -1062,7 +1054,6 @@
                     </div>
 
 
-
                     <div>
                         <div *ngFor="let t of typeList">
                             <div class="card">
@@ -1097,7 +1088,7 @@
                                                            type="number" min="0" step="1"
                                                            placeholder="e.g 1"
                                                            (ngModel)="'project_application_' + fl.name"
-                                                           >
+                                                    >
                                                     <span class="input-group-addon"> VMs</span>
                                                 </div>
                                                 <span class="help-block">Number of VMs you would like to run in the future</span>
@@ -1269,7 +1260,7 @@
                     </div>
 
 
-                    <strong >
+                    <strong>
                         <div class="form-group row">
                             <label #corenumbers id="corenumbers" class="col">Number of total
                                 cores:</label>
@@ -1310,7 +1301,7 @@
 </div>
 
 
-<div  bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+<div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -1321,7 +1312,8 @@
                 <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
                 <button type="button" class="close" style="cursor: pointer"
-                        (click)="resultModal.hide();extension_status= 0;removeModalOpen();" aria-label="Close">
+                        (click)="resultModal.hide();extension_status= 0;removeModalOpen();"
+                        aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
