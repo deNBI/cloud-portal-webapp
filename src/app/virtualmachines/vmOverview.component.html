@@ -18,14 +18,17 @@
                 class="btn btn-primary"
                 (click)="getAllVms();toggleTab('all')">All Machines
         </button>
+        <div style="margin-right: 5px;margin-left: 5px;">
+            <pagination
+                    [totalItems]="vms_filtered?.length" [itemsPerPage]="vmsPerPage"
+                    (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"></pagination>
+        </div>
 
 
     </div>
 
 
     <div class="table-responsive">
-        <pagination [totalItems]="vms_filtered?.length" [itemsPerPage]="vmsPerPage"
-                    (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"></pagination>
 
         <table class="table table-striped col-md-12 table-responsive">
             <thead>
