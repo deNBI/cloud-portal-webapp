@@ -45,6 +45,24 @@ export class ApplicationsService ***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
+     getApplicationClient(app_id:string):Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/client/', ***REMOVED***
+            headers: header_csrf,
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
+
+    /**
+     * Checks if some client has the ressource avaiable for an application.
+     * @param ***REMOVED***string***REMOVED*** app_id
+     * @returns ***REMOVED***Observable<any>***REMOVED***
+     */
+     getApplicationClientAvaiable(app_id:string):Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/clients/resource/', ***REMOVED***
+            headers: header_csrf,
+            withCredentials: true,
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
     getAllApplications(): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', ***REMOVED***
             withCredentials: true,

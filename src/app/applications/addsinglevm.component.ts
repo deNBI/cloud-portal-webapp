@@ -6,21 +6,31 @@ import ***REMOVED***SpecialHardware***REMOVED*** from './special_hardware.model'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
+import ***REMOVED***Flavor***REMOVED*** from "../virtualmachines/virtualmachinemodels/flavor";
+import ***REMOVED***FlavorService***REMOVED*** from "../api-connector/flavor.service";
 
 @Component(***REMOVED***
     templateUrl: 'addsinglevm.component.html',
-    providers: [SpecialHardwareService, ApiSettings, ApplicationsService]
+    providers: [FlavorService, SpecialHardwareService, ApiSettings, ApplicationsService]
 ***REMOVED***)
 
-export class AddsinglevmComponent extends AbstractBaseClasse***REMOVED***
+export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
     /**
      * Check if the shortname provided is valid.
      * @type ***REMOVED***boolean***REMOVED***
      */
     public wronginput: boolean = false;
 
+
+    /**
+     * List of flavors.
+     */
+    public flavorList: Flavor[];
+
+
     public error: string[];
-    public project_application_vms_requested=3;
+    public project_application_vms_requested = 3;
+    public project_application_report_allowed=false;
 
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
@@ -30,14 +40,16 @@ export class AddsinglevmComponent extends AbstractBaseClasse***REMOVED***
 
     /**
      * Available special hardware.
-      * @type ***REMOVED***any[]***REMOVED***
+     * @type ***REMOVED***any[]***REMOVED***
      */
     special_hardware: SpecialHardware[] = new Array();
 
     constructor(private specialhardwareservice: SpecialHardwareService,
-                private  applicationsservice: ApplicationsService) ***REMOVED***
+                private  applicationsservice: ApplicationsService, private flavorService: FlavorService) ***REMOVED***
         super();
         this.getSpecialHardware();
+        this.getListOfFlavors();
+
 
     ***REMOVED***
 
@@ -94,6 +106,13 @@ export class AddsinglevmComponent extends AbstractBaseClasse***REMOVED***
                 this.notificationModalStay = true;
             ***REMOVED***)
         ***REMOVED***
+    ***REMOVED***
+
+    /**
+     * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+     */
+    getListOfFlavors() ***REMOVED***
+        this.flavorService.getListOfFlavorsAvailable().subscribe(flavors => ***REMOVED***this.flavorList = flavors;console.log(this.flavorList)***REMOVED***);
     ***REMOVED***
 
 

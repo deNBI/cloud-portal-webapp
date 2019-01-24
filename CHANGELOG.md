@@ -1,5 +1,29 @@
 
 
+#### Features
+
+* **Application:**
+  *  Further informations on extensions 
+  * added Additional Information header 
+  * added report fields
+* **CI:**  test docker build on travis 
+* **Members:**
+  * Facility manager  also sees email (
+  * Vo also sees email
+* **Modification:** simple vm works again
+* **Tables:** all responsive 
+* **Vm:** make modal big when active 
+* **application:**  add reporting field in application
+* **invitation_links:**  reference to invitation links wiki page added 
+* **member:** add and remove member without facility 
+* **modification-request:**  Updating the request-modal 
+
+#### Bug Fixes
+
+* **Table:** fixed an table
+
+----
+
 #### Bug Fixes
 
 * **Application:** fixed ram gb 
@@ -9,8 +33,8 @@
 * **Application:**
   * if without faciltiy approve 
   * vo can approve without facility 
-
-
+  * added Additional Information header 
+  * added report fields 
 ------
 #### Bug Fixes
 * **volume:** fixed volume bug
