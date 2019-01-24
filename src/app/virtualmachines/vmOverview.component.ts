@@ -9,6 +9,7 @@ import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service
 import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.service";
 import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
 import ***REMOVED***FilterBaseClass***REMOVED*** from "../shared_modules/baseClass/filter-base-class";
+import ***REMOVED***Image***REMOVED*** from "./virtualmachinemodels/image";
 
 @Component(***REMOVED***
     selector: 'vm-overview',
@@ -82,11 +83,12 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * String if the snapshot is done.
      * @type ***REMOVED***string***REMOVED***
      */
+    snapshotNameCheckDone = false;
     snapshotDone: string = 'Waiting';
     /**
      * Name of the snapshot.
      */
-    snapshotName: string;
+    snapshotName: string = '';
     /**
      * Tab which is shown own|all.
      * @type ***REMOVED***string***REMOVED***
@@ -134,6 +136,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
         this.vms_returned = this.vms_filtered.slice(startItem, endItem)
 
     ***REMOVED***
+
 
     /**
      * Check if vm corresponds the filter.
@@ -203,10 +206,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * @param e
      */
     validSnapshotName(e) ***REMOVED***
-        this.validSnapshotNameBool = this.snapshotName.length > 0 ? true : false;
+        this.snapshotNameCheckDone = false;
+        this.imageService.checkSnapshotNameVaiable(this.snapshotName).subscribe(res => ***REMOVED***
+
+            this.validSnapshotNameBool = this.snapshotName.length > 0 && res['valid']
+            this.snapshotNameCheckDone = true;
+        ***REMOVED***)
 
 
     ***REMOVED***
+
 
     /**
      * Reset the snapshotDone to waiting.
@@ -490,9 +499,12 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
             if (result['Error']) ***REMOVED***
                 this.snapshotDone = result['Error'].toString();
             ***REMOVED***
-            else if (result['Created'])
+            else if (result['Created']) ***REMOVED***
+                this.imageService.getSnapshot(result['Created']).subscribe(res => ***REMOVED***
+                    console.log(res)
+                ***REMOVED***)
                 this.snapshotDone = 'true';
-
+            ***REMOVED***
 
         ***REMOVED***)
     ***REMOVED***

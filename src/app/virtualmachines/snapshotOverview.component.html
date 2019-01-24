@@ -14,6 +14,7 @@
                         <th>Name</th>
                         <th>Project</th>
                         <th>Actions</th>
+                        <th>Status</th>
 
                         <!-- th>Client</th-->
 
@@ -31,6 +32,13 @@
                                     class="btn btn-primary">
                                 Delete Snapshot
                             </button>
+                        </td>
+                        <td> <span *ngIf="snapshot?.snapshot_status == 'active'"
+                                   style="margin-left: 5px"
+                                   class="badge badge-success"> ***REMOVED******REMOVED***snapshot?.snapshot_status | uppercase***REMOVED******REMOVED*** </span>
+                            <span *ngIf="snapshot?.snapshot_status != 'active'"
+                                  style="margin-left: 5px"
+                                  class="badge badge-info"> ***REMOVED******REMOVED***snapshot?.snapshot_status | uppercase***REMOVED******REMOVED*** </span>
                         </td>
 
                         <!-- td>***REMOVED******REMOVED***volume.volume_client.host***REMOVED******REMOVED*** : ***REMOVED******REMOVED***volume.volume_client.port***REMOVED******REMOVED***</td-->
