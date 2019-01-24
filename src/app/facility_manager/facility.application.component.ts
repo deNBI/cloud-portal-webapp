@@ -86,6 +86,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
         super();
 
         this.facilityService.getManagerFacilities().subscribe(result => {
+            console.log(result )
             this.managerFacilities = result;
             this.selectedFacility = this.managerFacilities[0];
             this.getAllApplications(this.selectedFacility ['FacilityId']);
@@ -355,6 +356,8 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * @param value
      */
     onChangeSelectedFacility(value) {
+        this.all_applications = [];
+        console.log(this.selectedFacility)
         this.getAllApplications(this.selectedFacility['FacilityId'])
     }
 

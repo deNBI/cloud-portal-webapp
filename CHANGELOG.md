@@ -1,3 +1,14 @@
+#### Features
+
+* **Application:**
+  * if not enough ressource shows them 
+  * now shows client limits when simple vm is created 
+* **Clients:** limits serialier added 
+* **Snapshot:**
+  * added status badges 
+  * added a snapshot name check 
+
+
 
 
 #### Features
