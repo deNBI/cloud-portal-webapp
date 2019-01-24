@@ -8,12 +8,13 @@
             <div class="card-block">
 
                 <div style="padding:5px" class="alert alert-info"><strong>Info: </strong>
-                    You need to set a valid SSH Key before you can start a machine. Please set a valid key below or on
+                    You need to set a valid SSH Key before you can start a machine. Please set a
+                    valid key below or on
                     your <a
                             href="#/userinfo">personal data page</a>.
                 </div>
-                <div class="table-responsive" style="width: 100%">
-                    <table class="table table-striped">
+                <div  style="width: 100%">
+                    <table  table-responsive class="table table-striped">
 
                         <tr app-public-key [userinfo]="userinfo"></tr>
                     </table>
@@ -36,7 +37,8 @@
 
                 <div class="card-body">
 
-                    <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" class="form-horizontal">
+                    <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+                          class="form-horizontal">
                         <div class="form-group row"
                              [ngClass]="{'has-danger':f.controls.selectedProject?.invalid && (f.controls.selectedProject?.dirty || f.controls.selectedProject.touched),
                              'has-success':f.controls.selectedProject?.valid && (f.controls.selectedProject?.dirty || f.controls.selectedProject?.touched)}"
@@ -48,8 +50,11 @@
                                 <select required class="form-control" name="selectedProject"
                                         [(ngModel)]="selectedProject"
                                         (ngModelChange)="getSelectedProjectClient();">
-                                    <option value="undefined" disabled selected hidden> Please Select</option>
-                                    <option *ngFor="let project of projects" [ngValue]="project"> {{project[0]}}
+                                    <option value="undefined" disabled selected hidden> Please
+                                        Select
+                                    </option>
+                                    <option *ngFor="let project of projects" [ngValue]="project">
+                                        {{project[0]}}
                                     </option>
 
                                 </select>
@@ -61,9 +66,11 @@
                         <div *ngIf="client_avaiable">
                             <div class="form-group row"
                                  *ngIf="(selectedProjectVmsMax || selectedProjectVmsMax == 0) && selectedProject && selectedProject[1] != FREEMIUM_ID">
-                                <label class="col-md-3 form-control-label"><strong>Vms in use</strong></label>
+                                <label class="col-md-3 form-control-label"><strong>Vms in
+                                    use</strong></label>
                                 <div class="col-md-6">
-                                    <strong> current: {{selectedProjectVmsUsed}} | max: {{selectedProjectVmsMax}}
+                                    <strong> current: {{selectedProjectVmsUsed}} | max:
+                                        {{selectedProjectVmsMax}}
                                         Vms</strong>
                                 </div>
                             </div>
@@ -73,10 +80,12 @@
                                 <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <input required id="id_instance_name" name="instance_name" class="form-control"
+                                        <input required id="id_instance_name" name="instance_name"
+                                               class="form-control"
                                                type="text" placeholder="Instancename" ngModel>
                                     </div>
-                                    <div style="color: dodgerblue">Info: The instance name will also be the hostname of the vm.
+                                    <div style="color: dodgerblue">Info: The instance name will also
+                                        be the hostname of the vm.
                                     </div>
 
 
@@ -89,10 +98,14 @@
                                 <div class="col-md-6">
 
 
-                                    <select required class="form-control col-md-6" name="selectedFlavor"
+                                    <select required class="form-control col-md-6"
+                                            name="selectedFlavor"
                                             [(ngModel)]="selectedFlavor">
-                                        <option value="undefined" disabled selected hidden> Please Select</option>
-                                        <option *ngFor="  let flavor of flavors" [ngValue]="flavor"> {{flavor.name}}
+                                        <option value="undefined" disabled selected hidden> Please
+                                            Select
+                                        </option>
+                                        <option *ngFor="  let flavor of flavors" [ngValue]="flavor">
+                                            {{flavor.name}}
                                         </option>
 
                                     </select>
@@ -106,7 +119,8 @@
                             </div>
 
                             <div class="col-md-9">
-                                <flavor-detail [collapse2]="collapsed2" [flavor]="selectedFlavor"></flavor-detail>
+                                <flavor-detail [collapse2]="collapsed2"
+                                               [flavor]="selectedFlavor"></flavor-detail>
                             </div>
 
                             <div *ngIf="selectedProject" class="form-group row"
@@ -118,9 +132,12 @@
 
                                     <select required class="form-control" name="selectedImage"
                                             [(ngModel)]="selectedImage">
-                                        <option value="undefined" disabled selected hidden> Please Select</option>
+                                        <option value="undefined" disabled selected hidden> Please
+                                            Select
+                                        </option>
 
-                                        <option *ngFor="let image of images" [ngValue]="image"> {{image.name}}
+                                        <option *ngFor="let image of images" [ngValue]="image">
+                                            {{image.name}}
                                         </option>
 
                                     </select>
@@ -134,7 +151,8 @@
                                 </button>
                             </div>
                             <div class="col-md-9">
-                                <image-detail [collapse1]="collapsed1" [image]="selectedImage"></image-detail>
+                                <image-detail [collapse1]="collapsed1"
+                                              [image]="selectedImage"></image-detail>
                             </div>
 
 
@@ -161,7 +179,8 @@
 
                                 <div class="col-md-9">
                                     <div class="input-group">
-                                        <input type="text" placeholder="Volumename" [value]="volumeName"
+                                        <input type="text" placeholder="Volumename"
+                                               [value]="volumeName"
                                                (input)="volumeName = $event.target.value">
                                     </div>
                                 </div>
@@ -175,7 +194,8 @@
                                 <div class="col-md-9">
                                     <div class="input-group">
                                         <input min="0" step="1" [value]="diskspace"
-                                               (input)="diskspace = $event.target.value" type="number"
+                                               (input)="diskspace = $event.target.value"
+                                               type="number"
                                                placeholder="e.g 8 "><span
                                             class="input-group-addon"> GB
                                     </span>
@@ -209,7 +229,8 @@
                             </div>
 
 
-                            <button type="button" [disabled]="f.invalid || (disksfpace > 0 && volumeName == '')"
+                            <button type="button"
+                                    [disabled]="f.invalid || (disksfpace > 0 && volumeName == '')"
                                     class="btn btn-primary offset-md-8"
                                     data-toggle="modal"
                                     (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1],diskspace);resetData();resetProgressBar;infoModal.show();">
@@ -217,7 +238,8 @@
                             </button>
                             <br><br><br>
                         </div>
-                        <div class="alert alert-danger" *ngIf="isLoaded && !client_avaiable && selectedProject">The
+                        <div class="alert alert-danger"
+                             *ngIf="isLoaded && !client_avaiable && selectedProject">The
                             corresponding client is currently offline.
                             If you have any questions please contact cloud@denbi.de.
                         </div>
@@ -240,13 +262,16 @@
 </div>
 
 
-<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+<div bsModal #infoModal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-info" role="document">
+    <div class="modal-dialog modal-info" role="document"
+         [ngClass]="data['Started'] ? 'modal-lg':''">
+
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Status</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()"
+                <button type="button" class="close" style="cursor: pointer"
+                        (click)="infoModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -277,7 +302,8 @@
                             aria-valuemax="100">{{checking_vm_ssh_port}}
                     </div>
                 </div>
-                <p>If you close this modal you can find instructions how to connect to the virtual machine on the
+                <p>If you close this modal you can find instructions how to connect to the virtual
+                    machine on the
                     instance overview site</p>
             </div>
             <div class="modal-body" *ngIf="data['Started']">
@@ -292,7 +318,14 @@
                 Parameters missing
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="infoModal.hide();resetData()">Close
+                <button *ngIf="data['Started']"
+                        routerLinkActive="active"
+                        [routerLink]="['/virtualmachines/vmOverview']"
+                        type="button" class="btn btn-info nav-link"
+                        (click)="infoModal.hide();resetData()">Instance Overview
+                </button>
+                <button type="button" class="btn btn-secondary"
+                        (click)="infoModal.hide();resetData()">Close
                 </button>
             </div>
         </div><!-- /.modal-content -->

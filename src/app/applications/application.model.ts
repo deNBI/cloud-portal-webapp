@@ -1,5 +1,7 @@
 import {ApplicationExtension} from "./application_extension.model";
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+
 
 export class Application {
   private _Id: number;
@@ -30,12 +32,34 @@ export class Application {
   private _PerunId:number;
   private _TotalCores: number;
   private _TotalRam: number;
+  private _DateApproved: string;
+  private _CurrentFlavors: { [id: string]: {counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number} };
 
 
 
   constructor() {
+    this._CurrentFlavors={};
   }
 
+ public  addFlavorToCurrent(name: string, counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number ):void {
+    this._CurrentFlavors[name]={counter:counter,tag: tag,ram: ram,rootdisk:rootdisk,vcpus:vcpus,gpu:gpu,epheremal_disk:epheremal_disk};
+ }
+
+  get CurrentFlavors(): { [id: string]: {counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number} } {
+    return this._CurrentFlavors
+  }
+
+  set CurrentFlavors(value: { [id: string]: {counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number} } ){
+    this._CurrentFlavors  = value;
+  }
+
+  get DateApproved(): string {
+    return this._DateApproved;
+  }
+
+  set DateApproved(value: string) {
+    this._DateApproved = value;
+  }
 
   get TotalCores():number{
     return this._TotalCores;

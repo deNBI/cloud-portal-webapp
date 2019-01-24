@@ -21,7 +21,7 @@ import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
     templateUrl: 'facilityprojectsoverview.component.html',
     providers: [FacilityService, UserService, GroupService, PerunSettings, ApiSettings]
 })
-export class FacilityProjectsOverviewComponent extends  FilterBaseClass{
+export class FacilityProjectsOverviewComponent extends FilterBaseClass {
 
     debug_module = false;
 
@@ -58,8 +58,6 @@ export class FacilityProjectsOverviewComponent extends  FilterBaseClass{
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
     projects_filtered: Project[] = new Array();
-
-
 
 
     constructor(private groupservice: GroupService,
@@ -203,7 +201,7 @@ export class FacilityProjectsOverviewComponent extends  FilterBaseClass{
     }
 
     getMembesOfTheProject(projectid: number, projectname: string) {
-        this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => {
+        this.facilityservice.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId']).subscribe(members => {
                 this.usersModalProjectID = projectid;
                 this.usersModalProjectName = projectname;
                 this.usersModalProjectMembers = new Array();
@@ -213,6 +211,7 @@ export class FacilityProjectsOverviewComponent extends  FilterBaseClass{
                     let fullName = member["firstName"] + " " + member["lastName"];
                     let newMember = new ProjectMember(user_id, fullName, member_id);
                     newMember.ElixirId = member['elixirId'];
+                    newMember.Email = member['email'];
                     this.usersModalProjectMembers.push(newMember);
                 }
 

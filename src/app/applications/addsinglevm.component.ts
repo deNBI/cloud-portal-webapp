@@ -6,21 +6,31 @@ import {SpecialHardware} from './special_hardware.model'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {ApplicationsService} from '../api-connector/applications.service'
 import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
+import {Flavor} from "../virtualmachines/virtualmachinemodels/flavor";
+import {FlavorService} from "../api-connector/flavor.service";
 
 @Component({
     templateUrl: 'addsinglevm.component.html',
-    providers: [SpecialHardwareService, ApiSettings, ApplicationsService]
+    providers: [FlavorService, SpecialHardwareService, ApiSettings, ApplicationsService]
 })
 
-export class AddsinglevmComponent extends AbstractBaseClasse{
+export class AddsinglevmComponent extends AbstractBaseClasse {
     /**
      * Check if the shortname provided is valid.
      * @type {boolean}
      */
     public wronginput: boolean = false;
 
+
+    /**
+     * List of flavors.
+     */
+    public flavorList: Flavor[];
+
+
     public error: string[];
-    public project_application_vms_requested=3;
+    public project_application_vms_requested = 3;
+    public project_application_report_allowed=false;
 
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
@@ -30,14 +40,16 @@ export class AddsinglevmComponent extends AbstractBaseClasse{
 
     /**
      * Available special hardware.
-      * @type {any[]}
+     * @type {any[]}
      */
     special_hardware: SpecialHardware[] = new Array();
 
     constructor(private specialhardwareservice: SpecialHardwareService,
-                private  applicationsservice: ApplicationsService) {
+                private  applicationsservice: ApplicationsService, private flavorService: FlavorService) {
         super();
         this.getSpecialHardware();
+        this.getListOfFlavors();
+
 
     }
 
@@ -94,6 +106,13 @@ export class AddsinglevmComponent extends AbstractBaseClasse{
                 this.notificationModalStay = true;
             })
         }
+    }
+
+    /**
+     * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+     */
+    getListOfFlavors() {
+        this.flavorService.getListOfFlavorsAvailable().subscribe(flavors => {this.flavorList = flavors;console.log(this.flavorList)});
     }
 
 

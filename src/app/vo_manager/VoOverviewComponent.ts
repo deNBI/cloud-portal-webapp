@@ -17,7 +17,7 @@ import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
 
 })
 
-export class VoOverviewComponent extends FilterBaseClass{
+export class VoOverviewComponent extends FilterBaseClass {
 
     public emailSubject: string;
     public emailReply: string = '';
@@ -44,12 +44,8 @@ export class VoOverviewComponent extends FilterBaseClass{
     public usersModalProjectName: string;
 
 
-
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
-
-
-
 
 
     constructor(private voserice: VoService, private groupservice: GroupService) {
@@ -70,7 +66,7 @@ export class VoOverviewComponent extends FilterBaseClass{
     }
 
     checkFilter(project: Project) {
-        if (this.isFilterProjectStatus(project.Status,project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
+        if (this.isFilterProjectStatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
             return true
         }
         else {
@@ -251,9 +247,8 @@ export class VoOverviewComponent extends FilterBaseClass{
     }
 
 
-
     getMembesOfTheProject(projectid: number, projectname: string) {
-        this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => {
+        this.voserice.getVoGroupRichMembers(projectid).subscribe(members => {
                 this.usersModalProjectID = projectid;
                 this.usersModalProjectName = projectname;
                 this.usersModalProjectMembers = new Array();
@@ -263,6 +258,7 @@ export class VoOverviewComponent extends FilterBaseClass{
                     let fullName = member["firstName"] + " " + member["lastName"];
                     let newMember = new ProjectMember(user_id, fullName, member_id);
                     newMember.ElixirId = member['elixirId'];
+                    newMember.Email = member['email'];
                     this.usersModalProjectMembers.push(newMember);
                 }
 

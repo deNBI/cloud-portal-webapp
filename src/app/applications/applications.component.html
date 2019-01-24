@@ -20,7 +20,7 @@
                 </div>
                 <div *ngIf="user_applications.length > 0" class="card-block">
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table class="table table-striped table-responsive">
                             <thead>
                             <tr>
                                 <th>Project Name</th>
@@ -74,13 +74,13 @@
                                         <div id="user_application-{{ application.Id }}"
                                              [class.collapse]="getCollapseStatus('user_application-' + application.Id)">
                                             <div class="table-responsive">
-                                                <table class="table table-striped">
+                                                <table class="table table-striped table-responsive">
                                                     <tr [style.display]="application.Status != 'submitted' ? 'inherit' :'none'">
                                                         <td>Facility</td>
-
                                                         <td>
                                                             {{application.ComputeCenter?.Name}}
                                                         </td>
+
                                                     </tr>
                                                     <tr>
                                                         <td>Description</td>
@@ -101,42 +101,50 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>VMs</td>
-                                                        <td>{{
-                                                            application.VMsRequested
-                                                            }} VMs
+                                                        <td><b>VMs</b>
                                                         </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
+                                                        <td *ngIf="!application.OpenStackProject">
+                                                            <span *ngIf="application.Status == 'modification requested'"> Current: </span>
+                                                            {{application.VMsRequested}}
+                                                        </td>
+                                                        <td *ngIf="application.OpenStackProject">
+                                                            Current number
+                                                        <td *ngIf="application.Status == 'modification requested' && !application.OpenStackProject">
+                                                            Requested:
                                                             {{application.ApplicationExtension?.VMsRequested}}
-                                                            VMs
+                                                        </td>
+                                                        <td *ngIf="application.Status == 'modification requested' && application.OpenStackProject">
+                                                            Requested
                                                         </td>
                                                     </tr>
-                                                    <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
-                                                        <td>Cores/VM</td>
-                                                        <td>{{
-                                                            application.CoresPerVM
-                                                            }}
+                                                    <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
+                                                        <td>Flavor: {{item.key}}</td>
+                                                        <td>{{item.value.counter}}</td>
+                                                        <td *ngIf="application.Status == 'modification requested' && application.OpenStackProject">
+                                                            {{application.ApplicationExtension?.RequestedFlavors[item.key].counter}}
                                                         </td>
-                                                    </tr>
 
+                                                    </tr>
                                                     <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
                                                         <td>Cores</td>
                                                         <td>{{
                                                             application.TotalCores
                                                             }}
                                                         </td>
-                                                    </tr>
-                                                    <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
-                                                        <td>RAM</td>
-                                                        <td>{{
-                                                            application.RamPerVM
-                                                            }} GB
+
+                                                        <td *ngIf="application.OpenStackProject && application.Status == 'modification requested'">
+                                                            {{application.ApplicationExtension.CoresPerVM}}
+
                                                         </td>
                                                     </tr>
-                                                    <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
+
+                                                    <tr *ngIf="application.OpenStackProject">
                                                         <td>RAM</td>
                                                         <td>{{
                                                             application.TotalRam}} GB
+                                                        </td>
+                                                        <td *ngIf="application.OpenStackProject && application.Status == 'modification requested'">
+                                                            {{application.ApplicationExtension?.TotalRAM}}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -194,6 +202,9 @@
                                                         <td>
                                                             {{application.OpenStackProject}}
                                                         </td>
+                                                        <td *ngIf="application.Status == 'modification requested'">
+                                                            {{application.OpenStackProject}}
+                                                        </td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -224,8 +235,8 @@
 
                 <div *ngIf="this.activeApplicationsAvailable() == true"
                      class="card-block">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
+                    <div>
+                        <table class="table table-striped table-responsive">
                             <thead>
                             <tr>
                                 <th>Project Name</th>
@@ -259,7 +270,8 @@
                                                     class="form-control"
                                                     #selectedComputeCenter>
 
-                                                <option value="undefined" selected> no center</option>
+                                                <option value="undefined" selected> no center
+                                                </option>
                                                 <option *ngFor="let computeCenter of computeCenters"
                                                         value="{{computeCenter.FacilityId}}">
                                                     {{computeCenter.Name}}
@@ -358,8 +370,9 @@
                                             colspan="6">
                                             <div id="application_review-{{ application.Id }}"
                                                  [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
-                                                <div class="table-responsive">
-                                                    <table class="table table-striped">
+                                                <div>
+                                                    <table class="table table-striped"
+                                                           table-responsive>
                                                         <tr>
                                                             <td>User
                                                                 Affiliations
@@ -442,17 +455,36 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td>VMs</td>
-                                                            <td>{{
-                                                                application.VMsRequested
-                                                                }} VMs
+                                                            <td><b>VMs</b>
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                                {{application.ApplicationExtension?.VMsRequested}}
-                                                                VMs
+                                                            <td *ngIf="application.Status == 4 && application.OpenStackProject">
+                                                                Current Number
+                                                            </td>
+                                                            <td *ngIf="application.Status == 4 && application.OpenStackProject">
+                                                                Requested
+                                                            </td>
+                                                            <td *ngIf="!application.OpenStackProject">
+                                                                <span *ngIf="application.Status == 4">Current:</span>
+                                                                {{application.VMsRequested}}
+                                                            </td>
+                                                            <td *ngIf="!application.OpenStackProject && application.Status == 4">
+                                                                Requested:
+                                                                {{application.ApplicationExtension.VMsRequested}}
                                                             </td>
 
                                                         </tr>
+
+                                                        <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
+                                                            <td>Flavor: {{item.key}}</td>
+                                                            <td>{{item.value.counter}}</td>
+                                                            <td *ngIf="application.Status == 4 && application.OpenStackProject">
+                                                                {{application.ApplicationExtension?.RequestedFlavors[item.key].counter}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr *ngIf="application.TotalCores == 0 && application.OpenStackProject">
+                                                            No VMs requested!
+                                                        </tr>
+
 
                                                         <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
                                                             <td>Cores/VM</td>
@@ -463,23 +495,24 @@
                                                         </tr>
 
                                                         <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
-                                                            <td>Cores</td>
+                                                            <td>Total Cores</td>
                                                             <td>{{
                                                                 application.TotalCores
                                                                 }}
                                                             </td>
-                                                        </tr>
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
-                                                            <td>RAM</td>
-                                                            <td>{{
-                                                                application.RamPerVM 
-                                                                }} GB
+
+                                                            <td *ngIf="application.Status == 4">
+                                                                {{application.ApplicationExtension.TotalCores}}
                                                             </td>
                                                         </tr>
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
-                                                            <td>RAM</td>
+
+                                                        <tr *ngIf="application.OpenStackProject">
+                                                            <td>Total RAM</td>
                                                             <td>{{
                                                                 application.TotalRam}} GB
+                                                            </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                                {{application.ApplicationExtension.TotalRAM}}
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -519,8 +552,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr *ngIf="application.OpenStackProject">
-                                                            <td>Special
-                                                                Hardware
+                                                            <td>Special Hardware
                                                             </td>
                                                             <td><span
                                                                     style="margin-right: 5px;"
@@ -575,8 +607,8 @@
                 </div>
 
                 <div *ngIf="all_applications.length > 0" class="card-block">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
+                    <div>
+                        <table class="table table-responsive table-striped table-hover">
                             <thead>
                             <tr>
 
@@ -627,8 +659,8 @@
                                             colspan="6">
                                             <div id="application_history-{{ application.Id }}"
                                                  [class.collapse]="getCollapseStatus('application_history-' + application.Id)">
-                                                <div class="table-responsive">
-                                                    <table class="table table-striped">
+                                                <div>
+                                                    <table class="table table-striped table-responsive">
                                                         <tr>
                                                             <td>Description
                                                             </td>
@@ -636,67 +668,102 @@
                                                                 application.Description
                                                                 }}
                                                             </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Comment</td>
-                                                            <td>{{
-                                                                application.Comment
-                                                                }}
+                                                            <td *ngIf="application.Status == 4">
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>Facility</td>
-                                                            <td>
-                                                                {{application.ComputeCenter?.Name}}
-                                                            </td>
-                                                        </tr>
+
                                                         <tr>
                                                             <td>Workgroup</td>
                                                             <td>{{
                                                                 application.Workgroup
                                                                 }}
                                                             </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                OpenStackProject
+                                                            </td>
+                                                            <td>
+                                                                {{application.OpenStackProject}}
+                                                            </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Comment</td>
+                                                            <td>{{
+                                                                application.Comment
+                                                                }}
+                                                            </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                                {{application.ApplicationExtension?.Comment}}
+                                                            </td>
+
                                                         </tr>
                                                         <tr>
                                                             <td>Lifetime</td>
                                                             <td>{{
                                                                 application.Lifetime
-                                                                }}
+                                                                }} months
+                                                            </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                                {{application.ApplicationExtension?.Lifetime
+                                                                +
+                                                                application.Lifetime}}
+                                                                months
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td>VMs</td>
-                                                            <td>{{
-                                                                application.VMsRequested
-                                                                }}
+                                                            <td *ngIf="application.Status == 4"><b>VMs</b>
                                                             </td>
-                                                        </tr>
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
-                                                            <td>Cores</td>
-                                                            <td>{{
-                                                                application.CoresPerVM
-                                                                }}
+                                                            <td *ngIf="application.Status != 4">
+                                                                VMs
                                                             </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                                Current Number
+                                                            </td>
+                                                            <td *ngIf="application.Status == 4 && application.OpenStackProject">
+                                                                Requested
+                                                            </td>
+                                                            <td *ngIf="!application.OpenStackProject">
+                                                                {{application.VMsRequested}}
+                                                            </td>
+                                                            <td *ngIf="!application.OpenStackProject && application.Status == 4">
+                                                                Requested:
+                                                                {{application.ApplicationExtension.VMsRequested}}
+                                                            </td>
+
                                                         </tr>
 
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
-                                                            <td>Cores</td>
-                                                            <td>{{
-                                                                application.TotalCores
+                                                        <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
+                                                            <td>Flavor: {{item.key}}</td>
+                                                            <td>{{item.value.counter}}</td>
+                                                            <td *ngIf="application.Status == 4 && application.OpenStackProject">
+                                                                {{application.ApplicationExtension?.RequestedFlavors[item.key].counter}}
+                                                            </td>
+
+                                                        </tr>
+
+
+                                                        <tr *ngIf="application.OpenStackProject">
+                                                            <td>Total Cores</td>
+                                                            <td>{{application.TotalCores
                                                                 }}
                                                             </td>
-                                                        </tr>
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
-                                                            <td>RAM</td>
-                                                            <td>{{
-                                                                application.RamPerVM
-                                                                }} GB
+                                                            <td *ngIf="application.Status == 4">
+                                                                {{application.ApplicationExtension.TotalCores}}
                                                             </td>
                                                         </tr>
-                                                        <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
-                                                            <td>RAM</td>
+                                                        <tr *ngIf="application.OpenStackProject">
+                                                            <td>Total RAM</td>
                                                             <td>{{
                                                                 application.TotalRam}} GB
+                                                            </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                                {{application.ApplicationExtension.TotalRAM}}
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -704,7 +771,11 @@
                                                             </td>
                                                             <td>{{
                                                                 application.VolumeLimit
-                                                                }}
+                                                                }} GB
+                                                            </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                                {{application.ApplicationExtension?.VolumeLimit}}
+                                                                GB
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -715,26 +786,37 @@
                                                                 application.VolumeCounter
                                                                 }}
                                                             </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                                {{application.ApplicationExtension?.VolumeCounter}}
+                                                            </td>
                                                         </tr>
                                                         <tr *ngIf="application.OpenStackProject">
                                                             <td>ObjectStorage
                                                             </td>
                                                             <td>{{
                                                                 application.ObjectStorage
-                                                                }}
+                                                                }} GB
+                                                            </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                                {{application.ApplicationExtension?.ObjectStorage}}
+                                                                GB
                                                             </td>
                                                         </tr>
-
                                                         <tr *ngIf="application.OpenStackProject">
-                                                            <td>Special
-                                                                Hardware
+                                                            <td>Special Hardware
                                                             </td>
                                                             <td><span
                                                                     style="margin-right: 5px;"
                                                                     class="badge badge-primary"
                                                                     *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
                                                             </td>
+                                                            <td *ngIf="application.Status == 4">
+                                                       <span style="margin-right: 5px;"
+                                                             class="badge badge-primary"
+                                                             *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">{{ sh }}</span>
+                                                            </td>
                                                         </tr>
+
                                                         <tr>
                                                             <td>Last status
                                                                 changed
@@ -742,6 +824,8 @@
                                                             <td>{{
                                                                 application.DateStatusChanged
                                                                 }}
+                                                            </td>
+                                                            <td *ngIf="application.Status == 4">
                                                             </td>
                                                         </tr>
                                                         <tr *ngIf="application.Status == 2">
@@ -806,7 +890,8 @@
 <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document"
+         [ngClass]="notificationClientInfo.length > 0 ? 'modal-lg':''">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">{{ notificationModalTitle }}</h4>
@@ -820,11 +905,46 @@
                      role="alert">
                     {{ notificationModalMessage }}
                 </div>
+                <div *ngIf="notificationClientInfo.length > 0">
+                    <div *ngFor="let c of notificationClientInfo">
+                        <br>
+                        <p>Client: {{c.location}}</p>
+                        <table class="table table-responsive table-striped">
+                            <thead>
+                            <tr>
+                                <td></td>
+                                <td>Assigned Ressources</td>
+                                <td>Max Ressources</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>VMs</td>
+                                <td>{{c.assignedVMs}}</td>
+                                <td>{{c.maxVMs}}</td>
+                            </tr>
+                            <tr>
+                                <td>Volumes</td>
+                                <td>{{c.assignedVolumes}}</td>
+                                <td>{{c.maxVolumes}}</td>
+                            </tr>
+                            <tr>
+                                <td>Volume Storage</td>
+                                <td>{{c.assignedVolumesStorage}}</td>
+                                <td>{{c.maxVolumeLimit}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button *ngIf="notificationModalIsClosable == true"
                         type="button"
-                        (click)="notificationModal.hide();" type="reset"
+                        (click)="resetNotificationModal();notificationModal.hide();" type="reset"
                         class="btn  btn-secondary"> Close
                 </button>
             </div>
@@ -864,54 +984,85 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div bsModal #extensionModal="bs-modal" class="modal fade" tabindex="-1"
-     role="dialog" aria-labelledby="Label"
+<div bsModal #extensionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h1>Modify Request: {{selectedApplication?.Name}}</h1>
+                <h4>Modification/Extension request for {{selectedApplication?.Shortname}}</h4>
                 <button type="button" class="close" style="cursor: pointer"
                         (click)="extensionModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="application_form" #f="ngForm"
-                      (ngSubmit)="onSubmit(f)" class="form-horizontal">
+
+                <div class="alert alert-info">
+                    <strong>Please be aware:</strong>
+                    If your last renewal or initial application was dated before flavor-categories
+                    where introduced, the data which is shown on the left side of the form might be
+                    misleading.
+                    This does not change the modification-request-process as it only
+                    serves as an additional information. You are only able to pick flavors which are
+                    currently available.
+                    <br><br>
+                    The number of flavors, GBs of storage and storage volumes which you enter within
+                    this request will be the numbers you will actually get.
+                    These numbers <strong>will not be added</strong> to your current numbers, but
+                    will <strong>replace them</strong>.
+                </div>
+                <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+                      class="form-horizontal">
 
 
-                    <div class="form-group row" [ngClass]="{
+                    <div class="form-group row">
+                        <div class="col">
+                            <label class="col form-control-label" for="textarea-input">
+                                <strong>Lifetime* <i class="icon-question" data-toggle="tooltip"
+                                                     title="Current timespan of your project. You can extend your project by a maximum of 12 months">
+                                </i>
+                                </strong>
+                            </label>
+                        </div>
+
+                        <div class="col">
+                            <div class="input-group">
+                                <input class="form-control"
+                                       name="project_application_lifetime" placeholder="NDA"
+                                       type="text" value="{{showLifetime(selectedApplication)}}"
+                                       disabled>
+
+                            </div>
+                            <span class="help-block">Current lifetime</span>
+                        </div>
+
+                        <div class="col">
+                            <div class="input-group" [ngClass]="{
                                 'has-danger': f.controls.project_application_renewal_lifetime?.invalid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched),
                                 'has-success': f.controls.project_application_renewal_lifetime?.valid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched)
                                 }">
-                        <label class="col-md-4 form-control-label"
-                               for="textarea-input"><strong>Additional
-                            lifetime* <i class="icon-question"
-                                         data-toggle="tooltip"
-                                         data-placement="auto"
-                                         title="Additional Lifetime in months of your project"></i></strong></label>
-                        <div class="col-md-8">
-                            <div class="input-group">
                                 <input class="form-control"
                                        id="id_project_application_renewal_lifetime"
                                        name="project_application_renewal_lifetime"
                                        placeholder="e.g 3"
-                                       type="number" min="1" step="1" ngModel
-                                       required>
-                                <span class="input-group-addon"> months
-                                    </span>
+                                       type="number" min="0" step="1" ngModel required>
+                                <span class="input-group-addon"> months</span>
                             </div>
-                            <span class="help-block">How many months should the project be extended?</span>
+                            <span class="help-block">Number of months you want to extend the project</span>
                         </div>
                     </div>
 
-
                     <div class="form-group row">
-                        <h5 class="col-md-12 form-control-label">Resources</h5>
+                        <h6 class="col-md-8 form-control-label">Resources*
+                            <i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour"
+                               data-balloon-pos="down">
+                                <i class="icon-question"></i></i>
+                        </h6>
                     </div>
 
-                    <div class="form-group row" [ngClass]="{
+                    <div *ngIf="!selectedApplication?.OpenStackProject" class="form-group row"
+                         [ngClass]="{
                                 'has-danger': f.controls.project_application_renewal_vms_requested?.invalid ,
                                 'has-success': f.controls.project_application_renewal_vms_requested?.valid
                                 }">
@@ -922,7 +1073,20 @@
                                          data-toggle="tooltip"
                                          data-placement="auto"
                                          title="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."></i></strong></label>
-                        <div class="col-md-8">
+
+                        <div class="col">
+                            <div class="input-group">
+                                <input class="form-control"
+                                       name="project_application_vms_requested_old"
+                                       value="{{selectedApplication?.VMsRequested}}"
+                                       placeholder="NDA"
+                                       type="text" disabled>
+                                <span class="input-group-addon"> VMs
+                                    </span>
+
+                            </div>
+                            <span class="help-block">Current vms requested</span></div>
+                        <div class="col">
                             <div class="input-group">
                                 <input required class="form-control"
                                        id="id_project_application_renewal_vms_requested"
@@ -937,145 +1101,189 @@
                         </div>
                     </div>
 
-                    <div *ngIf="selectedApplication?.OpenStackProject"
-                         class="form-group row" [ngClass]="{
-                                'has-danger': f.controls.project_application_renewal_cores_per_vm?.invalid ,
-                                'has-success': f.controls.project_application_renewal_cores_per_vm?.valid
-                                }">
-                        <label class="col-md-4 form-control-label"
-                               for="textarea-input"><strong>Cores per VM* <i
-                                class="icon-question" data-toggle="tooltip"
-                                data-placement="auto"
-                                title="A CPU core is the processing unit of your virtual machine."></i></strong></label>
-                        <div class="col-md-8">
-                            <div class="input-group">
-                                <input required class="form-control"
-                                       id="id_project_application_renewal_cores_per_vm"
-                                       name="project_application_renewal_cores_per_vm"
-                                       placeholder="e.g. 2"
-                                       type="number" min="1" step="1"
-                                       [ngModel]="selectedApplication?.CoresPerVM">
-                                <span class="input-group-addon"> VMs
-                                    </span>
+
+                    <div *ngIf="selectedApplication?.OpenStackProject">
+                        <div *ngFor="let t of typeList">
+                            <div class="card">
+
+                                <div id="flavor-card" class="card-header">
+                                    {{t.long_name}}
+                                </div>
+                                <div class="form-group card-body">
+                                    <div *ngFor="let fl of flavorList" class="form-group row">
+                                        <div *ngIf="fl.type.shortcut == t.shortcut"
+                                             class="form-group row">
+                                            <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
+                                                Number of cores: {{fl.vcpus}}<br>
+                                                RAM: {{fl.ram}} GB</label>
+                                            <div class="col">
+                                                <div class="input-group">
+                                                    <input class="form-control"
+                                                           name="project_application_{{fl.name}}_old"
+                                                           type="text"
+                                                           value="{{selectedApplication?.CurrentFlavors[fl.name]?.counter}}"
+                                                           placeholder="NDA" disabled>
+                                                    <span class="input-group-addon"> VMs</span>
+                                                </div>
+                                                <span class="help-block">Currently approved of this type </span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="input-group">
+                                                    <input class="form-control"
+                                                           (change)="valuesChanged(f)"
+                                                           id="project_application_{{fl.name}}"
+                                                           name="project_application_{{fl.name}}"
+                                                           type="number" min="0" step="1"
+                                                           placeholder="e.g 1"
+                                                           (ngModel)="'project_application_' + fl.name"
+                                                           required>
+                                                    <span class="input-group-addon"> VMs</span>
+                                                </div>
+                                                <span class="help-block">Number of VMs you would like to run in the future</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
-                            <span class="help-block">How many cores should every VM have?</span>
+
                         </div>
                     </div>
 
 
-                    <div *ngIf="selectedApplication?.OpenStackProject"
-                         class="form-group row"
-                         [ngClass]="{
-                                'has-danger': f.controls.project_application_renewal_ram_per_vm?.invalid,
-                                'has-success': f.controls.project_application_renewal_ram_per_vm?.valid
-                                }">
-                        <label class="col-md-4 form-control-label"
-                               for="textarea-input"><strong>RAM per VM* <i
-                                class="icon-question" data-toggle="tooltip"
-                                data-placement="auto"
-                                title="RAM is where data is stored that is accessed by the CPU."></i></strong></label>
-                        <div class="col-md-8">
+                    <div class="form-group row">
+                        <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage
+                            Limit*
+                            <i
+                                    data-balloon="Storage limit is the sum of extra storage provided by volumes."
+                                    data-balloon-pos="down" data-balloon-length="medium"><i
+                                    class="icon-question"
+                                    style="cursor: pointer;"></i></i></strong></label>
+                        <div class="col">
                             <div class="input-group">
-                                <input required class="form-control"
-                                       id="id_project_application_ram_per_vm"
-                                       name="project_application_renewal_ram_per_vm"
-                                       placeholder="e.g. 8"
-                                       type="number" min="1" step="1"
-                                       [ngModel]="selectedApplication?.RamPerVM">
+                                <input class="form-control"
+                                       name="project_application_renewal_volume_limit"
+                                       value="{{selectedApplication?.VolumeLimit}}"
+                                       placeholder="NDA"
+                                       type="text" disabled>
                                 <span class="input-group-addon"> GB
                                     </span>
                             </div>
-                            <span class="help-block">How much RAM should every VM have?</span>
+                            <span class="help-block">Current extra storage</span>
                         </div>
-                    </div>
-
-                    <div class="form-group row" [ngClass]="{
+                        <div class="col">
+                            <div class="input-group" [ngClass]="{
                                 'has-danger': f.controls.project_application_renewal_volume_limit?.invalid,
                                 'has-success': f.controls.project_application_renewal_volume_limit?.valid
                                 }">
-                        <label class="col-md-4 form-control-label"
-                               for="textarea-input"><strong>Storage Limit*
-                            <i
-                                    class="icon-question" data-toggle="tooltip"
-                                    data-placement="auto"
-                                    title="Storage limit is the sum of extra storage provided by volumes."></i></strong></label>
-                        <div class="col-md-8">
-                            <div class="input-group">
-                                <input required class="form-control"
+                                <input class="form-control"
                                        id="id_project_application_renewal_volume_limit"
                                        name="project_application_renewal_volume_limit"
                                        placeholder="e.g. 20"
-                                       type="number" min="1" step="1"
-                                       [ngModel]="selectedApplication?.VolumeLimit">
+                                       value="{{selectedApplication?.VolumeLimit}}"
+                                       type="number" min="1" step="1" [ngModel]="20">
                                 <span class="input-group-addon"> GB
                                     </span>
                             </div>
-                            <span class="help-block">How many extra storage do you need for your Vms?</span>
+                            <span class="help-block">How much extra storage do you need in the future?</span>
                         </div>
                     </div>
 
-                    <div class="form-group row" [ngClass]="{
+                    <div class="form-group row">
+                        <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
+                            of storage
+                            volumes*
+                            <i data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+                               data-balloon-pos="down" data-balloon-length="large"><i
+                                    class="icon-question"
+                                    style="cursor: pointer;"></i></i></strong></label>
+                        <div class="col">
+                            <div class="input-group">
+                                <input required class="form-control"
+                                       name="project_application_volume_counter"
+                                       placeholder="NDA"
+                                       value="{{selectedApplication?.VolumeCounter}}"
+                                       type="text" disabled>
+                            </div>
+                            <span class="help-block">Current number of storage volumes</span>
+                        </div>
+
+                        <div class="col">
+                            <div class="input-group"
+                                 [ngClass]="{
                                 'has-danger': f.controls.project_application_renewal_volume_counter?.invalid,
                                 'has-success': f.controls.project_application_renewal_volume_counter?.valid
                                 }">
-                        <label class="col-md-4 form-control-label"
-                               for="textarea-input"><strong>Volume Counter*
-                            <i
-                                    class="icon-question" data-toggle="tooltip"
-                                    data-placement="auto"
-                                    title="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."></i></strong></label>
-                        <div class="col-md-8">
-                            <div class="input-group">
                                 <input required class="form-control"
                                        id="id_project_application_renewal_volume_counter"
                                        name="project_application_renewal_volume_counter"
                                        placeholder="e.g. 20"
                                        type="number" min="0" step="1"
                                        [ngModel]="selectedApplication?.VolumeCounter">
-                                <span class="input-group-addon"> GB
-                                    </span>
                             </div>
-                            <span class="help-block">How many storage volumes do you want to use?</span>
+                            <span class="help-block">How many storage volumes do you need in the future?</span>
                         </div>
                     </div>
 
-                    <div *ngIf="selectedApplication?.OpenStackProject"
-                         class="form-group row"
-                         [ngClass]="{
+                    <div *ngIf="selectedApplication?.OpenStackProject" class="form-group row">
+                        <label class="col-md-4 form-control-label" for="textarea-input"><strong>Object
+                            Storage* </strong><i
+                                data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
+                                data-balloon-pos="down" data-balloon-length="large"><i
+                                class="icon-question"
+                                style="cursor: pointer;"></i></i></label>
+
+                        <div class="col">
+                            <div class="input-group">
+                                <input class="form-control"
+                                       name="project_application_object_storage"
+                                       placeholder="NDA"
+                                       value="{{selectedApplication?.ObjectStorage}}"
+                                       type="text" disabled>
+                                <span class="input-group-addon"> GB
+                                    </span>
+                            </div>
+                            <span class="help-block">Current Object Storage capacity</span>
+                        </div>
+
+                        <div *ngIf="selectedApplication?.OpenStackProject" class="col">
+                            <div class="input-group" [ngClass]="{
                                 'has-danger': f.controls.project_application_renewal_object_storage?.invalid ,
                                 'has-success': f.controls.project_application_renewal_object_storage?.valid
-                                }">
-                        <label class="col-md-4 form-control-label"
-                               for="textarea-input">Object Storage <i
-                                class="icon-question" data-toggle="tooltip"
-                                data-placement="auto"
-                                title="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."></i></label>
-                        <div class="col-md-8">
-                            <div class="input-group">
+                                }" required>
                                 <input class="form-control"
                                        id="id_project_application_renewal_object_storage"
                                        name="project_application_renewal_object_storage"
                                        placeholder="e.g. 8"
-                                       type="number" min="0" step="1"
-                                       [ngModel]="selectedApplication?.ObjectStorage">
+                                       value="{{selectedApplication?.ObjectStorage}}"
+                                       type="number" min="0" step="1" [ngModel]="0">
                                 <span class="input-group-addon"> GB
                                     </span>
                             </div>
-                            <span class="help-block">How much object storage would you need?</span>
+                            <span class="help-block">How much Object Storage do you need in the future?</span>
                         </div>
                     </div>
 
 
-                    <div *ngIf="selectedApplication?.OpenStackProject"
-                         class="form-group row">
-                        <label class="col-md-4 form-control-label">Special
-                            Hardware <i class="icon-question"
-                                        data-toggle="tooltip"
-                                        data-placement="auto"
-                                        title="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."></i></label>
-                        <div class="col-md-8">
-                            <div *ngFor="let sh of special_hardware; let i=index;"
-                                 class="checkbox">
+                    <div *ngIf="selectedApplication?.OpenStackProject" class="form-group row">
+                        <label class="col-md-4 form-control-label"><strong>Special
+                            Hardware </strong> <i
+                                data-balloon="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."
+                                data-balloon-pos="down"
+                                data-balloon-length="large"><i class="icon-question"
+                                                               style="cursor: pointer;"></i></i></label>
+                        <!-- not working properly yet
+                        <div class="col">
+                              <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">                                    <label>
+                                      <input type="checkbox" [checked]="(specialHardwareInUse(sh, selectedApplication))" disabled>
+                                      {{sh.Name}}
+                                  </label>
+                              </div>
+                              <span class="help-block">Currently used special hardware</span>
+                          </div> -->
+
+                        <div class="col">
+                            <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
                                 <label>
                                     <input type="checkbox"
                                            [checked]="( checkboxValue === true ? sh.Checked : False )"
@@ -1083,7 +1291,7 @@
                                     {{sh.Name}}
                                 </label>
                             </div>
-                            <span class="help-block">Which special Hardware would you need?</span>
+                            <span class="help-block">Which special hardware do you need in the future?</span>
                         </div>
                     </div>
 
@@ -1091,29 +1299,36 @@
                         <label class="col-md-4 form-control-label"
                                for="text-input"><strong>Comment</strong></label>
                         <div class="col-md-8">
-                <textarea type="text"
-                          id="id_project_application_renewal__comment"
-                          name="project_application_renewal_comment"
-                          class="form-control" maxlength="8192"
-                          placeholder=''
-                          [ngModel]="selectedApplication?.Comment"></textarea>
+                <textarea type="text" id="id_project_application_renewal__comment"
+                          name="project_application_renewal_comment" class="form-control"
+                          maxlength="8192"
+                          placeholder='' [ngModel]="selectedApplication?.Comment"></textarea>
                             <span class="help-block">Additional information you want to share?</span>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <p class="col-md-12 form-control-label">By submitting
-                            this application you agree to the
-                            cloud
-                            usage policy.</p>
-                    </div>
+
+
+                    <strong *ngIf="selectedApplication?.OpenStackProject">
+                        <div class="form-group row">
+                            <label #corenumbers id="corenumbers" class="col">Number of total
+                                cores:</label>
+                        </div>
+                        <div class="form-group row">
+                            <label #ramnumbers id="ramnumbers" class="col">Amount of total
+                                RAM: </label>
+                        </div>
+                    </strong>
 
 
                 </form>
 
 
                 <div class="modal-footer">
-                    <button type="button" c class="btn  btn-primary"
-                            type="submit" name="_save" form="application_form"
+                    <div class="label">
+                        By submitting this application you agree to the cloud usage policy.
+                    </div>
+                    <button type="button" class="btn  btn-primary" type="submit" name="_save"
+                            form="application_form"
                             (click)="extensionModal.hide();resultModal.show()"
                             [disabled]="f.invalid"><i
                             class="fa fa-dot-circle-o">
@@ -1122,7 +1337,8 @@
                         Submit
                     </button>
                     <button type="button" class="btn btn-danger"
-                            (click)="extensionModal.hide()">Close
+                            (click)="extensionModal.hide(); unsetValues('corenumbers', 'ramnumbers')">
+                        Close
                     </button>
 
                 </div>
@@ -1133,47 +1349,41 @@
 </div>
 
 
-<div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1"
-     role="dialog" aria-labelledby="Label"
+<div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" *ngIf="extension_status == 0">
                     Waiting </h4>
-                <h4 class="modal-title" *ngIf="extension_status == 1">
-                    Success </h4>
-                <h4 class="modal-title" *ngIf="extension_status == 2">
-                    Error </h4>
+                <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
+                <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
                 <button type="button" class="close" style="cursor: pointer"
-                        (click)="resultModal.hide()" aria-label="Close">
+                        (click)="resultModal.hide();extension_status= 0;removeModalOpen();" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+
             <div class="modal-body">
-                <div class="alert alert-info" role="alert"
-                     *ngIf="extension_status==0">
+                <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
                     Waiting... <i class="fa fa-spinner fa-spin"
                                   style="font-size:24px"></i>
                 </div>
 
 
-                <div class="alert alert-success" role="alert"
-                     *ngIf="extension_status == 1">
+                <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
 
                     Modify request successfully submitted!
                 </div>
-                <div class="alert alert-success" role="alert"
-                     *ngIf="extension_status == 3">
+                <div class="alert alert-success" role="alert" *ngIf="extension_status == 3">
                     Modify request successfully approved!
                 </div>
-                <div class="alert alert-success" role="alert"
-                     *ngIf="extension_status == 4">
+                <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
                     Modify request successfully declined!
                 </div>
 
-                <div class="alert alert-warning" role="alert"
-                     *ngIf="extension_status == 2">
+                <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
                     An error occured.
 
                 </div>
@@ -1181,7 +1391,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
-                            (click)="extension_status= 0;resultModal.hide()">
+                            (click)="resultModal.hide();extension_status= 0;removeModalOpen();">
                         Close
                     </button>
                 </div>

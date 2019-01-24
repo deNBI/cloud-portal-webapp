@@ -29,7 +29,8 @@
 /connect.lock
 /coverage
 /libpeerconnection.log
-npm-debug.log*
+/documentation
+npm-debug.log
 testem.log
 /typings
 
