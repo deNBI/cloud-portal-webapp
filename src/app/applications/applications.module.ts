@@ -8,10 +8,12 @@ import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap/modal';
 import ***REMOVED***AddsinglevmComponent***REMOVED*** from "./addsinglevm.component";
 import ***REMOVED***AddcloudapplicationComponent***REMOVED*** from "./addcloudapplication.component";
+import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
 
 @NgModule(***REMOVED***
     imports: [
         ApplicationsRoutingModule,
+        ClickOutsideModule,
         TabsModule,
         CommonModule,
         FormsModule,
