@@ -2,6 +2,4 @@
 
 . ./hooks/env 
 
-echo $CACHE_TAG
-
 docker build --no-cache --build-arg "ANGULAR_MODE=${ANGULAR_MODE}" -t $IMAGE_NAME . 
