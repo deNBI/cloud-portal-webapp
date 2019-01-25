@@ -1,5 +1,16 @@
+
+
+#### Bug Fixes
+
+* **Modification:** fixed html bug 
+* **Overview:** aligned buttons 
+
 #### Features
 
+* **Application:**
+  * added test app btn 
+* **Email:** updated emails 
+* **Modification:** removed required from flavors
 * **Application:**
   * if not enough ressource shows them 
   * now shows client limits when simple vm is created 
@@ -7,8 +18,6 @@
 * **Snapshot:**
   * added status badges 
   * added a snapshot name check 
-
-
 
 
 #### Features
