@@ -8,10 +8,12 @@ import {FormsModule} from '@angular/forms';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {AddsinglevmComponent} from "./addsinglevm.component";
 import {AddcloudapplicationComponent} from "./addcloudapplication.component";
+import {ClickOutsideModule} from 'ng4-click-outside';
 
 @NgModule({
     imports: [
         ApplicationsRoutingModule,
+        ClickOutsideModule,
         TabsModule,
         CommonModule,
         FormsModule,

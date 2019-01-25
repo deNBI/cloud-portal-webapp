@@ -19,6 +19,10 @@
                         started
                         temporarily.
                     </div>
+                    <div *ngIf="!production">
+                        <button (click)="sendTestApplication();notificationModal.show();">Test Application
+                        </button>
+                    </div>
 
                     <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
                           class="form-horizontal">
@@ -215,25 +219,35 @@
                         </div>
 
 
-                        <div class="form-group row">
-                            <label class="col-md-4 form-control-label">You are able to start
-                                machines of the
-                                type:</label>
-                            <div class="col-md-8">
-                                <ul *ngFor="let f of flavorList">
+                        <div class="card">
 
-                                    <li *ngIf="f.simple_vm">
-                                        {{f.name}}
-                                        (CPUs:{{f.vcpus}}, RAM:{{f.ram}} GB)
-                                    
-                                    </li>
-
-                                </ul>
-                                <span class="help-block">More flavors can be enabled on demand.</span>
-
+                            <div id="flavor-card" class="card-header">
+                                Flavors
                             </div>
+                            <div class="form-group card-body">
+                                <div *ngFor="let f of flavorList">
 
+                                    <label class="col-md-4 form-control-label"><strong>{{f.name}}</strong><br>
+                                        Number of cores: {{f.vcpus}}<br>
+                                        RAM: {{f.ram}} GB</label>
+                                    <div class="col-md-8">
+
+                                        <div class="input-group">
+                                            <input class="form-control"
+                                                   id="project_application_{{f.name}}"
+                                                   name="project_application_{{f.name}}"
+                                                   type="number" min="0" step="1"
+                                                   value="0" placeholder="0"
+                                                   (ngModel)="'project_application_' + f.name">
+                                            <span class="input-group-addon"> VMs
+                                    </span>
+                                        </div>
+                                        <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
 
                         <br>
                         <div class="form-group row">
@@ -247,7 +261,8 @@
                         </div>
                         <br>
                         <div class="form-group row">
-                            <h5 class="col-md-6 form-control-label">Institutional Information</h5>
+                            <h5 class="col-md-6 form-control-label">Institutional
+                                Information</h5>
                         </div>
 
                         <div class="form-group row" [ngClass]="{
@@ -260,7 +275,8 @@
                                         class="icon-question"
                                         style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
-                                <input required type="text" id="id_project_application_institute"
+                                <input required type="text"
+                                       id="id_project_application_institute"
                                        name="project_application_institute" class="form-control"
                                        placeholder="e.g. Center for Biotechnology, Bielefeld"
                                        ngModel>
@@ -278,7 +294,8 @@
                                         data-balloon-pos="down"><i class="icon-question"
                                                                    style="cursor: pointer;"></i></i></strong></label>
                             <div class="col-md-8">
-                                <input required type="text" id="id_project_application_workgroup"
+                                <input required type="text"
+                                       id="id_project_application_workgroup"
                                        name="project_application_workgroup" class="form-control"
                                        placeholder="e.g. Computational Metagenomics" ngModel>
                                 <span class="help-block">To which workgroup do you belong?</span>
@@ -301,9 +318,11 @@
                                            name="project_application_report_allowed"
                                            [(ngModel)]="project_application_report_allowed"
                                     >
-                                    <span class="switch-label" data-on="Yes" data-off="No"></span>
+                                    <span class="switch-label" data-on="Yes"
+                                          data-off="No"></span>
                                     <span class="switch-handle"></span></label>
-                                <p> Do you permit the de.NBI Cloud to publicly mention your project's participation?</p>
+                                <p> Do you permit the de.NBI Cloud to publicly mention your
+                                    project's participation?</p>
 
                             </div>
 

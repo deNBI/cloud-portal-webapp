@@ -221,7 +221,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         let cur_flavors: [string, number][];
         for (let entry in app.CurrentFlavors) {
             cur_flavors.push([entry, app.CurrentFlavors[entry].counter]);
-            console.log(entry);
         }
         return cur_flavors;
     }
@@ -490,7 +489,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @param application application where it might be in use
      */
     specialHardwareInUse(nums: number, application: Application): boolean {
-        console.log(application.SpecialHardware.toString() + ' ' + nums.toString())
         return (application.SpecialHardware.toString().includes(nums.toString()));
     }
 
@@ -615,7 +613,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                         let special_hardware = [];
                         if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
                             let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
-                            console.log(special_hardware_string)
 
                             for (let c = 0; c < special_hardware_string.length; c++) {
                                 let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
@@ -776,7 +773,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      */
     public getUserApplication(application: Application) {
         let index = this.user_applications.indexOf(application);
-        console.log(index)
 
         this.applicationsservice.getUserApplication(application.Id.toString()).subscribe(aj => {
             let a = new Application();
@@ -1105,7 +1101,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     /**
      * Bugfix not scrollable site after closing modal
      */
-    removeModalOpen(){
+    removeModalOpen() {
         document.body.classList.remove('modal-open');
     }
 
@@ -1125,16 +1121,18 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         let new_group_id: number;
         this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(res => {
             if (res['Info']) {
-                for (let client of res['Clients']) {
-                    let newClient = new Vmclient();
-                    newClient.location = client.location;
-                    newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
-                    newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
-                    newClient.maxVMs = client.max_ressources.maxTotalInstances;
-                    newClient.assignedVMs = client.assigned_ressources.vms;
-                    newClient.assignedVolumes = client.assigned_ressources.volumes;
-                    newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
-                    this.notificationClientInfo.push(newClient);
+                if (res['Clients']) {
+                    for (let client of res['Clients']) {
+                        let newClient = new Vmclient();
+                        newClient.location = client.location;
+                        newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
+                        newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
+                        newClient.maxVMs = client.max_ressources.maxTotalInstances;
+                        newClient.assignedVMs = client.assigned_ressources.vms;
+                        newClient.assignedVolumes = client.assigned_ressources.volumes;
+                        newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
+                        this.notificationClientInfo.push(newClient);
+                    }
                 }
                 this.updateNotificationModal("Failed", res['Info'], true, "danger");
 
