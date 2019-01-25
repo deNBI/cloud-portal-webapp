@@ -4,7 +4,7 @@
 
 IMAGE_NAME_TAG=$(echo $IMAGE_NAME |  cut -d ':' -f 2)
 
-if ([[ $SOURCE_BRANCH = "prod" ]] || [[ $SOURCE_BRANCH == *.*.* ]]) && [[ $CACHE_TAG !=   *.*.*-staging ]] ; then 
+if ([[ $SOURCE_BRANCH = "prod" ]] || [[ $SOURCE_BRANCH == *.*.* ]]) && [[ $IMAGE_NAME_TAG !=   *.*.*-staging ]] ; then 
         ANGULAR_MODE="production"
 else
         ANGULAR_MODE="stage"
