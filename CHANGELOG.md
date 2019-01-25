@@ -1,4 +1,6 @@
 
+## 0.1.0-beta.0.6.0 Release
+
 
 #### Bug Fixes
 
