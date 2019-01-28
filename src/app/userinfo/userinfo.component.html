@@ -3,15 +3,12 @@
     <div class="row">
         <div class="col-md-8">
             <!--/.col-->
-            <h1>Hello, {{ userinfo.FirstName }} {{ userinfo.LastName }}</h1></div>
+            <h1>Welcome {{ userinfo.FirstName }} {{ userinfo.LastName }}</h1></div>
         <div class="col-md-4">
             <button *ngIf="freemium_active && !is_project_member" class="btn btn-primary btn-lg"
                     (click)="freemiummodal.show();">Join Freemium!
             </button>
         </div>
-    </div>
-    <div class="row">
-        <h3>This is your personal data page.</h3>
     </div>
             <div class="card">
                 <div class="card-header">
