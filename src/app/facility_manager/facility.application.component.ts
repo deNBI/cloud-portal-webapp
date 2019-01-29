@@ -89,7 +89,9 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             console.log(result )
             this.managerFacilities = result;
             this.selectedFacility = this.managerFacilities[0];
+            this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe()
             this.getAllApplications(this.selectedFacility ['FacilityId']);
+
 
         })
     }
