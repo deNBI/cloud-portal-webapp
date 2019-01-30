@@ -16,6 +16,7 @@ import { ResourcesComponent } from './resources/resources.component';
       FormsModule,
     CommonModule,
     ModalModule.forRoot(),
+
   ],
   declarations: [
       FacilityProjectsOverviewComponent,
