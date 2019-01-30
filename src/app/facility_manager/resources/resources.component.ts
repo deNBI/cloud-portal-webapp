@@ -1,6 +1,10 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***FacilityService***REMOVED*** from "../../api-connector/facility.service";
-import ***REMOVED***ComputecenterComponent***REMOVED*** from "../../projectmanagement/computecenter.component";
+
+import * as jspdf from 'jspdf';
+
+import html2canvas from 'html2canvas';
+
 
 @Component(***REMOVED***
     selector: 'app-resources',
@@ -100,6 +104,24 @@ export class ResourcesComponent implements OnInit ***REMOVED***
             this.isLoaded = true;
         ***REMOVED***)
 
+    ***REMOVED***
+
+
+    public captureScreen() ***REMOVED***
+        var data = document.getElementById('contentToConvert');
+        html2canvas(data).then(canvas => ***REMOVED***
+            // Few necessary setting options
+            var imgWidth = 208;
+            var pageHeight = 295;
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            var heightLeft = imgHeight;
+
+            const contentDataURL = canvas.toDataURL('image/png')
+            let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+            var position = 0;
+            pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+            pdf.save(this.selectedFacility['Facility'] + '.pdf'); // Generated PDF
+        ***REMOVED***);
     ***REMOVED***
 
 

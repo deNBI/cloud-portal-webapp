@@ -16,6 +16,7 @@ import ***REMOVED*** ResourcesComponent ***REMOVED*** from './resources/resource
       FormsModule,
     CommonModule,
     ModalModule.forRoot(),
+
   ],
   declarations: [
       FacilityProjectsOverviewComponent,
