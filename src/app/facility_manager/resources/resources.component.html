@@ -1,0 +1,103 @@
+<div *ngIf="isLoaded==false" class="loader"></div>
+
+<div *ngIf="isLoaded" class="animated fadeIn" ng-app  style="width: 100%">
+    <div class="row" >
+        <!--/.col-->
+        <h1 *ngIf="selectedFacility">Projects Overview: ***REMOVED******REMOVED***selectedFacility['Facility']***REMOVED******REMOVED***
+
+
+        </h1>
+        <div class="card"  style="width: 100%">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> Resources
+
+            </div>
+            <div><select [(ngModel)]="selectedFacility"
+                         (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
+                         class="form-control" name="selectedFacility">
+                <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
+                    ***REMOVED******REMOVED***facility['Facility']***REMOVED******REMOVED***
+                </option>
+
+            </select></div>
+
+            <div class="card-block"  style="width: 100%">
+
+
+                <table class="table table-responsive table-striped table-bordered table" style="width: 100%" >
+                    <thead>
+                    <th colspan="5"><h1>Facility: ***REMOVED******REMOVED***selectedFacility['Facility']***REMOVED******REMOVED***</h1></th>
+                    </thead>
+                    <thead>
+                    <th></th>
+                    <th>Approved OpenStack</th>
+                    <th>Wait for Confirmation OpenStack</th>
+                    <th>Simple VM</th>
+                    <th>Total</th>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <th>&nbsp;Ram [GB]</th>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackApprovedTotalRam***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackWFCTotalRam***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***simpleVmTotalRam***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***totalRam***REMOVED******REMOVED***</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;Cores</th>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackApprovedTotalCores***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackWFCTotalCores***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***simpleVmTotalCores***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***totalCores***REMOVED******REMOVED***</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;Vms</th>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackApprovedTotalVms***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackWFCTotalVms***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***simpleVmTotalVms***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***totalVms***REMOVED******REMOVED***</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;Volumes</th>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackApprovedTotalVolumeCounter***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackWFCTotalVolumeCounter***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***simpleVmTotalVolumeCounter***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***totalVolumeCounter***REMOVED******REMOVED***</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;Volumes Storage [GB]</th>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackApprovedTotalVolumeLimit***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackWFCTotalVolumeLimit***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***simpleVmTotalVolumeLimit***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***totalVolumeLimit***REMOVED******REMOVED***</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;Object Storage [GB]</th>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackApprovedTotalObjectStorage***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackWFCTotalObjectStorage***REMOVED******REMOVED***</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;***REMOVED******REMOVED***totalObjectStorage***REMOVED******REMOVED***</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;FPGA</th>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackApprovedTotalFPGA***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackWFCTotalFPGA***REMOVED******REMOVED***</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;***REMOVED******REMOVED***totalFPGA***REMOVED******REMOVED***</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;GPU</th>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackApprovedTotalGPU***REMOVED******REMOVED***</td>
+                        <td>&nbsp;***REMOVED******REMOVED***openStackWFCTotalGPU***REMOVED******REMOVED***</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;***REMOVED******REMOVED***totalFPGA***REMOVED******REMOVED***</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!-- DivTable.com -->
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+</div>

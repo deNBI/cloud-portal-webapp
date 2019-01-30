@@ -7,6 +7,7 @@ import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED***ImageTagComponent***REMOVED*** from "../facility_manager/imagetags.component";
 import ***REMOVED***FacilitymanagerRoutingModule***REMOVED*** from "./facilitymanager-routing.module";
 import ***REMOVED***FacilityApplicationComponent***REMOVED*** from "./facility.application.component";
+import ***REMOVED*** ResourcesComponent ***REMOVED*** from './resources/resources.component';
 
 @NgModule(***REMOVED***
   imports: [
@@ -19,7 +20,8 @@ import ***REMOVED***FacilityApplicationComponent***REMOVED*** from "./facility.a
   declarations: [
       FacilityProjectsOverviewComponent,
       ImageTagComponent,
-      FacilityApplicationComponent
+      FacilityApplicationComponent,
+      ResourcesComponent
   ]
 ***REMOVED***)
 export class FacilitymanagerModule ***REMOVED*** ***REMOVED***
