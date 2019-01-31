@@ -2,7 +2,7 @@
     <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>&#9776;</button>
     <a class="navbar-brand d-none d-md-block" href="#"></a>
     <ul class="nav navbar-nav ml-md-auto">
-      <li><strong class="text-muted" style="padding-right: 2pc">***REMOVED******REMOVED***login_name***REMOVED******REMOVED***</strong></li>
+        <li><strong class="text-muted" style="padding-right: 2pc">***REMOVED******REMOVED***login_name***REMOVED******REMOVED***</strong></li>
     </ul>
 </header>
 <div class="app-body">
@@ -13,11 +13,13 @@
                     Profile
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/userinfo']"><i class="icon-user"></i>
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/userinfo']"><i
+                            class="icon-user"></i>
                         User Information </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/help']"><i class="icon-info"></i>
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/help']"><i
+                            class="icon-info"></i>
                         Help</a>
                 </li>
                 <li class="divider"></li>
@@ -25,28 +27,33 @@
                     Project management
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/project-management']"><i
+                    <a class="nav-link" routerLinkActive="active"
+                       [routerLink]="['/project-management']"><i
                             class="icon-list"></i> Project Overview</a>
                 </li>
                 <li class="nav-item">
 
-                    <a class="nav-link" [routerLinkActiveOptions]="***REMOVED***exact:true***REMOVED***" routerLinkActive="active" [routerLink]="['/applications']"><i
+                    <a class="nav-link" [routerLinkActiveOptions]="***REMOVED***exact:true***REMOVED***"
+                       routerLinkActive="active" [routerLink]="['/applications']"><i
                             class="icon-drawer"></i> Applications</a>
                 </li>
                 <li class="nav-item nav-dropdown ***REMOVED******REMOVED***navbar_state***REMOVED******REMOVED***">
-                    <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;" (click)="toggle_new_application();"><i
+                    <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;"
+                       (click)="toggle_new_application();"><i
                             class="icon-pencil"></i> New Application</a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                                [routerLink]="['/applications/newCloudApplication']">
-                                <i class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
+                                <i class="icon-question" onmouseover="" style="cursor: pointer;"
+                                   data-toggle="tooltip" data-placement="auto"
                                    title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i>
                                 Cloud Project </a></li>
                         <li class="nav-item">
                             <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                                [routerLink]="['/applications/newSingleVmApplication']"><i
-                                    class="icon-question"  onmouseover="" style="cursor: pointer;" data-toggle="tooltip" data-placement="auto"
+                                    class="icon-question" onmouseover="" style="cursor: pointer;"
+                                    data-toggle="tooltip" data-placement="auto"
                                     title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i>
                                 Simple VM Project </a></li>
 
@@ -57,13 +64,16 @@
                     Virtual Machines
                 </li>
                 <li class="nav-item" *ngIf="vm_project_member">
-                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/newVM']"><i
+                    <a class="nav-link" routerLinkActive="active"
+                       [routerLink]="['/virtualmachines/newVM']"><i
 
                             class="icon-screen-desktop"></i> New Instance</a>
                 </li>
-                <li  *ngIf="vm_project_member || get_is_vo_admin()" class="nav-item nav-dropdown ***REMOVED******REMOVED***overview_state***REMOVED******REMOVED***">
-                    <a class="nav-link nav-dropdown-toggle"  onmouseover="" style="cursor: pointer;" (click)="  toggle_overview();"><i
-                            class="icon-list"   onmouseover="" style="cursor: pointer;"></i> Overviews</a>
+                <li *ngIf="vm_project_member || get_is_vo_admin()"
+                    class="nav-item nav-dropdown ***REMOVED******REMOVED***overview_state***REMOVED******REMOVED***">
+                    <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;"
+                       (click)="  toggle_overview();"><i
+                            class="icon-list" onmouseover="" style="cursor: pointer;"></i> Overviews</a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item" *ngIf="vm_project_member || get_is_vo_admin()">
                             <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
@@ -71,7 +81,7 @@
                                     class="icon-list"></i> Instances</a>
                         </li>
                         <li class="nav-item" *ngIf="get_is_vo_admin()">
-                            <a  style="padding-left: 25px" class="nav-link" routerLinkActive="active"
+                            <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                                [routerLink]="['/virtualmachines/clientOverview']"><i
                                     class="icon-list"></i> Clients</a>
                         </li>
@@ -91,27 +101,37 @@
                 </li>
 
 
-                <li *ngIf="is_facility_manager" class="nav-title">
+                <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-title">
                     Facilities
                 </li>
-                <li *ngIf="is_facility_manager" class="nav-item">
-                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/facilityProjects']"><i
+                <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active"
+                       [routerLink]="['/facility-manager/facilityProjects']"><i
                             class="icon-list"></i> Projects</a>
                 </li>
-                 <li *ngIf="is_facility_manager" class="nav-item">
-                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/facilityApplications']"><i
+                <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active"
+                       [routerLink]="['/facility-manager/facilityApplications']"><i
                             class="icon-list"></i> Applications</a>
                 </li>
-                <li *ngIf="is_facility_manager" class="nav-item">
-                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/facility-manager/imageTags']"><i
+                <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active"
+                       [routerLink]="['/facility-manager/facilityResources']"><i
+                            class="icon-list"></i> Resources</a>
+                </li>
+                <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active"
+                       [routerLink]="['/facility-manager/imageTags']"><i
                             class="icon-tag"></i> Image Tags</a>
                 </li>
+
 
                 <li class="nav-title" *ngIf="get_is_vo_admin()">
                     Vo Manager
                 </li>
                 <li class="nav-item" *ngIf="get_is_vo_admin()">
-                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/vo-manager/overview']"><i
+                    <a class="nav-link" routerLinkActive="active"
+                       [routerLink]="['/vo-manager/overview']"><i
                             class="icon-list"></i> Overview</a>
                 </li>
 
