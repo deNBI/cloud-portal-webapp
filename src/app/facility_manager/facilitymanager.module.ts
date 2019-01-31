@@ -7,6 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {ImageTagComponent} from "../facility_manager/imagetags.component";
 import {FacilitymanagerRoutingModule} from "./facilitymanager-routing.module";
 import {FacilityApplicationComponent} from "./facility.application.component";
+import { ResourcesComponent } from './resources/resources.component';
 
 @NgModule({
   imports: [
@@ -15,11 +16,13 @@ import {FacilityApplicationComponent} from "./facility.application.component";
       FormsModule,
     CommonModule,
     ModalModule.forRoot(),
+
   ],
   declarations: [
       FacilityProjectsOverviewComponent,
       ImageTagComponent,
-      FacilityApplicationComponent
+      FacilityApplicationComponent,
+      ResourcesComponent
   ]
 })
 export class FacilitymanagerModule { }
