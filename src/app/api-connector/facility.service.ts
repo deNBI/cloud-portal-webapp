@@ -59,6 +59,17 @@ export class FacilityService ***REMOVED***
 
     ***REMOVED***
 
+    getFacilityResources(facility: number): Observable<any> ***REMOVED***
+
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/resources/', ***REMOVED***
+            withCredentials: true,
+
+
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+
+
+    ***REMOVED***
+
 
     /**
      * Gets all facility applications which are waiting for conirmation.
@@ -139,7 +150,7 @@ export class FacilityService ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** facility id of the facility
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-      getFacilityGroupRichMembers(groupid: number,facility:number): Observable<any> ***REMOVED***
+    getFacilityGroupRichMembers(groupid: number, facility: number): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/' + groupid + '/members/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
