@@ -1,0 +1,106 @@
+<div *ngIf="isLoaded==false" class="loader"></div>
+
+<div *ngIf="isLoaded" class="animated fadeIn" ng-app style="width: 100%">
+    <div class="row">
+        <!--/.col-->
+        <h1 *ngIf="selectedFacility">Projects Overview: {{selectedFacility['Facility']}}
+
+
+        </h1>
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> Resources
+
+            </div>
+            <div><select [(ngModel)]="selectedFacility"
+                         (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
+                         class="form-control" name="selectedFacility">
+                <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
+                    {{facility['Facility']}}
+                </option>
+
+            </select></div>
+
+            <div id="contentToConvert" class="card-block" style="width: 100%">
+
+
+                <table class="table table-responsive table-striped table-bordered table"
+                       style="width: 100%">
+                    <thead>
+                    <th colspan="5"><h1>Facility: {{selectedFacility['Facility']}}</h1></th>
+                    </thead>
+                    <thead>
+                    <th></th>
+                    <th>Approved OpenStack</th>
+                    <th>Wait for Confirmation OpenStack</th>
+                    <th>Simple VM</th>
+                    <th>Total</th>
+                    </thead>
+                    <tbody>
+
+                    <tr>
+                        <th>&nbsp;Ram [GB]</th>
+                        <td>&nbsp;{{openStackApprovedTotalRam}}</td>
+                        <td>&nbsp;{{openStackWFCTotalRam}}</td>
+                        <td>&nbsp;{{simpleVmTotalRam}}</td>
+                        <td>&nbsp;{{totalRam}}</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;Cores</th>
+                        <td>&nbsp;{{openStackApprovedTotalCores}}</td>
+                        <td>&nbsp;{{openStackWFCTotalCores}}</td>
+                        <td>&nbsp;{{simpleVmTotalCores}}</td>
+                        <td>&nbsp;{{totalCores}}</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;Vms</th>
+                        <td>&nbsp;{{openStackApprovedTotalVms}}</td>
+                        <td>&nbsp;{{openStackWFCTotalVms}}</td>
+                        <td>&nbsp;{{simpleVmTotalVms}}</td>
+                        <td>&nbsp;{{totalVms}}</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;Volumes</th>
+                        <td>&nbsp;{{openStackApprovedTotalVolumeCounter}}</td>
+                        <td>&nbsp;{{openStackWFCTotalVolumeCounter}}</td>
+                        <td>&nbsp;{{simpleVmTotalVolumeCounter}}</td>
+                        <td>&nbsp;{{totalVolumeCounter}}</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;Volumes Storage [GB]</th>
+                        <td>&nbsp;{{openStackApprovedTotalVolumeLimit}}</td>
+                        <td>&nbsp;{{openStackWFCTotalVolumeLimit}}</td>
+                        <td>&nbsp;{{simpleVmTotalVolumeLimit}}</td>
+                        <td>&nbsp;{{totalVolumeLimit}}</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;Object Storage [GB]</th>
+                        <td>&nbsp;{{openStackApprovedTotalObjectStorage}}</td>
+                        <td>&nbsp;{{openStackWFCTotalObjectStorage}}</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;{{totalObjectStorage}}</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;FPGA</th>
+                        <td>&nbsp;{{openStackApprovedTotalFPGA}}</td>
+                        <td>&nbsp;{{openStackWFCTotalFPGA}}</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;{{totalFPGA}}</td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;GPU</th>
+                        <td>&nbsp;{{openStackApprovedTotalGPU}}</td>
+                        <td>&nbsp;{{openStackWFCTotalGPU}}</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;{{totalFPGA}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <button (click)="captureScreen()">Download PDF</button>
+            <!-- DivTable.com -->
+        </div>
+        <!--/.col-->
+    </div>
+</div>
