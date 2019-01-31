@@ -1,4 +1,21 @@
 
+
+### Bug Fixes
+
+* **Applications:** Single vm to simple vm 
+* **Modification:** fixed html bug (
+* **Overview:** aligned buttons 
+
+#### Features
+
+* **Application:**
+  * added test app btn 
+* **Applications:** added to pdf 
+* **Email:** updated emails
+* **Facility:** added resources overview 
+* **Modification:** removed required from flavors 
+* **Resources:** added resources overview method 
+
 ## 0.1.0-beta.0.6.0 Release
 
 
