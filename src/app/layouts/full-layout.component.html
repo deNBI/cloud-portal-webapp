@@ -5,6 +5,7 @@
         <li><strong class="text-muted" style="cursor: pointer;padding-right: 2pc" routerLinkActive="active"
                     [routerLink]="['/userinfo']"
         >***REMOVED******REMOVED***login_name***REMOVED******REMOVED***</strong></li>
+
     </ul>
 </header>
 <div class="app-body">
@@ -103,24 +104,34 @@
                 </li>
 
 
-                <li *ngIf="is_facility_manager" class="nav-title">
+                <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-title">
                     Facilities
                 </li>
-                <li *ngIf="is_facility_manager" class="nav-item">
+
+                <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-item">
+
                     <a class="nav-link" routerLinkActive="active"
                        [routerLink]="['/facility-manager/facilityProjects']"><i
                             class="icon-list"></i> Projects</a>
                 </li>
-                <li *ngIf="is_facility_manager" class="nav-item">
+
+                <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-item">
                     <a class="nav-link" routerLinkActive="active"
                        [routerLink]="['/facility-manager/facilityApplications']"><i
                             class="icon-list"></i> Applications</a>
                 </li>
-                <li *ngIf="is_facility_manager" class="nav-item">
+
+                <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-item">
+                    <a class="nav-link" routerLinkActive="active"
+                       [routerLink]="['/facility-manager/facilityResources']"><i
+                            class="icon-list"></i> Resources</a>
+                </li>
+                <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-item">
                     <a class="nav-link" routerLinkActive="active"
                        [routerLink]="['/facility-manager/imageTags']"><i
                             class="icon-tag"></i> Image Tags</a>
                 </li>
+
 
                 <li class="nav-title" *ngIf="get_is_vo_admin()">
                     Vo Manager
