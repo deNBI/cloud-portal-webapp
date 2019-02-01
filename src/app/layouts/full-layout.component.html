@@ -2,7 +2,10 @@
     <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>&#9776;</button>
     <a class="navbar-brand d-none d-md-block" href="#"></a>
     <ul class="nav navbar-nav ml-md-auto">
-        <li><strong class="text-muted" style="padding-right: 2pc">{{login_name}}</strong></li>
+        <li><strong class="text-muted" style="cursor: pointer;padding-right: 2pc" routerLinkActive="active"
+                    [routerLink]="['/userinfo']"
+        >{{login_name}}</strong></li>
+
     </ul>
 </header>
 <div class="app-body">
@@ -104,16 +107,20 @@
                 <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-title">
                     Facilities
                 </li>
+
                 <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-item">
+
                     <a class="nav-link" routerLinkActive="active"
                        [routerLink]="['/facility-manager/facilityProjects']"><i
                             class="icon-list"></i> Projects</a>
                 </li>
+
                 <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-item">
                     <a class="nav-link" routerLinkActive="active"
                        [routerLink]="['/facility-manager/facilityApplications']"><i
                             class="icon-list"></i> Applications</a>
                 </li>
+
                 <li *ngIf="is_facility_manager || get_is_vo_admin()" class="nav-item">
                     <a class="nav-link" routerLinkActive="active"
                        [routerLink]="['/facility-manager/facilityResources']"><i
