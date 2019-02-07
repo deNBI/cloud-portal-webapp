@@ -9,6 +9,7 @@ import {VoManagerRoutingModule} from "./VoManager-routing.module";
 import {VoOverviewComponent} from "./VoOverviewComponent";
 import {VoGuardService} from "./vo-guard.service";
 import {VoService} from "../api-connector/vo.service";
+import { ResourcesComponent } from './resources/resources.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import {VoService} from "../api-connector/vo.service";
     ModalModule.forRoot(),
   ],
   declarations: [
-    VoOverviewComponent
+    VoOverviewComponent,
+    ResourcesComponent
   ],
     providers:[
         VoService,
