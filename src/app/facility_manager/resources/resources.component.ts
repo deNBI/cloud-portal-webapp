@@ -28,6 +28,7 @@ export class ResourcesComponent implements OnInit {
     openstackApprovedResources: Resources;
     totalResource: Resources;
     tableId = 'contentToConvert';
+     today: number = Date.now();
 
 
     exportAsConfigCSV: ExportAsConfig = {

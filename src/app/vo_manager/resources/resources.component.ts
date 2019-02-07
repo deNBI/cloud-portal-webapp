@@ -10,7 +10,7 @@ import {ExportAsService, ExportAsConfig} from 'ngx-export-as'
     selector: 'app-resources',
     templateUrl: './resources.component.html',
     styleUrls: ['./resources.component.scss'],
-    providers: [VoService,ExportAsService]
+    providers: [VoService, ExportAsService]
 })
 export class ResourcesComponent implements OnInit {
 
@@ -18,11 +18,11 @@ export class ResourcesComponent implements OnInit {
     voResources: Resources[] = [];
     totalResource: Resources;
     fileName = 'VoResources';
-    tableId= 'resourcesTable';
+    tableId = 'resourcesTable';
+    today: number = Date.now();
 
 
-
-     exportAsConfigCSV: ExportAsConfig = {
+    exportAsConfigCSV: ExportAsConfig = {
         type: 'csv',
         elementId: this.tableId
     };

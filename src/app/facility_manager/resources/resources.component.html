@@ -29,12 +29,12 @@
                        style="width: 100%">
                     <thead>
                     <tr>
-                        <th colspan="5"><h1>Facility: {{selectedFacility['Facility']}}</h1></th>
+                        <th colspan="5"><h1>Facility: {{selectedFacility['Facility']}} {{today | date:'dd-MM-yyyy'}}</h1></th>
                     </tr>
                     </thead>
                     <thead>
                     <tr>
-                        <th></th>
+                        <th>{{today | date:'dd-MM-yyyy'}}</th>
                         <th>{{openstackApprovedResources.resource_name}}</th>
                         <th>{{openstackWFCResources.resource_name}}</th>
                         <th>{{simpleVmRessource.resource_name}}</th>
