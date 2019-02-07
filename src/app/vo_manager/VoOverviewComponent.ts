@@ -50,7 +50,6 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
 
     constructor(private voserice: VoService, private groupservice: GroupService) ***REMOVED***
         super();
-        this.voserice.getVoProjectResources().subscribe()
         this.getVoProjects();
         this.voserice.getNewsletterSubscriptionCounter().subscribe(result => ***REMOVED***
             this.newsletterSubscriptionCounter = result['subscribed'];
