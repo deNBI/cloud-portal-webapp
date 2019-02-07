@@ -10,7 +10,7 @@ import ***REMOVED***ExportAsService, ExportAsConfig***REMOVED*** from 'ngx-expor
     selector: 'app-resources',
     templateUrl: './resources.component.html',
     styleUrls: ['./resources.component.scss'],
-    providers: [VoService,ExportAsService]
+    providers: [VoService, ExportAsService]
 ***REMOVED***)
 export class ResourcesComponent implements OnInit ***REMOVED***
 
@@ -18,11 +18,11 @@ export class ResourcesComponent implements OnInit ***REMOVED***
     voResources: Resources[] = [];
     totalResource: Resources;
     fileName = 'VoResources';
-    tableId= 'resourcesTable';
+    tableId = 'resourcesTable';
+    today: number = Date.now();
 
 
-
-     exportAsConfigCSV: ExportAsConfig = ***REMOVED***
+    exportAsConfigCSV: ExportAsConfig = ***REMOVED***
         type: 'csv',
         elementId: this.tableId
     ***REMOVED***;

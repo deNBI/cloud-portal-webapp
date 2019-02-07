@@ -28,6 +28,7 @@ export class ResourcesComponent implements OnInit ***REMOVED***
     openstackApprovedResources: Resources;
     totalResource: Resources;
     tableId = 'contentToConvert';
+     today: number = Date.now();
 
 
     exportAsConfigCSV: ExportAsConfig = ***REMOVED***
