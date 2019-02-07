@@ -1,11 +1,11 @@
-import ***REMOVED*** Component, OnInit ***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***VoService***REMOVED*** from "../../api-connector/vo.service";
 
 @Component(***REMOVED***
-  selector: 'app-resources',
-  templateUrl: './resources.component.html',
-  styleUrls: ['./resources.component.scss']
-    providers:[VoService]
+    selector: 'app-resources',
+    templateUrl: './resources.component.html',
+    styleUrls: ['./resources.component.scss'],
+    providers: [VoService]
 ***REMOVED***)
 export class ResourcesComponent implements OnInit ***REMOVED***
 
