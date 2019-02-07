@@ -18,6 +18,7 @@ import ***REMOVED***HttpClientModule***REMOVED*** from '@angular/common/http';
 // Routing Module
 import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
 import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination';
+import ***REMOVED***ExportAsModule***REMOVED*** from 'ngx-export-as';
 
 // Layouts
 import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout.component';
@@ -38,6 +39,7 @@ import ***REMOVED***ConsentInfoComponent***REMOVED*** from "./consent-info.compo
         ModalModule.forRoot(),
         PopoverModule,
         PaginationModule.forRoot(),
+        ExportAsModule
     ],
     declarations: [
         AppComponent,

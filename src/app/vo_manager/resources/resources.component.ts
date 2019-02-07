@@ -4,24 +4,39 @@ import ***REMOVED***FacilityService***REMOVED*** from "../../api-connector/facil
 import * as jspdf from 'jspdf';
 import ***REMOVED***Resources***REMOVED*** from "./resources";
 import html2canvas from 'html2canvas';
+import ***REMOVED***ExportAsService, ExportAsConfig***REMOVED*** from 'ngx-export-as'
 
 @Component(***REMOVED***
     selector: 'app-resources',
     templateUrl: './resources.component.html',
     styleUrls: ['./resources.component.scss'],
-    providers: [VoService]
+    providers: [VoService,ExportAsService]
 ***REMOVED***)
 export class ResourcesComponent implements OnInit ***REMOVED***
 
     isLoaded = false;
     voResources: Resources[] = [];
     totalResource: Resources;
+    fileName = 'VoResources';
+    tableId= 'resourcesTable';
 
 
-    constructor(private voservice: VoService) ***REMOVED***
+
+     exportAsConfigCSV: ExportAsConfig = ***REMOVED***
+        type: 'csv',
+        elementId: this.tableId
+    ***REMOVED***;
+
+    constructor(private voservice: VoService, private exportAsService: ExportAsService) ***REMOVED***
         this.getVoProjectResources()
 
     ***REMOVED***
+
+    public tableToCSV() ***REMOVED***
+        this.exportAsService.save(this.exportAsConfigCSV, this.fileName);
+
+    ***REMOVED***
+
 
     public getVoProjectResources() ***REMOVED***
         this.voservice.getVoProjectResources().subscribe(res => ***REMOVED***
@@ -36,7 +51,6 @@ export class ResourcesComponent implements OnInit ***REMOVED***
                     this.totalResource = new Resources('Total', res['Total']['totalRam'], res['Total']['totalCores'], res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
                         res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'], res['Total']['totalFPGA'], res['Total']['totalGPU']);
                 ***REMOVED***
-                console.log(this.voResources)
             ***REMOVED***
 
 
@@ -46,8 +60,8 @@ export class ResourcesComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
 
-    public captureScreen() ***REMOVED***
-        var data = document.getElementById('contentToConvert');
+    public tableToPDF() ***REMOVED***
+        var data = document.getElementById(this.tableId);
         html2canvas(data).then(canvas => ***REMOVED***
             // Few necessary setting options
             var imgWidth = 208;
