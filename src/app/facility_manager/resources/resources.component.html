@@ -31,68 +31,68 @@
                     </thead>
                     <thead>
                     <th></th>
-                    <th>Approved OpenStack</th>
-                    <th>Wait for Confirmation OpenStack</th>
-                    <th>Simple VM</th>
-                    <th>Total</th>
+                    <th>{{openstackApprovedResources.resource_name}}</th>
+                    <th>{{openstackWFCResources.resource_name}}</th>
+                    <th>{{simpleVmRessource.resource_name}}</th>
+                    <th>{{totalResource.resource_name}}</th>
                     </thead>
                     <tbody>
 
                     <tr>
                         <th>&nbsp;Ram [GB]</th>
-                        <td>&nbsp;{{openStackApprovedTotalRam}}</td>
-                        <td>&nbsp;{{openStackWFCTotalRam}}</td>
-                        <td>&nbsp;{{simpleVmTotalRam}}</td>
-                        <td>&nbsp;{{totalRam}}</td>
+                        <td>&nbsp;{{openstackApprovedResources.totalRam}}</td>
+                        <td>&nbsp;{{openstackWFCResources.totalRam}}</td>
+                        <td>&nbsp;{{simpleVmRessource.totalRam}}</td>
+                        <td>&nbsp;{{totalResource.totalRam}}</td>
                     </tr>
                     <tr>
                         <th>&nbsp;Cores</th>
-                        <td>&nbsp;{{openStackApprovedTotalCores}}</td>
-                        <td>&nbsp;{{openStackWFCTotalCores}}</td>
-                        <td>&nbsp;{{simpleVmTotalCores}}</td>
-                        <td>&nbsp;{{totalCores}}</td>
+                        <td>&nbsp;{{openstackApprovedResources.totalCores}}</td>
+                        <td>&nbsp;{{openstackWFCResources.totalCores}}</td>
+                        <td>&nbsp;{{simpleVmRessource.totalCores}}</td>
+                        <td>&nbsp;{{totalResource.totalCores}}</td>
                     </tr>
                     <tr>
                         <th>&nbsp;Vms</th>
-                        <td>&nbsp;{{openStackApprovedTotalVms}}</td>
-                        <td>&nbsp;{{openStackWFCTotalVms}}</td>
-                        <td>&nbsp;{{simpleVmTotalVms}}</td>
-                        <td>&nbsp;{{totalVms}}</td>
+                        <td>&nbsp;{{openstackApprovedResources.totalVms}}</td>
+                        <td>&nbsp;{{openstackWFCResources.totalVms}}</td>
+                        <td>&nbsp;{{simpleVmRessource.totalVms}}</td>
+                        <td>&nbsp;{{totalResource.totalVms}}</td>
                     </tr>
                     <tr>
                         <th>&nbsp;Volumes</th>
-                        <td>&nbsp;{{openStackApprovedTotalVolumeCounter}}</td>
-                        <td>&nbsp;{{openStackWFCTotalVolumeCounter}}</td>
-                        <td>&nbsp;{{simpleVmTotalVolumeCounter}}</td>
-                        <td>&nbsp;{{totalVolumeCounter}}</td>
+                        <td>&nbsp;{{openstackApprovedResources.totalVolumeCounter}}</td>
+                        <td>&nbsp;{{openstackWFCResources.totalVolumeCounter}}</td>
+                        <td>&nbsp;{{simpleVmRessource.totalVolumeCounter}}</td>
+                        <td>&nbsp;{{totalResource.totalVolumeCounter}}</td>
                     </tr>
                     <tr>
                         <th>&nbsp;Volumes Storage [GB]</th>
-                        <td>&nbsp;{{openStackApprovedTotalVolumeLimit}}</td>
-                        <td>&nbsp;{{openStackWFCTotalVolumeLimit}}</td>
-                        <td>&nbsp;{{simpleVmTotalVolumeLimit}}</td>
-                        <td>&nbsp;{{totalVolumeLimit}}</td>
+                        <td>&nbsp;{{openstackApprovedResources.totalVolumeLimit}}</td>
+                        <td>&nbsp;{{openstackWFCResources.totalVolumeLimit}}</td>
+                        <td>&nbsp;{{simpleVmRessource.totalVolumeLimit}}</td>
+                        <td>&nbsp;{{totalResource.totalVolumeLimit}}</td>
                     </tr>
                     <tr>
                         <th>&nbsp;Object Storage [GB]</th>
-                        <td>&nbsp;{{openStackApprovedTotalObjectStorage}}</td>
-                        <td>&nbsp;{{openStackWFCTotalObjectStorage}}</td>
+                        <td>&nbsp;{{openstackApprovedResources.totalObjectStorage}}</td>
+                        <td>&nbsp;{{openstackWFCResources.totalObjectStorage}}</td>
                         <td>&nbsp;</td>
-                        <td>&nbsp;{{totalObjectStorage}}</td>
+                        <td>&nbsp;{{totalResource.totalObjectStorage}}</td>
                     </tr>
                     <tr>
                         <th>&nbsp;FPGA</th>
-                        <td>&nbsp;{{openStackApprovedTotalFPGA}}</td>
-                        <td>&nbsp;{{openStackWFCTotalFPGA}}</td>
+                        <td>&nbsp;{{openstackApprovedResources.totalFPGA}}</td>
+                        <td>&nbsp;{{openstackWFCResources.totalFPGA}}</td>
                         <td>&nbsp;</td>
-                        <td>&nbsp;{{totalFPGA}}</td>
+                        <td>&nbsp;{{totalResource.totalFPGA}}</td>
                     </tr>
                     <tr>
                         <th>&nbsp;GPU</th>
-                        <td>&nbsp;{{openStackApprovedTotalGPU}}</td>
-                        <td>&nbsp;{{openStackWFCTotalGPU}}</td>
+                        <td>&nbsp;{{openstackApprovedResources.totalGPU}}</td>
+                        <td>&nbsp;{{openstackWFCResources.totalGPU}}</td>
                         <td>&nbsp;</td>
-                        <td>&nbsp;{{totalGPU}}</td>
+                        <td>&nbsp;{{totalResource.totalGPU}}</td>
                     </tr>
                     </tbody>
                 </table>
