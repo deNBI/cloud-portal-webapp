@@ -66,6 +66,14 @@ export class VoService ***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
     ***REMOVED***
 
+       getVoProjectResources(): Observable<any> ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/resources/', ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+    ***REMOVED***
+
+
      setProjectStatus(groupid: number,status:number): Observable<any> ***REMOVED***
                 let params = new HttpParams().set('status', status.toString());
 
