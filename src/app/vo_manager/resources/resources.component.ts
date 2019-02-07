@@ -4,24 +4,39 @@ import {FacilityService} from "../../api-connector/facility.service";
 import * as jspdf from 'jspdf';
 import {Resources} from "./resources";
 import html2canvas from 'html2canvas';
+import {ExportAsService, ExportAsConfig} from 'ngx-export-as'
 
 @Component({
     selector: 'app-resources',
     templateUrl: './resources.component.html',
     styleUrls: ['./resources.component.scss'],
-    providers: [VoService]
+    providers: [VoService,ExportAsService]
 })
 export class ResourcesComponent implements OnInit {
 
     isLoaded = false;
     voResources: Resources[] = [];
     totalResource: Resources;
+    fileName = 'VoResources';
+    tableId= 'resourcesTable';
 
 
-    constructor(private voservice: VoService) {
+
+     exportAsConfigCSV: ExportAsConfig = {
+        type: 'csv',
+        elementId: this.tableId
+    };
+
+    constructor(private voservice: VoService, private exportAsService: ExportAsService) {
         this.getVoProjectResources()
 
     }
+
+    public tableToCSV() {
+        this.exportAsService.save(this.exportAsConfigCSV, this.fileName);
+
+    }
+
 
     public getVoProjectResources() {
         this.voservice.getVoProjectResources().subscribe(res => {
@@ -36,7 +51,6 @@ export class ResourcesComponent implements OnInit {
                     this.totalResource = new Resources('Total', res['Total']['totalRam'], res['Total']['totalCores'], res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
                         res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'], res['Total']['totalFPGA'], res['Total']['totalGPU']);
                 }
-                console.log(this.voResources)
             }
 
 
@@ -46,8 +60,8 @@ export class ResourcesComponent implements OnInit {
     }
 
 
-    public captureScreen() {
-        var data = document.getElementById('contentToConvert');
+    public tableToPDF() {
+        var data = document.getElementById(this.tableId);
         html2canvas(data).then(canvas => {
             // Few necessary setting options
             var imgWidth = 208;

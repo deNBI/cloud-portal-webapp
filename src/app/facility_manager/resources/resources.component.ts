@@ -4,13 +4,14 @@ import {Resources} from "../../vo_manager/resources/resources";
 import * as jspdf from 'jspdf';
 
 import html2canvas from 'html2canvas';
+import {ExportAsService, ExportAsConfig} from 'ngx-export-as'
 
 
 @Component({
     selector: 'app-resources',
     templateUrl: './resources.component.html',
     styleUrls: ['./resources.component.scss'],
-    providers: [FacilityService]
+    providers: [FacilityService, ExportAsService]
 
 })
 export class ResourcesComponent implements OnInit {
@@ -26,9 +27,21 @@ export class ResourcesComponent implements OnInit {
     openstackWFCResources: Resources;
     openstackApprovedResources: Resources;
     totalResource: Resources;
+    tableId = 'contentToConvert';
 
 
-    constructor(private  facilityService: FacilityService) {
+    exportAsConfigCSV: ExportAsConfig = {
+        type: 'csv',
+        elementId: this.tableId
+    };
+
+    public tableToCSV() {
+        this.exportAsService.save(this.exportAsConfigCSV, this.tableId);
+
+    }
+
+
+    constructor(private  facilityService: FacilityService, private exportAsService: ExportAsService) {
         this.facilityService.getManagerFacilities().subscribe(result => {
             this.managerFacilities = result;
             this.selectedFacility = this.managerFacilities[0];
@@ -45,7 +58,7 @@ export class ResourcesComponent implements OnInit {
                 this.openstackApprovedResources = new Resources('Approved OpenStack', res['approvedOpenStackApplications']['totalRam'], res['approvedOpenStackApplications']['totalCores'],
                     res['approvedOpenStackApplications']['totalVms'], res['approvedOpenStackApplications']['totalVolumeLimit'], res['approvedOpenStackApplications']['totalVolumeCounter'],
                     res['approvedOpenStackApplications']['totalObjectStorage'], res['approvedOpenStackApplications']['totalFPGA'], res['approvedOpenStackApplications']['totalGPU']);
-                this.openstackWFCResources =new  Resources('Wait for Confirmation OpenStack', res['wfcOpenStackApplications']['totalRam'], res['wfcOpenStackApplications']['totalCores'],
+                this.openstackWFCResources = new Resources('Wait for Confirmation OpenStack', res['wfcOpenStackApplications']['totalRam'], res['wfcOpenStackApplications']['totalCores'],
                     res['wfcOpenStackApplications']['totalVms'], res['wfcOpenStackApplications']['totalVolumeLimit'], res['wfcOpenStackApplications']['totalVolumeCounter'],
                     res['wfcOpenStackApplications']['totalObjectStorage'], res['wfcOpenStackApplications']['totalFPGA'], res['wfcOpenStackApplications']['totalGPU'])
                 this.totalResource = new Resources('Total', res['total']['totalRam'], res['total']['totalCores'], res['total']['totalVms'], res['total']['totalVolumeLimit'],
@@ -58,10 +71,8 @@ export class ResourcesComponent implements OnInit {
     }
 
 
-    public
-
-    captureScreen() {
-        var data = document.getElementById('contentToConvert');
+    public tableToPDF() {
+        var data = document.getElementById(this.tableId);
         html2canvas(data).then(canvas => {
             // Few necessary setting options
             var imgWidth = 208;
