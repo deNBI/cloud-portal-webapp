@@ -1,15 +1,25 @@
 #### Bug Fixes
 
 * **Resources:** fixed small bug ([fa057274](fa057274))
+* **VM:** fixed diskspace bug ([7ab58e55](7ab58e55))
+* **Vm:** fixed button bug ([e1168997](e1168997))
 
 #### Features
 
+* **Applications:** added GPU ([e02102b3](e02102b3))
+* **Flavors:** now public url ([86dc7a91](86dc7a91))
+* **PublicKey:** added word break ([38f9a75c](38f9a75c))
 * **Resource:** added class ([94b03a40](94b03a40))
 * **Resources:**
   * added date ([a16bd999](a16bd999))
   * added csv convert ([5a73aa76](5a73aa76))
   * now at vo listet for all facilities ([89a7a5a9](89a7a5a9))
   * addet to vo ([469f1a85](469f1a85))
+* **VmOverview:**
+  * asking status forom OpenStack ([cc2316dd](cc2316dd))
+  * Connect modal bigger,refresh button ([36f796bb](36f796bb))
+* **license:**  add license ([15f35421](15f35421))
+
 
 
 ### Bug Fixes
