@@ -20,7 +20,8 @@
                         temporarily.
                     </div>
                     <div *ngIf="!production">
-                        <button (click)="sendTestApplication();notificationModal.show();">Test Application
+                        <button (click)="sendTestApplication();notificationModal.show();">Test
+                            Application
                         </button>
                     </div>
 
@@ -225,24 +226,30 @@
                                 Flavors
                             </div>
                             <div class="form-group card-body">
-                                <div *ngFor="let f of flavorList">
+                                <div *ngFor="let f of flavorList" >
+                                    <div class="form-group row">
 
-                                    <label class="col-md-4 form-control-label"><strong>{{f.name}}</strong><br>
-                                        Number of cores: {{f.vcpus}}<br>
-                                        RAM: {{f.ram}} GB</label>
-                                    <div class="col-md-8">
+                                        <label class="col-md-4 form-control-label"><strong>{{f.name}}</strong><br>
+                                            Number of cores: {{f.vcpus}}<br>
+                                            RAM: {{f.ram}} GB<br>
+                                            Ephemeral disk: {{f.epheremal_disk}} GB <br>
+                                            <span *ngIf="f.type.shortcut == 'GPU'">
+                                                GPU: {{f.gpu}}
+                                            </span></label>
+                                        <div class="col-md-8">
 
-                                        <div class="input-group">
-                                            <input class="form-control"
-                                                   id="project_application_{{f.name}}"
-                                                   name="project_application_{{f.name}}"
-                                                   type="number" min="0" step="1"
-                                                   value="0" placeholder="0"
-                                                   (ngModel)="'project_application_' + f.name">
-                                            <span class="input-group-addon"> VMs
+                                            <div class="input-group">
+                                                <input class="form-control"
+                                                       id="project_application_{{f.name}}"
+                                                       name="project_application_{{f.name}}"
+                                                       type="number" min="0" step="1"
+                                                       value="0" placeholder="0"
+                                                       (ngModel)="'project_application_' + f.name">
+                                                <span class="input-group-addon"> VMs
                                     </span>
+                                            </div>
+                                            <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
                                         </div>
-                                        <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
                                     </div>
                                 </div>
                             </div>
