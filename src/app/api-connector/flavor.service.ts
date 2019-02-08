@@ -13,28 +13,24 @@ export class FlavorService ***REMOVED***
     constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
     ***REMOVED***
 
-    getFlavors(project_id:number): Observable<Flavor[]> ***REMOVED***
-                let params = new HttpParams().set('project_id', project_id.toString());
-
-
-        return this.http.get<Flavor[]>(this.settings.getConnectorBaseUrl() + 'flavors/', ***REMOVED***
+    getFlavors(project_id: number): Observable<Flavor[]> ***REMOVED***
+        return this.http.get<Flavor[]>(this.settings.getConnectorBaseUrl() + 'projects/' + project_id + '/flavors/', ***REMOVED***
             withCredentials: true,
-            params:params
 
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
     ***REMOVED***
 
     getListOfTypesAvailable(): Observable<FlavorType[]> ***REMOVED***
-      return this.http.get<FlavorType[]>(this.settings.getConnectorBaseUrl() + 'project_applications/flavorTypes/', ***REMOVED***
-        withCredentials: true
-      ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get<FlavorType[]>(this.settings.getConnectorBaseUrl() + 'project_applications/flavorTypes/', ***REMOVED***
+            withCredentials: true
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
     getListOfFlavorsAvailable(): Observable<Flavor[]> ***REMOVED***
-      return this.http.get<Flavor[]>(this.settings.getConnectorBaseUrl() + 'project_applications/flavors/',***REMOVED***
-        withCredentials: true
-      ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get<Flavor[]>(this.settings.getConnectorBaseUrl() + 'project_applications/flavors/', ***REMOVED***
+            withCredentials: true
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
 ***REMOVED***
