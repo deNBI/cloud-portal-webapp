@@ -266,7 +266,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
 
             if (this.tab === 'own') {
-                this.getVms(this.elixir_id);
+                this.getVms();
             }
             else if (this.tab === 'all') {
                 this.getAllVms();
@@ -319,7 +319,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                 if (res['Started']) {
                     this.reboot_done = true;
                     if (this.tab === 'own') {
-                        this.getVms(this.elixir_id);
+                        this.getVms();
                     }
                     else if (this.tab === 'all') {
                         this.getAllVms();
@@ -352,7 +352,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
 
             if (this.tab === 'own') {
-                this.getVms(this.elixir_id);
+                this.getVms();
             }
             else if (this.tab === 'all') {
                 this.getAllVms();
@@ -374,7 +374,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Get all vms of user.
      * @param {string} elixir_id of user
      */
-    getVms(elixir_id: string): void {
+    getVms(): void {
         this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
                 this.vms_content = vms;
 
@@ -400,6 +400,35 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         );
     }
 
+    refreshVms():void {
+        this.vms_returned=[];
+         this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
+                this.vms_content = vms;
+
+                for (let vm of this.vms_content) {
+                    this.setCollapseStatus(vm.openstackid, false)
+
+                    if (vm.created_at != '') {
+                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                    }
+
+                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
+                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                    }
+                    else {
+                        vm.stopped_at = ''
+                    }
+                }
+                this.isLoaded = true;
+                this.applyFilter();
+
+                this.checkInactiveVms();
+            }
+        );
+
+
+    }
+
     /**
      * Resume a vm.
      * @param {string} openstack_id of instance.
@@ -413,7 +442,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
 
             if (this.tab === 'own') {
-                this.getVms(this.elixir_id);
+                this.getVms();
             }
             else if (this.tab === 'all') {
                 this.getAllVms();
@@ -532,7 +561,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
                     }
                 }).then(result => {
-                    this.getVms(this.elixir_id)
+                    this.getVms()
 
                 });
             })

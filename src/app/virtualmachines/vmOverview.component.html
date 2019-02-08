@@ -3,7 +3,7 @@
 <div *ngIf="isLoaded" class="card">
 
     <div class="card-header">
-        <strong>Instance</strong>
+        <i class="icon-refresh icons"  style="cursor: pointer;"(click)="refreshVms()"></i><strong>Instance</strong>
         –Overview
     </div>
     <div *ngIf="is_vo_admin">
@@ -538,7 +538,7 @@
 
 <div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-info" role="document">
+    <div class="modal-dialog modal-info modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">How to connect</h4>
