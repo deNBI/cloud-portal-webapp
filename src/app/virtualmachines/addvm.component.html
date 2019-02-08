@@ -37,7 +37,7 @@
 
                 <div class="card-body">
 
-                    <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+                    <form id="application_form" #f="ngForm"
                           class="form-horizontal">
                         <div class="form-group row"
                              [ngClass]="***REMOVED***'has-danger':f.controls.selectedProject?.invalid && (f.controls.selectedProject?.dirty || f.controls.selectedProject.touched),
@@ -111,11 +111,13 @@
                                     </select>
 
                                 </div>
+
                                 <button *ngIf="selectedFlavor"
                                         (click)="collapsed2=!collapsed2; toggleInformationButton2()"
-                                        class="btn btn-primary">
+                                        class="btn btn-info .btn-pill">
                                     ***REMOVED******REMOVED***informationButton2***REMOVED******REMOVED***
                                 </button>
+
                             </div>
 
                             <div class="col-md-9">
@@ -146,7 +148,7 @@
                                 </div>
                                 <button *ngIf="selectedImage"
                                         (click)="collapsed1=!collapsed1; toggleInformationButton()"
-                                        class="btn btn-primary">
+                                        class="btn btn-info .btn-pill">
                                     ***REMOVED******REMOVED***informationButton***REMOVED******REMOVED***
                                 </button>
                             </div>
