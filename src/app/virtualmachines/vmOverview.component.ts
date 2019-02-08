@@ -266,7 +266,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
 
             if (this.tab === 'own') ***REMOVED***
-                this.getVms(this.elixir_id);
+                this.getVms();
             ***REMOVED***
             else if (this.tab === 'all') ***REMOVED***
                 this.getAllVms();
@@ -319,7 +319,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                 if (res['Started']) ***REMOVED***
                     this.reboot_done = true;
                     if (this.tab === 'own') ***REMOVED***
-                        this.getVms(this.elixir_id);
+                        this.getVms();
                     ***REMOVED***
                     else if (this.tab === 'all') ***REMOVED***
                         this.getAllVms();
@@ -352,7 +352,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
 
             if (this.tab === 'own') ***REMOVED***
-                this.getVms(this.elixir_id);
+                this.getVms();
             ***REMOVED***
             else if (this.tab === 'all') ***REMOVED***
                 this.getAllVms();
@@ -374,7 +374,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * Get all vms of user.
      * @param ***REMOVED***string***REMOVED*** elixir_id of user
      */
-    getVms(elixir_id: string): void ***REMOVED***
+    getVms(): void ***REMOVED***
         this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
                 this.vms_content = vms;
 
@@ -400,6 +400,35 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
         );
     ***REMOVED***
 
+    refreshVms():void ***REMOVED***
+        this.vms_returned=[];
+         this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
+                this.vms_content = vms;
+
+                for (let vm of this.vms_content) ***REMOVED***
+                    this.setCollapseStatus(vm.openstackid, false)
+
+                    if (vm.created_at != '') ***REMOVED***
+                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                    ***REMOVED***
+
+                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
+                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                    ***REMOVED***
+                    else ***REMOVED***
+                        vm.stopped_at = ''
+                    ***REMOVED***
+                ***REMOVED***
+                this.isLoaded = true;
+                this.applyFilter();
+
+                this.checkInactiveVms();
+            ***REMOVED***
+        );
+
+
+    ***REMOVED***
+
     /**
      * Resume a vm.
      * @param ***REMOVED***string***REMOVED*** openstack_id of instance.
@@ -413,7 +442,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
 
             if (this.tab === 'own') ***REMOVED***
-                this.getVms(this.elixir_id);
+                this.getVms();
             ***REMOVED***
             else if (this.tab === 'all') ***REMOVED***
                 this.getAllVms();
@@ -532,7 +561,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
                     ***REMOVED***
                 ***REMOVED***).then(result => ***REMOVED***
-                    this.getVms(this.elixir_id)
+                    this.getVms()
 
                 ***REMOVED***);
             ***REMOVED***)
