@@ -39,6 +39,7 @@
     "ng2-popover": "0.0.14",
     "ng4-click-outside": "^1.0.1",
     "ngx-bootstrap": "^3.0.1",
+    "ngx-export-as": "^1.2.2",
     "ngx-modialog": "^5.0.1",
     "ngx-popover": "0.0.16",
     "node-sass": "^4.9.2",

@@ -18,6 +18,7 @@ import {HttpClientModule} from '@angular/common/http';
 // Routing Module
 import {AppRoutingModule} from './app.routing';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
+import {ExportAsModule} from 'ngx-export-as';
 
 // Layouts
 import {FullLayoutComponent} from './layouts/full-layout.component';
@@ -38,6 +39,7 @@ import {ConsentInfoComponent} from "./consent-info.component";
         ModalModule.forRoot(),
         PopoverModule,
         PaginationModule.forRoot(),
+        ExportAsModule
     ],
     declarations: [
         AppComponent,
