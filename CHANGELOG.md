@@ -1,3 +1,15 @@
+#### Bug Fixes
+
+* **Resources:** fixed small bug ([fa057274](fa057274))
+
+#### Features
+
+* **Resource:** added class ([94b03a40](94b03a40))
+* **Resources:**
+  * added date ([a16bd999](a16bd999))
+  * added csv convert ([5a73aa76](5a73aa76))
+  * now at vo listet for all facilities ([89a7a5a9](89a7a5a9))
+  * addet to vo ([469f1a85](469f1a85))
 
 
 ### Bug Fixes
