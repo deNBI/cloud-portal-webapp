@@ -48,6 +48,7 @@ export class VirtualMachineComponent implements OnInit {
 
     informationButton: string = "Show Details";
     informationButton2: string = "Show Details";
+    client_checked=false;
 
     /**
      * All image of a project.
@@ -117,7 +118,7 @@ export class VirtualMachineComponent implements OnInit {
     /**
      * If the client for a project is viable.
      */
-    client_avaiable: boolean;
+    client_avaiable: boolean=false;
 
     /**
      * If the public key is valid.
@@ -340,6 +341,7 @@ export class VirtualMachineComponent implements OnInit {
      * @param {number} groupid
      */
     getSelectedProjectClient(groupid: number) {
+        this.client_checked=false;
         this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => {
             this.selectedProjectClient=res;
             if (res['status'] == 'Connected') {
@@ -350,9 +352,11 @@ export class VirtualMachineComponent implements OnInit {
                 this.getSelectedProjectVolumes();
                 this.getImages(this.selectedProject[1]);
                 this.getFlavors(this.selectedProject[1]);
+                this.client_checked=true;
             }
             else {
                 this.client_avaiable = false;
+                this.client_checked=true;
 
             }
             this.selectedProjectClient = res;
