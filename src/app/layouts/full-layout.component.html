@@ -141,6 +141,11 @@
                        [routerLink]="['/vo-manager/overview']"><i
                             class="icon-list"></i> Overview</a>
                 </li>
+                <li class="nav-item" *ngIf="get_is_vo_admin()">
+                    <a class="nav-link" routerLinkActive="active"
+                       [routerLink]="['/vo-manager/resources']"><i
+                            class="icon-list"></i> Resources</a>
+                </li>
 
             </ul>
         </nav>
