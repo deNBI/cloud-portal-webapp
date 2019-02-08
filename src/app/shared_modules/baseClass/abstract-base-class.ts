@@ -27,6 +27,7 @@ enum Vm_Statuses {
     ACTIVE = 1,
     SUSPENDED = 2,
     DELETED = 3,
+    CLIENT_OFFLINE=4,
 }
 
 
