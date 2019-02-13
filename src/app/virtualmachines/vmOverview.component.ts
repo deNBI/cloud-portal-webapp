@@ -10,11 +10,12 @@ import {ImageService} from "../api-connector/image.service";
 import {Vmclient} from "./virtualmachinemodels/vmclient";
 import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
 import {Image} from "./virtualmachinemodels/image";
+import {VoService} from "../api-connector/vo.service";
 
 @Component({
     selector: 'vm-overview',
     templateUrl: 'vmOverview.component.html',
-    providers: [ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
+    providers: [VoService,ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 })
 
 
@@ -63,10 +64,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Id of vm which changed status.
      */
     status_changed_vm_id: string;
-    /**
-     * Elixir-Id of the user.
-     */
-    elixir_id: string;
+
     /**
      * If user is vo admin.
      */
@@ -119,7 +117,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     reboot_done: boolean;
 
 
-    constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
+    constructor(private voService:VoService,private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
         super()
     }
 
@@ -159,7 +157,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      */
     applyFilter() {
 
-
         this.vms_filtered = this.vms_content.filter(vm => this.checkFilter(vm));
 
         this.vmStart = 0;
@@ -183,7 +180,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Check status of all inactive vms.
      */
     checkInactiveVms() {
-        this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => {
+        this.virtualmachineservice.checkStatusInactiveVms().subscribe(vms => {
             this.vms_content = vms;
             for (let vm of this.vms_content) {
                 if (vm.created_at != '') {
@@ -395,14 +392,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                 this.isLoaded = true;
                 this.applyFilter();
 
-                this.checkInactiveVms();
             }
         );
     }
 
-    refreshVms():void {
-        this.vms_returned=[];
-         this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
+    refreshVms(): void {
+        this.vms_returned = [];
+        this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
                 this.vms_content = vms;
 
                 for (let vm of this.vms_content) {
@@ -422,7 +418,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                 this.isLoaded = true;
                 this.applyFilter();
 
-                this.checkInactiveVms();
             }
         );
 
@@ -488,8 +483,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     }
 
     ngOnInit(): void {
-        this.getElixirId();
-        this.checkVOstatus(this.userservice)
+        this.getVms();
+        this.checkVOstatus()
 
     }
 
@@ -497,25 +492,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Check vm status.
      * @param {UserService} userservice
      */
-    checkVOstatus(userservice: UserService) {
-        let user_id: number;
-        let admin_vos: {};
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) {
-                //TODO catch errors
-                user_id = userdata["id"];
-                return userservice.getVosWhereUserIsAdmin().toPromise();
-            }).then(function (adminvos) {
-            admin_vos = adminvos;
-        }).then(result => {
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in admin_vos) {
-                if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
-                    this.is_vo_admin = true;
-                }
-            }
-        });
+    checkVOstatus() {
+       this.voService.isVo().subscribe(res =>{
+           this.is_vo_admin=res['Is_Vo_Manager'];
+       })
     }
 
     /**
@@ -530,7 +510,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
             }
             else if (result['Created']) {
                 this.imageService.getSnapshot(result['Created']).subscribe(res => {
-                    console.log(res)
                 })
                 this.snapshotDone = 'true';
             }
@@ -538,33 +517,4 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         })
     }
 
-    /**
-     * Get elixir id of logged in user.
-     */
-    getElixirId() {
-        this.userservice.getLoggedUser().toPromise()
-            .then(result => {
-                let res = result;
-
-                let userid = res["id"];
-                this.userservice.getLogins().toPromise().then(result => {
-                    let logins = result;
-                    for (let login of logins) {
-                        if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
-
-                            this.elixir_id = login['value'];
-
-                            break
-
-                        }
-
-
-                    }
-                }).then(result => {
-                    this.getVms()
-
-                });
-            })
-
-    }
 }
