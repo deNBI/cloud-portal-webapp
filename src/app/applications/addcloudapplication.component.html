@@ -14,7 +14,9 @@
                         german university or research facility will be accepted!
                     </div>
                     <div *ngIf="!production">
-                        <button (click)="sendTestApplication();notificationModal.show();">Test Application</button>
+                        <button (click)="sendTestApplication();notificationModal.show();">Test
+                            Application
+                        </button>
                     </div>
                     <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
                           class="form-horizontal">
@@ -146,13 +148,17 @@
                         </div>-->
 
                         <div *ngFor="let t of typeList">
-                            <div class="card">
+                            <div class="card"
+                                >
                                 <!--(click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"-->
-                                <div id="flavor-card" class="card-header">
-                                    ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
+                                <div  (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]" style="cursor: pointer;"  id="flavor-card" class="card-header">
+
+
+                                        ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
+
                                 </div>
                                 <!--*ngIf="collapseList[typeList.indexOf(t)]"-->
-                                <div class="form-group card-body">
+                                <div *ngIf="collapseList[typeList.indexOf(t)]" class="form-group card-body">
                                     <div *ngFor="let f of flavorList">
                                         <div *ngIf="f.type.shortcut == t.shortcut"
                                              class="form-group row">
@@ -160,7 +166,7 @@
                                                 Number of cores: ***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***<br>
                                                 RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED*** GB <br>
                                                 Ephemeral disk: ***REMOVED******REMOVED***f.epheremal_disk***REMOVED******REMOVED*** GB <br>
-                                            <span *ngIf="f.type.shortcut == 'GPU'">
+                                                <span *ngIf="f.type.shortcut == 'GPU'">
                                                 GPU: ***REMOVED******REMOVED***f.gpu***REMOVED******REMOVED***
                                             </span></label>
                                             <div class="col-md-8">
