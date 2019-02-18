@@ -150,6 +150,12 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
         for (let i = 0; i < types.length; i++) {
             this.collapseList.push(false); //AS FIX
         }
+         for (let t of this.typeList) {
+            if (t.long_name === 'Standart Flavor') {
+                this.collapseList[this.typeList.indexOf(t)]=true;
+            }
+            break;
+        }
 
     }
 

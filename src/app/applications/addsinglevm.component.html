@@ -220,14 +220,22 @@
                         </div>
 
                         <div *ngFor="let t of typeList">
+                            <div class="card"
+                            >
+                                <!--(click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"-->
+                                <div (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"
+                                     style="cursor: pointer;" id="flavor-card" class="card-header">
 
-                            <div class="card">
-                                <div id="flavor-card" class="card-header">
+
                                     {{t.long_name}}
+
                                 </div>
-                                <div class="form-group card-body">
+                                <!--*ngIf="collapseList[typeList.indexOf(t)]"-->
+                                <div *ngIf="collapseList[typeList.indexOf(t)]"
+                                     class="form-group card-body">
                                     <div *ngFor="let f of flavorList">
-                                        <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"  class="form-group row">
+                                        <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
+                                             class="form-group row">
 
                                             <label class="col-md-4 form-control-label"><strong>{{f.name}}</strong><br>
                                                 Number of cores: {{f.vcpus}}<br>
