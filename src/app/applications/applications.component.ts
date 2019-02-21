@@ -396,6 +396,9 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                 a.Comment = aj["project_application_comment"];
                 a.PerunId = aj['project_application_perun_id'];
                 a.DateApproved = aj['project_application_date_approved'];
+                a.Dissemination = aj['project_application_report_allowed'];
+
+
 
                 for (let f of aj['flavors']) ***REMOVED***
                     a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
@@ -568,6 +571,9 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                     a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
                     a.UserEmail = aj["project_application_user"]["email"];
                     a.Status = aj["project_application_status"];
+                    a.Dissemination = aj['project_application_report_allowed'];
+
+
 
                     for (let f of aj['flavors']) ***REMOVED***
                         a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
@@ -708,6 +714,9 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
             a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
             a.UserEmail = aj["project_application_user"]["email"];
             a.Status = aj["project_application_status"];
+            a.Dissemination = aj['project_application_report_allowed'];
+
+
             if (a.Status == this.application_statuses.APPROVED) ***REMOVED***
                 a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
@@ -794,7 +803,11 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
             a.SpecialHardware = aj["project_application_special_hardware"];
             a.OpenStackProject = aj["project_application_openstack_project"];
             a.DateApproved = aj['project_application_date_approved'];
+            a.Dissemination = aj['project_application_report_allowed'];
+
             a.PerunId = aj['project_application_perun_id'];
+            a.Dissemination = aj['project_application_report_allowed'];
+
 
 
             a.Comment = aj["project_application_comment"];
