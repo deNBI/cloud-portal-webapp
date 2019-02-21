@@ -378,16 +378,6 @@
                 <div class="alert alert-{{ notificationModalType }}" role="alert">
                     {{ notificationModalMessage }}
 
-                    <ng-container *ngIf="error">
-                        <br>
-                        <br>
-                        <strong>Wrong inputs:</strong>
-                        <br>
-                        <div *ngFor="let err of error">
-                            <b>{{err}}</b>
-                        </div>
-                    </ng-container>
-
                 </div>
             </div>
             <div class="modal-footer">
