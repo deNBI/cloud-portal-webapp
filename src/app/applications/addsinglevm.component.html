@@ -226,7 +226,7 @@
                                 Flavors
                             </div>
                             <div class="form-group card-body">
-                                <div *ngFor="let f of flavorList" >
+                                <div *ngFor="let f of flavorList">
                                     <div class="form-group row">
 
                                         <label class="col-md-4 form-control-label"><strong>{{f.name}}</strong><br>
@@ -313,6 +313,17 @@
                         <br>
                         <div class="form-group row">
                             <h5 class="col-md-6 form-control-label">Additional Information</h5>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>European
+                                Project</strong></label>
+                            <div class="col-md-8">
+                <textarea type="text" id="id_project_application_european_project"
+                          name="project_application_european_project" class="form-control"
+                          maxlength="2048"
+                          placeholder='' [ngModel]="''"></textarea>
+                                <span class="help-block">Is your project part of a European project, if so, which one?</span>
+                            </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>
