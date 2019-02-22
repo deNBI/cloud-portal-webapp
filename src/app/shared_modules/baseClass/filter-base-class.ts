@@ -19,7 +19,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     filterVmElixir_id: string;
     filterVmStopped_at: string;
     filterVmName: string;
-    filterVmSsh: string;
+    filterFacilityName: string;
 
     changeFilterLifetime(lifetime_reached: number) ***REMOVED***
         let status: string;
@@ -40,6 +40,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
 
     abstract checkFilter(obj: any): void
 
+
     isFilterProjectId(id: number): boolean ***REMOVED***
         if (!this.filterProjectId) ***REMOVED***
             return true;
@@ -49,6 +50,18 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***
         else ***REMOVED***
             return false
+        ***REMOVED***
+    ***REMOVED***
+
+    isFilterFacilityName(name: string): boolean ***REMOVED***
+        if (!this.filterFacilityName) ***REMOVED***
+            return true;
+        ***REMOVED***
+        else if (name.indexOf(this.filterFacilityName) === 0) ***REMOVED***
+            return true;
+        ***REMOVED***
+        else ***REMOVED***
+            return false;
         ***REMOVED***
     ***REMOVED***
 
@@ -97,7 +110,8 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
                 lifetime_status = this.lifetime_statuses[this.lifetime_statuses.EXPIRED];
                 break;
             case this.lifetime_statuses.EXPIRES_SOON:
-                lifetime_status = this.lifetime_statuses[this.lifetime_statuses.EXPIRES_SOON];break;
+                lifetime_status = this.lifetime_statuses[this.lifetime_statuses.EXPIRES_SOON];
+                break;
         ***REMOVED***
 
 
