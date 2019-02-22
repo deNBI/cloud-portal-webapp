@@ -66,8 +66,13 @@ export class VoOverviewComponent extends FilterBaseClass {
     }
 
     checkFilter(project: Project) {
-        if (this.isFilterProjectStatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
-            return true
+         let facNameFilter=true;
+         if (project.ComputeCenter){
+                facNameFilter=this.isFilterFacilityName(project.ComputeCenter.Name)
+            }
+        if (facNameFilter && this.isFilterProjectStatus(project.Status, project.LifetimeReached)  && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
+            return true;
+
         }
         else {
             return false
