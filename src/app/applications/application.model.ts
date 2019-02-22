@@ -33,6 +33,7 @@ export class Application {
     private _TotalCores: number;
     private _TotalRam: number;
     private _DateApproved: string;
+    private _Horizon2020: string;
 
 
     private _Dissemination: boolean;
@@ -303,5 +304,14 @@ export class Application {
 
     set PerunId(value: number) {
         this._PerunId = value;
+    }
+
+
+    get Horizon2020(): string {
+        return this._Horizon2020;
+    }
+
+    set Horizon2020(value: string) {
+        this._Horizon2020 = value;
     }
 }

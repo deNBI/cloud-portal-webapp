@@ -397,7 +397,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 a.PerunId = aj['project_application_perun_id'];
                 a.DateApproved = aj['project_application_date_approved'];
                 a.Dissemination = aj['project_application_report_allowed'];
-
+                a.Horizon2020 = aj['project_application_horizon2020'];
 
 
                 for (let f of aj['flavors']) {
@@ -572,7 +572,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                     a.UserEmail = aj["project_application_user"]["email"];
                     a.Status = aj["project_application_status"];
                     a.Dissemination = aj['project_application_report_allowed'];
-
+                    a.Horizon2020 = aj['project_application_horizon2020'];
 
 
                     for (let f of aj['flavors']) {
@@ -715,6 +715,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             a.UserEmail = aj["project_application_user"]["email"];
             a.Status = aj["project_application_status"];
             a.Dissemination = aj['project_application_report_allowed'];
+            a.Horizon2020 = aj['project_application_horizon2020'];
 
 
             if (a.Status == this.application_statuses.APPROVED) {
@@ -804,10 +805,10 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             a.OpenStackProject = aj["project_application_openstack_project"];
             a.DateApproved = aj['project_application_date_approved'];
             a.Dissemination = aj['project_application_report_allowed'];
+            a.Horizon2020 = aj['project_application_horizon2020'];
 
             a.PerunId = aj['project_application_perun_id'];
-            a.Dissemination = aj['project_application_report_allowed'];
-
+            a.Horizon2020 = aj['project_application_horizon2020'];
 
 
             a.Comment = aj["project_application_comment"];
