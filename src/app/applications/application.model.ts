@@ -33,6 +33,7 @@ export class Application ***REMOVED***
     private _TotalCores: number;
     private _TotalRam: number;
     private _DateApproved: string;
+    private _Horizon2020: string;
 
 
     private _Dissemination: boolean;
@@ -303,5 +304,14 @@ export class Application ***REMOVED***
 
     set PerunId(value: number) ***REMOVED***
         this._PerunId = value;
+    ***REMOVED***
+
+
+    get Horizon2020(): string ***REMOVED***
+        return this._Horizon2020;
+    ***REMOVED***
+
+    set Horizon2020(value: string) ***REMOVED***
+        this._Horizon2020 = value;
     ***REMOVED***
 ***REMOVED***
