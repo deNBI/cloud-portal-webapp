@@ -174,18 +174,6 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
                 this.projects.push(newProject);
             ***REMOVED***
             this.isLoaded = true;
-            for (let group of this.projects) ***REMOVED***
-                if (group.Name.length > 15 || group.Name.indexOf('_') > -1) ***REMOVED***
-                    this.groupservice.getShortame(group.Id.toString()).subscribe(result => ***REMOVED***
-                        if (result['shortname']) ***REMOVED***
-                            group.Name = result['shortname']
-                        ***REMOVED***
-
-                    ***REMOVED***)
-                ***REMOVED***
-
-            ***REMOVED***
-
         ***REMOVED***)
 
     ***REMOVED***
