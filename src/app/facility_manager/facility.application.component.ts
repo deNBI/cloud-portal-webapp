@@ -347,6 +347,21 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     ***REMOVED***
 
     /**
+     * Decline an extension request.
+     * @param ***REMOVED***number***REMOVED*** application_id
+     */
+    public declineExtension(app: Application) ***REMOVED***
+        let modificaton_requested = 4
+        this.applicationstatusservice.setApplicationStatus(app.Id, modificaton_requested).subscribe(res => ***REMOVED***
+            this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
+            this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
+        ***REMOVED***)
+
+
+    ***REMOVED***
+
+
+    /**
      * Declines an Application.
      * @param ***REMOVED***number***REMOVED*** application_id
      */

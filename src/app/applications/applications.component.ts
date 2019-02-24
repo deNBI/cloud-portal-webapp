@@ -1036,7 +1036,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(res => ***REMOVED***
                                 if (compute_center != 'undefined') ***REMOVED***
 
-                                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => ***REMOVED***
+                                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION).subscribe(result => ***REMOVED***
                                             if (result['Error']) ***REMOVED***
                                                 this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
@@ -1064,7 +1064,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                                     )
                                 ***REMOVED*** else ***REMOVED***
                                     this.groupservice.setPerunGroupStatus(new_group_id, this.application_statuses.APPROVED).subscribe(res => ***REMOVED***
-                                        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => ***REMOVED***
+                                        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED).subscribe(result => ***REMOVED***
                                             if (result['Error']) ***REMOVED***
                                                 this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
@@ -1156,7 +1156,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
             ***REMOVED***
             else ***REMOVED***
-                this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => ***REMOVED***
+                this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED).subscribe(result => ***REMOVED***
                     if (result['Error']) ***REMOVED***
 
                         this.updateNotificationModal("Failed", result['Error'], true, "danger");
@@ -1238,7 +1238,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
     assignGroupToFacility(group_id, application_id, compute_center) ***REMOVED***
         if (compute_center != 'undefined') ***REMOVED***
             this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(res => ***REMOVED***
-                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(res => ***REMOVED***
+                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION).subscribe(res => ***REMOVED***
                         for (let app of this.all_applications) ***REMOVED***
                             if (app.Id == application_id) ***REMOVED***
                                 this.getApplication(app);
@@ -1269,7 +1269,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * @param application_id
      */
     public declineApplication(application_id) ***REMOVED***
-        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined"), '').toPromise()
+        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined")).toPromise()
             .then(result => ***REMOVED***
                 this.all_applications = [];
                 this.user_applications = [];
