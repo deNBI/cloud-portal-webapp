@@ -86,6 +86,23 @@ export class FacilityService {
 
     }
 
+
+
+      /**
+     * Gets all facility modification applications which are waiting for conirmation.
+     * @param {number} facility
+     * @returns {Observable<any>}
+     */
+    getFacilityModificationApplicationsWaitingForConfirmation(facility: number): Observable<any> {
+
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/modification_applications/', {
+            withCredentials: true,
+
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
+
     /**
      * Approves an facility application.
      * @param {number} facility

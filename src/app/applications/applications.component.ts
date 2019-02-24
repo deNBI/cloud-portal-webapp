@@ -34,6 +34,7 @@ import {Vmclient} from "../virtualmachines/virtualmachinemodels/vmclient";
 })
 export class ApplicationsComponent extends AbstractBaseClasse {
 
+
     /**
      * Limits information for Client tested/used for Simple Vm Project creation.
      */
@@ -902,24 +903,41 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Approve an extension request.
      * @param {number} application_id
      */
-    public approveExtension(application_id: number) {
-        this.applicationsservice.approveRenewal(application_id).subscribe(result => {
-            if (result['Error']) {
-                this.extension_status = 2
-            }
-            else {
-                this.extension_status = 3;
-            }
-            this.getApplication(this.selectedApplication);
+    public approveExtension(app: Application) {
+        if (!app.OpenStackProject) {
+            this.applicationstatusservice.setApplicationStatus(app.Id, this.WAIT_FOR_EXTENSION_STATUS).subscribe(res => {
+                this.extension_status = 5;
+                this.getApplication(app);
+                this.getUserApplication(app);
 
-            for (let app of this.user_applications) {
-                if (this.selectedApplication.PerunId == app.PerunId) {
-                    this.getUserApplication(app);
-                    break;
+                for (let app of this.user_applications) {
+                    if (this.selectedApplication.PerunId == app.PerunId) {
+                        this.getUserApplication(app);
+                        break;
+                    }
+
                 }
+            })
+        }
+        else {
+            this.applicationsservice.approveRenewal(app.Id).subscribe(result => {
+                if (result['Error']) {
+                    this.extension_status = 2
+                }
+                else {
+                    this.extension_status = 3;
+                }
+                this.getApplication(this.selectedApplication);
 
-            }
-        })
+                for (let app of this.user_applications) {
+                    if (this.selectedApplication.PerunId == app.PerunId) {
+                        this.getUserApplication(app);
+                        break;
+                    }
+
+                }
+            })
+        }
     }
 
     /**
@@ -1293,6 +1311,10 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 return true;
             }
         }
+    }
+
+    public setApplicationStatus(status: number, app: Application) {
+        this.applicationstatusservice.setApplicationStatus(app.Id, status).subscribe()
     }
 
 

@@ -116,14 +116,27 @@
                                                     <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
                                                         <td>Flavor: {{item.key}}</td>
                                                         <td>{{item.value.counter}}</td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
+                                                        <td *ngIf="application.Status == 4 ">
                                                             <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 {{application.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}</span>
                                                             <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
-                                                               0</span>
-                                                        </td>
-
+                                                               0</span></td>
                                                     </tr>
+                                                    <ng-container
+                                                            *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
+                                                        <tr *ngIf="!application.CurrentFlavors[item.key]">
+                                                            <td>Flavor: {{item.key}}</td>
+                                                            <td>0</td>
+                                                            <td>
+                                                                {{application.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}
+
+
+                                                            </td>
+
+
+                                                        </tr>
+                                                    </ng-container>
+
                                                     <tr *ngIf="application.OpenStackProject">
                                                         <td>Cores</td>
                                                         <td>{{
@@ -328,7 +341,7 @@
                                             </button>
                                             <button *ngIf="application.Status == 4"
 
-                                                    (click)="setSelectedApplication(application);approveExtension(application.Id);resultModal.show();"
+                                                    (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
                                                     type="button"
                                                     class="btn btn-secondary">
                                                 <i class="fa fa-check"></i>&nbsp;
@@ -472,13 +485,25 @@
                                                             <td>Flavor: {{item.key}}</td>
                                                             <td>{{item.value.counter}}</td>
                                                             <td *ngIf="application.Status == 4 ">
- <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                            <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 {{application.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}</span>
                                                                 <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
                                                         </tr>
+                                                        <ng-container
+                                                                *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
+                                                            <tr *ngIf="!application.CurrentFlavors[item.key]">
+                                                                <td>Flavor: {{item.key}}</td>
+                                                                <td>0</td>
+                                                                <td>
+                                                                    {{application.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}
 
 
+                                                                </td>
+
+
+                                                            </tr>
+                                                        </ng-container>
 
 
                                                         <tr *ngIf="application.OpenStackProject">
@@ -722,13 +747,26 @@
                                                         <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
                                                             <td>Flavor: {{item.key}}</td>
                                                             <td>{{item.value.counter}}</td>
-                                                            <td *ngIf="application.Status == 4">
- <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                            <td *ngIf="application.Status == 4 ">
+                                                            <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 {{application.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}</span>
                                                                 <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
-
                                                         </tr>
+                                                        <ng-container
+                                                                *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
+                                                            <tr *ngIf="!application.CurrentFlavors[item.key]">
+                                                                <td>Flavor: {{item.key}}</td>
+                                                                <td>0</td>
+                                                                <td>
+                                                                    {{application.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}
+
+
+                                                                </td>
+
+
+                                                            </tr>
+                                                        </ng-container>
 
 
                                                         <tr *ngIf="application.OpenStackProject">
@@ -1029,7 +1067,8 @@
                                        id="id_project_application_renewal_lifetime"
                                        name="project_application_renewal_lifetime"
                                        placeholder="e.g 3"
-                                       type="number" min="0" step="1" ngModel required>
+                                       type="number" min="0" max="12" step="1" ngModel required
+                                       pattern="^([1-9]|1[012])$">
                                 <span class="input-group-addon"> months</span>
                             </div>
                             <span class="help-block">Number of months you want to extend the project</span>
@@ -1325,6 +1364,9 @@
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
                     Modify request successfully declined!
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="extension_status == 5">
+                    Modify request successfully approved and forwarded to facility!
                 </div>
 
                 <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
