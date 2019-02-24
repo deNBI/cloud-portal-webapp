@@ -34,6 +34,7 @@ import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachines/virtualmachin
 ***REMOVED***)
 export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
+
     /**
      * Limits information for Client tested/used for Simple Vm Project creation.
      */
@@ -902,24 +903,41 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * Approve an extension request.
      * @param ***REMOVED***number***REMOVED*** application_id
      */
-    public approveExtension(application_id: number) ***REMOVED***
-        this.applicationsservice.approveRenewal(application_id).subscribe(result => ***REMOVED***
-            if (result['Error']) ***REMOVED***
-                this.extension_status = 2
-            ***REMOVED***
-            else ***REMOVED***
-                this.extension_status = 3;
-            ***REMOVED***
-            this.getApplication(this.selectedApplication);
+    public approveExtension(app: Application) ***REMOVED***
+        if (!app.OpenStackProject) ***REMOVED***
+            this.applicationstatusservice.setApplicationStatus(app.Id, this.WAIT_FOR_EXTENSION_STATUS).subscribe(res => ***REMOVED***
+                this.extension_status = 5;
+                this.getApplication(app);
+                this.getUserApplication(app);
 
-            for (let app of this.user_applications) ***REMOVED***
-                if (this.selectedApplication.PerunId == app.PerunId) ***REMOVED***
-                    this.getUserApplication(app);
-                    break;
+                for (let app of this.user_applications) ***REMOVED***
+                    if (this.selectedApplication.PerunId == app.PerunId) ***REMOVED***
+                        this.getUserApplication(app);
+                        break;
+                    ***REMOVED***
+
                 ***REMOVED***
+            ***REMOVED***)
+        ***REMOVED***
+        else ***REMOVED***
+            this.applicationsservice.approveRenewal(app.Id).subscribe(result => ***REMOVED***
+                if (result['Error']) ***REMOVED***
+                    this.extension_status = 2
+                ***REMOVED***
+                else ***REMOVED***
+                    this.extension_status = 3;
+                ***REMOVED***
+                this.getApplication(this.selectedApplication);
 
-            ***REMOVED***
-        ***REMOVED***)
+                for (let app of this.user_applications) ***REMOVED***
+                    if (this.selectedApplication.PerunId == app.PerunId) ***REMOVED***
+                        this.getUserApplication(app);
+                        break;
+                    ***REMOVED***
+
+                ***REMOVED***
+            ***REMOVED***)
+        ***REMOVED***
     ***REMOVED***
 
     /**
@@ -1293,6 +1311,10 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                 return true;
             ***REMOVED***
         ***REMOVED***
+    ***REMOVED***
+
+    public setApplicationStatus(status: number, app: Application) ***REMOVED***
+        this.applicationstatusservice.setApplicationStatus(app.Id, status).subscribe()
     ***REMOVED***
 
 

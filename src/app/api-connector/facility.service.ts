@@ -86,6 +86,23 @@ export class FacilityService ***REMOVED***
 
     ***REMOVED***
 
+
+
+      /**
+     * Gets all facility modification applications which are waiting for conirmation.
+     * @param ***REMOVED***number***REMOVED*** facility
+     * @returns ***REMOVED***Observable<any>***REMOVED***
+     */
+    getFacilityModificationApplicationsWaitingForConfirmation(facility: number): Observable<any> ***REMOVED***
+
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/modification_applications/', ***REMOVED***
+            withCredentials: true,
+
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+
+
+    ***REMOVED***
+
     /**
      * Approves an facility application.
      * @param ***REMOVED***number***REMOVED*** facility

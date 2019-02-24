@@ -24,8 +24,10 @@ export class ApplicationStatusService ***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
-    setApplicationStatus(application_id: number, status_id: number, compute_center: string): Observable<any> ***REMOVED***
-        let params = new HttpParams().set("project_application_status", status_id.toString()).set('compute_center',compute_center)
+    setApplicationStatus(application_id: number, status_id: number): Observable<any> ***REMOVED***
+        console.log(application_id)
+        console.log(status_id)
+        let params = new HttpParams().set("project_application_status", status_id.toString());
 
 
         return this.http.patch(this.settings.getApiBaseURL() + 'project_applications/' + application_id + "/", params,
