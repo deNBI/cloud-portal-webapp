@@ -347,6 +347,21 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     }
 
     /**
+     * Decline an extension request.
+     * @param {number} application_id
+     */
+    public declineExtension(app: Application) {
+        let modificaton_requested = 4
+        this.applicationstatusservice.setApplicationStatus(app.Id, modificaton_requested).subscribe(res => {
+            this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
+            this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
+        })
+
+
+    }
+
+
+    /**
      * Declines an Application.
      * @param {number} application_id
      */
