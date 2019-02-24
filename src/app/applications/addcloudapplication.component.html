@@ -14,7 +14,9 @@
                         german university or research facility will be accepted!
                     </div>
                     <div *ngIf="!production">
-                        <button (click)="sendTestApplication();notificationModal.show();">Test Application</button>
+                        <button (click)="sendTestApplication();notificationModal.show();">Test
+                            Application
+                        </button>
                     </div>
                     <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
                           class="form-horizontal">
@@ -160,7 +162,7 @@
                                                 Number of cores: {{f.vcpus}}<br>
                                                 RAM: {{f.ram}} GB <br>
                                                 Ephemeral disk: {{f.epheremal_disk}} GB <br>
-                                            <span *ngIf="f.type.shortcut == 'GPU'">
+                                                <span *ngIf="f.type.shortcut == 'GPU'">
                                                 GPU: {{f.gpu}}
                                             </span></label>
                                             <div class="col-md-8">
@@ -332,6 +334,17 @@
                         </div>
                         <div class="form-group row">
                             <h5 class="col-md-6 form-control-label">Additional Information</h5>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon
+                                2020</strong></label>
+                            <div class="col-md-8">
+                                <input type="text" id="id_project_application_horizon2020"
+                                       name="project_application_horizon2020" class="form-control"
+                                       maxlength="2048"
+                                       placeholder='Name of the project' [ngModel]="''">
+                                <span class="help-block">Is your project part of a Horizon 2020 project?</span>
+                            </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>

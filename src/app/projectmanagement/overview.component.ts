@@ -174,18 +174,6 @@ export class OverviewComponent extends AbstractBaseClasse {
                 this.projects.push(newProject);
             }
             this.isLoaded = true;
-            for (let group of this.projects) {
-                if (group.Name.length > 15 || group.Name.indexOf('_') > -1) {
-                    this.groupservice.getShortame(group.Id.toString()).subscribe(result => {
-                        if (result['shortname']) {
-                            group.Name = result['shortname']
-                        }
-
-                    })
-                }
-
-            }
-
         })
 
     }

@@ -83,12 +83,24 @@
 
                                                     </tr>
                                                     <tr>
+                                                        <td>Dissemination allowed</td>
+                                                        <td>
+                                                            {{application.Dissemination}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
                                                         <td>Description</td>
                                                         <td>{{
                                                             application.Description
                                                             }}
                                                         </td>
                                                         <td *ngIf="application.Status == 'modification requested'"></td>
+                                                    </tr>
+                                                     <tr>
+                                                        <td>Horizon 2020</td>
+                                                        <td>
+                                                            {{application.Horizon2020}}
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td>Comment</td>
@@ -372,6 +384,7 @@
                                                 <div>
                                                     <table class="table table-striped"
                                                            table-responsive>
+
                                                         <tr>
                                                             <td>User
                                                                 Affiliations
@@ -406,6 +419,18 @@
                                                                 }}
                                                             </td>
                                                             <td *ngIf="application.Status == 4">
+                                                            </td>
+                                                        </tr>
+                                                         <tr>
+                                                        <td>Horizon 2020</td>
+                                                        <td>
+                                                            {{application.Horizon2020}}
+                                                        </td>
+                                                    </tr>
+                                                        <tr>
+                                                            <td>Dissemination allowed</td>
+                                                            <td>
+                                                                {{application.Dissemination}}
                                                             </td>
                                                         </tr>
 
@@ -477,8 +502,6 @@
                                                                 <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
                                                         </tr>
-
-
 
 
                                                         <tr *ngIf="application.OpenStackProject">
@@ -656,6 +679,18 @@
                                                                 }}
                                                             </td>
                                                             <td *ngIf="application.Status == 4">
+                                                            </td>
+                                                        </tr>
+                                                         <tr>
+                                                        <td>Horizon 2020</td>
+                                                        <td>
+                                                            {{application.Horizon2020}}
+                                                        </td>
+                                                    </tr>
+                                                        <tr>
+                                                            <td>Dissemination allowed</td>
+                                                            <td>
+                                                                {{application.Dissemination}}
                                                             </td>
                                                         </tr>
 
