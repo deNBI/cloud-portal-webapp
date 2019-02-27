@@ -25,8 +25,7 @@ export class ApplicationStatusService {
     }
 
     setApplicationStatus(application_id: number, status_id: number): Observable<any> {
-        console.log(application_id)
-        console.log(status_id)
+        
         let params = new HttpParams().set("project_application_status", status_id.toString());
 
 
