@@ -9,6 +9,7 @@ import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/base
 import ***REMOVED***Flavor***REMOVED*** from "../virtualmachines/virtualmachinemodels/flavor";
 import ***REMOVED***FlavorService***REMOVED*** from "../api-connector/flavor.service";
 import ***REMOVED***environment***REMOVED*** from "../../environments/environment";
+import ***REMOVED***FlavorType***REMOVED*** from "../virtualmachines/virtualmachinemodels/flavorType";
 
 @Component(***REMOVED***
     templateUrl: 'addsinglevm.component.html',
@@ -16,6 +17,17 @@ import ***REMOVED***environment***REMOVED*** from "../../environments/environmen
 ***REMOVED***)
 
 export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
+
+
+    /**
+     * List of flavor types.
+     */
+    public typeList: FlavorType[];
+    /**
+     * List of all collapse booleans.
+     */
+    public collapseList: boolean[];
+
     /**
      * Check if the shortname provided is valid.
      * @type ***REMOVED***boolean***REMOVED***
@@ -53,6 +65,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
         super();
         this.getSpecialHardware();
         this.getListOfFlavors();
+        this.getListOfTypes();
 
 
     ***REMOVED***
@@ -121,6 +134,31 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
+    getListOfTypes() ***REMOVED***
+        this.flavorService.getListOfTypesAvailable().subscribe(types => this.setListOfTypes(types));
+    ***REMOVED***
+
+
+    /**
+     * Uses the param types to safe the available FlavorTypes to the array typeList.
+     * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
+     * @param types array of all available FlavorTypes
+     */
+    setListOfTypes(types: FlavorType[]) ***REMOVED***
+        this.typeList = types;
+        this.collapseList = new Array(types.length) as Array<boolean>;
+        for (let i = 0; i < types.length; i++) ***REMOVED***
+            this.collapseList.push(false); //AS FIX
+        ***REMOVED***
+         for (let t of this.typeList) ***REMOVED***
+            if (t.long_name === 'Standart Flavor') ***REMOVED***
+                this.collapseList[this.typeList.indexOf(t)]=true;
+            ***REMOVED***
+            break;
+        ***REMOVED***
+
+    ***REMOVED***
+
 
     /**
      * Check if shortname is valid.
@@ -135,7 +173,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
-     sendTestApplication() ***REMOVED***
+    sendTestApplication() ***REMOVED***
         let values: ***REMOVED*** [key: string]: any ***REMOVED*** = ***REMOVED******REMOVED***;
 
         values['project_application_comment'] = 'TestApplication';
