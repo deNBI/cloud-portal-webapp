@@ -37,6 +37,7 @@
                         <table class="table table-responsive table-striped">
                             <thead>
                             <tr>
+                                <th>Facility</th>
                                 <th>Project ID</th>
                                 <th>Project Name</th>
                                 <th>Details</th>
@@ -50,6 +51,11 @@
                             </tr>
                             </thead>
                             <tbody>
+                             <td><input style="width: 110px;" type="text" placeholder="Filter"
+                                       name="filterFacilityName"
+                                       [(ngModel)]="filterFacilityName"
+                                       (ngModelChange)="applyFilter();">
+                            </td>
                             <td><input style="width: 110px;" type="text" placeholder="Filter"
                                        name="filterProjectId"
                                        [(ngModel)]="filterProjectId"
@@ -110,6 +116,7 @@
 
                             <tr *ngFor="let project of projects_filtered">
                                 <!-- [ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}"-->
+                                <td>{{project?.ComputeCenter?.Name}}</td>
                                 <td>{{ project.Id }}</td>
                                 <td>{{ project.Name }}</td>
 

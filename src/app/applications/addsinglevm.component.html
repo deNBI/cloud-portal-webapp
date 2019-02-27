@@ -329,6 +329,16 @@
                             <h5 class="col-md-6 form-control-label">Additional Information</h5>
                         </div>
                         <div class="form-group row">
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon 2020</strong></label>
+                            <div class="col-md-8">
+                                <input type="text" id="id_project_application_horizon2020"
+                                       name="project_application_horizon2020" class="form-control"
+                                       maxlength="2048"
+                                       placeholder='Name of the project' [ngModel]="''">
+                                <span class="help-block">Is your project part of a Horizon 2020 project?</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>
                             <div class="col-md-8">
 
@@ -391,16 +401,6 @@
             <div class="modal-body">
                 <div class="alert alert-{{ notificationModalType }}" role="alert">
                     {{ notificationModalMessage }}
-
-                    <ng-container *ngIf="error">
-                        <br>
-                        <br>
-                        <strong>Wrong inputs:</strong>
-                        <br>
-                        <div *ngFor="let err of error">
-                            <b>{{err}}</b>
-                        </div>
-                    </ng-container>
 
                 </div>
             </div>
