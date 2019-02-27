@@ -61,12 +61,10 @@ export class VirtualmachineService {
     }
 
 
-    checkStatusInactiveVms(elixir_id: string): Observable<VirtualMachine[]> {
-        let params = new HttpParams().set('elixir_id', elixir_id);
+    checkStatusInactiveVms(): Observable<VirtualMachine[]> {
 
         return this.http.get<VirtualMachine[]>(this.baseVmUrl + 'status/', {
             withCredentials: true,
-            params: params
         }).pipe(catchError((error: any) => throwError(error)));
     }
 

@@ -9,6 +9,7 @@ import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-clas
 import {Flavor} from "../virtualmachines/virtualmachinemodels/flavor";
 import {FlavorService} from "../api-connector/flavor.service";
 import {environment} from "../../environments/environment";
+import {FlavorType} from "../virtualmachines/virtualmachinemodels/flavorType";
 
 @Component({
     templateUrl: 'addsinglevm.component.html',
@@ -16,6 +17,17 @@ import {environment} from "../../environments/environment";
 })
 
 export class AddsinglevmComponent extends AbstractBaseClasse {
+
+
+    /**
+     * List of flavor types.
+     */
+    public typeList: FlavorType[];
+    /**
+     * List of all collapse booleans.
+     */
+    public collapseList: boolean[];
+
     /**
      * Check if the shortname provided is valid.
      * @type {boolean}
@@ -53,6 +65,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
         super();
         this.getSpecialHardware();
         this.getListOfFlavors();
+        this.getListOfTypes();
 
 
     }
@@ -121,6 +134,31 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
         });
     }
 
+    getListOfTypes() {
+        this.flavorService.getListOfTypesAvailable().subscribe(types => this.setListOfTypes(types));
+    }
+
+
+    /**
+     * Uses the param types to safe the available FlavorTypes to the array typeList.
+     * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
+     * @param types array of all available FlavorTypes
+     */
+    setListOfTypes(types: FlavorType[]) {
+        this.typeList = types;
+        this.collapseList = new Array(types.length) as Array<boolean>;
+        for (let i = 0; i < types.length; i++) {
+            this.collapseList.push(false); //AS FIX
+        }
+         for (let t of this.typeList) {
+            if (t.long_name === 'Standart Flavor') {
+                this.collapseList[this.typeList.indexOf(t)]=true;
+            }
+            break;
+        }
+
+    }
+
 
     /**
      * Check if shortname is valid.
@@ -135,7 +173,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
         }
     }
 
-     sendTestApplication() {
+    sendTestApplication() {
         let values: { [key: string]: any } = {};
 
         values['project_application_comment'] = 'TestApplication';

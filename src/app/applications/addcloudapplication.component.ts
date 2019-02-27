@@ -21,7 +21,12 @@ import {environment} from "../../environments/environment";
 
 export class AddcloudapplicationComponent extends AbstractBaseClasse {
 
-    public production=environment.production;
+    public production = environment.production;
+
+    /**
+     * List of all collapse booleans.
+     */
+    public collapseList: boolean[];
 
     public project_application_report_allowed = false;
 
@@ -53,7 +58,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
     /**
      * List of all collapse booleans.
      */
-    public collapseList: boolean[];
+    F
     /**
      * Total number of cores.
      * @type {number}
@@ -238,7 +243,14 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
         this.typeList = types;
         this.collapseList = new Array(types.length) as Array<boolean>;
         for (let i = 0; i < types.length; i++) {
+
             this.collapseList.push(false); //AS FIX
+        }
+        for (let t of this.typeList) {
+            if (t.long_name === 'Standart Flavor') {
+                this.collapseList[this.typeList.indexOf(t)]=true;
+            }
+            break;
         }
 
     }
