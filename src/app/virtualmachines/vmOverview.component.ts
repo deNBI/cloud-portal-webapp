@@ -10,11 +10,12 @@ import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.servi
 import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
 import ***REMOVED***FilterBaseClass***REMOVED*** from "../shared_modules/baseClass/filter-base-class";
 import ***REMOVED***Image***REMOVED*** from "./virtualmachinemodels/image";
+import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 
 @Component(***REMOVED***
     selector: 'vm-overview',
     templateUrl: 'vmOverview.component.html',
-    providers: [ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
+    providers: [VoService,ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 ***REMOVED***)
 
 
@@ -63,10 +64,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * Id of vm which changed status.
      */
     status_changed_vm_id: string;
-    /**
-     * Elixir-Id of the user.
-     */
-    elixir_id: string;
+
     /**
      * If user is vo admin.
      */
@@ -119,7 +117,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
     reboot_done: boolean;
 
 
-    constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) ***REMOVED***
+    constructor(private voService:VoService,private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) ***REMOVED***
         super()
     ***REMOVED***
 
@@ -159,7 +157,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      */
     applyFilter() ***REMOVED***
 
-
         this.vms_filtered = this.vms_content.filter(vm => this.checkFilter(vm));
 
         this.vmStart = 0;
@@ -183,7 +180,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * Check status of all inactive vms.
      */
     checkInactiveVms() ***REMOVED***
-        this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => ***REMOVED***
+        this.virtualmachineservice.checkStatusInactiveVms().subscribe(vms => ***REMOVED***
             this.vms_content = vms;
             for (let vm of this.vms_content) ***REMOVED***
                 if (vm.created_at != '') ***REMOVED***
@@ -395,14 +392,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                 this.isLoaded = true;
                 this.applyFilter();
 
-                this.checkInactiveVms();
             ***REMOVED***
         );
     ***REMOVED***
 
-    refreshVms():void ***REMOVED***
-        this.vms_returned=[];
-         this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
+    refreshVms(): void ***REMOVED***
+        this.vms_returned = [];
+        this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
                 this.vms_content = vms;
 
                 for (let vm of this.vms_content) ***REMOVED***
@@ -422,7 +418,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                 this.isLoaded = true;
                 this.applyFilter();
 
-                this.checkInactiveVms();
             ***REMOVED***
         );
 
@@ -488,8 +483,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
     ***REMOVED***
 
     ngOnInit(): void ***REMOVED***
-        this.getElixirId();
-        this.checkVOstatus(this.userservice)
+        this.getVms();
+        this.checkVOstatus()
 
     ***REMOVED***
 
@@ -497,25 +492,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * Check vm status.
      * @param ***REMOVED***UserService***REMOVED*** userservice
      */
-    checkVOstatus(userservice: UserService) ***REMOVED***
-        let user_id: number;
-        let admin_vos: ***REMOVED******REMOVED***;
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) ***REMOVED***
-                //TODO catch errors
-                user_id = userdata["id"];
-                return userservice.getVosWhereUserIsAdmin().toPromise();
-            ***REMOVED***).then(function (adminvos) ***REMOVED***
-            admin_vos = adminvos;
-        ***REMOVED***).then(result => ***REMOVED***
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in admin_vos) ***REMOVED***
-                if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) ***REMOVED***
-                    this.is_vo_admin = true;
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***);
+    checkVOstatus() ***REMOVED***
+       this.voService.isVo().subscribe(res =>***REMOVED***
+           this.is_vo_admin=res['Is_Vo_Manager'];
+       ***REMOVED***)
     ***REMOVED***
 
     /**
@@ -530,7 +510,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
             ***REMOVED***
             else if (result['Created']) ***REMOVED***
                 this.imageService.getSnapshot(result['Created']).subscribe(res => ***REMOVED***
-                    console.log(res)
                 ***REMOVED***)
                 this.snapshotDone = 'true';
             ***REMOVED***
@@ -538,33 +517,4 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
         ***REMOVED***)
     ***REMOVED***
 
-    /**
-     * Get elixir id of logged in user.
-     */
-    getElixirId() ***REMOVED***
-        this.userservice.getLoggedUser().toPromise()
-            .then(result => ***REMOVED***
-                let res = result;
-
-                let userid = res["id"];
-                this.userservice.getLogins().toPromise().then(result => ***REMOVED***
-                    let logins = result;
-                    for (let login of logins) ***REMOVED***
-                        if (login['friendlyName'] === 'login-namespace:elixir-persistent') ***REMOVED***
-
-                            this.elixir_id = login['value'];
-
-                            break
-
-                        ***REMOVED***
-
-
-                    ***REMOVED***
-                ***REMOVED***).then(result => ***REMOVED***
-                    this.getVms()
-
-                ***REMOVED***);
-            ***REMOVED***)
-
-    ***REMOVED***
 ***REMOVED***
