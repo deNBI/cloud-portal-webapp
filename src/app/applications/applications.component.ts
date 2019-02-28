@@ -918,7 +918,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** application_id
      */
     public approveExtension(app: Application) ***REMOVED***
-        if (!app.OpenStackProject) ***REMOVED***
+        if (app.OpenStackProject) ***REMOVED***
             this.applicationstatusservice.setApplicationStatus(app.Id, this.WAIT_FOR_EXTENSION_STATUS).subscribe(res => ***REMOVED***
                 this.extension_status = 5;
                 this.getApplication(app);
