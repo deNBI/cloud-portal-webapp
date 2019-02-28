@@ -86,6 +86,21 @@ export class FacilityService {
 
     }
 
+    /**
+     * Gets all facility applications history.
+     * @param {number} facility
+     * @returns {Observable<any>}
+     */
+    getFacilityApplicationsHistory(facility: number): Observable<any> {
+
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications_history/', {
+            withCredentials: true,
+
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
+
 
 
       /**
