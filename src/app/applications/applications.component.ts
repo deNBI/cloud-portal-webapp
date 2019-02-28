@@ -918,7 +918,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @param {number} application_id
      */
     public approveExtension(app: Application) {
-        if (!app.OpenStackProject) {
+        if (app.OpenStackProject) {
             this.applicationstatusservice.setApplicationStatus(app.Id, this.WAIT_FOR_EXTENSION_STATUS).subscribe(res => {
                 this.extension_status = 5;
                 this.getApplication(app);
