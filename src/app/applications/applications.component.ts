@@ -560,6 +560,8 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
                     a.ObjectStorage = aj["project_application_object_storage"];
                     a.SpecialHardware = aj["project_application_special_hardware"];
+                    a.OpenStackProject = aj["project_application_openstack_project"];
+
 
                     a.Institute = aj["project_application_institute"];
                     a.Workgroup = aj["project_application_workgroup"];
@@ -589,7 +591,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
                     a.Comment = aj["project_application_comment"];
                     a.PerunId = aj['project_application_perun_id'];
-                    a.OpenStackProject = aj["project_application_openstack_project"];
                     if (aj['projectapplicationrenewal']) ***REMOVED***
                         let r = new ApplicationExtension();
                         let requestExtensionTotalCores = 0;
@@ -703,6 +704,8 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
             a.ObjectStorage = aj["project_application_object_storage"];
             a.SpecialHardware = aj["project_application_special_hardware"];
+            a.OpenStackProject = aj["project_application_openstack_project"];
+
 
             a.Institute = aj["project_application_institute"];
             a.Workgroup = aj["project_application_workgroup"];
@@ -918,6 +921,8 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** application_id
      */
     public approveExtension(app: Application) ***REMOVED***
+        console.log(app)
+        console.log(app.OpenStackProject)
         if (app.OpenStackProject) ***REMOVED***
             this.applicationstatusservice.setApplicationStatus(app.Id, this.WAIT_FOR_EXTENSION_STATUS).subscribe(res => ***REMOVED***
                 this.extension_status = 5;

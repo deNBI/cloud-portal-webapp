@@ -86,6 +86,21 @@ export class FacilityService ***REMOVED***
 
     ***REMOVED***
 
+    /**
+     * Gets all facility applications history.
+     * @param ***REMOVED***number***REMOVED*** facility
+     * @returns ***REMOVED***Observable<any>***REMOVED***
+     */
+    getFacilityApplicationsHistory(facility: number): Observable<any> ***REMOVED***
+
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications_history/', ***REMOVED***
+            withCredentials: true,
+
+        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+
+
+    ***REMOVED***
+
 
 
       /**
