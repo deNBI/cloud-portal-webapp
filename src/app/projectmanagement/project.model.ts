@@ -1,5 +1,5 @@
-import ***REMOVED***ProjectMemberApplication***REMOVED*** from "./project_member_application";
-import ***REMOVED***ComputecenterComponent***REMOVED*** from "./computecenter.component";
+import ***REMOVED***ProjectMemberApplication***REMOVED*** from './project_member_application';
+import ***REMOVED***ComputecenterComponent***REMOVED*** from './computecenter.component';
 
 export class Project ***REMOVED***
     get UserIsAdmin(): boolean ***REMOVED***
@@ -41,7 +41,7 @@ export class Project ***REMOVED***
 
     ***REMOVED***
 
-//todo exdend with additional information
+// todo exdend with additional information
 
     get LifetimeReached(): number ***REMOVED***
         return this._LifetimeReached

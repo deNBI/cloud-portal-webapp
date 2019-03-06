@@ -1,5 +1,5 @@
-import ***REMOVED***ApplicationExtension***REMOVED*** from "./application_extension.model";
-import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
+import ***REMOVED***ApplicationExtension***REMOVED*** from './application_extension.model';
+import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 
 

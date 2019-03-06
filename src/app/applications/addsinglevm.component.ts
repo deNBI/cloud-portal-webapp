@@ -5,11 +5,11 @@ import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/s
 import ***REMOVED***SpecialHardware***REMOVED*** from './special_hardware.model'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
-import ***REMOVED***Flavor***REMOVED*** from "../virtualmachines/virtualmachinemodels/flavor";
-import ***REMOVED***FlavorService***REMOVED*** from "../api-connector/flavor.service";
-import ***REMOVED***environment***REMOVED*** from "../../environments/environment";
-import ***REMOVED***FlavorType***REMOVED*** from "../virtualmachines/virtualmachinemodels/flavorType";
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
+import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
+import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
+import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
+import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 
 @Component(***REMOVED***
     templateUrl: 'addsinglevm.component.html',
@@ -32,7 +32,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
      * Check if the shortname provided is valid.
      * @type ***REMOVED***boolean***REMOVED***
      */
-    public wronginput: boolean = false;
+    public wronginput = false;
 
 
     /**
@@ -51,8 +51,8 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
         'We would highly appreciate the following citation in your next publication(s): ‘This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).';
-    public acknowledgeModalTitle: string = 'Acknowledge';
-    public acknowledgeModalType: string = 'info';
+    public acknowledgeModalTitle = 'Acknowledge';
+    public acknowledgeModalType = 'info';
 
     /**
      * Available special hardware.
@@ -77,10 +77,10 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
     getSpecialHardware() ***REMOVED***
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => ***REMOVED***
-                let res = result;
-                for (let key in res) ***REMOVED***
-                    let shj = res[key];
-                    let sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
+                const res = result;
+                for (const key in res) ***REMOVED***
+                    const shj = res[key];
+                    const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
                     this.special_hardware.push(sh)
                 ***REMOVED***
             ***REMOVED***);
@@ -96,11 +96,10 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
         if (this.wronginput == true) ***REMOVED***
             this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
-        ***REMOVED***
-        else ***REMOVED***
-            let values = ***REMOVED******REMOVED***;
+        ***REMOVED*** else ***REMOVED***
+            const values = ***REMOVED******REMOVED***;
             values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
-            for (let v in f.controls) ***REMOVED***
+            for (const v in f.controls) ***REMOVED***
                 if (f.controls[v].value) ***REMOVED***
                     values[v] = f.controls[v].value;
                 ***REMOVED***
@@ -111,10 +110,10 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
                     this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 ***REMOVED***).catch(error => ***REMOVED***
-                var error_json = error;
+                const error_json = error;
                 this.error = [];
-                for (let key of Object.keys(error_json)) ***REMOVED***
-                    this.error.push(key.split('_',)[2])
+                for (const key of Object.keys(error_json)) ***REMOVED***
+                    this.error.push(key.split('_', )[2])
 
                 ***REMOVED***
 
@@ -148,11 +147,11 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
         this.typeList = types;
         this.collapseList = new Array(types.length) as Array<boolean>;
         for (let i = 0; i < types.length; i++) ***REMOVED***
-            this.collapseList.push(false); //AS FIX
+            this.collapseList.push(false); // AS FIX
         ***REMOVED***
-         for (let t of this.typeList) ***REMOVED***
+         for (const t of this.typeList) ***REMOVED***
             if (t.long_name === 'Standart Flavor') ***REMOVED***
-                this.collapseList[this.typeList.indexOf(t)]=true;
+                this.collapseList[this.typeList.indexOf(t)] = true;
             ***REMOVED***
             break;
         ***REMOVED***
@@ -167,14 +166,13 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
     public checkShortname(shortname: string) ***REMOVED***
         if (/^[a-zA-Z0-9\s]*$/.test(shortname) == false) ***REMOVED***
             this.wronginput = true;
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             this.wronginput = false;
         ***REMOVED***
     ***REMOVED***
 
     sendTestApplication() ***REMOVED***
-        let values: ***REMOVED*** [key: string]: any ***REMOVED*** = ***REMOVED******REMOVED***;
+        const values: ***REMOVED*** [key: string]: any ***REMOVED*** = ***REMOVED******REMOVED***;
 
         values['project_application_comment'] = 'TestApplication';
         values['project_application_description'] = 'TestApplication';
@@ -182,8 +180,8 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
         values['project_application_lifetime'] = 3;
         values['project_application_name'] = 'TestApplication';
         values['project_application_openstack_project'] = false;
-        for (let f of this.flavorList) ***REMOVED***
-            let fname = 'project_application_' + f.name;
+        for (const f of this.flavorList) ***REMOVED***
+            const fname = 'project_application_' + f.name;
             values[fname] = 1;
         ***REMOVED***
         values['project_application_report_allowed'] = true;
@@ -197,10 +195,10 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
                 this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                 this.notificationModalStay = false;
             ***REMOVED***).catch(error => ***REMOVED***
-            var error_json = error
+            const error_json = error
             this.error = []
-            for (let key of Object.keys(error_json)) ***REMOVED***
-                this.error.push(key.split('_',)[2])
+            for (const key of Object.keys(error_json)) ***REMOVED***
+                this.error.push(key.split('_', )[2])
 
             ***REMOVED***
 

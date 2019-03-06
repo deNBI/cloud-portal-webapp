@@ -19,15 +19,15 @@ export class ApiSettings ***REMOVED***
     Returns the format of the API call.
     default is JSON
    */
-  getApiFormat(): string***REMOVED***
+  getApiFormat(): string ***REMOVED***
     return 'json';
   ***REMOVED***
 
-  getCSRFToken(): string***REMOVED***
-    return Cookie.get("csrftoken");
+  getCSRFToken(): string ***REMOVED***
+    return Cookie.get('csrftoken');
   ***REMOVED***
 
-  getAccessToken(): string***REMOVED***
-    return Cookie.get("access_token");
+  getAccessToken(): string ***REMOVED***
+    return Cookie.get('access_token');
   ***REMOVED***
 ***REMOVED***

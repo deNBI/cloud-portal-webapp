@@ -1,8 +1,8 @@
 import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
 import ***REMOVED***Routes, RouterModule***REMOVED*** from '@angular/router';
-import ***REMOVED***VoOverviewComponent***REMOVED*** from "./VoOverviewComponent";
-import ***REMOVED***VoGuardService***REMOVED*** from "./vo-guard.service";
-import ***REMOVED***ResourcesComponent***REMOVED*** from "./resources/resources.component";
+import ***REMOVED***VoOverviewComponent***REMOVED*** from './VoOverviewComponent';
+import ***REMOVED***VoGuardService***REMOVED*** from './vo-guard.service';
+import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.component';
 
 
 const routes: Routes = [

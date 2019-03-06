@@ -3,7 +3,7 @@ import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@
 import ***REMOVED***PerunSettings***REMOVED*** from './connector-settings.service'
 import ***REMOVED*** Observable***REMOVED*** from 'rxjs';
 import 'rxjs/add/operator/map';
-import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
+import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
 
 @Injectable()
 export class ResourcesManager ***REMOVED***

@@ -6,7 +6,7 @@ import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angu
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
 const header = new HttpHeaders(***REMOVED***
-    'X-CSRFToken': Cookie.get("csrftoken")
+    'X-CSRFToken': Cookie.get('csrftoken')
 ***REMOVED***);
 
 
@@ -93,7 +93,7 @@ export class FacilityService ***REMOVED***
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
     approveFacilityApplication(facility: number, application_id: number): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('action', 'approve');
+        const params = new HttpParams().set('action', 'approve');
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/', params, ***REMOVED***
@@ -112,7 +112,7 @@ export class FacilityService ***REMOVED***
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
     declineFacilityApplication(facility: number, application_id: number): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('action', 'decline');
+        const params = new HttpParams().set('action', 'decline');
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/', params, ***REMOVED***
@@ -133,7 +133,7 @@ export class FacilityService ***REMOVED***
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
     sendMailToFacility(facility, subject, message, reply?): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
+        const params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
 
         return this.http.post(this.settings.getApiBaseURL() + 'facilityManagers/current/facilityMail/', params, ***REMOVED***
             withCredentials: true,

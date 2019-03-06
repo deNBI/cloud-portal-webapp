@@ -12,8 +12,8 @@ import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sideba
 import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.directive';
 import ***REMOVED***PopoverModule***REMOVED*** from 'ngx-popover';
 import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
-import ***REMOVED***PerunSettings***REMOVED*** from "./perun-connector/connector-settings.service";
-import ***REMOVED***ApiSettings***REMOVED*** from "./api-connector/api-settings.service";
+import ***REMOVED***PerunSettings***REMOVED*** from './perun-connector/connector-settings.service';
+import ***REMOVED***ApiSettings***REMOVED*** from './api-connector/api-settings.service';
 import ***REMOVED***HttpClientModule***REMOVED*** from '@angular/common/http';
 // Routing Module
 import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
@@ -23,10 +23,10 @@ import ***REMOVED***ExportAsModule***REMOVED*** from 'ngx-export-as';
 // Layouts
 import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout.component';
 import ***REMOVED***SimpleLayoutComponent***REMOVED*** from './layouts/simple-layout.component';
-import ***REMOVED***ModalModule***REMOVED*** from "ngx-bootstrap";
-import ***REMOVED***RegistrationInfoComponent***REMOVED*** from "./registration-info.component";
-import ***REMOVED***UserService***REMOVED*** from "./api-connector/user.service";
-import ***REMOVED***ConsentInfoComponent***REMOVED*** from "./consent-info.component";
+import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap';
+import ***REMOVED***RegistrationInfoComponent***REMOVED*** from './registration-info.component';
+import ***REMOVED***UserService***REMOVED*** from './api-connector/user.service';
+import ***REMOVED***ConsentInfoComponent***REMOVED*** from './consent-info.component';
 
 @NgModule(***REMOVED***
     imports: [

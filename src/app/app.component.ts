@@ -1,7 +1,7 @@
 import ***REMOVED***AfterViewInit, Component, ViewChild***REMOVED*** from '@angular/core';
 import ***REMOVED***RequestOptions, XHRBackend, Http***REMOVED*** from '@angular/http';
-import ***REMOVED***HttpInterceptor***REMOVED*** from "app/interceptor";
-import ***REMOVED***ModalDirective***REMOVED*** from "ngx-bootstrap";
+import ***REMOVED***HttpInterceptor***REMOVED*** from 'app/interceptor';
+import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap';
 
 
 export function httpInterceptor(backend: XHRBackend, options: RequestOptions, modal: AppComponent) ***REMOVED***
@@ -19,10 +19,10 @@ export function httpInterceptor(backend: XHRBackend, options: RequestOptions, mo
 ***REMOVED***)
 export class AppComponent implements AfterViewInit ***REMOVED***
 
+  @ViewChild('timeoutModal') modal: ModalDirective;
+
   ngAfterViewInit(): void ***REMOVED***
   ***REMOVED***
-
-  @ViewChild('timeoutModal') modal: ModalDirective;
 
   refresh() ***REMOVED***
     window.sessionStorage.clear();

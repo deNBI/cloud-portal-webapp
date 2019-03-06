@@ -2,13 +2,13 @@ import ***REMOVED*** NgModule ***REMOVED*** from '@angular/core';
 
 import ***REMOVED*** TabsModule ***REMOVED*** from 'ngx-bootstrap/tabs';
 
-import ***REMOVED***CommonModule***REMOVED*** from "@angular/common";
+import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
 import ***REMOVED*** ModalModule ***REMOVED*** from 'ngx-bootstrap/modal';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import ***REMOVED***VoManagerRoutingModule***REMOVED*** from "./VoManager-routing.module";
-import ***REMOVED***VoOverviewComponent***REMOVED*** from "./VoOverviewComponent";
-import ***REMOVED***VoGuardService***REMOVED*** from "./vo-guard.service";
-import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
+import ***REMOVED***VoManagerRoutingModule***REMOVED*** from './VoManager-routing.module';
+import ***REMOVED***VoOverviewComponent***REMOVED*** from './VoOverviewComponent';
+import ***REMOVED***VoGuardService***REMOVED*** from './vo-guard.service';
+import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 import ***REMOVED*** ResourcesComponent ***REMOVED*** from './resources/resources.component';
 
 @NgModule(***REMOVED***
@@ -23,7 +23,7 @@ import ***REMOVED*** ResourcesComponent ***REMOVED*** from './resources/resource
     VoOverviewComponent,
     ResourcesComponent
   ],
-    providers:[
+    providers: [
         VoService,
         VoGuardService
 

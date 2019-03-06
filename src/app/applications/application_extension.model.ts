@@ -14,22 +14,22 @@ export class ApplicationExtension ***REMOVED***
     private _OpenStackProject: boolean;
     private _TotalCores: number;
     private _TotalRAM: number;
-    private _RequestedFlavors: ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number***REMOVED*** ***REMOVED***;
+    private _RequestedFlavors: ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number***REMOVED*** ***REMOVED***;
 
     constructor() ***REMOVED***
-      this._RequestedFlavors= ***REMOVED******REMOVED***;
+      this._RequestedFlavors = ***REMOVED******REMOVED***;
 
     ***REMOVED***
 
-  public  addFlavorToRequested(name: string, counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number ):void ***REMOVED***
-    this._RequestedFlavors[name]=***REMOVED***counter:counter,tag: tag,ram: ram,rootdisk:rootdisk,vcpus:vcpus,gpu:gpu,epheremal_disk:epheremal_disk***REMOVED***;
+  public  addFlavorToRequested(name: string, counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number ): void ***REMOVED***
+    this._RequestedFlavors[name] = ***REMOVED***counter: counter, tag: tag, ram: ram, rootdisk: rootdisk, vcpus: vcpus, gpu: gpu, epheremal_disk: epheremal_disk***REMOVED***;
   ***REMOVED***
 
-  get RequestedFlavors(): ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number***REMOVED*** ***REMOVED*** ***REMOVED***
+  get RequestedFlavors(): ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number***REMOVED*** ***REMOVED*** ***REMOVED***
     return this._RequestedFlavors
   ***REMOVED***
 
-  set RequestedFlavors(value:***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu : number, epheremal_disk: number***REMOVED*** ***REMOVED***) ***REMOVED***
+  set RequestedFlavors(value: ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number***REMOVED*** ***REMOVED***) ***REMOVED***
     this._RequestedFlavors  = value;
   ***REMOVED***
 

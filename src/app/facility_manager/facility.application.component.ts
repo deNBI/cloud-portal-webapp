@@ -1,20 +1,20 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import * as moment from 'moment';
-import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
-import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
-import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
-import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
-import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
-import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
-import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
-import ***REMOVED***Application***REMOVED*** from "../applications/application.model";
-import ***REMOVED***ApplicationExtension***REMOVED*** from "../applications/application_extension.model";
-import ***REMOVED***SpecialHardware***REMOVED*** from "../applications/special_hardware.model";
-import ***REMOVED***ApplicationStatus***REMOVED*** from "../applications/application_status.model";
-import ***REMOVED***ApplicationStatusService***REMOVED*** from "../api-connector/application-status.service";
-import ***REMOVED***ApplicationsService***REMOVED*** from "../api-connector/applications.service";
-import ***REMOVED***SpecialHardwareService***REMOVED*** from "../api-connector/special-hardware.service";
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
+import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
+import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
+import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
+import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
+import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
+import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connector-settings.service';
+import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
+import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
+import ***REMOVED***ApplicationExtension***REMOVED*** from '../applications/application_extension.model';
+import ***REMOVED***SpecialHardware***REMOVED*** from '../applications/special_hardware.model';
+import ***REMOVED***ApplicationStatus***REMOVED*** from '../applications/application_status.model';
+import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service';
+import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service';
+import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/special-hardware.service';
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
 
 @Component(***REMOVED***
     selector: 'app-facility.application',
@@ -100,8 +100,8 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      */
     getComputeCenters() ***REMOVED***
         this.facilityService.getComputeCenters().subscribe(result => ***REMOVED***
-            for (let cc of result) ***REMOVED***
-                let compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
+            for (const cc of result) ***REMOVED***
+                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             ***REMOVED***
 
@@ -129,48 +129,48 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * @param ***REMOVED***number***REMOVED*** facility
      */
     getAllApplications(facility: number) ***REMOVED***
-        //todo check if user is VO Admin
+        // todo check if user is VO Admin
         this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe(res => ***REMOVED***
             if (Object.keys(res).length == 0) ***REMOVED***
                 this.isLoaded = true;
             ***REMOVED***
 
-            for (let key in res) ***REMOVED***
+            for (const key in res) ***REMOVED***
 
-                let aj = res[key];
-                let a = new Application();
-                a.Id = aj["project_application_id"];
+                const aj = res[key];
+                const a = new Application();
+                a.Id = aj['project_application_id'];
 
-                a.Name = aj["project_application_name"];
-                a.Shortname = aj["project_application_shortname"];
-                a.Description = aj["project_application_description"];
-                a.Lifetime = aj["project_application_lifetime"];
+                a.Name = aj['project_application_name'];
+                a.Shortname = aj['project_application_shortname'];
+                a.Description = aj['project_application_description'];
+                a.Lifetime = aj['project_application_lifetime'];
 
-                a.VMsRequested = aj["project_application_vms_requested"];
-                a.RamPerVM = aj["project_application_ram_per_vm"];
-                a.TotalRam = aj["project_application_total_ram"];
-                a.TotalCores = aj["project_application_total_cores"];
-                a.CoresPerVM = aj["project_application_cores_per_vm"];
-                a.VolumeLimit = aj["project_application_volume_limit"];
-                a.VolumeCounter = aj["project_application_volume_counter"];
+                a.VMsRequested = aj['project_application_vms_requested'];
+                a.RamPerVM = aj['project_application_ram_per_vm'];
+                a.TotalRam = aj['project_application_total_ram'];
+                a.TotalCores = aj['project_application_total_cores'];
+                a.CoresPerVM = aj['project_application_cores_per_vm'];
+                a.VolumeLimit = aj['project_application_volume_limit'];
+                a.VolumeCounter = aj['project_application_volume_counter'];
 
-                a.ObjectStorage = aj["project_application_object_storage"];
-                a.SpecialHardware = aj["project_application_special_hardware"];
+                a.ObjectStorage = aj['project_application_object_storage'];
+                a.SpecialHardware = aj['project_application_special_hardware'];
 
-                a.Institute = aj["project_application_institute"];
-                a.Workgroup = aj["project_application_workgroup"];
+                a.Institute = aj['project_application_institute'];
+                a.Workgroup = aj['project_application_workgroup'];
 
-                a.DateSubmitted = aj["project_application_date_submitted"];
-                a.DateStatusChanged = aj["project_application_date_status_changed"];
-                a.User = aj["project_application_user"]["username"];
-                a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
-                a.UserEmail = aj["project_application_user"]["email"];
-                a.Status = aj["project_application_status"];
-                a.Comment = aj["project_application_comment"];
+                a.DateSubmitted = aj['project_application_date_submitted'];
+                a.DateStatusChanged = aj['project_application_date_status_changed'];
+                a.User = aj['project_application_user']['username'];
+                a.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
+                a.UserEmail = aj['project_application_user']['email'];
+                a.Status = aj['project_application_status'];
+                a.Comment = aj['project_application_comment'];
                 a.PerunId = aj['project_application_perun_id'];
-                a.OpenStackProject = aj["project_application_openstack_project"];
+                a.OpenStackProject = aj['project_application_openstack_project'];
                 if (aj['projectapplicationrenewal']) ***REMOVED***
-                    let r = new ApplicationExtension();
+                    const r = new ApplicationExtension();
 
                     r.Id = aj['projectapplicationrenewal']['project_application'];
                     r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
@@ -182,12 +182,12 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
                     r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
                     r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                     r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                    let special_hardware = [];
+                    const special_hardware = [];
                     if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) ***REMOVED***
-                        let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
+                        const special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
 
                         for (let c = 0; c < special_hardware_string.length; c++) ***REMOVED***
-                            let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                            const sh = special_hardware_string.charAt(c) == this.FPGA ? 'FPGA' : 'GPU';
                             special_hardware.push(sh)
 
                         ***REMOVED***
@@ -252,10 +252,10 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     getApplicationStatus() ***REMOVED***
         this.applicationstatusservice.getAllApplicationStatus().toPromise()
             .then(result => ***REMOVED***
-                let res = result;
-                for (let key in res) ***REMOVED***
-                    let asj = res[key];
-                    let aj = new ApplicationStatus(asj["application_status_id"], asj["application_status_name"]);
+                const res = result;
+                for (const key in res) ***REMOVED***
+                    const asj = res[key];
+                    const aj = new ApplicationStatus(asj['application_status_id'], asj['application_status_name']);
                     this.application_status.push(aj)
                 ***REMOVED***
             ***REMOVED***);
@@ -267,10 +267,10 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     getSpecialHardware() ***REMOVED***
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => ***REMOVED***
-                let res = result;
-                for (let key in res) ***REMOVED***
-                    let shj = res[key];
-                    let sh = new SpecialHardware(shj["special_hardware_id"], shj["special_hardware_key"], shj["special_hardware_name"]);
+                const res = result;
+                for (const key in res) ***REMOVED***
+                    const shj = res[key];
+                    const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
                     this.special_hardware.push(sh)
                 ***REMOVED***
             ***REMOVED***);
@@ -286,8 +286,8 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             if (!(elixir_id in this.application_user)) ***REMOVED***
                 this.userService.getMemberDetailsByElixirId(elixir_id).subscribe(result => ***REMOVED***
 
-                    let name = result['firstName'] + ' ' + result['lastName'];
-                    let appuser: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
+                    const name = result['firstName'] + ' ' + result['lastName'];
+                    const appuser: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
                     appuser['name'] = name;
                     appuser['email'] = result['email'];
                     this.application_user[elixir_id] = appuser;
@@ -327,8 +327,8 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * @returns ***REMOVED***string***REMOVED***
      */
     public getStatusById(id: number): string ***REMOVED***
-        let s = "Unknown";
-        for (let status of this.application_status) ***REMOVED***
+        const s = 'Unknown';
+        for (const status of this.application_status) ***REMOVED***
             if (status.Id == id) ***REMOVED***
                 return status.Name;
             ***REMOVED***
@@ -343,8 +343,8 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * @returns ***REMOVED***number***REMOVED***
      */
     public getIdByStatus(name: string): number ***REMOVED***
-        let s = -1;
-        for (let status of this.application_status) ***REMOVED***
+        const s = -1;
+        for (const status of this.application_status) ***REMOVED***
             if (status.Name == name) ***REMOVED***
                 return status.Id;
             ***REMOVED***

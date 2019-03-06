@@ -1,4 +1,4 @@
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from "./abstract-base-class";
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from './abstract-base-class';
 
 export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
 
@@ -44,11 +44,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     isFilterProjectId(id: number): boolean ***REMOVED***
         if (!this.filterProjectId) ***REMOVED***
             return true;
-        ***REMOVED***
-        else if (id.toString().indexOf(this.filterProjectId.toString()) === 0) ***REMOVED***
+        ***REMOVED*** else if (id.toString().indexOf(this.filterProjectId.toString()) === 0) ***REMOVED***
             return true
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             return false
         ***REMOVED***
     ***REMOVED***
@@ -56,11 +54,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     isFilterFacilityName(name: string): boolean ***REMOVED***
         if (!this.filterFacilityName) ***REMOVED***
             return true;
-        ***REMOVED***
-        else if (name.indexOf(this.filterFacilityName) === 0) ***REMOVED***
+        ***REMOVED*** else if (name.indexOf(this.filterFacilityName) === 0) ***REMOVED***
             return true;
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             return false;
         ***REMOVED***
     ***REMOVED***
@@ -68,11 +64,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     isFilterLongProjectName(name: string): boolean ***REMOVED***
         if (!this.filterProjectLongName) ***REMOVED***
             return true;
-        ***REMOVED***
-        else if (name.indexOf(this.filterProjectLongName) === 0) ***REMOVED***
+        ***REMOVED*** else if (name.indexOf(this.filterProjectLongName) === 0) ***REMOVED***
             return true;
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             return false;
         ***REMOVED***
     ***REMOVED***
@@ -82,13 +76,11 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
 
         if (!this.filterProjectName) ***REMOVED***
             return true;
-        ***REMOVED***
-        else if (projectName.indexOf(this.filterProjectName) === 0) ***REMOVED***
+        ***REMOVED*** else if (projectName.indexOf(this.filterProjectName) === 0) ***REMOVED***
 
             return true;
 
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
 
             return false;
         ***REMOVED***
@@ -119,8 +111,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
         ) ***REMOVED***
 
             return true
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             return false
         ***REMOVED***
     ***REMOVED***
@@ -128,11 +119,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     isFilterStopped_at(vmstopped_at: string): boolean ***REMOVED***
         if (!this.filterVmStopped_at) ***REMOVED***
             return true;
-        ***REMOVED***
-        else if (vmstopped_at.indexOf(this.filterVmStopped_at) === 0) ***REMOVED***
+        ***REMOVED*** else if (vmstopped_at.indexOf(this.filterVmStopped_at) === 0) ***REMOVED***
             return true;
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             return false;
         ***REMOVED***
     ***REMOVED***
@@ -141,11 +130,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     isFilterElixir_id(vmelixir_id: string): boolean ***REMOVED***
         if (!this.filterVmElixir_id) ***REMOVED***
             return true;
-        ***REMOVED***
-        else if (vmelixir_id.indexOf(this.filterVmElixir_id) === 0) ***REMOVED***
+        ***REMOVED*** else if (vmelixir_id.indexOf(this.filterVmElixir_id) === 0) ***REMOVED***
             return true;
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             return false;
         ***REMOVED***
     ***REMOVED***
@@ -153,11 +140,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     isFilterCreated_at(vmcreated_at: string): boolean ***REMOVED***
         if (!this.filterVmCreated_at) ***REMOVED***
             return true;
-        ***REMOVED***
-        else if (vmcreated_at.indexOf(this.filterVmCreated_at) === 0) ***REMOVED***
+        ***REMOVED*** else if (vmcreated_at.indexOf(this.filterVmCreated_at) === 0) ***REMOVED***
             return true;
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             return false;
         ***REMOVED***
     ***REMOVED***
@@ -165,11 +150,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     isFilterName(vmname: string): boolean ***REMOVED***
         if (!this.filterVmName) ***REMOVED***
             return true;
-        ***REMOVED***
-        else if (vmname.indexOf(this.filterVmName) === 0) ***REMOVED***
+        ***REMOVED*** else if (vmname.indexOf(this.filterVmName) === 0) ***REMOVED***
             return true;
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             return false;
         ***REMOVED***
     ***REMOVED***
@@ -177,15 +160,12 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     isFilterIP(vmip: string): boolean ***REMOVED***
         if (!this.filterVmIp) ***REMOVED***
             return true;
-        ***REMOVED***
-        else if (vmip == null) ***REMOVED***
+        ***REMOVED*** else if (vmip == null) ***REMOVED***
             return false;
-        ***REMOVED***
-        else if (vmip.indexOf(this.filterVmIp) === 0) ***REMOVED***
+        ***REMOVED*** else if (vmip.indexOf(this.filterVmIp) === 0) ***REMOVED***
 
             return true;
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             return false;
         ***REMOVED***
     ***REMOVED***
@@ -198,8 +178,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
         ) ***REMOVED***
 
             return true
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             return false
         ***REMOVED***
     ***REMOVED***
@@ -207,12 +186,10 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     isFilterUsername(vmusername: string): boolean ***REMOVED***
         if (!this.filterVmUsername) ***REMOVED***
             return true;
-        ***REMOVED***
-        else if (vmusername.indexOf(this.filterVmUsername) === 0) ***REMOVED***
+        ***REMOVED*** else if (vmusername.indexOf(this.filterVmUsername) === 0) ***REMOVED***
 
             return true;
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             return false;
         ***REMOVED***
     ***REMOVED***

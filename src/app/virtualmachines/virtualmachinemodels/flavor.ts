@@ -1,4 +1,4 @@
-import ***REMOVED***FlavorType***REMOVED*** from "./flavorType";
+import ***REMOVED***FlavorType***REMOVED*** from './flavorType';
 
 export class Flavor ***REMOVED***
     private _id: string;

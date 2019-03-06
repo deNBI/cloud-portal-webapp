@@ -1,6 +1,6 @@
 import ***REMOVED***Image***REMOVED*** from './image';
 import ***REMOVED***Flavor***REMOVED*** from './flavor';
-import ***REMOVED***Vmclient***REMOVED*** from "./vmclient";
+import ***REMOVED***Vmclient***REMOVED*** from './vmclient';
 
 
 export class VirtualMachine ***REMOVED***

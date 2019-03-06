@@ -1,9 +1,9 @@
 import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
 import ***REMOVED***Routes, RouterModule***REMOVED*** from '@angular/router';
-import ***REMOVED***FacilityProjectsOverviewComponent***REMOVED*** from "../facility_manager/facilityprojectsoverview.component";
-import ***REMOVED***ImageTagComponent***REMOVED*** from "../facility_manager/imagetags.component";
-import ***REMOVED***FacilityApplicationComponent***REMOVED*** from "./facility.application.component";
-import ***REMOVED***ResourcesComponent***REMOVED*** from "./resources/resources.component";
+import ***REMOVED***FacilityProjectsOverviewComponent***REMOVED*** from '../facility_manager/facilityprojectsoverview.component';
+import ***REMOVED***ImageTagComponent***REMOVED*** from '../facility_manager/imagetags.component';
+import ***REMOVED***FacilityApplicationComponent***REMOVED*** from './facility.application.component';
+import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.component';
 
 const routes: Routes = [
 

@@ -1,8 +1,8 @@
 import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.service";
-import ***REMOVED***SnapshotModel***REMOVED*** from "./virtualmachinemodels/snapshot.model";
-import ***REMOVED***Image***REMOVED*** from "./virtualmachinemodels/image";
+import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
+import ***REMOVED***SnapshotModel***REMOVED*** from './virtualmachinemodels/snapshot.model';
+import ***REMOVED***Image***REMOVED*** from './virtualmachinemodels/image';
 import ***REMOVED***forkJoin***REMOVED*** from 'rxjs';
 
 enum Snapshot_Delete_Statuses ***REMOVED***
@@ -43,7 +43,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
      */
     isLoaded = false;
 
-    private checkStatusTimeout: number = 5000;
+    private checkStatusTimeout = 5000;
 
 
     constructor(private imageService: ImageService) ***REMOVED***
@@ -75,14 +75,14 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
         let all_active = true;
 
         setTimeout(() => ***REMOVED***
-            let observables = [];
-            for (let s of this.snapshots) ***REMOVED***
+            const observables = [];
+            for (const s of this.snapshots) ***REMOVED***
 
                 observables.push(this.imageService.getSnapshot(s.snapshot_openstackid));
 
             ***REMOVED***
             forkJoin(observables).subscribe(res => ***REMOVED***
-                for (let i of res) ***REMOVED***
+                for (const i of res) ***REMOVED***
                     this.snapshots[res.indexOf(i)].snapshot_status = i['status'];
                     if (i['status'] != 'active') ***REMOVED***
                         all_active = false;
@@ -91,8 +91,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
                 ***REMOVED***
                 if (all_active) ***REMOVED***
                     return;
-                ***REMOVED***
-                else ***REMOVED***
+                ***REMOVED*** else ***REMOVED***
                     this.checkSnapShotsStatus();
                 ***REMOVED***
             ***REMOVED***)
@@ -112,8 +111,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
 
             if (result['Deleted'] && result['Deleted'] === true) ***REMOVED***
                 this.delete_status = 1;
-            ***REMOVED***
-            else if (result['Info']) ***REMOVED***
+            ***REMOVED*** else if (result['Info']) ***REMOVED***
                 this.delete_status = 3;
 
             ***REMOVED*** else ***REMOVED***

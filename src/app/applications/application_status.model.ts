@@ -1,4 +1,4 @@
-export class ApplicationStatus***REMOVED***
+export class ApplicationStatus ***REMOVED***
 
     /**
      * Id of the status.

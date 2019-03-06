@@ -7,6 +7,6 @@ import ***REMOVED***environment***REMOVED*** from '../environments/environment';
 
 
 ***REMOVED***)
-export class RegistrationInfoComponent***REMOVED***
-  voRegistrationLink= environment.voRegistrationLink;
+export class RegistrationInfoComponent ***REMOVED***
+  voRegistrationLink = environment.voRegistrationLink;
 ***REMOVED***

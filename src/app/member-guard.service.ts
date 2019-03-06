@@ -1,7 +1,7 @@
-import ***REMOVED***Injectable***REMOVED*** from "@angular/core";
-import ***REMOVED***CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot***REMOVED*** from "@angular/router";
-import ***REMOVED***environment***REMOVED*** from "../environments/environment";
-import ***REMOVED***UserService***REMOVED*** from "./api-connector/user.service";
+import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
+import ***REMOVED***CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot***REMOVED*** from '@angular/router';
+import ***REMOVED***environment***REMOVED*** from '../environments/environment';
+import ***REMOVED***UserService***REMOVED*** from './api-connector/user.service';
 import ***REMOVED*** Observable***REMOVED*** from 'rxjs';
 
 
@@ -14,12 +14,12 @@ export class MemberGuardService implements CanActivate ***REMOVED***
     ***REMOVED***
 
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Observable<boolean> | Promise<boolean> | boolean ***REMOVED***
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean ***REMOVED***
         return new Promise((resolve, reject) => ***REMOVED***
             this.userservice.getLoggedUser().toPromise()
                 .then(result => ***REMOVED***
 
-                    let res = result;
+                    const res = result;
 
                     return res
 
@@ -42,7 +42,7 @@ export class MemberGuardService implements CanActivate ***REMOVED***
                 ***REMOVED***);
             ***REMOVED***).catch(rejection => ***REMOVED***
 
-                //this.router.navigate(['/portal']);
+                // this.router.navigate(['/portal']);
                 window.location.href = environment.login;
                 resolve(false);
 
@@ -54,11 +54,11 @@ export class MemberGuardService implements CanActivate ***REMOVED***
     ***REMOVED***
 
 
-     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Observable<boolean> | Promise<boolean> | boolean ***REMOVED***
+     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean ***REMOVED***
         return new Promise((resolve, reject) => ***REMOVED***
             this.userservice.getLoggedUser().toPromise()
                 .then(result => ***REMOVED***
-                    let res = result;
+                    const res = result;
 
                     return res
 
@@ -81,7 +81,7 @@ export class MemberGuardService implements CanActivate ***REMOVED***
                 ***REMOVED***);
             ***REMOVED***).catch(rejection => ***REMOVED***
 
-                //this.router.navigate(['/portal']);
+                // this.router.navigate(['/portal']);
                 window.location.href = environment.login;
                 resolve(false);
 

@@ -16,31 +16,6 @@ export class DashboardComponent implements OnInit ***REMOVED***
 
   // dropdown buttons
   public status: ***REMOVED*** isopen ***REMOVED*** = ***REMOVED*** isopen: false ***REMOVED***;
-  public toggleDropdown($event: MouseEvent): void ***REMOVED***
-    $event.preventDefault();
-    $event.stopPropagation();
-    this.status.isopen = !this.status.isopen;
-  ***REMOVED***
-
-  // convert Hex to RGBA
-  public convertHex(hex: string, opacity: number) ***REMOVED***
-    hex = hex.replace('#', '');
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-
-    const rgba = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + opacity / 100 + ')';
-    return rgba;
-  ***REMOVED***
-
-  // events
-  public chartClicked(e: any): void ***REMOVED***
-    console.log(e);
-  ***REMOVED***
-
-  public chartHovered(e: any): void ***REMOVED***
-    console.log(e);
-  ***REMOVED***
 
   // lineChart1
   public lineChart1Data: Array<any> = [
@@ -225,12 +200,6 @@ export class DashboardComponent implements OnInit ***REMOVED***
   ];
   public barChart1Legend = false;
   public barChart1Type = 'bar';
-
-  // mainChart
-
-  public random(min: number, max: number) ***REMOVED***
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  ***REMOVED***
 
   public mainChartElements = 27;
   public mainChartData1: Array<number> = [];
@@ -460,6 +429,37 @@ export class DashboardComponent implements OnInit ***REMOVED***
 
   public sparklineChartLegend = false;
   public sparklineChartType = 'line';
+  public toggleDropdown($event: MouseEvent): void ***REMOVED***
+    $event.preventDefault();
+    $event.stopPropagation();
+    this.status.isopen = !this.status.isopen;
+  ***REMOVED***
+
+  // convert Hex to RGBA
+  public convertHex(hex: string, opacity: number) ***REMOVED***
+    hex = hex.replace('#', '');
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
+    const rgba = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + opacity / 100 + ')';
+    return rgba;
+  ***REMOVED***
+
+  // events
+  public chartClicked(e: any): void ***REMOVED***
+    console.log(e);
+  ***REMOVED***
+
+  public chartHovered(e: any): void ***REMOVED***
+    console.log(e);
+  ***REMOVED***
+
+  // mainChart
+
+  public random(min: number, max: number) ***REMOVED***
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  ***REMOVED***
 
 
   ngOnInit(): void ***REMOVED***

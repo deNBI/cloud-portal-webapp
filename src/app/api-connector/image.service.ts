@@ -1,6 +1,6 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***Image***REMOVED*** from '../virtualmachines/virtualmachinemodels/image';
-import ***REMOVED***SnapshotModel***REMOVED*** from "../virtualmachines/virtualmachinemodels/snapshot.model";
+import ***REMOVED***SnapshotModel***REMOVED*** from '../virtualmachines/virtualmachinemodels/snapshot.model';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
 import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
@@ -8,7 +8,7 @@ import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angu
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
 const header = new HttpHeaders(***REMOVED***
-    'X-CSRFToken': Cookie.get("csrftoken")
+    'X-CSRFToken': Cookie.get('csrftoken')
 ***REMOVED***);
 
 
@@ -18,7 +18,7 @@ export class ImageService ***REMOVED***
     ***REMOVED***
 
     getImages(project_id: number): Observable<Image[]> ***REMOVED***
-        let params = new HttpParams().set('project_id', project_id.toString());
+        const params = new HttpParams().set('project_id', project_id.toString());
 
 
         return this.http.get<Image[]>(this.settings.getConnectorBaseUrl() + 'images/', ***REMOVED***
@@ -73,7 +73,7 @@ export class ImageService ***REMOVED***
 
     addImageTags(imageTag: string, description: string): Observable<any> ***REMOVED***
 
-        let params = new HttpParams().set('imageTag', imageTag).set('description', description);
+        const params = new HttpParams().set('imageTag', imageTag).set('description', description);
 
 
         return this.http.post(this.settings.getConnectorBaseUrl() + 'imageTags/', params, ***REMOVED***
@@ -98,7 +98,7 @@ export class ImageService ***REMOVED***
 
     createSnapshot(snaptshot_instance: string, snapshot_name: string): Observable<any> ***REMOVED***
 
-        let params = new HttpParams().set('snapshot_name', snapshot_name).set('snapshot_instance', snaptshot_instance);
+        const params = new HttpParams().set('snapshot_name', snapshot_name).set('snapshot_instance', snaptshot_instance);
 
 
         return this.http.post(this.settings.getConnectorBaseUrl() + 'snapshots/', params, ***REMOVED***

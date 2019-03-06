@@ -8,7 +8,7 @@ import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angu
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
 const header = new HttpHeaders(***REMOVED***
-    'X-CSRFToken': Cookie.get("csrftoken")
+    'X-CSRFToken': Cookie.get('csrftoken')
 ***REMOVED***);
 
 
@@ -18,7 +18,7 @@ export class UserService ***REMOVED***
     ***REMOVED***
 
     setUserFacilityPassword(facility: string): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('facility', facility)
+        const params = new HttpParams().set('facility', facility)
 
         ;
         return this.http.post(this.settings.getConnectorBaseUrl() + 'users/setUserPassword/', params, ***REMOVED***
@@ -45,7 +45,7 @@ export class UserService ***REMOVED***
     ***REMOVED***
 
     requestChangePreferredMailUser(email: string): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('newPreferredEmail', email);
+        const params = new HttpParams().set('newPreferredEmail', email);
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'users/current/preferredEmail/', params,
@@ -137,7 +137,7 @@ export class UserService ***REMOVED***
     ***REMOVED***
 
     setNewsletterSubscription(subscribed: boolean): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('subscribed', subscribed.toString());
+        const params = new HttpParams().set('subscribed', subscribed.toString());
 
         return this.http.post(this.settings.getApiBaseURL() + 'newsletter/subscription/', params, ***REMOVED***
             withCredentials: true,
@@ -157,7 +157,7 @@ export class UserService ***REMOVED***
 
     sendHelpMail(subject, message, reply): Observable<any> ***REMOVED***
 
-        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+        const params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'users/current/helpMail/', params, ***REMOVED***

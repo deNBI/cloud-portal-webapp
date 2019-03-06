@@ -1,10 +1,10 @@
-import ***REMOVED***Vmclient***REMOVED*** from "./vmclient";
+import ***REMOVED***Vmclient***REMOVED*** from './vmclient';
 
 
 export class SnapshotModel ***REMOVED***
 
     private _snapshot_openstackid: string;
-    private _snapshot_client : Vmclient;
+    private _snapshot_client: Vmclient;
     private _snapshot_name: string;
     private _snapshot_created: boolean;
 

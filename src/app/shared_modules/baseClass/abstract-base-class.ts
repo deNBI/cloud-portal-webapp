@@ -27,7 +27,7 @@ enum Vm_Statuses ***REMOVED***
     ACTIVE = 1,
     SUSPENDED = 2,
     DELETED = 3,
-    CLIENT_OFFLINE=4,
+    CLIENT_OFFLINE= 4,
 ***REMOVED***
 
 
@@ -42,20 +42,20 @@ export abstract class AbstractBaseClasse ***REMOVED***
     isLoaded = false;
 
 
-    //notification Modal variables
+    // notification Modal variables
     public notificationModal;
-    public notificationModalTitle: string = "Notification";
-    public notificationModalMessage: string = "Please wait...";
-    public notificationModalType: string = "info";
-    public notificationModalInfoMessage: string = '';
-    public notificationModalIsClosable: boolean = false;
+    public notificationModalTitle = 'Notification';
+    public notificationModalMessage = 'Please wait...';
+    public notificationModalType = 'info';
+    public notificationModalInfoMessage = '';
+    public notificationModalIsClosable = false;
     public notificationModalStay: boolean;
 
     public resetNotificationModal() ***REMOVED***
-        this.notificationModalTitle = "Notification";
-        this.notificationModalMessage = "Please wait...";
+        this.notificationModalTitle = 'Notification';
+        this.notificationModalMessage = 'Please wait...';
         this.notificationModalIsClosable = false;
-        this.notificationModalType = "info";
+        this.notificationModalType = 'info';
     ***REMOVED***
 
     public updateNotificationModal(title: string, message: string, closable: true, type: string) ***REMOVED***
@@ -96,7 +96,7 @@ export abstract class AbstractBaseClasse ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
-    public setCollapseStatus(id:string,status:boolean):void***REMOVED***
+    public setCollapseStatus(id: string, status: boolean): void ***REMOVED***
 
             this.collapse_status[id] = status;
 
@@ -117,13 +117,11 @@ export abstract class AbstractBaseClasse ***REMOVED***
         if ((lifetimeDays - running) < 0) ***REMOVED***
             // expired
             return this.lifetime_statuses.EXPIRED
-        ***REMOVED***
-        else if ((lifetimeDays - running) < 21) ***REMOVED***
-            //expires soon
+        ***REMOVED*** else if ((lifetimeDays - running) < 21) ***REMOVED***
+            // expires soon
             return this.lifetime_statuses.EXPIRES_SOON
-        ***REMOVED***
-        else ***REMOVED***
-            //still valid
+        ***REMOVED*** else ***REMOVED***
+            // still valid
             return this.lifetime_statuses.VALID_LIFETIME
         ***REMOVED***
 

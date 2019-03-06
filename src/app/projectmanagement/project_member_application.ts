@@ -3,7 +3,7 @@ export class ProjectMemberApplication ***REMOVED***
     private _Id: number;
     private _Name: string;
     private _DateCreated: string;
-    private _UserIsVoMember:boolean;
+    private _UserIsVoMember: boolean;
 
 
     constructor(Id: number, Name: string, DateCreated: string) ***REMOVED***
@@ -14,12 +14,12 @@ export class ProjectMemberApplication ***REMOVED***
 
     ***REMOVED***
 
-    get UserIsVoMember():boolean***REMOVED***
+    get UserIsVoMember(): boolean ***REMOVED***
         return this._UserIsVoMember;
     ***REMOVED***
 
-    set UserIsVoMember(value:boolean)***REMOVED***
-        this._UserIsVoMember=value;
+    set UserIsVoMember(value: boolean) ***REMOVED***
+        this._UserIsVoMember = value;
     ***REMOVED***
 
 

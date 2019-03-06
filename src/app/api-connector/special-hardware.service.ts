@@ -10,7 +10,7 @@ export class SpecialHardwareService ***REMOVED***
     constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
     ***REMOVED***
 
-    getAllSpecialHardware():Observable<any> ***REMOVED***
+    getAllSpecialHardware(): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'special_hardware/', ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***format: this.settings.getApiFormat()***REMOVED***

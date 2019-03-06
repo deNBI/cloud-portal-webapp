@@ -1,8 +1,8 @@
 import ***REMOVED***Component, OnInit, Input***REMOVED*** from '@angular/core';
-import ***REMOVED***keyService***REMOVED*** from "../../api-connector/key.service";
-import ***REMOVED***ApiSettings***REMOVED*** from "../../api-connector/api-settings.service";
-import ***REMOVED***PerunSettings***REMOVED*** from "../../perun-connector/connector-settings.service";
-import ***REMOVED***Userinfo***REMOVED*** from "../../userinfo/userinfo.model";
+import ***REMOVED***keyService***REMOVED*** from '../../api-connector/key.service';
+import ***REMOVED***ApiSettings***REMOVED*** from '../../api-connector/api-settings.service';
+import ***REMOVED***PerunSettings***REMOVED*** from '../../perun-connector/connector-settings.service';
+import ***REMOVED***Userinfo***REMOVED*** from '../../userinfo/userinfo.model';
 
 @Component(***REMOVED***
     selector: '[app-public-key]',
@@ -15,7 +15,7 @@ export class PublicKeyComponent implements OnInit ***REMOVED***
 
     public_key: string;
     @Input() userinfo: Userinfo;
-    show_key_text: string = 'Show Public Key';
+    show_key_text = 'Show Public Key';
     key_visible = false;
 
 
@@ -27,9 +27,9 @@ export class PublicKeyComponent implements OnInit ***REMOVED***
 
     importKey(publicKey: string) ***REMOVED***
 
-        let re = /\+/gi;
+        const re = /\+/gi;
 
-        let newstr = publicKey.replace(re, "%2B");
+        const newstr = publicKey.replace(re, '%2B');
 
         this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(result => ***REMOVED***
             this.getUserPublicKey();
@@ -40,8 +40,7 @@ export class PublicKeyComponent implements OnInit ***REMOVED***
 
         if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]***REMOVED***0,3***REMOVED***( [^@]+@[^@]+)?/.test(this.public_key)) ***REMOVED***
             return true;
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
 
             return false;
         ***REMOVED***

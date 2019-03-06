@@ -7,13 +7,13 @@ import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
 
 const header = new HttpHeaders(***REMOVED***
-    'X-CSRFToken': Cookie.get("csrftoken"),
+    'X-CSRFToken': Cookie.get('csrftoken'),
     'Content-Type': 'application/json'
 
 ***REMOVED***);
 
 const header_csrf = new HttpHeaders(***REMOVED***
-    'X-CSRFToken': Cookie.get("csrftoken"),
+    'X-CSRFToken': Cookie.get('csrftoken'),
     'Content-Type': 'application/json'
 
 ***REMOVED***);
@@ -31,21 +31,21 @@ export class ApplicationsService ***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
-    getUserApplication(project_id:string):Observable<any> ***REMOVED***
+    getUserApplication(project_id: string): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'users/current/project_applications/' + project_id + '/', ***REMOVED***
             headers: header_csrf,
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
-    getApplication(app_id:string):Observable<any> ***REMOVED***
+    getApplication(app_id: string): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/', ***REMOVED***
             headers: header_csrf,
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
-     getApplicationClient(app_id:string):Observable<any> ***REMOVED***
+     getApplicationClient(app_id: string): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/client/', ***REMOVED***
             headers: header_csrf,
             withCredentials: true,
@@ -57,7 +57,7 @@ export class ApplicationsService ***REMOVED***
      * @param ***REMOVED***string***REMOVED*** app_id
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-     getApplicationClientAvaiable(app_id:string):Observable<any> ***REMOVED***
+     getApplicationClientAvaiable(app_id: string): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/clients/resource/', ***REMOVED***
             headers: header_csrf,
             withCredentials: true,
@@ -73,7 +73,7 @@ export class ApplicationsService ***REMOVED***
     ***REMOVED***
 
     addNewApplication(data): Observable<any> ***REMOVED***
-        let parameter = data;
+        const parameter = data;
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'project_applications/', parameter,
@@ -86,7 +86,7 @@ export class ApplicationsService ***REMOVED***
 
 
     requestRenewal(data): Observable<any> ***REMOVED***
-        let parameter = data;
+        const parameter = data;
 
         return this.http.post(this.settings.getApiBaseURL() + 'applicationRenewals/', parameter,
             ***REMOVED***
@@ -99,7 +99,7 @@ export class ApplicationsService ***REMOVED***
     approveRenewal(application_id: number): Observable<any> ***REMOVED***
 
 
-        return this.http.post(this.settings.getApiBaseURL() +  'applicationRenewals/'  + application_id + '/status/',null, ***REMOVED***
+        return this.http.post(this.settings.getApiBaseURL() +  'applicationRenewals/'  + application_id + '/status/', null, ***REMOVED***
             headers: header_csrf,
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -109,7 +109,7 @@ export class ApplicationsService ***REMOVED***
     declineRenewal(application_id: number): Observable<any> ***REMOVED***
 
 
-        return this.http.delete(this.settings.getApiBaseURL() + 'applicationRenewals/' +application_id + '/status/',
+        return this.http.delete(this.settings.getApiBaseURL() + 'applicationRenewals/' + application_id + '/status/',
             ***REMOVED***
                 headers: header_csrf,
                 withCredentials: true,
@@ -139,7 +139,7 @@ export class ApplicationsService ***REMOVED***
     deleteApplication(application_id: number): Observable<any> ***REMOVED***
 
 
-        return this.http.delete(this.settings.getApiBaseURL() +'project_applications/' + application_id +'/',
+        return this.http.delete(this.settings.getApiBaseURL() + 'project_applications/' + application_id + '/',
             ***REMOVED***
                 headers: header_csrf,
                 withCredentials: true,

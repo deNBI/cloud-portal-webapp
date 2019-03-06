@@ -5,33 +5,11 @@ import ***REMOVED*** Component ***REMOVED*** from '@angular/core';
 ***REMOVED***)
 export class WidgetsComponent ***REMOVED***
 
-  constructor() ***REMOVED*** ***REMOVED***
-
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
   public brandInfo = '#63c2de';
   public brandWarning = '#f8cb00';
   public brandDanger = '#f86c6b';
-
-  // convert Hex to RGBA
-  // public convertHex(hex: string, opacity: number)***REMOVED***
-  //   hex = hex.replace('#','');
-  //   let r = parseInt(hex.substring(0,2), 16);
-  //   let g = parseInt(hex.substring(2,4), 16);
-  //   let b = parseInt(hex.substring(4,6), 16);
-  //
-  //   let rgba = 'rgba('+r+','+g+','+b+','+opacity/100+')';
-  //   return rgba;
-  // ***REMOVED***
-
-  // events
-  public chartClicked(e: any): void ***REMOVED***
-    console.log(e);
-  ***REMOVED***
-
-  public chartHovered(e: any): void ***REMOVED***
-    console.log(e);
-  ***REMOVED***
 
   // lineChart1
   public lineChart1Data: Array<any> = [
@@ -382,5 +360,27 @@ export class WidgetsComponent ***REMOVED***
   ];
   public lineChart5Legend = false;
   public lineChart5Type = 'line';
+
+  constructor() ***REMOVED*** ***REMOVED***
+
+  // convert Hex to RGBA
+  // public convertHex(hex: string, opacity: number)***REMOVED***
+  //   hex = hex.replace('#','');
+  //   let r = parseInt(hex.substring(0,2), 16);
+  //   let g = parseInt(hex.substring(2,4), 16);
+  //   let b = parseInt(hex.substring(4,6), 16);
+  //
+  //   let rgba = 'rgba('+r+','+g+','+b+','+opacity/100+')';
+  //   return rgba;
+  // ***REMOVED***
+
+  // events
+  public chartClicked(e: any): void ***REMOVED***
+    console.log(e);
+  ***REMOVED***
+
+  public chartHovered(e: any): void ***REMOVED***
+    console.log(e);
+  ***REMOVED***
 
 ***REMOVED***

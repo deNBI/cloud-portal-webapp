@@ -10,8 +10,8 @@ import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.ser
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 import ***REMOVED***forEach***REMOVED*** from '@angular/router/src/utils/collection';
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
-import ***REMOVED***environment***REMOVED*** from "../../environments/environment";
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
+import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
 
 @Component(***REMOVED***
     templateUrl: 'addcloudapplication.component.html',
@@ -35,7 +35,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
      * If shortname is valid.
      * @type ***REMOVED***boolean***REMOVED***
      */
-    public wronginput: boolean = false;
+    public wronginput = false;
 
 
     /**
@@ -86,14 +86,14 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
         'We would highly appreciate the following citation in your next publication(s): ‘This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).';
-    public acknowledgeModalTitle: string = 'Acknowledge';
-    public acknowledgeModalType: string = 'info';
+    public acknowledgeModalTitle = 'Acknowledge';
+    public acknowledgeModalType = 'info';
 
     /**
      * If project is openstack project (everytime true)
      * @type ***REMOVED***boolean***REMOVED***
      */
-    project_application_openstack_project: boolean = true;
+    project_application_openstack_project = true;
     /**
      * List of special hardwares.
      * @type ***REMOVED***any[]***REMOVED***
@@ -139,8 +139,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
                 case 'project_application_report_allowed': ***REMOVED***
                     if (val) ***REMOVED***
                         return (this.constantStrings[key] + 'Yes');
-                    ***REMOVED***
-                    else ***REMOVED***
+                    ***REMOVED*** else ***REMOVED***
                         return (this.constantStrings[key] + 'No');
                     ***REMOVED***
                 ***REMOVED***
@@ -164,7 +163,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
         this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
         this.constantStrings['project_application_report_allowed'] = 'Dissemination allowed: ';
 
-        for (let key in this.flavorList) ***REMOVED***
+        for (const key in this.flavorList) ***REMOVED***
             if (key in this.flavorList) ***REMOVED***
                 this.constantStrings['project_application_' + this.flavorList[key].name] =
                     'Number of VMs of type ' + this.flavorList[key].name + ': ';
@@ -173,7 +172,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
     ***REMOVED***
 
     keyIsVM(key: string): Flavor ***REMOVED***
-        for (let fkey in this.flavorList) ***REMOVED***
+        for (const fkey in this.flavorList) ***REMOVED***
             if (fkey in this.flavorList) ***REMOVED***
                 if (this.flavorList[fkey].name === key.substring(20)) ***REMOVED***
                     return this.flavorList[fkey];
@@ -193,7 +192,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
         this.totalNumberOfCores = 0;
         this.totalRAM = 0;
         this.valuesToConfirm = new Array();
-        for (let key in f.controls) ***REMOVED***
+        for (const key in f.controls) ***REMOVED***
             if (f.controls[key].value) ***REMOVED***
                 if (key === 'project_application_name') ***REMOVED***
                     this.projectName = f.controls[key].value;
@@ -205,7 +204,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
                     console.log(key)
                     this.valuesToConfirm.push(this.matchString(key.toString(), f.controls[key].value.toString()));
 
-                    var flavor: Flavor = this.keyIsVM(key.toString());
+                    const flavor: Flavor = this.keyIsVM(key.toString());
                     if (flavor != null) ***REMOVED***
                         this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
                         this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value)
@@ -214,7 +213,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
             ***REMOVED***
         ***REMOVED***
         if (!this.project_application_report_allowed) ***REMOVED***
-            this.valuesToConfirm.push("Dissemination allowed: No")
+            this.valuesToConfirm.push('Dissemination allowed: No')
         ***REMOVED***
 
     ***REMOVED***
@@ -244,11 +243,11 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
         this.collapseList = new Array(types.length) as Array<boolean>;
         for (let i = 0; i < types.length; i++) ***REMOVED***
 
-            this.collapseList.push(false); //AS FIX
+            this.collapseList.push(false); // AS FIX
         ***REMOVED***
-        for (let t of this.typeList) ***REMOVED***
+        for (const t of this.typeList) ***REMOVED***
             if (t.long_name === 'Standart Flavor') ***REMOVED***
-                this.collapseList[this.typeList.indexOf(t)]=true;
+                this.collapseList[this.typeList.indexOf(t)] = true;
             ***REMOVED***
             break;
         ***REMOVED***
@@ -262,10 +261,10 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
     getSpecialHardware() ***REMOVED***
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => ***REMOVED***
-                let res = result;
-                for (let key in res) ***REMOVED***
-                    let shj = res[key];
-                    let sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
+                const res = result;
+                for (const key in res) ***REMOVED***
+                    const shj = res[key];
+                    const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
                     this.special_hardware.push(sh)
                 ***REMOVED***
             ***REMOVED***);
@@ -283,12 +282,11 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
 
             this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
-        ***REMOVED***
-        else ***REMOVED***
-            let values: ***REMOVED*** [key: string]: any ***REMOVED*** = ***REMOVED******REMOVED***;
+        ***REMOVED*** else ***REMOVED***
+            const values: ***REMOVED*** [key: string]: any ***REMOVED*** = ***REMOVED******REMOVED***;
             values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
             values['project_application_openstack_project'] = this.project_application_openstack_project;
-            for (let v in f.controls) ***REMOVED***
+            for (const v in f.controls) ***REMOVED***
                 if (f.controls[v].value) ***REMOVED***
 
                     values[v] = f.controls[v].value;
@@ -299,10 +297,10 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
                     this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 ***REMOVED***).catch(error => ***REMOVED***
-                var error_json = error
+                const error_json = error
                 this.error = []
-                for (let key of Object.keys(error_json)) ***REMOVED***
-                    this.error.push(key.split('_',)[2])
+                for (const key of Object.keys(error_json)) ***REMOVED***
+                    this.error.push(key.split('_', )[2])
 
                 ***REMOVED***
 
@@ -315,7 +313,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
 
 
     sendTestApplication() ***REMOVED***
-        let values: ***REMOVED*** [key: string]: any ***REMOVED*** = ***REMOVED******REMOVED***;
+        const values: ***REMOVED*** [key: string]: any ***REMOVED*** = ***REMOVED******REMOVED***;
 
         values['project_application_comment'] = 'TestApplication';
         values['project_application_description'] = 'TestApplication';
@@ -323,8 +321,8 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
         values['project_application_lifetime'] = 3;
         values['project_application_name'] = 'TestApplication';
         values['project_application_openstack_project'] = true;
-        for (let f of this.flavorList) ***REMOVED***
-            let fname = 'project_application_' + f.name;
+        for (const f of this.flavorList) ***REMOVED***
+            const fname = 'project_application_' + f.name;
             values[fname] = 1;
         ***REMOVED***
         values['project_application_report_allowed'] = true;
@@ -339,10 +337,10 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
                 this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                 this.notificationModalStay = false;
             ***REMOVED***).catch(error => ***REMOVED***
-            var error_json = error
+            const error_json = error
             this.error = []
-            for (let key of Object.keys(error_json)) ***REMOVED***
-                this.error.push(key.split('_',)[2])
+            for (const key of Object.keys(error_json)) ***REMOVED***
+                this.error.push(key.split('_', )[2])
 
             ***REMOVED***
 
@@ -362,8 +360,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
     public checkShortname(shortname: string) ***REMOVED***
         if (/^[a-zA-Z0-9\s]*$/.test(shortname) == false) ***REMOVED***
             this.wronginput = true;
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             this.wronginput = false;
         ***REMOVED***
     ***REMOVED***

@@ -1,12 +1,12 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***ApiSettings***REMOVED*** from "./api-settings.service";
+import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
 const header = new HttpHeaders(***REMOVED***
-    'X-CSRFToken': Cookie.get("csrftoken")
+    'X-CSRFToken': Cookie.get('csrftoken')
 ***REMOVED***);
 
 
@@ -27,7 +27,7 @@ export class keyService ***REMOVED***
 
     postKey(public_key: string): Observable<any> ***REMOVED***
         public_key = public_key.replace(/\r?\n|\r/gi, '');
-        let params = new HttpParams().set('public_key', public_key);
+        const params = new HttpParams().set('public_key', public_key);
 
         return this.http.put(this.settings.getApiBaseURL() + 'users/current/public_key/', params, ***REMOVED***
             withCredentials: true,

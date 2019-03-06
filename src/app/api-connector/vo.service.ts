@@ -8,7 +8,7 @@ import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
 
 const header = new HttpHeaders(***REMOVED***
-    'X-CSRFToken': Cookie.get("csrftoken")
+    'X-CSRFToken': Cookie.get('csrftoken')
 ***REMOVED***);
 
 @Injectable()
@@ -74,10 +74,10 @@ export class VoService ***REMOVED***
     ***REMOVED***
 
 
-     setProjectStatus(groupid: number,status:number): Observable<any> ***REMOVED***
-                let params = new HttpParams().set('status', status.toString());
+     setProjectStatus(groupid: number, status: number): Observable<any> ***REMOVED***
+                const params = new HttpParams().set('status', status.toString());
 
-        return this.http.post(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', params,***REMOVED***
+        return this.http.post(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -85,7 +85,7 @@ export class VoService ***REMOVED***
 
     sendNewsletterToVo(subject, message, reply?): Observable<any> ***REMOVED***
 
-        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+        const params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
         return this.http.post(this.settings.getApiBaseURL() + 'voManagers/current/newsletter/', params, ***REMOVED***
             withCredentials: true,
@@ -96,7 +96,7 @@ export class VoService ***REMOVED***
 
 
     sendMailToVo(subject, message, reply?): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+        const params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'voManagers/current/voMail/', params, ***REMOVED***

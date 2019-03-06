@@ -9,7 +9,7 @@ import ***REMOVED***
 ***REMOVED*** from '@angular/http';
 import ***REMOVED*** CookieService ***REMOVED*** from 'ng2-cookies';
 import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
-import ***REMOVED***ModalDirective***REMOVED*** from "ngx-bootstrap";
+import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap';
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 
 

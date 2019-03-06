@@ -9,7 +9,7 @@ import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
 
 const header = new HttpHeaders(***REMOVED***
-    'X-CSRFToken': Cookie.get("csrftoken")
+    'X-CSRFToken': Cookie.get('csrftoken')
 ***REMOVED***);
 
 
@@ -25,10 +25,10 @@ export class ApplicationStatusService ***REMOVED***
     ***REMOVED***
 
     setApplicationStatus(application_id: number, status_id: number, compute_center: string): Observable<any> ***REMOVED***
-        let params = new HttpParams().set("project_application_status", status_id.toString()).set('compute_center',compute_center)
+        const params = new HttpParams().set('project_application_status', status_id.toString()).set('compute_center', compute_center)
 
 
-        return this.http.patch(this.settings.getApiBaseURL() + 'project_applications/' + application_id + "/", params,
+        return this.http.patch(this.settings.getApiBaseURL() + 'project_applications/' + application_id + '/', params,
             ***REMOVED***
                 headers: header,
                 withCredentials: true

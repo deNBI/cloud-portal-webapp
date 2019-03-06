@@ -1,13 +1,13 @@
 import ***REMOVED***Component, Input, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
-import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
-import ***REMOVED***ProjectMember***REMOVED*** from "../projectmanagement/project_member.model";
-import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
+import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
+import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
+import ***REMOVED***ProjectMember***REMOVED*** from '../projectmanagement/project_member.model';
+import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import * as moment from 'moment';
-import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
-import ***REMOVED***Application***REMOVED*** from "../applications/application.model";
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
-import ***REMOVED***FilterBaseClass***REMOVED*** from "../shared_modules/baseClass/filter-base-class";
+import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
+import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
+import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared_modules/baseClass/filter-base-class';
 
 @Component(***REMOVED***
     selector: 'voOverview',
@@ -20,9 +20,9 @@ import ***REMOVED***FilterBaseClass***REMOVED*** from "../shared_modules/baseCla
 export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
 
     public emailSubject: string;
-    public emailReply: string = '';
+    public emailReply = '';
     public emailText: string;
-    public emailStatus: number = 0;
+    public emailStatus = 0;
     public emailHeader: string;
     public emailVerify: string;
     public emailType: number;
@@ -66,15 +66,14 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     ***REMOVED***
 
     checkFilter(project: Project) ***REMOVED***
-         let facNameFilter=true;
-         if (project.ComputeCenter)***REMOVED***
-                facNameFilter=this.isFilterFacilityName(project.ComputeCenter.Name)
+         let facNameFilter = true;
+         if (project.ComputeCenter) ***REMOVED***
+                facNameFilter = this.isFilterFacilityName(project.ComputeCenter.Name)
             ***REMOVED***
         if (facNameFilter && this.isFilterProjectStatus(project.Status, project.LifetimeReached)  && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) ***REMOVED***
             return true;
 
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             return false
         ***REMOVED***
 
@@ -98,8 +97,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
         this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => ***REMOVED***
             if (result == 1) ***REMOVED***
                 this.emailStatus = 1;
-            ***REMOVED***
-            else ***REMOVED***
+            ***REMOVED*** else ***REMOVED***
                 this.emailStatus = 2;
             ***REMOVED***
         ***REMOVED***)
@@ -111,8 +109,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
         this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => ***REMOVED***
             if (result == 1) ***REMOVED***
                 this.emailStatus = 1;
-            ***REMOVED***
-            else ***REMOVED***
+            ***REMOVED*** else ***REMOVED***
                 this.emailStatus = 2;
             ***REMOVED***
         ***REMOVED***)
@@ -155,14 +152,14 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
         this.details_loaded = false;
         if (!project.Lifetime) ***REMOVED***
             this.groupservice.getLifetime(project.Id).subscribe(res => ***REMOVED***
-                let lifetime = res['lifetime'];
+                const lifetime = res['lifetime'];
                 let dateCreated = project.DateCreated;
 
                 let expirationDate = undefined;
-                dateCreated = moment(dateCreated, "DD.MM.YYYY").toDate();
+                dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
                 if (lifetime != -1) ***REMOVED***
-                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
-                    let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+                    const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
                     project.LifetimeDays = lifetimeDays;
                     project.DateEnd = expirationDate;
@@ -171,8 +168,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
                 this.details_loaded = true;
 
             ***REMOVED***)
-        ***REMOVED***
-        else ***REMOVED***
+        ***REMOVED*** else ***REMOVED***
             this.details_loaded = true;
         ***REMOVED***
     ***REMOVED***
@@ -180,15 +176,15 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
 
     getVoProjects() ***REMOVED***
         this.voserice.getAllGroupsWithDetails().subscribe(result => ***REMOVED***
-            let vo_projects = result;
-            for (let group of vo_projects) ***REMOVED***
-                let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
-                let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                let is_pi = group['is_pi'];
-                let lifetime = group['lifetime'];
+            const vo_projects = result;
+            for (const group of vo_projects) ***REMOVED***
+                const dateCreated = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
+                const is_pi = group['is_pi'];
+                const lifetime = group['lifetime'];
 
-                let groupid = group['id'];
-                let facility = group['compute_center'];
+                const groupid = group['id'];
+                const facility = group['compute_center'];
                 let shortname = group['shortname'];
                 if (!shortname) ***REMOVED***
                     shortname = group['name']
@@ -200,11 +196,11 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
                 ***REMOVED***
 
 
-                let newProject = new Project(
+                const newProject = new Project(
                     Number(groupid),
                     shortname,
-                    group["description"],
-                    dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                    group['description'],
+                    dateCreated.date() + '.' + (dateCreated.month() + 1) + '.' + dateCreated.year(),
                     dateDayDifference,
                     is_pi,
                     true,
@@ -213,8 +209,8 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
                 newProject.Status = group['status'];
                 let expirationDate = undefined;
                 if (lifetime != -1) ***REMOVED***
-                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
-                    let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+                    const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
                     newProject.LifetimeDays = lifetimeDays;
                     newProject.DateEnd = expirationDate;
@@ -257,11 +253,11 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
                 this.usersModalProjectID = projectid;
                 this.usersModalProjectName = projectname;
                 this.usersModalProjectMembers = new Array();
-                for (let member of members) ***REMOVED***
-                    let member_id = member["id"];
-                    let user_id = member["userId"];
-                    let fullName = member["firstName"] + " " + member["lastName"];
-                    let newMember = new ProjectMember(user_id, fullName, member_id);
+                for (const member of members) ***REMOVED***
+                    const member_id = member['id'];
+                    const user_id = member['userId'];
+                    const fullName = member['firstName'] + ' ' + member['lastName'];
+                    const newMember = new ProjectMember(user_id, fullName, member_id);
                     newMember.ElixirId = member['elixirId'];
                     newMember.Email = member['email'];
                     this.usersModalProjectMembers.push(newMember);
