@@ -3,7 +3,7 @@ import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {PerunSettings} from './connector-settings.service'
 import { Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
-import {ApiSettings} from "../api-connector/api-settings.service";
+import {ApiSettings} from '../api-connector/api-settings.service';
 
 @Injectable()
 export class ResourcesManager {

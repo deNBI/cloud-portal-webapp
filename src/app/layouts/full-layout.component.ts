@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {ApiSettings} from "../api-connector/api-settings.service";
-import {ClientService} from "../api-connector/vmClients.service";
-import {FacilityService} from "../api-connector/facility.service";
-import {UserService} from "../api-connector/user.service";
-import {GroupService} from "../api-connector/group.service";
+import {PerunSettings} from '../perun-connector/connector-settings.service';
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {ClientService} from '../api-connector/vmClients.service';
+import {FacilityService} from '../api-connector/facility.service';
+import {UserService} from '../api-connector/user.service';
+import {GroupService} from '../api-connector/group.service';
 import {PopoverModule } from 'ngx-popover';
-import {VoService} from "../api-connector/vo.service";
+import {VoService} from '../api-connector/vo.service';
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './full-layout.component.html',
-    providers: [VoService,GroupService,UserService,FacilityService, ClientService,  PerunSettings, ApiSettings]
+    providers: [VoService, GroupService, UserService, FacilityService, ClientService,  PerunSettings, ApiSettings]
 })
 export class FullLayoutComponent implements OnInit {
 
@@ -23,9 +23,9 @@ export class FullLayoutComponent implements OnInit {
     public vm_project_member = false;
     public login_name = '';
     navbar_state = 'closed';
-    overview_state='closed';
+    overview_state = 'closed';
 
-    constructor(private voService:VoService,private groupService:GroupService,private userservice:UserService,private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) {
+    constructor(private voService: VoService, private groupService: GroupService, private userservice: UserService, private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) {
         this.is_vm_project_member();
         this.get_is_facility_manager();
         this.getLoginName();
@@ -66,17 +66,15 @@ export class FullLayoutComponent implements OnInit {
     toggle_new_application() {
         if (this.navbar_state == 'closed') {
             this.navbar_state = 'open'
-        }
-        else {
+        } else {
             this.navbar_state = 'closed'
         }
     }
 
-    toggle_overview(){
+    toggle_overview() {
          if (this.overview_state == 'closed') {
             this.overview_state = 'open'
-        }
-        else {
+        } else {
             this.overview_state = 'closed'
         }
     }
@@ -84,8 +82,8 @@ export class FullLayoutComponent implements OnInit {
 
 
     checkVOstatus() {
-       this.voService.isVo().subscribe(result =>{
-           this.is_vo_admin=result['Is_Vo_Manager'];
+       this.voService.isVo().subscribe(result => {
+           this.is_vo_admin = result['Is_Vo_Manager'];
        })
     }
 
@@ -96,8 +94,8 @@ export class FullLayoutComponent implements OnInit {
 
     getLoginName() {
             this.userservice.getLogins().toPromise().then(result => {
-                let logins = result;
-                for (let login of logins) {
+                const logins = result;
+                for (const login of logins) {
                   if (login['friendlyName'] === 'login-namespace:elixir') {
                         this.login_name = login['value'];
                     }

@@ -1,20 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import * as moment from 'moment';
-import {Project} from "../projectmanagement/project.model";
-import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
-import {FacilityService} from "../api-connector/facility.service";
-import {UserService} from "../api-connector/user.service";
-import {GroupService} from "../api-connector/group.service";
-import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {ApiSettings} from "../api-connector/api-settings.service";
-import {Application} from "../applications/application.model";
-import {ApplicationExtension} from "../applications/application_extension.model";
-import {SpecialHardware} from "../applications/special_hardware.model";
-import {ApplicationStatus} from "../applications/application_status.model";
-import {ApplicationStatusService} from "../api-connector/application-status.service";
-import {ApplicationsService} from "../api-connector/applications.service";
-import {SpecialHardwareService} from "../api-connector/special-hardware.service";
-import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
+import {Project} from '../projectmanagement/project.model';
+import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
+import {FacilityService} from '../api-connector/facility.service';
+import {UserService} from '../api-connector/user.service';
+import {GroupService} from '../api-connector/group.service';
+import {PerunSettings} from '../perun-connector/connector-settings.service';
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {Application} from '../applications/application.model';
+import {ApplicationExtension} from '../applications/application_extension.model';
+import {SpecialHardware} from '../applications/special_hardware.model';
+import {ApplicationStatus} from '../applications/application_status.model';
+import {ApplicationStatusService} from '../api-connector/application-status.service';
+import {ApplicationsService} from '../api-connector/applications.service';
+import {SpecialHardwareService} from '../api-connector/special-hardware.service';
+import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
 
 @Component({
     selector: 'app-facility.application',
@@ -100,8 +100,8 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      */
     getComputeCenters() {
         this.facilityService.getComputeCenters().subscribe(result => {
-            for (let cc of result) {
-                let compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
+            for (const cc of result) {
+                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             }
 
@@ -129,48 +129,48 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * @param {number} facility
      */
     getAllApplications(facility: number) {
-        //todo check if user is VO Admin
+        // todo check if user is VO Admin
         this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe(res => {
             if (Object.keys(res).length == 0) {
                 this.isLoaded = true;
             }
 
-            for (let key in res) {
+            for (const key in res) {
 
-                let aj = res[key];
-                let a = new Application();
-                a.Id = aj["project_application_id"];
+                const aj = res[key];
+                const a = new Application();
+                a.Id = aj['project_application_id'];
 
-                a.Name = aj["project_application_name"];
-                a.Shortname = aj["project_application_shortname"];
-                a.Description = aj["project_application_description"];
-                a.Lifetime = aj["project_application_lifetime"];
+                a.Name = aj['project_application_name'];
+                a.Shortname = aj['project_application_shortname'];
+                a.Description = aj['project_application_description'];
+                a.Lifetime = aj['project_application_lifetime'];
 
-                a.VMsRequested = aj["project_application_vms_requested"];
-                a.RamPerVM = aj["project_application_ram_per_vm"];
-                a.TotalRam = aj["project_application_total_ram"];
-                a.TotalCores = aj["project_application_total_cores"];
-                a.CoresPerVM = aj["project_application_cores_per_vm"];
-                a.VolumeLimit = aj["project_application_volume_limit"];
-                a.VolumeCounter = aj["project_application_volume_counter"];
+                a.VMsRequested = aj['project_application_vms_requested'];
+                a.RamPerVM = aj['project_application_ram_per_vm'];
+                a.TotalRam = aj['project_application_total_ram'];
+                a.TotalCores = aj['project_application_total_cores'];
+                a.CoresPerVM = aj['project_application_cores_per_vm'];
+                a.VolumeLimit = aj['project_application_volume_limit'];
+                a.VolumeCounter = aj['project_application_volume_counter'];
 
-                a.ObjectStorage = aj["project_application_object_storage"];
-                a.SpecialHardware = aj["project_application_special_hardware"];
+                a.ObjectStorage = aj['project_application_object_storage'];
+                a.SpecialHardware = aj['project_application_special_hardware'];
 
-                a.Institute = aj["project_application_institute"];
-                a.Workgroup = aj["project_application_workgroup"];
+                a.Institute = aj['project_application_institute'];
+                a.Workgroup = aj['project_application_workgroup'];
 
-                a.DateSubmitted = aj["project_application_date_submitted"];
-                a.DateStatusChanged = aj["project_application_date_status_changed"];
-                a.User = aj["project_application_user"]["username"];
-                a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
-                a.UserEmail = aj["project_application_user"]["email"];
-                a.Status = aj["project_application_status"];
-                a.Comment = aj["project_application_comment"];
+                a.DateSubmitted = aj['project_application_date_submitted'];
+                a.DateStatusChanged = aj['project_application_date_status_changed'];
+                a.User = aj['project_application_user']['username'];
+                a.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
+                a.UserEmail = aj['project_application_user']['email'];
+                a.Status = aj['project_application_status'];
+                a.Comment = aj['project_application_comment'];
                 a.PerunId = aj['project_application_perun_id'];
-                a.OpenStackProject = aj["project_application_openstack_project"];
+                a.OpenStackProject = aj['project_application_openstack_project'];
                 if (aj['projectapplicationrenewal']) {
-                    let r = new ApplicationExtension();
+                    const r = new ApplicationExtension();
 
                     r.Id = aj['projectapplicationrenewal']['project_application'];
                     r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
@@ -182,12 +182,12 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
                     r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
                     r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                     r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                    let special_hardware = [];
+                    const special_hardware = [];
                     if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) {
-                        let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
+                        const special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
 
                         for (let c = 0; c < special_hardware_string.length; c++) {
-                            let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                            const sh = special_hardware_string.charAt(c) == this.FPGA ? 'FPGA' : 'GPU';
                             special_hardware.push(sh)
 
                         }
@@ -252,10 +252,10 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     getApplicationStatus() {
         this.applicationstatusservice.getAllApplicationStatus().toPromise()
             .then(result => {
-                let res = result;
-                for (let key in res) {
-                    let asj = res[key];
-                    let aj = new ApplicationStatus(asj["application_status_id"], asj["application_status_name"]);
+                const res = result;
+                for (const key in res) {
+                    const asj = res[key];
+                    const aj = new ApplicationStatus(asj['application_status_id'], asj['application_status_name']);
                     this.application_status.push(aj)
                 }
             });
@@ -267,10 +267,10 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     getSpecialHardware() {
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => {
-                let res = result;
-                for (let key in res) {
-                    let shj = res[key];
-                    let sh = new SpecialHardware(shj["special_hardware_id"], shj["special_hardware_key"], shj["special_hardware_name"]);
+                const res = result;
+                for (const key in res) {
+                    const shj = res[key];
+                    const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
                     this.special_hardware.push(sh)
                 }
             });
@@ -286,8 +286,8 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             if (!(elixir_id in this.application_user)) {
                 this.userService.getMemberDetailsByElixirId(elixir_id).subscribe(result => {
 
-                    let name = result['firstName'] + ' ' + result['lastName'];
-                    let appuser: { [id: string]: string } = {};
+                    const name = result['firstName'] + ' ' + result['lastName'];
+                    const appuser: { [id: string]: string } = {};
                     appuser['name'] = name;
                     appuser['email'] = result['email'];
                     this.application_user[elixir_id] = appuser;
@@ -327,8 +327,8 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * @returns {string}
      */
     public getStatusById(id: number): string {
-        let s = "Unknown";
-        for (let status of this.application_status) {
+        const s = 'Unknown';
+        for (const status of this.application_status) {
             if (status.Id == id) {
                 return status.Name;
             }
@@ -343,8 +343,8 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * @returns {number}
      */
     public getIdByStatus(name: string): number {
-        let s = -1;
-        for (let status of this.application_status) {
+        const s = -1;
+        for (const status of this.application_status) {
             if (status.Name == name) {
                 return status.Id;
             }

@@ -1,4 +1,4 @@
-import {ImageService} from "../api-connector/image.service";
+import {ImageService} from '../api-connector/image.service';
 import {Component, Input, ViewChild} from '@angular/core';
 
 @Component({
@@ -6,30 +6,30 @@ import {Component, Input, ViewChild} from '@angular/core';
     providers: [ImageService]
 })
 export class ImageTagComponent {
-    isLoaded=false;
+    isLoaded = false;
 
     imageTags: [string, string][]
 
 
-    constructor(private imageService: ImageService,) {
+    constructor(private imageService: ImageService, ) {
         this.imageService.getImageTags().subscribe(result => {
             this.imageTags = result;
-            this.isLoaded=true;
+            this.isLoaded = true;
         })
     }
 
-    addTag(tag: string, description: string){
-        this.imageService.addImageTags(tag,description).subscribe(result =>{
-            this.imageService.getImageTags().subscribe(result=>{
-                this.imageTags=result
+    addTag(tag: string, description: string) {
+        this.imageService.addImageTags(tag, description).subscribe(result => {
+            this.imageService.getImageTags().subscribe(result => {
+                this.imageTags = result
             })
         })
     }
 
-        deleteTag(tag: string){
-        this.imageService.deleteImageTag(tag).subscribe(result =>{
-            this.imageService.getImageTags().subscribe(result=>{
-                this.imageTags=result
+        deleteTag(tag: string) {
+        this.imageService.deleteImageTag(tag).subscribe(result => {
+            this.imageService.getImageTags().subscribe(result => {
+                this.imageTags = result
             })
         })
     }

@@ -1,9 +1,9 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {Volume} from "./virtualmachinemodels/volume";
-import {VirtualmachineService} from "../api-connector/virtualmachine.service";
-import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
-import {GroupService} from "../api-connector/group.service";
-import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
+import {Volume} from './virtualmachinemodels/volume';
+import {VirtualmachineService} from '../api-connector/virtualmachine.service';
+import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
+import {GroupService} from '../api-connector/group.service';
+import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
 
 /**
  * Enum of all possible volume action statuses.
@@ -93,12 +93,12 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * Default diskspace.
      * @type {number}
      */
-    diskspace: number = 1;
+    diskspace = 1;
     /**
      * Default volumename.
      * @type {string}
      */
-    volumeName: string = '';
+    volumeName = '';
     /**
      * Action which is performed with a volume.
      */
@@ -137,7 +137,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     getVolumes() {
         this.vmService.getVolumesByUser().subscribe(result => {
             this.volumes = result;
-            for (let volume of this.volumes) {
+            for (const volume of this.volumes) {
                 this.setCollapseStatus(volume.volume_openstackid, false);
             }
 
@@ -164,8 +164,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
                 this.selectedProjectDiskspaceMax = result['Diskspace'];
 
-            }
-            else if (result['Diskspace'] === null || result['Diskspace'] === 0) {
+            } else if (result['Diskspace'] === null || result['Diskspace'] === 0) {
                 this.selectedProjectDiskspaceMax = 0;
             }
 
@@ -174,8 +173,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             if (result['Diskspace']) {
 
                 this.selectedProjectDiskspaceUsed = result['Diskspace'];
-            }
-            else if (result['Diskspace'] == 0 || result['Diskspace'] == null) {
+            } else if (result['Diskspace'] == 0 || result['Diskspace'] == null) {
                 this.selectedProjectDiskspaceUsed = 0;
             }
 
@@ -191,16 +189,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe(result => {
             if (result['VolumeCounter']) {
                 this.selectedProjectVolumesMax = result['VolumeCounter'];
-            }
-            else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) {
+            } else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) {
                 this.selectedProjectVolumesMax = 0;
             }
         });
         this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
             if (result['UsedVolumes']) {
                 this.selectedProjectVolumesUsed = result['UsedVolumes'];
-            }
-            else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) {
+            } else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) {
 
                 this.selectedProjectVolumesUsed = 0;
             }
@@ -227,21 +223,18 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
                 this.vmService.deleteVolume(volume_id).subscribe(result => {
                     if (result['Deleted'] && result['Deleted'] === true) {
                         this.volume_action_status = this.Volume_Action_Statuses.SUCCESS;
-                    }
-                    else {
+                    } else {
                         this.volume_action_status = this.Volume_Action_Statuses.ERROR;
                     }
                     this.getVolumes();
                 })
             })
 
-        }
-        else {
+        } else {
             this.vmService.deleteVolume(volume_id).subscribe(result => {
                 if (result['Deleted'] && result['Deleted'] === true) {
                     this.volume_action_status = this.Volume_Action_Statuses.SUCCESS;
-                }
-                else {
+                } else {
                     this.volume_action_status = this.Volume_Action_Statuses.ERROR;
                 }
                 this.getVolumes();
@@ -262,8 +255,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
             if (result['Attached'] && result['Attached'] === true) {
                 this.volume_action_status = this.Volume_Action_Statuses.ATTACHING_SUCCESSFULL;
-            }
-            else {
+            } else {
                 this.volume_action_status = this.Volume_Action_Statuses.ERROR;
             }
             this.getVolumes();
@@ -280,8 +272,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         this.vmService.renameVolume(volume_id, new_volume_name).subscribe(result => {
                 if (result['volume_name'] == new_volume_name) {
                     this.volume_action_status = this.Volume_Action_Statuses.CHANGING_NAME_SUCESSFULL;
-                }
-                else {
+                } else {
                     this.volume_action_status = this.Volume_Action_Statuses.ERROR;
                 }
                 this.getVolumes();
@@ -303,8 +294,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
             if (result['Created']) {
                 this.volume_action_status = Volume_Action_Statuses.WAIT_CREATION;
-            }
-            else {
+            } else {
                 this.volume_action_status = Volume_Action_Statuses.ERROR;
             }
             this.getVolumes();
@@ -322,21 +312,19 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         this.volume_action_status = 7;
         this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
             if (result['Created']) {
-                let volume_id = result['Created'];
+                const volume_id = result['Created'];
                 this.volume_action_status = Volume_Action_Statuses.ATTACHING;
 
                 this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
 
                     if (result['Attached'] && result['Attached'] === true) {
                         this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED;
-                    }
-                    else {
+                    } else {
                         this.volume_action_status = Volume_Action_Statuses.ERROR;
                     }
                     this.getVolumes();
                 })
-            }
-            else {
+            } else {
                 this.volume_action_status = Volume_Action_Statuses.ERROR;
             }
             this.getVolumes();
@@ -368,8 +356,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
             if (result['Deleted'] && result['Deleted'] === true) {
                 this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_DETACHED_VOLUME;
-            }
-            else {
+            } else {
                 this.volume_action_status = Volume_Action_Statuses.ERROR;
             }
             this.getVolumes();
@@ -381,7 +368,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      */
     getUserApprovedProjects() {
         this.groupService.getMemberGroupsStatus().subscribe(membergroups => {
-            for (let project of membergroups) {
+            for (const project of membergroups) {
                 this.projects.push(project);
 
             }

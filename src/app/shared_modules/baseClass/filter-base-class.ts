@@ -1,4 +1,4 @@
-import {AbstractBaseClasse} from "./abstract-base-class";
+import {AbstractBaseClasse} from './abstract-base-class';
 
 export abstract class FilterBaseClass extends AbstractBaseClasse {
 
@@ -44,11 +44,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     isFilterProjectId(id: number): boolean {
         if (!this.filterProjectId) {
             return true;
-        }
-        else if (id.toString().indexOf(this.filterProjectId.toString()) === 0) {
+        } else if (id.toString().indexOf(this.filterProjectId.toString()) === 0) {
             return true
-        }
-        else {
+        } else {
             return false
         }
     }
@@ -56,11 +54,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     isFilterFacilityName(name: string): boolean {
         if (!this.filterFacilityName) {
             return true;
-        }
-        else if (name.indexOf(this.filterFacilityName) === 0) {
+        } else if (name.indexOf(this.filterFacilityName) === 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -68,11 +64,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     isFilterLongProjectName(name: string): boolean {
         if (!this.filterProjectLongName) {
             return true;
-        }
-        else if (name.indexOf(this.filterProjectLongName) === 0) {
+        } else if (name.indexOf(this.filterProjectLongName) === 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -82,13 +76,11 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
 
         if (!this.filterProjectName) {
             return true;
-        }
-        else if (projectName.indexOf(this.filterProjectName) === 0) {
+        } else if (projectName.indexOf(this.filterProjectName) === 0) {
 
             return true;
 
-        }
-        else {
+        } else {
 
             return false;
         }
@@ -119,8 +111,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
         ) {
 
             return true
-        }
-        else {
+        } else {
             return false
         }
     }
@@ -128,11 +119,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     isFilterStopped_at(vmstopped_at: string): boolean {
         if (!this.filterVmStopped_at) {
             return true;
-        }
-        else if (vmstopped_at.indexOf(this.filterVmStopped_at) === 0) {
+        } else if (vmstopped_at.indexOf(this.filterVmStopped_at) === 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -141,11 +130,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     isFilterElixir_id(vmelixir_id: string): boolean {
         if (!this.filterVmElixir_id) {
             return true;
-        }
-        else if (vmelixir_id.indexOf(this.filterVmElixir_id) === 0) {
+        } else if (vmelixir_id.indexOf(this.filterVmElixir_id) === 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -153,11 +140,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     isFilterCreated_at(vmcreated_at: string): boolean {
         if (!this.filterVmCreated_at) {
             return true;
-        }
-        else if (vmcreated_at.indexOf(this.filterVmCreated_at) === 0) {
+        } else if (vmcreated_at.indexOf(this.filterVmCreated_at) === 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -165,11 +150,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     isFilterName(vmname: string): boolean {
         if (!this.filterVmName) {
             return true;
-        }
-        else if (vmname.indexOf(this.filterVmName) === 0) {
+        } else if (vmname.indexOf(this.filterVmName) === 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -177,15 +160,12 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     isFilterIP(vmip: string): boolean {
         if (!this.filterVmIp) {
             return true;
-        }
-        else if (vmip == null) {
+        } else if (vmip == null) {
             return false;
-        }
-        else if (vmip.indexOf(this.filterVmIp) === 0) {
+        } else if (vmip.indexOf(this.filterVmIp) === 0) {
 
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -198,8 +178,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
         ) {
 
             return true
-        }
-        else {
+        } else {
             return false
         }
     }
@@ -207,12 +186,10 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     isFilterUsername(vmusername: string): boolean {
         if (!this.filterVmUsername) {
             return true;
-        }
-        else if (vmusername.indexOf(this.filterVmUsername) === 0) {
+        } else if (vmusername.indexOf(this.filterVmUsername) === 0) {
 
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

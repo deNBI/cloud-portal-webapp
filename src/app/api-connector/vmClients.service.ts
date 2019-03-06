@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {Vmclient} from "../virtualmachines/virtualmachinemodels/vmclient";
+import {Vmclient} from '../virtualmachines/virtualmachinemodels/vmclient';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
@@ -9,7 +9,7 @@ import {Cookie} from 'ng2-cookies/ng2-cookies';
 
 
 const header = new HttpHeaders({
-    'X-CSRFToken': Cookie.get("csrftoken")
+    'X-CSRFToken': Cookie.get('csrftoken')
 });
 
 @Injectable()
@@ -37,7 +37,7 @@ export class ClientService {
     }
 
     checkClient(host: string, port: string): Observable<any> {
-        let params = new HttpParams().set('host', host).set('port', port);
+        const params = new HttpParams().set('host', host).set('port', port);
 
 
         return this.http.post(this.clientURL + 'checkClient/', params, {
@@ -50,7 +50,7 @@ export class ClientService {
 
     postClient(host: string, port: string, location: string): Observable<any> {
 
-        let params = new HttpParams().set('host', host).set('port', port).set('location', location);
+        const params = new HttpParams().set('host', host).set('port', port).set('location', location);
 
 
         return this.http.post(this.clientURL , params, {
@@ -60,8 +60,8 @@ export class ClientService {
 
     }
 
-    deleteClient(client_id:number): Observable<any> {
-        return this.http.delete(this.clientURL + client_id +'/', {
+    deleteClient(client_id: number): Observable<any> {
+        return this.http.delete(this.clientURL + client_id + '/', {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));

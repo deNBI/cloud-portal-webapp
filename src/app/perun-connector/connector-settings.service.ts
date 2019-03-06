@@ -17,7 +17,7 @@ export class PerunSettings {
     Return the VO of the denbi.
     3334 is the denbi-dev VO
    */
-  getPerunVO(int: boolean = false): number{
+  getPerunVO(int: boolean = false): number {
     return environment.vo;
   }
 
@@ -25,8 +25,8 @@ export class PerunSettings {
     returns the current used IdP service, which is configured with shibboleth
     Reuired for the member identification by VO and elixir ID
    */
-  getUserExtSource(): string{
-    return "https://login.elixir-czech.org/idp/";
+  getUserExtSource(): string {
+    return 'https://login.elixir-czech.org/idp/';
   }
 
 }

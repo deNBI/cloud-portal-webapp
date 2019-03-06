@@ -6,7 +6,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 
 const header = new HttpHeaders({
-    'X-CSRFToken': Cookie.get("csrftoken")
+    'X-CSRFToken': Cookie.get('csrftoken')
 });
 
 
@@ -93,7 +93,7 @@ export class FacilityService {
      * @returns {Observable<any>}
      */
     approveFacilityApplication(facility: number, application_id: number): Observable<any> {
-        let params = new HttpParams().set('action', 'approve');
+        const params = new HttpParams().set('action', 'approve');
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/', params, {
@@ -112,7 +112,7 @@ export class FacilityService {
      * @returns {Observable<any>}
      */
     declineFacilityApplication(facility: number, application_id: number): Observable<any> {
-        let params = new HttpParams().set('action', 'decline');
+        const params = new HttpParams().set('action', 'decline');
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/', params, {
@@ -133,7 +133,7 @@ export class FacilityService {
      * @returns {Observable<any>}
      */
     sendMailToFacility(facility, subject, message, reply?): Observable<any> {
-        let params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
+        const params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
 
         return this.http.post(this.settings.getApiBaseURL() + 'facilityManagers/current/facilityMail/', params, {
             withCredentials: true,

@@ -1,8 +1,8 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {ImageService} from "../api-connector/image.service";
-import {SnapshotModel} from "./virtualmachinemodels/snapshot.model";
-import {Image} from "./virtualmachinemodels/image";
+import {ImageService} from '../api-connector/image.service';
+import {SnapshotModel} from './virtualmachinemodels/snapshot.model';
+import {Image} from './virtualmachinemodels/image';
 import {forkJoin} from 'rxjs';
 
 enum Snapshot_Delete_Statuses {
@@ -43,7 +43,7 @@ export class SnapshotOverviewComponent implements OnInit {
      */
     isLoaded = false;
 
-    private checkStatusTimeout: number = 5000;
+    private checkStatusTimeout = 5000;
 
 
     constructor(private imageService: ImageService) {
@@ -75,14 +75,14 @@ export class SnapshotOverviewComponent implements OnInit {
         let all_active = true;
 
         setTimeout(() => {
-            let observables = [];
-            for (let s of this.snapshots) {
+            const observables = [];
+            for (const s of this.snapshots) {
 
                 observables.push(this.imageService.getSnapshot(s.snapshot_openstackid));
 
             }
             forkJoin(observables).subscribe(res => {
-                for (let i of res) {
+                for (const i of res) {
                     this.snapshots[res.indexOf(i)].snapshot_status = i['status'];
                     if (i['status'] != 'active') {
                         all_active = false;
@@ -91,8 +91,7 @@ export class SnapshotOverviewComponent implements OnInit {
                 }
                 if (all_active) {
                     return;
-                }
-                else {
+                } else {
                     this.checkSnapShotsStatus();
                 }
             })
@@ -112,8 +111,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
             if (result['Deleted'] && result['Deleted'] === true) {
                 this.delete_status = 1;
-            }
-            else if (result['Info']) {
+            } else if (result['Info']) {
                 this.delete_status = 3;
 
             } else {

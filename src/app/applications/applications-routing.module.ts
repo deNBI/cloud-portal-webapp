@@ -3,8 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ApplicationsComponent } from './applications.component';
 
-import {AddsinglevmComponent} from "./addsinglevm.component";
-import {AddcloudapplicationComponent} from "./addcloudapplication.component";
+import {AddsinglevmComponent} from './addsinglevm.component';
+import {AddcloudapplicationComponent} from './addcloudapplication.component';
 
 
 const routes: Routes = [

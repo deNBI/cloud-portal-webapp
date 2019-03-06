@@ -7,6 +7,6 @@ import {environment} from '../environments/environment';
 
 
 })
-export class RegistrationInfoComponent{
-  voRegistrationLink= environment.voRegistrationLink;
+export class RegistrationInfoComponent {
+  voRegistrationLink = environment.voRegistrationLink;
 }

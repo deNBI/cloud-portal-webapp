@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalDirective} from 'ngx-bootstrap';
 
 @Component({
   templateUrl: 'modals.component.html'

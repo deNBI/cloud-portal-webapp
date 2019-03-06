@@ -1,5 +1,5 @@
 export class Metadata {
 
-  constructor( public key:string ,public value:string){}
+  constructor( public key: string , public value: string) {}
 
 }

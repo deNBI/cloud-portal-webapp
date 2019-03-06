@@ -5,8 +5,8 @@ import {Routes, RouterModule} from '@angular/router';
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {SimpleLayoutComponent} from './layouts/simple-layout.component';
 import {MemberGuardService} from './member-guard.service';
-import {RegistrationInfoComponent} from "./registration-info.component";
-import {ConsentInfoComponent} from "./consent-info.component";
+import {RegistrationInfoComponent} from './registration-info.component';
+import {ConsentInfoComponent} from './consent-info.component';
 
 export const routes: Routes = [
     {

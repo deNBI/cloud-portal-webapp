@@ -1,10 +1,10 @@
-import {Vmclient} from "./vmclient";
+import {Vmclient} from './vmclient';
 
 
 export class SnapshotModel {
 
     private _snapshot_openstackid: string;
-    private _snapshot_client : Vmclient;
+    private _snapshot_client: Vmclient;
     private _snapshot_name: string;
     private _snapshot_created: boolean;
 

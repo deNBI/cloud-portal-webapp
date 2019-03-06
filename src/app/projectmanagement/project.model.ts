@@ -1,5 +1,5 @@
-import {ProjectMemberApplication} from "./project_member_application";
-import {ComputecenterComponent} from "./computecenter.component";
+import {ProjectMemberApplication} from './project_member_application';
+import {ComputecenterComponent} from './computecenter.component';
 
 export class Project {
     get UserIsAdmin(): boolean {
@@ -41,7 +41,7 @@ export class Project {
 
     }
 
-//todo exdend with additional information
+// todo exdend with additional information
 
     get LifetimeReached(): number {
         return this._LifetimeReached

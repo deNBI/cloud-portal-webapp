@@ -19,15 +19,15 @@ export class ApiSettings {
     Returns the format of the API call.
     default is JSON
    */
-  getApiFormat(): string{
+  getApiFormat(): string {
     return 'json';
   }
 
-  getCSRFToken(): string{
-    return Cookie.get("csrftoken");
+  getCSRFToken(): string {
+    return Cookie.get('csrftoken');
   }
 
-  getAccessToken(): string{
-    return Cookie.get("access_token");
+  getAccessToken(): string {
+    return Cookie.get('access_token');
   }
 }

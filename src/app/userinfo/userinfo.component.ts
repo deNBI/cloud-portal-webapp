@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 
 import {Userinfo} from './userinfo.model'
-import {PerunSettings} from "../perun-connector/connector-settings.service";
+import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {ApiSettings} from '../api-connector/api-settings.service'
-import {keyService} from "../api-connector/key.service";
-import {UserService} from "../api-connector/user.service";
-import {GroupService} from "../api-connector/group.service";
+import {keyService} from '../api-connector/key.service';
+import {UserService} from '../api-connector/user.service';
+import {GroupService} from '../api-connector/group.service';
 
 
 @Component({
@@ -15,10 +15,10 @@ import {GroupService} from "../api-connector/group.service";
 })
 export class UserinfoComponent implements OnInit {
     userinfo: Userinfo;
-    key: string = 'Show Public Key';
+    key = 'Show Public Key';
     key_visible = false;
     newsletter_subscribed: boolean;
-    public_key: string = '';
+    public_key = '';
     isLoaded = false;
     is_project_member = true;
     freemium_active = false;
@@ -67,9 +67,9 @@ export class UserinfoComponent implements OnInit {
 
     importKey(publicKey: string, keyname: string) {
 
-        let re = /\+/gi;
+        const re = /\+/gi;
 
-        let newstr = publicKey.replace(re, "%2B");
+        const newstr = publicKey.replace(re, '%2B');
 
         this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(result => {
             this.getUserPublicKey();
@@ -80,8 +80,7 @@ export class UserinfoComponent implements OnInit {
 
         if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key)) {
             return true;
-        }
-        else {
+        } else {
 
             return false;
         }
@@ -106,23 +105,22 @@ export class UserinfoComponent implements OnInit {
     getUserinfo() {
         this.userservice.getLoggedUser().toPromise()
             .then(result => {
-                let res = result;
+                const res = result;
 
-                this.userinfo.FirstName = res["firstName"];
-                this.userinfo.LastName = res["lastName"];
-                this.userinfo.Id = res["id"];
+                this.userinfo.FirstName = res['firstName'];
+                this.userinfo.LastName = res['lastName'];
+                this.userinfo.Id = res['id'];
 
                 return this.userservice.getMemberByUser().toPromise();
 
             }).then(memberinfo => {
-            this.userinfo.MemberId = memberinfo["id"];
+            this.userinfo.MemberId = memberinfo['id'];
             this.userservice.getLogins().toPromise().then(result => {
-                let logins = result;
-                for (let login of logins) {
+                const logins = result;
+                for (const login of logins) {
                     if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
                         this.userinfo.ElxirId = login['value']
-                    }
-                    else if (login['friendlyName'] === 'login-namespace:elixir') {
+                    } else if (login['friendlyName'] === 'login-namespace:elixir') {
                         this.userinfo.UserLogin = login['value'];
 
                     }
@@ -139,8 +137,7 @@ export class UserinfoComponent implements OnInit {
                     result = result['subscribed'];
                     if (result.toString() == 'true') {
                         this.newsletter_subscribed = true;
-                    }
-                    else {
+                    } else {
                         this.newsletter_subscribed = false;
                     }
                     this.getUserPublicKey()
@@ -177,8 +174,7 @@ export class UserinfoComponent implements OnInit {
         this.groupService.getMemberGroupsStatus().subscribe(result => {
             if (result.length > 0) {
                 this.is_project_member = true
-            }
-            else {
+            } else {
                 this.is_project_member = false
             }
         })

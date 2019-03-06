@@ -8,7 +8,7 @@ import {Cookie} from 'ng2-cookies/ng2-cookies';
 
 
 const header = new HttpHeaders({
-    'X-CSRFToken': Cookie.get("csrftoken")
+    'X-CSRFToken': Cookie.get('csrftoken')
 });
 
 @Injectable()
@@ -74,10 +74,10 @@ export class VoService {
     }
 
 
-     setProjectStatus(groupid: number,status:number): Observable<any> {
-                let params = new HttpParams().set('status', status.toString());
+     setProjectStatus(groupid: number, status: number): Observable<any> {
+                const params = new HttpParams().set('status', status.toString());
 
-        return this.http.post(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', params,{
+        return this.http.post(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', params, {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));
@@ -85,7 +85,7 @@ export class VoService {
 
     sendNewsletterToVo(subject, message, reply?): Observable<any> {
 
-        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+        const params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
         return this.http.post(this.settings.getApiBaseURL() + 'voManagers/current/newsletter/', params, {
             withCredentials: true,
@@ -96,7 +96,7 @@ export class VoService {
 
 
     sendMailToVo(subject, message, reply?): Observable<any> {
-        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+        const params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'voManagers/current/voMail/', params, {

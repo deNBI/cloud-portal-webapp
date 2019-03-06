@@ -12,8 +12,8 @@ import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
 import {AsideToggleDirective} from './shared/aside.directive';
 import {PopoverModule} from 'ngx-popover';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
-import {PerunSettings} from "./perun-connector/connector-settings.service";
-import {ApiSettings} from "./api-connector/api-settings.service";
+import {PerunSettings} from './perun-connector/connector-settings.service';
+import {ApiSettings} from './api-connector/api-settings.service';
 import {HttpClientModule} from '@angular/common/http';
 // Routing Module
 import {AppRoutingModule} from './app.routing';
@@ -23,10 +23,10 @@ import {ExportAsModule} from 'ngx-export-as';
 // Layouts
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {SimpleLayoutComponent} from './layouts/simple-layout.component';
-import {ModalModule} from "ngx-bootstrap";
-import {RegistrationInfoComponent} from "./registration-info.component";
-import {UserService} from "./api-connector/user.service";
-import {ConsentInfoComponent} from "./consent-info.component";
+import {ModalModule} from 'ngx-bootstrap';
+import {RegistrationInfoComponent} from './registration-info.component';
+import {UserService} from './api-connector/user.service';
+import {ConsentInfoComponent} from './consent-info.component';
 
 @NgModule({
     imports: [

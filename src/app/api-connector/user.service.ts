@@ -8,7 +8,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 
 const header = new HttpHeaders({
-    'X-CSRFToken': Cookie.get("csrftoken")
+    'X-CSRFToken': Cookie.get('csrftoken')
 });
 
 
@@ -18,7 +18,7 @@ export class UserService {
     }
 
     setUserFacilityPassword(facility: string): Observable<any> {
-        let params = new HttpParams().set('facility', facility)
+        const params = new HttpParams().set('facility', facility)
 
         ;
         return this.http.post(this.settings.getConnectorBaseUrl() + 'users/setUserPassword/', params, {
@@ -45,7 +45,7 @@ export class UserService {
     }
 
     requestChangePreferredMailUser(email: string): Observable<any> {
-        let params = new HttpParams().set('newPreferredEmail', email);
+        const params = new HttpParams().set('newPreferredEmail', email);
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'users/current/preferredEmail/', params,
@@ -137,7 +137,7 @@ export class UserService {
     }
 
     setNewsletterSubscription(subscribed: boolean): Observable<any> {
-        let params = new HttpParams().set('subscribed', subscribed.toString());
+        const params = new HttpParams().set('subscribed', subscribed.toString());
 
         return this.http.post(this.settings.getApiBaseURL() + 'newsletter/subscription/', params, {
             withCredentials: true,
@@ -157,7 +157,7 @@ export class UserService {
 
     sendHelpMail(subject, message, reply): Observable<any> {
 
-        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+        const params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
         return this.http.post(this.settings.getApiBaseURL() + 'users/current/helpMail/', params, {

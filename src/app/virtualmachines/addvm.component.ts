@@ -3,31 +3,31 @@ import {
     AfterViewInit,
     ElementRef
 } from '@angular/core';
-import {Image} from "./virtualmachinemodels/image";
-import {ModalDirective} from "ngx-bootstrap";
+import {Image} from './virtualmachinemodels/image';
+import {ModalDirective} from 'ngx-bootstrap';
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
 import {FlavorService} from '../api-connector/flavor.service';
-import {ImageDetailComponent} from "./imagedetail.component";
+import {ImageDetailComponent} from './imagedetail.component';
 import {FormsModule} from '@angular/forms';
 import {forkJoin} from 'rxjs';
 
 import {Metadata} from './virtualmachinemodels/metadata';
-import {VirtualmachineService} from "../api-connector/virtualmachine.service";
+import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {ApplicationsService} from '../api-connector/applications.service'
-import {Userinfo} from "../userinfo/userinfo.model";
-import {ApiSettings} from "../api-connector/api-settings.service";
-import {PerunSettings} from "../perun-connector/connector-settings.service";
+import {Userinfo} from '../userinfo/userinfo.model';
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {PerunSettings} from '../perun-connector/connector-settings.service';
 
-import {ClientService} from "../api-connector/vmClients.service";
-import {Vmclient} from "./virtualmachinemodels/vmclient";
-import {Application} from "../applications/application.model";
-import {keyService} from "../api-connector/key.service";
-import {Project} from "../projectmanagement/project.model";
-import {GroupService} from "../api-connector/group.service";
-import {environment} from "../../environments/environment";
+import {ClientService} from '../api-connector/vmClients.service';
+import {Vmclient} from './virtualmachinemodels/vmclient';
+import {Application} from '../applications/application.model';
+import {keyService} from '../api-connector/key.service';
+import {Project} from '../projectmanagement/project.model';
+import {GroupService} from '../api-connector/group.service';
+import {environment} from '../../environments/environment';
 import {UserinfoComponent} from '../userinfo/userinfo.component';
-import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
+import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
 
 @Component({
     selector: 'new-vm',
@@ -37,7 +37,7 @@ import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-clas
 export class VirtualMachineComponent implements OnInit {
 
 
-    data: string = "";
+    data = '';
     creating_vm_status = 'Creating..';
     creating_vm_prograss_bar = 'progress-bar-animated';
     checking_vm_status = '';
@@ -46,9 +46,9 @@ export class VirtualMachineComponent implements OnInit {
     checking_vm_ssh_port = '';
     checking_vm_ssh_port_width = 0;
 
-    informationButton: string = "Show Details";
-    informationButton2: string = "Show Details";
-    client_checked=false;
+    informationButton = 'Show Details';
+    informationButton2 = 'Show Details';
+    client_checked = false;
 
     /**
      * All image of a project.
@@ -118,7 +118,7 @@ export class VirtualMachineComponent implements OnInit {
     /**
      * If the client for a project is viable.
      */
-    client_avaiable: boolean=false;
+    client_avaiable = false;
 
     /**
      * If the public key is valid.
@@ -129,7 +129,7 @@ export class VirtualMachineComponent implements OnInit {
      * Default volume name.
      * @type {string}
      */
-    volumeName: string = '';
+    volumeName = '';
 
     /**
      * If optional params are shown.
@@ -141,7 +141,7 @@ export class VirtualMachineComponent implements OnInit {
      * Default diskspace.
      * @type {number}
      */
-    diskspace: number = 0;
+    diskspace = 0;
 
     /**
      * If the data for the site is initialized.
@@ -165,7 +165,7 @@ export class VirtualMachineComponent implements OnInit {
      * Time for the check status loop.
      * @type {number}
      */
-    private checkStatusTimeout: number = 5000;
+    private checkStatusTimeout = 5000;
 
 
     constructor(private groupService: GroupService, private imageService: ImageService, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private  keyService: keyService, private clientservice: ClientService) {
@@ -199,8 +199,7 @@ export class VirtualMachineComponent implements OnInit {
 
         if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)) {
             this.validPublickey = true;
-        }
-        else {
+        } else {
 
             this.validPublickey = false;
         }
@@ -221,10 +220,10 @@ export class VirtualMachineComponent implements OnInit {
      * Toggle information button 1.
      */
     toggleInformationButton(): void {
-        if (this.informationButton == "Show Details") {
-            this.informationButton = "Hide Details";
+        if (this.informationButton == 'Show Details') {
+            this.informationButton = 'Hide Details';
         } else {
-            this.informationButton = "Show Details";
+            this.informationButton = 'Show Details';
         }
 
     }
@@ -233,10 +232,10 @@ export class VirtualMachineComponent implements OnInit {
      * Toggle information button 2.
      */
     toggleInformationButton2(): void {
-        if (this.informationButton2 == "Show Details") {
-            this.informationButton2 = "Hide Details";
+        if (this.informationButton2 == 'Show Details') {
+            this.informationButton2 = 'Hide Details';
         } else {
-            this.informationButton2 = "Show Details";
+            this.informationButton2 = 'Show Details';
         }
 
     }
@@ -272,8 +271,7 @@ export class VirtualMachineComponent implements OnInit {
                     this.getSelectedProjectVolumes();
 
 
-                }
-                else {
+                } else {
                     if (res['Waiting'] == 'PORT_CLOSED') {
                         this.checking_vm_status = 'Active';
                         this.checking_vm_status_progress_bar = '';
@@ -300,9 +298,9 @@ export class VirtualMachineComponent implements OnInit {
      */
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string): void {
         if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
-            let re = /\+/gi;
+            const re = /\+/gi;
 
-            let flavor_fixed = flavor.replace(re, "%2B");
+            const flavor_fixed = flavor.replace(re, '%2B');
 
 
             this.virtualmachineservice.startVM(flavor_fixed, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => {
@@ -316,8 +314,7 @@ export class VirtualMachineComponent implements OnInit {
                     this.checking_vm_status_width = 33;
 
                     this.check_status_loop(data['Created']);
-                }
-                else {
+                } else {
                     this.creating_vm_status = 'Creating';
 
                     this.data = data
@@ -326,11 +323,10 @@ export class VirtualMachineComponent implements OnInit {
 
             });
 
-        }
-        else {
+        } else {
             this.creating_vm_status = 'Creating';
 
-            this.data = "INVALID"
+            this.data = 'INVALID'
 
         }
     }
@@ -341,9 +337,9 @@ export class VirtualMachineComponent implements OnInit {
      * @param {number} groupid
      */
     getSelectedProjectClient(groupid: number) {
-        this.client_checked=false;
+        this.client_checked = false;
         this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => {
-            this.selectedProjectClient=res;
+            this.selectedProjectClient = res;
             if (res['status'] == 'Connected') {
                 this.client_avaiable = true;
 
@@ -352,11 +348,10 @@ export class VirtualMachineComponent implements OnInit {
                 this.getSelectedProjectVolumes();
                 this.getImages(this.selectedProject[1]);
                 this.getFlavors(this.selectedProject[1]);
-                this.client_checked=true;
-            }
-            else {
+                this.client_checked = true;
+            } else {
                 this.client_avaiable = false;
-                this.client_checked=true;
+                this.client_checked = true;
 
             }
             this.selectedProjectClient = res;
@@ -384,8 +379,8 @@ export class VirtualMachineComponent implements OnInit {
         forkJoin(this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => {
             this.userinfo.PublicKey = result[1]['public_key'];
             this.validatePublicKey();
-            let membergroups = result[0];
-            for (let project of membergroups) {
+            const membergroups = result[0];
+            for (const project of membergroups) {
                 this.projects.push(project);
 
             }
@@ -404,8 +399,7 @@ export class VirtualMachineComponent implements OnInit {
 
                 this.selectedProjectDiskspaceMax = result['Diskspace'];
 
-            }
-            else if (result['Diskspace'] === null || result['Diskspace'] === 0) {
+            } else if (result['Diskspace'] === null || result['Diskspace'] === 0) {
                 this.selectedProjectDiskspaceMax = 0;
             }
 
@@ -414,8 +408,7 @@ export class VirtualMachineComponent implements OnInit {
             if (result['Diskspace']) {
 
                 this.selectedProjectDiskspaceUsed = result['Diskspace'];
-            }
-            else if (result['Diskspace'] == 0 || result['Diskspace'] == null) {
+            } else if (result['Diskspace'] == 0 || result['Diskspace'] == null) {
                 this.selectedProjectDiskspaceUsed = 0;
             }
 
@@ -431,16 +424,14 @@ export class VirtualMachineComponent implements OnInit {
         this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe(result => {
             if (result['VolumeCounter']) {
                 this.selectedProjectVolumesMax = result['VolumeCounter'];
-            }
-            else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) {
+            } else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) {
                 this.selectedProjectVolumesMax = 0;
             }
         })
         this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
             if (result['UsedVolumes']) {
                 this.selectedProjectVolumesUsed = result['UsedVolumes'];
-            }
-            else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) {
+            } else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) {
 
                 this.selectedProjectVolumesUsed = 0;
             }
@@ -459,8 +450,7 @@ export class VirtualMachineComponent implements OnInit {
 
                 this.selectedProjectVmsMax = result['NumberVms'];
 
-            }
-            else if (result['NumberVms'] === null || result['NumberVms'] === 0) {
+            } else if (result['NumberVms'] === null || result['NumberVms'] === 0) {
                 this.selectedProjectVmsMax = 0;
             }
 
@@ -469,8 +459,7 @@ export class VirtualMachineComponent implements OnInit {
             if (result['NumberVms']) {
 
                 this.selectedProjectVmsUsed = result['NumberVms'];
-            }
-            else if (result['NumberVms'] == 0 || result['NumberVms'] == null) {
+            } else if (result['NumberVms'] == 0 || result['NumberVms'] == null) {
                 this.selectedProjectVmsUsed = 0;
             }
 

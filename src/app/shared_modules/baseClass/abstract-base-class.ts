@@ -27,7 +27,7 @@ enum Vm_Statuses {
     ACTIVE = 1,
     SUSPENDED = 2,
     DELETED = 3,
-    CLIENT_OFFLINE=4,
+    CLIENT_OFFLINE= 4,
 }
 
 
@@ -42,20 +42,20 @@ export abstract class AbstractBaseClasse {
     isLoaded = false;
 
 
-    //notification Modal variables
+    // notification Modal variables
     public notificationModal;
-    public notificationModalTitle: string = "Notification";
-    public notificationModalMessage: string = "Please wait...";
-    public notificationModalType: string = "info";
-    public notificationModalInfoMessage: string = '';
-    public notificationModalIsClosable: boolean = false;
+    public notificationModalTitle = 'Notification';
+    public notificationModalMessage = 'Please wait...';
+    public notificationModalType = 'info';
+    public notificationModalInfoMessage = '';
+    public notificationModalIsClosable = false;
     public notificationModalStay: boolean;
 
     public resetNotificationModal() {
-        this.notificationModalTitle = "Notification";
-        this.notificationModalMessage = "Please wait...";
+        this.notificationModalTitle = 'Notification';
+        this.notificationModalMessage = 'Please wait...';
         this.notificationModalIsClosable = false;
-        this.notificationModalType = "info";
+        this.notificationModalType = 'info';
     }
 
     public updateNotificationModal(title: string, message: string, closable: true, type: string) {
@@ -96,7 +96,7 @@ export abstract class AbstractBaseClasse {
         }
     }
 
-    public setCollapseStatus(id:string,status:boolean):void{
+    public setCollapseStatus(id: string, status: boolean): void {
 
             this.collapse_status[id] = status;
 
@@ -117,13 +117,11 @@ export abstract class AbstractBaseClasse {
         if ((lifetimeDays - running) < 0) {
             // expired
             return this.lifetime_statuses.EXPIRED
-        }
-        else if ((lifetimeDays - running) < 21) {
-            //expires soon
+        } else if ((lifetimeDays - running) < 21) {
+            // expires soon
             return this.lifetime_statuses.EXPIRES_SOON
-        }
-        else {
-            //still valid
+        } else {
+            // still valid
             return this.lifetime_statuses.VALID_LIFETIME
         }
 

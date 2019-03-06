@@ -1,19 +1,19 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {Http} from '@angular/http';
-import {PerunSettings} from "../perun-connector/connector-settings.service";
+import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {Project} from './project.model';
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalDirective} from 'ngx-bootstrap';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
-import {ApiSettings} from "../api-connector/api-settings.service";
-import {GroupService} from "../api-connector/group.service";
-import {UserService} from "../api-connector/user.service";
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {GroupService} from '../api-connector/group.service';
+import {UserService} from '../api-connector/user.service';
 import * as moment from 'moment';
-import {VoService} from "../api-connector/vo.service";
+import {VoService} from '../api-connector/vo.service';
 import {catchError} from 'rxjs/operators';
-import {ProjectMemberApplication} from "./project_member_application";
-import {ComputecenterComponent} from "./computecenter.component";
-import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
+import {ProjectMemberApplication} from './project_member_application';
+import {ComputecenterComponent} from './computecenter.component';
+import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
 
 
 @Component({
@@ -49,9 +49,9 @@ export class OverviewComponent extends AbstractBaseClasse {
     public usersModalProjectName: string;
     public selectedProject: Project;
 
-    public isLoaded: boolean = false;
+    public isLoaded = false;
 
-    //modal variables for Add User Modal
+    // modal variables for Add User Modal
     public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
@@ -62,11 +62,11 @@ export class OverviewComponent extends AbstractBaseClasse {
     public UserModalFacility: [string, number];
 
 
-    public passwordModalTitle: string = "Changing Password";
-    public passwordModalType: string = 'info';
-    public passwordModalPassword: string = '';
-    public passwordModalFacility: string = '';
-    public passwordModalEmail: string = '';
+    public passwordModalTitle = 'Changing Password';
+    public passwordModalType = 'info';
+    public passwordModalPassword = '';
+    public passwordModalFacility = '';
+    public passwordModalEmail = '';
 
     constructor(private perunsettings: PerunSettings,
                 private groupservice: GroupService,
@@ -84,7 +84,7 @@ export class OverviewComponent extends AbstractBaseClasse {
     }
 
     setAddUserInvitationLink(): void {
-        let uri = this.invitation_group_pre + this.addUserModalRealName + this.invitation_group_post + this.addUserModalRealName;
+        const uri = this.invitation_group_pre + this.addUserModalRealName + this.invitation_group_post + this.addUserModalRealName;
         this.addUserModalInvitationLink = uri
 
     }
@@ -93,7 +93,7 @@ export class OverviewComponent extends AbstractBaseClasse {
     setUserFacilityPassword(facility: string, details: [string, string][]) {
         this.userservice.setUserFacilityPassword(facility).subscribe(result => {
             result = result;
-            for (let key of details) {
+            for (const key of details) {
                 if (key[0] == 'Support') {
                     this.passwordModalEmail = key[1];
                 }
@@ -103,8 +103,7 @@ export class OverviewComponent extends AbstractBaseClasse {
             if (result['Error']) {
                 this.passwordModalTitle = 'Set or update password';
                 this.passwordModalType = 'warning'
-            }
-            else {
+            } else {
                 this.passwordModalTitle = 'Success';
                 this.passwordModalType = 'success';
                 this.passwordModalPassword = result.toString()
@@ -116,14 +115,14 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.details_loaded = false;
         if (!project.Lifetime) {
             this.groupservice.getLifetime(project.Id).subscribe(res => {
-                let lifetime = res['lifetime'];
+                const lifetime = res['lifetime'];
                 let dateCreated = project.DateCreated;
 
                 let expirationDate = undefined;
-                dateCreated = moment(dateCreated, "DD.MM.YYYY").toDate();
+                dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
                 if (lifetime != -1) {
-                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
-                    let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+                    const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
                     project.LifetimeDays = lifetimeDays;
                     project.DateEnd = expirationDate;
@@ -132,8 +131,7 @@ export class OverviewComponent extends AbstractBaseClasse {
                 this.details_loaded = true;
 
             })
-        }
-        else {
+        } else {
             this.details_loaded = true;
         }
 
@@ -144,15 +142,15 @@ export class OverviewComponent extends AbstractBaseClasse {
 
         this.groupservice.getGroupDetails().subscribe(result => {
             this.userprojects = result;
-            for (let group of this.userprojects) {
-                let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
-                let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                let is_pi = group['is_pi'];
-                let groupid = group['id'];
-                let facility = group['compute_center'];
-                let shortname = group['shortname'];
+            for (const group of this.userprojects) {
+                const dateCreated = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
+                const is_pi = group['is_pi'];
+                const groupid = group['id'];
+                const facility = group['compute_center'];
+                const shortname = group['shortname'];
 
-                let realname = group['name'];
+                const realname = group['name'];
                 let compute_center = null;
 
                 if (facility) {
@@ -160,11 +158,11 @@ export class OverviewComponent extends AbstractBaseClasse {
                 }
 
 
-                let newProject = new Project(
+                const newProject = new Project(
                     Number(groupid),
                     shortname,
-                    group["description"],
-                    moment(dateCreated).format("DD.MM.YYYY"),
+                    group['description'],
+                    moment(dateCreated).format('DD.MM.YYYY'),
                     dateDayDifference,
                     is_pi,
                     this.is_admin,
@@ -199,17 +197,16 @@ export class OverviewComponent extends AbstractBaseClasse {
             this.usersModalProjectName = projectname;
             this.usersModalProjectMembers = new Array();
             this.groupservice.getGroupAdminIds(projectid.toString()).subscribe(result => {
-                let admindIds = result['adminIds'];
-                for (let member of members) {
-                    let member_id = member["id"];
-                    let user_id = member["userId"];
-                    let fullName = member["firstName"] + " " + member["lastName"];
-                    let projectMember = new ProjectMember(user_id, fullName, member_id);
+                const admindIds = result['adminIds'];
+                for (const member of members) {
+                    const member_id = member['id'];
+                    const user_id = member['userId'];
+                    const fullName = member['firstName'] + ' ' + member['lastName'];
+                    const projectMember = new ProjectMember(user_id, fullName, member_id);
                     projectMember.ElixirId = member['elixirId'];
                     if (admindIds.indexOf(user_id) != -1) {
                         projectMember.IsPi = true;
-                    }
-                    else {
+                    } else {
                         projectMember.IsPi = false;
                     }
 
@@ -229,18 +226,18 @@ export class OverviewComponent extends AbstractBaseClasse {
             this.selectedProject.ProjectMemberApplications = [];
 
 
-            let newProjectApplications = [];
+            const newProjectApplications = [];
             if (applications.length == 0) {
                 this.loaded = true;
 
             }
-            for (let application of applications) {
-                let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
-                let membername = application['displayName'];
+            for (const application of applications) {
+                const dateApplicationCreated = moment(application['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const membername = application['displayName'];
 
 
-                let newMemberApplication = new ProjectMemberApplication(
-                    application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year()
+                const newMemberApplication = new ProjectMemberApplication(
+                    application['id'], membername, dateApplicationCreated.date() + '.' + (dateApplicationCreated.month() + 1) + '.' + dateApplicationCreated.year()
                 );
                 newProjectApplications.push(newMemberApplication);
 
@@ -261,20 +258,18 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.loaded = false;
         this.application_action_done = false;
         this.groupservice.approveGroupApplication(project, application).subscribe(result => {
-            let application = result;
+            const application = result;
             this.selectedProject.ProjectMemberApplications = [];
 
             if (application['state'] == 'APPROVED') {
                 this.application_action_success = true;
-            }
-            else if (application['message']) {
+            } else if (application['message']) {
                 this.application_action_success = false;
 
                 this.application_action_error_message = application['message'];
 
 
-            }
-            else {
+            } else {
                 this.application_action_success = false;
             }
 
@@ -292,7 +287,7 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.application_action_done = false;
 
         this.groupservice.rejectGroupApplication(project, application).subscribe(result => {
-                let application = result;
+                const application = result;
                 this.selectedProject.ProjectMemberApplications = [];
 
 
@@ -300,15 +295,11 @@ export class OverviewComponent extends AbstractBaseClasse {
                     this.application_action_success = true;
 
 
-                }
-                else if (application['message']) {
+                } else if (application['message']) {
                     this.application_action_success = false;
 
                     this.application_action_error_message = application['message'];
-                }
-
-
-                else {
+                } else {
                     this.application_action_success = false;
                 }
                 this.application_action = 'rejected';
@@ -325,8 +316,7 @@ export class OverviewComponent extends AbstractBaseClasse {
 
         if (member.IsPi) {
             return 'blue'
-        }
-        else {
+        } else {
             return 'black'
         }
 
@@ -339,8 +329,7 @@ export class OverviewComponent extends AbstractBaseClasse {
         if (facility) {
             this.UserModalFacility = facility;
 
-        }
-        else {
+        } else {
             this.UserModalFacility = null;
 
         }
@@ -350,7 +339,7 @@ export class OverviewComponent extends AbstractBaseClasse {
 
 
     public resetPasswordModal() {
-        this.passwordModalTitle = "Changing Password";
+        this.passwordModalTitle = 'Changing Password';
         this.passwordModalType = 'info';
         this.passwordModalPassword = '';
         this.passwordModalFacility = '';
@@ -368,8 +357,7 @@ export class OverviewComponent extends AbstractBaseClasse {
         if (facility) {
             this.UserModalFacility = facility;
 
-        }
-        else {
+        } else {
             this.UserModalFacility = null;
 
         }
@@ -384,22 +372,20 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => {
                 if (result.status == 200) {
-                    this.updateNotificationModal("Success", "Member " + firstName + " " + lastName + " added.", true, "success");
+                    this.updateNotificationModal('Success', 'Member ' + firstName + ' ' + lastName + ' added.', true, 'success');
 
                 } else {
 
 
-                    this.updateNotificationModal("Failed", "Member could not be added!", true, "danger");
+                    this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
                 }
             },
             error => {
 
                 if (error['name'] == 'AlreadyMemberException') {
-                    this.updateNotificationModal("Info", firstName + " " + lastName + " is already a member of the project.", true, "info");
-                }
-
-                else {
-                    this.updateNotificationModal("Failed", "Member could not be added!", true, "danger");
+                    this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a member of the project.', true, 'info');
+                } else {
+                    this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
                 }
             });
 
@@ -416,17 +402,16 @@ export class OverviewComponent extends AbstractBaseClasse {
                 result => {
 
                     if (result.status == 200) {
-                        this.updateNotificationModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+                        this.updateNotificationModal('Success', 'Admin ' + firstName + ' ' + lastName + ' added.', true, 'success');
 
                     } else {
-                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
                     }
                 }, error => {
                     if (error['name'] == 'AlreadyAdminException') {
-                        this.updateNotificationModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
-                    }
-                    else {
-                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a admin of the project.', true, 'info');
+                    } else {
+                        this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
                     }
                 })
         }, error => {
@@ -434,17 +419,16 @@ export class OverviewComponent extends AbstractBaseClasse {
                 result => {
 
                     if (result.status == 200) {
-                        this.updateNotificationModal("Success", "Admin " + firstName + " " + lastName + " added.", true, "success");
+                        this.updateNotificationModal('Success', 'Admin ' + firstName + ' ' + lastName + ' added.', true, 'success');
 
                     } else {
-                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
                     }
                 }, error => {
                     if (error['name'] == 'AlreadyAdminException') {
-                        this.updateNotificationModal("Info", firstName + " " + lastName + " is already a admin of the project.", true, "info");
-                    }
-                    else {
-                        this.updateNotificationModal("Failed", "Admin could not be added!", true, "danger");
+                        this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a admin of the project.', true, 'info');
+                    } else {
+                        this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
                     }
                 })
         })
@@ -460,13 +444,13 @@ export class OverviewComponent extends AbstractBaseClasse {
             .then(result => {
 
                 if (result.status == 200) {
-                    this.updateNotificationModal("Success", username + " promoted to Admin", true, "success");
+                    this.updateNotificationModal('Success', username + ' promoted to Admin', true, 'success');
 
                 } else {
-                    this.updateNotificationModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+                    this.updateNotificationModal('Failed', username + ' could not be promoted to Admin!', true, 'danger');
                 }
             }).catch(error => {
-            this.updateNotificationModal("Failed", username + " could not be promoted to Admin!", true, "danger");
+            this.updateNotificationModal('Failed', username + ' could not be promoted to Admin!', true, 'danger');
         });
     }
 
@@ -480,13 +464,13 @@ export class OverviewComponent extends AbstractBaseClasse {
             .then(result => {
 
                 if (result.status == 200) {
-                    this.updateNotificationModal("Success", name + " was removed as Admin", true, "success");
+                    this.updateNotificationModal('Success', name + ' was removed as Admin', true, 'success');
 
                 } else {
-                    this.updateNotificationModal("Failed", name + " could not be removed as Admin!", true, "danger");
+                    this.updateNotificationModal('Failed', name + ' could not be removed as Admin!', true, 'danger');
                 }
             }).catch(error => {
-            this.updateNotificationModal("Failed", name + " could not be removed as Admin!", true, "danger");
+            this.updateNotificationModal('Failed', name + ' could not be removed as Admin!', true, 'danger');
         });
     }
 
@@ -498,14 +482,14 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(result => {
 
                 if (result.status == 200) {
-                    this.updateNotificationModal("Success", "Member " + name + " removed from the group", true, "success");
+                    this.updateNotificationModal('Success', 'Member ' + name + ' removed from the group', true, 'success');
 
                 } else {
-                    this.updateNotificationModal("Failed", "Member" + name + " could not be removed !", true, "danger");
+                    this.updateNotificationModal('Failed', 'Member' + name + ' could not be removed !', true, 'danger');
                 }
             },
             error => {
-                this.updateNotificationModal("Failed", "Member" + name + " could not be removed !", true, "danger");
+                this.updateNotificationModal('Failed', 'Member' + name + ' could not be removed !', true, 'danger');
             });
     }
 
@@ -515,6 +499,6 @@ export class OverviewComponent extends AbstractBaseClasse {
     }
 
     public comingSoon() {
-        alert("This function will be implemented soon.")
+        alert('This function will be implemented soon.')
     }
 }

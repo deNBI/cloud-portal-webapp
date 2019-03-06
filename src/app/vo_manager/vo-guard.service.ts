@@ -1,6 +1,6 @@
-import {Injectable} from "@angular/core";
-import {CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot} from "@angular/router";
-import {VoService} from "../api-connector/vo.service";
+import {Injectable} from '@angular/core';
+import {CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot} from '@angular/router';
+import {VoService} from '../api-connector/vo.service';
 import {Observable} from 'rxjs';
 
 @Injectable()
@@ -16,11 +16,10 @@ export class VoGuardService implements CanActivate {
             this.voservice.isVo().subscribe(
                 result => {
 
-                    let res = result;
+                    const res = result;
                     if (res['Is_Vo_Manager']) {
                         return resolve(true)
-                    }
-                    else {
+                    } else {
                         return resolve(false)
                     }
                 })

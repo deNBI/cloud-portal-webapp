@@ -10,8 +10,8 @@ import {FlavorService} from '../api-connector/flavor.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {forEach} from '@angular/router/src/utils/collection';
-import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
-import {environment} from "../../environments/environment";
+import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
+import {environment} from '../../environments/environment';
 
 @Component({
     templateUrl: 'addcloudapplication.component.html',
@@ -35,7 +35,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
      * If shortname is valid.
      * @type {boolean}
      */
-    public wronginput: boolean = false;
+    public wronginput = false;
 
 
     /**
@@ -86,14 +86,14 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
         'We would highly appreciate the following citation in your next publication(s): ‘This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).';
-    public acknowledgeModalTitle: string = 'Acknowledge';
-    public acknowledgeModalType: string = 'info';
+    public acknowledgeModalTitle = 'Acknowledge';
+    public acknowledgeModalType = 'info';
 
     /**
      * If project is openstack project (everytime true)
      * @type {boolean}
      */
-    project_application_openstack_project: boolean = true;
+    project_application_openstack_project = true;
     /**
      * List of special hardwares.
      * @type {any[]}
@@ -139,8 +139,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
                 case 'project_application_report_allowed': {
                     if (val) {
                         return (this.constantStrings[key] + 'Yes');
-                    }
-                    else {
+                    } else {
                         return (this.constantStrings[key] + 'No');
                     }
                 }
@@ -164,7 +163,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
         this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
         this.constantStrings['project_application_report_allowed'] = 'Dissemination allowed: ';
 
-        for (let key in this.flavorList) {
+        for (const key in this.flavorList) {
             if (key in this.flavorList) {
                 this.constantStrings['project_application_' + this.flavorList[key].name] =
                     'Number of VMs of type ' + this.flavorList[key].name + ': ';
@@ -173,7 +172,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
     }
 
     keyIsVM(key: string): Flavor {
-        for (let fkey in this.flavorList) {
+        for (const fkey in this.flavorList) {
             if (fkey in this.flavorList) {
                 if (this.flavorList[fkey].name === key.substring(20)) {
                     return this.flavorList[fkey];
@@ -193,7 +192,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
         this.totalNumberOfCores = 0;
         this.totalRAM = 0;
         this.valuesToConfirm = new Array();
-        for (let key in f.controls) {
+        for (const key in f.controls) {
             if (f.controls[key].value) {
                 if (key === 'project_application_name') {
                     this.projectName = f.controls[key].value;
@@ -205,7 +204,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
                     console.log(key)
                     this.valuesToConfirm.push(this.matchString(key.toString(), f.controls[key].value.toString()));
 
-                    var flavor: Flavor = this.keyIsVM(key.toString());
+                    const flavor: Flavor = this.keyIsVM(key.toString());
                     if (flavor != null) {
                         this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
                         this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value)
@@ -214,7 +213,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
             }
         }
         if (!this.project_application_report_allowed) {
-            this.valuesToConfirm.push("Dissemination allowed: No")
+            this.valuesToConfirm.push('Dissemination allowed: No')
         }
 
     }
@@ -244,11 +243,11 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
         this.collapseList = new Array(types.length) as Array<boolean>;
         for (let i = 0; i < types.length; i++) {
 
-            this.collapseList.push(false); //AS FIX
+            this.collapseList.push(false); // AS FIX
         }
-        for (let t of this.typeList) {
+        for (const t of this.typeList) {
             if (t.long_name === 'Standart Flavor') {
-                this.collapseList[this.typeList.indexOf(t)]=true;
+                this.collapseList[this.typeList.indexOf(t)] = true;
             }
             break;
         }
@@ -262,10 +261,10 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
     getSpecialHardware() {
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => {
-                let res = result;
-                for (let key in res) {
-                    let shj = res[key];
-                    let sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
+                const res = result;
+                for (const key in res) {
+                    const shj = res[key];
+                    const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
                     this.special_hardware.push(sh)
                 }
             });
@@ -283,12 +282,11 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
 
             this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
-        }
-        else {
-            let values: { [key: string]: any } = {};
+        } else {
+            const values: { [key: string]: any } = {};
             values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
             values['project_application_openstack_project'] = this.project_application_openstack_project;
-            for (let v in f.controls) {
+            for (const v in f.controls) {
                 if (f.controls[v].value) {
 
                     values[v] = f.controls[v].value;
@@ -299,10 +297,10 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
                     this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 }).catch(error => {
-                var error_json = error
+                const error_json = error
                 this.error = []
-                for (let key of Object.keys(error_json)) {
-                    this.error.push(key.split('_',)[2])
+                for (const key of Object.keys(error_json)) {
+                    this.error.push(key.split('_', )[2])
 
                 }
 
@@ -315,7 +313,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
 
 
     sendTestApplication() {
-        let values: { [key: string]: any } = {};
+        const values: { [key: string]: any } = {};
 
         values['project_application_comment'] = 'TestApplication';
         values['project_application_description'] = 'TestApplication';
@@ -323,8 +321,8 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
         values['project_application_lifetime'] = 3;
         values['project_application_name'] = 'TestApplication';
         values['project_application_openstack_project'] = true;
-        for (let f of this.flavorList) {
-            let fname = 'project_application_' + f.name;
+        for (const f of this.flavorList) {
+            const fname = 'project_application_' + f.name;
             values[fname] = 1;
         }
         values['project_application_report_allowed'] = true;
@@ -339,10 +337,10 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
                 this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                 this.notificationModalStay = false;
             }).catch(error => {
-            var error_json = error
+            const error_json = error
             this.error = []
-            for (let key of Object.keys(error_json)) {
-                this.error.push(key.split('_',)[2])
+            for (const key of Object.keys(error_json)) {
+                this.error.push(key.split('_', )[2])
 
             }
 
@@ -362,8 +360,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
     public checkShortname(shortname: string) {
         if (/^[a-zA-Z0-9\s]*$/.test(shortname) == false) {
             this.wronginput = true;
-        }
-        else {
+        } else {
             this.wronginput = false;
         }
     }

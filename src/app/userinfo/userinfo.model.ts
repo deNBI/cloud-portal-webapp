@@ -7,29 +7,29 @@ export class Userinfo {
   private _ElixirId: string;
   private _PublicKey: string;
   private _UserLogin: string;
-  private _Email:string;
-  private _PendingEmails:string[];
+  private _Email: string;
+  private _PendingEmails: string[];
 
   constructor() {
-    this.LastName = " ";
-    this.FirstName = " ";
+    this.LastName = ' ';
+    this.FirstName = ' ';
     this.Id = -1;
   }
 
-  get PendingEmails():string[]{
+  get PendingEmails(): string[] {
     return this._PendingEmails;
   }
 
-  set PendingEmails(value:string[]){
-    this._PendingEmails=value;
+  set PendingEmails(value: string[]) {
+    this._PendingEmails = value;
   }
 
-  get Email():string{
+  get Email(): string {
     return this._Email;
   }
 
-  set Email(value:string){
-    this._Email=value;
+  set Email(value: string) {
+    this._Email = value;
   }
   get Id(): number {
     return this._Id;

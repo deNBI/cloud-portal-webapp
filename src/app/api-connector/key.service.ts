@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {ApiSettings} from "./api-settings.service";
+import {ApiSettings} from './api-settings.service';
 import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 
 const header = new HttpHeaders({
-    'X-CSRFToken': Cookie.get("csrftoken")
+    'X-CSRFToken': Cookie.get('csrftoken')
 });
 
 
@@ -27,7 +27,7 @@ export class keyService {
 
     postKey(public_key: string): Observable<any> {
         public_key = public_key.replace(/\r?\n|\r/gi, '');
-        let params = new HttpParams().set('public_key', public_key);
+        const params = new HttpParams().set('public_key', public_key);
 
         return this.http.put(this.settings.getApiBaseURL() + 'users/current/public_key/', params, {
             withCredentials: true,

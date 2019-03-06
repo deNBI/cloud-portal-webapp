@@ -7,6 +7,6 @@ import {environment} from '../environments/environment';
 
 
 })
-export class ConsentInfoComponent{
-  voLoginLink= environment.login
+export class ConsentInfoComponent {
+  voLoginLink = environment.login
 }

@@ -9,7 +9,7 @@ import {
 } from '@angular/http';
 import { CookieService } from 'ng2-cookies';
 import {Observable, throwError} from 'rxjs';
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalDirective} from 'ngx-bootstrap';
 import {catchError} from 'rxjs/operators';
 
 

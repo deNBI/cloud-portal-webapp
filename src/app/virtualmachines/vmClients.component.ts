@@ -1,19 +1,19 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {Vmclient} from "./virtualmachinemodels/vmclient";
-import {ClientService} from "../api-connector/vmClients.service";
-import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {ApiSettings} from "../api-connector/api-settings.service";
-import {GroupService} from "../api-connector/group.service";
-import {UserService} from "../api-connector/user.service";
-import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
-import {FacilityService} from "../api-connector/facility.service";
+import {Vmclient} from './virtualmachinemodels/vmclient';
+import {ClientService} from '../api-connector/vmClients.service';
+import {PerunSettings} from '../perun-connector/connector-settings.service';
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {GroupService} from '../api-connector/group.service';
+import {UserService} from '../api-connector/user.service';
+import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
+import {FacilityService} from '../api-connector/facility.service';
 
 
 @Component({
     selector: 'client-overview',
     templateUrl: 'vmClients.component.html',
-    providers: [FacilityService,UserService, GroupService, ClientService, PerunSettings, ApiSettings]
+    providers: [FacilityService, UserService, GroupService, ClientService, PerunSettings, ApiSettings]
 })
 
 export class ClientOverviewComponent implements OnInit {
@@ -30,12 +30,12 @@ export class ClientOverviewComponent implements OnInit {
      * Default status not added client.
      * @type {string}
      */
-    checkStatus: string = 'Not checked';
+    checkStatus = 'Not checked';
     /**
      * All computecenters.
      * @type {Array}
      */
-    computeCenters: ComputecenterComponent[]=[];
+    computeCenters: ComputecenterComponent[] = [];
     /**
      * Selected computecenter.
      */
@@ -46,7 +46,7 @@ export class ClientOverviewComponent implements OnInit {
      */
     isLoaded = false;
 
-    constructor(private facilityService:FacilityService,private userservice: UserService, private groupservice: GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) {
+    constructor(private facilityService: FacilityService, private userservice: UserService, private groupservice: GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) {
 
     }
 
@@ -60,15 +60,15 @@ export class ClientOverviewComponent implements OnInit {
         this.userservice
             .getLoggedUser().toPromise()
             .then(function (userdata) {
-                //TODO catch errors
-                user_id = userdata["id"];
+                // TODO catch errors
+                user_id = userdata['id'];
                 return userservice.getVosWhereUserIsAdmin().toPromise();
             }).then(function (adminvos) {
             admin_vos = adminvos;
         }).then(result => {
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in admin_vos) {
-                if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
+            // check if user is a Vo admin so we can serv according buttons
+            for (const vkey in admin_vos) {
+                if (admin_vos[vkey]['id'] == this.perunsettings.getPerunVO().toString()) {
                     this.is_vo_admin = true;
                 }
             }
@@ -82,7 +82,7 @@ export class ClientOverviewComponent implements OnInit {
     getClientsChecked(): void {
         this.clientservice.getClientsChecked().subscribe(clients => {
             this.clients = clients;
-            this.isLoaded=true;
+            this.isLoaded = true;
         });
 
 
@@ -93,8 +93,8 @@ export class ClientOverviewComponent implements OnInit {
      */
     getComputeCenters() {
         this.facilityService.getComputeCenters().subscribe(result => {
-            for (let cc of result) {
-                let compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
+            for (const cc of result) {
+                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             }
 
@@ -112,12 +112,10 @@ export class ClientOverviewComponent implements OnInit {
 
                 if (data['status'] == false) {
                     this.checkStatus = 'No Connection';
-                }
-                else if (data['status'] == true) {
-                    this.checkStatus = "Connected";
-                }
-                else {
-                    this.checkStatus = "check failed";
+                } else if (data['status'] == true) {
+                    this.checkStatus = 'Connected';
+                } else {
+                    this.checkStatus = 'check failed';
 
                 }
 
@@ -146,7 +144,7 @@ export class ClientOverviewComponent implements OnInit {
      * Delete a client.
      * @param {number} client_id
      */
-    deleteClient(client_id:number): void {
+    deleteClient(client_id: number): void {
         this.clientservice.deleteClient(client_id).subscribe(data => {
 
             this.getClientsChecked();

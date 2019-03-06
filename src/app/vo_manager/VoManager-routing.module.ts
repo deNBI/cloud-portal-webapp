@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {VoOverviewComponent} from "./VoOverviewComponent";
-import {VoGuardService} from "./vo-guard.service";
-import {ResourcesComponent} from "./resources/resources.component";
+import {VoOverviewComponent} from './VoOverviewComponent';
+import {VoGuardService} from './vo-guard.service';
+import {ResourcesComponent} from './resources/resources.component';
 
 
 const routes: Routes = [

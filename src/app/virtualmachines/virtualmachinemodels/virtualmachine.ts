@@ -1,6 +1,6 @@
 import {Image} from './image';
 import {Flavor} from './flavor';
-import {Vmclient} from "./vmclient";
+import {Vmclient} from './vmclient';
 
 
 export class VirtualMachine {

@@ -5,11 +5,11 @@ import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {SpecialHardware} from './special_hardware.model'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {ApplicationsService} from '../api-connector/applications.service'
-import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
-import {Flavor} from "../virtualmachines/virtualmachinemodels/flavor";
-import {FlavorService} from "../api-connector/flavor.service";
-import {environment} from "../../environments/environment";
-import {FlavorType} from "../virtualmachines/virtualmachinemodels/flavorType";
+import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {FlavorService} from '../api-connector/flavor.service';
+import {environment} from '../../environments/environment';
+import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 
 @Component({
     templateUrl: 'addsinglevm.component.html',
@@ -32,7 +32,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
      * Check if the shortname provided is valid.
      * @type {boolean}
      */
-    public wronginput: boolean = false;
+    public wronginput = false;
 
 
     /**
@@ -51,8 +51,8 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
 
     public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
         'We would highly appreciate the following citation in your next publication(s): ‘This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).';
-    public acknowledgeModalTitle: string = 'Acknowledge';
-    public acknowledgeModalType: string = 'info';
+    public acknowledgeModalTitle = 'Acknowledge';
+    public acknowledgeModalType = 'info';
 
     /**
      * Available special hardware.
@@ -77,10 +77,10 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
     getSpecialHardware() {
         this.specialhardwareservice.getAllSpecialHardware().toPromise()
             .then(result => {
-                let res = result;
-                for (let key in res) {
-                    let shj = res[key];
-                    let sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
+                const res = result;
+                for (const key in res) {
+                    const shj = res[key];
+                    const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
                     this.special_hardware.push(sh)
                 }
             });
@@ -96,11 +96,10 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
         if (this.wronginput == true) {
             this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
             this.notificationModalStay = true;
-        }
-        else {
-            let values = {};
+        } else {
+            const values = {};
             values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
-            for (let v in f.controls) {
+            for (const v in f.controls) {
                 if (f.controls[v].value) {
                     values[v] = f.controls[v].value;
                 }
@@ -111,10 +110,10 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
                     this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
                 }).catch(error => {
-                var error_json = error;
+                const error_json = error;
                 this.error = [];
-                for (let key of Object.keys(error_json)) {
-                    this.error.push(key.split('_',)[2])
+                for (const key of Object.keys(error_json)) {
+                    this.error.push(key.split('_', )[2])
 
                 }
 
@@ -148,11 +147,11 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
         this.typeList = types;
         this.collapseList = new Array(types.length) as Array<boolean>;
         for (let i = 0; i < types.length; i++) {
-            this.collapseList.push(false); //AS FIX
+            this.collapseList.push(false); // AS FIX
         }
-         for (let t of this.typeList) {
+         for (const t of this.typeList) {
             if (t.long_name === 'Standart Flavor') {
-                this.collapseList[this.typeList.indexOf(t)]=true;
+                this.collapseList[this.typeList.indexOf(t)] = true;
             }
             break;
         }
@@ -167,14 +166,13 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
     public checkShortname(shortname: string) {
         if (/^[a-zA-Z0-9\s]*$/.test(shortname) == false) {
             this.wronginput = true;
-        }
-        else {
+        } else {
             this.wronginput = false;
         }
     }
 
     sendTestApplication() {
-        let values: { [key: string]: any } = {};
+        const values: { [key: string]: any } = {};
 
         values['project_application_comment'] = 'TestApplication';
         values['project_application_description'] = 'TestApplication';
@@ -182,8 +180,8 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
         values['project_application_lifetime'] = 3;
         values['project_application_name'] = 'TestApplication';
         values['project_application_openstack_project'] = false;
-        for (let f of this.flavorList) {
-            let fname = 'project_application_' + f.name;
+        for (const f of this.flavorList) {
+            const fname = 'project_application_' + f.name;
             values[fname] = 1;
         }
         values['project_application_report_allowed'] = true;
@@ -197,10 +195,10 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
                 this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                 this.notificationModalStay = false;
             }).catch(error => {
-            var error_json = error
+            const error_json = error
             this.error = []
-            for (let key of Object.keys(error_json)) {
-                this.error.push(key.split('_',)[2])
+            for (const key of Object.keys(error_json)) {
+                this.error.push(key.split('_', )[2])
 
             }
 

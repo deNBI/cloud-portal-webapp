@@ -1,4 +1,4 @@
-export class ApplicationStatus{
+export class ApplicationStatus {
 
     /**
      * Id of the status.

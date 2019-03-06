@@ -1,21 +1,21 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {Http} from '@angular/http';
-import {PerunSettings} from "../perun-connector/connector-settings.service";
+import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {Project} from '../projectmanagement/project.model';
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalDirective} from 'ngx-bootstrap';
 import {ProjectMember} from '../projectmanagement/project_member.model'
 import {environment} from '../../environments/environment'
-import {ApiSettings} from "../api-connector/api-settings.service";
-import {GroupService} from "../api-connector/group.service";
-import {UserService} from "../api-connector/user.service";
-import {FacilityService} from "../api-connector/facility.service";
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {GroupService} from '../api-connector/group.service';
+import {UserService} from '../api-connector/user.service';
+import {FacilityService} from '../api-connector/facility.service';
 import {FormsModule} from '@angular/forms';
 import {map} from 'rxjs/operators';
 
 import * as moment from 'moment';
-import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
-import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
-import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
+import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
+import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
+import {FilterBaseClass} from '../shared_modules/baseClass/filter-base-class';
 
 @Component({
     templateUrl: 'facilityprojectsoverview.component.html',
@@ -28,7 +28,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
     member_id: number;
-    isLoaded: boolean = false;
+    isLoaded = false;
     projects: Project[] = new Array();
     details_loaded = false;
     /**
@@ -52,8 +52,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
 
     public emailSubject: string;
     public emailText: string;
-    public emailStatus: number = 0;
-    public emailReply: string = '';
+    public emailStatus = 0;
+    public emailReply = '';
 
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
@@ -82,8 +82,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
     checkFilter(project: Project) {
         if (this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
             return true
-        }
-        else {
+        } else {
             return false
         }
 
@@ -99,14 +98,14 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
         this.details_loaded = false;
         if (!project.Lifetime) {
             this.groupservice.getLifetime(project.Id).subscribe(res => {
-                let lifetime = res['lifetime'];
+                const lifetime = res['lifetime'];
                 let dateCreated = project.DateCreated;
 
                 let expirationDate = undefined;
-                dateCreated = moment(dateCreated, "DD.MM.YYYY").toDate();
+                dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
                 if (lifetime != -1) {
-                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
-                    let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+                    const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
                     project.LifetimeDays = lifetimeDays;
                     project.DateEnd = expirationDate;
@@ -115,8 +114,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                 this.details_loaded = true;
 
             })
-        }
-        else {
+        } else {
             this.details_loaded = true;
         }
     }
@@ -126,17 +124,17 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
 
 
         this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe(result => {
-            let facility_projects = result;
-            let is_pi = false;
-            let is_admin = false;
-            for (let group of facility_projects) {
-                let dateCreated = moment(group['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
-                let dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                let groupid = group['id'];
-                let facility = group['compute_center'];
+            const facility_projects = result;
+            const is_pi = false;
+            const is_admin = false;
+            for (const group of facility_projects) {
+                const dateCreated = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
+                const groupid = group['id'];
+                const facility = group['compute_center'];
                 let shortname = group['shortname'];
                 let compute_center = null;
-                let lifetime = group['lifetime'];
+                const lifetime = group['lifetime'];
                 let expirationDate = undefined;
 
 
@@ -147,11 +145,11 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                     compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
                 }
 
-                let newProject = new Project(
+                const newProject = new Project(
                     Number(groupid),
                     shortname,
-                    group["description"],
-                    dateCreated.date() + "." + (dateCreated.month() + 1) + "." + dateCreated.year(),
+                    group['description'],
+                    dateCreated.date() + '.' + (dateCreated.month() + 1) + '.' + dateCreated.year(),
                     dateDayDifference,
                     is_pi,
                     is_admin,
@@ -159,8 +157,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                 newProject.Status = group['status'];
 
                 if (lifetime != -1) {
-                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format("DD.MM.YYYY");
-                    let lifetimeDays = Math.abs(moment(moment(expirationDate, "DD.MM.YYYY").toDate()).diff(moment(dateCreated), 'days'));
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+                    const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
                     newProject.LifetimeDays = lifetimeDays;
                     newProject.DateEnd = expirationDate;
@@ -188,8 +186,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
 
                 if (result.status == 201) {
                     this.emailStatus = 1;
-                }
-                else {
+                } else {
                     this.emailStatus = 2;
                 }
             },
@@ -205,11 +202,11 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                 this.usersModalProjectID = projectid;
                 this.usersModalProjectName = projectname;
                 this.usersModalProjectMembers = new Array();
-                for (let member of members) {
-                    let member_id = member["id"];
-                    let user_id = member["userId"];
-                    let fullName = member["firstName"] + " " + member["lastName"];
-                    let newMember = new ProjectMember(user_id, fullName, member_id);
+                for (const member of members) {
+                    const member_id = member['id'];
+                    const user_id = member['userId'];
+                    const fullName = member['firstName'] + ' ' + member['lastName'];
+                    const newMember = new ProjectMember(user_id, fullName, member_id);
                     newMember.ElixirId = member['elixirId'];
                     newMember.Email = member['email'];
                     this.usersModalProjectMembers.push(newMember);
@@ -235,6 +232,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
 
 
     public comingSoon() {
-        alert("This function will be implemented soon.")
+        alert('This function will be implemented soon.')
     }
 }

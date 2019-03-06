@@ -3,7 +3,7 @@ export class ProjectMemberApplication {
     private _Id: number;
     private _Name: string;
     private _DateCreated: string;
-    private _UserIsVoMember:boolean;
+    private _UserIsVoMember: boolean;
 
 
     constructor(Id: number, Name: string, DateCreated: string) {
@@ -14,12 +14,12 @@ export class ProjectMemberApplication {
 
     }
 
-    get UserIsVoMember():boolean{
+    get UserIsVoMember(): boolean {
         return this._UserIsVoMember;
     }
 
-    set UserIsVoMember(value:boolean){
-        this._UserIsVoMember=value;
+    set UserIsVoMember(value: boolean) {
+        this._UserIsVoMember = value;
     }
 
 

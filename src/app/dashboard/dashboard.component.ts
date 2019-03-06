@@ -16,31 +16,6 @@ export class DashboardComponent implements OnInit {
 
   // dropdown buttons
   public status: { isopen } = { isopen: false };
-  public toggleDropdown($event: MouseEvent): void {
-    $event.preventDefault();
-    $event.stopPropagation();
-    this.status.isopen = !this.status.isopen;
-  }
-
-  // convert Hex to RGBA
-  public convertHex(hex: string, opacity: number) {
-    hex = hex.replace('#', '');
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-
-    const rgba = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + opacity / 100 + ')';
-    return rgba;
-  }
-
-  // events
-  public chartClicked(e: any): void {
-    console.log(e);
-  }
-
-  public chartHovered(e: any): void {
-    console.log(e);
-  }
 
   // lineChart1
   public lineChart1Data: Array<any> = [
@@ -225,12 +200,6 @@ export class DashboardComponent implements OnInit {
   ];
   public barChart1Legend = false;
   public barChart1Type = 'bar';
-
-  // mainChart
-
-  public random(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
 
   public mainChartElements = 27;
   public mainChartData1: Array<number> = [];
@@ -460,6 +429,37 @@ export class DashboardComponent implements OnInit {
 
   public sparklineChartLegend = false;
   public sparklineChartType = 'line';
+  public toggleDropdown($event: MouseEvent): void {
+    $event.preventDefault();
+    $event.stopPropagation();
+    this.status.isopen = !this.status.isopen;
+  }
+
+  // convert Hex to RGBA
+  public convertHex(hex: string, opacity: number) {
+    hex = hex.replace('#', '');
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
+    const rgba = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + opacity / 100 + ')';
+    return rgba;
+  }
+
+  // events
+  public chartClicked(e: any): void {
+    console.log(e);
+  }
+
+  public chartHovered(e: any): void {
+    console.log(e);
+  }
+
+  // mainChart
+
+  public random(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
 
 
   ngOnInit(): void {
