@@ -1,10 +1,38 @@
 ***REMOVED***
   "rulesDirectory": [
-    "node_modules/codelyzer"
+    "node_modules/codelyzer",
+    "node_modules/tslint-eslint-rules/dist/rules"
   ],
   "rules": ***REMOVED***
     "callable-types": true,
+    "no-constant-condition": true,
+    "no-control-regex":true,
+    "no-duplicate-case":true,
+    "no-empty-character-class2":true,
+    "no-ex-assign2":true,
+    "no-extra-boolean-cast":true,
+    "no-extra-semi":true,
+    "no-inner-declarations":true,
+    "no-invalid-regexp":true,
+    "no-irregular-whitespace":true,
+    "no-regex-spaces":true,
+    "no-sparse-arrays":true,
+    "no-unexpected-multiline":true,
+    "valid-jsdoc":true,
+    "valid-typeof":true,
+    "no-multi-spaces":true,
+    "no-proto":true,
+    "no-script-url":true,
+    "no-self-compare":true,
+    "handle-callback-err":true,
     "class-name": true,
+    "indent":true,
+    "sort-imports":true,
+    "no-mixed-spaces-and-tabs":true,
+    "arrow-body-style":true,
+    "arrow-parens":true,
+    "arrow-spacing":true,
+    
     "comment-format": [
       true,
       "check-space"
