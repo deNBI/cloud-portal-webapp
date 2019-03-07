@@ -17,5 +17,4 @@ export const environment = ***REMOVED***
     connectorBaseUrl: 'http://portal-dev.denbi.de:8000/connector/',
     login: 'https://portal-dev.denbi.de/portal/'
 
-
 ***REMOVED***;

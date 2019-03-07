@@ -1,18 +1,16 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***
   Http,
+  Request,
   RequestOptions,
   RequestOptionsArgs,
-  Request,
   Response,
-  XHRBackend,
+  XHRBackend
 ***REMOVED*** from '@angular/http';
 import ***REMOVED*** CookieService ***REMOVED*** from 'ng2-cookies';
-import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap';
+import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
-
-
 
 @Injectable()
 export class HttpInterceptor extends Http ***REMOVED***
@@ -32,6 +30,7 @@ export class HttpInterceptor extends Http ***REMOVED***
     if (error.status === 0) ***REMOVED***
       this.timeoutModal.show();
     ***REMOVED***
+
     return throwError(error)
   ***REMOVED***
 ***REMOVED***

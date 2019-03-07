@@ -1,4 +1,4 @@
-import ***REMOVED*** TestBed, async ***REMOVED*** from '@angular/core/testing';
+import ***REMOVED*** async, TestBed ***REMOVED*** from '@angular/core/testing';
 import ***REMOVED*** AppComponent ***REMOVED*** from './app.component';
 
 describe('AppComponent', () => ***REMOVED***
@@ -6,7 +6,7 @@ describe('AppComponent', () => ***REMOVED***
     TestBed.configureTestingModule(***REMOVED***
       declarations: [
         AppComponent
-      ],
+      ]
     ***REMOVED***);
     TestBed.compileComponents();
   ***REMOVED***);

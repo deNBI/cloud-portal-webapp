@@ -1,31 +1,31 @@
-import ***REMOVED***BrowserModule***REMOVED*** from '@angular/platform-browser';
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
 import ***REMOVED***HashLocationStrategy, LocationStrategy***REMOVED*** from '@angular/common';
+import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
+import ***REMOVED***BrowserModule***REMOVED*** from '@angular/platform-browser';
 
-import ***REMOVED***AppComponent***REMOVED*** from './app.component';
 import ***REMOVED***BsDropdownModule***REMOVED*** from 'ngx-bootstrap/dropdown';
 import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
+import ***REMOVED***AppComponent***REMOVED*** from './app.component';
 import ***REMOVED***NAV_DROPDOWN_DIRECTIVES***REMOVED*** from './shared/nav-dropdown.directive';
 
-import ***REMOVED***ChartsModule***REMOVED*** from 'ng2-charts/ng2-charts';
-import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sidebar.directive';
-import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.directive';
-import ***REMOVED***PopoverModule***REMOVED*** from 'ngx-popover';
-import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
-import ***REMOVED***PerunSettings***REMOVED*** from './perun-connector/connector-settings.service';
-import ***REMOVED***ApiSettings***REMOVED*** from './api-connector/api-settings.service';
 import ***REMOVED***HttpClientModule***REMOVED*** from '@angular/common/http';
-// Routing Module
-import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
+import ***REMOVED***ChartsModule***REMOVED*** from 'ng2-charts/ng2-charts';
+import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap';
 import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination';
 import ***REMOVED***ExportAsModule***REMOVED*** from 'ngx-export-as';
+import ***REMOVED***PopoverModule***REMOVED*** from 'ngx-popover';
+import ***REMOVED***ApiSettings***REMOVED*** from './api-connector/api-settings.service';
+import ***REMOVED***UserService***REMOVED*** from './api-connector/user.service';
+// Routing Module
+import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
+import ***REMOVED***ConsentInfoComponent***REMOVED*** from './consent-info.component';
 // Layouts
 import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout.component';
 import ***REMOVED***SimpleLayoutComponent***REMOVED*** from './layouts/simple-layout.component';
-import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap';
+import ***REMOVED***PerunSettings***REMOVED*** from './perun-connector/connector-settings.service';
 import ***REMOVED***RegistrationInfoComponent***REMOVED*** from './registration-info.component';
-import ***REMOVED***UserService***REMOVED*** from './api-connector/user.service';
-import ***REMOVED***ConsentInfoComponent***REMOVED*** from './consent-info.component';
+import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.directive';
+import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
+import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sidebar.directive';
 
 @NgModule(***REMOVED***
     imports: [
@@ -49,7 +49,7 @@ import ***REMOVED***ConsentInfoComponent***REMOVED*** from './consent-info.compo
         SIDEBAR_TOGGLE_DIRECTIVES,
         AsideToggleDirective,
         RegistrationInfoComponent,
-        ConsentInfoComponent,
+        ConsentInfoComponent
     ],
     providers: [***REMOVED***
         provide: LocationStrategy,
