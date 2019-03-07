@@ -14,7 +14,7 @@ const header = new HttpHeaders({
 
 @Injectable()
 export class ClientService {
-    clientURL = this.settings.getConnectorBaseUrl() + 'clients/';
+    clientURL = this.settings.getApiBaseURL() + 'clients/';
 
     constructor(private http: HttpClient, private settings: ApiSettings) {
     }

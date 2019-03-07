@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
@@ -45,7 +45,7 @@ export class ApplicationsService {
         }).pipe(catchError((error: any) => throwError(error)));
     }
 
-     getApplicationClient(app_id: string): Observable<any> {
+    getApplicationClient(app_id: string): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/client/', {
             headers: header_csrf,
             withCredentials: true,
@@ -57,12 +57,13 @@ export class ApplicationsService {
      * @param {string} app_id
      * @returns {Observable<any>}
      */
-     getApplicationClientAvaiable(app_id: string): Observable<any> {
+    getApplicationClientAvaiable(app_id: string): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/clients/resource/', {
             headers: header_csrf,
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
     }
+
     getAllApplications(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', {
             withCredentials: true,
@@ -99,7 +100,7 @@ export class ApplicationsService {
     approveRenewal(application_id: number): Observable<any> {
 
 
-        return this.http.post(this.settings.getApiBaseURL() +  'applicationRenewals/'  + application_id + '/status/', null, {
+        return this.http.post(this.settings.getApiBaseURL() + 'applicationRenewals/' + application_id + '/status/', null, {
             headers: header_csrf,
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));

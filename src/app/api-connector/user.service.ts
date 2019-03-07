@@ -19,7 +19,7 @@ export class UserService {
         const params = new HttpParams().set('facility', facility)
 
         ;
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'users/setUserPassword/', params, {
+        return this.http.post(this.settings.getApiBaseURL() + 'users/setUserPassword/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
