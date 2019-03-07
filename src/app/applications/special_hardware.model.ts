@@ -3,19 +3,19 @@ export class SpecialHardware ***REMOVED***
     /**
      * Id of the special hardware.
      */
-  private _Id: number;
+    private _Id: number;
     /**
      * Key of the special hardware.
      */
-  private _Key: string;
+    private _Key: string;
     /**
      * Name of the special hardware.
      */
-  private _Name: string;
+    private _Name: string;
     /**
      * If the special hardware was checked in a form.
      */
-  private _Checked: boolean;
+    private _Checked: boolean;
 
     /**
      * Initialize the special hardware with values.
@@ -23,43 +23,43 @@ export class SpecialHardware ***REMOVED***
      * @param ***REMOVED***string***REMOVED*** Key
      * @param ***REMOVED***string***REMOVED*** Name
      */
-  constructor(Id: number, Key: string, Name: string) ***REMOVED***
-    this._Id = Id;
-    this._Key = Key;
-    this._Name = Name;
-    this._Checked = false;
-  ***REMOVED***
+    constructor(Id: number, Key: string, Name: string) ***REMOVED***
+        this._Id = Id;
+        this._Key = Key;
+        this._Name = Name;
+        this._Checked = false;
+    ***REMOVED***
 
-  get Id(): number ***REMOVED***
-    return this._Id;
-  ***REMOVED***
+    get Id(): number ***REMOVED***
+        return this._Id;
+    ***REMOVED***
 
-  set Id(value: number) ***REMOVED***
-    this._Id = value;
-  ***REMOVED***
+    set Id(value: number) ***REMOVED***
+        this._Id = value;
+    ***REMOVED***
 
-  get Key(): string ***REMOVED***
-    return this._Key;
-  ***REMOVED***
+    get Key(): string ***REMOVED***
+        return this._Key;
+    ***REMOVED***
 
-  set Key(value: string) ***REMOVED***
-    this._Key = value;
-  ***REMOVED***
+    set Key(value: string) ***REMOVED***
+        this._Key = value;
+    ***REMOVED***
 
-  get Name(): string ***REMOVED***
-    return this._Name;
-  ***REMOVED***
+    get Name(): string ***REMOVED***
+        return this._Name;
+    ***REMOVED***
 
-  set Name(value: string) ***REMOVED***
-    this._Name = value;
-  ***REMOVED***
+    set Name(value: string) ***REMOVED***
+        this._Name = value;
+    ***REMOVED***
 
-  get Checked(): boolean ***REMOVED***
-    return this._Checked;
-  ***REMOVED***
+    get Checked(): boolean ***REMOVED***
+        return this._Checked;
+    ***REMOVED***
 
-  set Checked(value: boolean) ***REMOVED***
-    this._Checked = value;
-  ***REMOVED***
+    set Checked(value: boolean) ***REMOVED***
+        this._Checked = value;
+    ***REMOVED***
 
 ***REMOVED***

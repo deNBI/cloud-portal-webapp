@@ -29,7 +29,8 @@ export class Project ***REMOVED***
     private _LifetimeReached: number;
 
 
-    constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) ***REMOVED***
+    constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number,
+                UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) ***REMOVED***
         this._Id = Id;
         this._Name = Name;
         this._Description = Description;

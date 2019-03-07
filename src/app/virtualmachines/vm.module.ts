@@ -13,7 +13,6 @@ import ***REMOVED***VmOverviewComponent***REMOVED*** from '../virtualmachines/vm
 import ***REMOVED***VolumeOverviewComponent***REMOVED*** from './volumeOverview.component';
 import ***REMOVED***SnapshotOverviewComponent***REMOVED*** from './snapshotOverview.component';
 import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination'
-import ***REMOVED***UserinfoModule***REMOVED*** from '../userinfo/userinfo.module';
 import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared_modules/public-key/public-key.module';
 import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
 

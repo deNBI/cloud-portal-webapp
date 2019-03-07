@@ -27,7 +27,7 @@ enum Vm_Statuses ***REMOVED***
     ACTIVE = 1,
     SUSPENDED = 2,
     DELETED = 3,
-    CLIENT_OFFLINE= 4,
+    CLIENT_OFFLINE = 4,
 ***REMOVED***
 
 
@@ -98,10 +98,9 @@ export abstract class AbstractBaseClasse ***REMOVED***
 
     public setCollapseStatus(id: string, status: boolean): void ***REMOVED***
 
-            this.collapse_status[id] = status;
+        this.collapse_status[id] = status;
 
     ***REMOVED***
-
 
 
     /**

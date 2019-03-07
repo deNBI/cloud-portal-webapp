@@ -1,6 +1,6 @@
 import ***REMOVED***BrowserModule***REMOVED*** from '@angular/platform-browser';
 import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***LocationStrategy, HashLocationStrategy***REMOVED*** from '@angular/common';
+import ***REMOVED***HashLocationStrategy, LocationStrategy***REMOVED*** from '@angular/common';
 
 import ***REMOVED***AppComponent***REMOVED*** from './app.component';
 import ***REMOVED***BsDropdownModule***REMOVED*** from 'ngx-bootstrap/dropdown';
@@ -19,7 +19,6 @@ import ***REMOVED***HttpClientModule***REMOVED*** from '@angular/common/http';
 import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
 import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination';
 import ***REMOVED***ExportAsModule***REMOVED*** from 'ngx-export-as';
-
 // Layouts
 import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout.component';
 import ***REMOVED***SimpleLayoutComponent***REMOVED*** from './layouts/simple-layout.component';

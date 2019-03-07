@@ -128,18 +128,21 @@
                     Deleting ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
                                                                     style="font-size:24px"></i>
                 </div>
-                <div class="alert alert-success" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED">
+                <div class="alert alert-success" role="alert"
+                     *ngIf="volume_action_status == Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED">
                     Sucessfully created and attached Volume.
 
                 </div>
-                <div class="alert alert-success" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.CHANGING_NAME_SUCESSFULL">
+                <div class="alert alert-success" role="alert"
+                     *ngIf="volume_action_status == Volume_Action_Statuses.CHANGING_NAME_SUCESSFULL">
                     Sucessfully renamed Volume.
 
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.SUCCESS">
                     ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED*** was succesfully deleted.
                 </div>
-                <div class="alert alert-success" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.SUCCESSFULLY_DETACHED_VOLUME">
+                <div class="alert alert-success" role="alert"
+                     *ngIf="volume_action_status == Volume_Action_Statuses.SUCCESSFULLY_DETACHED_VOLUME">
                     ***REMOVED******REMOVED***selected_volume?.volume_openstackid***REMOVED******REMOVED*** was succesfully detached.
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="volume_action_status == Volume_Action_Statuses.ATTACHING_SUCCESSFULL">

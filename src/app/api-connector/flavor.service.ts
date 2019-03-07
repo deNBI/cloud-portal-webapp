@@ -3,7 +3,7 @@ import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinem
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
 import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
-import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
+import ***REMOVED***HttpClient***REMOVED*** from '@angular/common/http';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 
 

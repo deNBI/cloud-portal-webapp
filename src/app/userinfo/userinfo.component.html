@@ -10,64 +10,64 @@
             </button>
         </div>
     </div>
-            <div class="card">
-                <div class="card-header">
-                    <i class="fa fa-align-justify"></i> Personal Information
-                </div>
-                <div class="card-block">
-                    <div>
-                        <table class="table table-responsive table-striped">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-align-justify"></i> Personal Information
+        </div>
+        <div class="card-block">
+            <div>
+                <table class="table table-responsive table-striped">
 
-                            <tr>
-                                <th>Elixir Login</th>
-                                <td>***REMOVED******REMOVED*** userinfo.UserLogin ***REMOVED******REMOVED***</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th>Elixir ID</th>
-                                <td>***REMOVED******REMOVED***userinfo.ElxirId***REMOVED******REMOVED***</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th>Preferred Email</th>
-                                <td>***REMOVED******REMOVED***userinfo.Email***REMOVED******REMOVED***
+                    <tr>
+                        <th>Elixir Login</th>
+                        <td>***REMOVED******REMOVED*** userinfo.UserLogin ***REMOVED******REMOVED***</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Elixir ID</th>
+                        <td>***REMOVED******REMOVED***userinfo.ElxirId***REMOVED******REMOVED***</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Preferred Email</th>
+                        <td>***REMOVED******REMOVED***userinfo.Email***REMOVED******REMOVED***
 
-                                    <div style="color: red" *ngFor="  let pendingEmail of userinfo.PendingEmails">You
-                                        have pending change
-                                        request. Please check inbox of: ***REMOVED******REMOVED***pendingEmail***REMOVED******REMOVED*** for validation email.
-                                    </div>
-                                </td>
-                                <td>
-                                    <button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
-                                </td>
-                            </tr>
-                            <tr app-public-key [userinfo]="userinfo"></tr>
+                            <div style="color: red" *ngFor="  let pendingEmail of userinfo.PendingEmails">You
+                                have pending change
+                                request. Please check inbox of: ***REMOVED******REMOVED***pendingEmail***REMOVED******REMOVED*** for validation email.
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
+                        </td>
+                    </tr>
+                    <tr app-public-key [userinfo]="userinfo"></tr>
 
-                            <tr>
-                                <th>Newsletter</th>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-2"><label
-                                                class="switch switch-text switch-primary-outline-alt">
-                                            <input type="checkbox" class="switch-input"
-                                                   [(ngModel)]="newsletter_subscribed"
-                                                   (change)="setNewsletterSubscription($event)">
-                                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                                            <span class="switch-handle"></span>
-                                        </label></div>
-                                        <div class="col-md-6"> Subscribe to our newsletter and get the latest news of
-                                            upcoming
-                                            events and current developments in de.NBI Cloud Portal.
-                                        </div>
-                                    </div>
-                                </td>
-                                <td></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+                    <tr>
+                        <th>Newsletter</th>
+                        <td>
+                            <div class="row">
+                                <div class="col-md-2"><label
+                                        class="switch switch-text switch-primary-outline-alt">
+                                    <input type="checkbox" class="switch-input"
+                                           [(ngModel)]="newsletter_subscribed"
+                                           (change)="setNewsletterSubscription($event)">
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label></div>
+                                <div class="col-md-6"> Subscribe to our newsletter and get the latest news of
+                                    upcoming
+                                    events and current developments in de.NBI Cloud Portal.
+                                </div>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
             </div>
+        </div>
     </div>
+</div>
 
 
 <div bsModal #pubKeyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"

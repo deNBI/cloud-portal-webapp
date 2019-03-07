@@ -1,20 +1,15 @@
-import ***REMOVED***Component, Input, ViewChild***REMOVED*** from '@angular/core';
-import ***REMOVED***Http***REMOVED*** from '@angular/http';
+import ***REMOVED***Component, Input***REMOVED*** from '@angular/core';
 import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connector-settings.service';
 import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
-import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap';
 import ***REMOVED***ProjectMember***REMOVED*** from '../projectmanagement/project_member.model'
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import ***REMOVED***map***REMOVED*** from 'rxjs/operators';
 
 import * as moment from 'moment';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
 import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared_modules/baseClass/filter-base-class';
 
 @Component(***REMOVED***
@@ -80,7 +75,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
     ***REMOVED***
 
     checkFilter(project: Project) ***REMOVED***
-        if (this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) ***REMOVED***
+        if (this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
+            && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) ***REMOVED***
             return true
         ***REMOVED*** else ***REMOVED***
             return false
@@ -103,7 +99,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
 
                 let expirationDate = undefined;
                 dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
-                if (lifetime != -1) ***REMOVED***
+                if (lifetime !== -1) ***REMOVED***
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
                     const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
@@ -131,7 +127,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                 const dateCreated = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
                 const dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
                 const groupid = group['id'];
-                const facility = group['compute_center'];
+                const tmp_facility = group['compute_center'];
                 let shortname = group['shortname'];
                 let compute_center = null;
                 const lifetime = group['lifetime'];
@@ -141,8 +137,10 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                 if (!shortname) ***REMOVED***
                     shortname = group['name']
                 ***REMOVED***
-                if (facility) ***REMOVED***
-                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
+                if (tmp_facility) ***REMOVED***
+                    compute_center = new ComputecenterComponent(tmp_facility['compute_center_facility_id'],
+                        tmp_facility['compute_center_name'],
+                        tmp_facility['compute_center_login'], tmp_facility['compute_center_support_mail']);
                 ***REMOVED***
 
                 const newProject = new Project(
@@ -156,7 +154,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                     compute_center);
                 newProject.Status = group['status'];
 
-                if (lifetime != -1) ***REMOVED***
+                if (lifetime !== -1) ***REMOVED***
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
                     const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
@@ -182,9 +180,10 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
     ***REMOVED***
 
     sendMailToFacility(facility: number, subject: string, message: string, reply?: string) ***REMOVED***
-        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => ***REMOVED***
+        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message),
+            encodeURIComponent(reply)).subscribe(result => ***REMOVED***
 
-                if (result.status == 201) ***REMOVED***
+                if (result.status === 201) ***REMOVED***
                     this.emailStatus = 1;
                 ***REMOVED*** else ***REMOVED***
                     this.emailStatus = 2;

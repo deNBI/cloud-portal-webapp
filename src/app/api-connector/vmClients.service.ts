@@ -20,7 +20,6 @@ export class ClientService ***REMOVED***
     ***REMOVED***
 
 
-
     isClientAvaiable(): Observable<Vmclient> ***REMOVED***
 
 
@@ -53,7 +52,7 @@ export class ClientService ***REMOVED***
         const params = new HttpParams().set('host', host).set('port', port).set('location', location);
 
 
-        return this.http.post(this.clientURL , params, ***REMOVED***
+        return this.http.post(this.clientURL, params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));

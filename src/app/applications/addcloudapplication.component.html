@@ -149,21 +149,26 @@
 
                         <div *ngFor="let t of typeList">
                             <div class="card"
-                                >
+                            >
                                 <!--(click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"-->
-                                <div  (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]" style="cursor: pointer;"  id="flavor-card" class="card-header">
+                                <div (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"
+                                     style="cursor: pointer;" id="flavor-card" class="card-header">
 
 
-                                        ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
+                                    ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
 
-                                  <i *ngIf="collapseList[typeList.indexOf(t)]" style="float: right;font-size: 25px" class="icon-arrow-up"></i>
-                                  <i *ngIf="!collapseList[typeList.indexOf(t)]" style="float: right;font-size: 25px" class="icon-arrow-down"></i>
-
+                                    <i *ngIf="collapseList[typeList.indexOf(t)]"
+                                       style="float: right;font-size: 25px"
+                                       class="icon-arrow-up"></i>
+                                    <i *ngIf="!collapseList[typeList.indexOf(t)]"
+                                       style="float: right;font-size: 25px"
+                                       class="icon-arrow-down"></i>
 
 
                                 </div>
                                 <!--*ngIf="collapseList[typeList.indexOf(t)]"-->
-                                <div *ngIf="collapseList[typeList.indexOf(t)]" class="form-group card-body">
+                                <div *ngIf="collapseList[typeList.indexOf(t)]"
+                                     class="form-group card-body">
                                     <div *ngFor="let f of flavorList">
                                         <div *ngIf="f.type.shortcut == t.shortcut"
                                              class="form-group row">

@@ -1,18 +1,9 @@
-import ***REMOVED***
-    Component, OnInit, TemplateRef, ViewChild,
-    AfterViewInit,
-    ElementRef
-***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***Image***REMOVED*** from './virtualmachinemodels/image';
-import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap';
 import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor';
 import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
-import ***REMOVED***ImageDetailComponent***REMOVED*** from './imagedetail.component';
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED***forkJoin***REMOVED*** from 'rxjs';
-
-import ***REMOVED***Metadata***REMOVED*** from './virtualmachinemodels/metadata';
 import ***REMOVED***VirtualmachineService***REMOVED*** from '../api-connector/virtualmachine.service';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
@@ -23,16 +14,14 @@ import ***REMOVED***ClientService***REMOVED*** from '../api-connector/vmClients.
 import ***REMOVED***Vmclient***REMOVED*** from './virtualmachinemodels/vmclient';
 import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
 import ***REMOVED***keyService***REMOVED*** from '../api-connector/key.service';
-import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
-import ***REMOVED***UserinfoComponent***REMOVED*** from '../userinfo/userinfo.component';
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
 
 @Component(***REMOVED***
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService],
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService,
+        Application, PerunSettings, ApiSettings, keyService, ClientService],
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
 
@@ -168,7 +157,9 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     private checkStatusTimeout = 5000;
 
 
-    constructor(private groupService: GroupService, private imageService: ImageService, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private  keyService: keyService, private clientservice: ClientService) ***REMOVED***
+    constructor(private groupService: GroupService, private imageService: ImageService, private applicataionsservice: ApplicationsService,
+                private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
+                private  keyservice: keyService, private clientservice: ClientService) ***REMOVED***
     ***REMOVED***
 
 
@@ -191,7 +182,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
 
-
     /**
      * Validate the public key of the user.
      */
@@ -211,16 +201,16 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      * Get the public key of the user.
      */
     getUserPublicKey() ***REMOVED***
-        this.keyService.getKey().subscribe(result => ***REMOVED***
+        this.keyservice.getKey().subscribe(result => ***REMOVED***
             this.userinfo.PublicKey = result['public_key'];
         ***REMOVED***)
     ***REMOVED***
 
-     /**
+    /**
      * Toggle information button 1.
      */
     toggleInformationButton(): void ***REMOVED***
-        if (this.informationButton == 'Show Details') ***REMOVED***
+        if (this.informationButton === 'Show Details') ***REMOVED***
             this.informationButton = 'Hide Details';
         ***REMOVED*** else ***REMOVED***
             this.informationButton = 'Show Details';
@@ -232,7 +222,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      * Toggle information button 2.
      */
     toggleInformationButton2(): void ***REMOVED***
-        if (this.informationButton2 == 'Show Details') ***REMOVED***
+        if (this.informationButton2 === 'Show Details') ***REMOVED***
             this.informationButton2 = 'Hide Details';
         ***REMOVED*** else ***REMOVED***
             this.informationButton2 = 'Show Details';
@@ -272,7 +262,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
 
                 ***REMOVED*** else ***REMOVED***
-                    if (res['Waiting'] == 'PORT_CLOSED') ***REMOVED***
+                    if (res['Waiting'] === 'PORT_CLOSED') ***REMOVED***
                         this.checking_vm_status = 'Active';
                         this.checking_vm_status_progress_bar = '';
                         this.creating_vm_prograss_bar = '';
@@ -303,7 +293,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
             const flavor_fixed = flavor.replace(re, '%2B');
 
 
-            this.virtualmachineservice.startVM(flavor_fixed, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => ***REMOVED***
+            this.virtualmachineservice.startVM(flavor_fixed, image, servername, project, projectid,
+                this.volumeName, this.diskspace.toString()).subscribe(data => ***REMOVED***
 
 
                 if (data['Created']) ***REMOVED***
@@ -340,7 +331,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
         this.client_checked = false;
         this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => ***REMOVED***
             this.selectedProjectClient = res;
-            if (res['status'] == 'Connected') ***REMOVED***
+            if (res['status'] === 'Connected') ***REMOVED***
                 this.client_avaiable = true;
 
                 this.getSelectedProjectDiskspace();
@@ -364,7 +355,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      * Reset the data attribute.
      */
     resetData(): void ***REMOVED***
-        if (this.data == 'INVALID') ***REMOVED***
+        if (this.data === 'INVALID') ***REMOVED***
             return;
         ***REMOVED***
         this.data = '';
@@ -376,7 +367,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      * Gets all groups of the user and his key.
      */
     initializeData() ***REMOVED***
-        forkJoin(this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => ***REMOVED***
+        forkJoin(this.groupService.getMemberGroupsStatus(), this.keyservice.getKey()).subscribe(result => ***REMOVED***
             this.userinfo.PublicKey = result[1]['public_key'];
             this.validatePublicKey();
             const membergroups = result[0];
@@ -408,7 +399,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
             if (result['Diskspace']) ***REMOVED***
 
                 this.selectedProjectDiskspaceUsed = result['Diskspace'];
-            ***REMOVED*** else if (result['Diskspace'] == 0 || result['Diskspace'] == null) ***REMOVED***
+            ***REMOVED*** else if (result['Diskspace'] === 0 || result['Diskspace'] == null) ***REMOVED***
                 this.selectedProjectDiskspaceUsed = 0;
             ***REMOVED***
 
@@ -459,7 +450,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
             if (result['NumberVms']) ***REMOVED***
 
                 this.selectedProjectVmsUsed = result['NumberVms'];
-            ***REMOVED*** else if (result['NumberVms'] == 0 || result['NumberVms'] == null) ***REMOVED***
+            ***REMOVED*** else if (result['NumberVms'] === 0 || result['NumberVms'] == null) ***REMOVED***
                 this.selectedProjectVmsUsed = 0;
             ***REMOVED***
 

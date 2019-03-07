@@ -1,12 +1,10 @@
-import ***REMOVED***Component, Input, OnInit***REMOVED*** from '@angular/core';
+import ***REMOVED***Component***REMOVED*** from '@angular/core';
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
 import ***REMOVED***ProjectMember***REMOVED*** from '../projectmanagement/project_member.model';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import * as moment from 'moment';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
-import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
 import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared_modules/baseClass/filter-base-class';
 
 @Component(***REMOVED***
@@ -66,11 +64,12 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     ***REMOVED***
 
     checkFilter(project: Project) ***REMOVED***
-         let facNameFilter = true;
-         if (project.ComputeCenter) ***REMOVED***
-                facNameFilter = this.isFilterFacilityName(project.ComputeCenter.Name)
-            ***REMOVED***
-        if (facNameFilter && this.isFilterProjectStatus(project.Status, project.LifetimeReached)  && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) ***REMOVED***
+        let facNameFilter = true;
+        if (project.ComputeCenter) ***REMOVED***
+            facNameFilter = this.isFilterFacilityName(project.ComputeCenter.Name)
+        ***REMOVED***
+        if (facNameFilter && this.isFilterProjectStatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name)
+            && this.isFilterProjectId(project.Id)) ***REMOVED***
             return true;
 
         ***REMOVED*** else ***REMOVED***
@@ -94,25 +93,27 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     ***REMOVED***
 
     sendNewsletterToVo(subject: string, message: string, reply?: string) ***REMOVED***
-        this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => ***REMOVED***
-            if (result == 1) ***REMOVED***
-                this.emailStatus = 1;
-            ***REMOVED*** else ***REMOVED***
-                this.emailStatus = 2;
-            ***REMOVED***
-        ***REMOVED***)
+        this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
+            .subscribe(result => ***REMOVED***
+                if (result === 1) ***REMOVED***
+                    this.emailStatus = 1;
+                ***REMOVED*** else ***REMOVED***
+                    this.emailStatus = 2;
+                ***REMOVED***
+            ***REMOVED***)
 
     ***REMOVED***
 
 
     sendMailToVo(subject: string, message: string, reply?: string) ***REMOVED***
-        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => ***REMOVED***
-            if (result == 1) ***REMOVED***
-                this.emailStatus = 1;
-            ***REMOVED*** else ***REMOVED***
-                this.emailStatus = 2;
-            ***REMOVED***
-        ***REMOVED***)
+        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
+            .subscribe(result => ***REMOVED***
+                if (result === 1) ***REMOVED***
+                    this.emailStatus = 1;
+                ***REMOVED*** else ***REMOVED***
+                    this.emailStatus = 2;
+                ***REMOVED***
+            ***REMOVED***)
 
     ***REMOVED***
 
@@ -157,7 +158,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
 
                 let expirationDate = undefined;
                 dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
-                if (lifetime != -1) ***REMOVED***
+                if (lifetime !== -1) ***REMOVED***
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
                     const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
@@ -192,7 +193,8 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
                 let compute_center = null;
 
                 if (facility) ***REMOVED***
-                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
+                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'],
+                        facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
                 ***REMOVED***
 
 
@@ -208,7 +210,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
                 newProject.Lifetime = lifetime;
                 newProject.Status = group['status'];
                 let expirationDate = undefined;
-                if (lifetime != -1) ***REMOVED***
+                if (lifetime !== -1) ***REMOVED***
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
                     const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 

@@ -1,10 +1,9 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***VoService***REMOVED*** from '../../api-connector/vo.service';
-import ***REMOVED***FacilityService***REMOVED*** from '../../api-connector/facility.service';
 import * as jspdf from 'jspdf';
 import ***REMOVED***Resources***REMOVED*** from './resources';
 import html2canvas from 'html2canvas';
-import ***REMOVED***ExportAsService, ExportAsConfig***REMOVED*** from 'ngx-export-as'
+import ***REMOVED***ExportAsConfig, ExportAsService***REMOVED*** from 'ngx-export-as'
 
 @Component(***REMOVED***
     selector: 'app-resources',
@@ -41,14 +40,16 @@ export class ResourcesComponent implements OnInit ***REMOVED***
     public getVoProjectResources() ***REMOVED***
         this.voservice.getVoProjectResources().subscribe(res => ***REMOVED***
             for (const r in res) ***REMOVED***
-                if (r != 'Total') ***REMOVED***
+                if (r !== 'Total') ***REMOVED***
                     const resource = new Resources(r, res[r]['totalRam'], res[r]['totalCores'],
                         res[r]['totalVms'], res[r]['totalVolumeLimit'], res[r]['totalVolumeCounter'],
                         res[r]['totalObjectStorage'], res[r]['totalFPGA'], res[r]['totalGPU']);
                     this.voResources.push(resource);
                 ***REMOVED*** else ***REMOVED***
-                    this.totalResource = new Resources('Total', res['Total']['totalRam'], res['Total']['totalCores'], res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
-                        res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'], res['Total']['totalFPGA'], res['Total']['totalGPU']);
+                    this.totalResource = new Resources('Total', res['Total']['totalRam'], res['Total']['totalCores'],
+                        res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
+                        res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'],
+                        res['Total']['totalFPGA'], res['Total']['totalGPU']);
                 ***REMOVED***
             ***REMOVED***
 

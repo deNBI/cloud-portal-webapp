@@ -1,6 +1,5 @@
 import ***REMOVED***ApplicationExtension***REMOVED*** from './application_extension.model';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
-import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 
 
 export class Application ***REMOVED***
@@ -37,14 +36,20 @@ export class Application ***REMOVED***
 
 
     private _Dissemination: boolean;
-    private _CurrentFlavors: ***REMOVED*** [id: string]: ***REMOVED*** counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number ***REMOVED*** ***REMOVED***;
+    private _CurrentFlavors: ***REMOVED***
+        [id: string]: ***REMOVED***
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        ***REMOVED***
+    ***REMOVED***;
 
 
     constructor() ***REMOVED***
         this._CurrentFlavors = ***REMOVED******REMOVED***;
     ***REMOVED***
 
-    public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number): void ***REMOVED***
+    public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number,
+                              vcpus: number, gpu: number, epheremal_disk: number): void ***REMOVED***
         this._CurrentFlavors[name] = ***REMOVED***
             counter: counter,
             tag: tag,
@@ -55,7 +60,8 @@ export class Application ***REMOVED***
             epheremal_disk: epheremal_disk
         ***REMOVED***;
     ***REMOVED***
-     get Dissemination(): boolean ***REMOVED***
+
+    get Dissemination(): boolean ***REMOVED***
         return this._Dissemination;
     ***REMOVED***
 
@@ -63,11 +69,21 @@ export class Application ***REMOVED***
         this._Dissemination = value;
     ***REMOVED***
 
-    get CurrentFlavors(): ***REMOVED*** [id: string]: ***REMOVED*** counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number ***REMOVED*** ***REMOVED*** ***REMOVED***
+    get CurrentFlavors(): ***REMOVED***
+        [id: string]: ***REMOVED***
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        ***REMOVED***
+    ***REMOVED*** ***REMOVED***
         return this._CurrentFlavors
     ***REMOVED***
 
-    set CurrentFlavors(value: ***REMOVED*** [id: string]: ***REMOVED*** counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number ***REMOVED*** ***REMOVED***) ***REMOVED***
+    set CurrentFlavors(value: ***REMOVED***
+        [id: string]: ***REMOVED***
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        ***REMOVED***
+    ***REMOVED***) ***REMOVED***
         this._CurrentFlavors = value;
     ***REMOVED***
 

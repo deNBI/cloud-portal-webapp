@@ -1,5 +1,4 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
 import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';

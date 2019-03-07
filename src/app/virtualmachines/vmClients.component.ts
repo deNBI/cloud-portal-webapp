@@ -1,5 +1,4 @@
-import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
+import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***Vmclient***REMOVED*** from './virtualmachinemodels/vmclient';
 import ***REMOVED***ClientService***REMOVED*** from '../api-connector/vmClients.service';
 import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connector-settings.service';
@@ -46,7 +45,8 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
      */
     isLoaded = false;
 
-    constructor(private facilityService: FacilityService, private userservice: UserService, private groupservice: GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
+    constructor(private facilityService: FacilityService, private userservice: UserService, private groupservice: GroupService,
+                private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
 
     ***REMOVED***
 
@@ -68,7 +68,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***).then(result => ***REMOVED***
             // check if user is a Vo admin so we can serv according buttons
             for (const vkey in admin_vos) ***REMOVED***
-                if (admin_vos[vkey]['id'] == this.perunsettings.getPerunVO().toString()) ***REMOVED***
+                if (admin_vos[vkey]['id'] === this.perunsettings.getPerunVO().toString()) ***REMOVED***
                     this.is_vo_admin = true;
                 ***REMOVED***
             ***REMOVED***
@@ -94,7 +94,8 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     getComputeCenters() ***REMOVED***
         this.facilityService.getComputeCenters().subscribe(result => ***REMOVED***
             for (const cc of result) ***REMOVED***
-                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
+                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
+                    cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             ***REMOVED***
 
@@ -110,9 +111,9 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         if (host && port) ***REMOVED***
             this.clientservice.checkClient(host, port).subscribe(data => ***REMOVED***
 
-                if (data['status'] == false) ***REMOVED***
+                if (!data['status']) ***REMOVED***
                     this.checkStatus = 'No Connection';
-                ***REMOVED*** else if (data['status'] == true) ***REMOVED***
+                ***REMOVED*** else if (data['status']) ***REMOVED***
                     this.checkStatus = 'Connected';
                 ***REMOVED*** else ***REMOVED***
                     this.checkStatus = 'check failed';

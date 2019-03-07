@@ -2,20 +2,20 @@
 <div class="modal fade" bsModal #timeoutModal="bs-modal" [config]="***REMOVED***backdrop: 'static'***REMOVED***"
      tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
-         <div class="modal-content">
-             <div class="modal-header">
-                 <h4 class="modal-title pull-left">Reload</h4>
-                 <button type="button" class="close pull-right" aria-label="Close" (click)="timeoutModal.hide()">
-                     <span aria-hidden="true">&times;</span>
-                   </button>
-               </div>
-             <div class="modal-body">
-               Your session has been expired. Please click the following button to reload the page.
-                  <br>
-                 <button type="button" (click)="refresh();" type="reset"
-                         class="btn  btn-secondary"> reload
-                 </button>
-               </div>
-           </div>
-       </div>
- </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Reload</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="timeoutModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Your session has been expired. Please click the following button to reload the page.
+                <br>
+                <button type="button" (click)="refresh();" type="reset"
+                        class="btn  btn-secondary"> reload
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

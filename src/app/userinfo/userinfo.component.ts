@@ -25,7 +25,7 @@ export class UserinfoComponent implements OnInit ***REMOVED***
     emailChange = '';
     freemium: boolean;
 
-    constructor(private groupService: GroupService, private userservice: UserService, private keyService: keyService) ***REMOVED***
+    constructor(private groupService: GroupService, private userservice: UserService, private keyservice: keyService) ***REMOVED***
         this.userinfo = new Userinfo();
         this.getUserinfo();
 
@@ -71,7 +71,7 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
         const newstr = publicKey.replace(re, '%2B');
 
-        this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(result => ***REMOVED***
+        this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(result => ***REMOVED***
             this.getUserPublicKey();
         ***REMOVED***);
     ***REMOVED***
@@ -89,7 +89,7 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
 
     getUserPublicKey() ***REMOVED***
-        this.keyService.getKey().subscribe(result => ***REMOVED***
+        this.keyservice.getKey().subscribe(result => ***REMOVED***
             this.userinfo.PublicKey = result['public_key'];
             this.isLoaded = true;
         ***REMOVED***)
@@ -129,13 +129,13 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
             ***REMOVED***)
         ***REMOVED***);
-        this.userservice.getPreferredMailUser().subscribe(res => ***REMOVED***
-            this.userinfo.Email = res['preferredEmail'];
+        this.userservice.getPreferredMailUser().subscribe(r => ***REMOVED***
+            this.userinfo.Email = r['preferredEmail'];
             this.userservice.getPendingPreferredMailUser().subscribe(res => ***REMOVED***
-                this.userinfo.PendingEmails = res['pendingEmails']
+                this.userinfo.PendingEmails = res['pendingEmails'];
                 this.userservice.getNewsletterSubscription().subscribe(result => ***REMOVED***
                     result = result['subscribed'];
-                    if (result.toString() == 'true') ***REMOVED***
+                    if (result.toString() === 'true') ***REMOVED***
                         this.newsletter_subscribed = true;
                     ***REMOVED*** else ***REMOVED***
                         this.newsletter_subscribed = false;
@@ -151,13 +151,13 @@ export class UserinfoComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     show_key() ***REMOVED***
-        if (this.key_visible == false) ***REMOVED***
+        if (!this.key_visible) ***REMOVED***
             this.toggleKey();
         ***REMOVED***
     ***REMOVED***
 
     toggleKey() ***REMOVED***
-        if (this.key == 'Show Public Key') ***REMOVED***
+        if (this.key === 'Show Public Key') ***REMOVED***
             this.key = 'Hide Public Key';
             this.key_visible = true;
         ***REMOVED*** else ***REMOVED***

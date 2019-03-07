@@ -1,8 +1,6 @@
-import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
+import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
 import ***REMOVED***SnapshotModel***REMOVED*** from './virtualmachinemodels/snapshot.model';
-import ***REMOVED***Image***REMOVED*** from './virtualmachinemodels/image';
 import ***REMOVED***forkJoin***REMOVED*** from 'rxjs';
 
 enum Snapshot_Delete_Statuses ***REMOVED***
@@ -84,7 +82,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
             forkJoin(observables).subscribe(res => ***REMOVED***
                 for (const i of res) ***REMOVED***
                     this.snapshots[res.indexOf(i)].snapshot_status = i['status'];
-                    if (i['status'] != 'active') ***REMOVED***
+                    if (i['status'] !== 'active') ***REMOVED***
                         all_active = false;
                     ***REMOVED***
 

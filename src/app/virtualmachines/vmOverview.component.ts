@@ -1,5 +1,4 @@
-import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
+import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 
 import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connector-settings.service';
 import ***REMOVED***VirtualmachineService***REMOVED*** from '../api-connector/virtualmachine.service';
@@ -7,9 +6,7 @@ import ***REMOVED***VirtualMachine***REMOVED*** from './virtualmachinemodels/vir
 import ***REMOVED***FullLayoutComponent***REMOVED*** from '../layouts/full-layout.component';
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
 import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
-import ***REMOVED***Vmclient***REMOVED*** from './virtualmachinemodels/vmclient';
 import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared_modules/baseClass/filter-base-class';
-import ***REMOVED***Image***REMOVED*** from './virtualmachinemodels/image';
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 
 @Component(***REMOVED***
@@ -117,7 +114,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
     reboot_done: boolean;
 
 
-    constructor(private voService: VoService, private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) ***REMOVED***
+    constructor(private voService: VoService, private imageService: ImageService, private userservice: UserService,
+                private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) ***REMOVED***
         super()
     ***REMOVED***
 
@@ -142,7 +140,9 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * @returns ***REMOVED***boolean***REMOVED*** True if it matches the filter
      */
     checkFilter(vm: VirtualMachine) ***REMOVED***
-        if (this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at) && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at) && this.isFilterUsername(vm.username)) ***REMOVED***
+        if (this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at)
+            && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at)
+            && this.isFilterUsername(vm.username)) ***REMOVED***
             return true
         ***REMOVED*** else ***REMOVED***
             return false
@@ -182,11 +182,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
         this.virtualmachineservice.checkStatusInactiveVms().subscribe(vms => ***REMOVED***
             this.vms_content = vms;
             for (const vm of this.vms_content) ***REMOVED***
-                if (vm.created_at != '') ***REMOVED***
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                if (vm.created_at !== '') ***REMOVED***
+                    vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                 ***REMOVED***
-                if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
-                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                    vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
                 ***REMOVED*** else ***REMOVED***
                     vm.stopped_at = ''
                 ***REMOVED***
@@ -230,11 +230,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                 this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
                         this.vms_content = vms;
                         for (const vm of this.vms_content) ***REMOVED***
-                            if (vm.created_at != '') ***REMOVED***
-                                vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                            if (vm.created_at !== '') ***REMOVED***
+                                vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                             ***REMOVED***
-                            if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
-                                vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                            if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                                vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
                             ***REMOVED*** else ***REMOVED***
                                 vm.stopped_at = ''
                             ***REMOVED***
@@ -366,14 +366,14 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                 this.vms_content = vms;
 
                 for (const vm of this.vms_content) ***REMOVED***
-                    this.setCollapseStatus(vm.openstackid, false)
+                    this.setCollapseStatus(vm.openstackid, false);
 
-                    if (vm.created_at != '') ***REMOVED***
-                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                    if (vm.created_at !== '') ***REMOVED***
+                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                     ***REMOVED***
 
-                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                    if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
                     ***REMOVED*** else ***REMOVED***
                         vm.stopped_at = ''
                     ***REMOVED***
@@ -391,14 +391,14 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                 this.vms_content = vms;
 
                 for (const vm of this.vms_content) ***REMOVED***
-                    this.setCollapseStatus(vm.openstackid, false)
+                    this.setCollapseStatus(vm.openstackid, false);
 
-                    if (vm.created_at != '') ***REMOVED***
-                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                    if (vm.created_at !== '') ***REMOVED***
+                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                     ***REMOVED***
 
-                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                    if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
                     ***REMOVED*** else ***REMOVED***
                         vm.stopped_at = ''
                     ***REMOVED***
@@ -450,11 +450,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                     this.setCollapseStatus(vm.openstackid, false)
 
 
-                    if (vm.created_at != '') ***REMOVED***
-                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                    if (vm.created_at !== '') ***REMOVED***
+                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                     ***REMOVED***
-                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
+                    if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
                     ***REMOVED*** else ***REMOVED***
                         vm.stopped_at = ''
                     ***REMOVED***
@@ -478,9 +478,9 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * @param ***REMOVED***UserService***REMOVED*** userservice
      */
     checkVOstatus() ***REMOVED***
-       this.voService.isVo().subscribe(res => ***REMOVED***
-           this.is_vo_admin = res['Is_Vo_Manager'];
-       ***REMOVED***)
+        this.voService.isVo().subscribe(res => ***REMOVED***
+            this.is_vo_admin = res['Is_Vo_Manager'];
+        ***REMOVED***)
     ***REMOVED***
 
     /**

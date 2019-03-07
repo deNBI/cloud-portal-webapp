@@ -1,15 +1,12 @@
 import ***REMOVED***Component***REMOVED*** from '@angular/core';
-import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
 import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/special-hardware.service'
 import ***REMOVED***SpecialHardware***REMOVED*** from './special_hardware.model'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
-import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
-import ***REMOVED***forEach***REMOVED*** from '@angular/router/src/utils/collection';
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
 
@@ -84,8 +81,11 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
     public projectName: string;
 
 
-    public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
-        'We would highly appreciate the following citation in your next publication(s): ‘This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).';
+    public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through ' +
+        'the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
+        'We would highly appreciate the following citation in your next publication(s): ' +
+        '‘This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) ' +
+        '(031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).';
     public acknowledgeModalTitle = 'Acknowledge';
     public acknowledgeModalType = 'info';
 
@@ -263,9 +263,12 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
             .then(result => ***REMOVED***
                 const res = result;
                 for (const key in res) ***REMOVED***
-                    const shj = res[key];
-                    const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
-                    this.special_hardware.push(sh)
+                    if (res[key]) ***REMOVED***
+                        const shj = res[key];
+                        const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'],
+                            shj['special_hardware_name']);
+                        this.special_hardware.push(sh)
+                    ***REMOVED***
                 ***REMOVED***
             ***REMOVED***);
     ***REMOVED***
@@ -278,13 +281,15 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
      */
     onSubmit(f: NgForm) ***REMOVED***
         this.error = null;
-        if (this.wronginput == true) ***REMOVED***
+        if (this.wronginput) ***REMOVED***
 
-            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.',
+                true, 'danger');
             this.notificationModalStay = true;
         ***REMOVED*** else ***REMOVED***
             const values: ***REMOVED*** [key: string]: any ***REMOVED*** = ***REMOVED******REMOVED***;
-            values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
+            values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked)
+                .map(hardware => hardware.Id);
             values['project_application_openstack_project'] = this.project_application_openstack_project;
             for (const v in f.controls) ***REMOVED***
                 if (f.controls[v].value) ***REMOVED***
@@ -305,7 +310,8 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
                 ***REMOVED***
 
 
-                this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+                this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.'
+                    , true, 'danger');
                 this.notificationModalStay = true;
             ***REMOVED***)
         ***REMOVED***
@@ -345,7 +351,8 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
             ***REMOVED***
 
 
-            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.',
+                true, 'danger');
             this.notificationModalStay = true;
         ***REMOVED***)
 
@@ -358,7 +365,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
      * @param ***REMOVED***string***REMOVED*** shortname
      */
     public checkShortname(shortname: string) ***REMOVED***
-        if (/^[a-zA-Z0-9\s]*$/.test(shortname) == false) ***REMOVED***
+        if (!/^[a-zA-Z0-9\s]*$/.test(shortname)) ***REMOVED***
             this.wronginput = true;
         ***REMOVED*** else ***REMOVED***
             this.wronginput = false;

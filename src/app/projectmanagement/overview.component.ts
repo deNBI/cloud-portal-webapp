@@ -1,8 +1,6 @@
-import ***REMOVED***Component, Input, ViewChild***REMOVED*** from '@angular/core';
-import ***REMOVED***Http***REMOVED*** from '@angular/http';
+import ***REMOVED***Component, Input***REMOVED*** from '@angular/core';
 import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connector-settings.service';
 import ***REMOVED***Project***REMOVED*** from './project.model';
-import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap';
 import ***REMOVED***ProjectMember***REMOVED*** from './project_member.model'
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
@@ -10,7 +8,6 @@ import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.servi
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
 import * as moment from 'moment';
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
-import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 import ***REMOVED***ProjectMemberApplication***REMOVED*** from './project_member_application';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from './computecenter.component';
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
@@ -94,7 +91,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         this.userservice.setUserFacilityPassword(facility).subscribe(result => ***REMOVED***
             result = result;
             for (const key of details) ***REMOVED***
-                if (key[0] == 'Support') ***REMOVED***
+                if (key[0] === 'Support') ***REMOVED***
                     this.passwordModalEmail = key[1];
                 ***REMOVED***
             ***REMOVED***
@@ -120,7 +117,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
                 let expirationDate = undefined;
                 dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
-                if (lifetime != -1) ***REMOVED***
+                if (lifetime !== -1) ***REMOVED***
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
                     const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
@@ -154,7 +151,8 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
                 let compute_center = null;
 
                 if (facility) ***REMOVED***
-                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
+                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'],
+                        facility['compute_center_login'], facility['compute_center_support_mail']);
                 ***REMOVED***
 
 
@@ -204,7 +202,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
                     const fullName = member['firstName'] + ' ' + member['lastName'];
                     const projectMember = new ProjectMember(user_id, fullName, member_id);
                     projectMember.ElixirId = member['elixirId'];
-                    if (admindIds.indexOf(user_id) != -1) ***REMOVED***
+                    if (admindIds.indexOf(user_id) !== -1) ***REMOVED***
                         projectMember.IsPi = true;
                     ***REMOVED*** else ***REMOVED***
                         projectMember.IsPi = false;
@@ -227,7 +225,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
 
             const newProjectApplications = [];
-            if (applications.length == 0) ***REMOVED***
+            if (applications.length === 0) ***REMOVED***
                 this.loaded = true;
 
             ***REMOVED***
@@ -237,7 +235,8 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
 
                 const newMemberApplication = new ProjectMemberApplication(
-                    application['id'], membername, dateApplicationCreated.date() + '.' + (dateApplicationCreated.month() + 1) + '.' + dateApplicationCreated.year()
+                    application['id'], membername, dateApplicationCreated.date() + '.' + (dateApplicationCreated.month() + 1)
+                    + '.' + dateApplicationCreated.year()
                 );
                 newProjectApplications.push(newMemberApplication);
 
@@ -258,15 +257,15 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         this.loaded = false;
         this.application_action_done = false;
         this.groupservice.approveGroupApplication(project, application).subscribe(result => ***REMOVED***
-            const application = result;
+            const tmp_application = result;
             this.selectedProject.ProjectMemberApplications = [];
 
-            if (application['state'] == 'APPROVED') ***REMOVED***
+            if (tmp_application['state'] === 'APPROVED') ***REMOVED***
                 this.application_action_success = true;
-            ***REMOVED*** else if (application['message']) ***REMOVED***
+            ***REMOVED*** else if (tmp_application['message']) ***REMOVED***
                 this.application_action_success = false;
 
-                this.application_action_error_message = application['message'];
+                this.application_action_error_message = tmp_application['message'];
 
 
             ***REMOVED*** else ***REMOVED***
@@ -287,18 +286,18 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         this.application_action_done = false;
 
         this.groupservice.rejectGroupApplication(project, application).subscribe(result => ***REMOVED***
-                const application = result;
+                const tmp_application = result;
                 this.selectedProject.ProjectMemberApplications = [];
 
 
-                if (application['state'] == 'REJECTED') ***REMOVED***
+                if (tmp_application['state'] === 'REJECTED') ***REMOVED***
                     this.application_action_success = true;
 
 
-                ***REMOVED*** else if (application['message']) ***REMOVED***
+                ***REMOVED*** else if (tmp_application['message']) ***REMOVED***
                     this.application_action_success = false;
 
-                    this.application_action_error_message = application['message'];
+                    this.application_action_error_message = tmp_application['message'];
                 ***REMOVED*** else ***REMOVED***
                     this.application_action_success = false;
                 ***REMOVED***
@@ -371,7 +370,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => ***REMOVED***
-                if (result.status == 200) ***REMOVED***
+                if (result.status === 200) ***REMOVED***
                     this.updateNotificationModal('Success', 'Member ' + firstName + ' ' + lastName + ' added.', true, 'success');
 
                 ***REMOVED*** else ***REMOVED***
@@ -382,7 +381,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
             ***REMOVED***,
             error => ***REMOVED***
 
-                if (error['name'] == 'AlreadyMemberException') ***REMOVED***
+                if (error['name'] === 'AlreadyMemberException') ***REMOVED***
                     this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a member of the project.', true, 'info');
                 ***REMOVED*** else ***REMOVED***
                     this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
@@ -397,36 +396,38 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
             facility_id = this.UserModalFacility[1]
         ***REMOVED***
-        this.groupservice.addMember(groupid, memberid, facility_id).subscribe(result => ***REMOVED***
+        this.groupservice.addMember(groupid, memberid, facility_id).subscribe(res => ***REMOVED***
             this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
                 result => ***REMOVED***
 
-                    if (result.status == 200) ***REMOVED***
+                    if (result.status === 200) ***REMOVED***
                         this.updateNotificationModal('Success', 'Admin ' + firstName + ' ' + lastName + ' added.', true, 'success');
 
                     ***REMOVED*** else ***REMOVED***
                         this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
                     ***REMOVED***
                 ***REMOVED***, error => ***REMOVED***
-                    if (error['name'] == 'AlreadyAdminException') ***REMOVED***
-                        this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a admin of the project.', true, 'info');
+                    if (error['name'] === 'AlreadyAdminException') ***REMOVED***
+                        this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a admin of the project.',
+                            true, 'info');
                     ***REMOVED*** else ***REMOVED***
                         this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
                     ***REMOVED***
                 ***REMOVED***)
-        ***REMOVED***, error => ***REMOVED***
+        ***REMOVED***, err => ***REMOVED***
             this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
                 result => ***REMOVED***
 
-                    if (result.status == 200) ***REMOVED***
+                    if (result.status === 200) ***REMOVED***
                         this.updateNotificationModal('Success', 'Admin ' + firstName + ' ' + lastName + ' added.', true, 'success');
 
                     ***REMOVED*** else ***REMOVED***
                         this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
                     ***REMOVED***
                 ***REMOVED***, error => ***REMOVED***
-                    if (error['name'] == 'AlreadyAdminException') ***REMOVED***
-                        this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a admin of the project.', true, 'info');
+                    if (error['name'] === 'AlreadyAdminException') ***REMOVED***
+                        this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a admin of the project.',
+                            true, 'info');
                     ***REMOVED*** else ***REMOVED***
                         this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
                     ***REMOVED***
@@ -443,7 +444,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
-                if (result.status == 200) ***REMOVED***
+                if (result.status === 200) ***REMOVED***
                     this.updateNotificationModal('Success', username + ' promoted to Admin', true, 'success');
 
                 ***REMOVED*** else ***REMOVED***
@@ -463,7 +464,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
             .then(result => ***REMOVED***
 
-                if (result.status == 200) ***REMOVED***
+                if (result.status === 200) ***REMOVED***
                     this.updateNotificationModal('Success', name + ' was removed as Admin', true, 'success');
 
                 ***REMOVED*** else ***REMOVED***
@@ -475,13 +476,13 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
     ***REMOVED***
 
     public removeMember(groupid: number, memberid: number, name: string) ***REMOVED***
-        let facility_id = null
+        let facility_id = null;
         if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
             facility_id = this.UserModalFacility[1]
         ***REMOVED***
         this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(result => ***REMOVED***
 
-                if (result.status == 200) ***REMOVED***
+                if (result.status === 200) ***REMOVED***
                     this.updateNotificationModal('Success', 'Member ' + name + ' removed from the group', true, 'success');
 
                 ***REMOVED*** else ***REMOVED***

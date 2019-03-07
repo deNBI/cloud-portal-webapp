@@ -1,5 +1,5 @@
 import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
-import ***REMOVED***Component, Input, ViewChild***REMOVED*** from '@angular/core';
+import ***REMOVED***Component***REMOVED*** from '@angular/core';
 
 @Component(***REMOVED***
     templateUrl: 'imageTag.component.html',
@@ -11,7 +11,7 @@ export class ImageTagComponent ***REMOVED***
     imageTags: [string, string][]
 
 
-    constructor(private imageService: ImageService, ) ***REMOVED***
+    constructor(private imageService: ImageService,) ***REMOVED***
         this.imageService.getImageTags().subscribe(result => ***REMOVED***
             this.imageTags = result;
             this.isLoaded = true;
@@ -26,14 +26,13 @@ export class ImageTagComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-        deleteTag(tag: string) ***REMOVED***
+    deleteTag(tag: string) ***REMOVED***
         this.imageService.deleteImageTag(tag).subscribe(result => ***REMOVED***
             this.imageService.getImageTags().subscribe(result => ***REMOVED***
                 this.imageTags = result
             ***REMOVED***)
         ***REMOVED***)
     ***REMOVED***
-
 
 
 ***REMOVED***

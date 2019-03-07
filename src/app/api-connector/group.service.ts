@@ -4,7 +4,6 @@ import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
-import ***REMOVED***Vmclient***REMOVED*** from '../virtualmachines/virtualmachinemodels/vmclient';
 
 const header = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -16,9 +15,6 @@ export class GroupService ***REMOVED***
 
     constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
     ***REMOVED***
-
-
-
 
 
     getFacilityByGroup(groupid: string): Observable<any> ***REMOVED***
@@ -39,8 +35,6 @@ export class GroupService ***REMOVED***
     ***REMOVED***
 
 
-
-
     assignGroupToResource(groupid: string, computecenter: string): Observable<any> ***REMOVED***
         const params = new HttpParams().set('compute_center', computecenter)
 
@@ -52,7 +46,7 @@ export class GroupService ***REMOVED***
 
     ***REMOVED***
 
-     removeGroupFromResource(groupid: string): Observable<any> ***REMOVED***
+    removeGroupFromResource(groupid: string): Observable<any> ***REMOVED***
 
         return this.http.delete(this.settings.getApiBaseURL() + 'projects/' + groupid + '/resource/', ***REMOVED***
             withCredentials: true,
@@ -123,7 +117,7 @@ export class GroupService ***REMOVED***
     ***REMOVED***
 
 
-    removeMember(group_id: number, member_id: number,  facility_id?: number): Observable<any> ***REMOVED***
+    removeMember(group_id: number, member_id: number, facility_id?: number): Observable<any> ***REMOVED***
         const params = new HttpParams();
 
 
@@ -305,8 +299,6 @@ export class GroupService ***REMOVED***
     ***REMOVED***
 
 
-
-
     setLifetime(groupid: string, lifetime: string): Observable<any> ***REMOVED***
         const params = new HttpParams().set('lifetime', lifetime);
 
@@ -392,7 +384,7 @@ export class GroupService ***REMOVED***
 
     getGroupApprovedVms(groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/'  + groupid + '/attributes/approvedVms/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/attributes/approvedVms/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 

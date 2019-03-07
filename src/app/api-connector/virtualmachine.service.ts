@@ -88,21 +88,21 @@ export class VirtualmachineService ***REMOVED***
     ***REMOVED***
 
     stopVM(openstack_id: string): Observable<any> ***REMOVED***
-                const params = new HttpParams().set('os_action', 'stop');
+        const params = new HttpParams().set('os_action', 'stop');
 
 
-        return this.http.post(this.baseVmUrl + openstack_id + '/action/' , params, ***REMOVED***
+        return this.http.post(this.baseVmUrl + openstack_id + '/action/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
 
-      rebootVM(openstack_id: string, reboot_type: string): Observable<any> ***REMOVED***
-                const params = new HttpParams().set('os_action', 'reboot').set('reboot_type', reboot_type);
+    rebootVM(openstack_id: string, reboot_type: string): Observable<any> ***REMOVED***
+        const params = new HttpParams().set('os_action', 'reboot').set('reboot_type', reboot_type);
 
 
-        return this.http.post(this.baseVmUrl + openstack_id + '/action/' , params, ***REMOVED***
+        return this.http.post(this.baseVmUrl + openstack_id + '/action/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));

@@ -1,4 +1,4 @@
-import ***REMOVED***Component, OnInit, Input***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, Input, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***keyService***REMOVED*** from '../../api-connector/key.service';
 import ***REMOVED***ApiSettings***REMOVED*** from '../../api-connector/api-settings.service';
 import ***REMOVED***PerunSettings***REMOVED*** from '../../perun-connector/connector-settings.service';
@@ -8,7 +8,7 @@ import ***REMOVED***Userinfo***REMOVED*** from '../../userinfo/userinfo.model';
     selector: '[app-public-key]',
     templateUrl: './public-key.component.html',
     styleUrls: ['./public-key.component.scss'],
-    providers: [ PerunSettings, ApiSettings, keyService]
+    providers: [PerunSettings, ApiSettings, keyService]
 
 ***REMOVED***)
 export class PublicKeyComponent implements OnInit ***REMOVED***
@@ -19,7 +19,7 @@ export class PublicKeyComponent implements OnInit ***REMOVED***
     key_visible = false;
 
 
-    constructor( private keyService: keyService) ***REMOVED***
+    constructor(private keyservice: keyService) ***REMOVED***
     ***REMOVED***
 
     ngOnInit() ***REMOVED***
@@ -31,7 +31,7 @@ export class PublicKeyComponent implements OnInit ***REMOVED***
 
         const newstr = publicKey.replace(re, '%2B');
 
-        this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(result => ***REMOVED***
+        this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(result => ***REMOVED***
             this.getUserPublicKey();
         ***REMOVED***);
     ***REMOVED***
@@ -48,19 +48,19 @@ export class PublicKeyComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     getUserPublicKey() ***REMOVED***
-        this.keyService.getKey().subscribe(result => ***REMOVED***
+        this.keyservice.getKey().subscribe(result => ***REMOVED***
             this.userinfo.PublicKey = result['public_key'];
         ***REMOVED***)
     ***REMOVED***
 
     show_key() ***REMOVED***
-        if (this.key_visible == false) ***REMOVED***
+        if (!this.key_visible) ***REMOVED***
             this.toggleKey();
         ***REMOVED***
     ***REMOVED***
 
     toggleKey() ***REMOVED***
-        if (this.show_key_text == 'Show Public Key') ***REMOVED***
+        if (this.show_key_text === 'Show Public Key') ***REMOVED***
             this.show_key_text = 'Hide Public Key';
             this.key_visible = true;
         ***REMOVED*** else ***REMOVED***

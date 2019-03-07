@@ -4,7 +4,7 @@ import ***REMOVED***Resources***REMOVED*** from '../../vo_manager/resources/reso
 import * as jspdf from 'jspdf';
 
 import html2canvas from 'html2canvas';
-import ***REMOVED***ExportAsService, ExportAsConfig***REMOVED*** from 'ngx-export-as'
+import ***REMOVED***ExportAsConfig, ExportAsService***REMOVED*** from 'ngx-export-as'
 
 
 @Component(***REMOVED***
@@ -28,7 +28,7 @@ export class ResourcesComponent implements OnInit ***REMOVED***
     openstackApprovedResources: Resources;
     totalResource: Resources;
     tableId = 'contentToConvert';
-     today: number = Date.now();
+    today: number = Date.now();
 
 
     exportAsConfigCSV: ExportAsConfig = ***REMOVED***
@@ -54,16 +54,26 @@ export class ResourcesComponent implements OnInit ***REMOVED***
 
     public getSelectedFacilityResources() ***REMOVED***
         this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe(res => ***REMOVED***
-                this.simpleVmRessource = new Resources('Simple VM', res['simpleVmApplications']['totalRam'], res['simpleVmApplications']['totalCores'],
-                    res['simpleVmApplications']['totalVms'], res['simpleVmApplications']['totalVolumeLimit'], res['simpleVmApplications']['totalVolumeCounter'], 0, 0, 0);
-                this.openstackApprovedResources = new Resources('Approved OpenStack', res['approvedOpenStackApplications']['totalRam'], res['approvedOpenStackApplications']['totalCores'],
-                    res['approvedOpenStackApplications']['totalVms'], res['approvedOpenStackApplications']['totalVolumeLimit'], res['approvedOpenStackApplications']['totalVolumeCounter'],
-                    res['approvedOpenStackApplications']['totalObjectStorage'], res['approvedOpenStackApplications']['totalFPGA'], res['approvedOpenStackApplications']['totalGPU']);
-                this.openstackWFCResources = new Resources('Wait for Confirmation OpenStack', res['wfcOpenStackApplications']['totalRam'], res['wfcOpenStackApplications']['totalCores'],
-                    res['wfcOpenStackApplications']['totalVms'], res['wfcOpenStackApplications']['totalVolumeLimit'], res['wfcOpenStackApplications']['totalVolumeCounter'],
-                    res['wfcOpenStackApplications']['totalObjectStorage'], res['wfcOpenStackApplications']['totalFPGA'], res['wfcOpenStackApplications']['totalGPU'])
-                this.totalResource = new Resources('Total', res['total']['totalRam'], res['total']['totalCores'], res['total']['totalVms'], res['total']['totalVolumeLimit'],
-                    res['total']['totalVolumeCounter'], res['total']['totalObjectStorage'], res['total']['totalFPGA'], res['total']['totalGPU']);
+                this.simpleVmRessource = new Resources('Simple VM', res['simpleVmApplications']['totalRam'],
+                    res['simpleVmApplications']['totalCores'],
+                    res['simpleVmApplications']['totalVms'], res['simpleVmApplications']['totalVolumeLimit'],
+                    res['simpleVmApplications']['totalVolumeCounter'], 0, 0, 0);
+                this.openstackApprovedResources = new Resources('Approved OpenStack', res['approvedOpenStackApplications']['totalRam'],
+                    res['approvedOpenStackApplications']['totalCores'],
+                    res['approvedOpenStackApplications']['totalVms'], res['approvedOpenStackApplications']['totalVolumeLimit'],
+                    res['approvedOpenStackApplications']['totalVolumeCounter'],
+                    res['approvedOpenStackApplications']['totalObjectStorage'], res['approvedOpenStackApplications']['totalFPGA'],
+                    res['approvedOpenStackApplications']['totalGPU']);
+                this.openstackWFCResources = new Resources('Wait for Confirmation OpenStack', res['wfcOpenStackApplications']['totalRam'],
+                    res['wfcOpenStackApplications']['totalCores'],
+                    res['wfcOpenStackApplications']['totalVms'], res['wfcOpenStackApplications']['totalVolumeLimit'],
+                    res['wfcOpenStackApplications']['totalVolumeCounter'],
+                    res['wfcOpenStackApplications']['totalObjectStorage'], res['wfcOpenStackApplications']['totalFPGA'],
+                    res['wfcOpenStackApplications']['totalGPU'])
+                this.totalResource = new Resources('Total', res['total']['totalRam'], res['total']['totalCores'],
+                    res['total']['totalVms'], res['total']['totalVolumeLimit'],
+                    res['total']['totalVolumeCounter'], res['total']['totalObjectStorage'],
+                    res['total']['totalFPGA'], res['total']['totalGPU']);
 
                 this.isLoaded = true;
             ***REMOVED***
