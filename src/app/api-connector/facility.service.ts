@@ -12,7 +12,7 @@ const header = new HttpHeaders({
 
 @Injectable()
 export class FacilityService {
-    constructor(private http: HttpClient, private settings: ApiSettings) {
+    constructor(private http: HttpClient) {
     }
 
 
@@ -23,7 +23,7 @@ export class FacilityService {
     getComputeCenters(): Observable<any> {
 
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/', {
             withCredentials: true,
 
         }).pipe(catchError((error: any) => throwError(error.error)));
@@ -35,7 +35,7 @@ export class FacilityService {
      */
     getManagerFacilities(): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'facilityManagers/current/facilities/', {
+        return this.http.get(ApiSettings.getApiBaseURL()+ 'facilityManagers/current/facilities/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -50,7 +50,7 @@ export class FacilityService {
      */
     getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number, status: number): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/projects/', {
             withCredentials: true,
             params: {status: status.toString()}
 
@@ -66,7 +66,7 @@ export class FacilityService {
      */
     getFacilityResources(facility: number): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/resources/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/projects/resources/', {
             withCredentials: true,
 
 
@@ -83,7 +83,7 @@ export class FacilityService {
      */
     getFacilityApplicationsWaitingForConfirmation(facility: number): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/applications/', {
             withCredentials: true,
 
         }).pipe(catchError((error: any) => throwError(error)));
@@ -98,7 +98,7 @@ export class FacilityService {
      */
     getFacilityApplicationsHistory(facility: number): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications_history/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/applications_history/', {
             withCredentials: true,
 
         }).pipe(catchError((error: any) => throwError(error)));
@@ -115,7 +115,7 @@ export class FacilityService {
      */
     getFacilityModificationApplicationsWaitingForConfirmation(facility: number): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/modification_applications/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/modification_applications/', {
             withCredentials: true,
 
         }).pipe(catchError((error: any) => throwError(error)));
@@ -133,7 +133,7 @@ export class FacilityService {
         const params = new HttpParams().set('action', 'approve');
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/',
+        return this.http.post(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/',
             params, {
                 withCredentials: true,
                 headers: header,
@@ -153,7 +153,7 @@ export class FacilityService {
         const params = new HttpParams().set('action', 'decline');
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/',
+        return this.http.post(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/',
             params, {
                 withCredentials: true,
                 headers: header,
@@ -174,7 +174,7 @@ export class FacilityService {
     sendMailToFacility(facility, subject, message, reply?): Observable<any> {
         const params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
 
-        return this.http.post(this.settings.getApiBaseURL() + 'facilityManagers/current/facilityMail/', params, {
+        return this.http.post(ApiSettings.getApiBaseURL() + 'facilityManagers/current/facilityMail/', params, {
             withCredentials: true,
             headers: header,
             observe: 'response'
@@ -190,7 +190,7 @@ export class FacilityService {
      * @returns {Observable<any>}
      */
     getFacilityGroupRichMembers(groupid: number, facility: number): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/' + groupid + '/members/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/projects/' + groupid + '/members/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error.error)));
     }

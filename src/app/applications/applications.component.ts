@@ -110,8 +110,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     public notificationModalIsClosable = false;
     private APPROVED_STATUS = 2;
     private WAIT_FOR_EXTENSION_STATUS = 6;
-    private EXTENSION_STATUS = 4;
-    private EXTENSTION_STATUS_STRING = 'modification requested';
+
 
     /**
      * Special hardware id for FPGA.
@@ -159,6 +158,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @param {GroupService} groupservice
      * @param {VoService} voService
      * @param {FacilityService} facilityService
+     * @param {FlavorService} flavorService
      */
     constructor(private applicationsservice: ApplicationsService,
                 private applicationstatusservice: ApplicationStatusService,
@@ -186,7 +186,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
             }
 
-        })
+        });
         this.getListOfFlavors();
         this.getListOfTypes();
     }
@@ -213,7 +213,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @param elemIDcores the ID of the label containing the number of cores
      * @param elemIDram the ID of the label containing the amount of RAM
      */
-    unsetValues(elemIDcores, elemIDram: string) {
+    protected unsetValues(elemIDcores, elemIDram: string) {
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
         document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
@@ -226,7 +226,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
      * @param f the form which contains the input-fields
      */
-    valuesChanged(f: NgForm) {
+    protected valuesChanged(f: NgForm) {
 
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
@@ -532,7 +532,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 }
 
                 for (const key in res) {
-                    if (res[key]) {
+                    if (res.hasOwnProperty(key)) {
 
 
                         const aj = res[key];
@@ -544,9 +544,9 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                         a.Description = aj['project_application_description'];
                         a.Lifetime = aj['project_application_lifetime'];
 
-                    a.ObjectStorage = aj["project_application_object_storage"];
-                    a.SpecialHardware = aj["project_application_special_hardware"];
-                    a.OpenStackProject = aj["project_application_openstack_project"];
+                        a.ObjectStorage = aj["project_application_object_storage"];
+                        a.SpecialHardware = aj["project_application_special_hardware"];
+                        a.OpenStackProject = aj["project_application_openstack_project"];
 
 
                         a.ObjectStorage = aj['project_application_object_storage'];
@@ -577,73 +577,75 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                 / (1000 * 3600 * 24));
 
 
-                    a.Comment = aj["project_application_comment"];
-                    a.PerunId = aj['project_application_perun_id'];
-                    if (aj['projectapplicationrenewal']) {
-                        let r = new ApplicationExtension();
-                        let requestExtensionTotalCores = 0;
-                        let requestExtensionTotalRam = 0;
+                            a.Comment = aj["project_application_comment"];
+                            a.PerunId = aj['project_application_perun_id'];
+                            if (aj['projectapplicationrenewal']) {
+                                let r = new ApplicationExtension();
+                                let requestExtensionTotalCores = 0;
+                                let requestExtensionTotalRam = 0;
 
-                        a.Comment = aj['project_application_comment'];
-                        a.PerunId = aj['project_application_perun_id'];
-                        a.OpenStackProject = aj['project_application_openstack_project'];
-                        if (aj['projectapplicationrenewal']) {
-                            const r = new ApplicationExtension();
-                            let requestExtensionTotalCores = 0;
-                            let requestExtensionTotalRam = 0;
-
-
-                            for (const f of aj['projectapplicationrenewal']['flavors']) {
-                                r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
-                                requestExtensionTotalCores += f.vcpus * f.counter;
-                                requestExtensionTotalRam += f.ram * f.counter
-
-                            }
+                                a.Comment = aj['project_application_comment'];
+                                a.PerunId = aj['project_application_perun_id'];
+                                a.OpenStackProject = aj['project_application_openstack_project'];
+                                if (aj['projectapplicationrenewal']) {
+                                    const r = new ApplicationExtension();
+                                    let requestExtensionTotalCores = 0;
+                                    let requestExtensionTotalRam = 0;
 
 
-                            r.TotalRAM = requestExtensionTotalRam;
-                            r.TotalCores = requestExtensionTotalCores;
+                                    for (const f of aj['projectapplicationrenewal']['flavors']) {
+                                        r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+                                        requestExtensionTotalCores += f.vcpus * f.counter;
+                                        requestExtensionTotalRam += f.ram * f.counter
 
-                            r.Id = aj['projectapplicationrenewal']['project_application'];
-                            r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-                            r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-                            r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-                            r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-                            r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                            r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-                            r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-                            r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-                            r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                            const special_hardware = [];
-                            if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
-                                const special_hardware_string = aj['projectapplicationrenewal']
-                                    ['project_application_renewal_special_hardware'].toString();
+                                    }
 
-                                for (let c = 0; c < special_hardware_string.length; c++) {
-                                    const sh = special_hardware_string.charAt(c) === this.FPGA ? 'FPGA' : 'GPU';
-                                    special_hardware.push(sh)
+
+                                    r.TotalRAM = requestExtensionTotalRam;
+                                    r.TotalCores = requestExtensionTotalCores;
+
+                                    r.Id = aj['projectapplicationrenewal']['project_application'];
+                                    r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                                    r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                                    r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                                    r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                                    r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                                    r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                                    r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                                    const special_hardware = [];
+                                    if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
+                                        const special_hardware_string = aj['projectapplicationrenewal']
+                                            ['project_application_renewal_special_hardware'].toString();
+
+                                        for (let c = 0; c < special_hardware_string.length; c++) {
+                                            const sh = special_hardware_string.charAt(c) === this.FPGA ? 'FPGA' : 'GPU';
+                                            special_hardware.push(sh)
+
+                                        }
+
+                                        r.SpecialHardware = special_hardware;
+                                    }
+                                    a.ApplicationExtension = r;
 
                                 }
 
-                                r.SpecialHardware = special_hardware;
-                            }
-                            a.ApplicationExtension = r;
+                                this.all_applications.push(a);
 
+                            }
                         }
 
-                        this.all_applications.push(a);
+                        this.isLoaded_AllApplication = true;
+                        for (const app of this.all_applications) {
+                            if (app.Status === this.application_statuses.WAIT_FOR_CONFIRMATION ||
+                                app.Status === this.application_statuses.MODIFICATION_REQUESTED) {
+                                this.getFacilityProject(app);
+                            }
+                        }
 
                     }
                 }
-
-                this.isLoaded_AllApplication = true;
-                for (const app of this.all_applications) {
-                    if (app.Status === this.application_statuses.WAIT_FOR_CONFIRMATION ||
-                        app.Status === this.application_statuses.MODIFICATION_REQUESTED) {
-                        this.getFacilityProject(app);
-                    }
-                }
-
             });
         } else {
             this.isLoaded_AllApplication = true;
@@ -1110,9 +1112,10 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
                                                     }
                                                 }
-                                            })
-
+                                            }
                                         })
+
+                                    })
 
                                 }
                             });

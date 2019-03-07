@@ -11,9 +11,9 @@ export class SpecialHardwareService {
     }
 
     getAllSpecialHardware(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'special_hardware/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'special_hardware/', {
             withCredentials: true,
-            params: {format: this.settings.getApiFormat()}
+            params: {format: ApiSettings.getApiFormat()}
         }).pipe(catchError((error: any) => throwError(error)));
     }
 

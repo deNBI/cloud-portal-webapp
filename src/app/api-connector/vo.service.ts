@@ -19,7 +19,7 @@ export class VoService {
 
     isVo(): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'voManagers/current/status/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'voManagers/current/status/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
     }
@@ -28,7 +28,7 @@ export class VoService {
     getNewsletterSubscriptionCounter(): Observable<any> {
 
 
-        return this.http.get(this.settings.getApiBaseURL() + 'newsletter/subscription/counter/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'newsletter/subscription/counter/', {
             withCredentials: true,
 
         }).pipe(catchError((error: any) => throwError(error)));
@@ -37,14 +37,14 @@ export class VoService {
 
     getAllVoGroups(): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'vo/projects/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
     removeResourceFromGroup(groupid: string): Observable<any> {
-        return this.http.delete(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/resource/', {
+        return this.http.delete(ApiSettings.getApiBaseURL() + 'vo/projects/' + groupid + '/resource/', {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));
@@ -53,21 +53,21 @@ export class VoService {
 
     getAllGroupsWithDetails(): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/details/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'vo/projects/details/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
     }
 
     getProjectStatus(groupid: number): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));
     }
 
     getVoProjectResources(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/resources/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'vo/projects/resources/', {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));
@@ -77,7 +77,7 @@ export class VoService {
     setProjectStatus(groupid: number, status: number): Observable<any> {
         const params = new HttpParams().set('status', status.toString());
 
-        return this.http.post(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', params, {
+        return this.http.post(ApiSettings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', params, {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));
@@ -87,7 +87,7 @@ export class VoService {
 
         const params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-        return this.http.post(this.settings.getApiBaseURL() + 'voManagers/current/newsletter/', params, {
+        return this.http.post(ApiSettings.getApiBaseURL() + 'voManagers/current/newsletter/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -99,7 +99,7 @@ export class VoService {
         const params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'voManagers/current/voMail/', params, {
+        return this.http.post(ApiSettings.getApiBaseURL() + 'voManagers/current/voMail/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -112,7 +112,7 @@ export class VoService {
      * @returns {Observable<any>}
      */
     getVoGroupRichMembers(groupid: number): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/members/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'vo/projects/' + groupid + '/members/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error.error)));
     }

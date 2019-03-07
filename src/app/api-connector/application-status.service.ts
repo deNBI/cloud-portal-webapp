@@ -14,7 +14,7 @@ const header = new HttpHeaders({
 
 @Injectable()
 export class ApplicationStatusService {
-    constructor(private http: HttpClient, private settings: ApiSettings) {
+    constructor(private http: HttpClient) {
     }
 
     /**
@@ -22,7 +22,7 @@ export class ApplicationStatusService {
      * @returns {Observable<any>}
      */
     getAllApplicationStatus(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'application_status/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'application_status/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
     }
@@ -38,7 +38,7 @@ export class ApplicationStatusService {
         let params = new HttpParams().set("project_application_status", status_id.toString());
 
 
-        return this.http.patch(this.settings.getApiBaseURL() + 'project_applications/' + application_id + '/', params,
+        return this.http.patch(ApiSettings.getApiBaseURL() + 'project_applications/' + application_id + '/', params,
             {
                 headers: header,
                 withCredentials: true

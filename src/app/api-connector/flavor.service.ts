@@ -14,7 +14,7 @@ export class FlavorService {
     }
 
     getFlavors(project_id: number): Observable<Flavor[]> {
-        return this.http.get<Flavor[]>(this.settings.getApiBaseURL() + 'projects/' + project_id + '/flavors/', {
+        return this.http.get<Flavor[]>(ApiSettings.getApiBaseURL() + 'projects/' + project_id + '/flavors/', {
             withCredentials: true,
 
         }).pipe(catchError((error: any) => throwError(error)));
@@ -22,13 +22,13 @@ export class FlavorService {
     }
 
     getListOfTypesAvailable(): Observable<FlavorType[]> {
-        return this.http.get<FlavorType[]>(this.settings.getApiBaseURL() + 'project_applications/flavorTypes/', {
+        return this.http.get<FlavorType[]>(ApiSettings.getApiBaseURL() + 'project_applications/flavorTypes/', {
             withCredentials: true
         }).pipe(catchError((error: any) => throwError(error)));
     }
 
     getListOfFlavorsAvailable(): Observable<Flavor[]> {
-        return this.http.get<Flavor[]>(this.settings.getApiBaseURL() + 'project_applications/flavors/', {
+        return this.http.get<Flavor[]>(ApiSettings.getApiBaseURL() + 'project_applications/flavors/', {
             withCredentials: true
         }).pipe(catchError((error: any) => throwError(error)));
     }
