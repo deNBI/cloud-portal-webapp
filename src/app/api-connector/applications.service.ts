@@ -1,6 +1,6 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
-import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
+import ***REMOVED***HttpClient, HttpHeaders***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
@@ -45,7 +45,7 @@ export class ApplicationsService ***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
-     getApplicationClient(app_id: string): Observable<any> ***REMOVED***
+    getApplicationClient(app_id: string): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/client/', ***REMOVED***
             headers: header_csrf,
             withCredentials: true,
@@ -57,12 +57,13 @@ export class ApplicationsService ***REMOVED***
      * @param ***REMOVED***string***REMOVED*** app_id
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-     getApplicationClientAvaiable(app_id: string): Observable<any> ***REMOVED***
+    getApplicationClientAvaiable(app_id: string): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/' + app_id + '/clients/resource/', ***REMOVED***
             headers: header_csrf,
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
+
     getAllApplications(): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'project_applications/', ***REMOVED***
             withCredentials: true,
@@ -99,7 +100,7 @@ export class ApplicationsService ***REMOVED***
     approveRenewal(application_id: number): Observable<any> ***REMOVED***
 
 
-        return this.http.post(this.settings.getApiBaseURL() +  'applicationRenewals/'  + application_id + '/status/', null, ***REMOVED***
+        return this.http.post(this.settings.getApiBaseURL() + 'applicationRenewals/' + application_id + '/status/', null, ***REMOVED***
             headers: header_csrf,
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));

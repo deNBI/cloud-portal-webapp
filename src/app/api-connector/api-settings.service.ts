@@ -1,33 +1,29 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
+
 @Injectable()
 export class ApiSettings ***REMOVED***
-  constructor() ***REMOVED******REMOVED***
+    /**
+     * Class for getting base urls.
+     */
 
-  /*
-    Provides base URL with trailing slash for all Portal API calls.
-   */
-  getApiBaseURL(): string ***REMOVED***
-    return environment.apiBaseUrl;
-  ***REMOVED***
-  getConnectorBaseUrl(): string ***REMOVED***
-    return environment.apiBaseUrl;
-  ***REMOVED***
+    constructor() ***REMOVED***
+    ***REMOVED***
 
-  /*
-    Returns the format of the API call.
-    default is JSON
-   */
-  getApiFormat(): string ***REMOVED***
-    return 'json';
-  ***REMOVED***
+    /**
+     * Provides base URL with trailing slash for all Portal API calls.
+     * @returns ***REMOVED***string***REMOVED*** Base Django API Url
+     */
+    static getApiBaseURL(): string ***REMOVED***
+        return environment.apiBaseUrl;
+    ***REMOVED***
 
-  getCSRFToken(): string ***REMOVED***
-    return Cookie.get('csrftoken');
-  ***REMOVED***
+    /**
+     *  Returns the format of the API call.
+     * @returns ***REMOVED***string***REMOVED*** 'json'
+     */
+    static getApiFormat(): string ***REMOVED***
+        return 'json';
+    ***REMOVED***
 
-  getAccessToken(): string ***REMOVED***
-    return Cookie.get('access_token');
-  ***REMOVED***
 ***REMOVED***
