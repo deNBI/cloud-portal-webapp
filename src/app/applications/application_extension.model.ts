@@ -21,6 +21,18 @@ export class ApplicationExtension ***REMOVED***
 
     ***REMOVED***
 
+
+    /**
+     * Add Flavor to requested flavor list.
+     * @param ***REMOVED***string***REMOVED*** name name of the flavor
+     * @param ***REMOVED***number***REMOVED*** counter how many flavors
+     * @param ***REMOVED***string***REMOVED*** tag tag of the flavor
+     * @param ***REMOVED***number***REMOVED*** ram ram of the flavor
+     * @param ***REMOVED***number***REMOVED*** rootdisk rootdisk of the flavor
+     * @param ***REMOVED***number***REMOVED*** vcpus vcpus of the flavor
+     * @param ***REMOVED***number***REMOVED*** gpu gpu of the flavors
+     * @param ***REMOVED***number***REMOVED*** epheremal_disk epheremal_disk of the flavor
+     */
     public addFlavorToRequested(name: string, counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number): void ***REMOVED***
         this._RequestedFlavors[name] = ***REMOVED***
             counter: counter,

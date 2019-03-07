@@ -120,6 +120,11 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
         ***REMOVED***)
     ***REMOVED***
 
+
+    /**
+     * Approve an application extension.
+     * @param ***REMOVED***Application***REMOVED*** app the application
+     */
     public approveExtension(app: Application) ***REMOVED***
 
         this.applicationsservice.approveRenewal(app.Id).subscribe(result => ***REMOVED***
@@ -152,6 +157,11 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
         this.selectedApplication = application;
     ***REMOVED***
 
+
+    /**
+     * Get all application modification requests.
+     * @param ***REMOVED***number***REMOVED*** facility id of the facility
+     */
     getAllApplicationsModifications(facility: number) ***REMOVED***
         this.isLoaded = false
         //todo check if user is VO Admin
@@ -249,6 +259,10 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     ***REMOVED***
 
 
+    /**
+     * Get all application ( with all stati) for a facility.
+     * @param ***REMOVED***number***REMOVED*** facility id of the facility
+     */
     getAllApplicationsHistory(facility: number) ***REMOVED***
         this.isLoaded = false;
         this.applications_history = [];
