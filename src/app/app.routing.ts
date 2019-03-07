@@ -1,18 +1,18 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 
 // Layouts
+import {ConsentInfoComponent} from './consent-info.component';
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {SimpleLayoutComponent} from './layouts/simple-layout.component';
 import {MemberGuardService} from './member-guard.service';
 import {RegistrationInfoComponent} from './registration-info.component';
-import {ConsentInfoComponent} from './consent-info.component';
 
 export const routes: Routes = [
     {
         path: '',
         redirectTo: 'userinfo',
-        pathMatch: 'full',
+        pathMatch: 'full'
     },
     {
         path: 'registration-info',
@@ -65,7 +65,6 @@ export const routes: Routes = [
         ]
     }
 ];
-
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

@@ -1,18 +1,16 @@
 import {Injectable} from '@angular/core';
 import {
   Http,
+  Request,
   RequestOptions,
   RequestOptionsArgs,
-  Request,
   Response,
-  XHRBackend,
+  XHRBackend
 } from '@angular/http';
 import { CookieService } from 'ng2-cookies';
-import {Observable, throwError} from 'rxjs';
 import {ModalDirective} from 'ngx-bootstrap';
+import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-
-
 
 @Injectable()
 export class HttpInterceptor extends Http {
@@ -32,6 +30,7 @@ export class HttpInterceptor extends Http {
     if (error.status === 0) {
       this.timeoutModal.show();
     }
+
     return throwError(error)
   }
 }

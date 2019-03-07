@@ -3,7 +3,6 @@ import {Http, RequestOptions, XHRBackend} from '@angular/http';
 import {HttpInterceptor} from 'app/interceptor';
 import {ModalDirective} from 'ngx-bootstrap';
 
-
 export function httpInterceptor(backend: XHRBackend, options: RequestOptions, modal: AppComponent) {
     return new HttpInterceptor(backend, options, modal.getModal());
 }

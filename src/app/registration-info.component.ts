@@ -5,7 +5,6 @@ import {environment} from '../environments/environment';
     selector: 'app-registration-info',
     templateUrl: 'registration-info.component.html'
 
-
 })
 export class RegistrationInfoComponent {
     voRegistrationLink = environment.voRegistrationLink;

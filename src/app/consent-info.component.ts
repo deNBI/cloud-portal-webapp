@@ -5,7 +5,6 @@ import {environment} from '../environments/environment';
     selector: 'app-consent-info',
     templateUrl: 'consent-info.component.html'
 
-
 })
 export class ConsentInfoComponent {
     voLoginLink = environment.login
