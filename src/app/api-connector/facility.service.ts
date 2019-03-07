@@ -59,6 +59,11 @@ export class FacilityService {
 
     }
 
+    /**
+     * Get all resources assigned to a facility.
+     * @param {number} facility id of the facility
+     * @returns {Observable<any>}
+     */
     getFacilityResources(facility: number): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/resources/', {
@@ -79,6 +84,38 @@ export class FacilityService {
     getFacilityApplicationsWaitingForConfirmation(facility: number): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/', {
+            withCredentials: true,
+
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
+
+    /**
+     * Gets all facility applications history.
+     * @param {number} facility
+     * @returns {Observable<any>}
+     */
+    getFacilityApplicationsHistory(facility: number): Observable<any> {
+
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications_history/', {
+            withCredentials: true,
+
+        }).pipe(catchError((error: any) => throwError(error)));
+
+
+    }
+
+
+
+      /**
+     * Gets all facility modification applications which are waiting for conirmation.
+     * @param {number} facility
+     * @returns {Observable<any>}
+     */
+    getFacilityModificationApplicationsWaitingForConfirmation(facility: number): Observable<any> {
+
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/modification_applications/', {
             withCredentials: true,
 
         }).pipe(catchError((error: any) => throwError(error)));

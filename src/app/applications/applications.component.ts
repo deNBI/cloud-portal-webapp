@@ -28,6 +28,7 @@ import {Vmclient} from '../virtualmachines/virtualmachinemodels/vmclient';
 })
 export class ApplicationsComponent extends AbstractBaseClasse {
 
+
     /**
      * Limits information for Client tested/used for Simple Vm Project creation.
      */
@@ -543,13 +544,10 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                         a.Description = aj['project_application_description'];
                         a.Lifetime = aj['project_application_lifetime'];
 
-                        a.VMsRequested = aj['project_application_vms_requested'];
-                        a.RamPerVM = aj['project_application_ram_per_vm'];
-                        a.TotalRam = aj['project_application_total_ram'];
-                        a.TotalCores = aj['project_application_total_cores'];
-                        a.CoresPerVM = aj['project_application_cores_per_vm'];
-                        a.VolumeLimit = aj['project_application_volume_limit'];
-                        a.VolumeCounter = aj['project_application_volume_counter'];
+                    a.ObjectStorage = aj["project_application_object_storage"];
+                    a.SpecialHardware = aj["project_application_special_hardware"];
+                    a.OpenStackProject = aj["project_application_openstack_project"];
+
 
                         a.ObjectStorage = aj['project_application_object_storage'];
                         a.SpecialHardware = aj['project_application_special_hardware'];
@@ -579,7 +577,12 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                 / (1000 * 3600 * 24));
 
 
-                        }
+                    a.Comment = aj["project_application_comment"];
+                    a.PerunId = aj['project_application_perun_id'];
+                    if (aj['projectapplicationrenewal']) {
+                        let r = new ApplicationExtension();
+                        let requestExtensionTotalCores = 0;
+                        let requestExtensionTotalRam = 0;
 
                         a.Comment = aj['project_application_comment'];
                         a.PerunId = aj['project_application_perun_id'];
@@ -697,8 +700,10 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             a.VolumeLimit = aj['project_application_volume_limit'];
             a.VolumeCounter = aj['project_application_volume_counter'];
 
-            a.ObjectStorage = aj['project_application_object_storage'];
-            a.SpecialHardware = aj['project_application_special_hardware'];
+            a.ObjectStorage = aj["project_application_object_storage"];
+            a.SpecialHardware = aj["project_application_special_hardware"];
+            a.OpenStackProject = aj["project_application_openstack_project"];
+
 
             a.Institute = aj['project_application_institute'];
             a.Workgroup = aj['project_application_workgroup'];
@@ -914,23 +919,43 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Approve an extension request.
      * @param {number} application_id
      */
-    public approveExtension(application_id: number) {
-        this.applicationsservice.approveRenewal(application_id).subscribe(result => {
-            if (result['Error']) {
-                this.extension_status = 2
-            } else {
-                this.extension_status = 3;
-            }
-            this.getApplication(this.selectedApplication);
+    public approveExtension(app: Application) {
+        console.log(app)
+        console.log(app.OpenStackProject)
+        if (app.OpenStackProject) {
+            this.applicationstatusservice.setApplicationStatus(app.Id, this.WAIT_FOR_EXTENSION_STATUS).subscribe(res => {
+                this.extension_status = 5;
+                this.getApplication(app);
+                this.getUserApplication(app);
 
-            for (const app of this.user_applications) {
-                if (this.selectedApplication.PerunId === app.PerunId) {
-                    this.getUserApplication(app);
-                    break;
+                for (let app of this.user_applications) {
+                    if (this.selectedApplication.PerunId == app.PerunId) {
+                        this.getUserApplication(app);
+                        break;
+                    }
+
                 }
+            })
+        }
+        else {
+            this.applicationsservice.approveRenewal(app.Id).subscribe(result => {
+                if (result['Error']) {
+                    this.extension_status = 2
+                }
+                else {
+                    this.extension_status = 3;
+                }
+                this.getApplication(this.selectedApplication);
 
-            }
-        })
+                for (let app of this.user_applications) {
+                    if (this.selectedApplication.PerunId == app.PerunId) {
+                        this.getUserApplication(app);
+                        break;
+                    }
+
+                }
+            })
+        }
     }
 
     /**
@@ -1028,8 +1053,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(r => {
                                 if (compute_center !== 'undefined') {
 
-                                    this.applicationstatusservice.setApplicationStatus(application_id,
-                                        this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => {
+                                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION).subscribe(result => {
                                             if (result['Error']) {
                                                 this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
@@ -1055,15 +1079,20 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                         }
                                     )
                                 } else {
-                                    this.groupservice.setPerunGroupStatus(new_group_id, this.application_statuses.APPROVED)
-                                        .subscribe(resp => {
-                                            this.applicationstatusservice.setApplicationStatus(application_id,
-                                                this.application_statuses.APPROVED, compute_center).subscribe(result => {
-                                                if (result['Error']) {
-                                                    this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+                                    this.groupservice.setPerunGroupStatus(new_group_id, this.application_statuses.APPROVED).subscribe(res => {
+                                        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED).subscribe(result => {
+                                            if (result['Error']) {
+                                                this.updateNotificationModal("Failed", result['Error'], true, "danger");
 
-                                                } else {
-                                                    this.updateNotificationModal('Success', 'The new project was created', true, 'success');
+                                            }
+                                            else {
+                                                this.updateNotificationModal("Success", "The new project was created", true, "success");
+                                            }
+                                            for (let app of this.user_applications) {
+                                                if (app.Id == application_id) {
+                                                    this.getUserApplication(app);
+                                                    break;
+
                                                 }
                                                 for (const app of this.user_applications) {
                                                     if (app.Id === application_id) {
@@ -1147,9 +1176,9 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 }
                 this.updateNotificationModal('Failed', res['Info'], true, 'danger');
 
-            } else {
-                this.applicationstatusservice.setApplicationStatus(application_id,
-                    this.application_statuses.APPROVED, compute_center).subscribe(result => {
+            }
+            else {
+                this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED).subscribe(result => {
                     if (result['Error']) {
 
                         this.updateNotificationModal('Failed', result['Error'], true, 'danger');
@@ -1230,10 +1259,9 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     assignGroupToFacility(group_id, application_id, compute_center) {
         if (compute_center !== 'undefined') {
             this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(res => {
-                    this.applicationstatusservice.setApplicationStatus(application_id,
-                        this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(r => {
-                        for (const app of this.all_applications) {
-                            if (app.Id === application_id) {
+                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION).subscribe(res => {
+                        for (let app of this.all_applications) {
+                            if (app.Id == application_id) {
                                 this.getApplication(app);
 
                                 break;
@@ -1261,7 +1289,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @param application_id
      */
     public declineApplication(application_id) {
-        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus('declined'), '').toPromise()
+        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined")).toPromise()
             .then(result => {
                 this.all_applications = [];
                 this.user_applications = [];
@@ -1303,6 +1331,10 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 return true;
             }
         }
+    }
+
+    public setApplicationStatus(status: number, app: Application) {
+        this.applicationstatusservice.setApplicationStatus(app.Id, status).subscribe()
     }
 
 
