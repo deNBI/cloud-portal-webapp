@@ -13,15 +13,15 @@ import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connecto
 import ***REMOVED***ClientService***REMOVED*** from '../api-connector/vmClients.service';
 import ***REMOVED***Vmclient***REMOVED*** from './virtualmachinemodels/vmclient';
 import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
-import ***REMOVED***keyService***REMOVED*** from '../api-connector/key.service';
+import ***REMOVED***KeyService***REMOVED*** from '../api-connector/key.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
 
 @Component(***REMOVED***
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService,
-        Application, PerunSettings, ApiSettings, keyService, ClientService],
+    providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
+        Application, PerunSettings, ApiSettings, KeyService, ClientService],
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
 
@@ -159,7 +159,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
     constructor(private groupService: GroupService, private imageService: ImageService, private applicataionsservice: ApplicationsService,
                 private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-                private  keyservice: keyService, private clientservice: ClientService) ***REMOVED***
+                private  keyservice: KeyService, private clientservice: ClientService) ***REMOVED***
     ***REMOVED***
 
 

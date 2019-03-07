@@ -20,7 +20,8 @@ export class VirtualmachineService ***REMOVED***
     ***REMOVED***
 
 
-    startVM(flavor: string, image: string, servername: string, project: string, projectid: string, volumename?: string, diskspace?: string): Observable<any> ***REMOVED***
+    startVM(flavor: string, image: string, servername: string, project: string, projectid: string,
+            volumename?: string, diskspace?: string): Observable<any> ***REMOVED***
 
         const params = new HttpParams()
             .set('flavor', flavor)
