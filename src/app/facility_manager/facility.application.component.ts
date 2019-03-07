@@ -120,6 +120,11 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
         })
     }
 
+
+    /**
+     * Approve an application extension.
+     * @param {Application} app the application
+     */
     public approveExtension(app: Application) {
 
         this.applicationsservice.approveRenewal(app.Id).subscribe(result => {
@@ -152,6 +157,11 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
         this.selectedApplication = application;
     }
 
+
+    /**
+     * Get all application modification requests.
+     * @param {number} facility id of the facility
+     */
     getAllApplicationsModifications(facility: number) {
         this.isLoaded = false
         //todo check if user is VO Admin
@@ -249,6 +259,10 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     }
 
 
+    /**
+     * Get all application ( with all stati) for a facility.
+     * @param {number} facility id of the facility
+     */
     getAllApplicationsHistory(facility: number) {
         this.isLoaded = false;
         this.applications_history = [];

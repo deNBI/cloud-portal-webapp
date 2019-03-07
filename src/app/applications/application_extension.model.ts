@@ -21,6 +21,18 @@ export class ApplicationExtension {
 
     }
 
+
+    /**
+     * Add Flavor to requested flavor list.
+     * @param {string} name name of the flavor
+     * @param {number} counter how many flavors
+     * @param {string} tag tag of the flavor
+     * @param {number} ram ram of the flavor
+     * @param {number} rootdisk rootdisk of the flavor
+     * @param {number} vcpus vcpus of the flavor
+     * @param {number} gpu gpu of the flavors
+     * @param {number} epheremal_disk epheremal_disk of the flavor
+     */
     public addFlavorToRequested(name: string, counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number): void {
         this._RequestedFlavors[name] = {
             counter: counter,

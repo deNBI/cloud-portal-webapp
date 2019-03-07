@@ -59,6 +59,11 @@ export class FacilityService {
 
     }
 
+    /**
+     * Get all resources assigned to a facility.
+     * @param {number} facility id of the facility
+     * @returns {Observable<any>}
+     */
     getFacilityResources(facility: number): Observable<any> {
 
         return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/resources/', {
