@@ -170,7 +170,7 @@
                                             <label class="col-md-4 form-control-label"><strong>{{f.name}}</strong><br>
                                                 Number of cores: {{f.vcpus}}<br>
                                                 RAM: {{f.ram}} GB <br>
-                                                Ephemeral disk: {{f.epheremal_disk}} GB <br>
+
                                                 <span *ngIf="f.type.shortcut == 'GPU'">
                                                 GPU: {{f.gpu}}
                                             </span></label>
@@ -272,7 +272,7 @@
                         </div>
 
 
-                        <div class="form-group row">
+                        <!--div class="form-group row">
                             <label class="col-md-4 form-control-label">Special Hardware <i
                                     data-balloon="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."
                                     data-balloon-pos="down"
@@ -290,7 +290,7 @@
                                 </div>
                                 <span class="help-block">Which special Hardware would you need?</span>
                             </div>
-                        </div>
+                        </div-->
                         <div class="form-group row">
                             <label class="col-md-4 form-control-label"
                                    for="text-input"><strong>Comment</strong></label>

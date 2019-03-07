@@ -72,6 +72,15 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * @type {Array}
      */
     all_applications: Application[] = [];
+
+    /**
+     * List of all application modifications.
+     * @type {Array}
+     */
+    all_application_modifications: Application [] = [];
+
+
+    applications_history: Application [] = [];
     /**
      * Special hardware id for FPGA.
      * @type {number}
@@ -82,14 +91,17 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     constructor(private userService: UserService,
                 private applicationstatusservice: ApplicationStatusService,
                 private specialhardwareservice: SpecialHardwareService,
-                private  facilityService: FacilityService) {
+                private  facilityService: FacilityService, private applicationsservice: ApplicationsService) {
         super();
 
         this.facilityService.getManagerFacilities().subscribe(result => {
             this.managerFacilities = result;
             this.selectedFacility = this.managerFacilities[0];
-            this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe()
-            this.getAllApplications(this.selectedFacility ['FacilityId']);
+            this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe();
+            this.getApplicationStatus();
+            this.getAllApplicationsWFC(this.selectedFacility ['FacilityId']);
+            this.getAllApplicationsModifications(this.selectedFacility ['FacilityId']);
+            this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
 
         })
@@ -108,6 +120,27 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
         })
     }
 
+
+    /**
+     * Approve an application extension.
+     * @param {Application} app the application
+     */
+    public approveExtension(app: Application) {
+
+        this.applicationsservice.approveRenewal(app.Id).subscribe(result => {
+            if (result['Error']) {
+                this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
+            }
+            else {
+                this.updateNotificationModal('Success', 'Successfully approved the application modification.', true, 'success');
+                this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
+                this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
+
+            }
+        })
+    }
+
+
     /**
      * Gets all affialiations from a user.
      * @param {number} user
@@ -124,11 +157,217 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
         this.selectedApplication = application;
     }
 
+
+    /**
+     * Get all application modification requests.
+     * @param {number} facility id of the facility
+     */
+    getAllApplicationsModifications(facility: number) {
+        this.isLoaded = false
+        //todo check if user is VO Admin
+        this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility).subscribe(res => {
+            if (Object.keys(res).length == 0) {
+                this.isLoaded = true;
+            }
+
+            for (let key in res) {
+
+                let aj = res[key];
+                let a = new Application();
+                a.Id = aj["project_application_id"];
+
+                a.Name = aj["project_application_name"];
+                a.Shortname = aj["project_application_shortname"];
+                a.Description = aj["project_application_description"];
+                a.Lifetime = aj["project_application_lifetime"];
+
+                a.VMsRequested = aj["project_application_vms_requested"];
+                a.RamPerVM = aj["project_application_ram_per_vm"];
+                a.TotalRam = aj["project_application_total_ram"];
+                a.TotalCores = aj["project_application_total_cores"];
+                a.CoresPerVM = aj["project_application_cores_per_vm"];
+                a.VolumeLimit = aj["project_application_volume_limit"];
+                a.VolumeCounter = aj["project_application_volume_counter"];
+
+                a.ObjectStorage = aj["project_application_object_storage"];
+                a.SpecialHardware = aj["project_application_special_hardware"];
+
+                a.Institute = aj["project_application_institute"];
+                a.Workgroup = aj["project_application_workgroup"];
+
+                a.DateSubmitted = aj["project_application_date_submitted"];
+                a.DateStatusChanged = aj["project_application_date_status_changed"];
+                a.User = aj["project_application_user"]["username"];
+                a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
+                a.UserEmail = aj["project_application_user"]["email"];
+                a.Status = aj["project_application_status"];
+                a.Comment = aj["project_application_comment"];
+                a.PerunId = aj['project_application_perun_id'];
+                a.OpenStackProject = aj["project_application_openstack_project"];
+                for (let f of aj['flavors']) {
+                    a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+
+                }
+                if (aj['projectapplicationrenewal']) {
+                    let r = new ApplicationExtension();
+                    let requestExtensionTotalCores = 0;
+                    let requestExtensionTotalRam = 0;
+                    for (let f of aj['projectapplicationrenewal']['flavors']) {
+                        r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk);
+                        requestExtensionTotalCores += f.vcpus * f.counter;
+                        requestExtensionTotalRam += f.ram * f.counter
+
+                    }
+
+                    r.TotalRAM = requestExtensionTotalRam;
+                    r.TotalCores = requestExtensionTotalCores;
+
+
+                    r.Id = aj['projectapplicationrenewal']['project_application'];
+                    r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                    r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                    r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                    r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                    r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                    r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                    r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                    let special_hardware = [];
+                    if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) {
+                        let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
+
+                        for (let c = 0; c < special_hardware_string.length; c++) {
+                            let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                            special_hardware.push(sh)
+
+                        }
+
+                        r.SpecialHardware = special_hardware;
+                    }
+                    a.ApplicationExtension = r;
+
+                }
+                this.all_application_modifications.push(a);
+
+            }
+
+            this.isLoaded = true;
+
+
+        });
+    }
+
+
+    /**
+     * Get all application ( with all stati) for a facility.
+     * @param {number} facility id of the facility
+     */
+    getAllApplicationsHistory(facility: number) {
+        this.isLoaded = false;
+        this.applications_history = [];
+
+        //todo check if user is VO Admin
+        this.facilityService.getFacilityApplicationsHistory(facility).subscribe(res => {
+            if (Object.keys(res).length == 0) {
+                this.isLoaded = true;
+            }
+
+            for (let key in res) {
+
+                let aj = res[key];
+                let a = new Application();
+                a.Id = aj["project_application_id"];
+
+                a.Name = aj["project_application_name"];
+                a.Shortname = aj["project_application_shortname"];
+                a.Description = aj["project_application_description"];
+                a.Lifetime = aj["project_application_lifetime"];
+
+                a.VMsRequested = aj["project_application_vms_requested"];
+                a.RamPerVM = aj["project_application_ram_per_vm"];
+                a.TotalRam = aj["project_application_total_ram"];
+                a.TotalCores = aj["project_application_total_cores"];
+                a.CoresPerVM = aj["project_application_cores_per_vm"];
+                a.VolumeLimit = aj["project_application_volume_limit"];
+                a.VolumeCounter = aj["project_application_volume_counter"];
+
+                a.ObjectStorage = aj["project_application_object_storage"];
+                a.SpecialHardware = aj["project_application_special_hardware"];
+
+                a.Institute = aj["project_application_institute"];
+                a.Workgroup = aj["project_application_workgroup"];
+
+                a.DateSubmitted = aj["project_application_date_submitted"];
+                a.DateStatusChanged = aj["project_application_date_status_changed"];
+                a.User = aj["project_application_user"]["username"];
+                a.UserAffiliations = aj["project_application_user"]['profile']['affiliations'];
+                a.UserEmail = aj["project_application_user"]["email"];
+                a.Status = aj["project_application_status"];
+                a.Comment = aj["project_application_comment"];
+                a.PerunId = aj['project_application_perun_id'];
+                a.OpenStackProject = aj["project_application_openstack_project"];
+                for (let f of aj['flavors']) {
+                    a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+
+                }
+                if (aj['projectapplicationrenewal']) {
+                    let r = new ApplicationExtension();
+                    let requestExtensionTotalCores = 0;
+                    let requestExtensionTotalRam = 0;
+                    for (let f of aj['projectapplicationrenewal']['flavors']) {
+                        r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk);
+                        requestExtensionTotalCores += f.vcpus * f.counter;
+                        requestExtensionTotalRam += f.ram * f.counter
+
+                    }
+
+                    r.TotalRAM = requestExtensionTotalRam;
+                    r.TotalCores = requestExtensionTotalCores;
+
+
+                    r.Id = aj['projectapplicationrenewal']['project_application'];
+                    r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                    r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                    r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                    r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                    r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                    r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                    r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                    let special_hardware = [];
+                    if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) {
+                        let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
+
+                        for (let c = 0; c < special_hardware_string.length; c++) {
+                            let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
+                            special_hardware.push(sh)
+
+                        }
+
+                        r.SpecialHardware = special_hardware;
+                    }
+                    a.ApplicationExtension = r;
+
+                }
+                this.applications_history.push(a);
+
+            }
+
+            this.isLoaded = true;
+
+
+        });
+    }
+
+
     /**
      * Gets all applications for the facility.
      * @param {number} facility
      */
-    getAllApplications(facility: number) {
+    getAllApplicationsWFC(facility: number) {
+
         //todo check if user is VO Admin
         this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe(res => {
             if (Object.keys(res).length == 0) {
@@ -219,13 +458,31 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
 
             this.all_applications = [];
-            this.getAllApplications(this.selectedFacility['FacilityId'])
+                            this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
+
+            this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
         }, error => {
             this.updateNotificationModal('Failed', 'Failed to approve the application.', true, 'danger');
 
 
         })
     }
+
+    /**
+     * Decline an extension request.
+     * @param {number} application_id
+     */
+    public declineExtension(app: Application) {
+        let modificaton_requested = 4
+        this.applicationstatusservice.setApplicationStatus(app.Id, modificaton_requested).subscribe(res => {
+            this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
+            this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
+            this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
+        })
+
+
+    }
+
 
     /**
      * Declines an Application.
@@ -238,7 +495,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             this.updateNotificationModal('Success', 'Successfully declined the application.', true, 'success');
 
             this.all_applications = [];
-            this.getAllApplications(this.selectedFacility['FacilityId'])
+            this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
         }, error => {
             this.updateNotificationModal('Failed', 'Failed to decline the application.', true, 'danger');
 
@@ -327,6 +584,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * @returns {string}
      */
     public getStatusById(id: number): string {
+
         let s = "Unknown";
         for (let status of this.application_status) {
             if (status.Id == id) {
@@ -358,7 +616,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      */
     onChangeSelectedFacility(value) {
         this.all_applications = [];
-        this.getAllApplications(this.selectedFacility['FacilityId'])
+        this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
     }
 
 
