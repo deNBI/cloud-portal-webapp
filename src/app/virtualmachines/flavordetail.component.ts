@@ -2,7 +2,7 @@ import ***REMOVED***Component, Input, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor'
 
 @Component(***REMOVED***
-    selector: 'flavor-detail',
+    selector: 'app-flavor-detail',
     templateUrl: 'flavordetail.component.html'
 
 

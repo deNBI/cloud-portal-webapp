@@ -10,7 +10,7 @@ import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared_modules/baseCla
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 
 @Component(***REMOVED***
-    selector: 'vm-overview',
+    selector: 'app-vm-overview',
     templateUrl: 'vmOverview.component.html',
     providers: [VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 ***REMOVED***)

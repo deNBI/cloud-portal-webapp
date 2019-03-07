@@ -8,7 +8,7 @@ import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanageme
 import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared_modules/baseClass/filter-base-class';
 
 @Component(***REMOVED***
-    selector: 'voOverview',
+    selector: 'app-vo-overview',
     templateUrl: 'voOverview.component.html',
     providers: [VoService, GroupService]
 

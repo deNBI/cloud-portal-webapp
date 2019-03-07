@@ -11,7 +11,7 @@ export class ImageTagComponent ***REMOVED***
     imageTags: [string, string][]
 
 
-    constructor(private imageService: ImageService,) ***REMOVED***
+    constructor(private imageService: ImageService, ) ***REMOVED***
         this.imageService.getImageTags().subscribe(result => ***REMOVED***
             this.imageTags = result;
             this.isLoaded = true;
@@ -19,7 +19,7 @@ export class ImageTagComponent ***REMOVED***
     ***REMOVED***
 
     addTag(tag: string, description: string) ***REMOVED***
-        this.imageService.addImageTags(tag, description).subscribe(result => ***REMOVED***
+        this.imageService.addImageTags(tag, description).subscribe(res => ***REMOVED***
             this.imageService.getImageTags().subscribe(result => ***REMOVED***
                 this.imageTags = result
             ***REMOVED***)
@@ -27,7 +27,7 @@ export class ImageTagComponent ***REMOVED***
     ***REMOVED***
 
     deleteTag(tag: string) ***REMOVED***
-        this.imageService.deleteImageTag(tag).subscribe(result => ***REMOVED***
+        this.imageService.deleteImageTag(tag).subscribe(res => ***REMOVED***
             this.imageService.getImageTags().subscribe(result => ***REMOVED***
                 this.imageTags = result
             ***REMOVED***)

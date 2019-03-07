@@ -2,7 +2,7 @@ import ***REMOVED***Component, Input***REMOVED*** from '@angular/core';
 import ***REMOVED***Image***REMOVED*** from './virtualmachinemodels/image'
 
 @Component(***REMOVED***
-    selector: 'image-detail',
+    selector: 'app-image-detail',
     templateUrl: 'imagedetail.component.html'
 
 ***REMOVED***)

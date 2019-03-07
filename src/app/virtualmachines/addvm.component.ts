@@ -18,7 +18,7 @@ import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.servi
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
 
 @Component(***REMOVED***
-    selector: 'new-vm',
+    selector: 'app-new-vm',
     templateUrl: 'addvm.component.html',
     providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
         Application, PerunSettings, ApiSettings, KeyService, ClientService],

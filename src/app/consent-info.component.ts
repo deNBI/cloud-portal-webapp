@@ -2,11 +2,11 @@ import ***REMOVED***Component***REMOVED*** from '@angular/core';
 import ***REMOVED***environment***REMOVED*** from '../environments/environment';
 
 @Component(***REMOVED***
-  selector: 'consent-info',
-  templateUrl: 'consent-info.component.html'
+    selector: 'app-consent-info',
+    templateUrl: 'consent-info.component.html'
 
 
 ***REMOVED***)
 export class ConsentInfoComponent ***REMOVED***
-  voLoginLink = environment.login
+    voLoginLink = environment.login
 ***REMOVED***

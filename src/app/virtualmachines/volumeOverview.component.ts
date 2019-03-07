@@ -31,7 +31,7 @@ enum Volume_Request_Statuses ***REMOVED***
 
 @Component(***REMOVED***
 
-    selector: 'volume-overview',
+    selector: 'app-volume-overview',
     templateUrl: 'volumeOverview.component.html',
     providers: [GroupService, VirtualmachineService]
 ***REMOVED***)
@@ -150,7 +150,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * Calc diskspace sum of selected project diskspace and additional diskspace of new volume.
      */
     calcDiskSpaceSum(): void ***REMOVED***
-        this.selectedProjectDiskSpaceSum = parseInt(this.diskspace.toString(), 10) + parseInt(this.selectedProjectDiskspaceUsed.toString(), 10);
+        this.selectedProjectDiskSpaceSum = parseInt(this.diskspace.toString(), 10)
+            + parseInt(this.selectedProjectDiskspaceUsed.toString(), 10);
     ***REMOVED***
 
 
