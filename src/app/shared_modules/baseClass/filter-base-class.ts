@@ -171,7 +171,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     }
 
     isFilterstatus(vmstatus: string): boolean {
-        if (vmstatus != 'ACTIVE' && vmstatus != 'DELETED' && vmstatus != 'SUSPENDED') {
+        if (vmstatus !== 'ACTIVE' && vmstatus !== 'DELETED' && vmstatus !== 'SUSPENDED') {
             return true
         }
         if (this.filterstatus_list[vmstatus]

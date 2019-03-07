@@ -11,7 +11,7 @@ export class ImageTagComponent {
     imageTags: [string, string][]
 
 
-    constructor(private imageService: ImageService,) {
+    constructor(private imageService: ImageService, ) {
         this.imageService.getImageTags().subscribe(result => {
             this.imageTags = result;
             this.isLoaded = true;
@@ -19,7 +19,7 @@ export class ImageTagComponent {
     }
 
     addTag(tag: string, description: string) {
-        this.imageService.addImageTags(tag, description).subscribe(result => {
+        this.imageService.addImageTags(tag, description).subscribe(res => {
             this.imageService.getImageTags().subscribe(result => {
                 this.imageTags = result
             })
@@ -27,7 +27,7 @@ export class ImageTagComponent {
     }
 
     deleteTag(tag: string) {
-        this.imageService.deleteImageTag(tag).subscribe(result => {
+        this.imageService.deleteImageTag(tag).subscribe(res => {
             this.imageService.getImageTags().subscribe(result => {
                 this.imageTags = result
             })

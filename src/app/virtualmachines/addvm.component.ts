@@ -18,7 +18,7 @@ import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
 
 @Component({
-    selector: 'new-vm',
+    selector: 'app-new-vm',
     templateUrl: 'addvm.component.html',
     providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
         Application, PerunSettings, ApiSettings, KeyService, ClientService],

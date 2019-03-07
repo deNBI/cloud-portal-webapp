@@ -10,7 +10,7 @@ import {FacilityService} from '../api-connector/facility.service';
 
 
 @Component({
-    selector: 'client-overview',
+    selector: 'app-client-overview',
     templateUrl: 'vmClients.component.html',
     providers: [FacilityService, UserService, GroupService, ClientService, PerunSettings, ApiSettings]
 })

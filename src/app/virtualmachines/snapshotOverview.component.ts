@@ -10,7 +10,7 @@ enum Snapshot_Delete_Statuses {
 }
 
 @Component({
-    selector: 'snapshot-overview',
+    selector: 'app-snapshot-overview',
     templateUrl: 'snapshotOverview.component.html',
     providers: [ImageService]
 })

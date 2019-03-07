@@ -10,7 +10,7 @@ import {FilterBaseClass} from '../shared_modules/baseClass/filter-base-class';
 import {VoService} from '../api-connector/vo.service';
 
 @Component({
-    selector: 'vm-overview',
+    selector: 'app-vm-overview',
     templateUrl: 'vmOverview.component.html',
     providers: [VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 })

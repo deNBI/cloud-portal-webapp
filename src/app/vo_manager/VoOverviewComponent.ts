@@ -8,7 +8,7 @@ import {ComputecenterComponent} from '../projectmanagement/computecenter.compone
 import {FilterBaseClass} from '../shared_modules/baseClass/filter-base-class';
 
 @Component({
-    selector: 'voOverview',
+    selector: 'app-vo-overview',
     templateUrl: 'voOverview.component.html',
     providers: [VoService, GroupService]
 
