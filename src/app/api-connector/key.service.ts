@@ -11,7 +11,7 @@ const header = new HttpHeaders({
 
 
 @Injectable()
-export class keyService {
+export class KeyService {
 
 
     constructor(private http: HttpClient, private settings: ApiSettings) {

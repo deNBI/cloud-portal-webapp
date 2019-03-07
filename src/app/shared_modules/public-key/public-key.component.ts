@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {keyService} from '../../api-connector/key.service';
+import {KeyService} from '../../api-connector/key.service';
 import {ApiSettings} from '../../api-connector/api-settings.service';
 import {PerunSettings} from '../../perun-connector/connector-settings.service';
 import {Userinfo} from '../../userinfo/userinfo.model';
@@ -8,7 +8,7 @@ import {Userinfo} from '../../userinfo/userinfo.model';
     selector: '[app-public-key]',
     templateUrl: './public-key.component.html',
     styleUrls: ['./public-key.component.scss'],
-    providers: [PerunSettings, ApiSettings, keyService]
+    providers: [PerunSettings, ApiSettings, KeyService]
 
 })
 export class PublicKeyComponent implements OnInit {
@@ -19,7 +19,7 @@ export class PublicKeyComponent implements OnInit {
     key_visible = false;
 
 
-    constructor(private keyservice: keyService) {
+    constructor(private keyservice: KeyService) {
     }
 
     ngOnInit() {

@@ -8,7 +8,6 @@ import {Application} from './application.model';
 import {ApplicationStatus} from './application_status.model';
 import {SpecialHardware} from './special_hardware.model'
 import {GroupService} from '../api-connector/group.service';
-import * as moment from 'moment';
 import {UserService} from '../api-connector/user.service';
 import {ApplicationExtension} from './application_extension.model';
 import {NgForm} from '@angular/forms';
@@ -24,7 +23,8 @@ import {Vmclient} from '../virtualmachines/virtualmachinemodels/vmclient';
 
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings, FlavorService]
+    providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService,
+        ApplicationsService, SpecialHardwareService, ApiSettings, FlavorService]
 })
 export class ApplicationsComponent extends AbstractBaseClasse {
 
@@ -206,17 +206,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
     }
 
-    /**
-     * unused yet
-     * @param app
-     */
-    flavorTuples(app: Application): [string, number][] {
-        let cur_flavors: [string, number][];
-        for (const entry in app.CurrentFlavors) {
-            cur_flavors.push([entry, app.CurrentFlavors[entry].counter]);
-        }
-        return cur_flavors;
-    }
 
     /**
      * Resets the values of totalRAM und totalNumberOfCores to 0 and changes the text at the end of the extension form.
@@ -291,7 +280,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     getComputeCenters() {
         this.facilityService.getComputeCenters().subscribe(result => {
             for (const cc of result) {
-                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
+                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
+                    cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             }
 
@@ -323,7 +313,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      */
     onSubmit(f: NgForm) {
         const values = {};
-        values['project_application_renewal_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
+        values['project_application_renewal_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked)
+            .map(hardware => hardware.Id);
         for (const v in f.controls) {
             if (f.controls[v].value) {
                 values[v] = f.controls[v].value;
@@ -363,83 +354,86 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         this.applicationsservice
             .getUserApplications().subscribe(result => {
             const res = result;
-            if (Object.keys(res).length == 0) {
+            if (Object.keys(res).length === 0) {
                 this.isLoaded_userApplication = true;
             }
             for (const key in res) {
-                const aj = res[key];
-                const a = new Application();
-                a.Id = aj['project_application_id'];
-                a.Name = aj['project_application_name'];
-                a.Shortname = aj['project_application_shortname'];
-                a.Lifetime = aj['project_application_lifetime'];
-                a.DateSubmitted = aj['project_application_date_submitted'];
-                a.Status = aj['project_application_status']['application_status_name'];
-                a.Description = aj['project_application_description'];
-                a.VMsRequested = aj['project_application_vms_requested'];
-                a.RamPerVM = aj['project_application_ram_per_vm'];
-                a.TotalRam = aj['project_application_total_ram'];
-                a.TotalCores = aj['project_application_total_cores'];
-                a.CoresPerVM = aj['project_application_cores_per_vm'];
-                a.VolumeLimit = aj['project_application_volume_limit'];
-                a.VolumeCounter = aj['project_application_volume_counter'];
-                a.ObjectStorage = aj['project_application_object_storage'];
-                a.SpecialHardware = aj['project_application_special_hardware'];
-                a.OpenStackProject = aj['project_application_openstack_project'];
-                a.Comment = aj['project_application_comment'];
-                a.PerunId = aj['project_application_perun_id'];
-                a.DateApproved = aj['project_application_date_approved'];
-                a.Dissemination = aj['project_application_report_allowed'];
-                a.Horizon2020 = aj['project_application_horizon2020'];
+                if (res[key]) {
+                    const aj = res[key];
+                    const a = new Application();
+                    a.Id = aj['project_application_id'];
+                    a.Name = aj['project_application_name'];
+                    a.Shortname = aj['project_application_shortname'];
+                    a.Lifetime = aj['project_application_lifetime'];
+                    a.DateSubmitted = aj['project_application_date_submitted'];
+                    a.Status = aj['project_application_status']['application_status_name'];
+                    a.Description = aj['project_application_description'];
+                    a.VMsRequested = aj['project_application_vms_requested'];
+                    a.RamPerVM = aj['project_application_ram_per_vm'];
+                    a.TotalRam = aj['project_application_total_ram'];
+                    a.TotalCores = aj['project_application_total_cores'];
+                    a.CoresPerVM = aj['project_application_cores_per_vm'];
+                    a.VolumeLimit = aj['project_application_volume_limit'];
+                    a.VolumeCounter = aj['project_application_volume_counter'];
+                    a.ObjectStorage = aj['project_application_object_storage'];
+                    a.SpecialHardware = aj['project_application_special_hardware'];
+                    a.OpenStackProject = aj['project_application_openstack_project'];
+                    a.Comment = aj['project_application_comment'];
+                    a.PerunId = aj['project_application_perun_id'];
+                    a.DateApproved = aj['project_application_date_approved'];
+                    a.Dissemination = aj['project_application_report_allowed'];
+                    a.Horizon2020 = aj['project_application_horizon2020'];
 
 
-                for (const f of aj['flavors']) {
-                    a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
-
-                }
-
-                if (aj['projectapplicationrenewal']) {
-                    const r = new ApplicationExtension();
-                    let requestExtensionTotalCores = 0;
-                    let requestExtensionTotalRam = 0;
-
-
-                    for (const f of aj['projectapplicationrenewal']['flavors']) {
-                        r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
-                        requestExtensionTotalCores += f.vcpus * f.counter;
-                        requestExtensionTotalRam += f.ram * f.counter
+                    for (const f of aj['flavors']) {
+                        a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
 
                     }
 
+                    if (aj['projectapplicationrenewal']) {
+                        const r = new ApplicationExtension();
+                        let requestExtensionTotalCores = 0;
+                        let requestExtensionTotalRam = 0;
 
-                    r.TotalRAM = requestExtensionTotalRam;
-                    r.TotalCores = requestExtensionTotalCores;
 
-                    r.Id = aj['projectapplicationrenewal']['project_application'];
-                    r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-                    r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-                    r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-                    r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                    r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-                    r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-                    r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                    const special_hardware = [];
-                    if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
-                        const special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
-
-                        for (let c = 0; c < special_hardware_string.length; c++) {
-                            const sh = special_hardware_string.charAt(c) == this.FPGA ? 'FPGA' : 'GPU';
-                            special_hardware.push(sh)
+                        for (const f of aj['projectapplicationrenewal']['flavors']) {
+                            r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+                            requestExtensionTotalCores += f.vcpus * f.counter;
+                            requestExtensionTotalRam += f.ram * f.counter
 
                         }
 
-                        r.SpecialHardware = special_hardware;
+
+                        r.TotalRAM = requestExtensionTotalRam;
+                        r.TotalCores = requestExtensionTotalCores;
+
+                        r.Id = aj['projectapplicationrenewal']['project_application'];
+                        r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                        r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                        r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                        r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                        r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                        r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                        r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                        r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                        r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                        const special_hardware = [];
+                        if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
+                            const special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware']
+                                .toString();
+
+                            for (let c = 0; c < special_hardware_string.length; c++) {
+                                const sh = special_hardware_string.charAt(c) === this.FPGA ? 'FPGA' : 'GPU';
+                                special_hardware.push(sh)
+
+                            }
+
+                            r.SpecialHardware = special_hardware;
+                        }
+                        a.ApplicationExtension = r;
                     }
-                    a.ApplicationExtension = r;
+                    this.user_applications.push(a)
                 }
-                this.user_applications.push(a)
             }
             this.isLoaded_userApplication = true;
 
@@ -496,9 +490,11 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             .then(result => {
                 const res = result;
                 for (const key in res) {
-                    const asj = res[key];
-                    const aj = new ApplicationStatus(asj['application_status_id'], asj['application_status_name']);
-                    this.application_status.push(aj)
+                    if (res[key]) {
+                        const asj = res[key];
+                        const aj = new ApplicationStatus(asj['application_status_id'], asj['application_status_name']);
+                        this.application_status.push(aj)
+                    }
                 }
             });
     }
@@ -511,9 +507,13 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             .then(result => {
                 const res = result;
                 for (const key in res) {
-                    const shj = res[key];
-                    const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
-                    this.special_hardware.push(sh)
+                    if (res[key]) {
+
+                        const shj = res[key];
+                        const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'],
+                            shj['special_hardware_name']);
+                        this.special_hardware.push(sh)
+                    }
                 }
             });
     }
@@ -526,111 +526,117 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
         if (this.is_vo_admin) {
             this.applicationsservice.getAllApplications().subscribe(res => {
-                if (Object.keys(res).length == 0) {
+                if (Object.keys(res).length === 0) {
                     this.isLoaded_AllApplication = true;
                 }
 
                 for (const key in res) {
-
-                    const aj = res[key];
-                    const a = new Application();
-                    a.Id = aj['project_application_id'];
-
-                    a.Name = aj['project_application_name'];
-                    a.Shortname = aj['project_application_shortname'];
-                    a.Description = aj['project_application_description'];
-                    a.Lifetime = aj['project_application_lifetime'];
-
-                    a.VMsRequested = aj['project_application_vms_requested'];
-                    a.RamPerVM = aj['project_application_ram_per_vm'];
-                    a.TotalRam = aj['project_application_total_ram'];
-                    a.TotalCores = aj['project_application_total_cores'];
-                    a.CoresPerVM = aj['project_application_cores_per_vm'];
-                    a.VolumeLimit = aj['project_application_volume_limit'];
-                    a.VolumeCounter = aj['project_application_volume_counter'];
-
-                    a.ObjectStorage = aj['project_application_object_storage'];
-                    a.SpecialHardware = aj['project_application_special_hardware'];
-
-                    a.Institute = aj['project_application_institute'];
-                    a.Workgroup = aj['project_application_workgroup'];
-                    a.DateApproved = aj['project_application_date_approved'];
+                    if (res[key]) {
 
 
-                    a.DateSubmitted = aj['project_application_date_submitted'];
-                    a.DateStatusChanged = aj['project_application_date_status_changed'];
-                    a.User = aj['project_application_user']['username'];
-                    a.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
-                    a.UserEmail = aj['project_application_user']['email'];
-                    a.Status = aj['project_application_status'];
-                    a.Dissemination = aj['project_application_report_allowed'];
-                    a.Horizon2020 = aj['project_application_horizon2020'];
+                        const aj = res[key];
+                        const a = new Application();
+                        a.Id = aj['project_application_id'];
+
+                        a.Name = aj['project_application_name'];
+                        a.Shortname = aj['project_application_shortname'];
+                        a.Description = aj['project_application_description'];
+                        a.Lifetime = aj['project_application_lifetime'];
+
+                        a.VMsRequested = aj['project_application_vms_requested'];
+                        a.RamPerVM = aj['project_application_ram_per_vm'];
+                        a.TotalRam = aj['project_application_total_ram'];
+                        a.TotalCores = aj['project_application_total_cores'];
+                        a.CoresPerVM = aj['project_application_cores_per_vm'];
+                        a.VolumeLimit = aj['project_application_volume_limit'];
+                        a.VolumeCounter = aj['project_application_volume_counter'];
+
+                        a.ObjectStorage = aj['project_application_object_storage'];
+                        a.SpecialHardware = aj['project_application_special_hardware'];
+
+                        a.Institute = aj['project_application_institute'];
+                        a.Workgroup = aj['project_application_workgroup'];
+                        a.DateApproved = aj['project_application_date_approved'];
 
 
-                    for (const f of aj['flavors']) {
-                        a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
-
-                    }
-                    if (a.Status === this.APPROVED_STATUS) {
-
-                        a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
-
-
-                    }
-
-                    a.Comment = aj['project_application_comment'];
-                    a.PerunId = aj['project_application_perun_id'];
-                    a.OpenStackProject = aj['project_application_openstack_project'];
-                    if (aj['projectapplicationrenewal']) {
-                        const r = new ApplicationExtension();
-                        let requestExtensionTotalCores = 0;
-                        let requestExtensionTotalRam = 0;
+                        a.DateSubmitted = aj['project_application_date_submitted'];
+                        a.DateStatusChanged = aj['project_application_date_status_changed'];
+                        a.User = aj['project_application_user']['username'];
+                        a.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
+                        a.UserEmail = aj['project_application_user']['email'];
+                        a.Status = aj['project_application_status'];
+                        a.Dissemination = aj['project_application_report_allowed'];
+                        a.Horizon2020 = aj['project_application_horizon2020'];
 
 
-                        for (const f of aj['projectapplicationrenewal']['flavors']) {
-                            r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
-                            requestExtensionTotalCores += f.vcpus * f.counter;
-                            requestExtensionTotalRam += f.ram * f.counter
+                        for (const f of aj['flavors']) {
+                            a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+
+                        }
+                        if (a.Status === this.APPROVED_STATUS) {
+
+                            a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime()))
+                                / (1000 * 3600 * 24));
+
 
                         }
 
+                        a.Comment = aj['project_application_comment'];
+                        a.PerunId = aj['project_application_perun_id'];
+                        a.OpenStackProject = aj['project_application_openstack_project'];
+                        if (aj['projectapplicationrenewal']) {
+                            const r = new ApplicationExtension();
+                            let requestExtensionTotalCores = 0;
+                            let requestExtensionTotalRam = 0;
 
-                        r.TotalRAM = requestExtensionTotalRam;
-                        r.TotalCores = requestExtensionTotalCores;
 
-                        r.Id = aj['projectapplicationrenewal']['project_application'];
-                        r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-                        r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-                        r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-                        r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-                        r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                        r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-                        r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-                        r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-                        r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                        const special_hardware = [];
-                        if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
-                            const special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
-
-                            for (let c = 0; c < special_hardware_string.length; c++) {
-                                const sh = special_hardware_string.charAt(c) == this.FPGA ? 'FPGA' : 'GPU';
-                                special_hardware.push(sh)
+                            for (const f of aj['projectapplicationrenewal']['flavors']) {
+                                r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+                                requestExtensionTotalCores += f.vcpus * f.counter;
+                                requestExtensionTotalRam += f.ram * f.counter
 
                             }
 
-                            r.SpecialHardware = special_hardware;
+
+                            r.TotalRAM = requestExtensionTotalRam;
+                            r.TotalCores = requestExtensionTotalCores;
+
+                            r.Id = aj['projectapplicationrenewal']['project_application'];
+                            r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                            r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                            r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                            r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                            r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                            r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                            r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                            r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                            r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                            const special_hardware = [];
+                            if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
+                                const special_hardware_string = aj['projectapplicationrenewal']
+                                    ['project_application_renewal_special_hardware'].toString();
+
+                                for (let c = 0; c < special_hardware_string.length; c++) {
+                                    const sh = special_hardware_string.charAt(c) === this.FPGA ? 'FPGA' : 'GPU';
+                                    special_hardware.push(sh)
+
+                                }
+
+                                r.SpecialHardware = special_hardware;
+                            }
+                            a.ApplicationExtension = r;
+
                         }
-                        a.ApplicationExtension = r;
+
+                        this.all_applications.push(a);
 
                     }
-
-                    this.all_applications.push(a);
-
                 }
 
                 this.isLoaded_AllApplication = true;
                 for (const app of this.all_applications) {
-                    if (app.Status == this.application_statuses.WAIT_FOR_CONFIRMATION || app.Status == this.application_statuses.MODIFICATION_REQUESTED) {
+                    if (app.Status === this.application_statuses.WAIT_FOR_CONFIRMATION ||
+                        app.Status === this.application_statuses.MODIFICATION_REQUESTED) {
                         this.getFacilityProject(app);
                     }
                 }
@@ -650,7 +656,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      */
     public getFacilityProject(app: Application) {
 
-        if (!app.ComputeCenter && app.Status.toString() != 'submitted') {
+        if (!app.ComputeCenter && app.Status.toString() !== 'submitted') {
             this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe(res => {
                 const login = res['Login'];
                 const suport = res['Support'];
@@ -709,7 +715,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             a.Horizon2020 = aj['project_application_horizon2020'];
 
 
-            if (a.Status == this.application_statuses.APPROVED) {
+            if (a.Status === this.application_statuses.APPROVED) {
                 a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
 
@@ -749,10 +755,11 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
                 const special_hardware = [];
                 if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
-                    const special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
+                    const special_hardware_string = aj['projectapplicationrenewal']
+                        ['project_application_renewal_special_hardware'].toString();
 
                     for (let c = 0; c < special_hardware_string.length; c++) {
-                        const sh = special_hardware_string.charAt(c) == this.FPGA ? 'FPGA' : 'GPU';
+                        const sh = special_hardware_string.charAt(c) === this.FPGA ? 'FPGA' : 'GPU';
                         special_hardware.push(sh)
 
                     }
@@ -835,10 +842,11 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
                 const special_hardware = [];
                 if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
-                    const special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
+                    const special_hardware_string = aj['projectapplicationrenewal']
+                        ['project_application_renewal_special_hardware'].toString();
 
                     for (let c = 0; c < special_hardware_string.length; c++) {
-                        const sh = special_hardware_string.charAt(c) == this.FPGA ? 'FPGA' : 'GPU';
+                        const sh = special_hardware_string.charAt(c) === this.FPGA ? 'FPGA' : 'GPU';
                         special_hardware.push(sh)
 
                     }
@@ -869,7 +877,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             this.getUserApplication(this.selectedApplication);
 
             for (const app of this.all_applications) {
-                if (this.selectedApplication.PerunId == app.PerunId) {
+                if (this.selectedApplication.PerunId === app.PerunId) {
                     this.getApplication(app);
                     break;
                 }
@@ -916,7 +924,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             this.getApplication(this.selectedApplication);
 
             for (const app of this.user_applications) {
-                if (this.selectedApplication.PerunId == app.PerunId) {
+                if (this.selectedApplication.PerunId === app.PerunId) {
                     this.getUserApplication(app);
                     break;
                 }
@@ -939,7 +947,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             this.getApplication(this.selectedApplication);
 
             for (const app of this.user_applications) {
-                if (this.selectedApplication.PerunId == app.PerunId) {
+                if (this.selectedApplication.PerunId === app.PerunId) {
                     this.getUserApplication(app);
                     break;
                 }
@@ -957,7 +965,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     public getStatusById(id: number): string {
         const s = 'Unknown';
         for (const status of this.application_status) {
-            if (status.Id == id) {
+            if (status.Id === id) {
                 return status.Name;
             }
         }
@@ -973,7 +981,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     public getIdByStatus(name: string): number {
         const s = -1;
         for (const status of this.application_status) {
-            if (status.Name == name) {
+            if (status.Name === name) {
                 return status.Id;
             }
         }
@@ -1016,11 +1024,12 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                     new_group_id = group['id'];
                     this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
                     this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
-                        this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
-                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(res => {
-                                if (compute_center != 'undefined') {
+                        this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(re => {
+                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(r => {
+                                if (compute_center !== 'undefined') {
 
-                                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => {
+                                    this.applicationstatusservice.setApplicationStatus(application_id,
+                                        this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(result => {
                                             if (result['Error']) {
                                                 this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
@@ -1028,7 +1037,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                                 this.updateNotificationModal('Success', 'The new project was created', true, 'success');
                                             }
                                             for (const app of this.user_applications) {
-                                                if (app.Id == application_id) {
+                                                if (app.Id === application_id) {
                                                     this.getUserApplication(app);
                                                     break;
 
@@ -1037,7 +1046,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
                                             }
                                             for (const app of this.all_applications) {
-                                                if (app.Id == application_id) {
+                                                if (app.Id === application_id) {
                                                     this.getApplication(app);
                                                     break;
 
@@ -1046,33 +1055,35 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                         }
                                     )
                                 } else {
-                                    this.groupservice.setPerunGroupStatus(new_group_id, this.application_statuses.APPROVED).subscribe(res => {
-                                        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => {
-                                            if (result['Error']) {
-                                                this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+                                    this.groupservice.setPerunGroupStatus(new_group_id, this.application_statuses.APPROVED)
+                                        .subscribe(resp => {
+                                            this.applicationstatusservice.setApplicationStatus(application_id,
+                                                this.application_statuses.APPROVED, compute_center).subscribe(result => {
+                                                if (result['Error']) {
+                                                    this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
-                                            } else {
-                                                this.updateNotificationModal('Success', 'The new project was created', true, 'success');
-                                            }
-                                            for (const app of this.user_applications) {
-                                                if (app.Id == application_id) {
-                                                    this.getUserApplication(app);
-                                                    break;
+                                                } else {
+                                                    this.updateNotificationModal('Success', 'The new project was created', true, 'success');
+                                                }
+                                                for (const app of this.user_applications) {
+                                                    if (app.Id === application_id) {
+                                                        this.getUserApplication(app);
+                                                        break;
+
+                                                    }
+
 
                                                 }
+                                                for (const app of this.all_applications) {
+                                                    if (app.Id === application_id) {
+                                                        this.getApplication(app);
+                                                        break;
 
-
-                                            }
-                                            for (const app of this.all_applications) {
-                                                if (app.Id == application_id) {
-                                                    this.getApplication(app);
-                                                    break;
-
+                                                    }
                                                 }
-                                            }
+                                            })
+
                                         })
-
-                                    })
 
                                 }
                             });
@@ -1137,7 +1148,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 this.updateNotificationModal('Failed', res['Info'], true, 'danger');
 
             } else {
-                this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED, compute_center).subscribe(result => {
+                this.applicationstatusservice.setApplicationStatus(application_id,
+                    this.application_statuses.APPROVED, compute_center).subscribe(result => {
                     if (result['Error']) {
 
                         this.updateNotificationModal('Failed', result['Error'], true, 'danger');
@@ -1154,8 +1166,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                 const group = group_raw;
                                 new_group_id = group['id'];
                                 this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
-                                this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
-                                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(res => {
+                                this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(r => {
+                                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(re => {
                                             if (result['Info']) {
                                                 this.updateNotificationModal('Failed', result['Info'], true, 'danger');
 
@@ -1170,13 +1182,14 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                                     newClient.assignedVolumes = client.assigned_ressources.volumes;
                                                     newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
                                                     this.notificationClientInfo.push(newClient);
-                                                    this.updateNotificationModal('Success', 'The new project was created and assigned to ' + client.location + '.', true, 'success');
+                                                    this.updateNotificationModal('Success', 'The new project was created and assigned to '
+                                                        + client.location + '.', true, 'success');
 
                                                 });
                                             }
 
                                             for (const app of this.user_applications) {
-                                                if (app.Id == application_id) {
+                                                if (app.Id === application_id) {
                                                     this.getUserApplication(app);
                                                     break;
 
@@ -1185,7 +1198,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
                                             }
                                             for (const app of this.all_applications) {
-                                                if (app.Id == application_id) {
+                                                if (app.Id === application_id) {
                                                     this.getApplication(app);
                                                     break;
 
@@ -1215,11 +1228,12 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     }
 
     assignGroupToFacility(group_id, application_id, compute_center) {
-        if (compute_center != 'undefined') {
+        if (compute_center !== 'undefined') {
             this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(res => {
-                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(res => {
+                    this.applicationstatusservice.setApplicationStatus(application_id,
+                        this.application_statuses.WAIT_FOR_CONFIRMATION, compute_center).subscribe(r => {
                         for (const app of this.all_applications) {
-                            if (app.Id == application_id) {
+                            if (app.Id === application_id) {
                                 this.getApplication(app);
 
                                 break;
@@ -1285,7 +1299,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      */
     public activeApplicationsAvailable(): boolean {
         for (const application of this.all_applications) {
-            if (application.Status == 1 || application.Status == 4 || application.Status == 7 || application.Status == 6) {
+            if (application.Status === 1 || application.Status === 4 || application.Status === 7 || application.Status === 6) {
                 return true;
             }
         }

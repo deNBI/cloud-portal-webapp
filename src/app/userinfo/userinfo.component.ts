@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {Userinfo} from './userinfo.model'
 import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {ApiSettings} from '../api-connector/api-settings.service'
-import {keyService} from '../api-connector/key.service';
+import {KeyService} from '../api-connector/key.service';
 import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 
@@ -11,7 +11,7 @@ import {GroupService} from '../api-connector/group.service';
 @Component({
     selector: 'app-userinfo',
     templateUrl: 'userinfo.component.html',
-    providers: [GroupService, UserService, PerunSettings, ApiSettings, keyService]
+    providers: [GroupService, UserService, PerunSettings, ApiSettings, KeyService]
 })
 export class UserinfoComponent implements OnInit {
     userinfo: Userinfo;
@@ -25,7 +25,7 @@ export class UserinfoComponent implements OnInit {
     emailChange = '';
     freemium: boolean;
 
-    constructor(private groupService: GroupService, private userservice: UserService, private keyservice: keyService) {
+    constructor(private groupService: GroupService, private userservice: UserService, private keyservice: KeyService) {
         this.userinfo = new Userinfo();
         this.getUserinfo();
 
