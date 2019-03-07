@@ -30,7 +30,6 @@
     "handle-callback-err":true,
     "class-name": true,
     "indent":true,
-    "sort-imports":true,
     "no-mixed-spaces-and-tabs":true,
     "arrow-body-style":true,
     "arrow-parens":true,
