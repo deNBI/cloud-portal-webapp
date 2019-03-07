@@ -21,7 +21,7 @@ export class ImageService ***REMOVED***
         const params = new HttpParams().set('project_id', project_id.toString());
 
 
-        return this.http.get<Image[]>(this.settings.getApiBaseURL() + 'images/', ***REMOVED***
+        return this.http.get<Image[]>(ApiSettings.getApiBaseURL() + 'images/', ***REMOVED***
             withCredentials: true,
             params: params,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -31,7 +31,7 @@ export class ImageService ***REMOVED***
 
     getImagesSnapshotsNames(): Observable<any> ***REMOVED***
 
-        return this.http.get<Image[]>(this.settings.getApiBaseURL() + 'snapshots/names/', ***REMOVED***
+        return this.http.get<Image[]>(ApiSettings.getApiBaseURL() + 'snapshots/names/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
@@ -42,7 +42,7 @@ export class ImageService ***REMOVED***
     checkSnapshotNameVaiable(snapshot_name: string): Observable<any> ***REMOVED***
 
 
-        return this.http.get<Image[]>(this.settings.getApiBaseURL() + 'snapshots/names/', ***REMOVED***
+        return this.http.get<Image[]>(ApiSettings.getApiBaseURL() + 'snapshots/names/', ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***snapshot_name: snapshot_name***REMOVED***
 
@@ -54,7 +54,7 @@ export class ImageService ***REMOVED***
 
     getSnapshot(openstack_id: string): Observable<Image> ***REMOVED***
 
-        return this.http.get<Image>(this.settings.getApiBaseURL() + 'snapshots/' + openstack_id + '/status/', ***REMOVED***
+        return this.http.get<Image>(ApiSettings.getApiBaseURL() + 'snapshots/' + openstack_id + '/status/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
@@ -63,7 +63,7 @@ export class ImageService ***REMOVED***
 
 
     getImageTags(): Observable<any> ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'imageTags/', ***REMOVED***
+        return this.http.get(ApiSettings.getApiBaseURL() + 'imageTags/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
@@ -76,7 +76,7 @@ export class ImageService ***REMOVED***
         const params = new HttpParams().set('imageTag', imageTag).set('description', description);
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'imageTags/', params, ***REMOVED***
+        return this.http.post(ApiSettings.getApiBaseURL() + 'imageTags/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -87,7 +87,7 @@ export class ImageService ***REMOVED***
     deleteImageTag(imageTag: string): Observable<any> ***REMOVED***
 
 
-        return this.http.delete(this.settings.getApiBaseURL() + 'imageTags/' + imageTag + '/', ***REMOVED***
+        return this.http.delete(ApiSettings.getApiBaseURL() + 'imageTags/' + imageTag + '/', ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -101,7 +101,7 @@ export class ImageService ***REMOVED***
         const params = new HttpParams().set('snapshot_name', snapshot_name).set('snapshot_instance', snaptshot_instance);
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'snapshots/', params, ***REMOVED***
+        return this.http.post(ApiSettings.getApiBaseURL() + 'snapshots/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -110,7 +110,7 @@ export class ImageService ***REMOVED***
     ***REMOVED***
 
     deleteSnapshot(snapshot_id: string): Observable<any> ***REMOVED***
-        return this.http.delete(this.settings.getApiBaseURL() + 'snapshots/' + snapshot_id + '/', ***REMOVED***
+        return this.http.delete(ApiSettings.getApiBaseURL() + 'snapshots/' + snapshot_id + '/', ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -120,7 +120,7 @@ export class ImageService ***REMOVED***
     getSnapshotsByUser(): Observable<SnapshotModel[]> ***REMOVED***
 
 
-        return this.http.get<SnapshotModel[]>(this.settings.getApiBaseURL() + 'snapshots/', ***REMOVED***
+        return this.http.get<SnapshotModel[]>(ApiSettings.getApiBaseURL() + 'snapshots/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 

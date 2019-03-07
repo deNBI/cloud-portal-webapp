@@ -14,7 +14,7 @@ const header = new HttpHeaders(***REMOVED***
 @Injectable()
 export class VirtualmachineService ***REMOVED***
     data: string;
-    baseVmUrl = this.settings.getApiBaseURL() + 'vms/';
+    baseVmUrl = ApiSettings.getApiBaseURL() + 'vms/';
 
     constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
     ***REMOVED***
@@ -40,7 +40,7 @@ export class VirtualmachineService ***REMOVED***
 
     getAllVM(): Observable<VirtualMachine[]> ***REMOVED***
 
-        return this.http.get<VirtualMachine[]>(this.settings.getApiBaseURL() + 'voManager/vms/', ***REMOVED***
+        return this.http.get<VirtualMachine[]>(ApiSettings.getApiBaseURL() + 'voManager/vms/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
@@ -56,7 +56,7 @@ export class VirtualmachineService ***REMOVED***
 
     getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> ***REMOVED***
 
-        return this.http.get<VirtualMachine[]>(this.settings.getApiBaseURL() + 'projects/' + groupid + '/vms/', ***REMOVED***
+        return this.http.get<VirtualMachine[]>(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/vms/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
@@ -123,7 +123,7 @@ export class VirtualmachineService ***REMOVED***
 
 
     getVolumesByUser(): Observable<Volume[]> ***REMOVED***
-        return this.http.get<Volume[]>(this.settings.getApiBaseURL() + 'volumes/', ***REMOVED***
+        return this.http.get<Volume[]>(ApiSettings.getApiBaseURL() + 'volumes/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
@@ -135,7 +135,7 @@ export class VirtualmachineService ***REMOVED***
             .set('volume_diskspace', volume_diskspace)
             .set('vm_openstackid', vm_openstackid);
 
-        return this.http.post(this.settings.getApiBaseURL() + 'volumes/', params, ***REMOVED***
+        return this.http.post(ApiSettings.getApiBaseURL() + 'volumes/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -146,7 +146,7 @@ export class VirtualmachineService ***REMOVED***
         const params = new HttpParams().set('instance_id', instance_id).set('os_action', 'attach');
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'volumes/' + volume_id + '/action/', params, ***REMOVED***
+        return this.http.post(ApiSettings.getApiBaseURL() + 'volumes/' + volume_id + '/action/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -156,7 +156,7 @@ export class VirtualmachineService ***REMOVED***
     renameVolume(volume_id: string, new_volume_name: string): Observable<any> ***REMOVED***
         const params = new HttpParams().set('new_volume_name', new_volume_name);
 
-        return this.http.patch(this.settings.getApiBaseURL() + 'volumes/' + volume_id + '/', params, ***REMOVED***
+        return this.http.patch(ApiSettings.getApiBaseURL() + 'volumes/' + volume_id + '/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -166,7 +166,7 @@ export class VirtualmachineService ***REMOVED***
 
     deleteVolume(volume_id: string): Observable<any> ***REMOVED***
 
-        return this.http.delete(this.settings.getApiBaseURL() + 'volumes/' + volume_id + '/', ***REMOVED***
+        return this.http.delete(ApiSettings.getApiBaseURL() + 'volumes/' + volume_id + '/', ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
@@ -177,7 +177,7 @@ export class VirtualmachineService ***REMOVED***
 
         const params = new HttpParams().set('instance_id', instance_id).set('os_action', 'detach');
 
-        return this.http.post(this.settings.getApiBaseURL() + 'volumes/' + volume_id + '/action/', params, ***REMOVED***
+        return this.http.post(ApiSettings.getApiBaseURL() + 'volumes/' + volume_id + '/action/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));

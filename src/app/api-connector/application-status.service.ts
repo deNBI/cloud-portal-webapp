@@ -14,7 +14,7 @@ const header = new HttpHeaders(***REMOVED***
 
 @Injectable()
 export class ApplicationStatusService ***REMOVED***
-    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
     /**
@@ -22,7 +22,7 @@ export class ApplicationStatusService ***REMOVED***
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
     getAllApplicationStatus(): Observable<any> ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'application_status/', ***REMOVED***
+        return this.http.get(ApiSettings.getApiBaseURL() + 'application_status/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
@@ -38,7 +38,7 @@ export class ApplicationStatusService ***REMOVED***
         let params = new HttpParams().set("project_application_status", status_id.toString());
 
 
-        return this.http.patch(this.settings.getApiBaseURL() + 'project_applications/' + application_id + '/', params,
+        return this.http.patch(ApiSettings.getApiBaseURL() + 'project_applications/' + application_id + '/', params,
             ***REMOVED***
                 headers: header,
                 withCredentials: true
