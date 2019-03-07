@@ -18,14 +18,25 @@ export class ApplicationStatusService ***REMOVED***
     constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
     ***REMOVED***
 
+    /**
+     * Get all application stati.
+     * @returns ***REMOVED***Observable<any>***REMOVED***
+     */
     getAllApplicationStatus(): Observable<any> ***REMOVED***
         return this.http.get(this.settings.getApiBaseURL() + 'application_status/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
     ***REMOVED***
 
-    setApplicationStatus(application_id: number, status_id: number, compute_center: string): Observable<any> ***REMOVED***
-        let params = new HttpParams().set("project_application_status", status_id.toString()).set('compute_center',compute_center)
+    /**
+     * Set status for an application.
+     * @param ***REMOVED***number***REMOVED*** application_id id of the application
+     * @param ***REMOVED***number***REMOVED*** status_id id of the status to set
+     * @returns ***REMOVED***Observable<any>***REMOVED***
+     */
+    setApplicationStatus(application_id: number, status_id: number): Observable<any> ***REMOVED***
+
+        let params = new HttpParams().set("project_application_status", status_id.toString());
 
 
         return this.http.patch(this.settings.getApiBaseURL() + 'project_applications/' + application_id + "/", params,
