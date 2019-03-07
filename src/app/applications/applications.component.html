@@ -128,14 +128,27 @@
                                                     <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
                                                         <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
                                                         <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
+                                                        <td *ngIf="application.Status == 4 ">
                                                             <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
                                                             <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
-                                                               0</span>
-                                                        </td>
-
+                                                               0</span></td>
                                                     </tr>
+                                                    <ng-container
+                                                            *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
+                                                        <tr *ngIf="!application.CurrentFlavors[item.key]">
+                                                            <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
+                                                            <td>0</td>
+                                                            <td>
+                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***
+
+
+                                                            </td>
+
+
+                                                        </tr>
+                                                    </ng-container>
+
                                                     <tr *ngIf="application.OpenStackProject">
                                                         <td>Cores</td>
                                                         <td>***REMOVED******REMOVED***
@@ -174,12 +187,12 @@
 
                                                         <td>***REMOVED******REMOVED***
                                                             application.VolumeCounter
-                                                            ***REMOVED******REMOVED***
+                                                            ***REMOVED******REMOVED*** volumes
                                                         </td>
                                                         <td *ngIf="application.Status == 'modification requested'">
 
 
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED***
+                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED*** volumes
                                                         </td>
                                                     </tr>
                                                     <tr *ngIf="application.OpenStackProject">
@@ -193,7 +206,7 @@
                                                             GB
                                                         </td>
                                                     </tr>
-                                                    <tr *ngIf="application.OpenStackProject">
+                                                    <!--tr *ngIf="application.OpenStackProject">
                                                         <td>Special Hardware
                                                         </td>
                                                         <td><span
@@ -206,7 +219,7 @@
                                                              class="badge badge-primary"
                                                              *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">***REMOVED******REMOVED*** sh ***REMOVED******REMOVED***</span>
                                                         </td>
-                                                    </tr>
+                                                    </tr-->
                                                     <tr>
                                                         <td>OpenStackProject
                                                         </td>
@@ -340,7 +353,7 @@
                                             </button>
                                             <button *ngIf="application.Status == 4"
 
-                                                    (click)="setSelectedApplication(application);approveExtension(application.Id);resultModal.show();"
+                                                    (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
                                                     type="button"
                                                     class="btn btn-secondary">
                                                 <i class="fa fa-check"></i>&nbsp;
@@ -497,12 +510,25 @@
                                                             <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
                                                             <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
                                                             <td *ngIf="application.Status == 4 ">
- <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                            <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
                                                                 <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
                                                         </tr>
+                                                        <ng-container
+                                                                *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
+                                                            <tr *ngIf="!application.CurrentFlavors[item.key]">
+                                                                <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
+                                                                <td>0</td>
+                                                                <td>
+                                                                    ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***
 
+
+                                                                </td>
+
+
+                                                            </tr>
+                                                        </ng-container>
 
                                                         <tr *ngIf="application.OpenStackProject">
                                                             <td>Total Cores</td>
@@ -543,10 +569,10 @@
                                                             </td>
                                                             <td>***REMOVED******REMOVED***
                                                                 application.VolumeCounter
-                                                                ***REMOVED******REMOVED***
+                                                                ***REMOVED******REMOVED*** volumes
                                                             </td>
                                                             <td *ngIf="application.Status == 4">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED***
+                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED*** volumes
                                                             </td>
                                                         </tr>
                                                         <tr *ngIf="application.OpenStackProject">
@@ -561,7 +587,7 @@
                                                                 GB
                                                             </td>
                                                         </tr>
-                                                        <tr *ngIf="application.OpenStackProject">
+                                                        <!--tr *ngIf="application.OpenStackProject">
                                                             <td>Special Hardware
                                                             </td>
                                                             <td><span
@@ -574,7 +600,7 @@
                                                              class="badge badge-primary"
                                                              *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">***REMOVED******REMOVED*** sh ***REMOVED******REMOVED***</span>
                                                             </td>
-                                                        </tr>
+                                                        </tr-->
 
                                                         <tr>
                                                             <td>Last status
@@ -757,13 +783,26 @@
                                                         <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
                                                             <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
                                                             <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
-                                                            <td *ngIf="application.Status == 4">
- <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                            <td *ngIf="application.Status == 4 ">
+                                                            <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
                                                                 <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
-
                                                         </tr>
+                                                        <ng-container
+                                                                *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
+                                                            <tr *ngIf="!application.CurrentFlavors[item.key]">
+                                                                <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
+                                                                <td>0</td>
+                                                                <td>
+                                                                    ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***
+
+
+                                                                </td>
+
+
+                                                            </tr>
+                                                        </ng-container>
 
 
                                                         <tr *ngIf="application.OpenStackProject">
@@ -802,10 +841,10 @@
                                                             </td>
                                                             <td>***REMOVED******REMOVED***
                                                                 application.VolumeCounter
-                                                                ***REMOVED******REMOVED***
+                                                                ***REMOVED******REMOVED*** volumes
                                                             </td>
                                                             <td *ngIf="application.Status == 4">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED***
+                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED*** volumes
                                                             </td>
                                                         </tr>
                                                         <tr *ngIf="application.OpenStackProject">
@@ -820,7 +859,7 @@
                                                                 GB
                                                             </td>
                                                         </tr>
-                                                        <tr *ngIf="application.OpenStackProject">
+                                                        <!--tr *ngIf="application.OpenStackProject">
                                                             <td>Special Hardware
                                                             </td>
                                                             <td><span
@@ -833,7 +872,7 @@
                                                              class="badge badge-primary"
                                                              *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">***REMOVED******REMOVED*** sh ***REMOVED******REMOVED***</span>
                                                             </td>
-                                                        </tr>
+                                                        </tr-->
 
                                                         <tr>
                                                             <td>Last status
@@ -1064,7 +1103,8 @@
                                        id="id_project_application_renewal_lifetime"
                                        name="project_application_renewal_lifetime"
                                        placeholder="e.g 3"
-                                       type="number" min="0" step="1" ngModel required>
+                                       type="number" min="0" max="12" step="1" ngModel required
+                                       pattern="^([1-9]|1[012])$">
                                 <span class="input-group-addon"> months</span>
                             </div>
                             <span class="help-block">Number of months you want to extend the project</span>
@@ -1260,7 +1300,7 @@
                               <span class="help-block">Currently used special hardware</span>
                           </div> -->
 
-                        <div class="col">
+                        <!--div class="col">
                             <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
                                 <label>
                                     <input type="checkbox"
@@ -1270,7 +1310,7 @@
                                 </label>
                             </div>
                             <span class="help-block">Which special hardware do you need in the future?</span>
-                        </div>
+                        </div-->
                     </div>
 
                     <div class="form-group row">
@@ -1361,6 +1401,9 @@
                 <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
                     Modify request successfully declined!
                 </div>
+                <div class="alert alert-success" role="alert" *ngIf="extension_status == 5">
+                    Modify request successfully approved and forwarded to facility!
+                </div>
 
                 <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
                     An error occured.
@@ -1378,3 +1421,4 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+</div>
