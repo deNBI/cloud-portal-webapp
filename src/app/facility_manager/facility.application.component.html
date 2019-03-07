@@ -217,10 +217,10 @@
                                                     <td>Volume Counter</td>
                                                     <td>{{
                                                         application.VolumeCounter
-                                                        }}
+                                                        }} volumes
                                                     </td>
                                                     <td *ngIf="application.Status == 4">
-                                                        {{application.ApplicationExtension?.VolumeCounter}}
+                                                        {{application.ApplicationExtension?.VolumeCounter}} volumes
                                                     </td>
                                                 </tr>
                                                 <tr *ngIf="application.OpenStackProject">
@@ -499,10 +499,10 @@
                                                     </td>
                                                     <td>{{
                                                         app.VolumeCounter
-                                                        }}
+                                                        }} volumes
                                                     </td>
                                                     <td>
-                                                        {{app.ApplicationExtension?.VolumeCounter}}
+                                                        {{app.ApplicationExtension?.VolumeCounter}} volumes
                                                     </td>
                                                 </tr>
                                                 <tr *ngIf="app.OpenStackProject">
@@ -770,10 +770,10 @@
                                                     </td>
                                                     <td>{{
                                                         application.VolumeCounter
-                                                        }}
+                                                        }} volumes
                                                     </td>
                                                     <td *ngIf="application.ApplicationExtension">
-                                                        {{application.ApplicationExtension?.VolumeCounter}}
+                                                        {{application.ApplicationExtension?.VolumeCounter}} volumes
                                                     </td>
                                                 </tr>
                                                 <tr *ngIf="application.OpenStackProject">
