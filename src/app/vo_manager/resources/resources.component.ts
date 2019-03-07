@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {VoService} from '../../api-connector/vo.service';
-import {FacilityService} from '../../api-connector/facility.service';
 import * as jspdf from 'jspdf';
 import {Resources} from './resources';
 import html2canvas from 'html2canvas';
-import {ExportAsService, ExportAsConfig} from 'ngx-export-as'
+import {ExportAsConfig, ExportAsService} from 'ngx-export-as'
 
 @Component({
     selector: 'app-resources',
@@ -41,14 +40,16 @@ export class ResourcesComponent implements OnInit {
     public getVoProjectResources() {
         this.voservice.getVoProjectResources().subscribe(res => {
             for (const r in res) {
-                if (r != 'Total') {
+                if (r !== 'Total') {
                     const resource = new Resources(r, res[r]['totalRam'], res[r]['totalCores'],
                         res[r]['totalVms'], res[r]['totalVolumeLimit'], res[r]['totalVolumeCounter'],
                         res[r]['totalObjectStorage'], res[r]['totalFPGA'], res[r]['totalGPU']);
                     this.voResources.push(resource);
                 } else {
-                    this.totalResource = new Resources('Total', res['Total']['totalRam'], res['Total']['totalCores'], res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
-                        res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'], res['Total']['totalFPGA'], res['Total']['totalGPU']);
+                    this.totalResource = new Resources('Total', res['Total']['totalRam'], res['Total']['totalCores'],
+                        res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
+                        res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'],
+                        res['Total']['totalFPGA'], res['Total']['totalGPU']);
                 }
             }
 

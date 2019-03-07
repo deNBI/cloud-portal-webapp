@@ -1,6 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {URLSearchParams} from '@angular/http';
 import {ApiSettings} from './api-settings.service';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';

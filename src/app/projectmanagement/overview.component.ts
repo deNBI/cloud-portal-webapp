@@ -1,8 +1,6 @@
-import {Component, Input, ViewChild} from '@angular/core';
-import {Http} from '@angular/http';
+import {Component, Input} from '@angular/core';
 import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {Project} from './project.model';
-import {ModalDirective} from 'ngx-bootstrap';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
 import {ApiSettings} from '../api-connector/api-settings.service';
@@ -10,7 +8,6 @@ import {GroupService} from '../api-connector/group.service';
 import {UserService} from '../api-connector/user.service';
 import * as moment from 'moment';
 import {VoService} from '../api-connector/vo.service';
-import {catchError} from 'rxjs/operators';
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
@@ -94,7 +91,7 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.userservice.setUserFacilityPassword(facility).subscribe(result => {
             result = result;
             for (const key of details) {
-                if (key[0] == 'Support') {
+                if (key[0] === 'Support') {
                     this.passwordModalEmail = key[1];
                 }
             }
@@ -120,7 +117,7 @@ export class OverviewComponent extends AbstractBaseClasse {
 
                 let expirationDate = undefined;
                 dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
-                if (lifetime != -1) {
+                if (lifetime !== -1) {
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
                     const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
@@ -154,7 +151,8 @@ export class OverviewComponent extends AbstractBaseClasse {
                 let compute_center = null;
 
                 if (facility) {
-                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
+                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'],
+                        facility['compute_center_login'], facility['compute_center_support_mail']);
                 }
 
 
@@ -204,7 +202,7 @@ export class OverviewComponent extends AbstractBaseClasse {
                     const fullName = member['firstName'] + ' ' + member['lastName'];
                     const projectMember = new ProjectMember(user_id, fullName, member_id);
                     projectMember.ElixirId = member['elixirId'];
-                    if (admindIds.indexOf(user_id) != -1) {
+                    if (admindIds.indexOf(user_id) !== -1) {
                         projectMember.IsPi = true;
                     } else {
                         projectMember.IsPi = false;
@@ -227,7 +225,7 @@ export class OverviewComponent extends AbstractBaseClasse {
 
 
             const newProjectApplications = [];
-            if (applications.length == 0) {
+            if (applications.length === 0) {
                 this.loaded = true;
 
             }
@@ -237,7 +235,8 @@ export class OverviewComponent extends AbstractBaseClasse {
 
 
                 const newMemberApplication = new ProjectMemberApplication(
-                    application['id'], membername, dateApplicationCreated.date() + '.' + (dateApplicationCreated.month() + 1) + '.' + dateApplicationCreated.year()
+                    application['id'], membername, dateApplicationCreated.date() + '.' + (dateApplicationCreated.month() + 1)
+                    + '.' + dateApplicationCreated.year()
                 );
                 newProjectApplications.push(newMemberApplication);
 
@@ -258,15 +257,15 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.loaded = false;
         this.application_action_done = false;
         this.groupservice.approveGroupApplication(project, application).subscribe(result => {
-            const application = result;
+            const tmp_application = result;
             this.selectedProject.ProjectMemberApplications = [];
 
-            if (application['state'] == 'APPROVED') {
+            if (tmp_application['state'] === 'APPROVED') {
                 this.application_action_success = true;
-            } else if (application['message']) {
+            } else if (tmp_application['message']) {
                 this.application_action_success = false;
 
-                this.application_action_error_message = application['message'];
+                this.application_action_error_message = tmp_application['message'];
 
 
             } else {
@@ -287,18 +286,18 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.application_action_done = false;
 
         this.groupservice.rejectGroupApplication(project, application).subscribe(result => {
-                const application = result;
+                const tmp_application = result;
                 this.selectedProject.ProjectMemberApplications = [];
 
 
-                if (application['state'] == 'REJECTED') {
+                if (tmp_application['state'] === 'REJECTED') {
                     this.application_action_success = true;
 
 
-                } else if (application['message']) {
+                } else if (tmp_application['message']) {
                     this.application_action_success = false;
 
-                    this.application_action_error_message = application['message'];
+                    this.application_action_error_message = tmp_application['message'];
                 } else {
                     this.application_action_success = false;
                 }
@@ -371,7 +370,7 @@ export class OverviewComponent extends AbstractBaseClasse {
         }
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => {
-                if (result.status == 200) {
+                if (result.status === 200) {
                     this.updateNotificationModal('Success', 'Member ' + firstName + ' ' + lastName + ' added.', true, 'success');
 
                 } else {
@@ -382,7 +381,7 @@ export class OverviewComponent extends AbstractBaseClasse {
             },
             error => {
 
-                if (error['name'] == 'AlreadyMemberException') {
+                if (error['name'] === 'AlreadyMemberException') {
                     this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a member of the project.', true, 'info');
                 } else {
                     this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
@@ -397,36 +396,38 @@ export class OverviewComponent extends AbstractBaseClasse {
         if (this.UserModalFacility && this.UserModalFacility[1]) {
             facility_id = this.UserModalFacility[1]
         }
-        this.groupservice.addMember(groupid, memberid, facility_id).subscribe(result => {
+        this.groupservice.addMember(groupid, memberid, facility_id).subscribe(res => {
             this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
                 result => {
 
-                    if (result.status == 200) {
+                    if (result.status === 200) {
                         this.updateNotificationModal('Success', 'Admin ' + firstName + ' ' + lastName + ' added.', true, 'success');
 
                     } else {
                         this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
                     }
                 }, error => {
-                    if (error['name'] == 'AlreadyAdminException') {
-                        this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a admin of the project.', true, 'info');
+                    if (error['name'] === 'AlreadyAdminException') {
+                        this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a admin of the project.',
+                            true, 'info');
                     } else {
                         this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
                     }
                 })
-        }, error => {
+        }, err => {
             this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
                 result => {
 
-                    if (result.status == 200) {
+                    if (result.status === 200) {
                         this.updateNotificationModal('Success', 'Admin ' + firstName + ' ' + lastName + ' added.', true, 'success');
 
                     } else {
                         this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
                     }
                 }, error => {
-                    if (error['name'] == 'AlreadyAdminException') {
-                        this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a admin of the project.', true, 'info');
+                    if (error['name'] === 'AlreadyAdminException') {
+                        this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a admin of the project.',
+                            true, 'info');
                     } else {
                         this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
                     }
@@ -443,7 +444,7 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
             .then(result => {
 
-                if (result.status == 200) {
+                if (result.status === 200) {
                     this.updateNotificationModal('Success', username + ' promoted to Admin', true, 'success');
 
                 } else {
@@ -463,7 +464,7 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
             .then(result => {
 
-                if (result.status == 200) {
+                if (result.status === 200) {
                     this.updateNotificationModal('Success', name + ' was removed as Admin', true, 'success');
 
                 } else {
@@ -475,13 +476,13 @@ export class OverviewComponent extends AbstractBaseClasse {
     }
 
     public removeMember(groupid: number, memberid: number, name: string) {
-        let facility_id = null
+        let facility_id = null;
         if (this.UserModalFacility && this.UserModalFacility[1]) {
             facility_id = this.UserModalFacility[1]
         }
         this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(result => {
 
-                if (result.status == 200) {
+                if (result.status === 200) {
                     this.updateNotificationModal('Success', 'Member ' + name + ' removed from the group', true, 'success');
 
                 } else {

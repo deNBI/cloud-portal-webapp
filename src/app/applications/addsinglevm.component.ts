@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {NgForm} from '@angular/forms';
 import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {SpecialHardware} from './special_hardware.model'
@@ -49,8 +48,11 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
     public project_application_report_allowed = false;
 
 
-    public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
-        'We would highly appreciate the following citation in your next publication(s): ‘This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).';
+    public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through the funding of ' +
+        'the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
+        'We would highly appreciate the following citation in your next publication(s): ' +
+        '‘This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) ' +
+        '(031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).';
     public acknowledgeModalTitle = 'Acknowledge';
     public acknowledgeModalType = 'info';
 
@@ -79,9 +81,12 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
             .then(result => {
                 const res = result;
                 for (const key in res) {
-                    const shj = res[key];
-                    const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
-                    this.special_hardware.push(sh)
+                    if (res[key]) {
+                        const shj = res[key];
+                        const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'],
+                            shj['special_hardware_name']);
+                        this.special_hardware.push(sh)
+                    }
                 }
             });
     }
@@ -93,12 +98,14 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
      */
     onSubmit(f: NgForm) {
         this.error = null;
-        if (this.wronginput == true) {
-            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+        if (this.wronginput) {
+            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.',
+                true, 'danger');
             this.notificationModalStay = true;
         } else {
             const values = {};
-            values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked).map(hardware => hardware.Id)
+            values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked)
+                .map(hardware => hardware.Id);
             for (const v in f.controls) {
                 if (f.controls[v].value) {
                     values[v] = f.controls[v].value;
@@ -118,7 +125,8 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
                 }
 
 
-                this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+                this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.',
+                    true, 'danger');
                 this.notificationModalStay = true;
             })
         }
@@ -149,7 +157,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
         for (let i = 0; i < types.length; i++) {
             this.collapseList.push(false); // AS FIX
         }
-         for (const t of this.typeList) {
+        for (const t of this.typeList) {
             if (t.long_name === 'Standart Flavor') {
                 this.collapseList[this.typeList.indexOf(t)] = true;
             }
@@ -164,7 +172,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
      * @param {string} shortname
      */
     public checkShortname(shortname: string) {
-        if (/^[a-zA-Z0-9\s]*$/.test(shortname) == false) {
+        if (!/^[a-zA-Z0-9\s]*$/.test(shortname)) {
             this.wronginput = true;
         } else {
             this.wronginput = false;
@@ -203,7 +211,8 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
             }
 
 
-            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.', true, 'danger');
+            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.',
+                true, 'danger');
             this.notificationModalStay = true;
         })
 

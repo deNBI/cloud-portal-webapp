@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {keyService} from '../../api-connector/key.service';
 import {ApiSettings} from '../../api-connector/api-settings.service';
 import {PerunSettings} from '../../perun-connector/connector-settings.service';
@@ -8,7 +8,7 @@ import {Userinfo} from '../../userinfo/userinfo.model';
     selector: '[app-public-key]',
     templateUrl: './public-key.component.html',
     styleUrls: ['./public-key.component.scss'],
-    providers: [ PerunSettings, ApiSettings, keyService]
+    providers: [PerunSettings, ApiSettings, keyService]
 
 })
 export class PublicKeyComponent implements OnInit {
@@ -19,7 +19,7 @@ export class PublicKeyComponent implements OnInit {
     key_visible = false;
 
 
-    constructor( private keyService: keyService) {
+    constructor(private keyservice: keyService) {
     }
 
     ngOnInit() {
@@ -31,7 +31,7 @@ export class PublicKeyComponent implements OnInit {
 
         const newstr = publicKey.replace(re, '%2B');
 
-        this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(result => {
+        this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(result => {
             this.getUserPublicKey();
         });
     }
@@ -48,19 +48,19 @@ export class PublicKeyComponent implements OnInit {
     }
 
     getUserPublicKey() {
-        this.keyService.getKey().subscribe(result => {
+        this.keyservice.getKey().subscribe(result => {
             this.userinfo.PublicKey = result['public_key'];
         })
     }
 
     show_key() {
-        if (this.key_visible == false) {
+        if (!this.key_visible) {
             this.toggleKey();
         }
     }
 
     toggleKey() {
-        if (this.show_key_text == 'Show Public Key') {
+        if (this.show_key_text === 'Show Public Key') {
             this.show_key_text = 'Hide Public Key';
             this.key_visible = true;
         } else {

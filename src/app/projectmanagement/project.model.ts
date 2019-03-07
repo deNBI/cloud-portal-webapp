@@ -29,7 +29,8 @@ export class Project {
     private _LifetimeReached: number;
 
 
-    constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) {
+    constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number,
+                UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) {
         this._Id = Id;
         this._Name = Name;
         this._Description = Description;

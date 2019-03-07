@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="card-block">
-                    <div >
+                    <div>
                         <table class="table table-responsive table-striped">
                             <thead>
                             <tr>
@@ -51,7 +51,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                             <td><input style="width: 110px;" type="text" placeholder="Filter"
+                            <td><input style="width: 110px;" type="text" placeholder="Filter"
                                        name="filterFacilityName"
                                        [(ngModel)]="filterFacilityName"
                                        (ngModelChange)="applyFilter();">
@@ -208,7 +208,7 @@
                     <tr *ngFor="let member of usersModalProjectMembers">
                         <td>{{ member.Id }}</td>
                         <td>{{ member.MemberId }}</td>
-                        <td >{{ member.ElixirId}}</td>
+                        <td>{{ member.ElixirId}}</td>
                         <td>{{member.Email}}</td>
                         <td>{{ member.Username }}</td>
                     </tr>
@@ -441,7 +441,7 @@
                         class="fa fa-spinner fa-spin"
                         style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
                 </div>
-                <div >
+                <div>
                     <table *ngIf="details_loaded" class="table  table-responsivetable-striped">
                         <thead>
                         <th>Description</th>

@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import * as moment from 'moment';
-import {Project} from '../projectmanagement/project.model';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FacilityService} from '../api-connector/facility.service';
 import {UserService} from '../api-connector/user.service';
@@ -20,7 +18,8 @@ import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-clas
     selector: 'app-facility.application',
     templateUrl: 'facility.application.component.html',
     styleUrls: ['facility.application.component.scss'],
-    providers: [FacilityService, UserService, GroupService, PerunSettings, ApplicationStatusService, ApplicationsService, SpecialHardwareService, ApiSettings]
+    providers: [FacilityService, UserService, GroupService, PerunSettings, ApplicationStatusService,
+        ApplicationsService, SpecialHardwareService, ApiSettings]
 
 })
 export class FacilityApplicationComponent extends AbstractBaseClasse implements OnInit {
@@ -101,7 +100,8 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     getComputeCenters() {
         this.facilityService.getComputeCenters().subscribe(result => {
             for (const cc of result) {
-                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
+                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
+                    cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             }
 
@@ -131,73 +131,75 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     getAllApplications(facility: number) {
         // todo check if user is VO Admin
         this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe(res => {
-            if (Object.keys(res).length == 0) {
+            if (Object.keys(res).length === 0) {
                 this.isLoaded = true;
             }
 
             for (const key in res) {
+                if (res[key]) {
+                    const aj = res[key];
+                    const a = new Application();
+                    a.Id = aj['project_application_id'];
 
-                const aj = res[key];
-                const a = new Application();
-                a.Id = aj['project_application_id'];
+                    a.Name = aj['project_application_name'];
+                    a.Shortname = aj['project_application_shortname'];
+                    a.Description = aj['project_application_description'];
+                    a.Lifetime = aj['project_application_lifetime'];
 
-                a.Name = aj['project_application_name'];
-                a.Shortname = aj['project_application_shortname'];
-                a.Description = aj['project_application_description'];
-                a.Lifetime = aj['project_application_lifetime'];
+                    a.VMsRequested = aj['project_application_vms_requested'];
+                    a.RamPerVM = aj['project_application_ram_per_vm'];
+                    a.TotalRam = aj['project_application_total_ram'];
+                    a.TotalCores = aj['project_application_total_cores'];
+                    a.CoresPerVM = aj['project_application_cores_per_vm'];
+                    a.VolumeLimit = aj['project_application_volume_limit'];
+                    a.VolumeCounter = aj['project_application_volume_counter'];
 
-                a.VMsRequested = aj['project_application_vms_requested'];
-                a.RamPerVM = aj['project_application_ram_per_vm'];
-                a.TotalRam = aj['project_application_total_ram'];
-                a.TotalCores = aj['project_application_total_cores'];
-                a.CoresPerVM = aj['project_application_cores_per_vm'];
-                a.VolumeLimit = aj['project_application_volume_limit'];
-                a.VolumeCounter = aj['project_application_volume_counter'];
+                    a.ObjectStorage = aj['project_application_object_storage'];
+                    a.SpecialHardware = aj['project_application_special_hardware'];
 
-                a.ObjectStorage = aj['project_application_object_storage'];
-                a.SpecialHardware = aj['project_application_special_hardware'];
+                    a.Institute = aj['project_application_institute'];
+                    a.Workgroup = aj['project_application_workgroup'];
 
-                a.Institute = aj['project_application_institute'];
-                a.Workgroup = aj['project_application_workgroup'];
+                    a.DateSubmitted = aj['project_application_date_submitted'];
+                    a.DateStatusChanged = aj['project_application_date_status_changed'];
+                    a.User = aj['project_application_user']['username'];
+                    a.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
+                    a.UserEmail = aj['project_application_user']['email'];
+                    a.Status = aj['project_application_status'];
+                    a.Comment = aj['project_application_comment'];
+                    a.PerunId = aj['project_application_perun_id'];
+                    a.OpenStackProject = aj['project_application_openstack_project'];
+                    if (aj['projectapplicationrenewal']) {
+                        const r = new ApplicationExtension();
 
-                a.DateSubmitted = aj['project_application_date_submitted'];
-                a.DateStatusChanged = aj['project_application_date_status_changed'];
-                a.User = aj['project_application_user']['username'];
-                a.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
-                a.UserEmail = aj['project_application_user']['email'];
-                a.Status = aj['project_application_status'];
-                a.Comment = aj['project_application_comment'];
-                a.PerunId = aj['project_application_perun_id'];
-                a.OpenStackProject = aj['project_application_openstack_project'];
-                if (aj['projectapplicationrenewal']) {
-                    const r = new ApplicationExtension();
+                        r.Id = aj['projectapplicationrenewal']['project_application'];
+                        r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                        r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                        r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                        r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                        r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                        r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                        r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                        r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                        r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                        const special_hardware = [];
+                        if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) {
+                            const special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware']
+                                .toString();
 
-                    r.Id = aj['projectapplicationrenewal']['project_application'];
-                    r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-                    r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-                    r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-                    r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                    r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-                    r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-                    r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                    const special_hardware = [];
-                    if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) {
-                        const special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
+                            for (let c = 0; c < special_hardware_string.length; c++) {
+                                const sh = special_hardware_string.charAt(c) === this.FPGA ? 'FPGA' : 'GPU';
+                                special_hardware.push(sh)
 
-                        for (let c = 0; c < special_hardware_string.length; c++) {
-                            const sh = special_hardware_string.charAt(c) == this.FPGA ? 'FPGA' : 'GPU';
-                            special_hardware.push(sh)
+                            }
 
+                            r.SpecialHardware = special_hardware;
                         }
+                        a.ApplicationExtension = r;
 
-                        r.SpecialHardware = special_hardware;
                     }
-                    a.ApplicationExtension = r;
-
+                    this.all_applications.push(a);
                 }
-                this.all_applications.push(a);
 
             }
 
@@ -254,9 +256,11 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             .then(result => {
                 const res = result;
                 for (const key in res) {
-                    const asj = res[key];
-                    const aj = new ApplicationStatus(asj['application_status_id'], asj['application_status_name']);
-                    this.application_status.push(aj)
+                    if (res[key]) {
+                        const asj = res[key];
+                        const aj = new ApplicationStatus(asj['application_status_id'], asj['application_status_name']);
+                        this.application_status.push(aj)
+                    }
                 }
             });
     }
@@ -269,9 +273,12 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             .then(result => {
                 const res = result;
                 for (const key in res) {
-                    const shj = res[key];
-                    const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
-                    this.special_hardware.push(sh)
+                    if (res[key]) {
+                        const shj = res[key];
+                        const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'],
+                            shj['special_hardware_name']);
+                        this.special_hardware.push(sh)
+                    }
                 }
             });
     }
@@ -329,7 +336,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     public getStatusById(id: number): string {
         const s = 'Unknown';
         for (const status of this.application_status) {
-            if (status.Id == id) {
+            if (status.Id === id) {
                 return status.Name;
             }
         }
@@ -345,7 +352,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     public getIdByStatus(name: string): number {
         const s = -1;
         for (const status of this.application_status) {
-            if (status.Name == name) {
+            if (status.Name === name) {
                 return status.Id;
             }
         }

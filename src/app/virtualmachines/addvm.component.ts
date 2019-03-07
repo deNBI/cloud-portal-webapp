@@ -1,18 +1,9 @@
-import {
-    Component, OnInit, TemplateRef, ViewChild,
-    AfterViewInit,
-    ElementRef
-} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Image} from './virtualmachinemodels/image';
-import {ModalDirective} from 'ngx-bootstrap';
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
 import {FlavorService} from '../api-connector/flavor.service';
-import {ImageDetailComponent} from './imagedetail.component';
-import {FormsModule} from '@angular/forms';
 import {forkJoin} from 'rxjs';
-
-import {Metadata} from './virtualmachinemodels/metadata';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {ApplicationsService} from '../api-connector/applications.service'
 import {Userinfo} from '../userinfo/userinfo.model';
@@ -23,16 +14,14 @@ import {ClientService} from '../api-connector/vmClients.service';
 import {Vmclient} from './virtualmachinemodels/vmclient';
 import {Application} from '../applications/application.model';
 import {keyService} from '../api-connector/key.service';
-import {Project} from '../projectmanagement/project.model';
 import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
-import {UserinfoComponent} from '../userinfo/userinfo.component';
-import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
 
 @Component({
     selector: 'new-vm',
     templateUrl: 'addvm.component.html',
-    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, Application, PerunSettings, ApiSettings, keyService, ClientService],
+    providers: [GroupService, ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService,
+        Application, PerunSettings, ApiSettings, keyService, ClientService],
 })
 export class VirtualMachineComponent implements OnInit {
 
@@ -168,7 +157,9 @@ export class VirtualMachineComponent implements OnInit {
     private checkStatusTimeout = 5000;
 
 
-    constructor(private groupService: GroupService, private imageService: ImageService, private applicataionsservice: ApplicationsService, private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService, private  keyService: keyService, private clientservice: ClientService) {
+    constructor(private groupService: GroupService, private imageService: ImageService, private applicataionsservice: ApplicationsService,
+                private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
+                private  keyservice: keyService, private clientservice: ClientService) {
     }
 
 
@@ -191,7 +182,6 @@ export class VirtualMachineComponent implements OnInit {
     }
 
 
-
     /**
      * Validate the public key of the user.
      */
@@ -211,16 +201,16 @@ export class VirtualMachineComponent implements OnInit {
      * Get the public key of the user.
      */
     getUserPublicKey() {
-        this.keyService.getKey().subscribe(result => {
+        this.keyservice.getKey().subscribe(result => {
             this.userinfo.PublicKey = result['public_key'];
         })
     }
 
-     /**
+    /**
      * Toggle information button 1.
      */
     toggleInformationButton(): void {
-        if (this.informationButton == 'Show Details') {
+        if (this.informationButton === 'Show Details') {
             this.informationButton = 'Hide Details';
         } else {
             this.informationButton = 'Show Details';
@@ -232,7 +222,7 @@ export class VirtualMachineComponent implements OnInit {
      * Toggle information button 2.
      */
     toggleInformationButton2(): void {
-        if (this.informationButton2 == 'Show Details') {
+        if (this.informationButton2 === 'Show Details') {
             this.informationButton2 = 'Hide Details';
         } else {
             this.informationButton2 = 'Show Details';
@@ -272,7 +262,7 @@ export class VirtualMachineComponent implements OnInit {
 
 
                 } else {
-                    if (res['Waiting'] == 'PORT_CLOSED') {
+                    if (res['Waiting'] === 'PORT_CLOSED') {
                         this.checking_vm_status = 'Active';
                         this.checking_vm_status_progress_bar = '';
                         this.creating_vm_prograss_bar = '';
@@ -303,7 +293,8 @@ export class VirtualMachineComponent implements OnInit {
             const flavor_fixed = flavor.replace(re, '%2B');
 
 
-            this.virtualmachineservice.startVM(flavor_fixed, image, servername, project, projectid, this.volumeName, this.diskspace.toString()).subscribe(data => {
+            this.virtualmachineservice.startVM(flavor_fixed, image, servername, project, projectid,
+                this.volumeName, this.diskspace.toString()).subscribe(data => {
 
 
                 if (data['Created']) {
@@ -340,7 +331,7 @@ export class VirtualMachineComponent implements OnInit {
         this.client_checked = false;
         this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => {
             this.selectedProjectClient = res;
-            if (res['status'] == 'Connected') {
+            if (res['status'] === 'Connected') {
                 this.client_avaiable = true;
 
                 this.getSelectedProjectDiskspace();
@@ -364,7 +355,7 @@ export class VirtualMachineComponent implements OnInit {
      * Reset the data attribute.
      */
     resetData(): void {
-        if (this.data == 'INVALID') {
+        if (this.data === 'INVALID') {
             return;
         }
         this.data = '';
@@ -376,7 +367,7 @@ export class VirtualMachineComponent implements OnInit {
      * Gets all groups of the user and his key.
      */
     initializeData() {
-        forkJoin(this.groupService.getMemberGroupsStatus(), this.keyService.getKey()).subscribe(result => {
+        forkJoin(this.groupService.getMemberGroupsStatus(), this.keyservice.getKey()).subscribe(result => {
             this.userinfo.PublicKey = result[1]['public_key'];
             this.validatePublicKey();
             const membergroups = result[0];
@@ -408,7 +399,7 @@ export class VirtualMachineComponent implements OnInit {
             if (result['Diskspace']) {
 
                 this.selectedProjectDiskspaceUsed = result['Diskspace'];
-            } else if (result['Diskspace'] == 0 || result['Diskspace'] == null) {
+            } else if (result['Diskspace'] === 0 || result['Diskspace'] == null) {
                 this.selectedProjectDiskspaceUsed = 0;
             }
 
@@ -459,7 +450,7 @@ export class VirtualMachineComponent implements OnInit {
             if (result['NumberVms']) {
 
                 this.selectedProjectVmsUsed = result['NumberVms'];
-            } else if (result['NumberVms'] == 0 || result['NumberVms'] == null) {
+            } else if (result['NumberVms'] === 0 || result['NumberVms'] == null) {
                 this.selectedProjectVmsUsed = 0;
             }
 

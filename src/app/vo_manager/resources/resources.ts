@@ -11,7 +11,8 @@ export class Resources {
     private _totalGPU = 0;
 
 
-    constructor(resource_name: string, totalRam: number, totalCores: number, totalVms: number, totalVolumeLimit: number, totalVolumeCounter: number, totalObjectStorage: number, totalFPGA: number, totalGPU: number) {
+    constructor(resource_name: string, totalRam: number, totalCores: number, totalVms: number, totalVolumeLimit: number,
+                totalVolumeCounter: number, totalObjectStorage: number, totalFPGA: number, totalGPU: number) {
         this._resource_name = resource_name;
         this._totalRam = totalRam;
         this._totalCores = totalCores;

@@ -1,20 +1,15 @@
-import {Component, Input, ViewChild} from '@angular/core';
-import {Http} from '@angular/http';
+import {Component, Input} from '@angular/core';
 import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {Project} from '../projectmanagement/project.model';
-import {ModalDirective} from 'ngx-bootstrap';
 import {ProjectMember} from '../projectmanagement/project_member.model'
 import {environment} from '../../environments/environment'
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {GroupService} from '../api-connector/group.service';
 import {UserService} from '../api-connector/user.service';
 import {FacilityService} from '../api-connector/facility.service';
-import {FormsModule} from '@angular/forms';
-import {map} from 'rxjs/operators';
 
 import * as moment from 'moment';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
-import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
 import {FilterBaseClass} from '../shared_modules/baseClass/filter-base-class';
 
 @Component({
@@ -80,7 +75,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
     }
 
     checkFilter(project: Project) {
-        if (this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
+        if (this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
+            && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
             return true
         } else {
             return false
@@ -103,7 +99,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
 
                 let expirationDate = undefined;
                 dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
-                if (lifetime != -1) {
+                if (lifetime !== -1) {
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
                     const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
@@ -131,7 +127,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                 const dateCreated = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
                 const dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
                 const groupid = group['id'];
-                const facility = group['compute_center'];
+                const tmp_facility = group['compute_center'];
                 let shortname = group['shortname'];
                 let compute_center = null;
                 const lifetime = group['lifetime'];
@@ -141,8 +137,10 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                 if (!shortname) {
                     shortname = group['name']
                 }
-                if (facility) {
-                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
+                if (tmp_facility) {
+                    compute_center = new ComputecenterComponent(tmp_facility['compute_center_facility_id'],
+                        tmp_facility['compute_center_name'],
+                        tmp_facility['compute_center_login'], tmp_facility['compute_center_support_mail']);
                 }
 
                 const newProject = new Project(
@@ -156,7 +154,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                     compute_center);
                 newProject.Status = group['status'];
 
-                if (lifetime != -1) {
+                if (lifetime !== -1) {
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
                     const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
@@ -182,9 +180,10 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
     }
 
     sendMailToFacility(facility: number, subject: string, message: string, reply?: string) {
-        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => {
+        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message),
+            encodeURIComponent(reply)).subscribe(result => {
 
-                if (result.status == 201) {
+                if (result.status === 201) {
                     this.emailStatus = 1;
                 } else {
                     this.emailStatus = 2;

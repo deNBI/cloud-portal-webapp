@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {LocationStrategy, HashLocationStrategy} from '@angular/common';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 import {AppComponent} from './app.component';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
@@ -19,7 +19,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from './app.routing';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {ExportAsModule} from 'ngx-export-as';
-
 // Layouts
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {SimpleLayoutComponent} from './layouts/simple-layout.component';

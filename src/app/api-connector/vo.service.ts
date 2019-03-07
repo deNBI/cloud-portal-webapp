@@ -66,7 +66,7 @@ export class VoService {
         }).pipe(catchError((error: any) => throwError(error.error)));
     }
 
-       getVoProjectResources(): Observable<any> {
+    getVoProjectResources(): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/resources/', {
             withCredentials: true,
             headers: header
@@ -74,8 +74,8 @@ export class VoService {
     }
 
 
-     setProjectStatus(groupid: number, status: number): Observable<any> {
-                const params = new HttpParams().set('status', status.toString());
+    setProjectStatus(groupid: number, status: number): Observable<any> {
+        const params = new HttpParams().set('status', status.toString());
 
         return this.http.post(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/status/', params, {
             withCredentials: true,
@@ -111,7 +111,7 @@ export class VoService {
      * @param {number} groupid id of the the group
      * @returns {Observable<any>}
      */
-     getVoGroupRichMembers(groupid: number): Observable<any> {
+    getVoGroupRichMembers(groupid: number): Observable<any> {
         return this.http.get(this.settings.getApiBaseURL() + 'vo/projects/' + groupid + '/members/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error.error)));

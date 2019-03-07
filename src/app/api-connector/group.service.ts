@@ -4,7 +4,6 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
-import {Vmclient} from '../virtualmachines/virtualmachinemodels/vmclient';
 
 const header = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -16,9 +15,6 @@ export class GroupService {
 
     constructor(private http: HttpClient, private settings: ApiSettings) {
     }
-
-
-
 
 
     getFacilityByGroup(groupid: string): Observable<any> {
@@ -39,8 +35,6 @@ export class GroupService {
     }
 
 
-
-
     assignGroupToResource(groupid: string, computecenter: string): Observable<any> {
         const params = new HttpParams().set('compute_center', computecenter)
 
@@ -52,7 +46,7 @@ export class GroupService {
 
     }
 
-     removeGroupFromResource(groupid: string): Observable<any> {
+    removeGroupFromResource(groupid: string): Observable<any> {
 
         return this.http.delete(this.settings.getApiBaseURL() + 'projects/' + groupid + '/resource/', {
             withCredentials: true,
@@ -123,7 +117,7 @@ export class GroupService {
     }
 
 
-    removeMember(group_id: number, member_id: number,  facility_id?: number): Observable<any> {
+    removeMember(group_id: number, member_id: number, facility_id?: number): Observable<any> {
         const params = new HttpParams();
 
 
@@ -305,8 +299,6 @@ export class GroupService {
     }
 
 
-
-
     setLifetime(groupid: string, lifetime: string): Observable<any> {
         const params = new HttpParams().set('lifetime', lifetime);
 
@@ -392,7 +384,7 @@ export class GroupService {
 
     getGroupApprovedVms(groupid: string): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/'  + groupid + '/attributes/approvedVms/', {
+        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/attributes/approvedVms/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error.error)));
 

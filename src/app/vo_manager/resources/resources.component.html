@@ -19,10 +19,10 @@
                        style="width: 100%">
                     <thead>
                     <tr>
-                    <th>{{today | date:'dd-MM-yyyy'}}</th>
+                        <th>{{today | date:'dd-MM-yyyy'}}</th>
 
-                    <th *ngFor="let r of voResources">{{r.resource_name}}</th>
-                    <th>{{totalResource.resource_name}}</th>
+                        <th *ngFor="let r of voResources">{{r.resource_name}}</th>
+                        <th>{{totalResource.resource_name}}</th>
                     </tr>
                     </thead>
                     <tbody>

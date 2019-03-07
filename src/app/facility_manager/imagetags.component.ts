@@ -1,5 +1,5 @@
 import {ImageService} from '../api-connector/image.service';
-import {Component, Input, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
     templateUrl: 'imageTag.component.html',
@@ -11,7 +11,7 @@ export class ImageTagComponent {
     imageTags: [string, string][]
 
 
-    constructor(private imageService: ImageService, ) {
+    constructor(private imageService: ImageService,) {
         this.imageService.getImageTags().subscribe(result => {
             this.imageTags = result;
             this.isLoaded = true;
@@ -26,14 +26,13 @@ export class ImageTagComponent {
         })
     }
 
-        deleteTag(tag: string) {
+    deleteTag(tag: string) {
         this.imageService.deleteImageTag(tag).subscribe(result => {
             this.imageService.getImageTags().subscribe(result => {
                 this.imageTags = result
             })
         })
     }
-
 
 
 }

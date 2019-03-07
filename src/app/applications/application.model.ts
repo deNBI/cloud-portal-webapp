@@ -1,6 +1,5 @@
 import {ApplicationExtension} from './application_extension.model';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
-import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 
 
 export class Application {
@@ -37,14 +36,20 @@ export class Application {
 
 
     private _Dissemination: boolean;
-    private _CurrentFlavors: { [id: string]: { counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number } };
+    private _CurrentFlavors: {
+        [id: string]: {
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        }
+    };
 
 
     constructor() {
         this._CurrentFlavors = {};
     }
 
-    public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number): void {
+    public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number,
+                              vcpus: number, gpu: number, epheremal_disk: number): void {
         this._CurrentFlavors[name] = {
             counter: counter,
             tag: tag,
@@ -55,7 +60,8 @@ export class Application {
             epheremal_disk: epheremal_disk
         };
     }
-     get Dissemination(): boolean {
+
+    get Dissemination(): boolean {
         return this._Dissemination;
     }
 
@@ -63,11 +69,21 @@ export class Application {
         this._Dissemination = value;
     }
 
-    get CurrentFlavors(): { [id: string]: { counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number } } {
+    get CurrentFlavors(): {
+        [id: string]: {
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        }
+    } {
         return this._CurrentFlavors
     }
 
-    set CurrentFlavors(value: { [id: string]: { counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number } }) {
+    set CurrentFlavors(value: {
+        [id: string]: {
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        }
+    }) {
         this._CurrentFlavors = value;
     }
 

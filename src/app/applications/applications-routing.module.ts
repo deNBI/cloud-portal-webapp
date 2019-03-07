@@ -1,35 +1,35 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 
-import { ApplicationsComponent } from './applications.component';
+import {ApplicationsComponent} from './applications.component';
 
 import {AddsinglevmComponent} from './addsinglevm.component';
 import {AddcloudapplicationComponent} from './addcloudapplication.component';
 
 
 const routes: Routes = [
-  {
-    path: '',
-    component: ApplicationsComponent,
-    data: {
-      title: 'Application overview'
-    }
+    {
+        path: '',
+        component: ApplicationsComponent,
+        data: {
+            title: 'Application overview'
+        }
 
-  },
-  {
-    path: 'newCloudApplication',
-    component: AddcloudapplicationComponent,
-    data: {
-      title: 'New Application'
-    }
+    },
+    {
+        path: 'newCloudApplication',
+        component: AddcloudapplicationComponent,
+        data: {
+            title: 'New Application'
+        }
 
-  },
+    },
     {
         path: 'newSingleVmApplication',
-    component: AddsinglevmComponent,
-    data: {
-      title: 'New Application'
-    }
+        component: AddsinglevmComponent,
+        data: {
+            title: 'New Application'
+        }
 
 
     }
@@ -37,7 +37,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
-export class ApplicationsRoutingModule {}
+export class ApplicationsRoutingModule {
+}

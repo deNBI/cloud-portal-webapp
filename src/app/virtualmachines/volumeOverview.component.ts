@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Volume} from './virtualmachinemodels/volume';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
@@ -150,7 +150,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * Calc diskspace sum of selected project diskspace and additional diskspace of new volume.
      */
     calcDiskSpaceSum(): void {
-        this.selectedProjectDiskSpaceSum = parseInt(this.diskspace.toString()) + parseInt(this.selectedProjectDiskspaceUsed.toString());
+        this.selectedProjectDiskSpaceSum = parseInt(this.diskspace.toString(), 10) + parseInt(this.selectedProjectDiskspaceUsed.toString(), 10);
     }
 
 
@@ -173,7 +173,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             if (result['Diskspace']) {
 
                 this.selectedProjectDiskspaceUsed = result['Diskspace'];
-            } else if (result['Diskspace'] == 0 || result['Diskspace'] == null) {
+            } else if (result['Diskspace'] === 0 || result['Diskspace'] == null) {
                 this.selectedProjectDiskspaceUsed = 0;
             }
 
@@ -215,8 +215,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
         if (instance_id) {
             this.volume_action_status = this.Volume_Action_Statuses.DETACHING_VOLUME;
-            this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
-                if (result['Deleted'] && result['Deleted'] === true) {
+            this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(res => {
+                if (res['Deleted'] && res['Deleted'] === true) {
                     this.volume_action_status = this.Volume_Action_Statuses.WAITING;
                 }
 
@@ -270,7 +270,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     renameVolume(volume_id: string, new_volume_name: string) {
         this.volume_action_status = this.Volume_Action_Statuses.CHANGING_NAME;
         this.vmService.renameVolume(volume_id, new_volume_name).subscribe(result => {
-                if (result['volume_name'] == new_volume_name) {
+                if (result['volume_name'] === new_volume_name) {
                     this.volume_action_status = this.Volume_Action_Statuses.CHANGING_NAME_SUCESSFULL;
                 } else {
                     this.volume_action_status = this.Volume_Action_Statuses.ERROR;
@@ -315,9 +315,9 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
                 const volume_id = result['Created'];
                 this.volume_action_status = Volume_Action_Statuses.ATTACHING;
 
-                this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
+                this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(res => {
 
-                    if (result['Attached'] && result['Attached'] === true) {
+                    if (res['Attached'] && res['Attached'] === true) {
                         this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED;
                     } else {
                         this.volume_action_status = Volume_Action_Statuses.ERROR;

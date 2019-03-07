@@ -1,12 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {VoService} from '../api-connector/vo.service';
 import {Project} from '../projectmanagement/project.model';
 import {ProjectMember} from '../projectmanagement/project_member.model';
 import {GroupService} from '../api-connector/group.service';
 import * as moment from 'moment';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
-import {Application} from '../applications/application.model';
-import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
 import {FilterBaseClass} from '../shared_modules/baseClass/filter-base-class';
 
 @Component({
@@ -66,11 +64,12 @@ export class VoOverviewComponent extends FilterBaseClass {
     }
 
     checkFilter(project: Project) {
-         let facNameFilter = true;
-         if (project.ComputeCenter) {
-                facNameFilter = this.isFilterFacilityName(project.ComputeCenter.Name)
-            }
-        if (facNameFilter && this.isFilterProjectStatus(project.Status, project.LifetimeReached)  && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
+        let facNameFilter = true;
+        if (project.ComputeCenter) {
+            facNameFilter = this.isFilterFacilityName(project.ComputeCenter.Name)
+        }
+        if (facNameFilter && this.isFilterProjectStatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name)
+            && this.isFilterProjectId(project.Id)) {
             return true;
 
         } else {
@@ -94,25 +93,27 @@ export class VoOverviewComponent extends FilterBaseClass {
     }
 
     sendNewsletterToVo(subject: string, message: string, reply?: string) {
-        this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => {
-            if (result == 1) {
-                this.emailStatus = 1;
-            } else {
-                this.emailStatus = 2;
-            }
-        })
+        this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
+            .subscribe(result => {
+                if (result === 1) {
+                    this.emailStatus = 1;
+                } else {
+                    this.emailStatus = 2;
+                }
+            })
 
     }
 
 
     sendMailToVo(subject: string, message: string, reply?: string) {
-        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply)).subscribe(result => {
-            if (result == 1) {
-                this.emailStatus = 1;
-            } else {
-                this.emailStatus = 2;
-            }
-        })
+        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
+            .subscribe(result => {
+                if (result === 1) {
+                    this.emailStatus = 1;
+                } else {
+                    this.emailStatus = 2;
+                }
+            })
 
     }
 
@@ -157,7 +158,7 @@ export class VoOverviewComponent extends FilterBaseClass {
 
                 let expirationDate = undefined;
                 dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
-                if (lifetime != -1) {
+                if (lifetime !== -1) {
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
                     const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
@@ -192,7 +193,8 @@ export class VoOverviewComponent extends FilterBaseClass {
                 let compute_center = null;
 
                 if (facility) {
-                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
+                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'],
+                        facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
                 }
 
 
@@ -208,7 +210,7 @@ export class VoOverviewComponent extends FilterBaseClass {
                 newProject.Lifetime = lifetime;
                 newProject.Status = group['status'];
                 let expirationDate = undefined;
-                if (lifetime != -1) {
+                if (lifetime !== -1) {
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
                     const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 

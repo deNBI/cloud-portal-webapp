@@ -96,11 +96,12 @@ export class FacilityService {
         const params = new HttpParams().set('action', 'approve');
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/', params, {
-            withCredentials: true,
-            headers: header,
-            observe: 'response'
-        }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/',
+            params, {
+                withCredentials: true,
+                headers: header,
+                observe: 'response'
+            }).pipe(catchError((error: any) => throwError(error)));
 
 
     }
@@ -115,11 +116,12 @@ export class FacilityService {
         const params = new HttpParams().set('action', 'decline');
 
 
-        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/', params, {
-            withCredentials: true,
-            headers: header,
-            observe: 'response'
-        }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/',
+            params, {
+                withCredentials: true,
+                headers: header,
+                observe: 'response'
+            }).pipe(catchError((error: any) => throwError(error)));
 
 
     }

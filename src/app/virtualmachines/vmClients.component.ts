@@ -1,5 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
 import {Vmclient} from './virtualmachinemodels/vmclient';
 import {ClientService} from '../api-connector/vmClients.service';
 import {PerunSettings} from '../perun-connector/connector-settings.service';
@@ -46,7 +45,8 @@ export class ClientOverviewComponent implements OnInit {
      */
     isLoaded = false;
 
-    constructor(private facilityService: FacilityService, private userservice: UserService, private groupservice: GroupService, private clientservice: ClientService, private perunsettings: PerunSettings) {
+    constructor(private facilityService: FacilityService, private userservice: UserService, private groupservice: GroupService,
+                private clientservice: ClientService, private perunsettings: PerunSettings) {
 
     }
 
@@ -68,7 +68,7 @@ export class ClientOverviewComponent implements OnInit {
         }).then(result => {
             // check if user is a Vo admin so we can serv according buttons
             for (const vkey in admin_vos) {
-                if (admin_vos[vkey]['id'] == this.perunsettings.getPerunVO().toString()) {
+                if (admin_vos[vkey]['id'] === this.perunsettings.getPerunVO().toString()) {
                     this.is_vo_admin = true;
                 }
             }
@@ -94,7 +94,8 @@ export class ClientOverviewComponent implements OnInit {
     getComputeCenters() {
         this.facilityService.getComputeCenters().subscribe(result => {
             for (const cc of result) {
-                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'], cc['compute_center_login'], cc['compute_center_support_mail'])
+                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
+                    cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             }
 
@@ -110,9 +111,9 @@ export class ClientOverviewComponent implements OnInit {
         if (host && port) {
             this.clientservice.checkClient(host, port).subscribe(data => {
 
-                if (data['status'] == false) {
+                if (!data['status']) {
                     this.checkStatus = 'No Connection';
-                } else if (data['status'] == true) {
+                } else if (data['status']) {
                     this.checkStatus = 'Connected';
                 } else {
                     this.checkStatus = 'check failed';

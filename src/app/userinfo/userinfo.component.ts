@@ -25,7 +25,7 @@ export class UserinfoComponent implements OnInit {
     emailChange = '';
     freemium: boolean;
 
-    constructor(private groupService: GroupService, private userservice: UserService, private keyService: keyService) {
+    constructor(private groupService: GroupService, private userservice: UserService, private keyservice: keyService) {
         this.userinfo = new Userinfo();
         this.getUserinfo();
 
@@ -71,7 +71,7 @@ export class UserinfoComponent implements OnInit {
 
         const newstr = publicKey.replace(re, '%2B');
 
-        this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(result => {
+        this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(result => {
             this.getUserPublicKey();
         });
     }
@@ -89,7 +89,7 @@ export class UserinfoComponent implements OnInit {
 
 
     getUserPublicKey() {
-        this.keyService.getKey().subscribe(result => {
+        this.keyservice.getKey().subscribe(result => {
             this.userinfo.PublicKey = result['public_key'];
             this.isLoaded = true;
         })
@@ -129,13 +129,13 @@ export class UserinfoComponent implements OnInit {
 
             })
         });
-        this.userservice.getPreferredMailUser().subscribe(res => {
-            this.userinfo.Email = res['preferredEmail'];
+        this.userservice.getPreferredMailUser().subscribe(r => {
+            this.userinfo.Email = r['preferredEmail'];
             this.userservice.getPendingPreferredMailUser().subscribe(res => {
-                this.userinfo.PendingEmails = res['pendingEmails']
+                this.userinfo.PendingEmails = res['pendingEmails'];
                 this.userservice.getNewsletterSubscription().subscribe(result => {
                     result = result['subscribed'];
-                    if (result.toString() == 'true') {
+                    if (result.toString() === 'true') {
                         this.newsletter_subscribed = true;
                     } else {
                         this.newsletter_subscribed = false;
@@ -151,13 +151,13 @@ export class UserinfoComponent implements OnInit {
     }
 
     show_key() {
-        if (this.key_visible == false) {
+        if (!this.key_visible) {
             this.toggleKey();
         }
     }
 
     toggleKey() {
-        if (this.key == 'Show Public Key') {
+        if (this.key === 'Show Public Key') {
             this.key = 'Hide Public Key';
             this.key_visible = true;
         } else {
