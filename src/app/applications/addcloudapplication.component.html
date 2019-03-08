@@ -148,20 +148,29 @@
                         </div>-->
 
                         <div *ngFor="let t of typeList">
-                            <div class="card">
+                            <div class="card"
+                                >
                                 <!--(click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"-->
-                                <div id="flavor-card" class="card-header">
-                                    {{t.long_name}}
+                                <div  (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]" style="cursor: pointer;"  id="flavor-card" class="card-header">
+
+
+                                        {{t.long_name}}
+
+                                  <i *ngIf="collapseList[typeList.indexOf(t)]" style="float: right;font-size: 25px" class="icon-arrow-up"></i>
+                                  <i *ngIf="!collapseList[typeList.indexOf(t)]" style="float: right;font-size: 25px" class="icon-arrow-down"></i>
+
+
+
                                 </div>
                                 <!--*ngIf="collapseList[typeList.indexOf(t)]"-->
-                                <div class="form-group card-body">
+                                <div *ngIf="collapseList[typeList.indexOf(t)]" class="form-group card-body">
                                     <div *ngFor="let f of flavorList">
                                         <div *ngIf="f.type.shortcut == t.shortcut"
                                              class="form-group row">
                                             <label class="col-md-4 form-control-label"><strong>{{f.name}}</strong><br>
                                                 Number of cores: {{f.vcpus}}<br>
                                                 RAM: {{f.ram}} GB <br>
-                                                Ephemeral disk: {{f.epheremal_disk}} GB <br>
+
                                                 <span *ngIf="f.type.shortcut == 'GPU'">
                                                 GPU: {{f.gpu}}
                                             </span></label>
@@ -263,7 +272,7 @@
                         </div>
 
 
-                        <div class="form-group row">
+                        <!--div class="form-group row">
                             <label class="col-md-4 form-control-label">Special Hardware <i
                                     data-balloon="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."
                                     data-balloon-pos="down"
@@ -281,7 +290,7 @@
                                 </div>
                                 <span class="help-block">Which special Hardware would you need?</span>
                             </div>
-                        </div>
+                        </div-->
                         <div class="form-group row">
                             <label class="col-md-4 form-control-label"
                                    for="text-input"><strong>Comment</strong></label>
