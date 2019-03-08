@@ -77,7 +77,7 @@ export class GroupService {
         })
     }
 
-    addMember(group_id: number, member_id: number, facility_id?: string): Observable<any> {
+    addMember(group_id: string, member_id: string, facility_id?: string): Observable<any> {
         const params: HttpParams = new HttpParams();
         if (facility_id) {
             params.set('facility_id', facility_id)
@@ -92,7 +92,7 @@ export class GroupService {
         })
     }
 
-    addAdmin(group_id: number, user_id: number, facility_id?: string): Observable<any> {
+    addAdmin(group_id: string, user_id: string, facility_id?: string): Observable<any> {
         const params: HttpParams = new HttpParams();
 
         if (facility_id) {
@@ -154,9 +154,9 @@ export class GroupService {
 
     }
 
-    setPerunGroupStatus(group_id: number, status: number): Observable<any> {
+    setPerunGroupStatus(group_id: string, status: string): Observable<any> {
 
-        const params: HttpParams = new HttpParams().set('status', status.toString());
+        const params: HttpParams = new HttpParams().set('status', status);
 
         return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/attributes/status/`, params, {
             withCredentials: true,
@@ -359,7 +359,7 @@ export class GroupService {
 
     }
 
-    setPerunGroupAttributes(application_id: number, groupid: number): Observable<any> {
+    setPerunGroupAttributes(application_id: string, groupid: string): Observable<any> {
         const params: HttpParams = new HttpParams()
             .set('application_id', application_id.toString());
 

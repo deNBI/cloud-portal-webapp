@@ -143,7 +143,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 private flavorService: FlavorService) {
 
         super();
-        this.voService.isVo().subscribe(result => {
+        this.voService.isVo().subscribe((result: { [key: string]: boolean }) => {
             this.is_vo_admin = result['Is_Vo_Manager'];
             this.getUserApplications();
             this.getApplicationStatus();
@@ -250,10 +250,13 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Gets all available compute centers and saves them in the computeCenters attribute.
      */
     getComputeCenters(): void {
-        this.facilityService.getComputeCenters().subscribe(result => {
+        this.facilityService.getComputeCenters().subscribe((result: [{ [key: string]: string }]) => {
             for (const cc of result) {
-                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
-                    cc['compute_center_login'], cc['compute_center_support_mail'])
+                const compute_center: ComputecenterComponent = new ComputecenterComponent(
+                    cc['compute_center_facility_id'],
+                    cc['compute_center_name'],
+                    cc['compute_center_login'],
+                    cc['compute_center_support_mail']);
                 this.computeCenters.push(compute_center)
             }
 
@@ -272,7 +275,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Sets the selected application.
      * @param application
      */
-    setSelectedApplication(application: any): void {
+    setSelectedApplication(application: Application): void {
         this.selectedApplication = application;
 
     }
@@ -307,8 +310,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             project_application_renewal_volume_limit: this.selectedApplication.VolumeLimit,
             project_application_renewal_volume_counter: this.selectedApplication.VolumeCounter,
             project_application_renewal_object_storage: this.selectedApplication.ObjectStorage,
-            project_application_renewal_comment: this.selectedApplication.Comment,
-
+            project_application_renewal_comment: this.selectedApplication.Comment
 
         })
 
@@ -320,14 +322,14 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      */
     getUserApplications(): void {
         this.applicationsservice
-            .getUserApplications().subscribe(result => {
-            const res = result;
+            .getUserApplications().subscribe((result: [{ [key: string]: string }]) => {
+            const res: [{ [key: string]: string }] = result;
             if (Object.keys(res).length === 0) {
                 this.isLoaded_userApplication = true;
             }
             for (const key in res) {
-                if (res[key]) {
-                    const aj = res[key];
+                if (res.hasOwnProperty(key)) {
+                    const aj: object = res[key];
                     const a: Application = new Application();
                     a.Id = aj['project_application_id'];
                     a.Name = aj['project_application_name'];
@@ -344,14 +346,12 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                     a.VolumeLimit = aj['project_application_volume_limit'];
                     a.VolumeCounter = aj['project_application_volume_counter'];
                     a.ObjectStorage = aj['project_application_object_storage'];
-                    a.SpecialHardware = aj['project_application_special_hardware'];
                     a.OpenStackProject = aj['project_application_openstack_project'];
                     a.Comment = aj['project_application_comment'];
                     a.PerunId = aj['project_application_perun_id'];
                     a.DateApproved = aj['project_application_date_approved'];
                     a.Dissemination = aj['project_application_report_allowed'];
                     a.Horizon2020 = aj['project_application_horizon2020'];
-
 
                     for (const f of aj['flavors']) {
                         a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
@@ -425,15 +425,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         }
 
         return `${sa.DateApproved} - ${this.getEndDate(sa.DateApproved, sa.Lifetime)}`;
-    }
-
-    /**
-     * Returns a boolean indicating if the special Hardware which is represented by nums is in use.
-     * @param nums number representing special Hardware
-     * @param application application where it might be in use
-     */
-    specialHardwareInUse(nums: number, application: Application): boolean {
-        return (application.SpecialHardware.toString().includes(nums.toString()));
     }
 
     /**
@@ -582,7 +573,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 const facilityname: string = res['Facility'];
                 const facilityId: number = res['FacilityId'];
 
-                const cc: ComputecenterComponent = new ComputecenterComponent(facilityId, facilityname, login, suport);
+                const cc: ComputecenterComponent = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
                 app.ComputeCenter = cc
 
             })
@@ -647,7 +638,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 let requestExtensionTotalRam: number = 0;
 
                 for (const f of aj['projectapplicationrenewal']['flavors']) {
-                    r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+                    r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk);
                     requestExtensionTotalCores += f.vcpus * f.counter;
                     requestExtensionTotalRam += f.ram * f.counter
 
@@ -751,8 +742,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Request an extension from an application.
      * @param data
      */
-    public requestExtension(data): void {
-        this.applicationsservice.requestRenewal(data).subscribe(result => {
+    public requestExtension(data: { [key: string]: string | number | boolean }): void {
+        this.applicationsservice.requestRenewal(data).subscribe((result: { [key: string]: string }) => {
             if (result['Error']) {
                 this.extension_status = 2
             } else {
@@ -779,7 +770,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string): void {
         if (!this.getCollapseStatus(collapse_id)) {
             if (!(elixir_id in this.application_user)) {
-                this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe(result => {
+                this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe((result: { [key: string]: string }) => {
 
                     const name: string = `${result['firstName']} ${result['lastName']}`;
                     const appuser: { [id: string]: string } = {};
@@ -794,12 +785,14 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
     /**
      * Approve an extension request.
-     * @param {number} application_id
+     * @param {Application} app
      */
     public approveExtension(app: Application): void {
 
         if (app.OpenStackProject) {
-            this.applicationstatusservice.setApplicationStatus(app.Id, this.WAIT_FOR_EXTENSION_STATUS).subscribe(() => {
+            this.applicationstatusservice.setApplicationStatus(
+                app.Id.toString(),
+                this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe(() => {
                 this.extension_status = 5;
                 this.getApplication(app);
                 this.getUserApplication(app);
@@ -813,7 +806,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 }
             })
         } else {
-            this.applicationsservice.approveRenewal(app.Id).subscribe(result => {
+            this.applicationsservice.approveRenewal(app.Id).subscribe((result: { [key: string]: string }) => {
                 if (result['Error']) {
                     this.extension_status = 2
                 } else {
@@ -821,7 +814,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 }
                 this.getApplication(this.selectedApplication);
 
-                for (let appl of this.user_applications) {
+                for (const appl of this.user_applications) {
                     if (this.selectedApplication.PerunId === appl.PerunId) {
                         this.getUserApplication(appl);
                         break;
@@ -837,7 +830,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @param {number} application_id
      */
     public declineExtension(application_id: number): void {
-        this.applicationsservice.declineRenewal(application_id).subscribe(result => {
+        this.applicationsservice.declineRenewal(application_id).subscribe((result: { [key: string]: string }) => {
             if (result != null) {
                 this.extension_status = 2
             } else {
@@ -906,27 +899,32 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @param application_id
      * @param compute_center
      */
-    public createOpenStackProjectGroup(name: string, description: string, manager_elixir_id: string, application_id: number, compute_center: string): void {
+    public createOpenStackProjectGroup(name: string,
+                                       description: string,
+                                       manager_elixir_id: string,
+                                       application_id: string,
+                                       compute_center: string): void {
         // get memeber id in order to add the user later as the new member and manager of the group
-        let manager_member_id: number;
-        let manager_member_user_id: number;
-        let new_group_id: number;
+        let manager_member_id: string;
+        let manager_member_user_id: string;
+        let new_group_id: string;
 
-        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => {
-                const member = member_raw;
+        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(
+            (member_raw: { [key: string]: string }) => {
+                const member: { [key: string]: string } = member_raw;
                 manager_member_id = member['id'];
                 manager_member_user_id = member['userId'];
-                this.groupservice.createGroup(name, description).subscribe(group_raw => {
-                    const group = group_raw;
+                this.groupservice.createGroup(name, description).subscribe((group: { [key: string]: string }) => {
                     new_group_id = group['id'];
                     this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
                     this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(() => {
                         this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => {
                             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(() => {
                                 if (compute_center !== 'undefined') {
-
-                                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION)
-                                        .subscribe(result => {
+                                    this.applicationstatusservice.setApplicationStatus(
+                                        application_id,
+                                        this.application_statuses.WAIT_FOR_CONFIRMATION.toString())
+                                        .subscribe((result: { [key: string]: string }) => {
                                                 if (result['Error']) {
                                                     this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
@@ -934,16 +932,15 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                                     this.updateNotificationModal('Success', 'The new project was created', true, 'success');
                                                 }
                                                 for (const app of this.user_applications) {
-                                                    if (app.Id === application_id) {
+                                                    if (app.Id.toString() === application_id) {
                                                         this.getUserApplication(app);
                                                         break;
 
                                                     }
 
-
                                                 }
                                                 for (const app of this.all_applications) {
-                                                    if (app.Id === application_id) {
+                                                    if (app.Id.toString() === application_id) {
                                                         this.getApplication(app);
                                                         break;
 
@@ -952,38 +949,42 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                             }
                                         )
                                 } else {
-                                    this.groupservice.setPerunGroupStatus(new_group_id, this.application_statuses.APPROVED).subscribe(() => {
-                                        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED).subscribe(result => {
-                                            if (result['Error']) {
-                                                this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+                                    this.groupservice.setPerunGroupStatus(
+                                        new_group_id,
+                                        this.application_statuses.APPROVED.toString()).subscribe(() => {
+                                        this.applicationstatusservice.setApplicationStatus(
+                                            application_id,
+                                            this.application_statuses.APPROVED.toString())
+                                            .subscribe((result: { [key: string]: string }) => {
+                                                if (result['Error']) {
+                                                    this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
-                                            } else {
-                                                this.updateNotificationModal('Success', 'The new project was created', true, 'success');
-                                            }
-                                            for (const appl of this.user_applications) {
-                                                if (appl.Id === application_id) {
-                                                    this.getUserApplication(appl);
-                                                    break;
-
+                                                } else {
+                                                    this.updateNotificationModal('Success', 'The new project was created', true, 'success');
                                                 }
-                                                for (const app of this.user_applications) {
-                                                    if (app.Id === application_id) {
-                                                        this.getUserApplication(app);
+                                                for (const appl of this.user_applications) {
+                                                    if (appl.Id.toString() === application_id) {
+                                                        this.getUserApplication(appl);
                                                         break;
 
                                                     }
+                                                    for (const app of this.user_applications) {
+                                                        if (app.Id.toString() === application_id) {
+                                                            this.getUserApplication(app);
+                                                            break;
 
-
-                                                }
-                                                for (const app of this.all_applications) {
-                                                    if (app.Id === application_id) {
-                                                        this.getApplication(app);
-                                                        break;
+                                                        }
 
                                                     }
+                                                    for (const app of this.all_applications) {
+                                                        if (app.Id.toString() === application_id) {
+                                                            this.getApplication(app);
+                                                            break;
+
+                                                        }
+                                                    }
                                                 }
-                                            }
-                                        })
+                                            })
 
                                     })
 
@@ -994,9 +995,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                     })
 
                 })
-            }
-
-            , error => {
+            },
+            () => {
                 this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
             })
 
@@ -1025,128 +1025,141 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @param application_id
      * @param compute_center
      */
-    public createSimpleVmProjectGroup(name, description, manager_elixir_id, application_id, compute_center): void {
+    public createSimpleVmProjectGroup(name: string,
+                                      description: string,
+                                      manager_elixir_id: string,
+                                      application_id: string,
+                                      compute_center: string): void {
 
         // get memeber id in order to add the user later as the new member and manager of the group
-        let manager_member_id: number;
-        let manager_member_user_id: number;
-        let new_group_id: number;
-        this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(res => {
-            if (res['Info']) {
-                if (res['Clients']) {
-                    for (const client of res['Clients']) {
-                        const newClient = new Vmclient();
-                        newClient.location = client.location;
-                        newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
-                        newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
-                        newClient.maxVMs = client.max_ressources.maxTotalInstances;
-                        newClient.assignedVMs = client.assigned_ressources.vms;
-                        newClient.assignedVolumes = client.assigned_ressources.volumes;
-                        newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
-                        this.notificationClientInfo.push(newClient);
+        let manager_member_id: string;
+        let manager_member_user_id: string;
+        let new_group_id: string;
+        this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
+            (res: Vmclient) => {
+                if (res['Info']) {
+                    if (res['Clients']) {
+                        for (const client of res['Clients']) {
+                            const newClient: Vmclient = new Vmclient();
+                            newClient.location = client.location;
+                            newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
+                            newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
+                            newClient.maxVMs = client.max_ressources.maxTotalInstances;
+                            newClient.assignedVMs = client.assigned_ressources.vms;
+                            newClient.assignedVolumes = client.assigned_ressources.volumes;
+                            newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
+                            this.notificationClientInfo.push(newClient);
+                        }
                     }
-                }
-                this.updateNotificationModal('Failed', res['Info'], true, 'danger');
+                    this.updateNotificationModal('Failed', res['Info'], true, 'danger');
 
-            }
-            else {
-                this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED).subscribe(result => {
-                    if (result['Error']) {
+                } else {
+                    this.applicationstatusservice.setApplicationStatus(
+                        application_id,
+                        this.application_statuses.APPROVED.toString()).subscribe((result: { [key: string]: string }) => {
+                        if (result['Error']) {
 
-                        this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+                            this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
+                        } else {
+                            this.userservice.getMemberByExtSourceNameAndExtLogin(
+                                manager_elixir_id).subscribe((member_raw: { [key: string]: string }) => {
+                                const member: { [key: string]: string } = member_raw;
+                                manager_member_id = member['id'];
+                                manager_member_user_id = member['userId'];
+                                this.groupservice.createGroup(name, description).subscribe((group: { [key: string]: string }) => {
+                                    new_group_id = group['id'];
+                                    this.groupservice.addMember(
+                                        new_group_id.toString(),
+                                        manager_member_id.toString(),
+                                        compute_center).subscribe();
+                                    this.groupservice.addAdmin(
+                                        new_group_id.toString(),
+                                        manager_member_user_id,
+                                        compute_center).subscribe(() => {
+                                        this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => {
+                                                if (result['Info']) {
+                                                    this.updateNotificationModal('Failed', result['Info'], true, 'danger');
 
-                    } else {
+                                                } else {
+                                                    this.applicationsservice.getApplicationClient(
+                                                        application_id).subscribe((client: object) => {
+                                                        const newClient: Vmclient = new Vmclient();
+                                                        newClient.location = client['location'];
+                                                        newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
+                                                        newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
+                                                        newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
+                                                        newClient.assignedVMs = client['assigned_ressources']['vms'];
+                                                        newClient.assignedVolumes = client['assigned_ressources']['volumes'];
+                                                        newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
+                                                        this.notificationClientInfo.push(newClient);
+                                                        this.updateNotificationModal(
+                                                            'Success', `The new project was created and assigned to ${newClient.location}.`,
+                                                            true,
+                                                            'success');
 
-
-                        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => {
-                            const member = member_raw;
-                            manager_member_id = member['id'];
-                            manager_member_user_id = member['userId'];
-                            this.groupservice.createGroup(name, description).subscribe(group_raw => {
-                                const group = group_raw;
-                                new_group_id = group['id'];
-                                this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
-                                this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(r => {
-                                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(re => {
-                                            if (result['Info']) {
-                                                this.updateNotificationModal('Failed', result['Info'], true, 'danger');
-
-                                            } else {
-                                                this.applicationsservice.getApplicationClient(application_id).subscribe(client => {
-                                                    const newClient = new Vmclient();
-                                                    newClient.location = client.location;
-                                                    newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
-                                                    newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
-                                                    newClient.maxVMs = client.max_ressources.maxTotalInstances;
-                                                    newClient.assignedVMs = client.assigned_ressources.vms;
-                                                    newClient.assignedVolumes = client.assigned_ressources.volumes;
-                                                    newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
-                                                    this.notificationClientInfo.push(newClient);
-                                                    this.updateNotificationModal('Success', 'The new project was created and assigned to '
-                                                        + client.location + '.', true, 'success');
-
-                                                });
-                                            }
-
-                                            for (const app of this.user_applications) {
-                                                if (app.Id === application_id) {
-                                                    this.getUserApplication(app);
-                                                    break;
-
+                                                    });
                                                 }
 
+                                                for (const app of this.user_applications) {
+                                                    if (app.Id.toString() === application_id) {
+                                                        this.getUserApplication(app);
+                                                        break;
 
-                                            }
-                                            for (const app of this.all_applications) {
-                                                if (app.Id === application_id) {
-                                                    this.getApplication(app);
-                                                    break;
+                                                    }
 
                                                 }
+                                                for (const app of this.all_applications) {
+                                                    if (app.Id.toString() === application_id) {
+                                                        this.getApplication(app);
+                                                        break;
+
+                                                    }
+                                                }
+
                                             }
+                                        )
 
-                                        }
-                                    )
-
+                                    });
 
                                 });
 
-                            });
+                            })
+                        }
 
-                        })
-                    }
+                    })
+                }
 
-                })
-            }
-
-        }, error => {
-            console.log(error);
-            this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-        })
-
+            },
+            (error: object) => {
+                console.log(error);
+                this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+            })
 
     }
 
-    assignGroupToFacility(group_id, application_id, compute_center) {
+    assignGroupToFacility(group_id: string, application_id: string, compute_center: string): void {
         if (compute_center !== 'undefined') {
-            this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(res => {
-                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION).subscribe(res => {
-                        for (let app of this.all_applications) {
-                            if (app.Id == application_id) {
-                                this.getApplication(app);
+            this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(
+                () => {
+                    this.applicationstatusservice.setApplicationStatus(
+                        application_id,
+                        this.application_statuses.WAIT_FOR_CONFIRMATION.toString())
+                        .subscribe(() => {
+                            for (const app of this.all_applications) {
+                                if (app.Id.toString() === application_id) {
+                                    this.getApplication(app);
 
-                                break;
+                                    break;
 
+                                }
                             }
-                        }
-                        this.updateNotificationModal('Success', 'The  project was assigned to the facility.', true, 'success');
+                            this.updateNotificationModal('Success', 'The  project was assigned to the facility.', true, 'success');
 
-                    })
-
+                        })
 
                 },
-                error => {
+                (error: object) => {
                     console.log(error);
                     this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
                 });
@@ -1160,16 +1173,16 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Decline an application.
      * @param application_id
      */
-    public declineApplication(application_id) {
-        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined")).toPromise()
-            .then(result => {
+    public declineApplication(application_id: string): void {
+        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus('declined').toString()).toPromise()
+            .then(() => {
                 this.all_applications = [];
                 this.user_applications = [];
                 this.getUserApplications();
                 this.getAllApplications();
                 this.updateNotificationModal('Success', 'The Application was declined', true, 'success');
             })
-            .catch(error => {
+            .catch(() => {
                 this.updateNotificationModal('Failed', 'Application could be declined!', true, 'danger');
             });
     }
@@ -1178,17 +1191,17 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Delete an application.
      * @param application_id
      */
-    public deleteApplication(application_id) {
+    public deleteApplication(application_id: string): void {
         this.applicationsservice.deleteApplication(application_id).toPromise()
-            .then(result => {
+            .then(() => {
                 this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
-            }).then(result => {
+            }).then(() => {
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
             this.getAllApplications();
         })
-            .catch(error => {
+            .catch(() => {
                 this.updateNotificationModal('Failed', 'Application could not be removed!', true, 'danger');
             });
     }
@@ -1205,26 +1218,23 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         }
     }
 
-    public setApplicationStatus(status: number, app: Application) {
-        this.applicationstatusservice.setApplicationStatus(app.Id, status).subscribe()
+    public setApplicationStatus(status: number, app: Application): void {
+        this.applicationstatusservice.setApplicationStatus(app.Id.toString(), status.toString()).subscribe()
     }
-
 
     /**
      * Set the id of the application which should be deleted.
      * @param applicationId
      */
-    public setDeleteId(applicationId) {
+    public setDeleteId(applicationId: number): void {
         this.deleteId = applicationId;
     }
-
 
     /**
      * Coming soon.
      */
-    public comingSoon() {
+    public comingSoon(): void {
         alert('This functinality will be implemented soon!')
     }
-
 
 }
