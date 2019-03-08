@@ -8,7 +8,6 @@ import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
 
-
 @Component(***REMOVED***
     selector: 'app-client-overview',
     templateUrl: 'vmClients.component.html',
@@ -62,6 +61,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
             .then(function (userdata) ***REMOVED***
                 // TODO catch errors
                 user_id = userdata['id'];
+
                 return userservice.getVosWhereUserIsAdmin().toPromise();
             ***REMOVED***).then(function (adminvos) ***REMOVED***
             admin_vos = adminvos;
@@ -75,7 +75,6 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-
     /**
      * Get all clients status checked.
      */
@@ -84,7 +83,6 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
             this.clients = clients;
             this.isLoaded = true;
         ***REMOVED***);
-
 
     ***REMOVED***
 
@@ -95,7 +93,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         this.facilityService.getComputeCenters().subscribe(result => ***REMOVED***
             for (const cc of result) ***REMOVED***
                 const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
-                    cc['compute_center_login'], cc['compute_center_support_mail'])
+                                                                  cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             ***REMOVED***
 
@@ -132,7 +130,6 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
      */
     postClient(host: string, port: string, location: string): void ***REMOVED***
 
-
         if (host && port && location) ***REMOVED***
             this.clientservice.postClient(host, port, location).subscribe(data => ***REMOVED***
 
@@ -151,7 +148,6 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
             this.getClientsChecked();
         ***REMOVED***);
     ***REMOVED***
-
 
     ngOnInit(): void ***REMOVED***
         this.checkVOstatus(this.userservice);

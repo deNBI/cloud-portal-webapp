@@ -1,6 +1,5 @@
 import ***REMOVED***Vmclient***REMOVED*** from './vmclient';
 
-
 export class SnapshotModel ***REMOVED***
 
     private _snapshot_openstackid: string;
@@ -10,7 +9,6 @@ export class SnapshotModel ***REMOVED***
 
     private _snapshot_project: string;
     private _snapshot_status: string;
-
 
     get snapshot_openstackid(): string ***REMOVED***
         return this._snapshot_openstackid;

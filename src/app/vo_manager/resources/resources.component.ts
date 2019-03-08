@@ -20,7 +20,6 @@ export class ResourcesComponent implements OnInit ***REMOVED***
     tableId = 'resourcesTable';
     today: number = Date.now();
 
-
     exportAsConfigCSV: ExportAsConfig = ***REMOVED***
         type: 'csv',
         elementId: this.tableId
@@ -36,29 +35,26 @@ export class ResourcesComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
-
     public getVoProjectResources() ***REMOVED***
         this.voservice.getVoProjectResources().subscribe(res => ***REMOVED***
             for (const r in res) ***REMOVED***
                 if (r !== 'Total') ***REMOVED***
                     const resource = new Resources(r, res[r]['totalRam'], res[r]['totalCores'],
-                        res[r]['totalVms'], res[r]['totalVolumeLimit'], res[r]['totalVolumeCounter'],
-                        res[r]['totalObjectStorage'], res[r]['totalFPGA'], res[r]['totalGPU']);
+                                                   res[r]['totalVms'], res[r]['totalVolumeLimit'], res[r]['totalVolumeCounter'],
+                                                   res[r]['totalObjectStorage'], res[r]['totalFPGA'], res[r]['totalGPU']);
                     this.voResources.push(resource);
                 ***REMOVED*** else ***REMOVED***
                     this.totalResource = new Resources('Total', res['Total']['totalRam'], res['Total']['totalCores'],
-                        res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
-                        res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'],
-                        res['Total']['totalFPGA'], res['Total']['totalGPU']);
+                                                       res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
+                                                       res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'],
+                                                       res['Total']['totalFPGA'], res['Total']['totalGPU']);
                 ***REMOVED***
             ***REMOVED***
-
 
             this.isLoaded = true;
         ***REMOVED***)
 
     ***REMOVED***
-
 
     public tableToPDF() ***REMOVED***
         const data = document.getElementById(this.tableId);
@@ -77,9 +73,7 @@ export class ResourcesComponent implements OnInit ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-
     ngOnInit() ***REMOVED***
     ***REMOVED***
-
 
 ***REMOVED***

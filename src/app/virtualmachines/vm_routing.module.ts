@@ -46,7 +46,7 @@ const routes: Routes = [
             title: 'Snapshots Overview'
         ***REMOVED***
 
-    ***REMOVED***,
+    ***REMOVED***
 ];
 
 @NgModule(***REMOVED***

@@ -4,7 +4,6 @@ import ***REMOVED***VoOverviewComponent***REMOVED*** from './VoOverviewComponent
 import ***REMOVED***VoGuardService***REMOVED*** from './vo-guard.service';
 import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.component';
 
-
 const routes: Routes = [
     ***REMOVED***
         path: 'overview',
@@ -22,9 +21,7 @@ const routes: Routes = [
             title: 'Vo Resources'
         ***REMOVED***
 
-
-    ***REMOVED***,
-
+    ***REMOVED***
 
 ];
 

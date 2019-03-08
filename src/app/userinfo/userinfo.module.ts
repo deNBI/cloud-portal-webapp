@@ -20,7 +20,7 @@ import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared_modules/public-
     ],
 
     declarations: [
-        UserinfoComponent,
+        UserinfoComponent
     ],
     exports: [UserinfoComponent, UserinfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
 ***REMOVED***)

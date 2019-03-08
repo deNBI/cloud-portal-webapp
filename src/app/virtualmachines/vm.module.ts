@@ -25,8 +25,7 @@ import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
         CommonModule,
         FormsModule,
         ModalModule.forRoot(),
-        PaginationModule.forRoot(),
-
+        PaginationModule.forRoot()
 
     ],
     declarations: [

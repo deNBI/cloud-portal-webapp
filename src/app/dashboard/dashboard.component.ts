@@ -18,13 +18,13 @@ export class DashboardComponent implements OnInit ***REMOVED***
   public status: ***REMOVED*** isopen ***REMOVED*** = ***REMOVED*** isopen: false ***REMOVED***;
 
   // lineChart1
-  public lineChart1Data: Array<any> = [
+  public lineChart1Data: any[] = [
     ***REMOVED***
       data: [65, 59, 84, 84, 51, 55, 40],
       label: 'Series A'
     ***REMOVED***
   ];
-  public lineChart1Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChart1Labels: any[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChart1Options: any = ***REMOVED***
     maintainAspectRatio: false,
     scales: ***REMOVED***
@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit ***REMOVED***
         ***REMOVED***,
         ticks: ***REMOVED***
           fontSize: 2,
-          fontColor: 'transparent',
+          fontColor: 'transparent'
         ***REMOVED***
 
       ***REMOVED***],
@@ -44,9 +44,9 @@ export class DashboardComponent implements OnInit ***REMOVED***
         ticks: ***REMOVED***
           display: false,
           min: 40 - 5,
-          max: 84 + 5,
+          max: 84 + 5
         ***REMOVED***
-      ***REMOVED***],
+      ***REMOVED***]
     ***REMOVED***,
     elements: ***REMOVED***
       line: ***REMOVED***
@@ -55,14 +55,14 @@ export class DashboardComponent implements OnInit ***REMOVED***
       point: ***REMOVED***
         radius: 4,
         hitRadius: 10,
-        hoverRadius: 4,
-      ***REMOVED***,
+        hoverRadius: 4
+      ***REMOVED***
     ***REMOVED***,
     legend: ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public lineChart1Colours: Array<any> = [
+  public lineChart1Colours: any[] = [
     ***REMOVED*** // grey
       backgroundColor: this.brandPrimary,
       borderColor: 'rgba(255,255,255,.55)'
@@ -72,13 +72,13 @@ export class DashboardComponent implements OnInit ***REMOVED***
   public lineChart1Type = 'line';
 
   // lineChart2
-  public lineChart2Data: Array<any> = [
+  public lineChart2Data: any[] = [
     ***REMOVED***
       data: [1, 18, 9, 17, 34, 22, 11],
       label: 'Series A'
     ***REMOVED***
   ];
-  public lineChart2Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChart2Labels: any[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChart2Options: any = ***REMOVED***
     maintainAspectRatio: false,
     scales: ***REMOVED***
@@ -89,7 +89,7 @@ export class DashboardComponent implements OnInit ***REMOVED***
         ***REMOVED***,
         ticks: ***REMOVED***
           fontSize: 2,
-          fontColor: 'transparent',
+          fontColor: 'transparent'
         ***REMOVED***
 
       ***REMOVED***],
@@ -98,9 +98,9 @@ export class DashboardComponent implements OnInit ***REMOVED***
         ticks: ***REMOVED***
           display: false,
           min: 1 - 5,
-          max: 34 + 5,
+          max: 34 + 5
         ***REMOVED***
-      ***REMOVED***],
+      ***REMOVED***]
     ***REMOVED***,
     elements: ***REMOVED***
       line: ***REMOVED***
@@ -110,14 +110,14 @@ export class DashboardComponent implements OnInit ***REMOVED***
       point: ***REMOVED***
         radius: 4,
         hitRadius: 10,
-        hoverRadius: 4,
-      ***REMOVED***,
+        hoverRadius: 4
+      ***REMOVED***
     ***REMOVED***,
     legend: ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public lineChart2Colours: Array<any> = [
+  public lineChart2Colours: any[] = [
     ***REMOVED*** // grey
       backgroundColor: this.brandInfo,
       borderColor: 'rgba(255,255,255,.55)'
@@ -126,15 +126,14 @@ export class DashboardComponent implements OnInit ***REMOVED***
   public lineChart2Legend = false;
   public lineChart2Type = 'line';
 
-
   // lineChart3
-  public lineChart3Data: Array<any> = [
+  public lineChart3Data: any[] = [
     ***REMOVED***
       data: [78, 81, 80, 45, 34, 12, 40],
       label: 'Series A'
     ***REMOVED***
   ];
-  public lineChart3Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChart3Labels: any[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChart3Options: any = ***REMOVED***
     maintainAspectRatio: false,
     scales: ***REMOVED***
@@ -152,37 +151,36 @@ export class DashboardComponent implements OnInit ***REMOVED***
       point: ***REMOVED***
         radius: 0,
         hitRadius: 10,
-        hoverRadius: 4,
-      ***REMOVED***,
+        hoverRadius: 4
+      ***REMOVED***
     ***REMOVED***,
     legend: ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public lineChart3Colours: Array<any> = [
+  public lineChart3Colours: any[] = [
     ***REMOVED***
       backgroundColor: 'rgba(255,255,255,.2)',
-      borderColor: 'rgba(255,255,255,.55)',
+      borderColor: 'rgba(255,255,255,.55)'
     ***REMOVED***
   ];
   public lineChart3Legend = false;
   public lineChart3Type = 'line';
 
-
   // barChart1
-  public barChart1Data: Array<any> = [
+  public barChart1Data: any[] = [
     ***REMOVED***
       data: [78, 81, 80, 45, 34, 12, 40, 78, 81, 80, 45, 34, 12, 40, 12, 40],
       label: 'Series A'
     ***REMOVED***
   ];
-  public barChart1Labels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
+  public barChart1Labels: any[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
   public barChart1Options: any = ***REMOVED***
     maintainAspectRatio: false,
     scales: ***REMOVED***
       xAxes: [***REMOVED***
         display: false,
-        barPercentage: 0.6,
+        barPercentage: 0.6
       ***REMOVED***],
       yAxes: [***REMOVED***
         display: false
@@ -192,7 +190,7 @@ export class DashboardComponent implements OnInit ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public barChart1Colours: Array<any> = [
+  public barChart1Colours: any[] = [
     ***REMOVED***
       backgroundColor: 'rgba(255,255,255,.3)',
       borderWidth: 0
@@ -202,11 +200,11 @@ export class DashboardComponent implements OnInit ***REMOVED***
   public barChart1Type = 'bar';
 
   public mainChartElements = 27;
-  public mainChartData1: Array<number> = [];
-  public mainChartData2: Array<number> = [];
-  public mainChartData3: Array<number> = [];
+  public mainChartData1: number[] = [];
+  public mainChartData2: number[] = [];
+  public mainChartData3: number[] = [];
 
-  public mainChartData: Array<any> = [
+  public mainChartData: any[] = [
     ***REMOVED***
       data: this.mainChartData1,
       label: 'Current'
@@ -221,7 +219,7 @@ export class DashboardComponent implements OnInit ***REMOVED***
     ***REMOVED***
   ];
   /* tslint:disable:max-line-length */
-  public mainChartLabels: Array<any> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Thursday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  public mainChartLabels: any[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Thursday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   /* tslint:enable:max-line-length */
   public mainChartOptions: any = ***REMOVED***
     responsive: true,
@@ -229,7 +227,7 @@ export class DashboardComponent implements OnInit ***REMOVED***
     scales: ***REMOVED***
       xAxes: [***REMOVED***
         gridLines: ***REMOVED***
-          drawOnChartArea: false,
+          drawOnChartArea: false
         ***REMOVED***,
         ticks: ***REMOVED***
           callback: function(value: any) ***REMOVED***
@@ -254,14 +252,14 @@ export class DashboardComponent implements OnInit ***REMOVED***
         radius: 0,
         hitRadius: 10,
         hoverRadius: 4,
-        hoverBorderWidth: 3,
+        hoverBorderWidth: 3
       ***REMOVED***
     ***REMOVED***,
     legend: ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public mainChartColours: Array<any> = [
+  public mainChartColours: any[] = [
     ***REMOVED*** // brandInfo
       backgroundColor: this.convertHex(this.brandInfo, 10),
       borderColor: this.brandInfo,
@@ -285,41 +283,41 @@ export class DashboardComponent implements OnInit ***REMOVED***
 
   // social box charts
 
-  public socialChartData1: Array<any> = [
+  public socialChartData1: any[] = [
     ***REMOVED***
       data: [65, 59, 84, 84, 51, 55, 40],
       label: 'Facebook'
     ***REMOVED***
   ];
-  public socialChartData2: Array<any> = [
+  public socialChartData2: any[] = [
     ***REMOVED***
       data: [1, 13, 9, 17, 34, 41, 38],
       label: 'Twitter'
     ***REMOVED***
   ];
-  public socialChartData3: Array<any> = [
+  public socialChartData3: any[] = [
     ***REMOVED***
       data: [78, 81, 80, 45, 34, 12, 40],
       label: 'LinkedIn'
     ***REMOVED***
   ];
-  public socialChartData4: Array<any> = [
+  public socialChartData4: any[] = [
     ***REMOVED***
       data: [35, 23, 56, 22, 97, 23, 64],
       label: 'Google+'
     ***REMOVED***
   ];
 
-  public socialChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public socialChartLabels: any[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public socialChartOptions: any = ***REMOVED***
     responsive: true,
     maintainAspectRatio: false,
     scales: ***REMOVED***
       xAxes: [***REMOVED***
-        display: false,
+        display: false
       ***REMOVED***],
       yAxes: [***REMOVED***
-        display: false,
+        display: false
       ***REMOVED***]
     ***REMOVED***,
     elements: ***REMOVED***
@@ -330,14 +328,14 @@ export class DashboardComponent implements OnInit ***REMOVED***
         radius: 0,
         hitRadius: 10,
         hoverRadius: 4,
-        hoverBorderWidth: 3,
+        hoverBorderWidth: 3
       ***REMOVED***
     ***REMOVED***,
     legend: ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public socialChartColours: Array<any> = [
+  public socialChartColours: any[] = [
     ***REMOVED***
       backgroundColor: 'rgba(255,255,255,.1)',
       borderColor: 'rgba(255,255,255,.55)',
@@ -349,29 +347,29 @@ export class DashboardComponent implements OnInit ***REMOVED***
 
   // sparkline charts
 
-  public sparklineChartData1: Array<any> = [
+  public sparklineChartData1: any[] = [
     ***REMOVED***
       data: [35, 23, 56, 22, 97, 23, 64],
       label: 'Clients'
     ***REMOVED***
   ];
-  public sparklineChartData2: Array<any> = [
+  public sparklineChartData2: any[] = [
     ***REMOVED***
       data: [65, 59, 84, 84, 51, 55, 40],
       label: 'Clients'
     ***REMOVED***
   ];
 
-  public sparklineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public sparklineChartLabels: any[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public sparklineChartOptions: any = ***REMOVED***
     responsive: true,
     maintainAspectRatio: false,
     scales: ***REMOVED***
       xAxes: [***REMOVED***
-        display: false,
+        display: false
       ***REMOVED***],
       yAxes: [***REMOVED***
-        display: false,
+        display: false
       ***REMOVED***]
     ***REMOVED***,
     elements: ***REMOVED***
@@ -382,50 +380,49 @@ export class DashboardComponent implements OnInit ***REMOVED***
         radius: 0,
         hitRadius: 10,
         hoverRadius: 4,
-        hoverBorderWidth: 3,
+        hoverBorderWidth: 3
       ***REMOVED***
     ***REMOVED***,
     legend: ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public sparklineChartDefault: Array<any> = [
+  public sparklineChartDefault: any[] = [
     ***REMOVED***
       backgroundColor: 'transparent',
-      borderColor: '#d1d4d7',
+      borderColor: '#d1d4d7'
     ***REMOVED***
   ];
-  public sparklineChartPrimary: Array<any> = [
+  public sparklineChartPrimary: any[] = [
     ***REMOVED***
       backgroundColor: 'transparent',
-      borderColor: this.brandPrimary,
+      borderColor: this.brandPrimary
     ***REMOVED***
   ];
-  public sparklineChartInfo: Array<any> = [
+  public sparklineChartInfo: any[] = [
     ***REMOVED***
       backgroundColor: 'transparent',
-      borderColor: this.brandInfo,
+      borderColor: this.brandInfo
     ***REMOVED***
   ];
-  public sparklineChartDanger: Array<any> = [
+  public sparklineChartDanger: any[] = [
     ***REMOVED***
       backgroundColor: 'transparent',
-      borderColor: this.brandDanger,
+      borderColor: this.brandDanger
     ***REMOVED***
   ];
-  public sparklineChartWarning: Array<any> = [
+  public sparklineChartWarning: any[] = [
     ***REMOVED***
       backgroundColor: 'transparent',
-      borderColor: this.brandWarning,
+      borderColor: this.brandWarning
     ***REMOVED***
   ];
-  public sparklineChartSuccess: Array<any> = [
+  public sparklineChartSuccess: any[] = [
     ***REMOVED***
       backgroundColor: 'transparent',
-      borderColor: this.brandSuccess,
+      borderColor: this.brandSuccess
     ***REMOVED***
   ];
-
 
   public sparklineChartLegend = false;
   public sparklineChartType = 'line';
@@ -443,6 +440,7 @@ export class DashboardComponent implements OnInit ***REMOVED***
     const b = parseInt(hex.substring(4, 6), 16);
 
     const rgba = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + opacity / 100 + ')';
+
     return rgba;
   ***REMOVED***
 
@@ -460,7 +458,6 @@ export class DashboardComponent implements OnInit ***REMOVED***
   public random(min: number, max: number) ***REMOVED***
     return Math.floor(Math.random() * (max - min + 1) + min);
   ***REMOVED***
-
 
   ngOnInit(): void ***REMOVED***
     // generate random values for mainChart

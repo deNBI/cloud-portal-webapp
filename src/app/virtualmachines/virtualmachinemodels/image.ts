@@ -7,4 +7,3 @@ export class Image ***REMOVED***
     description: string;
 
 ***REMOVED***
-

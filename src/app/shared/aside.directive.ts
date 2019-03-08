@@ -4,7 +4,7 @@ import ***REMOVED*** Directive, HostListener ***REMOVED*** from '@angular/core';
 * Allows the aside to be toggled via click.
 */
 @Directive(***REMOVED***
-  selector: '[appAsideMenuToggler]',
+  selector: '[appAsideMenuToggler]'
 ***REMOVED***)
 export class AsideToggleDirective ***REMOVED***
   constructor() ***REMOVED*** ***REMOVED***

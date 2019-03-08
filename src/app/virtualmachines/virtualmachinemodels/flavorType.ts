@@ -4,8 +4,3 @@ export class FlavorType ***REMOVED***
     descirption: string;
 
 ***REMOVED***
-
-
-
-
-

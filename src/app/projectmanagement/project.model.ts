@@ -28,7 +28,6 @@ export class Project ***REMOVED***
     private _OpenStackProject: boolean;
     private _LifetimeReached: number;
 
-
     constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number,
                 UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) ***REMOVED***
         this._Id = Id;
@@ -56,7 +55,6 @@ export class Project ***REMOVED***
 
         return this._RealName
     ***REMOVED***
-
 
     set RealName(value: string) ***REMOVED***
         this._RealName = value;
@@ -159,7 +157,6 @@ export class Project ***REMOVED***
         this._DaysRunning = value;
     ***REMOVED***
 
-
     get UserIsPi(): boolean ***REMOVED***
         return this._UserIsPi;
     ***REMOVED***
@@ -167,6 +164,5 @@ export class Project ***REMOVED***
     set UserIsPi(value: boolean) ***REMOVED***
         this._UserIsPi = value;
     ***REMOVED***
-
 
 ***REMOVED***

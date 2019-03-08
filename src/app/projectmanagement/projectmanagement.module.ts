@@ -12,10 +12,10 @@ import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
         TabsModule,
         FormsModule,
         CommonModule,
-        ModalModule.forRoot(),
+        ModalModule.forRoot()
     ],
     declarations: [
-        OverviewComponent,
+        OverviewComponent
 
     ]
 ***REMOVED***)

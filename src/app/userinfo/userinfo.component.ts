@@ -7,7 +7,6 @@ import ***REMOVED***KeyService***REMOVED*** from '../api-connector/key.service';
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 
-
 @Component(***REMOVED***
     selector: 'app-userinfo',
     templateUrl: 'userinfo.component.html',
@@ -31,7 +30,6 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
-
     requestChangePreferredMailUser(email: string) ***REMOVED***
         this.userservice.requestChangePreferredMailUser(email).subscribe(res => ***REMOVED***
             this.getPendingPreferredMailUser();
@@ -49,7 +47,6 @@ export class UserinfoComponent implements OnInit ***REMOVED***
         this.is_vm_project_member();
         this.getPreferredMail();
 
-
     ***REMOVED***
 
     isFreemiumActive() ***REMOVED***
@@ -58,7 +55,6 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
         ***REMOVED***);
     ***REMOVED***
-
 
     setNewsletterSubscription(e) ***REMOVED***
         this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => ***REMOVED***
@@ -87,14 +83,12 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
-
     getUserPublicKey() ***REMOVED***
         this.keyservice.getKey().subscribe(result => ***REMOVED***
             this.userinfo.PublicKey = result['public_key'];
             this.isLoaded = true;
         ***REMOVED***)
     ***REMOVED***
-
 
     // Returns the preffered Mail of the logged in User
     getPreferredMail() ***REMOVED***
@@ -142,11 +136,9 @@ export class UserinfoComponent implements OnInit ***REMOVED***
                     ***REMOVED***
                     this.getUserPublicKey()
 
-
                 ***REMOVED***)
             ***REMOVED***)
         ***REMOVED***)
-
 
     ***REMOVED***
 
@@ -180,4 +172,3 @@ export class UserinfoComponent implements OnInit ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 ***REMOVED***
-

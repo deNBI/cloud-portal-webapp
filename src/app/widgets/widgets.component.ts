@@ -12,13 +12,13 @@ export class WidgetsComponent ***REMOVED***
   public brandDanger = '#f86c6b';
 
   // lineChart1
-  public lineChart1Data: Array<any> = [
+  public lineChart1Data: any[] = [
     ***REMOVED***
       data: [65, 59, 84, 84, 51, 55, 40],
       label: 'Series A'
     ***REMOVED***
   ];
-  public lineChart1Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChart1Labels: any[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChart1Options: any = ***REMOVED***
     maintainAspectRatio: false,
     scales: ***REMOVED***
@@ -29,7 +29,7 @@ export class WidgetsComponent ***REMOVED***
         ***REMOVED***,
         ticks: ***REMOVED***
           fontSize: 2,
-          fontColor: 'transparent',
+          fontColor: 'transparent'
         ***REMOVED***
 
       ***REMOVED***],
@@ -38,9 +38,9 @@ export class WidgetsComponent ***REMOVED***
         ticks: ***REMOVED***
           display: false,
           min: 40 - 5,
-          max: 84 + 5,
+          max: 84 + 5
         ***REMOVED***
-      ***REMOVED***],
+      ***REMOVED***]
     ***REMOVED***,
     elements: ***REMOVED***
       line: ***REMOVED***
@@ -49,14 +49,14 @@ export class WidgetsComponent ***REMOVED***
       point: ***REMOVED***
         radius: 4,
         hitRadius: 10,
-        hoverRadius: 4,
-      ***REMOVED***,
+        hoverRadius: 4
+      ***REMOVED***
     ***REMOVED***,
     legend: ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public lineChart1Colours: Array<any> = [
+  public lineChart1Colours: any[] = [
     ***REMOVED*** // grey
       backgroundColor: this.brandPrimary,
       borderColor: 'rgba(255,255,255,.55)'
@@ -66,13 +66,13 @@ export class WidgetsComponent ***REMOVED***
   public lineChart1Type = 'line';
 
   // lineChart2
-  public lineChart2Data: Array<any> = [
+  public lineChart2Data: any[] = [
     ***REMOVED***
       data: [1, 18, 9, 17, 34, 22, 11],
       label: 'Series A'
     ***REMOVED***
   ];
-  public lineChart2Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChart2Labels: any[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChart2Options: any = ***REMOVED***
     maintainAspectRatio: false,
     scales: ***REMOVED***
@@ -83,7 +83,7 @@ export class WidgetsComponent ***REMOVED***
         ***REMOVED***,
         ticks: ***REMOVED***
           fontSize: 2,
-          fontColor: 'transparent',
+          fontColor: 'transparent'
         ***REMOVED***
 
       ***REMOVED***],
@@ -92,9 +92,9 @@ export class WidgetsComponent ***REMOVED***
         ticks: ***REMOVED***
           display: false,
           min: 1 - 5,
-          max: 34 + 5,
+          max: 34 + 5
         ***REMOVED***
-      ***REMOVED***],
+      ***REMOVED***]
     ***REMOVED***,
     elements: ***REMOVED***
       line: ***REMOVED***
@@ -104,14 +104,14 @@ export class WidgetsComponent ***REMOVED***
       point: ***REMOVED***
         radius: 4,
         hitRadius: 10,
-        hoverRadius: 4,
-      ***REMOVED***,
+        hoverRadius: 4
+      ***REMOVED***
     ***REMOVED***,
     legend: ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public lineChart2Colours: Array<any> = [
+  public lineChart2Colours: any[] = [
     ***REMOVED*** // grey
       backgroundColor: this.brandInfo,
       borderColor: 'rgba(255,255,255,.55)'
@@ -120,15 +120,14 @@ export class WidgetsComponent ***REMOVED***
   public lineChart2Legend = false;
   public lineChart2Type = 'line';
 
-
   // lineChart3
-  public lineChart3Data: Array<any> = [
+  public lineChart3Data: any[] = [
     ***REMOVED***
       data: [78, 81, 80, 45, 34, 12, 40],
       label: 'Series A'
     ***REMOVED***
   ];
-  public lineChart3Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChart3Labels: any[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChart3Options: any = ***REMOVED***
     maintainAspectRatio: false,
     scales: ***REMOVED***
@@ -146,37 +145,36 @@ export class WidgetsComponent ***REMOVED***
       point: ***REMOVED***
         radius: 0,
         hitRadius: 10,
-        hoverRadius: 4,
-      ***REMOVED***,
+        hoverRadius: 4
+      ***REMOVED***
     ***REMOVED***,
     legend: ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public lineChart3Colours: Array<any> = [
+  public lineChart3Colours: any[] = [
     ***REMOVED***
       backgroundColor: 'rgba(255,255,255,.2)',
-      borderColor: 'rgba(255,255,255,.55)',
+      borderColor: 'rgba(255,255,255,.55)'
     ***REMOVED***
   ];
   public lineChart3Legend = false;
   public lineChart3Type = 'line';
 
-
   // barChart1
-  public barChart1Data: Array<any> = [
+  public barChart1Data: any[] = [
     ***REMOVED***
       data: [78, 81, 80, 45, 34, 12, 40, 78, 81, 80, 45, 34, 12, 40, 12, 40],
       label: 'Series A'
     ***REMOVED***
   ];
-  public barChart1Labels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
+  public barChart1Labels: any[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
   public barChart1Options: any = ***REMOVED***
     maintainAspectRatio: false,
     scales: ***REMOVED***
       xAxes: [***REMOVED***
         display: false,
-        barPercentage: 0.6,
+        barPercentage: 0.6
       ***REMOVED***],
       yAxes: [***REMOVED***
         display: false
@@ -186,7 +184,7 @@ export class WidgetsComponent ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public barChart1Colours: Array<any> = [
+  public barChart1Colours: any[] = [
     ***REMOVED***
       backgroundColor: 'rgba(255,255,255,.3)',
       borderWidth: 0
@@ -196,22 +194,22 @@ export class WidgetsComponent ***REMOVED***
   public barChart1Type = 'bar';
 
   // lineChart4
-  public lineChart4Data: Array<any> = [
+  public lineChart4Data: any[] = [
     ***REMOVED***
       data: [4, 18, 9, 17, 34, 22, 11, 3, 15, 12, 18, 9],
       label: 'Series A'
     ***REMOVED***
   ];
-  public lineChart4Labels: Array<any> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  public lineChart4Labels: any[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   public lineChart4Options: any = ***REMOVED***
     maintainAspectRatio: false,
     scales: ***REMOVED***
       xAxes: [***REMOVED***
         display: false,
-        points: false,
+        points: false
       ***REMOVED***],
       yAxes: [***REMOVED***
-        display: false,
+        display: false
       ***REMOVED***]
     ***REMOVED***,
     elements: ***REMOVED*** point: ***REMOVED*** radius: 0 ***REMOVED*** ***REMOVED***,
@@ -219,7 +217,7 @@ export class WidgetsComponent ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public lineChart4Colours: Array<any> = [
+  public lineChart4Colours: any[] = [
     ***REMOVED***
       backgroundColor: 'transparent',
       borderColor: 'rgba(255,255,255,.55)',
@@ -229,26 +227,25 @@ export class WidgetsComponent ***REMOVED***
   public lineChart4Legend = false;
   public lineChart4Type = 'line';
 
-
   // barChart2
-  public barChart2Data: Array<any> = [
+  public barChart2Data: any[] = [
     ***REMOVED***
       data: [4, 18, 9, 17, 34, 22, 11, 3, 15, 12, 18, 9],
       label: 'Series A'
     ***REMOVED***
   ];
-  public barChart2Labels: Array<any> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  public barChart2Labels: any[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   public barChart2Options: any = ***REMOVED***
     maintainAspectRatio: false,
     scales: ***REMOVED***
       xAxes: [***REMOVED***
         display: false,
-        barPercentage: 0.6,
+        barPercentage: 0.6
       ***REMOVED***],
       yAxes: [***REMOVED***
         display: false,
         ticks: ***REMOVED***
-          beginAtZero: true,
+          beginAtZero: true
         ***REMOVED***
       ***REMOVED***]
     ***REMOVED***,
@@ -256,7 +253,7 @@ export class WidgetsComponent ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public barChart2Colours: Array<any> = [
+  public barChart2Colours: any[] = [
     ***REMOVED***
       backgroundColor: 'rgba(0,0,0,.2)',
       borderWidth: 0
@@ -265,15 +262,14 @@ export class WidgetsComponent ***REMOVED***
   public barChart2Legend = false;
   public barChart2Type = 'bar';
 
-
   // barChart3
-  public barChart3Data: Array<any> = [
+  public barChart3Data: any[] = [
     ***REMOVED***
       data: [4, 18, 9, 17, 34, 22, 11, 3, 15, 12, 18, 9],
       label: 'Series A'
     ***REMOVED***
   ];
-  public barChart3Labels: Array<any> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  public barChart3Labels: any[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   public barChart3Options: any = ***REMOVED***
     maintainAspectRatio: false,
     scales: ***REMOVED***
@@ -288,21 +284,21 @@ export class WidgetsComponent ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public barChart3Primary: Array<any> = [
+  public barChart3Primary: any[] = [
     ***REMOVED***
       backgroundColor: this.brandPrimary,
       borderColor: 'transparent',
       borderWidth: 1
     ***REMOVED***
   ];
-  public barChart3Danger: Array<any> = [
+  public barChart3Danger: any[] = [
     ***REMOVED***
       backgroundColor: this.brandDanger,
       borderColor: 'transparent',
       borderWidth: 1
     ***REMOVED***
   ];
-  public barChart3Success: Array<any> = [
+  public barChart3Success: any[] = [
     ***REMOVED***
       backgroundColor: this.brandSuccess,
       borderColor: 'transparent',
@@ -312,24 +308,23 @@ export class WidgetsComponent ***REMOVED***
   public barChart3Legend = false;
   public barChart3Type = 'bar';
 
-
   // lineChart5
-  public lineChart5Data: Array<any> = [
+  public lineChart5Data: any[] = [
     ***REMOVED***
       data: [65, 59, 84, 84, 51, 55, 40],
       label: 'Series A'
     ***REMOVED***
   ];
-  public lineChart5Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChart5Labels: any[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChart5Options: any = ***REMOVED***
     maintainAspectRatio: false,
     scales: ***REMOVED***
       xAxes: [***REMOVED***
         display: false,
-        points: false,
+        points: false
       ***REMOVED***],
       yAxes: [***REMOVED***
-        display: false,
+        display: false
       ***REMOVED***]
     ***REMOVED***,
     elements: ***REMOVED*** point: ***REMOVED*** radius: 0 ***REMOVED*** ***REMOVED***,
@@ -337,21 +332,21 @@ export class WidgetsComponent ***REMOVED***
       display: false
     ***REMOVED***
   ***REMOVED***;
-  public lineChart5Info: Array<any> = [
+  public lineChart5Info: any[] = [
     ***REMOVED***
       backgroundColor: 'transparent',
       borderColor: this.brandInfo,
       borderWidth: 2
     ***REMOVED***
   ];
-  public lineChart5Success: Array<any> = [
+  public lineChart5Success: any[] = [
     ***REMOVED***
       backgroundColor: 'transparent',
       borderColor: this.brandInfo,
       borderWidth: 2
     ***REMOVED***
   ];
-  public lineChart5Warning: Array<any> = [
+  public lineChart5Warning: any[] = [
     ***REMOVED***
       backgroundColor: 'transparent',
       borderColor: this.brandWarning,

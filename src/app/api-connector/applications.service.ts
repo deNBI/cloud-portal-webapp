@@ -4,7 +4,6 @@ import ***REMOVED***HttpClient, HttpHeaders***REMOVED*** from '@angular/common/h
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
-
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken'),
     'Content-Type': 'application/json'
@@ -25,7 +24,7 @@ export class ApplicationsService ***REMOVED***
     getUserApplications(): Observable<any> ***REMOVED***
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/project_applications/`, ***REMOVED***
             headers: header_csrf,
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 
@@ -58,7 +57,7 @@ export class ApplicationsService ***REMOVED***
     getApplicationClientAvaiable(app_id: string): Observable<any> ***REMOVED***
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***app_id***REMOVED***/clients/resource/`, ***REMOVED***
             headers: header_csrf,
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 
@@ -132,6 +131,5 @@ export class ApplicationsService ***REMOVED***
         ***REMOVED***)
 
     ***REMOVED***
-
 
 ***REMOVED***

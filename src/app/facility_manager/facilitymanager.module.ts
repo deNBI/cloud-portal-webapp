@@ -15,7 +15,7 @@ import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.
         TabsModule,
         FormsModule,
         CommonModule,
-        ModalModule.forRoot(),
+        ModalModule.forRoot()
 
     ],
     declarations: [

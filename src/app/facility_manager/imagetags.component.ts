@@ -10,8 +10,7 @@ export class ImageTagComponent ***REMOVED***
 
     imageTags: [string, string][]
 
-
-    constructor(private imageService: ImageService, ) ***REMOVED***
+    constructor(private imageService: ImageService ) ***REMOVED***
         this.imageService.getImageTags().subscribe(result => ***REMOVED***
             this.imageTags = result;
             this.isLoaded = true;
@@ -33,6 +32,5 @@ export class ImageTagComponent ***REMOVED***
             ***REMOVED***)
         ***REMOVED***)
     ***REMOVED***
-
 
 ***REMOVED***

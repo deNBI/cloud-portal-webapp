@@ -43,7 +43,6 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
 
     private checkStatusTimeout = 5000;
 
-
     constructor(private imageService: ImageService) ***REMOVED***
 
     ***REMOVED***
@@ -56,7 +55,6 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
         this.selected_snapshot = snapshot;
     ***REMOVED***
 
-
     /**
      * Get snapshots by user.
      */
@@ -67,7 +65,6 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
             this.checkSnapShotsStatus()
         ***REMOVED***)
     ***REMOVED***
-
 
     checkSnapShotsStatus() ***REMOVED***
         let all_active = true;
@@ -93,7 +90,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
                     this.checkSnapShotsStatus();
                 ***REMOVED***
             ***REMOVED***)
-        ***REMOVED***, this.checkStatusTimeout);
+        ***REMOVED***,         this.checkStatusTimeout);
 
     ***REMOVED***
 
@@ -105,7 +102,6 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
         this.imageService.deleteSnapshot(snapshot_id).subscribe(result => ***REMOVED***
 
             this.delete_status = 0;
-
 
             if (result['Deleted'] && result['Deleted'] === true) ***REMOVED***
                 this.delete_status = 1;
@@ -120,7 +116,6 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***)
 
     ***REMOVED***
-
 
     ngOnInit(): void ***REMOVED***
         this.getSnapshots()

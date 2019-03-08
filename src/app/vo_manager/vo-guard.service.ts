@@ -6,10 +6,8 @@ import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 @Injectable()
 export class VoGuardService implements CanActivate ***REMOVED***
 
-
     constructor(private router: Router, private voservice: VoService) ***REMOVED***
     ***REMOVED***
-
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean ***REMOVED***
         return new Promise((resolve, reject) => ***REMOVED***
@@ -25,9 +23,5 @@ export class VoGuardService implements CanActivate ***REMOVED***
                 ***REMOVED***)
         ***REMOVED***);
 
-
     ***REMOVED***
 ***REMOVED***
-
-
-

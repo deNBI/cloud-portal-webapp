@@ -10,8 +10,7 @@ const routes: Routes = [
             title: 'Project overview'
         ***REMOVED***
 
-    ***REMOVED***,
-
+    ***REMOVED***
 
 ];
 

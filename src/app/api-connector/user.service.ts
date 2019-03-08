@@ -59,7 +59,7 @@ export class UserService ***REMOVED***
         elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/$***REMOVED***elixir_id***REMOVED***/member/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
 
         ***REMOVED***)
 
@@ -90,7 +90,7 @@ export class UserService ***REMOVED***
     getMemberByUser(): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/member/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 

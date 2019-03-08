@@ -23,7 +23,7 @@ export class FacilityService ***REMOVED***
     getComputeCenters(): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
 
         ***REMOVED***)
     ***REMOVED***
@@ -92,7 +92,7 @@ export class FacilityService ***REMOVED***
     getFacilityApplicationsHistory(facility: number): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications_history/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
 
     ***REMOVED***
@@ -105,7 +105,7 @@ export class FacilityService ***REMOVED***
     getFacilityModificationApplicationsWaitingForConfirmation(facility: number): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/modification_applications/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
 
         ***REMOVED***)
     ***REMOVED***

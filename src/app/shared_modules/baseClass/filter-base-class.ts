@@ -3,10 +3,10 @@ import ***REMOVED***AbstractBaseClasse***REMOVED*** from './abstract-base-class'
 export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
 
     filterstatus_list: ***REMOVED*** [status: string]: boolean ***REMOVED*** = ***REMOVED***
-        'ACTIVE': true,
-        'SUSPENDED': true,
-        'DELETED': false,
-        'EXPIRED': false,
+        ACTIVE: true,
+        SUSPENDED: true,
+        DELETED: false,
+        EXPIRED: false,
         'EXPIRES SOON': false
     ***REMOVED***;
     filterProjectName: string;
@@ -33,13 +33,11 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***
         this.filterstatus_list[status] = !this.filterstatus_list[status];
 
-
     ***REMOVED***
 
     abstract applyFilter(): void
 
     abstract checkFilter(obj: any): void
-
 
     isFilterProjectId(id: number): boolean ***REMOVED***
         if (!this.filterProjectId) ***REMOVED***
@@ -70,7 +68,6 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
             return false;
         ***REMOVED***
     ***REMOVED***
-
 
     isFilterProjectName(projectName: string): boolean ***REMOVED***
 
@@ -106,7 +103,6 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
                 break;
         ***REMOVED***
 
-
         if (this.filterstatus_list[status] || this.filterstatus_list[lifetime_status]
         ) ***REMOVED***
 
@@ -125,7 +121,6 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
             return false;
         ***REMOVED***
     ***REMOVED***
-
 
     isFilterElixir_id(vmelixir_id: string): boolean ***REMOVED***
         if (!this.filterVmElixir_id) ***REMOVED***
@@ -197,7 +192,6 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     changeFilterStatus(status: string) ***REMOVED***
         this.filterstatus_list[status] = !this.filterstatus_list[status];
 
-
     ***REMOVED***
 
     changeFilterProjectStatusAndLifetimeStatus(project_status?: number, lifetime_reached?: number): void ***REMOVED***
@@ -223,7 +217,6 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
             ***REMOVED***
             this.filterstatus_list[status] = !this.filterstatus_list[status];
         ***REMOVED***
-
 
     ***REMOVED***
 ***REMOVED***

@@ -10,7 +10,6 @@ export class Resources ***REMOVED***
     private _totalFPGA = 0;
     private _totalGPU = 0;
 
-
     constructor(resource_name: string, totalRam: number, totalCores: number, totalVms: number, totalVolumeLimit: number,
                 totalVolumeCounter: number, totalObjectStorage: number, totalFPGA: number, totalGPU: number) ***REMOVED***
         this._resource_name = resource_name;
@@ -95,6 +94,5 @@ export class Resources ***REMOVED***
     set totalGPU(value: number) ***REMOVED***
         this._totalGPU = value;
     ***REMOVED***
-
 
 ***REMOVED***

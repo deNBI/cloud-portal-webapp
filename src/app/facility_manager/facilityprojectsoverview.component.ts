@@ -36,14 +36,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
     private EXPIRES_SOON = 1;
     private VALID_LIFETIME = 2;
 
-
     // modal variables for User list
     public usersModal;
     public usersModalProjectMembers: ProjectMember[] = new Array;
     public usersModalProjectID: number;
     public usersModalProjectName: string;
     public selectedProject: Project;
-
 
     public emailSubject: string;
     public emailText: string;
@@ -53,7 +51,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
     projects_filtered: Project[] = new Array();
-
 
     constructor(private groupservice: GroupService,
                 private  facilityservice: FacilityService) ***REMOVED***
@@ -69,7 +66,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
 
     applyFilter() ***REMOVED***
 
-
         this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
 
     ***REMOVED***
@@ -82,9 +78,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
             return false
         ***REMOVED***
 
-
     ***REMOVED***
-
 
     onChangeSelectedFacility(value) ***REMOVED***
         this.getFacilityProjects(this.selectedFacility['FacilityId'])
@@ -97,7 +91,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                 const lifetime = res['lifetime'];
                 let dateCreated = project.DateCreated;
 
-                let expirationDate = undefined;
+                let expirationDate;
                 dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
                 if (lifetime !== -1) ***REMOVED***
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
@@ -118,7 +112,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
     getFacilityProjects(facility) ***REMOVED***
         this.projects = [];
 
-
         this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe(result => ***REMOVED***
             const facility_projects = result;
             const is_pi = false;
@@ -131,16 +124,15 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                 let shortname = group['shortname'];
                 let compute_center = null;
                 const lifetime = group['lifetime'];
-                let expirationDate = undefined;
-
+                let expirationDate;
 
                 if (!shortname) ***REMOVED***
                     shortname = group['name']
                 ***REMOVED***
                 if (tmp_facility) ***REMOVED***
                     compute_center = new ComputecenterComponent(tmp_facility['compute_center_facility_id'],
-                        tmp_facility['compute_center_name'],
-                        tmp_facility['compute_center_login'], tmp_facility['compute_center_support_mail']);
+                                                                tmp_facility['compute_center_name'],
+                                                                tmp_facility['compute_center_login'], tmp_facility['compute_center_support_mail']);
                 ***REMOVED***
 
                 const newProject = new Project(
@@ -162,26 +154,22 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                     newProject.DateEnd = expirationDate;
                     newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
 
-
                 ***REMOVED***
                 newProject.RealName = group['name'];
                 newProject.Lifetime = lifetime;
-
 
                 this.projects.push(newProject);
             ***REMOVED***
             this.applyFilter();
             this.isLoaded = true;
 
-
         ***REMOVED***)
-
 
     ***REMOVED***
 
     sendMailToFacility(facility: string, subject: string, message: string, reply?: string) ***REMOVED***
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message),
-            encodeURIComponent(reply)).subscribe(result => ***REMOVED***
+                                                encodeURIComponent(reply)).subscribe(result => ***REMOVED***
 
                 if (result.status === 201) ***REMOVED***
                     this.emailStatus = 1;
@@ -189,7 +177,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                     this.emailStatus = 2;
                 ***REMOVED***
             ***REMOVED***,
-            error => ***REMOVED***
+                                                 error => ***REMOVED***
                 console.log(error);
                 this.emailStatus = 2;
             ***REMOVED***)
@@ -228,7 +216,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
         this.emailStatus = 0;
 
     ***REMOVED***
-
 
     public comingSoon() ***REMOVED***
         alert('This function will be implemented soon.')

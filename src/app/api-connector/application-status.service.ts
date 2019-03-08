@@ -38,7 +38,7 @@ export class ApplicationStatusService ***REMOVED***
         const params: HttpParams = new HttpParams().set('project_application_status', status_id);
 
         return this.http.patch(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***application_id***REMOVED***/`, params,
-            ***REMOVED***
+                               ***REMOVED***
                 headers: header,
                 withCredentials: true
             ***REMOVED***)

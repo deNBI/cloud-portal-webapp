@@ -15,7 +15,6 @@ import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
     providers: [VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 ***REMOVED***)
 
-
 export class VmOverviewComponent extends FilterBaseClass implements OnInit ***REMOVED***
     /**
      * All unfiltered vms.
@@ -113,7 +112,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      */
     reboot_done: boolean;
 
-
     constructor(private voService: VoService, private imageService: ImageService, private userservice: UserService,
                 private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) ***REMOVED***
         super()
@@ -133,7 +131,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
     ***REMOVED***
 
-
     /**
      * Check if vm corresponds the filter.
      * @param ***REMOVED***VirtualMachine***REMOVED*** vm vm which is checked
@@ -147,7 +144,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
         ***REMOVED*** else ***REMOVED***
             return false
         ***REMOVED***
-
 
     ***REMOVED***
 
@@ -163,7 +159,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
         this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
         this.currentPage = 1
-
 
     ***REMOVED***
 
@@ -208,9 +203,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
             this.snapshotNameCheckDone = true;
         ***REMOVED***)
 
-
     ***REMOVED***
-
 
     /**
      * Reset the snapshotDone to waiting.
@@ -226,7 +219,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
     checkStatus(openstackid: string) ***REMOVED***
         this.virtualmachineservice.checkVmStatus(openstackid).subscribe(res => ***REMOVED***
 
-
                 this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
                         this.vms_content = vms;
                         for (const vm of this.vms_content) ***REMOVED***
@@ -240,7 +232,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                             ***REMOVED***
                         ***REMOVED***
                         this.applyFilter()
-
 
                     ***REMOVED***
                 );
@@ -258,7 +249,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
             this.status_changed = 0;
 
-
             if (this.tab === 'own') ***REMOVED***
                 this.getVms();
             ***REMOVED*** else if (this.tab === 'all') ***REMOVED***
@@ -272,7 +262,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                 this.status_changed = 2;
             ***REMOVED***
 
-
         ***REMOVED***)
     ***REMOVED***
 
@@ -285,14 +274,12 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
         this.virtualmachineservice.rebootVM(openstack_id, reboot_type).subscribe(result => ***REMOVED***
             this.status_changed = 0;
 
-
             if (result['reboot']) ***REMOVED***
                 this.status_changed = 1;
                 this.check_status_loop(openstack_id)
             ***REMOVED*** else ***REMOVED***
                 this.status_changed = 2;
             ***REMOVED***
-
 
         ***REMOVED***)
     ***REMOVED***
@@ -316,18 +303,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
                     ***REMOVED***
 
-
                 ***REMOVED*** else ***REMOVED***
                     if (res['Error']) ***REMOVED***
                         this.status_check_error = true
-
 
                     ***REMOVED***
                     this.check_status_loop(id)
                 ***REMOVED***
 
             ***REMOVED***)
-        ***REMOVED***, this.checkStatusTimeout);
+        ***REMOVED***,         this.checkStatusTimeout);
     ***REMOVED***
 
     /**
@@ -338,7 +323,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
         this.virtualmachineservice.stopVM(openstack_id).subscribe(result => ***REMOVED***
 
             this.status_changed = 0;
-
 
             if (this.tab === 'own') ***REMOVED***
                 this.getVms();
@@ -352,7 +336,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
             ***REMOVED*** else ***REMOVED***
                 this.status_changed = 2;
             ***REMOVED***
-
 
         ***REMOVED***)
     ***REMOVED***
@@ -409,7 +392,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
             ***REMOVED***
         );
 
-
     ***REMOVED***
 
     /**
@@ -420,9 +402,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
         this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => ***REMOVED***
 
-
             this.status_changed = 0;
-
 
             if (this.tab === 'own') ***REMOVED***
                 this.getVms();
@@ -449,7 +429,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                 for (const vm of this.vms_content) ***REMOVED***
                     this.setCollapseStatus(vm.openstackid, false)
 
-
                     if (vm.created_at !== '') ***REMOVED***
                         vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                     ***REMOVED***
@@ -461,7 +440,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
                 ***REMOVED***
                 this.applyFilter();
-
 
             ***REMOVED***
         );

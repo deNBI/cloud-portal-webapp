@@ -11,7 +11,6 @@ export class Flavor ***REMOVED***
     private _type: FlavorType;
     private _simple_vm: boolean;
 
-
     get id(): string ***REMOVED***
         return this._id;
     ***REMOVED***
@@ -84,10 +83,4 @@ export class Flavor ***REMOVED***
         this._simple_vm = value;
     ***REMOVED***
 
-
 ***REMOVED***
-
-
-
-
-

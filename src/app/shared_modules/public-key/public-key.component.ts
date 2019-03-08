@@ -18,7 +18,6 @@ export class PublicKeyComponent implements OnInit ***REMOVED***
     show_key_text = 'Show Public Key';
     key_visible = false;
 
-
     constructor(private keyservice: KeyService) ***REMOVED***
     ***REMOVED***
 
@@ -68,6 +67,5 @@ export class PublicKeyComponent implements OnInit ***REMOVED***
             this.key_visible = false;
         ***REMOVED***
     ***REMOVED***
-
 
 ***REMOVED***

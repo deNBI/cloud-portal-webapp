@@ -61,7 +61,6 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-
     toggle_new_application() ***REMOVED***
         if (this.navbar_state === 'closed') ***REMOVED***
             this.navbar_state = 'open'
@@ -77,7 +76,6 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
             this.overview_state = 'closed'
         ***REMOVED***
     ***REMOVED***
-
 
     checkVOstatus() ***REMOVED***
         this.voService.isVo().subscribe(result => ***REMOVED***

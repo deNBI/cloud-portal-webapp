@@ -6,7 +6,6 @@ import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import ***REMOVED***ExportAsConfig, ExportAsService***REMOVED*** from 'ngx-export-as'
 
-
 @Component(***REMOVED***
     selector: 'app-resources',
     templateUrl: './resources.component.html',
@@ -29,7 +28,6 @@ export class ResourcesComponent implements OnInit ***REMOVED***
     totalResource: Resources;
     tableId: string = 'contentToConvert';
     today: number = Date.now();
-
 
     exportAsConfigCSV: ExportAsConfig = ***REMOVED***
         type: 'csv',

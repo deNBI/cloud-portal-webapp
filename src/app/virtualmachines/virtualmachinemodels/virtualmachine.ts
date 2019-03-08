@@ -2,7 +2,6 @@ import ***REMOVED***Image***REMOVED*** from './image';
 import ***REMOVED***Flavor***REMOVED*** from './flavor';
 import ***REMOVED***Vmclient***REMOVED*** from './vmclient';
 
-
 export class VirtualMachine ***REMOVED***
     flavor: Flavor;
     image: Image;
@@ -19,6 +18,4 @@ export class VirtualMachine ***REMOVED***
     floating_ip: string;
     ssh_command: string;
 
-
 ***REMOVED***
-

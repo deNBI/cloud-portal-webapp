@@ -1,15 +1,14 @@
 enum Lifetime_Statuses ***REMOVED***
     EXPIRED = 0,
     EXPIRES_SOON = 1,
-    VALID_LIFETIME = 2,
+    VALID_LIFETIME = 2
 ***REMOVED***
 
 enum Project_Statuses ***REMOVED***
     ACTIVE = 2,
-    SUSPENDED = 4,
+    SUSPENDED = 4
 
 ***REMOVED***
-
 
 enum Application_Statuses ***REMOVED***
     SUBMITTED = 1,
@@ -18,18 +17,16 @@ enum Application_Statuses ***REMOVED***
     MODIFICATION_REQUESTED = 4,
     MODIFICTION_DECLINED = 5,
     WAIT_FOR_CONFIRMATION = 6,
-    CONFIRMATION_DENIED = 7,
+    CONFIRMATION_DENIED = 7
 
 ***REMOVED***
-
 
 enum Vm_Statuses ***REMOVED***
     ACTIVE = 1,
     SUSPENDED = 2,
     DELETED = 3,
-    CLIENT_OFFLINE = 4,
+    CLIENT_OFFLINE = 4
 ***REMOVED***
-
 
 export abstract class AbstractBaseClasse ***REMOVED***
 
@@ -40,7 +37,6 @@ export abstract class AbstractBaseClasse ***REMOVED***
 
     collapse_status: ***REMOVED*** [id: string]: boolean ***REMOVED*** = ***REMOVED******REMOVED***;
     isLoaded = false;
-
 
     // notification Modal variables
     public notificationModal;
@@ -81,7 +77,6 @@ export abstract class AbstractBaseClasse ***REMOVED***
         this.notificationModalType = type;
     ***REMOVED***
 
-
     /**
      * Get a collapse status.
      * @param ***REMOVED***string***REMOVED*** id
@@ -92,6 +87,7 @@ export abstract class AbstractBaseClasse ***REMOVED***
             return this.collapse_status[id];
         ***REMOVED*** else ***REMOVED***
             this.collapse_status[id] = true;
+
             return true;
         ***REMOVED***
     ***REMOVED***
@@ -102,7 +98,6 @@ export abstract class AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-
     /**
      * Switch status of collapse.
      * @param ***REMOVED***string***REMOVED*** id
@@ -110,7 +105,6 @@ export abstract class AbstractBaseClasse ***REMOVED***
     public switchCollapseStatus(id: string) ***REMOVED***
         this.collapse_status[id] = !this.getCollapseStatus(id);
     ***REMOVED***
-
 
     lifeTimeReached(lifetimeDays: number, running: number): Lifetime_Statuses ***REMOVED***
         if ((lifetimeDays - running) < 0) ***REMOVED***
@@ -124,8 +118,6 @@ export abstract class AbstractBaseClasse ***REMOVED***
             return this.lifetime_statuses.VALID_LIFETIME
         ***REMOVED***
 
-
     ***REMOVED***
-
 
 ***REMOVED***

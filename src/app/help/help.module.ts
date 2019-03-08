@@ -17,7 +17,7 @@ import ***REMOVED***AlertModule***REMOVED*** from 'ngx-bootstrap';
     ],
 
     declarations: [
-        HelpComponent,
+        HelpComponent
     ]
 ***REMOVED***)
 export class HelpModule ***REMOVED***

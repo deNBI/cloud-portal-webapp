@@ -6,17 +6,17 @@ import ***REMOVED*** Component ***REMOVED*** from '@angular/core';
 export class ChartJSComponent ***REMOVED***
 
   // lineChart
-  public lineChartData: Array<any> = [
+  public lineChartData: any[] = [
     ***REMOVED***data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'***REMOVED***,
     ***REMOVED***data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'***REMOVED***,
     ***REMOVED***data: [18, 48, 77, 9, 100, 27, 40], label: 'Series C'***REMOVED***
   ];
-  public lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChartLabels: any[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChartOptions: any = ***REMOVED***
     animation: false,
     responsive: true
   ***REMOVED***;
-  public lineChartColours: Array<any> = [
+  public lineChartColours: any[] = [
     ***REMOVED*** // grey
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',

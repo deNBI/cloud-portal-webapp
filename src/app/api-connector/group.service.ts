@@ -21,7 +21,7 @@ export class GroupService ***REMOVED***
     getFacilityByGroup(groupid: string): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/computecenter/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
     ***REMOVED***
@@ -57,14 +57,14 @@ export class GroupService ***REMOVED***
     isUserAdminOfGroup(groupid: string, userid: string): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/members/$***REMOVED***userid***REMOVED***/manager/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 
     getGroupAdminIds(groupid: string): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/admins/ids/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 
@@ -205,7 +205,7 @@ export class GroupService ***REMOVED***
 
     getName(groupid: string): Observable<any> ***REMOVED***
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/name/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
 
     ***REMOVED***
@@ -231,13 +231,13 @@ export class GroupService ***REMOVED***
 
     getGroupDetails(): Observable<any> ***REMOVED***
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/details/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 
     getGroupApplications(group: number): Observable<any> ***REMOVED***
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***group***REMOVED***/applications/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
 
     ***REMOVED***
@@ -283,7 +283,7 @@ export class GroupService ***REMOVED***
         const params: HttpParams = new HttpParams().set('name', group_name).set('description', group_description.substring(0, 512));
 
         return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/`, params,
-            ***REMOVED***
+                              ***REMOVED***
                 withCredentials: true,
                 headers: header
             ***REMOVED***)
@@ -292,7 +292,7 @@ export class GroupService ***REMOVED***
     getLifetime(groupid: string): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/lifetime/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
 
     ***REMOVED***
@@ -333,20 +333,20 @@ export class GroupService ***REMOVED***
 
     getVolumesUsed(groupid: string): Observable<any> ***REMOVED***
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/usedVolumes/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 
     getVolumeCounter(groupid: string): Observable<any> ***REMOVED***
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/volumesCounter/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 
     getGroupApprovedVms(groupid: string): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/approvedVms/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
 
     ***REMOVED***
@@ -354,7 +354,7 @@ export class GroupService ***REMOVED***
     getGroupUsedVms(groupid: string): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/usedVms/`, ***REMOVED***
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
 
     ***REMOVED***
