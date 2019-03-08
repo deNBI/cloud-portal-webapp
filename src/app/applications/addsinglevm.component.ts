@@ -120,7 +120,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
                 const error_json = error;
                 this.error = [];
                 for (const key of Object.keys(error_json)) {
-                    this.error.push(key.split('_', )[2])
+                    this.error.push(key.split('_',)[2])
 
                 }
 
@@ -206,7 +206,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
             const error_json = error
             this.error = []
             for (const key of Object.keys(error_json)) {
-                this.error.push(key.split('_', )[2])
+                this.error.push(key.split('_',)[2])
 
             }
 

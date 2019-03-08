@@ -35,7 +35,7 @@ export class FacilityService {
      */
     getManagerFacilities(): Observable<any> {
 
-        return this.http.get(ApiSettings.getApiBaseURL()+ 'facilityManagers/current/facilities/', {
+        return this.http.get(ApiSettings.getApiBaseURL() + 'facilityManagers/current/facilities/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -107,8 +107,7 @@ export class FacilityService {
     }
 
 
-
-      /**
+    /**
      * Gets all facility modification applications which are waiting for conirmation.
      * @param {number} facility
      * @returns {Observable<any>}

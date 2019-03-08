@@ -16,7 +16,7 @@ export class VirtualmachineService {
     data: string;
     baseVmUrl = ApiSettings.getApiBaseURL() + 'vms/';
 
-    constructor(private http: HttpClient, private settings: ApiSettings) {
+    constructor(private http: HttpClient) {
     }
 
 

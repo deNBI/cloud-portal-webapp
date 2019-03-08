@@ -7,7 +7,7 @@ import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class SpecialHardwareService {
-    constructor(private http: HttpClient, private settings: ApiSettings) {
+    constructor(private http: HttpClient) {
     }
 
     getAllSpecialHardware(): Observable<any> {

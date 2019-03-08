@@ -14,7 +14,7 @@ const header = new HttpHeaders({
 
 @Injectable()
 export class ImageService {
-    constructor(private http: HttpClient, private settings: ApiSettings) {
+    constructor(private http: HttpClient) {
     }
 
     getImages(project_id: number): Observable<Image[]> {

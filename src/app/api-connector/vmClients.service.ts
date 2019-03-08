@@ -16,7 +16,7 @@ const header = new HttpHeaders({
 export class ClientService {
     clientURL = ApiSettings.getApiBaseURL() + 'clients/';
 
-    constructor(private http: HttpClient, private settings: ApiSettings) {
+    constructor(private http: HttpClient) {
     }
 
 

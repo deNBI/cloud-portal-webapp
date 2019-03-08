@@ -10,7 +10,7 @@ import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 @Injectable()
 export class FlavorService {
 
-    constructor(private http: HttpClient, private settings: ApiSettings) {
+    constructor(private http: HttpClient) {
     }
 
     getFlavors(project_id: number): Observable<Flavor[]> {
