@@ -6,7 +6,6 @@ import ***REMOVED***ApplicationsComponent***REMOVED*** from './applications.comp
 import ***REMOVED***AddsinglevmComponent***REMOVED*** from './addsinglevm.component';
 import ***REMOVED***AddcloudapplicationComponent***REMOVED*** from './addcloudapplication.component';
 
-
 const routes: Routes = [
     ***REMOVED***
         path: '',
@@ -31,11 +30,13 @@ const routes: Routes = [
             title: 'New Application'
         ***REMOVED***
 
-
     ***REMOVED***
 
 ];
 
+/**
+ * Application routing module.
+ */
 @NgModule(***REMOVED***
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]

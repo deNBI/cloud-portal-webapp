@@ -322,10 +322,6 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
      * @param ***REMOVED***string***REMOVED*** shortname
      */
     public checkShortname(shortname: string): void ***REMOVED***
-        if (!/^[a-zA-Z0-9\s]*$/.test(shortname)) ***REMOVED***
-            this.wronginput = true;
-        ***REMOVED*** else ***REMOVED***
-            this.wronginput = false;
-        ***REMOVED***
+        this.wronginput = !/^[a-zA-Z0-9\s]*$/.test(shortname);
     ***REMOVED***
 ***REMOVED***

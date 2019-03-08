@@ -10,6 +10,9 @@ import ***REMOVED***AddsinglevmComponent***REMOVED*** from './addsinglevm.compon
 import ***REMOVED***AddcloudapplicationComponent***REMOVED*** from './addcloudapplication.component';
 import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
 
+/**
+ * Applications Module.
+ */
 @NgModule(***REMOVED***
     imports: [
         ApplicationsRoutingModule,
@@ -17,14 +20,13 @@ import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
         TabsModule,
         CommonModule,
         FormsModule,
-        ModalModule.forRoot(),
-
+        ModalModule.forRoot()
 
     ],
     declarations: [
         ApplicationsComponent,
         AddsinglevmComponent,
-        AddcloudapplicationComponent,
+        AddcloudapplicationComponent
     ]
 ***REMOVED***)
 export class ApplicationsModule ***REMOVED***
