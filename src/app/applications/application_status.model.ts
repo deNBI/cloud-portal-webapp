@@ -1,3 +1,6 @@
+/**
+ * ApplicationStatus class.
+ */
 export class ApplicationStatus {
 
     /**
@@ -9,7 +12,6 @@ export class ApplicationStatus {
      * Name of the status.
      */
     private _Name: string;
-
 
     constructor(Id: number, Name: string) {
         this._Id = Id;

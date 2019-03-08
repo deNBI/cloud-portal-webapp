@@ -1,3 +1,6 @@
+/**
+ * Application Extension class.
+ */
 export class ApplicationExtension {
 
     private _Id: number;
@@ -14,13 +17,17 @@ export class ApplicationExtension {
     private _OpenStackProject: boolean;
     private _TotalCores: number;
     private _TotalRAM: number;
-    private _RequestedFlavors: { [id: string]: { counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number } };
+    private _RequestedFlavors: {
+        [id: string]: {
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        }
+    };
 
     constructor() {
         this._RequestedFlavors = {};
 
     }
-
 
     /**
      * Add Flavor to requested flavor list.
@@ -33,7 +40,8 @@ export class ApplicationExtension {
      * @param {number} gpu gpu of the flavors
      * @param {number} epheremal_disk epheremal_disk of the flavor
      */
-    public addFlavorToRequested(name: string, counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number): void {
+    public addFlavorToRequested(name: string, counter: number, tag: string, ram: number, rootdisk: number,
+                                vcpus: number, gpu: number, epheremal_disk: number): void {
         this._RequestedFlavors[name] = {
             counter: counter,
             tag: tag,
@@ -45,14 +53,23 @@ export class ApplicationExtension {
         };
     }
 
-    get RequestedFlavors(): { [id: string]: { counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number } } {
+    get RequestedFlavors(): {
+        [id: string]: {
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        }
+    } {
         return this._RequestedFlavors
     }
 
-    set RequestedFlavors(value: { [id: string]: { counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number } }) {
+    set RequestedFlavors(value: {
+        [id: string]: {
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        }
+    }) {
         this._RequestedFlavors = value;
     }
-
 
     get TotalCores(): number {
         return this._TotalCores;
@@ -78,7 +95,6 @@ export class ApplicationExtension {
         this._Lifetime = value;
     }
 
-
     get OpenStackProject(): boolean {
         return this._OpenStackProject
     }
@@ -86,7 +102,6 @@ export class ApplicationExtension {
     set OpenStackProject(value: boolean) {
         this._OpenStackProject = value;
     }
-
 
     get Id(): number {
         return this._Id;
@@ -96,7 +111,6 @@ export class ApplicationExtension {
         this._Id = value;
     }
 
-
     set Comment(value: string) {
         this._Comment = value;
     }
@@ -104,7 +118,6 @@ export class ApplicationExtension {
     get Comment(): string {
         return this._Comment;
     }
-
 
     get VMsRequested(): number {
         return this._VMsRequested;
@@ -138,7 +151,6 @@ export class ApplicationExtension {
         this._VolumeLimit = value;
     }
 
-
     get VolumeCounter(): number {
         return this._VolumeCounter;
     }
@@ -163,7 +175,6 @@ export class ApplicationExtension {
         this._SpecialHardware = value;
     }
 
-
     get DateSubmitted(): string {
         return this._DateSubmitted;
     }
@@ -171,6 +182,5 @@ export class ApplicationExtension {
     set DateSubmitted(value: string) {
         this._DateSubmitted = value;
     }
-
 
 }

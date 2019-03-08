@@ -179,7 +179,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
 
     }
 
-    sendMailToFacility(facility: number, subject: string, message: string, reply?: string) {
+    sendMailToFacility(facility: string, subject: string, message: string, reply?: string) {
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message),
             encodeURIComponent(reply)).subscribe(result => {
 

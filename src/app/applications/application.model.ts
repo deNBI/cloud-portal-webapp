@@ -1,7 +1,9 @@
 import {ApplicationExtension} from './application_extension.model';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 
-
+/**
+ * Application class.
+ */
 export class Application {
     private _Id: number;
     private _Name: string;
@@ -33,8 +35,6 @@ export class Application {
     private _TotalRam: number;
     private _DateApproved: string;
     private _Horizon2020: string;
-
-
     private _Dissemination: boolean;
     private _CurrentFlavors: {
         [id: string]: {
@@ -42,7 +42,6 @@ export class Application {
             vcpus: number, gpu: number, epheremal_disk: number
         }
     };
-
 
     constructor() {
         this._CurrentFlavors = {};
@@ -143,7 +142,6 @@ export class Application {
         this._OpenStackProject = value;
     }
 
-
     get ComputeCenter(): ComputecenterComponent {
         return this._ComputeCenter
     }
@@ -240,7 +238,6 @@ export class Application {
         this._VolumeLimit = value;
     }
 
-
     get VolumeCounter(): number {
         return this._VolumeCounter;
     }
@@ -305,7 +302,6 @@ export class Application {
         this._Status = value;
     }
 
-
     get UserEmail(): number {
         return this._UserEmail;
     }
@@ -321,7 +317,6 @@ export class Application {
     set PerunId(value: number) {
         this._PerunId = value;
     }
-
 
     get Horizon2020(): string {
         return this._Horizon2020;

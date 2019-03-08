@@ -77,10 +77,10 @@ export class GroupService {
         })
     }
 
-    addMember(group_id: number, member_id: number, facility_id?: number): Observable<any> {
+    addMember(group_id: number, member_id: number, facility_id?: string): Observable<any> {
         const params: HttpParams = new HttpParams();
         if (facility_id) {
-            params.set('facility_id', facility_id.toString())
+            params.set('facility_id', facility_id)
 
         }
 
@@ -92,11 +92,11 @@ export class GroupService {
         })
     }
 
-    addAdmin(group_id: number, user_id: number, facility_id?: number): Observable<any> {
+    addAdmin(group_id: number, user_id: number, facility_id?: string): Observable<any> {
         const params: HttpParams = new HttpParams();
 
         if (facility_id) {
-            params.set('facility_id', facility_id.toString())
+            params.set('facility_id', facility_id)
 
         }
 
@@ -363,7 +363,7 @@ export class GroupService {
         const params: HttpParams = new HttpParams()
             .set('application_id', application_id.toString());
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/'${groupid}/attributes/`, params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/`, params, {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));

@@ -5,7 +5,6 @@ import {ApiSettings} from '../api-connector/api-settings.service'
 import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {Application} from './application.model';
 import {ApplicationStatus} from './application_status.model';
-import {SpecialHardware} from './special_hardware.model'
 import {GroupService} from '../api-connector/group.service';
 import {UserService} from '../api-connector/user.service';
 import {ApplicationExtension} from './application_extension.model';
@@ -19,14 +18,15 @@ import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
 import {Vmclient} from '../virtualmachines/virtualmachinemodels/vmclient';
 
-
+/**
+ * Application Overview component.
+ */
 @Component({
     templateUrl: 'applications.component.html',
     providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService,
-        ApplicationsService, SpecialHardwareService, ApiSettings, FlavorService]
+        ApplicationsService, ApiSettings, FlavorService]
 })
 export class ApplicationsComponent extends AbstractBaseClasse {
-
 
     /**
      * Limits information for Client tested/used for Simple Vm Project creation.
@@ -43,7 +43,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * If the user is a vo admin.
      * @type {boolean}
      */
-    is_vo_admin = false;
+    is_vo_admin: boolean = false;
 
     /**
      * All Applications, just visibile for a vo admin.
@@ -57,11 +57,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      */
 
     application_status: ApplicationStatus[] = [];
-    /**
-     * Avaiable Special Hardwares.
-     * @type {Array}
-     */
-    special_hardware: SpecialHardware[] = [];
 
     /**
      * All available compute centers.
@@ -78,7 +73,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Id of the extension status.
      * @type {number}
      */
-    extension_status = 0;
+    extension_status: number = 0;
     /**
      * Id of Application set for deletion.
      */
@@ -88,13 +83,13 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * If all userApplications are loaded, important for the loader.
      * @type {boolean}
      */
-    isLoaded_userApplication = false;
+    isLoaded_userApplication: boolean = false;
 
     /**
      * If all Applications are loaded, important for the loader.
      * @type {boolean}
      */
-    isLoaded_AllApplication = false;
+    isLoaded_AllApplication: boolean = false;
 
     /**
      * User which requested the Application {id: Elixir Id of user : {name and email}}.
@@ -102,27 +97,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      */
     application_user: { [id: string]: { [id: string]: string } } = {};
 
-    // notification Modal variables
-    public notificationModalTitle = 'Notification';
-    public notificationModalMessage = 'Please wait...';
-    public notificationModalType = 'info';
-    public notificationModalIsClosable = false;
-    private APPROVED_STATUS = 2;
-    private WAIT_FOR_EXTENSION_STATUS = 6;
-
-
-    /**
-     * Special hardware id for FPGA.
-     * @type {number}
-     */
-    public FPGA = 1;
-
-    /**
-     * Special hardware id for GPU.
-     * @type {number}
-     */
-    public GPU = 2;
-
+    private APPROVED_STATUS: number = 2;
+    private WAIT_FOR_EXTENSION_STATUS: number = 6;
 
     /**
      * List of flavors.
@@ -140,19 +116,18 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Total number of cores.
      * @type {number}
      */
-    public totalNumberOfCores = 0;
+    public totalNumberOfCores: number = 0;
     /**
      * Total number of ram.
      * @type {number}
      */
-    public totalRAM = 0;
+    public totalRAM: number = 0;
 
     /**
      * Constructor.
      * Loads all Applications if user is vo admin and all user_applications.
      * @param {ApplicationsService} applicationsservice
      * @param {ApplicationStatusService} applicationstatusservice
-     * @param {SpecialHardwareService} specialhardwareservice
      * @param {UserService} userservice
      * @param {GroupService} groupservice
      * @param {VoService} voService
@@ -161,7 +136,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      */
     constructor(private applicationsservice: ApplicationsService,
                 private applicationstatusservice: ApplicationStatusService,
-                private specialhardwareservice: SpecialHardwareService,
                 private userservice: UserService,
                 private groupservice: GroupService,
                 private voService: VoService,
@@ -170,15 +144,12 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
         super();
         this.voService.isVo().subscribe(result => {
-
             this.is_vo_admin = result['Is_Vo_Manager'];
             this.getUserApplications();
             this.getApplicationStatus();
-            this.getSpecialHardware();
             if (this.is_vo_admin) {
                 this.getAllApplications();
                 this.getComputeCenters();
-
 
             } else {
                 this.isLoaded_AllApplication = true;
@@ -202,22 +173,21 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 }
             }
         }
+
         return null;
 
     }
-
 
     /**
      * Resets the values of totalRAM und totalNumberOfCores to 0 and changes the text at the end of the extension form.
      * @param elemIDcores the ID of the label containing the number of cores
      * @param elemIDram the ID of the label containing the amount of RAM
      */
-    protected unsetValues(elemIDcores, elemIDram: string) {
+    protected unsetValues(elemIDcores: string, elemIDram: string): void {
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
-        document.getElementById(elemIDcores).innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
-        document.getElementById(elemIDram).innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
-
+        document.getElementById(elemIDcores).innerHTML = `Number of total cores:  ${this.totalNumberOfCores.toString()}`;
+        document.getElementById(elemIDram).innerHTML = `Total amout of RAM:  ${this.totalRAM.toString()} GB`;
 
     }
 
@@ -225,7 +195,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
      * @param f the form which contains the input-fields
      */
-    protected valuesChanged(f: NgForm) {
+    protected valuesChanged(f: NgForm): void {
 
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
@@ -239,37 +209,39 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             }
         }
 
-        document.getElementById('corenumbers').innerHTML = 'Number of total cores: ' + this.totalNumberOfCores.toString();
-        document.getElementById('ramnumbers').innerHTML = 'Total amout of RAM: ' + this.totalRAM.toString() + ' GB';
-
+        document.getElementById('corenumbers').innerHTML = `Number of total cores:  ${this.totalNumberOfCores.toString()}`;
+        document.getElementById('ramnumbers').innerHTML = `Total amout of RAM:  ${this.totalRAM.toString()} GB`;
 
     }
 
     /**
      * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
      */
-    getListOfFlavors() {
-        this.flavorService.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
+    getListOfFlavors(): void {
+        this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
     }
 
     /**
      * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
      */
-    getListOfTypes() {
-        this.flavorService.getListOfTypesAvailable().subscribe(types => this.setListOfTypes(types));
+    getListOfTypes(): void {
+        this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
     }
-
 
     /**
      * Uses the param types to safe the available FlavorTypes to the array typeList.
      * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
      * @param types array of all available FlavorTypes
      */
-    setListOfTypes(types: FlavorType[]) {
+    setListOfTypes(types: FlavorType[]): void {
         this.typeList = types;
-        this.collapseList = new Array(types.length) as Array<boolean>;
-        for (let i = 0; i < types.length; i++) {
+        this.collapseList = new Array(types.length) as boolean[];
+        for (const t of types) {
+
             this.collapseList.push(false); // AS FIX
+            if (t.long_name === 'Standart Flavor') {
+                this.collapseList[this.typeList.indexOf(t)] = true;
+            }
         }
 
     }
@@ -277,7 +249,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     /**
      * Gets all available compute centers and saves them in the computeCenters attribute.
      */
-    getComputeCenters() {
+    getComputeCenters(): void {
         this.facilityService.getComputeCenters().subscribe(result => {
             for (const cc of result) {
                 const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
@@ -292,7 +264,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Gets all affialiations from a user.
      * @param {number} user
      */
-    getUserAffilaitions(user: number) {
+    getUserAffilaitions(user: number): void {
         this.userservice.getuserAffiliations(user).subscribe()
     }
 
@@ -300,21 +272,17 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Sets the selected application.
      * @param application
      */
-    setSelectedApplication(application: any) {
+    setSelectedApplication(application: any): void {
         this.selectedApplication = application;
 
-
     }
-
 
     /**
      * Submits an renewal request for an application.
      * @param {NgForm} f
      */
-    onSubmit(f: NgForm) {
-        const values = {};
-        values['project_application_renewal_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked)
-            .map(hardware => hardware.Id);
+    onSubmit(f: NgForm): void {
+        const values: { [key: string]: string | number | boolean } = {};
         for (const v in f.controls) {
             if (f.controls[v].value) {
                 values[v] = f.controls[v].value;
@@ -331,7 +299,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Sets the default values in the request renewal form.
      * @param {NgForm} f
      */
-    ngFormSetDefault(f: NgForm) {
+    ngFormSetDefault(f: NgForm): void {
         f.reset({
             project_application_renewal_vms_requested: this.selectedApplication.VMsRequested,
             project_application_renewal_cores_per_vm: this.selectedApplication.CoresPerVM,
@@ -350,7 +318,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Gets all Application of the user viewing the application overview.
      * Saves them in the userApplication array.
      */
-    getUserApplications() {
+    getUserApplications(): void {
         this.applicationsservice
             .getUserApplications().subscribe(result => {
             const res = result;
@@ -360,7 +328,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             for (const key in res) {
                 if (res[key]) {
                     const aj = res[key];
-                    const a = new Application();
+                    const a: Application = new Application();
                     a.Id = aj['project_application_id'];
                     a.Name = aj['project_application_name'];
                     a.Shortname = aj['project_application_shortname'];
@@ -391,10 +359,9 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                     }
 
                     if (aj['projectapplicationrenewal']) {
-                        const r = new ApplicationExtension();
-                        let requestExtensionTotalCores = 0;
-                        let requestExtensionTotalRam = 0;
-
+                        const r: ApplicationExtension = new ApplicationExtension();
+                        let requestExtensionTotalCores: number = 0;
+                        let requestExtensionTotalRam: number = 0;
 
                         for (const f of aj['projectapplicationrenewal']['flavors']) {
                             r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
@@ -402,7 +369,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                             requestExtensionTotalRam += f.ram * f.counter
 
                         }
-
 
                         r.TotalRAM = requestExtensionTotalRam;
                         r.TotalCores = requestExtensionTotalCores;
@@ -417,26 +383,13 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                         r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
                         r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                         r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                        const special_hardware = [];
-                        if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
-                            const special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware']
-                                .toString();
 
-                            for (let c = 0; c < special_hardware_string.length; c++) {
-                                const sh = special_hardware_string.charAt(c) === this.FPGA ? 'FPGA' : 'GPU';
-                                special_hardware.push(sh)
-
-                            }
-
-                            r.SpecialHardware = special_hardware;
-                        }
                         a.ApplicationExtension = r;
                     }
                     this.user_applications.push(a)
                 }
             }
             this.isLoaded_userApplication = true;
-
 
         });
     }
@@ -447,21 +400,22 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @param months number of months the application is permitted
      */
     getEndDate(approval: string, months: number): string {
-        let date1 = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
-        const m = date1.getMonth();
+        let date1: Date = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
+        const m: number = date1.getMonth();
         if ((m + months) > 11) {
             date1 = new Date(date1.getFullYear(), (m + months - 12), date1.getDate());
         } else {
             date1.setMonth(date1.getMonth() + months);
         }
 
-        return date1.getFullYear() + '-' + this.fillUp((date1.getMonth() + 1).toString()) + '-' + this.fillUp(date1.getDate().toString());
+        return `${date1.getFullYear()}-${this.fillUp((date1.getMonth() + 1).toString())}-${this.fillUp(date1.getDate().toString())}`;
     }
 
     fillUp(date: string): string {
         if (date.length === 1) {
-            return '0' + date;
+            return `0${date}`;
         }
+
         return date;
     }
 
@@ -469,7 +423,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         if (!sa) {
             return
         }
-        return sa.DateApproved + ' - ' + this.getEndDate(sa.DateApproved, sa.Lifetime);
+
+        return `${sa.DateApproved} - ${this.getEndDate(sa.DateApproved, sa.Lifetime)}`;
     }
 
     /**
@@ -481,34 +436,31 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         return (application.SpecialHardware.toString().includes(nums.toString()));
     }
 
-
     /**
      * Get all possible application stati.
      */
-    getApplicationStatus() {
+    getApplicationStatus(): void {
         this.applicationstatusservice.getAllApplicationStatus().toPromise()
-            .then(result => {
-                const res = result;
+            .then((result: object) => {
+                const res: object = result;
                 for (const key in res) {
                     if (res[key]) {
-                        const asj = res[key];
-                        const aj = new ApplicationStatus(asj['application_status_id'], asj['application_status_name']);
+                        const asj: object = res[key];
+                        const aj: ApplicationStatus = new ApplicationStatus(asj['application_status_id'], asj['application_status_name']);
                         this.application_status.push(aj)
                     }
                 }
             });
     }
 
-
-
     /**
      * Get all Applications if user is admin.
      */
-    getAllApplications() {
+    getAllApplications(): void {
         // todo check if user is VO Admin
 
         if (this.is_vo_admin) {
-            this.applicationsservice.getAllApplications().subscribe(res => {
+            this.applicationsservice.getAllApplications().subscribe((res: object) => {
                 if (Object.keys(res).length === 0) {
                     this.isLoaded_AllApplication = true;
                 }
@@ -516,9 +468,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 for (const key in res) {
                     if (res.hasOwnProperty(key)) {
 
-
-                        const aj = res[key];
-                        const a = new Application();
+                        const aj: object = res[key];
+                        const a: Application = new Application();
                         a.Id = aj['project_application_id'];
 
                         a.Name = aj['project_application_name'];
@@ -526,10 +477,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                         a.Description = aj['project_application_description'];
                         a.Lifetime = aj['project_application_lifetime'];
 
-                        a.ObjectStorage = aj["project_application_object_storage"];
-                        a.SpecialHardware = aj["project_application_special_hardware"];
-                        a.OpenStackProject = aj["project_application_openstack_project"];
-
+                        a.ObjectStorage = aj['project_application_object_storage'];
+                        a.OpenStackProject = aj['project_application_openstack_project'];
 
                         a.ObjectStorage = aj['project_application_object_storage'];
                         a.SpecialHardware = aj['project_application_special_hardware'];
@@ -537,7 +486,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                         a.Institute = aj['project_application_institute'];
                         a.Workgroup = aj['project_application_workgroup'];
                         a.DateApproved = aj['project_application_date_approved'];
-
 
                         a.DateSubmitted = aj['project_application_date_submitted'];
                         a.DateStatusChanged = aj['project_application_date_status_changed'];
@@ -548,7 +496,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                         a.Dissemination = aj['project_application_report_allowed'];
                         a.Horizon2020 = aj['project_application_horizon2020'];
 
-
                         for (const f of aj['flavors']) {
                             a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
 
@@ -558,30 +505,29 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                             a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime()))
                                 / (1000 * 3600 * 24));
 
-
-                            a.Comment = aj["project_application_comment"];
+                            a.Comment = aj['project_application_comment'];
                             a.PerunId = aj['project_application_perun_id'];
                             if (aj['projectapplicationrenewal']) {
-                                let r = new ApplicationExtension();
-                                let requestExtensionTotalCores = 0;
-                                let requestExtensionTotalRam = 0;
+                                const r: ApplicationExtension = new ApplicationExtension();
+                                let requestExtensionTotalCores: number = 0;
+                                let requestExtensionTotalRam: number = 0;
 
                                 a.Comment = aj['project_application_comment'];
                                 a.PerunId = aj['project_application_perun_id'];
                                 a.OpenStackProject = aj['project_application_openstack_project'];
-                                if (aj['projectapplicationrenewal']) {
-                                    const r = new ApplicationExtension();
-                                    let requestExtensionTotalCores = 0;
-                                    let requestExtensionTotalRam = 0;
 
-
-                                    for (const f of aj['projectapplicationrenewal']['flavors']) {
-                                        r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
-                                        requestExtensionTotalCores += f.vcpus * f.counter;
-                                        requestExtensionTotalRam += f.ram * f.counter
-
-                                    }
-
+                                for (const f of aj['projectapplicationrenewal']['flavors']) {
+                                    r.addFlavorToRequested(
+                                        f.flavor_name,
+                                        f.counter,
+                                        f.tag,
+                                        f.ram,
+                                        f.rootdisk,
+                                        f.vcpus,
+                                        f.gpu,
+                                        f.epheremal_disk);
+                                    requestExtensionTotalCores += f.vcpus * f.counter;
+                                    requestExtensionTotalRam += f.ram * f.counter;
 
                                     r.TotalRAM = requestExtensionTotalRam;
                                     r.TotalCores = requestExtensionTotalCores;
@@ -596,27 +542,14 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                     r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
                                     r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                                     r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                                    const special_hardware = [];
-                                    if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
-                                        const special_hardware_string = aj['projectapplicationrenewal']
-                                            ['project_application_renewal_special_hardware'].toString();
 
-                                        for (let c = 0; c < special_hardware_string.length; c++) {
-                                            const sh = special_hardware_string.charAt(c) === this.FPGA ? 'FPGA' : 'GPU';
-                                            special_hardware.push(sh)
-
-                                        }
-
-                                        r.SpecialHardware = special_hardware;
-                                    }
                                     a.ApplicationExtension = r;
 
                                 }
 
-                                this.all_applications.push(a);
-
                             }
                         }
+                        this.all_applications.push(a);
 
                         this.isLoaded_AllApplication = true;
                         for (const app of this.all_applications) {
@@ -634,25 +567,23 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
         }
 
-
     }
 
     /**
      * Get the facility of an application.
      * @param {Application} app
      */
-    public getFacilityProject(app: Application) {
+    public getFacilityProject(app: Application): void {
 
         if (!app.ComputeCenter && app.Status.toString() !== 'submitted') {
-            this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe(res => {
-                const login = res['Login'];
-                const suport = res['Support'];
-                const facilityname = res['Facility'];
-                const facilityId = res['FacilityId'];
+            this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => {
+                const login: string = res['Login'];
+                const suport: string = res['Support'];
+                const facilityname: string = res['Facility'];
+                const facilityId: number = res['FacilityId'];
 
-                const cc = new ComputecenterComponent(facilityId, facilityname, login, suport);
+                const cc: ComputecenterComponent = new ComputecenterComponent(facilityId, facilityname, login, suport);
                 app.ComputeCenter = cc
-
 
             })
         }
@@ -663,11 +594,11 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Updates an application with the actual values.
      * @param {Application} application
      */
-    public getApplication(application: Application) {
-        const index = this.all_applications.indexOf(application);
+    public getApplication(application: Application): void {
+        const index: number = this.all_applications.indexOf(application);
 
-        this.applicationsservice.getApplication(application.Id.toString()).subscribe(aj => {
-            const a = new Application();
+        this.applicationsservice.getApplication(application.Id.toString()).subscribe((aj: object) => {
+            const a: Application = new Application();
             a.Id = aj['project_application_id'];
 
             a.Name = aj['project_application_name'];
@@ -684,15 +615,12 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             a.VolumeLimit = aj['project_application_volume_limit'];
             a.VolumeCounter = aj['project_application_volume_counter'];
 
-            a.ObjectStorage = aj["project_application_object_storage"];
-            a.SpecialHardware = aj["project_application_special_hardware"];
-            a.OpenStackProject = aj["project_application_openstack_project"];
-
+            a.ObjectStorage = aj['project_application_object_storage'];
+            a.OpenStackProject = aj['project_application_openstack_project'];
 
             a.Institute = aj['project_application_institute'];
             a.Workgroup = aj['project_application_workgroup'];
             a.DateApproved = aj['project_application_date_approved'];
-
 
             a.DateSubmitted = aj['project_application_date_submitted'];
             a.DateStatusChanged = aj['project_application_date_status_changed'];
@@ -703,10 +631,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             a.Dissemination = aj['project_application_report_allowed'];
             a.Horizon2020 = aj['project_application_horizon2020'];
 
-
             if (a.Status === this.application_statuses.APPROVED) {
                 a.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(a.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
-
 
             }
             a.Comment = aj['project_application_comment'];
@@ -716,10 +642,9 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
             }
             if (aj['projectapplicationrenewal']) {
-                const r = new ApplicationExtension();
-                let requestExtensionTotalCores = 0;
-                let requestExtensionTotalRam = 0;
-
+                const r: ApplicationExtension = new ApplicationExtension();
+                let requestExtensionTotalCores: number = 0;
+                let requestExtensionTotalRam: number = 0;
 
                 for (const f of aj['projectapplicationrenewal']['flavors']) {
                     r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
@@ -727,7 +652,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                     requestExtensionTotalRam += f.ram * f.counter
 
                 }
-
 
                 r.TotalRAM = requestExtensionTotalRam;
                 r.TotalCores = requestExtensionTotalCores;
@@ -742,19 +666,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
                 r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                 r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                const special_hardware = [];
-                if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
-                    const special_hardware_string = aj['projectapplicationrenewal']
-                        ['project_application_renewal_special_hardware'].toString();
 
-                    for (let c = 0; c < special_hardware_string.length; c++) {
-                        const sh = special_hardware_string.charAt(c) === this.FPGA ? 'FPGA' : 'GPU';
-                        special_hardware.push(sh)
-
-                    }
-
-                    r.SpecialHardware = special_hardware;
-                }
                 a.ApplicationExtension = r;
             }
             this.getFacilityProject(a);
@@ -768,11 +680,11 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Gets a user application with the actual values.
      * @param {Application} application
      */
-    public getUserApplication(application: Application) {
-        const index = this.user_applications.indexOf(application);
+    public getUserApplication(application: Application): void {
+        const index: number = this.user_applications.indexOf(application);
 
-        this.applicationsservice.getUserApplication(application.Id.toString()).subscribe(aj => {
-            const a = new Application();
+        this.applicationsservice.getUserApplication(application.Id.toString()).subscribe((aj: object) => {
+            const a: Application = new Application();
             a.Id = aj['project_application_id'];
             a.Name = aj['project_application_name'];
             a.Shortname = aj['project_application_shortname'];
@@ -797,17 +709,15 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             a.PerunId = aj['project_application_perun_id'];
             a.Horizon2020 = aj['project_application_horizon2020'];
 
-
             a.Comment = aj['project_application_comment'];
             for (const f of aj['flavors']) {
                 a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
 
             }
             if (aj['projectapplicationrenewal']) {
-                const r = new ApplicationExtension();
-                let requestExtensionTotalCores = 0;
-                let requestExtensionTotalRam = 0;
-
+                const r: ApplicationExtension = new ApplicationExtension();
+                let requestExtensionTotalCores: number = 0;
+                let requestExtensionTotalRam: number = 0;
 
                 for (const f of aj['projectapplicationrenewal']['flavors']) {
                     r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
@@ -815,7 +725,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                     requestExtensionTotalRam += f.ram * f.counter
 
                 }
-
 
                 r.TotalRAM = requestExtensionTotalRam;
                 r.TotalCores = requestExtensionTotalCores;
@@ -829,26 +738,12 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
                 r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                 r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                const special_hardware = [];
-                if (aj['projectapplicationrenewal']['project_application_renewal_special_hardware'] != null) {
-                    const special_hardware_string = aj['projectapplicationrenewal']
-                        ['project_application_renewal_special_hardware'].toString();
 
-                    for (let c = 0; c < special_hardware_string.length; c++) {
-                        const sh = special_hardware_string.charAt(c) === this.FPGA ? 'FPGA' : 'GPU';
-                        special_hardware.push(sh)
-
-                    }
-
-                    r.SpecialHardware = special_hardware;
-                }
                 a.ApplicationExtension = r;
             }
             this.user_applications[index] = a;
 
-
         })
-
 
     }
 
@@ -856,7 +751,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Request an extension from an application.
      * @param data
      */
-    public requestExtension(data) {
+    public requestExtension(data): void {
         this.applicationsservice.requestRenewal(data).subscribe(result => {
             if (result['Error']) {
                 this.extension_status = 2
@@ -874,7 +769,6 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             }
         })
 
-
     }
 
     /**
@@ -882,12 +776,12 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @param {string} elixir_id
      * @param {string} collapse_id
      */
-    public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string) {
+    public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string): void {
         if (!this.getCollapseStatus(collapse_id)) {
             if (!(elixir_id in this.application_user)) {
                 this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe(result => {
 
-                    const name = result['firstName'] + ' ' + result['lastName'];
+                    const name: string = `${result['firstName']} ${result['lastName']}`;
                     const appuser: { [id: string]: string } = {};
                     appuser['name'] = name;
                     appuser['email'] = result['email'];
@@ -896,44 +790,40 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             }
         }
 
-
     }
 
     /**
      * Approve an extension request.
      * @param {number} application_id
      */
-    public approveExtension(app: Application) {
-        console.log(app)
-        console.log(app.OpenStackProject)
+    public approveExtension(app: Application): void {
+
         if (app.OpenStackProject) {
-            this.applicationstatusservice.setApplicationStatus(app.Id, this.WAIT_FOR_EXTENSION_STATUS).subscribe(res => {
+            this.applicationstatusservice.setApplicationStatus(app.Id, this.WAIT_FOR_EXTENSION_STATUS).subscribe(() => {
                 this.extension_status = 5;
                 this.getApplication(app);
                 this.getUserApplication(app);
 
-                for (let app of this.user_applications) {
-                    if (this.selectedApplication.PerunId == app.PerunId) {
-                        this.getUserApplication(app);
+                for (const appl of this.user_applications) {
+                    if (this.selectedApplication.PerunId === appl.PerunId) {
+                        this.getUserApplication(appl);
                         break;
                     }
 
                 }
             })
-        }
-        else {
+        } else {
             this.applicationsservice.approveRenewal(app.Id).subscribe(result => {
                 if (result['Error']) {
                     this.extension_status = 2
-                }
-                else {
+                } else {
                     this.extension_status = 3;
                 }
                 this.getApplication(this.selectedApplication);
 
-                for (let app of this.user_applications) {
-                    if (this.selectedApplication.PerunId == app.PerunId) {
-                        this.getUserApplication(app);
+                for (let appl of this.user_applications) {
+                    if (this.selectedApplication.PerunId === appl.PerunId) {
+                        this.getUserApplication(appl);
                         break;
                     }
 
@@ -946,7 +836,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * Decline an extension request.
      * @param {number} application_id
      */
-    public declineExtension(application_id: number) {
+    public declineExtension(application_id: number): void {
         this.applicationsservice.declineRenewal(application_id).subscribe(result => {
             if (result != null) {
                 this.extension_status = 2
@@ -965,22 +855,21 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         })
     }
 
-
     /**
      * Get status name  by status id.
      * @param {number} id
      * @returns {string}
      */
     public getStatusById(id: number): string {
-        const s = 'Unknown';
+        const s: string = 'Unknown';
         for (const status of this.application_status) {
             if (status.Id === id) {
                 return status.Name;
             }
         }
+
         return s;
     }
-
 
     /**
      * Get id by status name.
@@ -988,27 +877,26 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @returns {number}
      */
     public getIdByStatus(name: string): number {
-        const s = -1;
+        const s: number = -1;
         for (const status of this.application_status) {
             if (status.Name === name) {
                 return status.Id;
             }
         }
+
         return s;
     }
-
 
     /**
      * Remove Application from facility , where it is for confirmation
      * @param {Application} application the application
      */
-    removeApplicationFromFacilityConfirmation(application: Application) {
-        this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe(res => {
+    removeApplicationFromFacilityConfirmation(application: Application): void {
+        this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe(() => {
             this.getApplication(application)
         })
 
     }
-
 
     /**
      * Create a new Group in perun with the specific attributes.
@@ -1018,7 +906,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @param application_id
      * @param compute_center
      */
-    public createOpenStackProjectGroup(name, description, manager_elixir_id, application_id, compute_center) {
+    public createOpenStackProjectGroup(name: string, description: string, manager_elixir_id: string, application_id: number, compute_center: string): void {
         // get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;
         let manager_member_user_id: number;
@@ -1032,49 +920,49 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                     const group = group_raw;
                     new_group_id = group['id'];
                     this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
-                    this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(res => {
-                        this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(re => {
-                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(r => {
+                    this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(() => {
+                        this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => {
+                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(() => {
                                 if (compute_center !== 'undefined') {
 
-                                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION).subscribe(result => {
+                                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION)
+                                        .subscribe(result => {
+                                                if (result['Error']) {
+                                                    this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+
+                                                } else {
+                                                    this.updateNotificationModal('Success', 'The new project was created', true, 'success');
+                                                }
+                                                for (const app of this.user_applications) {
+                                                    if (app.Id === application_id) {
+                                                        this.getUserApplication(app);
+                                                        break;
+
+                                                    }
+
+
+                                                }
+                                                for (const app of this.all_applications) {
+                                                    if (app.Id === application_id) {
+                                                        this.getApplication(app);
+                                                        break;
+
+                                                    }
+                                                }
+                                            }
+                                        )
+                                } else {
+                                    this.groupservice.setPerunGroupStatus(new_group_id, this.application_statuses.APPROVED).subscribe(() => {
+                                        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED).subscribe(result => {
                                             if (result['Error']) {
                                                 this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
                                             } else {
                                                 this.updateNotificationModal('Success', 'The new project was created', true, 'success');
                                             }
-                                            for (const app of this.user_applications) {
-                                                if (app.Id === application_id) {
-                                                    this.getUserApplication(app);
-                                                    break;
-
-                                                }
-
-
-                                            }
-                                            for (const app of this.all_applications) {
-                                                if (app.Id === application_id) {
-                                                    this.getApplication(app);
-                                                    break;
-
-                                                }
-                                            }
-                                        }
-                                    )
-                                } else {
-                                    this.groupservice.setPerunGroupStatus(new_group_id, this.application_statuses.APPROVED).subscribe(res => {
-                                        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED).subscribe(result => {
-                                            if (result['Error']) {
-                                                this.updateNotificationModal("Failed", result['Error'], true, "danger");
-
-                                            }
-                                            else {
-                                                this.updateNotificationModal("Success", "The new project was created", true, "success");
-                                            }
-                                            for (let app of this.user_applications) {
-                                                if (app.Id == application_id) {
-                                                    this.getUserApplication(app);
+                                            for (const appl of this.user_applications) {
+                                                if (appl.Id === application_id) {
+                                                    this.getUserApplication(appl);
                                                     break;
 
                                                 }
@@ -1109,13 +997,12 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             }
 
             , error => {
-                console.log(error);
                 this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
             })
 
     }
 
-    public resetNotificationModal() {
+    public resetNotificationModal(): void {
         this.notificationModalTitle = 'Notification';
         this.notificationModalMessage = 'Please wait...';
         this.notificationModalIsClosable = false;
@@ -1126,7 +1013,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     /**
      * Bugfix not scrollable site after closing modal
      */
-    removeModalOpen() {
+    removeModalOpen(): void {
         document.body.classList.remove('modal-open');
     }
 
@@ -1138,7 +1025,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @param application_id
      * @param compute_center
      */
-    public createSimpleVmProjectGroup(name, description, manager_elixir_id, application_id, compute_center) {
+    public createSimpleVmProjectGroup(name, description, manager_elixir_id, application_id, compute_center): void {
 
         // get memeber id in order to add the user later as the new member and manager of the group
         let manager_member_id: number;

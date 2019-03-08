@@ -18,7 +18,7 @@ import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-clas
     templateUrl: 'facility.application.component.html',
     styleUrls: ['facility.application.component.scss'],
     providers: [FacilityService, UserService, GroupService, PerunSettings, ApplicationStatusService,
-        ApplicationsService, SpecialHardwareService, ApiSettings]
+        ApplicationsService, ApiSettings]
 
 })
 export class FacilityApplicationComponent extends AbstractBaseClasse implements OnInit {
@@ -88,8 +88,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
 
     constructor(private userService: UserService,
                 private applicationstatusservice: ApplicationStatusService,
-                private specialhardwareservice: SpecialHardwareService,
-                private  facilityService: FacilityService, private applicationsservice: ApplicationsService) {
+                private facilityService: FacilityService, private applicationsservice: ApplicationsService) {
         super();
 
         this.facilityService.getManagerFacilities().subscribe(result => {

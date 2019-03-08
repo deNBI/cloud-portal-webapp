@@ -250,14 +250,14 @@
                     <i class="fa fa-align-justify"></i> Applications for review
                 </div>
                 <div class="card-block"
-                     *ngIf="this.activeApplicationsAvailable() == false">
+                     *ngIf="!this.activeApplicationsAvailable()">
                     <div class="alert alert-success" role="alert">
                         <strong>No new Applications!</strong> There are no new
                         project applications for review.
                     </div>
                 </div>
 
-                <div *ngIf="this.activeApplicationsAvailable() == true"
+                <div *ngIf="this.activeApplicationsAvailable()"
                      class="card-block">
                     <div>
                         <table class="table table-striped table-responsive">
