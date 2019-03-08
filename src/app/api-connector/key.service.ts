@@ -19,7 +19,7 @@ export class KeyService ***REMOVED***
 
     getKey(): Observable<any> ***REMOVED***
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/current/public_key/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/public_key/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
@@ -29,7 +29,7 @@ export class KeyService ***REMOVED***
         public_key = public_key.replace(/\r?\n|\r/gi, '');
         const params = new HttpParams().set('public_key', public_key);
 
-        return this.http.put(ApiSettings.getApiBaseURL() + 'users/current/public_key/', params, ***REMOVED***
+        return this.http.put(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/public_key/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));

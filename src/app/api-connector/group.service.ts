@@ -19,7 +19,7 @@ export class GroupService ***REMOVED***
 
     getFacilityByGroup(groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/computecenter/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/computecenter/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
@@ -27,7 +27,7 @@ export class GroupService ***REMOVED***
 
     getClient(groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/client/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/client/', ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -38,7 +38,7 @@ export class GroupService ***REMOVED***
     assignGroupToResource(groupid: string, computecenter: string): Observable<any> ***REMOVED***
         const params = new HttpParams().set('compute_center', computecenter)
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/resource/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/resource/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -48,7 +48,7 @@ export class GroupService ***REMOVED***
 
     removeGroupFromResource(groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.delete(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/resource/', ***REMOVED***
+        return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/resource/', ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -58,7 +58,7 @@ export class GroupService ***REMOVED***
 
     isUserAdminOfGroup(groupid: string, userid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/members/' + userid + '/manager/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/members/' + userid + '/manager/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
@@ -67,7 +67,7 @@ export class GroupService ***REMOVED***
 
     getGroupAdminIds(groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/admins/ids/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/admins/ids/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
@@ -75,7 +75,7 @@ export class GroupService ***REMOVED***
 
     getGroupRichMembers(groupid: number): Observable<any> ***REMOVED***
         const params = new HttpParams().set('groupid', groupid.toString());
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/richMembers/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/richMembers/', ***REMOVED***
             withCredentials: true,
             params: params
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -90,7 +90,7 @@ export class GroupService ***REMOVED***
         ***REMOVED***
 
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + group_id + '/members/' + member_id + '/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + group_id + '/members/' + member_id + '/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
             // responseType: 'text',
@@ -108,7 +108,7 @@ export class GroupService ***REMOVED***
 
         ***REMOVED***
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + group_id + '/admins/' + user_id + '/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + group_id + '/admins/' + user_id + '/', params, ***REMOVED***
             withCredentials: true,
             headers: header,
             // responseType: 'text',
@@ -127,7 +127,7 @@ export class GroupService ***REMOVED***
         ***REMOVED***
 
 
-        return this.http.request('delete', ApiSettings.getApiBaseURL() + 'projects/' + group_id + '/members/' + member_id + '/', ***REMOVED***
+        return this.http.request('delete', `$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + group_id + '/members/' + member_id + '/', ***REMOVED***
             withCredentials: true,
             headers: header,
             body: params,
@@ -147,7 +147,7 @@ export class GroupService ***REMOVED***
         ***REMOVED***
 
 
-        return this.http.request('delete', ApiSettings.getApiBaseURL() + 'projects/' + group_id + '/admins/' + user_id + '/', ***REMOVED***
+        return this.http.request('delete', `$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + group_id + '/admins/' + user_id + '/', ***REMOVED***
             withCredentials: true,
             headers: header,
             responseType: 'text',
@@ -161,7 +161,7 @@ export class GroupService ***REMOVED***
 
         const params = new HttpParams().set('description', description).set('groupid', groupid);
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/description/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/description/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -174,7 +174,7 @@ export class GroupService ***REMOVED***
 
         const params = new HttpParams().set('status', status.toString());
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + group_id + '/attributes/status/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + group_id + '/attributes/status/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -186,7 +186,7 @@ export class GroupService ***REMOVED***
         const params = new HttpParams().set('value', value.toString());
 
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + group_id + '/attributes/volumeLimit/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + group_id + '/attributes/volumeLimit/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -197,7 +197,7 @@ export class GroupService ***REMOVED***
 
         const params = new HttpParams().set('value', value.toString());
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + group_id + '/attributes/volumesCounter/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + group_id + '/attributes/volumesCounter/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -206,7 +206,7 @@ export class GroupService ***REMOVED***
     setdeNBIDirectAcces(group_id: number, value: boolean): Observable<any> ***REMOVED***
 
         const params = new HttpParams().set('value', value.toString());
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + group_id + '/attributes/directAccess/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + group_id + '/attributes/directAccess/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -216,7 +216,7 @@ export class GroupService ***REMOVED***
     setName(groupid: string, name: string): Observable<any> ***REMOVED***
         const params = new HttpParams().set('name', name);
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/name/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/name/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -224,7 +224,7 @@ export class GroupService ***REMOVED***
 
 
     getName(groupid: string): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/name/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/name/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
@@ -234,7 +234,7 @@ export class GroupService ***REMOVED***
     setShortname(groupid: string, shortname: string): Observable<any> ***REMOVED***
         const params = new HttpParams().set('shortname', shortname)
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/shortname/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/shortname/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -244,7 +244,7 @@ export class GroupService ***REMOVED***
 
     getShortame(groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/shortname/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/shortname/', ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***groupid: groupid***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -252,7 +252,7 @@ export class GroupService ***REMOVED***
     ***REMOVED***
 
     getGroupDetails(): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/details/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/details/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
@@ -261,7 +261,7 @@ export class GroupService ***REMOVED***
 
 
     getGroupApplications(group: number): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + group + '/applications/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + group + '/applications/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
@@ -271,7 +271,7 @@ export class GroupService ***REMOVED***
     approveGroupApplication(groupid: number, application: number): Observable<any> ***REMOVED***
 
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/applications/' + application + '/status/', null, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/applications/' + application + '/status/', null, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -281,7 +281,7 @@ export class GroupService ***REMOVED***
     rejectGroupApplication(groupid: number, application: number): Observable<any> ***REMOVED***
 
 
-        return this.http.delete(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/applications/' + application + '/status/', ***REMOVED***
+        return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/applications/' + application + '/status/', ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -291,7 +291,7 @@ export class GroupService ***REMOVED***
 
     getMemberGroupsStatus(): Observable<any> ***REMOVED***
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/singlevm/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/singlevm/', ***REMOVED***
             withCredentials: true,
             headers: header
 
@@ -303,7 +303,7 @@ export class GroupService ***REMOVED***
         const params = new HttpParams().set('lifetime', lifetime);
 
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/lifetime/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/lifetime/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -314,7 +314,7 @@ export class GroupService ***REMOVED***
     createGroup(group_name: string, group_description: string): Observable<any> ***REMOVED***
         const params = new HttpParams().set('name', group_name).set('description', group_description.substring(0, 512));
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/', params,
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/', params,
             ***REMOVED***
                 withCredentials: true,
                 headers: header
@@ -324,7 +324,7 @@ export class GroupService ***REMOVED***
 
     getLifetime(groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/lifetime/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/lifetime/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
@@ -333,7 +333,7 @@ export class GroupService ***REMOVED***
     setPerunId(groupid: string, applicationId: string): Observable<any> ***REMOVED***
         const params = new HttpParams().set('applicationId', applicationId);
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/perunId/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/perunId/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -344,7 +344,7 @@ export class GroupService ***REMOVED***
 
     getGroupMembers(groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/members/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/members/', ***REMOVED***
             withCredentials: true,
             headers: header
 
@@ -355,14 +355,14 @@ export class GroupService ***REMOVED***
 
 
     getGroupMaxDiskspace(groupid: string): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/approvedDiskspace/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/approvedDiskspace/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
     ***REMOVED***
 
     getGroupUsedDiskspace(groupid: string): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/usedDiskspace/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/usedDiskspace/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
@@ -371,20 +371,20 @@ export class GroupService ***REMOVED***
 
 
     getVolumesUsed(groupid: string): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/usedVolumes/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/usedVolumes/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
     ***REMOVED***
 
     getVolumeCounter(groupid: string): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/volumesCounter/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/volumesCounter/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
     ***REMOVED***
 
     getGroupApprovedVms(groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/approvedVms/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/approvedVms/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
@@ -393,7 +393,7 @@ export class GroupService ***REMOVED***
 
     getGroupUsedVms(groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/usedVms/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/usedVms/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
 
@@ -404,7 +404,7 @@ export class GroupService ***REMOVED***
         const params = new HttpParams()
             .set('application_id', application_id.toString());
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/attributes/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/' + groupid + '/attributes/', params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -412,14 +412,14 @@ export class GroupService ***REMOVED***
 
 
     isFreemiumActive(): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'freemium/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***freemium/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
     ***REMOVED***
 
     addMemberToFreemium(): Observable<any> ***REMOVED***
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'freemium/', ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***freemium/', ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)

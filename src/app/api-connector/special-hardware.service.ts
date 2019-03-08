@@ -11,7 +11,7 @@ export class SpecialHardwareService ***REMOVED***
     ***REMOVED***
 
     getAllSpecialHardware(): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'special_hardware/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***special_hardware/', ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***format: ApiSettings.getApiFormat()***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));

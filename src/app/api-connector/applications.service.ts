@@ -1,18 +1,17 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
 import ***REMOVED***HttpClient, HttpHeaders***REMOVED*** from '@angular/common/http';
-import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
-import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
 
-const header = new HttpHeaders(***REMOVED***
+const header: HttpHeaders = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken'),
     'Content-Type': 'application/json'
 
 ***REMOVED***);
 
-const header_csrf = new HttpHeaders(***REMOVED***
+const header_csrf: HttpHeaders = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken'),
     'Content-Type': 'application/json'
 
@@ -23,33 +22,32 @@ export class ApplicationsService ***REMOVED***
     constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
-
     getUserApplications(): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/current/project_applications/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/project_applications/`, ***REMOVED***
             headers: header_csrf,
             withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        ***REMOVED***)
     ***REMOVED***
 
     getUserApplication(project_id: string): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/current/project_applications/' + project_id + '/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/project_applications/$***REMOVED*** project_id ***REMOVED***/`, ***REMOVED***
             headers: header_csrf,
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+            withCredentials: true
+        ***REMOVED***)
     ***REMOVED***
 
     getApplication(app_id: string): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'project_applications/' + app_id + '/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***app_id***REMOVED***/`, ***REMOVED***
             headers: header_csrf,
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+            withCredentials: true
+        ***REMOVED***)
     ***REMOVED***
 
     getApplicationClient(app_id: string): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'project_applications/' + app_id + '/client/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***app_id***REMOVED***/client/`, ***REMOVED***
             headers: header_csrf,
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+            withCredentials: true
+        ***REMOVED***)
     ***REMOVED***
 
     /**
@@ -58,93 +56,82 @@ export class ApplicationsService ***REMOVED***
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
     getApplicationClientAvaiable(app_id: string): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'project_applications/' + app_id + '/clients/resource/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***app_id***REMOVED***/clients/resource/`, ***REMOVED***
             headers: header_csrf,
             withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        ***REMOVED***)
     ***REMOVED***
 
     getAllApplications(): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'project_applications/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/`, ***REMOVED***
             withCredentials: true,
-            headers: header_csrf,
+            headers: header_csrf
 
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
-    ***REMOVED***
-
-    addNewApplication(data): Observable<any> ***REMOVED***
-        const parameter = data;
-
-
-        return this.http.post(ApiSettings.getApiBaseURL() + 'project_applications/', parameter,
-            ***REMOVED***
-                headers: header,
-                withCredentials: true
-            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        ***REMOVED***)
 
     ***REMOVED***
 
+    addNewApplication(data: string): Observable<any> ***REMOVED***
+        const parameter: string = data;
 
-    requestRenewal(data): Observable<any> ***REMOVED***
-        const parameter = data;
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/`, parameter, ***REMOVED***
+            headers: header,
+            withCredentials: true
+        ***REMOVED***)
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'applicationRenewals/', parameter,
-            ***REMOVED***
-                headers: header,
-                withCredentials: true
-            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
+
+    requestRenewal(data: string): Observable<any> ***REMOVED***
+        const parameter: string = data;
+
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***applicationRenewals/`, parameter, ***REMOVED***
+            headers: header,
+            withCredentials: true
+        ***REMOVED***)
 
     ***REMOVED***
 
     approveRenewal(application_id: number): Observable<any> ***REMOVED***
 
-
-        return this.http.post(ApiSettings.getApiBaseURL() + 'applicationRenewals/' + application_id + '/status/', null, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***applicationRenewals/$***REMOVED***application_id***REMOVED***/status/`, null, ***REMOVED***
             headers: header_csrf,
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+            withCredentials: true
+        ***REMOVED***)
 
     ***REMOVED***
 
     declineRenewal(application_id: number): Observable<any> ***REMOVED***
 
-
-        return this.http.delete(ApiSettings.getApiBaseURL() + 'applicationRenewals/' + application_id + '/status/',
-            ***REMOVED***
-                headers: header_csrf,
-                withCredentials: true,
-            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***applicationRenewals/$***REMOVED***application_id***REMOVED***/status/`, ***REMOVED***
+            headers: header_csrf,
+            withCredentials: true
+        ***REMOVED***)
 
     ***REMOVED***
 
-
     getAllApplicationsRenewalRequests(): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'applicationsRenewals/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***applicationsRenewals/`, ***REMOVED***
             withCredentials: true,
-            headers: header_csrf,
+            headers: header_csrf
 
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        ***REMOVED***)
 
     ***REMOVED***
 
     getApplicationsRenewalRequest(application_id: number): Observable<any> ***REMOVED***
-        return this.http.get(ApiSettings.getApiBaseURL() + 'applicationsRenewals/' + application_id + '/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***applicationsRenewals/$***REMOVED***application_id***REMOVED***/`, ***REMOVED***
             withCredentials: true,
-            headers: header_csrf,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+            headers: header_csrf
+        ***REMOVED***)
 
     ***REMOVED***
 
-
     deleteApplication(application_id: number): Observable<any> ***REMOVED***
 
-
-        return this.http.delete(ApiSettings.getApiBaseURL() + 'project_applications/' + application_id + '/',
-            ***REMOVED***
-                headers: header_csrf,
-                withCredentials: true,
-            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***application_id***REMOVED***/`, ***REMOVED***
+            headers: header_csrf,
+            withCredentials: true,
+        ***REMOVED***)
 
     ***REMOVED***
 
