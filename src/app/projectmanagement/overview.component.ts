@@ -226,6 +226,8 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
     loadProjectApplications(project: number) ***REMOVED***
         this.loaded = false;
         this.groupservice.getGroupApplications(project).subscribe(applications => ***REMOVED***
+            this.selectedProject.ProjectMemberApplications = [];
+
 
             let newProjectApplications = [];
             if (applications.length == 0) ***REMOVED***
@@ -235,6 +237,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
             for (let application of applications) ***REMOVED***
                 let dateApplicationCreated = moment(application['createdAt'], "YYYY-MM-DD HH:mm:ss.SSS");
                 let membername = application['displayName'];
+
 
                 let newMemberApplication = new ProjectMemberApplication(
                     application['id'], membername, dateApplicationCreated.date() + "." + (dateApplicationCreated.month() + 1) + "." + dateApplicationCreated.year()

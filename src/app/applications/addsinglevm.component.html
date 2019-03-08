@@ -219,36 +219,49 @@
                             </div>
                         </div>
 
+                        <div *ngFor="let t of typeList">
+                            <div class="card"
+                            >
+                                <!--(click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"-->
+                                <div (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"
+                                     style="cursor: pointer;" id="flavor-card" class="card-header">
 
-                        <div class="card">
 
-                            <div id="flavor-card" class="card-header">
-                                Flavors
-                            </div>
-                            <div class="form-group card-body">
-                                <div *ngFor="let f of flavorList">
-                                    <div class="form-group row">
+                                    ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
+                                          <i *ngIf="collapseList[typeList.indexOf(t)]" style="float: right;font-size: 25px" class="icon-arrow-up"></i>
+                                  <i *ngIf="!collapseList[typeList.indexOf(t)]" style="float: right;font-size: 25px" class="icon-arrow-down"></i>
 
-                                        <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</strong><br>
-                                            Number of cores: ***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***<br>
-                                            RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED*** GB<br>
-                                            Ephemeral disk: ***REMOVED******REMOVED***f.epheremal_disk***REMOVED******REMOVED*** GB <br>
-                                            <span *ngIf="f.type.shortcut == 'GPU'">
+
+
+
+                                </div>
+                                <!--*ngIf="collapseList[typeList.indexOf(t)]"-->
+                                <div *ngIf="collapseList[typeList.indexOf(t)]"
+                                     class="form-group card-body">
+                                    <div *ngFor="let f of flavorList">
+                                        <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
+                                             class="form-group row">
+
+                                            <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</strong><br>
+                                                Number of cores: ***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***<br>
+                                                RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED*** GB<br>
+                                                <span *ngIf="f.type.shortcut == 'GPU'">
                                                 GPU: ***REMOVED******REMOVED***f.gpu***REMOVED******REMOVED***
                                             </span></label>
-                                        <div class="col-md-8">
+                                            <div class="col-md-8">
 
-                                            <div class="input-group">
-                                                <input class="form-control"
-                                                       id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
-                                                       name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
-                                                       type="number" min="0" step="1"
-                                                       value="0" placeholder="0"
-                                                       (ngModel)="'project_application_' + f.name">
-                                                <span class="input-group-addon"> VMs
+                                                <div class="input-group">
+                                                    <input class="form-control"
+                                                           id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
+                                                           name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
+                                                           type="number" min="0" step="1"
+                                                           value="0" placeholder="0"
+                                                           (ngModel)="'project_application_' + f.name">
+                                                    <span class="input-group-addon"> VMs
                                     </span>
+                                                </div>
+                                                <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
                                             </div>
-                                            <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
                                         </div>
                                     </div>
                                 </div>

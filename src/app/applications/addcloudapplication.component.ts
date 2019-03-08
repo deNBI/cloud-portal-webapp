@@ -21,7 +21,12 @@ import ***REMOVED***environment***REMOVED*** from "../../environments/environmen
 
 export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED***
 
-    public production=environment.production;
+    public production = environment.production;
+
+    /**
+     * List of all collapse booleans.
+     */
+    public collapseList: boolean[];
 
     public project_application_report_allowed = false;
 
@@ -53,7 +58,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
     /**
      * List of all collapse booleans.
      */
-    public collapseList: boolean[];
+    F
     /**
      * Total number of cores.
      * @type ***REMOVED***number***REMOVED***
@@ -238,7 +243,14 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
         this.typeList = types;
         this.collapseList = new Array(types.length) as Array<boolean>;
         for (let i = 0; i < types.length; i++) ***REMOVED***
+
             this.collapseList.push(false); //AS FIX
+        ***REMOVED***
+        for (let t of this.typeList) ***REMOVED***
+            if (t.long_name === 'Standart Flavor') ***REMOVED***
+                this.collapseList[this.typeList.indexOf(t)]=true;
+            ***REMOVED***
+            break;
         ***REMOVED***
 
     ***REMOVED***
