@@ -573,8 +573,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 const facilityname: string = res['Facility'];
                 const facilityId: number = res['FacilityId'];
 
-                const cc: ComputecenterComponent = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
-                app.ComputeCenter = cc
+                app.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
 
             })
         }
@@ -711,7 +710,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 let requestExtensionTotalRam: number = 0;
 
                 for (const f of aj['projectapplicationrenewal']['flavors']) {
-                    r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+                    r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk);
                     requestExtensionTotalCores += f.vcpus * f.counter;
                     requestExtensionTotalRam += f.ram * f.counter
 

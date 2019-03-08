@@ -10,6 +10,9 @@ import {AddsinglevmComponent} from './addsinglevm.component';
 import {AddcloudapplicationComponent} from './addcloudapplication.component';
 import {ClickOutsideModule} from 'ng4-click-outside';
 
+/**
+ * Applications Module.
+ */
 @NgModule({
     imports: [
         ApplicationsRoutingModule,
@@ -17,14 +20,13 @@ import {ClickOutsideModule} from 'ng4-click-outside';
         TabsModule,
         CommonModule,
         FormsModule,
-        ModalModule.forRoot(),
-
+        ModalModule.forRoot()
 
     ],
     declarations: [
         ApplicationsComponent,
         AddsinglevmComponent,
-        AddcloudapplicationComponent,
+        AddcloudapplicationComponent
     ]
 })
 export class ApplicationsModule {
