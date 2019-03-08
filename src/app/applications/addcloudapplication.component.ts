@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
 import {NgForm} from '@angular/forms';
-import {SpecialHardwareService} from '../api-connector/special-hardware.service'
-import {SpecialHardware} from './special_hardware.model'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {ApplicationsService} from '../api-connector/applications.service'
 import {FlavorService} from '../api-connector/flavor.service';
@@ -10,30 +8,31 @@ import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
 import {environment} from '../../environments/environment';
 
+/**
+ * This components provides the functions to create a new Cloud Application.
+ */
 @Component({
     templateUrl: 'addcloudapplication.component.html',
-    providers: [SpecialHardwareService, ApiSettings, ApplicationsService, FlavorService],
+    providers: [ApiSettings, ApplicationsService, FlavorService],
     styleUrls: ['addcloudapplication.component.css']
 })
 
 export class AddcloudapplicationComponent extends AbstractBaseClasse {
 
-    public production = environment.production;
+    public production: boolean = environment.production;
 
     /**
      * List of all collapse booleans.
      */
     public collapseList: boolean[];
 
-    public project_application_report_allowed = false;
-
+    public project_application_report_allowed: boolean = false;
 
     /**
      * If shortname is valid.
      * @type {boolean}
      */
-    public wronginput = false;
-
+    public wronginput: boolean = false;
 
     /**
      * Contains errors recieved when submitting an application.
@@ -43,7 +42,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
      * Default vms requested in form.
      * @type {number}
      */
-    public project_application_vms_requested = 5;
+    public project_application_vms_requested: number = 5;
     /**
      * List of flavors.
      */
@@ -52,20 +51,17 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
      * List of flavor types.
      */
     public typeList: FlavorType[];
-    /**
-     * List of all collapse booleans.
-     */
-    F
+
     /**
      * Total number of cores.
      * @type {number}
      */
-    public totalNumberOfCores = 0;
+    public totalNumberOfCores: number = 0;
     /**
      * Total number of ram.
      * @type {number}
      */
-    public totalRAM = 0;
+    public totalRAM: number = 0;
     /**
      * Values to confirm.
      */
@@ -79,41 +75,25 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
      * Name of the project.
      */
     public projectName: string;
-
-
-    public acknowledgeModalMessage: string = 'The development and support of the cloud is possible above all through ' +
-        'the funding of the cloud infrastructure by the Federal Ministry of Education and Research (BMBF)!\n' +
-        'We would highly appreciate the following citation in your next publication(s): ' +
-        '‘This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure (de.NBI) ' +
-        '(031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).';
-    public acknowledgeModalTitle = 'Acknowledge';
-    public acknowledgeModalType = 'info';
+    public acknowledgeModalTitle: string = 'Acknowledge';
+    public acknowledgeModalType: string = 'info';
 
     /**
      * If project is openstack project (everytime true)
      * @type {boolean}
      */
-    project_application_openstack_project = true;
-    /**
-     * List of special hardwares.
-     * @type {any[]}
-     */
-    special_hardware: SpecialHardware[] = new Array();
+    project_application_openstack_project: boolean = true;
 
     /**
      * Constructor.
      * Initialize special hardware and gets list of flavor and flavortypes.
-     * @param {SpecialHardwareService} specialhardwareservice
      * @param {ApplicationsService} applicationsservice
      * @param {FlavorService} flavorservice
      */
-    constructor(private specialhardwareservice: SpecialHardwareService,
-                private  applicationsservice: ApplicationsService, private flavorservice: FlavorService) {
+    constructor(private applicationsservice: ApplicationsService, private flavorservice: FlavorService) {
         super();
-        this.getSpecialHardware();
         this.getListOfFlavors();
         this.getListOfTypes();
-
 
     }
 
@@ -128,19 +108,19 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
         if (key in this.constantStrings) {
             switch (key) {
                 case 'project_application_lifetime': {
-                    return (this.constantStrings[key] + val + ' months');
+                    return (`${this.constantStrings[key]}${val} months`);
                 }
                 case ('project_application_volume_limit'): {
-                    return (this.constantStrings[key] + val + ' GB');
+                    return (`${this.constantStrings[key]}${val} GB`);
                 }
                 case 'project_application_object_storage': {
-                    return (this.constantStrings[key] + val + ' GB');
+                    return (`${this.constantStrings[key]}${val}  GB`);
                 }
                 case 'project_application_report_allowed': {
                     if (val) {
-                        return (this.constantStrings[key] + 'Yes');
+                        return (`${this.constantStrings[key]}${val} Yes`);
                     } else {
-                        return (this.constantStrings[key] + 'No');
+                        return (`${this.constantStrings[key]} No`);
                     }
                 }
                 default: {
@@ -153,8 +133,8 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
     /**
      * Fills the array constantStrings with values dependent of keys which are used to indicate inputs from the application-form
      */
-    generateConstants() {
-        this.constantStrings = new Array();
+    generateConstants(): void {
+        this.constantStrings = [];
         this.constantStrings['project_application_lifetime'] = 'Lifetime of your project: ';
         this.constantStrings['project_application_volume_counter'] = 'Number of volumes for additional storage: ';
         this.constantStrings['project_application_object_storage'] = 'Additional object storage: ';
@@ -165,8 +145,8 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
 
         for (const key in this.flavorList) {
             if (key in this.flavorList) {
-                this.constantStrings['project_application_' + this.flavorList[key].name] =
-                    'Number of VMs of type ' + this.flavorList[key].name + ': ';
+                this.constantStrings[`project_application_ ${this.flavorList[key].name}`] =
+                    `Number of VMs of type  ${this.flavorList[key].name}: `;
             }
         }
     }
@@ -179,6 +159,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
                 }
             }
         }
+
         return null;
 
     }
@@ -187,21 +168,20 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
      * Uses the data from the application form to fill the confirmation-modal with information.
      * @param f the application form with corresponding data
      */
-    filterEnteredData(f: NgForm) {
+    filterEnteredData(f: NgForm): void {
         this.generateConstants();
         this.totalNumberOfCores = 0;
         this.totalRAM = 0;
-        this.valuesToConfirm = new Array();
+        this.valuesToConfirm = [];
         for (const key in f.controls) {
             if (f.controls[key].value) {
                 if (key === 'project_application_name') {
                     this.projectName = f.controls[key].value;
                     if (this.projectName.length > 50) {
-                        this.projectName = this.projectName.substring(0, 50) + '...';
+                        this.projectName = `${this.projectName.substring(0, 50)}...`;
                     }
                 }
                 if (key in this.constantStrings) {
-                    console.log(key)
                     this.valuesToConfirm.push(this.matchString(key.toString(), f.controls[key].value.toString()));
 
                     const flavor: Flavor = this.keyIsVM(key.toString());
@@ -221,60 +201,52 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
     /**
      * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
      */
-    getListOfFlavors() {
-        this.flavorservice.getListOfFlavorsAvailable().subscribe(flavors => this.flavorList = flavors);
+    getListOfFlavors(): void {
+        this.flavorservice.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
     }
 
     /**
      * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
      */
-    getListOfTypes() {
-        this.flavorservice.getListOfTypesAvailable().subscribe(types => this.setListOfTypes(types));
+    getListOfTypes(): void {
+        this.flavorservice.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
     }
-
 
     /**
      * Uses the param types to safe the available FlavorTypes to the array typeList.
      * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
      * @param types array of all available FlavorTypes
      */
-    setListOfTypes(types: FlavorType[]) {
+    setListOfTypes(types: FlavorType[]): void {
         this.typeList = types;
-        this.collapseList = new Array(types.length) as Array<boolean>;
-        for (let i = 0; i < types.length; i++) {
+        this.collapseList = new Array(types.length) as boolean[];
+        for (const t of types) {
 
             this.collapseList.push(false); // AS FIX
-        }
-        for (const t of this.typeList) {
             if (t.long_name === 'Standart Flavor') {
                 this.collapseList[this.typeList.indexOf(t)] = true;
             }
-            break;
         }
 
     }
-
-
-
-    }
-
 
     /**
      * Submits a new cloud application.
      * Therefore checks if the different values are valid.
      * @param {NgForm} f
      */
-    onSubmit(f: NgForm) {
+    onSubmit(f: NgForm): void {
         this.error = null;
         if (this.wronginput) {
 
-            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.',
-                true, 'danger');
+            this.updateNotificationModal(
+                'Failed',
+                'The application was not submitted, please check the required fields and try again.',
+                true,
+                'danger');
             this.notificationModalStay = true;
         } else {
-            const values: { [key: string]: any } = {};
-            values['project_application_special_hardware'] = this.special_hardware.filter(hardware => hardware.Checked)
-                .map(hardware => hardware.Id);
+            const values: { [key: string]: string | number | boolean } = {};
             values['project_application_openstack_project'] = this.project_application_openstack_project;
             for (const v in f.controls) {
                 if (f.controls[v].value) {
@@ -283,28 +255,29 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
                 }
             }
             this.applicationsservice.addNewApplication(values).toPromise()
-                .then(result => {
+                .then(() => {
                     this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                     this.notificationModalStay = false;
-                }).catch(error => {
-                const error_json = error
-                this.error = []
+                }).catch((error: string) => {
+                const error_json: string = error;
+                this.error = [];
                 for (const key of Object.keys(error_json)) {
-                    this.error.push(key.split('_',)[2])
+                    this.error.push(key.split('_')[2])
 
                 }
 
-
-                this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.'
-                    , true, 'danger');
+                this.updateNotificationModal(
+                    'Failed',
+                    'The application was not submitted, please check the required fields and try again.',
+                    true,
+                    'danger');
                 this.notificationModalStay = true;
             })
         }
     }
 
-
-    sendTestApplication() {
-        const values: { [key: string]: any } = {};
+    sendTestApplication(): void {
+        const values: { [key: string]: string | number | boolean } = {};
 
         values['project_application_comment'] = 'TestApplication';
         values['project_application_description'] = 'TestApplication';
@@ -313,43 +286,42 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
         values['project_application_name'] = 'TestApplication';
         values['project_application_openstack_project'] = true;
         for (const f of this.flavorList) {
-            const fname = 'project_application_' + f.name;
+            const fname: string = `project_application_ ${f.name}`;
             values[fname] = 1;
         }
         values['project_application_report_allowed'] = true;
         values['project_application_shortname'] = 'TestApplication';
-        values['project_application_special_hardware'] = [1, 2];
         values['project_application_volume_counter'] = 5;
         values['project_application_volume_limit'] = 20;
         values['project_application_workgroup'] = 'TestApplication';
 
         this.applicationsservice.addNewApplication(values).toPromise()
-            .then(result => {
+            .then(() => {
                 this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
                 this.notificationModalStay = false;
-            }).catch(error => {
-            const error_json = error
-            this.error = []
+            }).catch((error: string) => {
+            const error_json: string = error;
+            this.error = [];
             for (const key of Object.keys(error_json)) {
-                this.error.push(key.split('_',)[2])
+                this.error.push(key.split('_')[2])
 
             }
 
-
-            this.updateNotificationModal('Failed', 'The application was not submitted, please check the required fields and try again.',
-                true, 'danger');
+            this.updateNotificationModal(
+                'Failed',
+                'The application was not submitted, please check the required fields and try again.',
+                true,
+                'danger');
             this.notificationModalStay = true;
         })
 
-
     }
-
 
     /**
      * Check if shortname is valid.
      * @param {string} shortname
      */
-    public checkShortname(shortname: string) {
+    public checkShortname(shortname: string): void {
         if (!/^[a-zA-Z0-9\s]*$/.test(shortname)) {
             this.wronginput = true;
         } else {
@@ -357,5 +329,3 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
         }
     }
 }
-
-

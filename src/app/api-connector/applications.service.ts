@@ -71,10 +71,9 @@ export class ApplicationsService {
 
     }
 
-    addNewApplication(data: string): Observable<any> {
-        const parameter: string = data;
+    addNewApplication(data: { [key: string]: string | number | boolean }): Observable<any> {
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/`, parameter, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/`, data, {
             headers: header,
             withCredentials: true
         })
@@ -82,9 +81,8 @@ export class ApplicationsService {
     }
 
     requestRenewal(data: string): Observable<any> {
-        const parameter: string = data;
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/`, parameter, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/`, data, {
             headers: header,
             withCredentials: true
         })

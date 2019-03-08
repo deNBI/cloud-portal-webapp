@@ -11,7 +11,6 @@ import {SpecialHardware} from '../applications/special_hardware.model';
 import {ApplicationStatus} from '../applications/application_status.model';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ApplicationsService} from '../api-connector/applications.service';
-import {SpecialHardwareService} from '../api-connector/special-hardware.service';
 import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
 
 @Component({

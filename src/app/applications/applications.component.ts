@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {ApplicationsService} from '../api-connector/applications.service'
-import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {ApplicationStatusService} from '../api-connector/application-status.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {PerunSettings} from '../perun-connector/connector-settings.service';

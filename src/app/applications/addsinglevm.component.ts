@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {NgForm} from '@angular/forms';
-import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {SpecialHardware} from './special_hardware.model'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {ApplicationsService} from '../api-connector/applications.service'
