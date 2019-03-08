@@ -1,3 +1,22 @@
+#### Bug Fixes
+
+* **Applications:**  refresh fixed 
+
+#### Features
+
+* **Applications:**
+  * removed special hardware2 
+  * added history 
+  * now with modificaion 
+  * added arrow 
+* **Flavors:**
+  * now fold out 
+
+
+
+
+
+
 #### Features
 
 * **Applications:**
