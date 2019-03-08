@@ -14,7 +14,7 @@ const header = new HttpHeaders({
 @Injectable()
 export class VirtualmachineService {
     data: string;
-    baseVmUrl = ApiSettings.getApiBaseURL() + 'vms/';
+    baseVmUrl = `${ApiSettings.getApiBaseURL()}vms/';
 
     constructor(private http: HttpClient) {
     }
@@ -40,7 +40,7 @@ export class VirtualmachineService {
 
     getAllVM(): Observable<VirtualMachine[]> {
 
-        return this.http.get<VirtualMachine[]>(ApiSettings.getApiBaseURL() + 'voManager/vms/', {
+        return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}voManager/vms/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
     }
@@ -56,7 +56,7 @@ export class VirtualmachineService {
 
     getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> {
 
-        return this.http.get<VirtualMachine[]>(ApiSettings.getApiBaseURL() + 'projects/' + groupid + '/vms/', {
+        return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}projects/' + groupid + '/vms/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
     }
@@ -123,7 +123,7 @@ export class VirtualmachineService {
 
 
     getVolumesByUser(): Observable<Volume[]> {
-        return this.http.get<Volume[]>(ApiSettings.getApiBaseURL() + 'volumes/', {
+        return this.http.get<Volume[]>(`${ApiSettings.getApiBaseURL()}volumes/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -135,7 +135,7 @@ export class VirtualmachineService {
             .set('volume_diskspace', volume_diskspace)
             .set('vm_openstackid', vm_openstackid);
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'volumes/', params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}volumes/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -146,7 +146,7 @@ export class VirtualmachineService {
         const params = new HttpParams().set('instance_id', instance_id).set('os_action', 'attach');
 
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'volumes/' + volume_id + '/action/', params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}volumes/' + volume_id + '/action/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -156,7 +156,7 @@ export class VirtualmachineService {
     renameVolume(volume_id: string, new_volume_name: string): Observable<any> {
         const params = new HttpParams().set('new_volume_name', new_volume_name);
 
-        return this.http.patch(ApiSettings.getApiBaseURL() + 'volumes/' + volume_id + '/', params, {
+        return this.http.patch(`${ApiSettings.getApiBaseURL()}volumes/' + volume_id + '/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -166,7 +166,7 @@ export class VirtualmachineService {
 
     deleteVolume(volume_id: string): Observable<any> {
 
-        return this.http.delete(ApiSettings.getApiBaseURL() + 'volumes/' + volume_id + '/', {
+        return this.http.delete(`${ApiSettings.getApiBaseURL()}volumes/' + volume_id + '/', {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -177,7 +177,7 @@ export class VirtualmachineService {
 
         const params = new HttpParams().set('instance_id', instance_id).set('os_action', 'detach');
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'volumes/' + volume_id + '/action/', params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}volumes/' + volume_id + '/action/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));

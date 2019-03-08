@@ -19,7 +19,7 @@ export class KeyService {
 
     getKey(): Observable<any> {
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/current/public_key/', {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/public_key/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -29,7 +29,7 @@ export class KeyService {
         public_key = public_key.replace(/\r?\n|\r/gi, '');
         const params = new HttpParams().set('public_key', public_key);
 
-        return this.http.put(ApiSettings.getApiBaseURL() + 'users/current/public_key/', params, {
+        return this.http.put(`${ApiSettings.getApiBaseURL()}users/current/public_key/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));

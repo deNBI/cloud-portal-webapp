@@ -1,17 +1,17 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 
-
-const header = new HttpHeaders({
+const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
 });
 
-
+/**
+ * Service which delivers functions for getting and setting Application status.
+ */
 @Injectable()
 export class ApplicationStatusService {
     constructor(private http: HttpClient) {
@@ -22,9 +22,9 @@ export class ApplicationStatusService {
      * @returns {Observable<any>}
      */
     getAllApplicationStatus(): Observable<any> {
-        return this.http.get(ApiSettings.getApiBaseURL() + 'application_status/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get(`${ApiSettings.getApiBaseURL()}application_status/`, {
+            withCredentials: true
+        })
     }
 
     /**
@@ -35,14 +35,13 @@ export class ApplicationStatusService {
      */
     setApplicationStatus(application_id: number, status_id: number): Observable<any> {
 
-        let params = new HttpParams().set("project_application_status", status_id.toString());
+        const params: HttpParams = new HttpParams().set('project_application_status', status_id.toString());
 
-
-        return this.http.patch(ApiSettings.getApiBaseURL() + 'project_applications/' + application_id + '/', params,
+        return this.http.patch(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, params,
             {
                 headers: header,
                 withCredentials: true
-            }).pipe(catchError((error: any) => throwError(error)));
+            })
     }
 
 }

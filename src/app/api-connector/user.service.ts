@@ -19,7 +19,7 @@ export class UserService {
         const params = new HttpParams().set('facility', facility)
 
         ;
-        return this.http.post(ApiSettings.getApiBaseURL() + 'users/setUserPassword/', params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}users/setUserPassword/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -27,7 +27,7 @@ export class UserService {
 
     getLogins(): Observable<any> {
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/current/logins/',
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/logins/',
             {
                 withCredentials: true,
             }).pipe(catchError((error: any) => throwError(error)));
@@ -36,7 +36,7 @@ export class UserService {
 
     getPreferredMailUser(): Observable<any> {
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/current/preferredEmail/',
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/',
             {
                 withCredentials: true,
             }).pipe(catchError((error: any) => throwError(error)));
@@ -46,7 +46,7 @@ export class UserService {
         const params = new HttpParams().set('newPreferredEmail', email);
 
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'users/current/preferredEmail/', params,
+        return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/', params,
             {
                 withCredentials: true,
                 headers: header,
@@ -57,7 +57,7 @@ export class UserService {
     getPendingPreferredMailUser(): Observable<any> {
 
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/current/pendingPreferredEmails/',
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/pendingPreferredEmails/',
             {
                 withCredentials: true,
             }).pipe(catchError((error: any) => throwError(error)));
@@ -66,7 +66,7 @@ export class UserService {
 
     getMemberDetailsByElixirId(elixir_id: string) {
         elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/' + elixir_id + '/member/',
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/' + elixir_id + '/member/',
             {
                 withCredentials: true,
 
@@ -75,7 +75,7 @@ export class UserService {
     }
 
     isMember(userid: string) {
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/' + userid + '/member/status/',
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/' + userid + '/member/status/',
             {
                 withCredentials: true,
             }).pipe(catchError((error: any) => throwError(error)));
@@ -83,7 +83,7 @@ export class UserService {
     }
 
     getuserAffiliations(user_id: number) {
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/' + user_id.toString() + '/affiliations/',
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/' + user_id.toString() + '/affiliations/',
             {
                 withCredentials: true,
 
@@ -92,7 +92,7 @@ export class UserService {
     }
 
     getLoggedUser(): Observable<any> {
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/current/',
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/',
             {
                 withCredentials: true,
 
@@ -121,14 +121,14 @@ export class UserService {
 
 
     getVosWhereUserIsAdmin(): Observable<any> {
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/current/adminVos/', {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/adminVos/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
         ;
     }
 
     getGroupsWhereUserIsAdmin(): Observable<any> {
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/current/adminGroups/', {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/adminGroups/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
         ;
@@ -137,7 +137,7 @@ export class UserService {
     setNewsletterSubscription(subscribed: boolean): Observable<any> {
         const params = new HttpParams().set('subscribed', subscribed.toString());
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'newsletter/subscription/', params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}newsletter/subscription/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -146,7 +146,7 @@ export class UserService {
 
     getNewsletterSubscription(): Observable<any> {
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'newsletter/subscription/', {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}newsletter/subscription/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -158,7 +158,7 @@ export class UserService {
         const params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'users/current/helpMail/', params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/helpMail/', params, {
             withCredentials: true,
             headers: header,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -167,7 +167,7 @@ export class UserService {
 
     getFilteredMembersOfdeNBIVo(searchString: string, groupid: string): Observable<any> {
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'users/filter/', {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/filter/', {
             withCredentials: true,
             params: {
                 searchString: searchString,

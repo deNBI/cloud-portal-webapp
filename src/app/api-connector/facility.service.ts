@@ -1,20 +1,20 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 
-const header = new HttpHeaders({
+const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
 });
 
-
+/**
+ * Service which provides methods for the facilities.
+ */
 @Injectable()
 export class FacilityService {
     constructor(private http: HttpClient) {
     }
-
 
     /**
      * Get all available computecenters.
@@ -22,11 +22,10 @@ export class FacilityService {
      */
     getComputeCenters(): Observable<any> {
 
-
-        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/', {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/`, {
             withCredentials: true,
 
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
     }
 
     /**
@@ -35,12 +34,11 @@ export class FacilityService {
      */
     getManagerFacilities(): Observable<any> {
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'facilityManagers/current/facilities/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilities/`, {
+            withCredentials: true
+        })
 
     }
-
 
     /**
      * Get allowed groups from a facility with a specific status.
@@ -50,12 +48,11 @@ export class FacilityService {
      */
     getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number, status: number): Observable<any> {
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/projects/', {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
             withCredentials: true,
             params: {status: status.toString()}
 
-        }).pipe(catchError((error: any) => throwError(error)));
-
+        })
 
     }
 
@@ -66,15 +63,12 @@ export class FacilityService {
      */
     getFacilityResources(facility: number): Observable<any> {
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/projects/resources/', {
-            withCredentials: true,
+        return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/resources/`, {
+            withCredentials: true
 
-
-        }).pipe(catchError((error: any) => throwError(error)));
-
+        })
 
     }
-
 
     /**
      * Gets all facility applications which are waiting for conirmation.
@@ -83,11 +77,10 @@ export class FacilityService {
      */
     getFacilityApplicationsWaitingForConfirmation(facility: number): Observable<any> {
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/applications/', {
-            withCredentials: true,
+        return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/`, {
+            withCredentials: true
 
-        }).pipe(catchError((error: any) => throwError(error)));
-
+        })
 
     }
 
@@ -98,14 +91,11 @@ export class FacilityService {
      */
     getFacilityApplicationsHistory(facility: number): Observable<any> {
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/applications_history/', {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`, {
             withCredentials: true,
-
-        }).pipe(catchError((error: any) => throwError(error)));
-
+        })
 
     }
-
 
     /**
      * Gets all facility modification applications which are waiting for conirmation.
@@ -114,12 +104,10 @@ export class FacilityService {
      */
     getFacilityModificationApplicationsWaitingForConfirmation(facility: number): Observable<any> {
 
-        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/modification_applications/', {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/modification_applications/`, {
             withCredentials: true,
 
-        }).pipe(catchError((error: any) => throwError(error)));
-
-
+        })
     }
 
     /**
@@ -129,17 +117,13 @@ export class FacilityService {
      * @returns {Observable<any>}
      */
     approveFacilityApplication(facility: number, application_id: number): Observable<any> {
-        const params = new HttpParams().set('action', 'approve');
+        const params: HttpParams = new HttpParams().set('action', 'approve');
 
-
-        return this.http.post(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/',
-            params, {
-                withCredentials: true,
-                headers: header,
-                observe: 'response'
-            }).pipe(catchError((error: any) => throwError(error)));
-
-
+        return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`, params, {
+            withCredentials: true,
+            headers: header,
+            observe: 'response'
+        })
     }
 
     /**
@@ -149,17 +133,13 @@ export class FacilityService {
      * @returns {Observable<any>}
      */
     declineFacilityApplication(facility: number, application_id: number): Observable<any> {
-        const params = new HttpParams().set('action', 'decline');
+        const params: HttpParams = new HttpParams().set('action', 'decline');
 
-
-        return this.http.post(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/',
-            params, {
-                withCredentials: true,
-                headers: header,
-                observe: 'response'
-            }).pipe(catchError((error: any) => throwError(error)));
-
-
+        return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`, params, {
+            withCredentials: true,
+            headers: header,
+            observe: 'response'
+        })
     }
 
     /**
@@ -170,16 +150,16 @@ export class FacilityService {
      * @param reply
      * @returns {Observable<any>}
      */
-    sendMailToFacility(facility, subject, message, reply?): Observable<any> {
-        const params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
+    sendMailToFacility(facility: string, subject: string, message: string, reply?: string): Observable<any> {
+        const params: HttpParams = new HttpParams().set('subject', subject)
+            .set('facility_id', facility).set('message', message).set('reply', reply);
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'facilityManagers/current/facilityMail/', params, {
-            withCredentials: true,
-            headers: header,
-            observe: 'response'
-        }).pipe(catchError((error: any) => throwError(error)));
-
-
+        return this.http.post(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityMail/`, params, {
+                withCredentials: true,
+                headers: header,
+                observe: 'response'
+            }
+        )
     }
 
     /**
@@ -189,9 +169,10 @@ export class FacilityService {
      * @returns {Observable<any>}
      */
     getFacilityGroupRichMembers(groupid: number, facility: number): Observable<any> {
-        return this.http.get(ApiSettings.getApiBaseURL() + 'computecenters/' + facility + '/projects/' + groupid + '/members/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupid}/members/`, {
+                withCredentials: true
+            }
+        )
     }
 
 }

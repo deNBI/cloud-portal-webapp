@@ -21,7 +21,7 @@ export class ImageService {
         const params = new HttpParams().set('project_id', project_id.toString());
 
 
-        return this.http.get<Image[]>(ApiSettings.getApiBaseURL() + 'images/', {
+        return this.http.get<Image[]>(`${ApiSettings.getApiBaseURL()}images/', {
             withCredentials: true,
             params: params,
         }).pipe(catchError((error: any) => throwError(error)));
@@ -31,7 +31,7 @@ export class ImageService {
 
     getImagesSnapshotsNames(): Observable<any> {
 
-        return this.http.get<Image[]>(ApiSettings.getApiBaseURL() + 'snapshots/names/', {
+        return this.http.get<Image[]>(`${ApiSettings.getApiBaseURL()}snapshots/names/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -42,7 +42,7 @@ export class ImageService {
     checkSnapshotNameVaiable(snapshot_name: string): Observable<any> {
 
 
-        return this.http.get<Image[]>(ApiSettings.getApiBaseURL() + 'snapshots/names/', {
+        return this.http.get<Image[]>(`${ApiSettings.getApiBaseURL()}snapshots/names/', {
             withCredentials: true,
             params: {snapshot_name: snapshot_name}
 
@@ -54,7 +54,7 @@ export class ImageService {
 
     getSnapshot(openstack_id: string): Observable<Image> {
 
-        return this.http.get<Image>(ApiSettings.getApiBaseURL() + 'snapshots/' + openstack_id + '/status/', {
+        return this.http.get<Image>(`${ApiSettings.getApiBaseURL()}snapshots/' + openstack_id + '/status/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -63,7 +63,7 @@ export class ImageService {
 
 
     getImageTags(): Observable<any> {
-        return this.http.get(ApiSettings.getApiBaseURL() + 'imageTags/', {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}imageTags/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
@@ -76,7 +76,7 @@ export class ImageService {
         const params = new HttpParams().set('imageTag', imageTag).set('description', description);
 
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'imageTags/', params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}imageTags/', params, {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error)));
@@ -87,7 +87,7 @@ export class ImageService {
     deleteImageTag(imageTag: string): Observable<any> {
 
 
-        return this.http.delete(ApiSettings.getApiBaseURL() + 'imageTags/' + imageTag + '/', {
+        return this.http.delete(`${ApiSettings.getApiBaseURL()}imageTags/' + imageTag + '/', {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error)));
@@ -101,7 +101,7 @@ export class ImageService {
         const params = new HttpParams().set('snapshot_name', snapshot_name).set('snapshot_instance', snaptshot_instance);
 
 
-        return this.http.post(ApiSettings.getApiBaseURL() + 'snapshots/', params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}snapshots/', params, {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error)));
@@ -110,7 +110,7 @@ export class ImageService {
     }
 
     deleteSnapshot(snapshot_id: string): Observable<any> {
-        return this.http.delete(ApiSettings.getApiBaseURL() + 'snapshots/' + snapshot_id + '/', {
+        return this.http.delete(`${ApiSettings.getApiBaseURL()}snapshots/' + snapshot_id + '/', {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error)));
@@ -120,7 +120,7 @@ export class ImageService {
     getSnapshotsByUser(): Observable<SnapshotModel[]> {
 
 
-        return this.http.get<SnapshotModel[]>(ApiSettings.getApiBaseURL() + 'snapshots/', {
+        return this.http.get<SnapshotModel[]>(`${ApiSettings.getApiBaseURL()}snapshots/', {
             withCredentials: true,
         }).pipe(catchError((error: any) => throwError(error)));
 
