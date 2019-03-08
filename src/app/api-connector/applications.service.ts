@@ -71,10 +71,9 @@ export class ApplicationsService ***REMOVED***
 
     ***REMOVED***
 
-    addNewApplication(data: string): Observable<any> ***REMOVED***
-        const parameter: string = data;
+    addNewApplication(data: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED***): Observable<any> ***REMOVED***
 
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/`, parameter, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/`, data, ***REMOVED***
             headers: header,
             withCredentials: true
         ***REMOVED***)
@@ -82,9 +81,8 @@ export class ApplicationsService ***REMOVED***
     ***REMOVED***
 
     requestRenewal(data: string): Observable<any> ***REMOVED***
-        const parameter: string = data;
 
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***applicationRenewals/`, parameter, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***applicationRenewals/`, data, ***REMOVED***
             headers: header,
             withCredentials: true
         ***REMOVED***)

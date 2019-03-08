@@ -11,7 +11,6 @@ import ***REMOVED***SpecialHardware***REMOVED*** from '../applications/special_h
 import ***REMOVED***ApplicationStatus***REMOVED*** from '../applications/application_status.model';
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service';
-import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/special-hardware.service';
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
 
 @Component(***REMOVED***

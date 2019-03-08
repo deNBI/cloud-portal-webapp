@@ -1,6 +1,5 @@
 import ***REMOVED***Component***REMOVED*** from '@angular/core';
 import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
-import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/special-hardware.service'
 import ***REMOVED***SpecialHardware***REMOVED*** from './special_hardware.model'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'

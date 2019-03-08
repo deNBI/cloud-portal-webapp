@@ -1,6 +1,5 @@
 import ***REMOVED***Component***REMOVED*** from '@angular/core';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
-import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/special-hardware.service'
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connector-settings.service';
