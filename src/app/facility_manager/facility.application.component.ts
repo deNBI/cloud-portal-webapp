@@ -421,7 +421,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
 
             this.all_applications = [];
-                            this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
+            this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
             this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
         ***REMOVED***, error => ***REMOVED***
@@ -484,7 +484,6 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     ***REMOVED***
 
 
-
     /**
      * Get details of member like name and email by elixir.
      * @param ***REMOVED***string***REMOVED*** elixir_id
@@ -529,7 +528,6 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
         this.collapse_status[id] = !this.getCollapseStatus(id);
     ***REMOVED***
 
-
     /**
      * Get status name  by status id.
      * @param ***REMOVED***number***REMOVED*** id
@@ -537,7 +535,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      */
     public getStatusById(id: number): string ***REMOVED***
 
-        let s = "Unknown";
+        let s: string = "Unknown";
         for (let status of this.application_status) ***REMOVED***
             if (status.Id == id) ***REMOVED***
                 return status.Name;
