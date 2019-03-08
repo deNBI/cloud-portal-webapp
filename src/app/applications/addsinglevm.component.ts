@@ -73,23 +73,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
     }
 
 
-    /**
-     * Get available special hardware.
-     */
-    getSpecialHardware() {
-        this.specialhardwareservice.getAllSpecialHardware().toPromise()
-            .then(result => {
-                const res = result;
-                for (const key in res) {
-                    if (res[key]) {
-                        const shj = res[key];
-                        const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'],
-                            shj['special_hardware_name']);
-                        this.special_hardware.push(sh)
-                    }
-                }
-            });
-    }
+
 
 
     /**
