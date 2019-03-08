@@ -20,7 +20,7 @@ const header_csrf = new HttpHeaders(***REMOVED***
 
 @Injectable()
 export class ApplicationsService ***REMOVED***
-    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
 

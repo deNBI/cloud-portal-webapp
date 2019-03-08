@@ -14,7 +14,7 @@ const header = new HttpHeaders(***REMOVED***
 export class KeyService ***REMOVED***
 
 
-    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
     getKey(): Observable<any> ***REMOVED***

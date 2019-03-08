@@ -305,7 +305,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
                 const error_json = error
                 this.error = []
                 for (const key of Object.keys(error_json)) ***REMOVED***
-                    this.error.push(key.split('_', )[2])
+                    this.error.push(key.split('_',)[2])
 
                 ***REMOVED***
 
@@ -346,7 +346,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
             const error_json = error
             this.error = []
             for (const key of Object.keys(error_json)) ***REMOVED***
-                this.error.push(key.split('_', )[2])
+                this.error.push(key.split('_',)[2])
 
             ***REMOVED***
 

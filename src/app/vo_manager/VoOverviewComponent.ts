@@ -18,16 +18,16 @@ import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared_modules/baseCla
 export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
 
     public emailSubject: string;
-    public emailReply = '';
+    public emailReply: string = '';
     public emailText: string;
-    public emailStatus = 0;
+    public emailStatus :number= 0;
     public emailHeader: string;
     public emailVerify: string;
     public emailType: number;
     public selectedProject: Project;
 
     public newsletterSubscriptionCounter: number;
-    isLoaded = false;
+    isLoaded: boolean = false;
     details_loaded = false;
 
     member_id: number;
@@ -209,7 +209,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
                     compute_center);
                 newProject.Lifetime = lifetime;
                 newProject.Status = group['status'];
-                let expirationDate = undefined;
+                let expirationDate: string = '';
                 if (lifetime !== -1) ***REMOVED***
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
                     const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));

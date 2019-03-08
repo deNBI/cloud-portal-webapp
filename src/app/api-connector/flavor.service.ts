@@ -10,7 +10,7 @@ import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmach
 @Injectable()
 export class FlavorService ***REMOVED***
 
-    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
     getFlavors(project_id: number): Observable<Flavor[]> ***REMOVED***

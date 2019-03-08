@@ -12,7 +12,7 @@ const header = new HttpHeaders(***REMOVED***
 
 @Injectable()
 export class UserService ***REMOVED***
-    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
     setUserFacilityPassword(facility: string): Observable<any> ***REMOVED***

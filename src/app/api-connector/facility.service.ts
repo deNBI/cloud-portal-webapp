@@ -35,7 +35,7 @@ export class FacilityService ***REMOVED***
      */
     getManagerFacilities(): Observable<any> ***REMOVED***
 
-        return this.http.get(ApiSettings.getApiBaseURL()+ 'facilityManagers/current/facilities/', ***REMOVED***
+        return this.http.get(ApiSettings.getApiBaseURL() + 'facilityManagers/current/facilities/', ***REMOVED***
             withCredentials: true,
         ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
 
@@ -107,8 +107,7 @@ export class FacilityService ***REMOVED***
     ***REMOVED***
 
 
-
-      /**
+    /**
      * Gets all facility modification applications which are waiting for conirmation.
      * @param ***REMOVED***number***REMOVED*** facility
      * @returns ***REMOVED***Observable<any>***REMOVED***

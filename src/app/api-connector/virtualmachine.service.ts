@@ -16,7 +16,7 @@ export class VirtualmachineService ***REMOVED***
     data: string;
     baseVmUrl = ApiSettings.getApiBaseURL() + 'vms/';
 
-    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
 

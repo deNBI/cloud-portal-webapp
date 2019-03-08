@@ -7,7 +7,7 @@ import ***REMOVED***HttpClient***REMOVED*** from '@angular/common/http';
 
 @Injectable()
 export class SpecialHardwareService ***REMOVED***
-    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
     getAllSpecialHardware(): Observable<any> ***REMOVED***

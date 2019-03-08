@@ -13,7 +13,7 @@ const header = new HttpHeaders(***REMOVED***
 @Injectable()
 export class GroupService ***REMOVED***
 
-    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
 
