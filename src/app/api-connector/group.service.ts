@@ -77,10 +77,10 @@ export class GroupService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    addMember(group_id: number, member_id: number, facility_id?: number): Observable<any> ***REMOVED***
+    addMember(group_id: number, member_id: number, facility_id?: string): Observable<any> ***REMOVED***
         const params: HttpParams = new HttpParams();
         if (facility_id) ***REMOVED***
-            params.set('facility_id', facility_id.toString())
+            params.set('facility_id', facility_id)
 
         ***REMOVED***
 
@@ -92,11 +92,11 @@ export class GroupService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    addAdmin(group_id: number, user_id: number, facility_id?: number): Observable<any> ***REMOVED***
+    addAdmin(group_id: number, user_id: number, facility_id?: string): Observable<any> ***REMOVED***
         const params: HttpParams = new HttpParams();
 
         if (facility_id) ***REMOVED***
-            params.set('facility_id', facility_id.toString())
+            params.set('facility_id', facility_id)
 
         ***REMOVED***
 
@@ -363,7 +363,7 @@ export class GroupService ***REMOVED***
         const params: HttpParams = new HttpParams()
             .set('application_id', application_id.toString());
 
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/'$***REMOVED***groupid***REMOVED***/attributes/`, params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));

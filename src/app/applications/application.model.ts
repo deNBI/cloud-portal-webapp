@@ -1,7 +1,9 @@
 import ***REMOVED***ApplicationExtension***REMOVED*** from './application_extension.model';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 
-
+/**
+ * Application class.
+ */
 export class Application ***REMOVED***
     private _Id: number;
     private _Name: string;
@@ -33,8 +35,6 @@ export class Application ***REMOVED***
     private _TotalRam: number;
     private _DateApproved: string;
     private _Horizon2020: string;
-
-
     private _Dissemination: boolean;
     private _CurrentFlavors: ***REMOVED***
         [id: string]: ***REMOVED***
@@ -42,7 +42,6 @@ export class Application ***REMOVED***
             vcpus: number, gpu: number, epheremal_disk: number
         ***REMOVED***
     ***REMOVED***;
-
 
     constructor() ***REMOVED***
         this._CurrentFlavors = ***REMOVED******REMOVED***;
@@ -143,7 +142,6 @@ export class Application ***REMOVED***
         this._OpenStackProject = value;
     ***REMOVED***
 
-
     get ComputeCenter(): ComputecenterComponent ***REMOVED***
         return this._ComputeCenter
     ***REMOVED***
@@ -240,7 +238,6 @@ export class Application ***REMOVED***
         this._VolumeLimit = value;
     ***REMOVED***
 
-
     get VolumeCounter(): number ***REMOVED***
         return this._VolumeCounter;
     ***REMOVED***
@@ -305,7 +302,6 @@ export class Application ***REMOVED***
         this._Status = value;
     ***REMOVED***
 
-
     get UserEmail(): number ***REMOVED***
         return this._UserEmail;
     ***REMOVED***
@@ -321,7 +317,6 @@ export class Application ***REMOVED***
     set PerunId(value: number) ***REMOVED***
         this._PerunId = value;
     ***REMOVED***
-
 
     get Horizon2020(): string ***REMOVED***
         return this._Horizon2020;

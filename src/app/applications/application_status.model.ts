@@ -1,3 +1,6 @@
+/**
+ * ApplicationStatus class.
+ */
 export class ApplicationStatus ***REMOVED***
 
     /**
@@ -9,7 +12,6 @@ export class ApplicationStatus ***REMOVED***
      * Name of the status.
      */
     private _Name: string;
-
 
     constructor(Id: number, Name: string) ***REMOVED***
         this._Id = Id;

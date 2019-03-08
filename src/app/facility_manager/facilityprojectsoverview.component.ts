@@ -179,7 +179,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
 
     ***REMOVED***
 
-    sendMailToFacility(facility: number, subject: string, message: string, reply?: string) ***REMOVED***
+    sendMailToFacility(facility: string, subject: string, message: string, reply?: string) ***REMOVED***
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message),
             encodeURIComponent(reply)).subscribe(result => ***REMOVED***
 

@@ -18,7 +18,7 @@ import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/base
     templateUrl: 'facility.application.component.html',
     styleUrls: ['facility.application.component.scss'],
     providers: [FacilityService, UserService, GroupService, PerunSettings, ApplicationStatusService,
-        ApplicationsService, SpecialHardwareService, ApiSettings]
+        ApplicationsService, ApiSettings]
 
 ***REMOVED***)
 export class FacilityApplicationComponent extends AbstractBaseClasse implements OnInit ***REMOVED***
@@ -88,8 +88,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
 
     constructor(private userService: UserService,
                 private applicationstatusservice: ApplicationStatusService,
-                private specialhardwareservice: SpecialHardwareService,
-                private  facilityService: FacilityService, private applicationsservice: ApplicationsService) ***REMOVED***
+                private facilityService: FacilityService, private applicationsservice: ApplicationsService) ***REMOVED***
         super();
 
         this.facilityService.getManagerFacilities().subscribe(result => ***REMOVED***
