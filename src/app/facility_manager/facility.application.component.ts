@@ -188,7 +188,6 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
                 a.VolumeCounter = aj["project_application_volume_counter"];
 
                 a.ObjectStorage = aj["project_application_object_storage"];
-                a.SpecialHardware = aj["project_application_special_hardware"];
 
                 a.Institute = aj["project_application_institute"];
                 a.Workgroup = aj["project_application_workgroup"];
@@ -231,18 +230,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
                     r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
                     r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                     r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                    let special_hardware = [];
-                    if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) ***REMOVED***
-                        let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
 
-                        for (let c = 0; c < special_hardware_string.length; c++) ***REMOVED***
-                            let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
-                            special_hardware.push(sh)
-
-                        ***REMOVED***
-
-                        r.SpecialHardware = special_hardware;
-                    ***REMOVED***
                     a.ApplicationExtension = r;
 
                 ***REMOVED***
@@ -291,7 +279,6 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
                 a.VolumeCounter = aj["project_application_volume_counter"];
 
                 a.ObjectStorage = aj["project_application_object_storage"];
-                a.SpecialHardware = aj["project_application_special_hardware"];
 
                 a.Institute = aj["project_application_institute"];
                 a.Workgroup = aj["project_application_workgroup"];
@@ -334,18 +321,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
                     r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
                     r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                     r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                    let special_hardware = [];
-                    if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) ***REMOVED***
-                        let special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware'].toString();
 
-                        for (let c = 0; c < special_hardware_string.length; c++) ***REMOVED***
-                            let sh = special_hardware_string.charAt(c) == this.FPGA ? "FPGA" : "GPU";
-                            special_hardware.push(sh)
-
-                        ***REMOVED***
-
-                        r.SpecialHardware = special_hardware;
-                    ***REMOVED***
                     a.ApplicationExtension = r;
 
                 ***REMOVED***
@@ -392,7 +368,6 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
                     a.VolumeCounter = aj['project_application_volume_counter'];
 
                     a.ObjectStorage = aj['project_application_object_storage'];
-                    a.SpecialHardware = aj['project_application_special_hardware'];
 
                     a.Institute = aj['project_application_institute'];
                     a.Workgroup = aj['project_application_workgroup'];
@@ -419,19 +394,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
                         r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
                         r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
                         r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                        const special_hardware = [];
-                        if (aj['projectapplicationrenewal']['project_application_renewalspecial_hardware'] != null) ***REMOVED***
-                            const special_hardware_string = aj['projectapplicationrenewal']['project_application_renewal_special_hardware']
-                                .toString();
 
-                            for (let c = 0; c < special_hardware_string.length; c++) ***REMOVED***
-                                const sh = special_hardware_string.charAt(c) === this.FPGA ? 'FPGA' : 'GPU';
-                                special_hardware.push(sh)
-
-                            ***REMOVED***
-
-                            r.SpecialHardware = special_hardware;
-                        ***REMOVED***
                         a.ApplicationExtension = r;
 
                     ***REMOVED***

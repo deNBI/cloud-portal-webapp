@@ -1,13 +1,13 @@
 export class ComputecenterComponent ***REMOVED***
 
 
-    private _FacilityId: number;
+    private _FacilityId: string;
     private _Name: string;
     private _Login: string;
     private _Support: string;
 
 
-    constructor(FacilityId: number, Name: string, Login: string, Support: string) ***REMOVED***
+    constructor(FacilityId: string, Name: string, Login: string, Support: string) ***REMOVED***
         this._FacilityId = FacilityId;
         this._Name = Name;
         this._Login = Login;
@@ -16,11 +16,11 @@ export class ComputecenterComponent ***REMOVED***
 
     ***REMOVED***
 
-    get FacilityId(): number ***REMOVED***
+    get FacilityId(): string ***REMOVED***
         return this._FacilityId
     ***REMOVED***
 
-    set FacilityId(value: number) ***REMOVED***
+    set FacilityId(value: string) ***REMOVED***
         this._FacilityId = value;
     ***REMOVED***
 

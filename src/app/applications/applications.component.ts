@@ -143,7 +143,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                 private flavorService: FlavorService) ***REMOVED***
 
         super();
-        this.voService.isVo().subscribe(result => ***REMOVED***
+        this.voService.isVo().subscribe((result: ***REMOVED*** [key: string]: boolean ***REMOVED***) => ***REMOVED***
             this.is_vo_admin = result['Is_Vo_Manager'];
             this.getUserApplications();
             this.getApplicationStatus();
@@ -250,10 +250,13 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * Gets all available compute centers and saves them in the computeCenters attribute.
      */
     getComputeCenters(): void ***REMOVED***
-        this.facilityService.getComputeCenters().subscribe(result => ***REMOVED***
+        this.facilityService.getComputeCenters().subscribe((result: [***REMOVED*** [key: string]: string ***REMOVED***]) => ***REMOVED***
             for (const cc of result) ***REMOVED***
-                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
-                    cc['compute_center_login'], cc['compute_center_support_mail'])
+                const compute_center: ComputecenterComponent = new ComputecenterComponent(
+                    cc['compute_center_facility_id'],
+                    cc['compute_center_name'],
+                    cc['compute_center_login'],
+                    cc['compute_center_support_mail']);
                 this.computeCenters.push(compute_center)
             ***REMOVED***
 
@@ -272,7 +275,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * Sets the selected application.
      * @param application
      */
-    setSelectedApplication(application: any): void ***REMOVED***
+    setSelectedApplication(application: Application): void ***REMOVED***
         this.selectedApplication = application;
 
     ***REMOVED***
@@ -307,8 +310,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
             project_application_renewal_volume_limit: this.selectedApplication.VolumeLimit,
             project_application_renewal_volume_counter: this.selectedApplication.VolumeCounter,
             project_application_renewal_object_storage: this.selectedApplication.ObjectStorage,
-            project_application_renewal_comment: this.selectedApplication.Comment,
-
+            project_application_renewal_comment: this.selectedApplication.Comment
 
         ***REMOVED***)
 
@@ -320,14 +322,14 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      */
     getUserApplications(): void ***REMOVED***
         this.applicationsservice
-            .getUserApplications().subscribe(result => ***REMOVED***
-            const res = result;
+            .getUserApplications().subscribe((result: [***REMOVED*** [key: string]: string ***REMOVED***]) => ***REMOVED***
+            const res: [***REMOVED*** [key: string]: string ***REMOVED***] = result;
             if (Object.keys(res).length === 0) ***REMOVED***
                 this.isLoaded_userApplication = true;
             ***REMOVED***
             for (const key in res) ***REMOVED***
-                if (res[key]) ***REMOVED***
-                    const aj = res[key];
+                if (res.hasOwnProperty(key)) ***REMOVED***
+                    const aj: object = res[key];
                     const a: Application = new Application();
                     a.Id = aj['project_application_id'];
                     a.Name = aj['project_application_name'];
@@ -344,14 +346,12 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                     a.VolumeLimit = aj['project_application_volume_limit'];
                     a.VolumeCounter = aj['project_application_volume_counter'];
                     a.ObjectStorage = aj['project_application_object_storage'];
-                    a.SpecialHardware = aj['project_application_special_hardware'];
                     a.OpenStackProject = aj['project_application_openstack_project'];
                     a.Comment = aj['project_application_comment'];
                     a.PerunId = aj['project_application_perun_id'];
                     a.DateApproved = aj['project_application_date_approved'];
                     a.Dissemination = aj['project_application_report_allowed'];
                     a.Horizon2020 = aj['project_application_horizon2020'];
-
 
                     for (const f of aj['flavors']) ***REMOVED***
                         a.addFlavorToCurrent(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
@@ -425,15 +425,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***
 
         return `$***REMOVED***sa.DateApproved***REMOVED*** - $***REMOVED***this.getEndDate(sa.DateApproved, sa.Lifetime)***REMOVED***`;
-    ***REMOVED***
-
-    /**
-     * Returns a boolean indicating if the special Hardware which is represented by nums is in use.
-     * @param nums number representing special Hardware
-     * @param application application where it might be in use
-     */
-    specialHardwareInUse(nums: number, application: Application): boolean ***REMOVED***
-        return (application.SpecialHardware.toString().includes(nums.toString()));
     ***REMOVED***
 
     /**
@@ -582,7 +573,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                 const facilityname: string = res['Facility'];
                 const facilityId: number = res['FacilityId'];
 
-                const cc: ComputecenterComponent = new ComputecenterComponent(facilityId, facilityname, login, suport);
+                const cc: ComputecenterComponent = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
                 app.ComputeCenter = cc
 
             ***REMOVED***)
@@ -647,7 +638,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                 let requestExtensionTotalRam: number = 0;
 
                 for (const f of aj['projectapplicationrenewal']['flavors']) ***REMOVED***
-                    r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk)
+                    r.addFlavorToRequested(f.flavor_name, f.counter, f.tag, f.ram, f.rootdisk, f.vcpus, f.gpu, f.epheremal_disk);
                     requestExtensionTotalCores += f.vcpus * f.counter;
                     requestExtensionTotalRam += f.ram * f.counter
 
@@ -751,8 +742,8 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * Request an extension from an application.
      * @param data
      */
-    public requestExtension(data): void ***REMOVED***
-        this.applicationsservice.requestRenewal(data).subscribe(result => ***REMOVED***
+    public requestExtension(data: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED***): void ***REMOVED***
+        this.applicationsservice.requestRenewal(data).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
             if (result['Error']) ***REMOVED***
                 this.extension_status = 2
             ***REMOVED*** else ***REMOVED***
@@ -779,7 +770,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
     public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string): void ***REMOVED***
         if (!this.getCollapseStatus(collapse_id)) ***REMOVED***
             if (!(elixir_id in this.application_user)) ***REMOVED***
-                this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe(result => ***REMOVED***
+                this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
 
                     const name: string = `$***REMOVED***result['firstName']***REMOVED*** $***REMOVED***result['lastName']***REMOVED***`;
                     const appuser: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
@@ -794,12 +785,14 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
     /**
      * Approve an extension request.
-     * @param ***REMOVED***number***REMOVED*** application_id
+     * @param ***REMOVED***Application***REMOVED*** app
      */
     public approveExtension(app: Application): void ***REMOVED***
 
         if (app.OpenStackProject) ***REMOVED***
-            this.applicationstatusservice.setApplicationStatus(app.Id, this.WAIT_FOR_EXTENSION_STATUS).subscribe(() => ***REMOVED***
+            this.applicationstatusservice.setApplicationStatus(
+                app.Id.toString(),
+                this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe(() => ***REMOVED***
                 this.extension_status = 5;
                 this.getApplication(app);
                 this.getUserApplication(app);
@@ -813,7 +806,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                 ***REMOVED***
             ***REMOVED***)
         ***REMOVED*** else ***REMOVED***
-            this.applicationsservice.approveRenewal(app.Id).subscribe(result => ***REMOVED***
+            this.applicationsservice.approveRenewal(app.Id).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
                 if (result['Error']) ***REMOVED***
                     this.extension_status = 2
                 ***REMOVED*** else ***REMOVED***
@@ -821,7 +814,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                 ***REMOVED***
                 this.getApplication(this.selectedApplication);
 
-                for (let appl of this.user_applications) ***REMOVED***
+                for (const appl of this.user_applications) ***REMOVED***
                     if (this.selectedApplication.PerunId === appl.PerunId) ***REMOVED***
                         this.getUserApplication(appl);
                         break;
@@ -837,7 +830,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** application_id
      */
     public declineExtension(application_id: number): void ***REMOVED***
-        this.applicationsservice.declineRenewal(application_id).subscribe(result => ***REMOVED***
+        this.applicationsservice.declineRenewal(application_id).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
             if (result != null) ***REMOVED***
                 this.extension_status = 2
             ***REMOVED*** else ***REMOVED***
@@ -906,27 +899,32 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * @param application_id
      * @param compute_center
      */
-    public createOpenStackProjectGroup(name: string, description: string, manager_elixir_id: string, application_id: number, compute_center: string): void ***REMOVED***
+    public createOpenStackProjectGroup(name: string,
+                                       description: string,
+                                       manager_elixir_id: string,
+                                       application_id: string,
+                                       compute_center: string): void ***REMOVED***
         // get memeber id in order to add the user later as the new member and manager of the group
-        let manager_member_id: number;
-        let manager_member_user_id: number;
-        let new_group_id: number;
+        let manager_member_id: string;
+        let manager_member_user_id: string;
+        let new_group_id: string;
 
-        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => ***REMOVED***
-                const member = member_raw;
+        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(
+            (member_raw: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
+                const member: ***REMOVED*** [key: string]: string ***REMOVED*** = member_raw;
                 manager_member_id = member['id'];
                 manager_member_user_id = member['userId'];
-                this.groupservice.createGroup(name, description).subscribe(group_raw => ***REMOVED***
-                    const group = group_raw;
+                this.groupservice.createGroup(name, description).subscribe((group: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
                     new_group_id = group['id'];
                     this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
                     this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(() => ***REMOVED***
                         this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => ***REMOVED***
                             this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(() => ***REMOVED***
                                 if (compute_center !== 'undefined') ***REMOVED***
-
-                                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION)
-                                        .subscribe(result => ***REMOVED***
+                                    this.applicationstatusservice.setApplicationStatus(
+                                        application_id,
+                                        this.application_statuses.WAIT_FOR_CONFIRMATION.toString())
+                                        .subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
                                                 if (result['Error']) ***REMOVED***
                                                     this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
@@ -934,16 +932,15 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                                                     this.updateNotificationModal('Success', 'The new project was created', true, 'success');
                                                 ***REMOVED***
                                                 for (const app of this.user_applications) ***REMOVED***
-                                                    if (app.Id === application_id) ***REMOVED***
+                                                    if (app.Id.toString() === application_id) ***REMOVED***
                                                         this.getUserApplication(app);
                                                         break;
 
                                                     ***REMOVED***
 
-
                                                 ***REMOVED***
                                                 for (const app of this.all_applications) ***REMOVED***
-                                                    if (app.Id === application_id) ***REMOVED***
+                                                    if (app.Id.toString() === application_id) ***REMOVED***
                                                         this.getApplication(app);
                                                         break;
 
@@ -952,38 +949,42 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                                             ***REMOVED***
                                         )
                                 ***REMOVED*** else ***REMOVED***
-                                    this.groupservice.setPerunGroupStatus(new_group_id, this.application_statuses.APPROVED).subscribe(() => ***REMOVED***
-                                        this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED).subscribe(result => ***REMOVED***
-                                            if (result['Error']) ***REMOVED***
-                                                this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+                                    this.groupservice.setPerunGroupStatus(
+                                        new_group_id,
+                                        this.application_statuses.APPROVED.toString()).subscribe(() => ***REMOVED***
+                                        this.applicationstatusservice.setApplicationStatus(
+                                            application_id,
+                                            this.application_statuses.APPROVED.toString())
+                                            .subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
+                                                if (result['Error']) ***REMOVED***
+                                                    this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
-                                            ***REMOVED*** else ***REMOVED***
-                                                this.updateNotificationModal('Success', 'The new project was created', true, 'success');
-                                            ***REMOVED***
-                                            for (const appl of this.user_applications) ***REMOVED***
-                                                if (appl.Id === application_id) ***REMOVED***
-                                                    this.getUserApplication(appl);
-                                                    break;
-
+                                                ***REMOVED*** else ***REMOVED***
+                                                    this.updateNotificationModal('Success', 'The new project was created', true, 'success');
                                                 ***REMOVED***
-                                                for (const app of this.user_applications) ***REMOVED***
-                                                    if (app.Id === application_id) ***REMOVED***
-                                                        this.getUserApplication(app);
+                                                for (const appl of this.user_applications) ***REMOVED***
+                                                    if (appl.Id.toString() === application_id) ***REMOVED***
+                                                        this.getUserApplication(appl);
                                                         break;
 
                                                     ***REMOVED***
+                                                    for (const app of this.user_applications) ***REMOVED***
+                                                        if (app.Id.toString() === application_id) ***REMOVED***
+                                                            this.getUserApplication(app);
+                                                            break;
 
-
-                                                ***REMOVED***
-                                                for (const app of this.all_applications) ***REMOVED***
-                                                    if (app.Id === application_id) ***REMOVED***
-                                                        this.getApplication(app);
-                                                        break;
+                                                        ***REMOVED***
 
                                                     ***REMOVED***
+                                                    for (const app of this.all_applications) ***REMOVED***
+                                                        if (app.Id.toString() === application_id) ***REMOVED***
+                                                            this.getApplication(app);
+                                                            break;
+
+                                                        ***REMOVED***
+                                                    ***REMOVED***
                                                 ***REMOVED***
-                                            ***REMOVED***
-                                        ***REMOVED***)
+                                            ***REMOVED***)
 
                                     ***REMOVED***)
 
@@ -994,9 +995,8 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                     ***REMOVED***)
 
                 ***REMOVED***)
-            ***REMOVED***
-
-            , error => ***REMOVED***
+            ***REMOVED***,
+            () => ***REMOVED***
                 this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
             ***REMOVED***)
 
@@ -1025,128 +1025,141 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * @param application_id
      * @param compute_center
      */
-    public createSimpleVmProjectGroup(name, description, manager_elixir_id, application_id, compute_center): void ***REMOVED***
+    public createSimpleVmProjectGroup(name: string,
+                                      description: string,
+                                      manager_elixir_id: string,
+                                      application_id: string,
+                                      compute_center: string): void ***REMOVED***
 
         // get memeber id in order to add the user later as the new member and manager of the group
-        let manager_member_id: number;
-        let manager_member_user_id: number;
-        let new_group_id: number;
-        this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(res => ***REMOVED***
-            if (res['Info']) ***REMOVED***
-                if (res['Clients']) ***REMOVED***
-                    for (const client of res['Clients']) ***REMOVED***
-                        const newClient = new Vmclient();
-                        newClient.location = client.location;
-                        newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
-                        newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
-                        newClient.maxVMs = client.max_ressources.maxTotalInstances;
-                        newClient.assignedVMs = client.assigned_ressources.vms;
-                        newClient.assignedVolumes = client.assigned_ressources.volumes;
-                        newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
-                        this.notificationClientInfo.push(newClient);
+        let manager_member_id: string;
+        let manager_member_user_id: string;
+        let new_group_id: string;
+        this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
+            (res: Vmclient) => ***REMOVED***
+                if (res['Info']) ***REMOVED***
+                    if (res['Clients']) ***REMOVED***
+                        for (const client of res['Clients']) ***REMOVED***
+                            const newClient: Vmclient = new Vmclient();
+                            newClient.location = client.location;
+                            newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
+                            newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
+                            newClient.maxVMs = client.max_ressources.maxTotalInstances;
+                            newClient.assignedVMs = client.assigned_ressources.vms;
+                            newClient.assignedVolumes = client.assigned_ressources.volumes;
+                            newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
+                            this.notificationClientInfo.push(newClient);
+                        ***REMOVED***
                     ***REMOVED***
-                ***REMOVED***
-                this.updateNotificationModal('Failed', res['Info'], true, 'danger');
+                    this.updateNotificationModal('Failed', res['Info'], true, 'danger');
 
-            ***REMOVED***
-            else ***REMOVED***
-                this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.APPROVED).subscribe(result => ***REMOVED***
-                    if (result['Error']) ***REMOVED***
+                ***REMOVED*** else ***REMOVED***
+                    this.applicationstatusservice.setApplicationStatus(
+                        application_id,
+                        this.application_statuses.APPROVED.toString()).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
+                        if (result['Error']) ***REMOVED***
 
-                        this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+                            this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
+                        ***REMOVED*** else ***REMOVED***
+                            this.userservice.getMemberByExtSourceNameAndExtLogin(
+                                manager_elixir_id).subscribe((member_raw: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
+                                const member: ***REMOVED*** [key: string]: string ***REMOVED*** = member_raw;
+                                manager_member_id = member['id'];
+                                manager_member_user_id = member['userId'];
+                                this.groupservice.createGroup(name, description).subscribe((group: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
+                                    new_group_id = group['id'];
+                                    this.groupservice.addMember(
+                                        new_group_id.toString(),
+                                        manager_member_id.toString(),
+                                        compute_center).subscribe();
+                                    this.groupservice.addAdmin(
+                                        new_group_id.toString(),
+                                        manager_member_user_id,
+                                        compute_center).subscribe(() => ***REMOVED***
+                                        this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => ***REMOVED***
+                                                if (result['Info']) ***REMOVED***
+                                                    this.updateNotificationModal('Failed', result['Info'], true, 'danger');
 
-                    ***REMOVED*** else ***REMOVED***
+                                                ***REMOVED*** else ***REMOVED***
+                                                    this.applicationsservice.getApplicationClient(
+                                                        application_id).subscribe((client: object) => ***REMOVED***
+                                                        const newClient: Vmclient = new Vmclient();
+                                                        newClient.location = client['location'];
+                                                        newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
+                                                        newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
+                                                        newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
+                                                        newClient.assignedVMs = client['assigned_ressources']['vms'];
+                                                        newClient.assignedVolumes = client['assigned_ressources']['volumes'];
+                                                        newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
+                                                        this.notificationClientInfo.push(newClient);
+                                                        this.updateNotificationModal(
+                                                            'Success', `The new project was created and assigned to $***REMOVED***newClient.location***REMOVED***.`,
+                                                            true,
+                                                            'success');
 
-
-                        this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).subscribe(member_raw => ***REMOVED***
-                            const member = member_raw;
-                            manager_member_id = member['id'];
-                            manager_member_user_id = member['userId'];
-                            this.groupservice.createGroup(name, description).subscribe(group_raw => ***REMOVED***
-                                const group = group_raw;
-                                new_group_id = group['id'];
-                                this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
-                                this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(r => ***REMOVED***
-                                    this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(re => ***REMOVED***
-                                            if (result['Info']) ***REMOVED***
-                                                this.updateNotificationModal('Failed', result['Info'], true, 'danger');
-
-                                            ***REMOVED*** else ***REMOVED***
-                                                this.applicationsservice.getApplicationClient(application_id).subscribe(client => ***REMOVED***
-                                                    const newClient = new Vmclient();
-                                                    newClient.location = client.location;
-                                                    newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
-                                                    newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
-                                                    newClient.maxVMs = client.max_ressources.maxTotalInstances;
-                                                    newClient.assignedVMs = client.assigned_ressources.vms;
-                                                    newClient.assignedVolumes = client.assigned_ressources.volumes;
-                                                    newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
-                                                    this.notificationClientInfo.push(newClient);
-                                                    this.updateNotificationModal('Success', 'The new project was created and assigned to '
-                                                        + client.location + '.', true, 'success');
-
-                                                ***REMOVED***);
-                                            ***REMOVED***
-
-                                            for (const app of this.user_applications) ***REMOVED***
-                                                if (app.Id === application_id) ***REMOVED***
-                                                    this.getUserApplication(app);
-                                                    break;
-
+                                                    ***REMOVED***);
                                                 ***REMOVED***
 
+                                                for (const app of this.user_applications) ***REMOVED***
+                                                    if (app.Id.toString() === application_id) ***REMOVED***
+                                                        this.getUserApplication(app);
+                                                        break;
 
-                                            ***REMOVED***
-                                            for (const app of this.all_applications) ***REMOVED***
-                                                if (app.Id === application_id) ***REMOVED***
-                                                    this.getApplication(app);
-                                                    break;
+                                                    ***REMOVED***
 
                                                 ***REMOVED***
+                                                for (const app of this.all_applications) ***REMOVED***
+                                                    if (app.Id.toString() === application_id) ***REMOVED***
+                                                        this.getApplication(app);
+                                                        break;
+
+                                                    ***REMOVED***
+                                                ***REMOVED***
+
                                             ***REMOVED***
+                                        )
 
-                                        ***REMOVED***
-                                    )
-
+                                    ***REMOVED***);
 
                                 ***REMOVED***);
 
-                            ***REMOVED***);
+                            ***REMOVED***)
+                        ***REMOVED***
 
-                        ***REMOVED***)
-                    ***REMOVED***
+                    ***REMOVED***)
+                ***REMOVED***
 
-                ***REMOVED***)
-            ***REMOVED***
-
-        ***REMOVED***, error => ***REMOVED***
-            console.log(error);
-            this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-        ***REMOVED***)
-
+            ***REMOVED***,
+            (error: object) => ***REMOVED***
+                console.log(error);
+                this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+            ***REMOVED***)
 
     ***REMOVED***
 
-    assignGroupToFacility(group_id, application_id, compute_center) ***REMOVED***
+    assignGroupToFacility(group_id: string, application_id: string, compute_center: string): void ***REMOVED***
         if (compute_center !== 'undefined') ***REMOVED***
-            this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(res => ***REMOVED***
-                    this.applicationstatusservice.setApplicationStatus(application_id, this.application_statuses.WAIT_FOR_CONFIRMATION).subscribe(res => ***REMOVED***
-                        for (let app of this.all_applications) ***REMOVED***
-                            if (app.Id == application_id) ***REMOVED***
-                                this.getApplication(app);
+            this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(
+                () => ***REMOVED***
+                    this.applicationstatusservice.setApplicationStatus(
+                        application_id,
+                        this.application_statuses.WAIT_FOR_CONFIRMATION.toString())
+                        .subscribe(() => ***REMOVED***
+                            for (const app of this.all_applications) ***REMOVED***
+                                if (app.Id.toString() === application_id) ***REMOVED***
+                                    this.getApplication(app);
 
-                                break;
+                                    break;
 
+                                ***REMOVED***
                             ***REMOVED***
-                        ***REMOVED***
-                        this.updateNotificationModal('Success', 'The  project was assigned to the facility.', true, 'success');
+                            this.updateNotificationModal('Success', 'The  project was assigned to the facility.', true, 'success');
 
-                    ***REMOVED***)
-
+                        ***REMOVED***)
 
                 ***REMOVED***,
-                error => ***REMOVED***
+                (error: object) => ***REMOVED***
                     console.log(error);
                     this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
                 ***REMOVED***);
@@ -1160,16 +1173,16 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * Decline an application.
      * @param application_id
      */
-    public declineApplication(application_id) ***REMOVED***
-        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined")).toPromise()
-            .then(result => ***REMOVED***
+    public declineApplication(application_id: string): void ***REMOVED***
+        this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus('declined').toString()).toPromise()
+            .then(() => ***REMOVED***
                 this.all_applications = [];
                 this.user_applications = [];
                 this.getUserApplications();
                 this.getAllApplications();
                 this.updateNotificationModal('Success', 'The Application was declined', true, 'success');
             ***REMOVED***)
-            .catch(error => ***REMOVED***
+            .catch(() => ***REMOVED***
                 this.updateNotificationModal('Failed', 'Application could be declined!', true, 'danger');
             ***REMOVED***);
     ***REMOVED***
@@ -1178,17 +1191,17 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * Delete an application.
      * @param application_id
      */
-    public deleteApplication(application_id) ***REMOVED***
+    public deleteApplication(application_id: string): void ***REMOVED***
         this.applicationsservice.deleteApplication(application_id).toPromise()
-            .then(result => ***REMOVED***
+            .then(() => ***REMOVED***
                 this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
-            ***REMOVED***).then(result => ***REMOVED***
+            ***REMOVED***).then(() => ***REMOVED***
             this.user_applications = [];
             this.all_applications = [];
             this.getUserApplications();
             this.getAllApplications();
         ***REMOVED***)
-            .catch(error => ***REMOVED***
+            .catch(() => ***REMOVED***
                 this.updateNotificationModal('Failed', 'Application could not be removed!', true, 'danger');
             ***REMOVED***);
     ***REMOVED***
@@ -1205,26 +1218,23 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
-    public setApplicationStatus(status: number, app: Application) ***REMOVED***
-        this.applicationstatusservice.setApplicationStatus(app.Id, status).subscribe()
+    public setApplicationStatus(status: number, app: Application): void ***REMOVED***
+        this.applicationstatusservice.setApplicationStatus(app.Id.toString(), status.toString()).subscribe()
     ***REMOVED***
-
 
     /**
      * Set the id of the application which should be deleted.
      * @param applicationId
      */
-    public setDeleteId(applicationId) ***REMOVED***
+    public setDeleteId(applicationId: number): void ***REMOVED***
         this.deleteId = applicationId;
     ***REMOVED***
-
 
     /**
      * Coming soon.
      */
-    public comingSoon() ***REMOVED***
+    public comingSoon(): void ***REMOVED***
         alert('This functinality will be implemented soon!')
     ***REMOVED***
-
 
 ***REMOVED***

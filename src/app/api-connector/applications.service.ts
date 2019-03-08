@@ -80,7 +80,7 @@ export class ApplicationsService ***REMOVED***
 
     ***REMOVED***
 
-    requestRenewal(data: string): Observable<any> ***REMOVED***
+    requestRenewal(data: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED***): Observable<any> ***REMOVED***
 
         return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***applicationRenewals/`, data, ***REMOVED***
             headers: header,
@@ -124,11 +124,11 @@ export class ApplicationsService ***REMOVED***
 
     ***REMOVED***
 
-    deleteApplication(application_id: number): Observable<any> ***REMOVED***
+    deleteApplication(application_id: string): Observable<any> ***REMOVED***
 
         return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***application_id***REMOVED***/`, ***REMOVED***
             headers: header_csrf,
-            withCredentials: true,
+            withCredentials: true
         ***REMOVED***)
 
     ***REMOVED***
