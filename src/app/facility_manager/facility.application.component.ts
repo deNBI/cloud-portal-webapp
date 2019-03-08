@@ -522,23 +522,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             ***REMOVED***);
     ***REMOVED***
 
-    /**
-     * Get all available special hardware.
-     */
-    getSpecialHardware() ***REMOVED***
-        this.specialhardwareservice.getAllSpecialHardware().toPromise()
-            .then(result => ***REMOVED***
-                const res = result;
-                for (const key in res) ***REMOVED***
-                    if (res[key]) ***REMOVED***
-                        const shj = res[key];
-                        const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'],
-                            shj['special_hardware_name']);
-                        this.special_hardware.push(sh)
-                    ***REMOVED***
-                ***REMOVED***
-            ***REMOVED***);
-    ***REMOVED***
+
 
     /**
      * Get details of member like name and email by elixir.

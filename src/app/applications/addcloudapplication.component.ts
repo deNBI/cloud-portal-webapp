@@ -255,22 +255,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
     ***REMOVED***
 
 
-    /**
-     * Get all Special Hardware.
-     */
-    getSpecialHardware() ***REMOVED***
-        this.specialhardwareservice.getAllSpecialHardware().toPromise()
-            .then(result => ***REMOVED***
-                const res = result;
-                for (const key in res) ***REMOVED***
-                    if (res[key]) ***REMOVED***
-                        const shj = res[key];
-                        const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'],
-                            shj['special_hardware_name']);
-                        this.special_hardware.push(sh)
-                    ***REMOVED***
-                ***REMOVED***
-            ***REMOVED***);
+
     ***REMOVED***
 
 
