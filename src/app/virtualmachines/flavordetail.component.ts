@@ -5,12 +5,10 @@ import {Flavor} from './virtualmachinemodels/flavor'
     selector: 'app-flavor-detail',
     templateUrl: 'flavordetail.component.html'
 
-
 })
 export class FlavorDetailComponent implements OnInit {
     @Input() flavor: Flavor;
     @Input() collapse2: boolean;
-
 
     ngOnInit() {
     }

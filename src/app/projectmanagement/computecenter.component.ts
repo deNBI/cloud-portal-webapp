@@ -1,18 +1,15 @@
 export class ComputecenterComponent {
 
-
     private _FacilityId: string;
     private _Name: string;
     private _Login: string;
     private _Support: string;
-
 
     constructor(FacilityId: string, Name: string, Login: string, Support: string) {
         this._FacilityId = FacilityId;
         this._Name = Name;
         this._Login = Login;
         this._Support = Support
-
 
     }
 
@@ -47,6 +44,5 @@ export class ComputecenterComponent {
     set Support(value: string) {
         this.Support = value;
     }
-
 
 }

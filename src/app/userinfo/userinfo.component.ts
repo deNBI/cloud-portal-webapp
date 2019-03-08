@@ -7,7 +7,6 @@ import {KeyService} from '../api-connector/key.service';
 import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 
-
 @Component({
     selector: 'app-userinfo',
     templateUrl: 'userinfo.component.html',
@@ -31,7 +30,6 @@ export class UserinfoComponent implements OnInit {
 
     }
 
-
     requestChangePreferredMailUser(email: string) {
         this.userservice.requestChangePreferredMailUser(email).subscribe(res => {
             this.getPendingPreferredMailUser();
@@ -49,7 +47,6 @@ export class UserinfoComponent implements OnInit {
         this.is_vm_project_member();
         this.getPreferredMail();
 
-
     }
 
     isFreemiumActive() {
@@ -58,7 +55,6 @@ export class UserinfoComponent implements OnInit {
 
         });
     }
-
 
     setNewsletterSubscription(e) {
         this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => {
@@ -87,14 +83,12 @@ export class UserinfoComponent implements OnInit {
 
     }
 
-
     getUserPublicKey() {
         this.keyservice.getKey().subscribe(result => {
             this.userinfo.PublicKey = result['public_key'];
             this.isLoaded = true;
         })
     }
-
 
     // Returns the preffered Mail of the logged in User
     getPreferredMail() {
@@ -142,11 +136,9 @@ export class UserinfoComponent implements OnInit {
                     }
                     this.getUserPublicKey()
 
-
                 })
             })
         })
-
 
     }
 
@@ -180,4 +172,3 @@ export class UserinfoComponent implements OnInit {
         })
     }
 }
-

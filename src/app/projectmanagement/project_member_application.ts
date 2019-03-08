@@ -5,12 +5,10 @@ export class ProjectMemberApplication {
     private _DateCreated: string;
     private _UserIsVoMember: boolean;
 
-
     constructor(Id: number, Name: string, DateCreated: string) {
         this._Id = Id;
         this._Name = Name;
         this._DateCreated = DateCreated;
-
 
     }
 
@@ -21,7 +19,6 @@ export class ProjectMemberApplication {
     set UserIsVoMember(value: boolean) {
         this._UserIsVoMember = value;
     }
-
 
     get Id(): number {
         return this._Id;
@@ -39,7 +36,6 @@ export class ProjectMemberApplication {
         this._Name = value;
     }
 
-
     get DateCreated(): string {
         return this._DateCreated;
     }
@@ -47,6 +43,5 @@ export class ProjectMemberApplication {
     set DateCreated(value: string) {
         this._DateCreated = value;
     }
-
 
 }

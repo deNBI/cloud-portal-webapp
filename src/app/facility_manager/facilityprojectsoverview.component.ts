@@ -36,14 +36,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
     private EXPIRES_SOON = 1;
     private VALID_LIFETIME = 2;
 
-
     // modal variables for User list
     public usersModal;
     public usersModalProjectMembers: ProjectMember[] = new Array;
     public usersModalProjectID: number;
     public usersModalProjectName: string;
     public selectedProject: Project;
-
 
     public emailSubject: string;
     public emailText: string;
@@ -53,7 +51,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
     projects_filtered: Project[] = new Array();
-
 
     constructor(private groupservice: GroupService,
                 private  facilityservice: FacilityService) {
@@ -69,7 +66,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
 
     applyFilter() {
 
-
         this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
 
     }
@@ -82,9 +78,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
             return false
         }
 
-
     }
-
 
     onChangeSelectedFacility(value) {
         this.getFacilityProjects(this.selectedFacility['FacilityId'])
@@ -97,7 +91,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                 const lifetime = res['lifetime'];
                 let dateCreated = project.DateCreated;
 
-                let expirationDate = undefined;
+                let expirationDate;
                 dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
                 if (lifetime !== -1) {
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
@@ -118,7 +112,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
     getFacilityProjects(facility) {
         this.projects = [];
 
-
         this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe(result => {
             const facility_projects = result;
             const is_pi = false;
@@ -131,16 +124,15 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                 let shortname = group['shortname'];
                 let compute_center = null;
                 const lifetime = group['lifetime'];
-                let expirationDate = undefined;
-
+                let expirationDate;
 
                 if (!shortname) {
                     shortname = group['name']
                 }
                 if (tmp_facility) {
                     compute_center = new ComputecenterComponent(tmp_facility['compute_center_facility_id'],
-                        tmp_facility['compute_center_name'],
-                        tmp_facility['compute_center_login'], tmp_facility['compute_center_support_mail']);
+                                                                tmp_facility['compute_center_name'],
+                                                                tmp_facility['compute_center_login'], tmp_facility['compute_center_support_mail']);
                 }
 
                 const newProject = new Project(
@@ -162,26 +154,22 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                     newProject.DateEnd = expirationDate;
                     newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
 
-
                 }
                 newProject.RealName = group['name'];
                 newProject.Lifetime = lifetime;
-
 
                 this.projects.push(newProject);
             }
             this.applyFilter();
             this.isLoaded = true;
 
-
         })
-
 
     }
 
     sendMailToFacility(facility: string, subject: string, message: string, reply?: string) {
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message),
-            encodeURIComponent(reply)).subscribe(result => {
+                                                encodeURIComponent(reply)).subscribe(result => {
 
                 if (result.status === 201) {
                     this.emailStatus = 1;
@@ -189,7 +177,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                     this.emailStatus = 2;
                 }
             },
-            error => {
+                                                 error => {
                 console.log(error);
                 this.emailStatus = 2;
             })
@@ -228,7 +216,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
         this.emailStatus = 0;
 
     }
-
 
     public comingSoon() {
         alert('This function will be implemented soon.')

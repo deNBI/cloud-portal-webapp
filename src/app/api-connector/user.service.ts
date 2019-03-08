@@ -59,7 +59,7 @@ export class UserService {
         elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}users/${elixir_id}/member/`, {
-            withCredentials: true,
+            withCredentials: true
 
         })
 
@@ -90,7 +90,7 @@ export class UserService {
     getMemberByUser(): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/member/`, {
-            withCredentials: true,
+            withCredentials: true
         })
     }
 

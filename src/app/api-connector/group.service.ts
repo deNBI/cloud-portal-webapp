@@ -21,7 +21,7 @@ export class GroupService {
     getFacilityByGroup(groupid: string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/computecenter/`, {
-            withCredentials: true,
+            withCredentials: true
         }).pipe(catchError((error: any) => throwError(error.error)));
 
     }
@@ -57,14 +57,14 @@ export class GroupService {
     isUserAdminOfGroup(groupid: string, userid: string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/members/${userid}/manager/`, {
-            withCredentials: true,
+            withCredentials: true
         })
     }
 
     getGroupAdminIds(groupid: string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/admins/ids/`, {
-            withCredentials: true,
+            withCredentials: true
         })
     }
 
@@ -205,7 +205,7 @@ export class GroupService {
 
     getName(groupid: string): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/name/`, {
-            withCredentials: true,
+            withCredentials: true
         })
 
     }
@@ -231,13 +231,13 @@ export class GroupService {
 
     getGroupDetails(): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/details/`, {
-            withCredentials: true,
+            withCredentials: true
         })
     }
 
     getGroupApplications(group: number): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${group}/applications/`, {
-            withCredentials: true,
+            withCredentials: true
         })
 
     }
@@ -283,7 +283,7 @@ export class GroupService {
         const params: HttpParams = new HttpParams().set('name', group_name).set('description', group_description.substring(0, 512));
 
         return this.http.post(`${ApiSettings.getApiBaseURL()}projects/`, params,
-            {
+                              {
                 withCredentials: true,
                 headers: header
             })
@@ -292,7 +292,7 @@ export class GroupService {
     getLifetime(groupid: string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/lifetime/`, {
-            withCredentials: true,
+            withCredentials: true
         })
 
     }
@@ -333,20 +333,20 @@ export class GroupService {
 
     getVolumesUsed(groupid: string): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedVolumes/`, {
-            withCredentials: true,
+            withCredentials: true
         })
     }
 
     getVolumeCounter(groupid: string): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/volumesCounter/`, {
-            withCredentials: true,
+            withCredentials: true
         })
     }
 
     getGroupApprovedVms(groupid: string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/approvedVms/`, {
-            withCredentials: true,
+            withCredentials: true
         })
 
     }
@@ -354,7 +354,7 @@ export class GroupService {
     getGroupUsedVms(groupid: string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedVms/`, {
-            withCredentials: true,
+            withCredentials: true
         })
 
     }

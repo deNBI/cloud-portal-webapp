@@ -21,10 +21,9 @@ import {environment} from '../../environments/environment';
     selector: 'app-new-vm',
     templateUrl: 'addvm.component.html',
     providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
-        Application, PerunSettings, ApiSettings, KeyService, ClientService],
+        Application, PerunSettings, ApiSettings, KeyService, ClientService]
 })
 export class VirtualMachineComponent implements OnInit {
-
 
     data = '';
     creating_vm_status = 'Creating..';
@@ -156,12 +155,10 @@ export class VirtualMachineComponent implements OnInit {
      */
     private checkStatusTimeout = 5000;
 
-
     constructor(private groupService: GroupService, private imageService: ImageService, private applicataionsservice: ApplicationsService,
                 private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
                 private  keyservice: KeyService, private clientservice: ClientService) {
     }
-
 
     /**
      * Get images for the project.
@@ -181,7 +178,6 @@ export class VirtualMachineComponent implements OnInit {
 
     }
 
-
     /**
      * Validate the public key of the user.
      */
@@ -193,7 +189,6 @@ export class VirtualMachineComponent implements OnInit {
 
             this.validPublickey = false;
         }
-
 
     }
 
@@ -260,7 +255,6 @@ export class VirtualMachineComponent implements OnInit {
                     this.getSelectedProjectVms();
                     this.getSelectedProjectVolumes();
 
-
                 } else {
                     if (res['Waiting'] === 'PORT_CLOSED') {
                         this.checking_vm_status = 'Active';
@@ -269,13 +263,12 @@ export class VirtualMachineComponent implements OnInit {
                         this.checking_vm_ssh_port = 'Checking port..';
                         this.checking_vm_ssh_port_width = 34;
 
-
                     }
                     this.check_status_loop(id)
                 }
 
             })
-        }, this.checkStatusTimeout);
+        },         this.checkStatusTimeout);
     }
 
     /**
@@ -292,10 +285,8 @@ export class VirtualMachineComponent implements OnInit {
 
             const flavor_fixed = flavor.replace(re, '%2B');
 
-
             this.virtualmachineservice.startVM(flavor_fixed, image, servername, project, projectid,
-                this.volumeName, this.diskspace.toString()).subscribe(data => {
-
+                                               this.volumeName, this.diskspace.toString()).subscribe(data => {
 
                 if (data['Created']) {
                     this.creating_vm_status = 'Created';
@@ -310,7 +301,6 @@ export class VirtualMachineComponent implements OnInit {
 
                     this.data = data
                 }
-
 
             });
 
@@ -350,7 +340,6 @@ export class VirtualMachineComponent implements OnInit {
         })
     }
 
-
     /**
      * Reset the data attribute.
      */
@@ -360,7 +349,6 @@ export class VirtualMachineComponent implements OnInit {
         }
         this.data = '';
     }
-
 
     /**
      * Initializes the data.
@@ -379,14 +367,12 @@ export class VirtualMachineComponent implements OnInit {
         })
     }
 
-
     /**
      * Get vms diskpace and used from the selected project.
      */
     getSelectedProjectDiskspace(): void {
         this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe(result => {
             if (result['Diskspace']) {
-
 
                 this.selectedProjectDiskspaceMax = result['Diskspace'];
 
@@ -402,7 +388,6 @@ export class VirtualMachineComponent implements OnInit {
             } else if (result['Diskspace'] === 0 || result['Diskspace'] == null) {
                 this.selectedProjectDiskspaceUsed = 0;
             }
-
 
         })
 
@@ -430,14 +415,12 @@ export class VirtualMachineComponent implements OnInit {
         })
     }
 
-
     /**
      * Get vms max and used from the selected project.
      */
     getSelectedProjectVms(): void {
         this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()).subscribe(result => {
             if (result['NumberVms']) {
-
 
                 this.selectedProjectVmsMax = result['NumberVms'];
 
@@ -454,7 +437,6 @@ export class VirtualMachineComponent implements OnInit {
                 this.selectedProjectVmsUsed = 0;
             }
 
-
         })
 
     }
@@ -463,7 +445,6 @@ export class VirtualMachineComponent implements OnInit {
 
         this.userinfo = new Userinfo();
         this.initializeData();
-
 
     }
 }

@@ -15,7 +15,6 @@ import {VoService} from '../api-connector/vo.service';
     providers: [VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
 })
 
-
 export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     /**
      * All unfiltered vms.
@@ -113,7 +112,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      */
     reboot_done: boolean;
 
-
     constructor(private voService: VoService, private imageService: ImageService, private userservice: UserService,
                 private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
         super()
@@ -133,7 +131,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
     }
 
-
     /**
      * Check if vm corresponds the filter.
      * @param {VirtualMachine} vm vm which is checked
@@ -147,7 +144,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         } else {
             return false
         }
-
 
     }
 
@@ -163,7 +159,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
         this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
         this.currentPage = 1
-
 
     }
 
@@ -208,9 +203,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
             this.snapshotNameCheckDone = true;
         })
 
-
     }
-
 
     /**
      * Reset the snapshotDone to waiting.
@@ -226,7 +219,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     checkStatus(openstackid: string) {
         this.virtualmachineservice.checkVmStatus(openstackid).subscribe(res => {
 
-
                 this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
                         this.vms_content = vms;
                         for (const vm of this.vms_content) {
@@ -240,7 +232,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                             }
                         }
                         this.applyFilter()
-
 
                     }
                 );
@@ -258,7 +249,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
             this.status_changed = 0;
 
-
             if (this.tab === 'own') {
                 this.getVms();
             } else if (this.tab === 'all') {
@@ -272,7 +262,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                 this.status_changed = 2;
             }
 
-
         })
     }
 
@@ -285,14 +274,12 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         this.virtualmachineservice.rebootVM(openstack_id, reboot_type).subscribe(result => {
             this.status_changed = 0;
 
-
             if (result['reboot']) {
                 this.status_changed = 1;
                 this.check_status_loop(openstack_id)
             } else {
                 this.status_changed = 2;
             }
-
 
         })
     }
@@ -316,18 +303,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
                     }
 
-
                 } else {
                     if (res['Error']) {
                         this.status_check_error = true
-
 
                     }
                     this.check_status_loop(id)
                 }
 
             })
-        }, this.checkStatusTimeout);
+        },         this.checkStatusTimeout);
     }
 
     /**
@@ -338,7 +323,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         this.virtualmachineservice.stopVM(openstack_id).subscribe(result => {
 
             this.status_changed = 0;
-
 
             if (this.tab === 'own') {
                 this.getVms();
@@ -352,7 +336,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
             } else {
                 this.status_changed = 2;
             }
-
 
         })
     }
@@ -409,7 +392,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
             }
         );
 
-
     }
 
     /**
@@ -420,9 +402,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
         this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => {
 
-
             this.status_changed = 0;
-
 
             if (this.tab === 'own') {
                 this.getVms();
@@ -449,7 +429,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                 for (const vm of this.vms_content) {
                     this.setCollapseStatus(vm.openstackid, false)
 
-
                     if (vm.created_at !== '') {
                         vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                     }
@@ -461,7 +440,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
                 }
                 this.applyFilter();
-
 
             }
         );

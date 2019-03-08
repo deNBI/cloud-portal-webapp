@@ -10,8 +10,7 @@ export class ImageTagComponent {
 
     imageTags: [string, string][]
 
-
-    constructor(private imageService: ImageService, ) {
+    constructor(private imageService: ImageService ) {
         this.imageService.getImageTags().subscribe(result => {
             this.imageTags = result;
             this.isLoaded = true;
@@ -33,6 +32,5 @@ export class ImageTagComponent {
             })
         })
     }
-
 
 }

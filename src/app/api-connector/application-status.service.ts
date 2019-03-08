@@ -38,7 +38,7 @@ export class ApplicationStatusService {
         const params: HttpParams = new HttpParams().set('project_application_status', status_id);
 
         return this.http.patch(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, params,
-            {
+                               {
                 headers: header,
                 withCredentials: true
             })

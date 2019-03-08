@@ -31,7 +31,7 @@ export class ImageService {
     getImagesSnapshotsNames(): Observable<any> {
 
         return this.http.get<Image[]>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
-            withCredentials: true,
+            withCredentials: true
         })
 
     }
@@ -49,14 +49,14 @@ export class ImageService {
     getSnapshot(openstack_id: string): Observable<Image> {
 
         return this.http.get<Image>(`${ApiSettings.getApiBaseURL()}snapshots/${openstack_id}/status/`, {
-            withCredentials: true,
+            withCredentials: true
         })
 
     }
 
     getImageTags(): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}imageTags/`, {
-            withCredentials: true,
+            withCredentials: true
         })
 
     }
@@ -103,7 +103,7 @@ export class ImageService {
     getSnapshotsByUser(): Observable<SnapshotModel[]> {
 
         return this.http.get<SnapshotModel[]>(`${ApiSettings.getApiBaseURL()}snapshots/`, {
-            withCredentials: true,
+            withCredentials: true
         })
 
     }

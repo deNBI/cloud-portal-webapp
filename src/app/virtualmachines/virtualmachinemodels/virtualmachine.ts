@@ -2,7 +2,6 @@ import {Image} from './image';
 import {Flavor} from './flavor';
 import {Vmclient} from './vmclient';
 
-
 export class VirtualMachine {
     flavor: Flavor;
     image: Image;
@@ -19,6 +18,4 @@ export class VirtualMachine {
     floating_ip: string;
     ssh_command: string;
 
-
 }
-

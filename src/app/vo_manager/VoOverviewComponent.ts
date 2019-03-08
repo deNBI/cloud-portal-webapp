@@ -12,7 +12,6 @@ import {FilterBaseClass} from '../shared_modules/baseClass/filter-base-class';
     templateUrl: 'voOverview.component.html',
     providers: [VoService, GroupService]
 
-
 })
 
 export class VoOverviewComponent extends FilterBaseClass {
@@ -20,7 +19,7 @@ export class VoOverviewComponent extends FilterBaseClass {
     public emailSubject: string;
     public emailReply: string = '';
     public emailText: string;
-    public emailStatus :number= 0;
+    public emailStatus: number = 0;
     public emailHeader: string;
     public emailVerify: string;
     public emailType: number;
@@ -34,17 +33,14 @@ export class VoOverviewComponent extends FilterBaseClass {
     projects: Project[] = new Array();
     projects_filtered: Project[] = new Array();
 
-
     // modal variables for User list
     public usersModal;
     public usersModalProjectMembers: ProjectMember[] = new Array;
     public usersModalProjectID: number;
     public usersModalProjectName: string;
 
-
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
-
 
     constructor(private voserice: VoService, private groupservice: GroupService) {
         super();
@@ -53,11 +49,9 @@ export class VoOverviewComponent extends FilterBaseClass {
             this.newsletterSubscriptionCounter = result['subscribed'];
         });
 
-
     }
 
     applyFilter() {
-
 
         this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
 
@@ -75,7 +69,6 @@ export class VoOverviewComponent extends FilterBaseClass {
         } else {
             return false
         }
-
 
     }
 
@@ -103,7 +96,6 @@ export class VoOverviewComponent extends FilterBaseClass {
             })
 
     }
-
 
     sendMailToVo(subject: string, message: string, reply?: string) {
         this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
@@ -138,7 +130,6 @@ export class VoOverviewComponent extends FilterBaseClass {
 
     public resetEmailModal() {
 
-
         this.emailHeader = null;
         this.emailSubject = null;
         this.emailText = null;
@@ -156,7 +147,7 @@ export class VoOverviewComponent extends FilterBaseClass {
                 const lifetime = res['lifetime'];
                 let dateCreated = project.DateCreated;
 
-                let expirationDate = undefined;
+                let expirationDate;
                 dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
                 if (lifetime !== -1) {
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
@@ -173,7 +164,6 @@ export class VoOverviewComponent extends FilterBaseClass {
             this.details_loaded = true;
         }
     }
-
 
     getVoProjects() {
         this.voserice.getAllGroupsWithDetails().subscribe(result => {
@@ -194,9 +184,8 @@ export class VoOverviewComponent extends FilterBaseClass {
 
                 if (facility) {
                     compute_center = new ComputecenterComponent(facility['compute_center_facility_id'],
-                        facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
+                                                                facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
                 }
-
 
                 const newProject = new Project(
                     Number(groupid),
@@ -226,7 +215,6 @@ export class VoOverviewComponent extends FilterBaseClass {
 
             this.isLoaded = true;
 
-
         })
     }
 
@@ -243,12 +231,10 @@ export class VoOverviewComponent extends FilterBaseClass {
         })
     }
 
-
     removeResourceFromGroup(groupid: number) {
         this.voserice.removeResourceFromGroup(groupid.toString()).subscribe(res => {
         })
     }
-
 
     getMembesOfTheProject(projectid: number, projectname: string) {
         this.voserice.getVoGroupRichMembers(projectid).subscribe(members => {
@@ -273,6 +259,5 @@ export class VoOverviewComponent extends FilterBaseClass {
         this.getMembesOfTheProject(projectid, projectname);
 
     }
-
 
 }

@@ -8,7 +8,6 @@ import {UserService} from '../api-connector/user.service';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FacilityService} from '../api-connector/facility.service';
 
-
 @Component({
     selector: 'app-client-overview',
     templateUrl: 'vmClients.component.html',
@@ -62,6 +61,7 @@ export class ClientOverviewComponent implements OnInit {
             .then(function (userdata) {
                 // TODO catch errors
                 user_id = userdata['id'];
+
                 return userservice.getVosWhereUserIsAdmin().toPromise();
             }).then(function (adminvos) {
             admin_vos = adminvos;
@@ -75,7 +75,6 @@ export class ClientOverviewComponent implements OnInit {
         });
     }
 
-
     /**
      * Get all clients status checked.
      */
@@ -84,7 +83,6 @@ export class ClientOverviewComponent implements OnInit {
             this.clients = clients;
             this.isLoaded = true;
         });
-
 
     }
 
@@ -95,7 +93,7 @@ export class ClientOverviewComponent implements OnInit {
         this.facilityService.getComputeCenters().subscribe(result => {
             for (const cc of result) {
                 const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
-                    cc['compute_center_login'], cc['compute_center_support_mail'])
+                                                                  cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             }
 
@@ -132,7 +130,6 @@ export class ClientOverviewComponent implements OnInit {
      */
     postClient(host: string, port: string, location: string): void {
 
-
         if (host && port && location) {
             this.clientservice.postClient(host, port, location).subscribe(data => {
 
@@ -151,7 +148,6 @@ export class ClientOverviewComponent implements OnInit {
             this.getClientsChecked();
         });
     }
-
 
     ngOnInit(): void {
         this.checkVOstatus(this.userservice);

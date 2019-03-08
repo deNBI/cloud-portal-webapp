@@ -4,7 +4,6 @@ import {VoOverviewComponent} from './VoOverviewComponent';
 import {VoGuardService} from './vo-guard.service';
 import {ResourcesComponent} from './resources/resources.component';
 
-
 const routes: Routes = [
     {
         path: 'overview',
@@ -22,9 +21,7 @@ const routes: Routes = [
             title: 'Vo Resources'
         }
 
-
-    },
-
+    }
 
 ];
 

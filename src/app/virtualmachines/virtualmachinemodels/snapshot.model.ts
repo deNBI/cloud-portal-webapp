@@ -1,6 +1,5 @@
 import {Vmclient} from './vmclient';
 
-
 export class SnapshotModel {
 
     private _snapshot_openstackid: string;
@@ -10,7 +9,6 @@ export class SnapshotModel {
 
     private _snapshot_project: string;
     private _snapshot_status: string;
-
 
     get snapshot_openstackid(): string {
         return this._snapshot_openstackid;

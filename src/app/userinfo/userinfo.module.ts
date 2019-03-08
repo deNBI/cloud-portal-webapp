@@ -20,7 +20,7 @@ import {PublicKeyModule} from '../shared_modules/public-key/public-key.module';
     ],
 
     declarations: [
-        UserinfoComponent,
+        UserinfoComponent
     ],
     exports: [UserinfoComponent, UserinfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
 })

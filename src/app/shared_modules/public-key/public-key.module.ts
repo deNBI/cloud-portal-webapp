@@ -16,7 +16,7 @@ import {PublicKeyComponent} from './public-key.component';
     ],
 
     declarations: [
-        PublicKeyComponent,
+        PublicKeyComponent
     ],
     exports: [PublicKeyComponent, AlertModule, FormsModule, ModalModule, CommonModule, TabsModule]
 })

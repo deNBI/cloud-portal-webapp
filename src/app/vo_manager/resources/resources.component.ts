@@ -20,7 +20,6 @@ export class ResourcesComponent implements OnInit {
     tableId = 'resourcesTable';
     today: number = Date.now();
 
-
     exportAsConfigCSV: ExportAsConfig = {
         type: 'csv',
         elementId: this.tableId
@@ -36,29 +35,26 @@ export class ResourcesComponent implements OnInit {
 
     }
 
-
     public getVoProjectResources() {
         this.voservice.getVoProjectResources().subscribe(res => {
             for (const r in res) {
                 if (r !== 'Total') {
                     const resource = new Resources(r, res[r]['totalRam'], res[r]['totalCores'],
-                        res[r]['totalVms'], res[r]['totalVolumeLimit'], res[r]['totalVolumeCounter'],
-                        res[r]['totalObjectStorage'], res[r]['totalFPGA'], res[r]['totalGPU']);
+                                                   res[r]['totalVms'], res[r]['totalVolumeLimit'], res[r]['totalVolumeCounter'],
+                                                   res[r]['totalObjectStorage'], res[r]['totalFPGA'], res[r]['totalGPU']);
                     this.voResources.push(resource);
                 } else {
                     this.totalResource = new Resources('Total', res['Total']['totalRam'], res['Total']['totalCores'],
-                        res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
-                        res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'],
-                        res['Total']['totalFPGA'], res['Total']['totalGPU']);
+                                                       res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
+                                                       res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'],
+                                                       res['Total']['totalFPGA'], res['Total']['totalGPU']);
                 }
             }
-
 
             this.isLoaded = true;
         })
 
     }
-
 
     public tableToPDF() {
         const data = document.getElementById(this.tableId);
@@ -77,9 +73,7 @@ export class ResourcesComponent implements OnInit {
         });
     }
 
-
     ngOnInit() {
     }
-
 
 }

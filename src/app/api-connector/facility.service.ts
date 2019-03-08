@@ -23,7 +23,7 @@ export class FacilityService {
     getComputeCenters(): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/`, {
-            withCredentials: true,
+            withCredentials: true
 
         })
     }
@@ -92,7 +92,7 @@ export class FacilityService {
     getFacilityApplicationsHistory(facility: number): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`, {
-            withCredentials: true,
+            withCredentials: true
         })
 
     }
@@ -105,7 +105,7 @@ export class FacilityService {
     getFacilityModificationApplicationsWaitingForConfirmation(facility: number): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/modification_applications/`, {
-            withCredentials: true,
+            withCredentials: true
 
         })
     }

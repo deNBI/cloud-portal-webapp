@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {UserService} from '../api-connector/user.service';
 
-
 @Component({
     templateUrl: './help.component.html',
     providers: [UserService]
@@ -16,14 +15,13 @@ export class HelpComponent {
     public emailAdress: string;
     public emailReply = '';
 
-
     constructor(private userService: UserService) {
 
     }
 
     sendEmail(subject: string, message: string, reply: string) {
         this.userService.sendHelpMail(encodeURIComponent(subject), encodeURIComponent(message),
-            encodeURIComponent(reply)).subscribe(result => {
+                                      encodeURIComponent(reply)).subscribe(result => {
             if (result === 1) {
                 this.emailStatus = 1;
             } else {
@@ -42,5 +40,3 @@ export class HelpComponent {
 
     }
 }
-
-

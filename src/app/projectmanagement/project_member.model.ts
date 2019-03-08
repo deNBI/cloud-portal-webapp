@@ -14,14 +14,12 @@ export class ProjectMember {
     private _ElixirId: string;
     private _Email: string;
 
-
     constructor(Id: number, Username: string, MemberId: number) {
         this._Id = Id;
         this._Username = Username;
         this._MemberId = MemberId;
 
     }
-
 
     get ElixirId(): string {
         return this._ElixirId

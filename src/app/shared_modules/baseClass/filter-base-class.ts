@@ -3,10 +3,10 @@ import {AbstractBaseClasse} from './abstract-base-class';
 export abstract class FilterBaseClass extends AbstractBaseClasse {
 
     filterstatus_list: { [status: string]: boolean } = {
-        'ACTIVE': true,
-        'SUSPENDED': true,
-        'DELETED': false,
-        'EXPIRED': false,
+        ACTIVE: true,
+        SUSPENDED: true,
+        DELETED: false,
+        EXPIRED: false,
         'EXPIRES SOON': false
     };
     filterProjectName: string;
@@ -33,13 +33,11 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
         }
         this.filterstatus_list[status] = !this.filterstatus_list[status];
 
-
     }
 
     abstract applyFilter(): void
 
     abstract checkFilter(obj: any): void
-
 
     isFilterProjectId(id: number): boolean {
         if (!this.filterProjectId) {
@@ -70,7 +68,6 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
             return false;
         }
     }
-
 
     isFilterProjectName(projectName: string): boolean {
 
@@ -106,7 +103,6 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
                 break;
         }
 
-
         if (this.filterstatus_list[status] || this.filterstatus_list[lifetime_status]
         ) {
 
@@ -125,7 +121,6 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
             return false;
         }
     }
-
 
     isFilterElixir_id(vmelixir_id: string): boolean {
         if (!this.filterVmElixir_id) {
@@ -197,7 +192,6 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     changeFilterStatus(status: string) {
         this.filterstatus_list[status] = !this.filterstatus_list[status];
 
-
     }
 
     changeFilterProjectStatusAndLifetimeStatus(project_status?: number, lifetime_reached?: number): void {
@@ -223,7 +217,6 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
             }
             this.filterstatus_list[status] = !this.filterstatus_list[status];
         }
-
 
     }
 }

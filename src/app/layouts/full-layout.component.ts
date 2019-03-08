@@ -61,7 +61,6 @@ export class FullLayoutComponent implements OnInit {
         })
     }
 
-
     toggle_new_application() {
         if (this.navbar_state === 'closed') {
             this.navbar_state = 'open'
@@ -77,7 +76,6 @@ export class FullLayoutComponent implements OnInit {
             this.overview_state = 'closed'
         }
     }
-
 
     checkVOstatus() {
         this.voService.isVo().subscribe(result => {

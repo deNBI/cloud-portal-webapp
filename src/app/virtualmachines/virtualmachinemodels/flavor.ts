@@ -11,7 +11,6 @@ export class Flavor {
     private _type: FlavorType;
     private _simple_vm: boolean;
 
-
     get id(): string {
         return this._id;
     }
@@ -84,10 +83,4 @@ export class Flavor {
         this._simple_vm = value;
     }
 
-
 }
-
-
-
-
-

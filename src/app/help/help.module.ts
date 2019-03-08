@@ -17,7 +17,7 @@ import {AlertModule} from 'ngx-bootstrap';
     ],
 
     declarations: [
-        HelpComponent,
+        HelpComponent
     ]
 })
 export class HelpModule {

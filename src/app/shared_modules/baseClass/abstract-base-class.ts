@@ -1,15 +1,14 @@
 enum Lifetime_Statuses {
     EXPIRED = 0,
     EXPIRES_SOON = 1,
-    VALID_LIFETIME = 2,
+    VALID_LIFETIME = 2
 }
 
 enum Project_Statuses {
     ACTIVE = 2,
-    SUSPENDED = 4,
+    SUSPENDED = 4
 
 }
-
 
 enum Application_Statuses {
     SUBMITTED = 1,
@@ -18,18 +17,16 @@ enum Application_Statuses {
     MODIFICATION_REQUESTED = 4,
     MODIFICTION_DECLINED = 5,
     WAIT_FOR_CONFIRMATION = 6,
-    CONFIRMATION_DENIED = 7,
+    CONFIRMATION_DENIED = 7
 
 }
-
 
 enum Vm_Statuses {
     ACTIVE = 1,
     SUSPENDED = 2,
     DELETED = 3,
-    CLIENT_OFFLINE = 4,
+    CLIENT_OFFLINE = 4
 }
-
 
 export abstract class AbstractBaseClasse {
 
@@ -40,7 +37,6 @@ export abstract class AbstractBaseClasse {
 
     collapse_status: { [id: string]: boolean } = {};
     isLoaded = false;
-
 
     // notification Modal variables
     public notificationModal;
@@ -81,7 +77,6 @@ export abstract class AbstractBaseClasse {
         this.notificationModalType = type;
     }
 
-
     /**
      * Get a collapse status.
      * @param {string} id
@@ -92,6 +87,7 @@ export abstract class AbstractBaseClasse {
             return this.collapse_status[id];
         } else {
             this.collapse_status[id] = true;
+
             return true;
         }
     }
@@ -102,7 +98,6 @@ export abstract class AbstractBaseClasse {
 
     }
 
-
     /**
      * Switch status of collapse.
      * @param {string} id
@@ -110,7 +105,6 @@ export abstract class AbstractBaseClasse {
     public switchCollapseStatus(id: string) {
         this.collapse_status[id] = !this.getCollapseStatus(id);
     }
-
 
     lifeTimeReached(lifetimeDays: number, running: number): Lifetime_Statuses {
         if ((lifetimeDays - running) < 0) {
@@ -124,8 +118,6 @@ export abstract class AbstractBaseClasse {
             return this.lifetime_statuses.VALID_LIFETIME
         }
 
-
     }
-
 
 }

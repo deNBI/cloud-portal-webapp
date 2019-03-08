@@ -17,7 +17,7 @@ import {ResourcesComponent} from './resources/resources.component';
         TabsModule,
         FormsModule,
         CommonModule,
-        ModalModule.forRoot(),
+        ModalModule.forRoot()
     ],
     declarations: [
         VoOverviewComponent,

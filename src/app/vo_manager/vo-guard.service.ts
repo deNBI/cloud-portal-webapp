@@ -6,10 +6,8 @@ import {Observable} from 'rxjs';
 @Injectable()
 export class VoGuardService implements CanActivate {
 
-
     constructor(private router: Router, private voservice: VoService) {
     }
-
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         return new Promise((resolve, reject) => {
@@ -25,9 +23,5 @@ export class VoGuardService implements CanActivate {
                 })
         });
 
-
     }
 }
-
-
-

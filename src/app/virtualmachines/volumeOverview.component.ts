@@ -25,7 +25,7 @@ enum Volume_Action_Statuses {
 
 enum Volume_Request_Statuses {
     DELETE = 0,
-    DETACH = 1,
+    DETACH = 1
 
 }
 
@@ -109,7 +109,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      */
     request_status: number;
 
-
     constructor(private groupService: GroupService, private vmService: VirtualmachineService) {
         super();
 
@@ -154,14 +153,12 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             + parseInt(this.selectedProjectDiskspaceUsed.toString(), 10);
     }
 
-
     /**
      * Get diskspace of selected project.
      */
     getSelectedProjectDiskspace(): void {
         this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe(result => {
             if (result['Diskspace']) {
-
 
                 this.selectedProjectDiskspaceMax = result['Diskspace'];
 
@@ -177,7 +174,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             } else if (result['Diskspace'] === 0 || result['Diskspace'] == null) {
                 this.selectedProjectDiskspaceUsed = 0;
             }
-
 
         })
 
@@ -212,7 +208,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      */
     deleteVolume(volume_id: string, instance_id?: string) {
         this.volume_action_status = this.Volume_Action_Statuses.WAITING;
-
 
         if (instance_id) {
             this.volume_action_status = this.Volume_Action_Statuses.DETACHING_VOLUME;
@@ -281,7 +276,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             }
         )
 
-
     }
 
     /**
@@ -341,11 +335,9 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     getActiveVmsByProject(groupid: number) {
         this.vmService.getActiveVmsByProject(groupid.toString()).subscribe(result => {
 
-
             this.project_vms = result;
         })
     }
-
 
     /**
      * Detach volume from instance.
@@ -376,11 +368,9 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         });
     }
 
-
     ngOnInit(): void {
         this.getVolumes();
         this.getUserApprovedProjects();
-
 
     }
 
