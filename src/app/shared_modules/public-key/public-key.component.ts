@@ -7,7 +7,7 @@ import ***REMOVED***Userinfo***REMOVED*** from '../../userinfo/userinfo.model';
     selector: '[app-public-key]',
     templateUrl: './public-key.component.html',
     styleUrls: ['./public-key.component.scss'],
-    providers: [ ApiSettings, KeyService]
+    providers: [ApiSettings, KeyService]
 
 ***REMOVED***)
 export class PublicKeyComponent implements OnInit ***REMOVED***

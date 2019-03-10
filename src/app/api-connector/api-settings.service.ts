@@ -8,7 +8,7 @@ import ***REMOVED***environment***REMOVED*** from '../../environments/environmen
 export class ApiSettings ***REMOVED***
     /**
      *  Provides base URL with trailing slash for all Portal API calls.
-     * @returns ***REMOVED***string***REMOVED***
+     * @returns ***REMOVED***string***REMOVED*** the connector api base url
      */
     static getApiBaseURL(): string ***REMOVED***
         return environment.apiBaseUrl;

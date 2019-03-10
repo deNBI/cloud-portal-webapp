@@ -19,6 +19,10 @@ import ***REMOVED***environment***REMOVED*** from '../../environments/environmen
 
 export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED***
 
+    /**
+     * If it is in production or dev mode.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
     public production: boolean = environment.production;
 
     /**
@@ -80,7 +84,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
 
     /**
      * If project is openstack project (everytime true)
-     * @type ***REMOVED***boolean***REMOVED***
+     * @type ***REMOVED***boolean***REMOVED*** if it is a openstack project
      */
     project_application_openstack_project: boolean = true;
 
@@ -98,36 +102,38 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
     ***REMOVED***
 
     /**
-     * This function concatenates a given key combined with a given value to a string
-     * which is used on the confirmation-modal.
-     * @param key the key to access a string in the array constantStrings
-     * @param val the value that is concatenated with the string from the array and an optional addition (depending on the key)
-     * @returns the concatenated string for the confirmation-modal
+     * Uses the data from the application form to fill the confirmation-modal with information.
+     * @param form the application form with corresponding data
      */
-    matchString(key: string, val: string): string ***REMOVED***
-        if (key in this.constantStrings) ***REMOVED***
-            switch (key) ***REMOVED***
-                case 'project_application_lifetime': ***REMOVED***
-                    return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED*** months`);
-                ***REMOVED***
-                case ('project_application_volume_limit'): ***REMOVED***
-                    return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED*** GB`);
-                ***REMOVED***
-                case 'project_application_object_storage': ***REMOVED***
-                    return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED***  GB`);
-                ***REMOVED***
-                case 'project_application_report_allowed': ***REMOVED***
-                    if (val) ***REMOVED***
-                        return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED*** Yes`);
-                    ***REMOVED*** else ***REMOVED***
-                        return (`$***REMOVED***this.constantStrings[key]***REMOVED*** No`);
+    filterEnteredData(form: NgForm): void ***REMOVED***
+        this.generateConstants();
+        this.totalNumberOfCores = 0;
+        this.totalRAM = 0;
+        this.valuesToConfirm = [];
+        for (const key in form.controls) ***REMOVED***
+            if (form.controls[key].value) ***REMOVED***
+                if (key === 'project_application_name') ***REMOVED***
+                    this.projectName = form.controls[key].value;
+                    if (this.projectName.length > 50) ***REMOVED***
+                        this.projectName = `$***REMOVED***this.projectName.substring(0, 50)***REMOVED***...`;
                     ***REMOVED***
                 ***REMOVED***
-                default: ***REMOVED***
-                    return (this.constantStrings[key] + val);
+                if (key in this.constantStrings) ***REMOVED***
+                    this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
+
+                    const flavor: Flavor = this.keyIsVM(key.toString());
+                    if (flavor != null) ***REMOVED***
+                        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * form.controls[key].value);
+                        const ram: number = flavor.ram * form.controls[key].value;
+                        this.totalRAM = this.totalRAM + ram
+                    ***REMOVED***
                 ***REMOVED***
             ***REMOVED***
         ***REMOVED***
+        if (!this.project_application_report_allowed) ***REMOVED***
+            this.valuesToConfirm.push('Dissemination allowed: No')
+        ***REMOVED***
+
     ***REMOVED***
 
     /**
@@ -165,48 +171,40 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
     ***REMOVED***
 
     /**
-     * Uses the data from the application form to fill the confirmation-modal with information.
-     * @param f the application form with corresponding data
+     * This function concatenates a given key combined with a given value to a string
+     * which is used on the confirmation-modal.
+     * @param key the key to access a string in the array constantStrings
+     * @param val the value that is concatenated with the string from the array and an optional addition (depending on the key)
+     * @returns the concatenated string for the confirmation-modal
      */
-    filterEnteredData(f: NgForm): void ***REMOVED***
-        this.generateConstants();
-        this.totalNumberOfCores = 0;
-        this.totalRAM = 0;
-        this.valuesToConfirm = [];
-        for (const key in f.controls) ***REMOVED***
-            if (f.controls[key].value) ***REMOVED***
-                if (key === 'project_application_name') ***REMOVED***
-                    this.projectName = f.controls[key].value;
-                    if (this.projectName.length > 50) ***REMOVED***
-                        this.projectName = `$***REMOVED***this.projectName.substring(0, 50)***REMOVED***...`;
+    matchString(key: string, val: string): string ***REMOVED***
+        if (key in this.constantStrings) ***REMOVED***
+            switch (key) ***REMOVED***
+                case 'project_application_lifetime': ***REMOVED***
+                    return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED*** months`);
+                ***REMOVED***
+                case ('project_application_volume_limit'): ***REMOVED***
+                    return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED*** GB`);
+                ***REMOVED***
+                case 'project_application_object_storage': ***REMOVED***
+                    return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED***  GB`);
+                ***REMOVED***
+                case 'project_application_report_allowed': ***REMOVED***
+                    if (val) ***REMOVED***
+                        return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED*** Yes`);
+                    ***REMOVED*** else ***REMOVED***
+                        return (`$***REMOVED***this.constantStrings[key]***REMOVED*** No`);
                     ***REMOVED***
                 ***REMOVED***
-                if (key in this.constantStrings) ***REMOVED***
-                    this.valuesToConfirm.push(this.matchString(key.toString(), f.controls[key].value.toString()));
-
-                    const flavor: Flavor = this.keyIsVM(key.toString());
-                    if (flavor != null) ***REMOVED***
-                        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
-                        this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value)
-                    ***REMOVED***
+                default: ***REMOVED***
+                    return (this.constantStrings[key] + val);
                 ***REMOVED***
             ***REMOVED***
         ***REMOVED***
-        if (!this.project_application_report_allowed) ***REMOVED***
-            this.valuesToConfirm.push('Dissemination allowed: No')
-        ***REMOVED***
-
     ***REMOVED***
 
     /**
-     * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
-     */
-    getListOfFlavors(): void ***REMOVED***
-        this.flavorservice.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
-    ***REMOVED***
-
-    /**
-     * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+     * Gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
      */
     getListOfTypes(): void ***REMOVED***
         this.flavorservice.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
@@ -220,22 +218,29 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
     setListOfTypes(types: FlavorType[]): void ***REMOVED***
         this.typeList = types;
         this.collapseList = new Array(types.length) as boolean[];
-        for (const t of types) ***REMOVED***
+        for (const type of types) ***REMOVED***
 
             this.collapseList.push(false); // AS FIX
-            if (t.long_name === 'Standart Flavor') ***REMOVED***
-                this.collapseList[this.typeList.indexOf(t)] = true;
+            if (type.long_name === 'Standart Flavor') ***REMOVED***
+                this.collapseList[this.typeList.indexOf(type)] = true;
             ***REMOVED***
         ***REMOVED***
 
     ***REMOVED***
 
     /**
+     * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+     */
+    getListOfFlavors(): void ***REMOVED***
+        this.flavorservice.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
+    ***REMOVED***
+
+    /**
      * Submits a new cloud application.
      * Therefore checks if the different values are valid.
-     * @param ***REMOVED***NgForm***REMOVED*** f
+     * @param ***REMOVED***NgForm***REMOVED*** form
      */
-    onSubmit(f: NgForm): void ***REMOVED***
+    onSubmit(form: NgForm): void ***REMOVED***
         this.error = null;
         if (this.wronginput) ***REMOVED***
 
@@ -248,10 +253,10 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
         ***REMOVED*** else ***REMOVED***
             const values: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED*** = ***REMOVED******REMOVED***;
             values['project_application_openstack_project'] = this.project_application_openstack_project;
-            for (const v in f.controls) ***REMOVED***
-                if (f.controls[v].value) ***REMOVED***
+            for (const value in form.controls) ***REMOVED***
+                if (form.controls[value].value) ***REMOVED***
 
-                    values[v] = f.controls[v].value;
+                    values[value] = form.controls[value].value;
                 ***REMOVED***
             ***REMOVED***
             this.applicationsservice.addNewApplication(values).toPromise()
@@ -285,8 +290,8 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
         values['project_application_lifetime'] = 3;
         values['project_application_name'] = 'TestApplication';
         values['project_application_openstack_project'] = true;
-        for (const f of this.flavorList) ***REMOVED***
-            const fname: string = `project_application_ $***REMOVED***f.name***REMOVED***`;
+        for (const flavor of this.flavorList) ***REMOVED***
+            const fname: string = `project_application_ $***REMOVED***flavor.name***REMOVED***`;
             values[fname] = 1;
         ***REMOVED***
         values['project_application_report_allowed'] = true;

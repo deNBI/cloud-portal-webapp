@@ -16,6 +16,9 @@ const header_csrf: HttpHeaders = new HttpHeaders(***REMOVED***
 
 ***REMOVED***);
 
+/**
+ * Service which provides methods for creating application.
+ */
 @Injectable()
 export class ApplicationsService ***REMOVED***
     constructor(private http: HttpClient) ***REMOVED***

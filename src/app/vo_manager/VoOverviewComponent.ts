@@ -154,10 +154,9 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
                 const dateCreated: Date = moment(dateCreatedString, 'DD.MM.YYYY').toDate();
                 if (lifetime !== -1) ***REMOVED***
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-                    const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
+                    project.LifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
                         .diff(moment(dateCreated), 'days'));
 
-                    project.LifetimeDays = lifetimeDays;
                     project.DateEnd = expirationDate;
                 ***REMOVED***
                 project.Lifetime = lifetime;
@@ -173,7 +172,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
         this.voserice.getAllGroupsWithDetails().subscribe(result => ***REMOVED***
             const vo_projects = result;
             for (const group of vo_projects) ***REMOVED***
-                const dateCreated = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const dateCreated: moment.Moment = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
                 const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
                 const is_pi: boolean = group['is_pi'];
                 const lifetime: number = group['lifetime'];
@@ -184,7 +183,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
                 if (!shortname) ***REMOVED***
                     shortname = group['name']
                 ***REMOVED***
-                let compute_center = null;
+                let compute_center: ComputecenterComponent = null;
 
                 if (facility) ***REMOVED***
                     compute_center = new ComputecenterComponent(

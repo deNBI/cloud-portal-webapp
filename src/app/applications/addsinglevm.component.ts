@@ -12,6 +12,7 @@ import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmach
  * Component to create single vm applications.
  */
 @Component(***REMOVED***
+    selector: 'app-addsinglevm',
     templateUrl: 'addsinglevm.component.html',
     providers: [FlavorService, ApiSettings, ApplicationsService]
 ***REMOVED***)
@@ -52,11 +53,37 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
+
+    /**
+     * Gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+     */
+    getListOfTypes(): void ***REMOVED***
+        this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
+    ***REMOVED***
+
+    /**
+     * Uses the param types to safe the available FlavorTypes to the array typeList.
+     * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
+     * @param types array of all available FlavorTypes
+     */
+    setListOfTypes(types: FlavorType[]): void ***REMOVED***
+        this.typeList = types;
+        this.collapseList = new Array(types.length) as boolean[];
+        for (const type of types) ***REMOVED***
+
+            this.collapseList.push(false); // AS FIX
+            if (type.long_name === 'Standart Flavor') ***REMOVED***
+                this.collapseList[this.typeList.indexOf(type)] = true;
+            ***REMOVED***
+        ***REMOVED***
+
+    ***REMOVED***
+
     /**
      * Submit simple vm application.
-     * @param ***REMOVED***NgForm***REMOVED*** f
+     * @param ***REMOVED***NgForm***REMOVED*** form
      */
-    onSubmit(f: NgForm): void ***REMOVED***
+    onSubmit(form: NgForm): void ***REMOVED***
         this.error = null;
         if (this.wronginput) ***REMOVED***
             this.updateNotificationModal(
@@ -67,9 +94,9 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
             this.notificationModalStay = true;
         ***REMOVED*** else ***REMOVED***
             const values: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED*** = ***REMOVED******REMOVED***;
-            for (const v in f.controls) ***REMOVED***
-                if (f.controls[v].value) ***REMOVED***
-                    values[v] = f.controls[v].value;
+            for (const value in form.controls) ***REMOVED***
+                if (form.controls[value].value) ***REMOVED***
+                    values[value] = form.controls[value].value;
                 ***REMOVED***
             ***REMOVED***
 
@@ -102,30 +129,6 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
         this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
     ***REMOVED***
 
-    /**
-     * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
-     */
-    getListOfTypes(): void ***REMOVED***
-        this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
-    ***REMOVED***
-
-    /**
-     * Uses the param types to safe the available FlavorTypes to the array typeList.
-     * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
-     * @param types array of all available FlavorTypes
-     */
-    setListOfTypes(types: FlavorType[]): void ***REMOVED***
-        this.typeList = types;
-        this.collapseList = new Array(types.length) as boolean[];
-        for (const t of types) ***REMOVED***
-
-            this.collapseList.push(false); // AS FIX
-            if (t.long_name === 'Standart Flavor') ***REMOVED***
-                this.collapseList[this.typeList.indexOf(t)] = true;
-            ***REMOVED***
-        ***REMOVED***
-
-    ***REMOVED***
 
     /**
      * Check if shortname is valid.
@@ -144,8 +147,8 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
         values['project_application_lifetime'] = 3;
         values['project_application_name'] = 'TestApplication';
         values['project_application_openstack_project'] = false;
-        for (const f of this.flavorList) ***REMOVED***
-            const fname: string = `project_application_$***REMOVED***f.name***REMOVED***`;
+        for (const flavor of this.flavorList) ***REMOVED***
+            const fname: string = `project_application_$***REMOVED***flavor.name***REMOVED***`;
             values[fname] = 1;
         ***REMOVED***
         values['project_application_report_allowed'] = true;

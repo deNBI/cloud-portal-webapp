@@ -19,7 +19,7 @@ export class ApplicationStatusService ***REMOVED***
 
     /**
      * Get all application stati.
-     * @returns ***REMOVED***Observable<any>***REMOVED***
+     * @returns ***REMOVED***Observable<any>***REMOVED*** List of all application stati
      */
     getAllApplicationStatus(): Observable<any> ***REMOVED***
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***application_status/`, ***REMOVED***
@@ -31,17 +31,16 @@ export class ApplicationStatusService ***REMOVED***
      * Set status for an application.
      * @param ***REMOVED***number***REMOVED*** application_id id of the application
      * @param ***REMOVED***number***REMOVED*** status_id id of the status to set
-     * @returns ***REMOVED***Observable<any>***REMOVED***
+     * @returns ***REMOVED***Observable<any>***REMOVED*** 200 if successfull
      */
     setApplicationStatus(application_id: number | string, status_id: number | string): Observable<any> ***REMOVED***
 
         const params: HttpParams = new HttpParams().set('project_application_status', status_id.toString());
 
-        return this.http.patch(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***application_id***REMOVED***/`, params,
-            ***REMOVED***
-                headers: header,
-                withCredentials: true
-            ***REMOVED***)
+        return this.http.patch(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***application_id***REMOVED***/`, params, ***REMOVED***
+            headers: header,
+            withCredentials: true
+        ***REMOVED***)
     ***REMOVED***
 
 ***REMOVED***
