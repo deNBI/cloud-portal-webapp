@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {Project} from '../projectmanagement/project.model';
 import {ProjectMember} from '../projectmanagement/project_member.model'
 import {environment} from '../../environments/environment'
@@ -12,49 +11,47 @@ import * as moment from 'moment';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FilterBaseClass} from '../shared_modules/baseClass/filter-base-class';
 
+/**
+ * Facility Project overview component.
+ */
 @Component({
     templateUrl: 'facilityprojectsoverview.component.html',
-    providers: [FacilityService, UserService, GroupService, PerunSettings, ApiSettings]
+    providers: [FacilityService, UserService, GroupService, ApiSettings]
 })
 export class FacilityProjectsOverviewComponent extends FilterBaseClass {
 
-    debug_module = false;
+    debug_module: boolean = false;
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
     member_id: number;
-    isLoaded = false;
+    isLoaded: boolean = false;
     projects: Project[] = new Array();
-    details_loaded = false;
+    details_loaded: boolean = false;
     /**
      * Approved group status.
      * @type {number}
      */
-    STATUS_APPROVED = 2;
-
-    private EXPIRED = 0;
-    private EXPIRES_SOON = 1;
-    private VALID_LIFETIME = 2;
+    STATUS_APPROVED: number = 2;
 
     // modal variables for User list
-    public usersModal;
-    public usersModalProjectMembers: ProjectMember[] = new Array;
+    public usersModalProjectMembers: ProjectMember[] = [];
     public usersModalProjectID: number;
     public usersModalProjectName: string;
     public selectedProject: Project;
 
     public emailSubject: string;
     public emailText: string;
-    public emailStatus = 0;
-    public emailReply = '';
+    public emailStatus: number = 0;
+    public emailReply: string = '';
 
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
-    projects_filtered: Project[] = new Array();
+    projects_filtered: Project[] = [];
 
     constructor(private groupservice: GroupService,
-                private  facilityservice: FacilityService) {
-        super()
+                private facilityservice: FacilityService) {
+        super();
 
         this.facilityservice.getManagerFacilities().subscribe(result => {
             this.managerFacilities = result;
@@ -64,23 +61,18 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
         })
     }
 
-    applyFilter() {
+    applyFilter(): void {
 
         this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
 
     }
 
-    checkFilter(project: Project) {
-        if (this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
-            && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) {
-            return true
-        } else {
-            return false
-        }
-
+    checkFilter(project: Project): boolean {
+        return this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
+            && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)
     }
 
-    onChangeSelectedFacility(value) {
+    onChangeSelectedFacility(): void {
         this.getFacilityProjects(this.selectedFacility['FacilityId'])
     }
 
@@ -131,8 +123,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                 }
                 if (tmp_facility) {
                     compute_center = new ComputecenterComponent(tmp_facility['compute_center_facility_id'],
-                                                                tmp_facility['compute_center_name'],
-                                                                tmp_facility['compute_center_login'], tmp_facility['compute_center_support_mail']);
+                        tmp_facility['compute_center_name'],
+                        tmp_facility['compute_center_login'], tmp_facility['compute_center_support_mail']);
                 }
 
                 const newProject = new Project(
@@ -169,7 +161,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
 
     sendMailToFacility(facility: string, subject: string, message: string, reply?: string) {
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message),
-                                                encodeURIComponent(reply)).subscribe(result => {
+            encodeURIComponent(reply)).subscribe(result => {
 
                 if (result.status === 201) {
                     this.emailStatus = 1;
@@ -177,7 +169,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                     this.emailStatus = 2;
                 }
             },
-                                                 error => {
+            error => {
                 console.log(error);
                 this.emailStatus = 2;
             })

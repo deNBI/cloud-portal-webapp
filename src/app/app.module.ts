@@ -20,8 +20,6 @@ import {AppRoutingModule} from './app.routing';
 import {ConsentInfoComponent} from './consent-info.component';
 // Layouts
 import {FullLayoutComponent} from './layouts/full-layout.component';
-import {SimpleLayoutComponent} from './layouts/simple-layout.component';
-import {PerunSettings} from './perun-connector/connector-settings.service';
 import {RegistrationInfoComponent} from './registration-info.component';
 import {AsideToggleDirective} from './shared/aside.directive';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
@@ -46,7 +44,6 @@ import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
     declarations: [
         AppComponent,
         FullLayoutComponent,
-        SimpleLayoutComponent,
         NAV_DROPDOWN_DIRECTIVES,
         BreadcrumbsComponent,
         SIDEBAR_TOGGLE_DIRECTIVES,
@@ -59,7 +56,6 @@ import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
         useClass: HashLocationStrategy
     },
 
-        PerunSettings,
         ApiSettings,
         UserService
     ],

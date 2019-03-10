@@ -1,32 +1,36 @@
 import {ImageService} from '../api-connector/image.service';
 import {Component} from '@angular/core';
 
+/**
+ * ImageTag component.
+ */
 @Component({
     templateUrl: 'imageTag.component.html',
     providers: [ImageService]
 })
 export class ImageTagComponent {
-    isLoaded = false;
+    isLoaded: boolean = false;
 
-    imageTags: [string, string][]
+    imageTags: [string, string][];
 
-    constructor(private imageService: ImageService ) {
+    constructor(private imageService: ImageService) {
         this.imageService.getImageTags().subscribe(result => {
             this.imageTags = result;
             this.isLoaded = true;
         })
     }
 
-    addTag(tag: string, description: string) {
-        this.imageService.addImageTags(tag, description).subscribe(res => {
+
+    addTag(tag: string, description: string): void {
+        this.imageService.addImageTags(tag, description).subscribe(() => {
             this.imageService.getImageTags().subscribe(result => {
                 this.imageTags = result
             })
         })
     }
 
-    deleteTag(tag: string) {
-        this.imageService.deleteImageTag(tag).subscribe(res => {
+    deleteTag(tag: string): void {
+        this.imageService.deleteImageTag(tag).subscribe(() => {
             this.imageService.getImageTags().subscribe(result => {
                 this.imageTags = result
             })

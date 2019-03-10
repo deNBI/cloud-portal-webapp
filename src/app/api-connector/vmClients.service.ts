@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {Vmclient} from '../virtualmachines/virtualmachinemodels/vmclient';
+import {Client} from '../virtualmachines/virtualmachinemodels/vmclient';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
@@ -20,16 +20,16 @@ export class ClientService {
     constructor(private http: HttpClient) {
     }
 
-    isClientAvaiable(): Observable<Vmclient> {
+    isClientAvaiable(): Observable<Client> {
 
-        return this.http.get<Vmclient>(`${this.clientURL}active/`, {
+        return this.http.get<Client>(`${this.clientURL}active/`, {
             withCredentials: true
         })
     }
 
-    getClientsChecked(): Observable<Vmclient[]> {
+    getClientsChecked(): Observable<Client[]> {
 
-        return this.http.get<Vmclient[]>(this.clientURL, {
+        return this.http.get<Client[]>(this.clientURL, {
             withCredentials: true
         })
     }

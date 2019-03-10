@@ -1,3 +1,6 @@
+/**
+ * Image class.
+ */
 export class Image {
     id: string;
     name: string;

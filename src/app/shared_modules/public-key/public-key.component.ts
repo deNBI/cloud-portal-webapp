@@ -1,14 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {KeyService} from '../../api-connector/key.service';
 import {ApiSettings} from '../../api-connector/api-settings.service';
-import {PerunSettings} from '../../perun-connector/connector-settings.service';
 import {Userinfo} from '../../userinfo/userinfo.model';
 
 @Component({
     selector: '[app-public-key]',
     templateUrl: './public-key.component.html',
     styleUrls: ['./public-key.component.scss'],
-    providers: [PerunSettings, ApiSettings, KeyService]
+    providers: [ ApiSettings, KeyService]
 
 })
 export class PublicKeyComponent implements OnInit {

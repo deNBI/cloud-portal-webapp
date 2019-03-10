@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -12,13 +11,12 @@ import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
 
-
 /**
  * Projectoverview component.
  */
 @Component({
     templateUrl: 'overview.component.html',
-    providers: [VoService, UserService, GroupService, PerunSettings, ApiSettings]
+    providers: [VoService, UserService, GroupService, ApiSettings]
 })
 export class OverviewComponent extends AbstractBaseClasse {
 
@@ -65,7 +63,7 @@ export class OverviewComponent extends AbstractBaseClasse {
     public passwordModalEmail: string = '';
 
     constructor(private groupservice: GroupService,
-                private userservice: UserService,) {
+                private userservice: UserService) {
         super();
         this.getUserProjects();
 
@@ -126,7 +124,7 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.groupservice.getGroupDetails().subscribe(result => {
             this.userprojects = result;
             for (const group of this.userprojects) {
-                const dateCreated = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const dateCreated: moment.Moment = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
                 const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
                 const is_pi: boolean = group['is_pi'];
                 const groupid: string = group['id'];

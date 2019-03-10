@@ -1,5 +1,8 @@
 import {FlavorType} from './flavorType';
 
+/**
+ * Flavor Class.
+ */
 export class Flavor {
     private _id: string;
     private _name: string;

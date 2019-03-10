@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {ClientService} from '../api-connector/vmClients.service';
 import {FacilityService} from '../api-connector/facility.service';
@@ -7,25 +6,28 @@ import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {VoService} from '../api-connector/vo.service';
 
+/**
+ * FullLayout component.
+ */
 @Component({
     selector: 'app-dashboard',
     templateUrl: './full-layout.component.html',
-    providers: [VoService, GroupService, UserService, FacilityService, ClientService, PerunSettings, ApiSettings]
+    providers: [VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings]
 })
 export class FullLayoutComponent implements OnInit {
 
-    public year = new Date().getFullYear();
-    public disabled = false;
+    public year: number = new Date().getFullYear();
+    public disabled: boolean = false;
     public status: { isopen: boolean } = {isopen: false};
-    private is_vo_admin = false;
-    public is_facility_manager = false;
-    public vm_project_member = false;
-    public login_name = '';
-    navbar_state = 'closed';
-    overview_state = 'closed';
+    private is_vo_admin: boolean = false;
+    public is_facility_manager: boolean = false;
+    public vm_project_member: boolean = false;
+    public login_name: string = '';
+    navbar_state: string = 'closed';
+    overview_state: string = 'closed';
 
     constructor(private voService: VoService, private groupService: GroupService, private userservice: UserService,
-                private facilityservice: FacilityService, private clientservice: ClientService, private perunsettings: PerunSettings) {
+                private facilityservice: FacilityService) {
         this.is_vm_project_member();
         this.get_is_facility_manager();
         this.getLoginName();
@@ -45,7 +47,7 @@ export class FullLayoutComponent implements OnInit {
         this.status.isopen = !this.status.isopen;
     }
 
-    public get_is_facility_manager() {
+    public get_is_facility_manager(): void {
         this.facilityservice.getManagerFacilities().subscribe(result => {
             if (result.length > 0) {
                 this.is_facility_manager = true
@@ -53,7 +55,7 @@ export class FullLayoutComponent implements OnInit {
         })
     }
 
-    is_vm_project_member() {
+    is_vm_project_member(): void {
         this.groupService.getMemberGroupsStatus().subscribe(result => {
             if (result.length > 0) {
                 this.vm_project_member = true
@@ -61,7 +63,7 @@ export class FullLayoutComponent implements OnInit {
         })
     }
 
-    toggle_new_application() {
+    toggle_new_application(): void {
         if (this.navbar_state === 'closed') {
             this.navbar_state = 'open'
         } else {
@@ -69,7 +71,7 @@ export class FullLayoutComponent implements OnInit {
         }
     }
 
-    toggle_overview() {
+    toggle_overview(): void {
         if (this.overview_state === 'closed') {
             this.overview_state = 'open'
         } else {
@@ -77,7 +79,7 @@ export class FullLayoutComponent implements OnInit {
         }
     }
 
-    checkVOstatus() {
+    checkVOstatus(): void {
         this.voService.isVo().subscribe(result => {
             this.is_vo_admin = result['Is_Vo_Manager'];
         })
@@ -88,7 +90,7 @@ export class FullLayoutComponent implements OnInit {
         this.checkVOstatus();
     }
 
-    getLoginName() {
+    getLoginName(): void {
         this.userservice.getLogins().toPromise().then(result => {
             const logins = result;
             for (const login of logins) {

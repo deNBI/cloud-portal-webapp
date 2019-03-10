@@ -1,9 +1,12 @@
-import {Vmclient} from './vmclient';
+import {Client} from './vmclient';
 
+/**
+ * Snapshot class.
+ */
 export class SnapshotModel {
 
     private _snapshot_openstackid: string;
-    private _snapshot_client: Vmclient;
+    private _snapshot_client: Client;
     private _snapshot_name: string;
     private _snapshot_created: boolean;
 
@@ -18,11 +21,11 @@ export class SnapshotModel {
         this._snapshot_openstackid = value;
     }
 
-    get snapshot_client(): Vmclient {
+    get snapshot_client(): Client {
         return this._snapshot_client;
     }
 
-    set snapshot_client(value: Vmclient) {
+    set snapshot_client(value: Client) {
         this._snapshot_client = value;
     }
 

@@ -41,11 +41,10 @@ export class ComputecenterComponent {
     }
 
     get Support(): string {
-        return this._Support
+        return this._Support;
     }
 
     set Support(value: string) {
-        this.Support = value;
+        this._Support = value;
     }
-
 }

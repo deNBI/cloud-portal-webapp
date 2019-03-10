@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {ApplicationsService} from '../api-connector/applications.service'
 import {ApplicationStatusService} from '../api-connector/application-status.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
-import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {Application} from './application.model';
 import {ApplicationStatus} from './application_status.model';
 import {GroupService} from '../api-connector/group.service';
@@ -16,14 +15,14 @@ import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-clas
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
-import {Vmclient} from '../virtualmachines/virtualmachinemodels/vmclient';
+import {Client} from '../virtualmachines/virtualmachinemodels/vmclient';
 
 /**
  * Application Overview component.
  */
 @Component({
     templateUrl: 'applications.component.html',
-    providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService,
+    providers: [FacilityService, VoService, UserService, GroupService, ApplicationStatusService,
         ApplicationsService, ApiSettings, FlavorService]
 })
 export class ApplicationsComponent extends AbstractBaseClasse {
@@ -31,7 +30,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     /**
      * Limits information for Client tested/used for Simple Vm Project creation.
      */
-    notificationClientInfo: Vmclient[] = [];
+    notificationClientInfo: Client[] = [];
 
     /**
      * Applications of the user viewing the Application overview.
@@ -1035,11 +1034,11 @@ export class ApplicationsComponent extends AbstractBaseClasse {
         let manager_member_user_id: string;
         let new_group_id: string;
         this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
-            (res: Vmclient) => {
+            (res: Client) => {
                 if (res['Info']) {
                     if (res['Clients']) {
                         for (const client of res['Clients']) {
-                            const newClient: Vmclient = new Vmclient();
+                            const newClient: Client = new Client();
                             newClient.location = client.location;
                             newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
                             newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
@@ -1083,7 +1082,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                                 } else {
                                                     this.applicationsservice.getApplicationClient(
                                                         application_id).subscribe((client: object) => {
-                                                        const newClient: Vmclient = new Vmclient();
+                                                        const newClient: Client = new Client();
                                                         newClient.location = client['location'];
                                                         newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
                                                         newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];

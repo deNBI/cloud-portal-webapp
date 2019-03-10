@@ -1,4 +1,7 @@
-export class Vmclient {
+/**
+ * Clientclass
+ */
+export class Client {
     private _id: string;
     private _host: string;
     private _status: string;

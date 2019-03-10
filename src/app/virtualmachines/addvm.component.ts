@@ -8,35 +8,37 @@ import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {ApplicationsService} from '../api-connector/applications.service'
 import {Userinfo} from '../userinfo/userinfo.model';
 import {ApiSettings} from '../api-connector/api-settings.service';
-import {PerunSettings} from '../perun-connector/connector-settings.service';
 
 import {ClientService} from '../api-connector/vmClients.service';
-import {Vmclient} from './virtualmachinemodels/vmclient';
+import {Client} from './virtualmachinemodels/vmclient';
 import {Application} from '../applications/application.model';
 import {KeyService} from '../api-connector/key.service';
 import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
 
+/**
+ * Start virtualmachine component.
+ */
 @Component({
     selector: 'app-new-vm',
     templateUrl: 'addvm.component.html',
     providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
-        Application, PerunSettings, ApiSettings, KeyService, ClientService]
+        Application, ApiSettings, KeyService, ClientService]
 })
 export class VirtualMachineComponent implements OnInit {
 
-    data = '';
-    creating_vm_status = 'Creating..';
-    creating_vm_prograss_bar = 'progress-bar-animated';
-    checking_vm_status = '';
-    checking_vm_status_width = 0;
-    checking_vm_status_progress_bar = 'progress-bar-animated';
-    checking_vm_ssh_port = '';
-    checking_vm_ssh_port_width = 0;
+    data: string = '';
+    creating_vm_status: string = 'Creating..';
+    creating_vm_prograss_bar: string = 'progress-bar-animated';
+    checking_vm_status: string = '';
+    checking_vm_status_width: number = 0;
+    checking_vm_status_progress_bar: string = 'progress-bar-animated';
+    checking_vm_ssh_port: string = '';
+    checking_vm_ssh_port_width: number = 0;
 
-    informationButton = 'Show Details';
-    informationButton2 = 'Show Details';
-    client_checked = false;
+    informationButton: string = 'Show Details';
+    informationButton2: string = 'Show Details';
+    client_checked: boolean = false;
 
     /**
      * All image of a project.
@@ -66,7 +68,7 @@ export class VirtualMachineComponent implements OnInit {
     /**
      * Selected Project vms client.
      */
-    selectedProjectClient: Vmclient;
+    selectedProjectClient: Client;
 
     /**
      * Selected Project diskspace max.
@@ -106,7 +108,7 @@ export class VirtualMachineComponent implements OnInit {
     /**
      * If the client for a project is viable.
      */
-    client_avaiable = false;
+    client_avaiable: boolean = false;
 
     /**
      * If the public key is valid.
@@ -117,25 +119,25 @@ export class VirtualMachineComponent implements OnInit {
      * Default volume name.
      * @type {string}
      */
-    volumeName = '';
+    volumeName: string = '';
 
     /**
      * If optional params are shown.
      * @type {boolean}
      */
-    optional_params = false;
+    optional_params: boolean = false;
 
     /**
      * Default diskspace.
      * @type {number}
      */
-    diskspace = 0;
+    diskspace: number = 0;
 
     /**
      * If the data for the site is initialized.
      * @type {boolean}
      */
-    isLoaded = false;
+    isLoaded: boolean = false;
 
     /**
      * All projects of the user.
@@ -147,17 +149,17 @@ export class VirtualMachineComponent implements OnInit {
      * Id of the freemium project.
      * @type {number}
      */
-    FREEMIUM_ID = environment.freemium_project_id;
+    FREEMIUM_ID: number = environment.freemium_project_id;
 
     /**
      * Time for the check status loop.
      * @type {number}
      */
-    private checkStatusTimeout = 5000;
+    private checkStatusTimeout: number = 5000;
 
-    constructor(private groupService: GroupService, private imageService: ImageService, private applicataionsservice: ApplicationsService,
-                private  flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-                private  keyservice: KeyService, private clientservice: ClientService) {
+    constructor(private groupService: GroupService, private imageService: ImageService,
+                private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
+                private keyservice: KeyService) {
     }
 
     /**
@@ -181,21 +183,16 @@ export class VirtualMachineComponent implements OnInit {
     /**
      * Validate the public key of the user.
      */
-    validatePublicKey() {
+    validatePublicKey(): boolean {
 
-        if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)) {
-            this.validPublickey = true;
-        } else {
-
-            this.validPublickey = false;
-        }
+        return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)
 
     }
 
     /**
      * Get the public key of the user.
      */
-    getUserPublicKey() {
+    getUserPublicKey(): void {
         this.keyservice.getKey().subscribe(result => {
             this.userinfo.PublicKey = result['public_key'];
         })
@@ -228,7 +225,7 @@ export class VirtualMachineComponent implements OnInit {
     /**
      * Reset the progress bar.
      */
-    resetProgressBar() {
+    resetProgressBar(): void {
         this.creating_vm_status = 'Creating..';
         this.creating_vm_prograss_bar = 'progress-bar-animated';
         this.checking_vm_status = '';
@@ -242,33 +239,33 @@ export class VirtualMachineComponent implements OnInit {
      * Check the status of the started vm in a loop.
      * @param {string} id
      */
-    check_status_loop(id: string) {
+    check_status_loop(id: string): void {
 
-        setTimeout(() => {
-            this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
-                res = res;
+        setTimeout(
+            () => {
+                this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
+                    if (res['Started'] || res['Error']) {
+                        this.resetProgressBar();
+                        this.data = res;
+                        this.getSelectedProjectDiskspace();
+                        this.getSelectedProjectVms();
+                        this.getSelectedProjectVolumes();
 
-                if (res['Started'] || res['Error']) {
-                    this.resetProgressBar();
-                    this.data = res;
-                    this.getSelectedProjectDiskspace();
-                    this.getSelectedProjectVms();
-                    this.getSelectedProjectVolumes();
+                    } else {
+                        if (res['Waiting'] === 'PORT_CLOSED') {
+                            this.checking_vm_status = 'Active';
+                            this.checking_vm_status_progress_bar = '';
+                            this.creating_vm_prograss_bar = '';
+                            this.checking_vm_ssh_port = 'Checking port..';
+                            this.checking_vm_ssh_port_width = 34;
 
-                } else {
-                    if (res['Waiting'] === 'PORT_CLOSED') {
-                        this.checking_vm_status = 'Active';
-                        this.checking_vm_status_progress_bar = '';
-                        this.creating_vm_prograss_bar = '';
-                        this.checking_vm_ssh_port = 'Checking port..';
-                        this.checking_vm_ssh_port_width = 34;
-
+                        }
+                        this.check_status_loop(id)
                     }
-                    this.check_status_loop(id)
-                }
 
-            })
-        },         this.checkStatusTimeout);
+                })
+            },
+            this.checkStatusTimeout);
     }
 
     /**
@@ -281,12 +278,13 @@ export class VirtualMachineComponent implements OnInit {
      */
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string): void {
         if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
-            const re = /\+/gi;
+            const re: RegExp = /\+/gi;
 
-            const flavor_fixed = flavor.replace(re, '%2B');
+            const flavor_fixed: string = flavor.replace(re, '%2B');
 
-            this.virtualmachineservice.startVM(flavor_fixed, image, servername, project, projectid,
-                                               this.volumeName, this.diskspace.toString()).subscribe(data => {
+            this.virtualmachineservice.startVM(
+                flavor_fixed, image, servername, project, projectid,
+                this.volumeName, this.diskspace.toString()).subscribe(data => {
 
                 if (data['Created']) {
                     this.creating_vm_status = 'Created';
@@ -317,7 +315,7 @@ export class VirtualMachineComponent implements OnInit {
      * If connected geht vm,volumes etc.
      * @param {number} groupid
      */
-    getSelectedProjectClient(groupid: number) {
+    getSelectedProjectClient(groupid: number): void {
         this.client_checked = false;
         this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => {
             this.selectedProjectClient = res;
@@ -354,7 +352,7 @@ export class VirtualMachineComponent implements OnInit {
      * Initializes the data.
      * Gets all groups of the user and his key.
      */
-    initializeData() {
+    initializeData(): void {
         forkJoin(this.groupService.getMemberGroupsStatus(), this.keyservice.getKey()).subscribe(result => {
             this.userinfo.PublicKey = result[1]['public_key'];
             this.validatePublicKey();
@@ -380,7 +378,7 @@ export class VirtualMachineComponent implements OnInit {
                 this.selectedProjectDiskspaceMax = 0;
             }
 
-        })
+        });
         this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe(result => {
             if (result['Diskspace']) {
 
@@ -403,7 +401,7 @@ export class VirtualMachineComponent implements OnInit {
             } else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) {
                 this.selectedProjectVolumesMax = 0;
             }
-        })
+        });
         this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
             if (result['UsedVolumes']) {
                 this.selectedProjectVolumesUsed = result['UsedVolumes'];
@@ -428,7 +426,7 @@ export class VirtualMachineComponent implements OnInit {
                 this.selectedProjectVmsMax = 0;
             }
 
-        })
+        });
         this.groupService.getGroupUsedVms(this.selectedProject[1].toString()).subscribe(result => {
             if (result['NumberVms']) {
 

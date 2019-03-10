@@ -1,34 +1,38 @@
 import {Component, OnInit} from '@angular/core';
-import {Vmclient} from './virtualmachinemodels/vmclient';
+import {Client} from './virtualmachinemodels/vmclient';
 import {ClientService} from '../api-connector/vmClients.service';
-import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {GroupService} from '../api-connector/group.service';
 import {UserService} from '../api-connector/user.service';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FacilityService} from '../api-connector/facility.service';
+import {environment} from '../../environments/environment';
 
+
+/**
+ * Client component.
+ */
 @Component({
     selector: 'app-client-overview',
     templateUrl: 'vmClients.component.html',
-    providers: [FacilityService, UserService, GroupService, ClientService, PerunSettings, ApiSettings]
+    providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings]
 })
 
 export class ClientOverviewComponent implements OnInit {
     /**
      * All clients.
      */
-    clients: Vmclient[];
+    clients: Client[];
     /**
      * If user is vo.
      * @type {boolean}
      */
-    is_vo_admin = false;
+    is_vo_admin: boolean = false;
     /**
      * Default status not added client.
      * @type {string}
      */
-    checkStatus = 'Not checked';
+    checkStatus: string = 'Not checked';
     /**
      * All computecenters.
      * @type {Array}
@@ -42,10 +46,10 @@ export class ClientOverviewComponent implements OnInit {
      * If site is initialized with data.
      * @type {boolean}
      */
-    isLoaded = false;
+    isLoaded: boolean = false;
 
-    constructor(private facilityService: FacilityService, private userservice: UserService, private groupservice: GroupService,
-                private clientservice: ClientService, private perunsettings: PerunSettings) {
+    constructor(private facilityService: FacilityService, private userservice: UserService,
+                private clientservice: ClientService) {
 
     }
 
@@ -53,7 +57,7 @@ export class ClientOverviewComponent implements OnInit {
      * Check if user is vo.
      * @param {UserService} userservice
      */
-    checkVOstatus(userservice: UserService) {
+    checkVOstatus(userservice: UserService): void {
         let user_id: number;
         let admin_vos: {};
         this.userservice
@@ -65,10 +69,10 @@ export class ClientOverviewComponent implements OnInit {
                 return userservice.getVosWhereUserIsAdmin().toPromise();
             }).then(function (adminvos) {
             admin_vos = adminvos;
-        }).then(result => {
+        }).then(() => {
             // check if user is a Vo admin so we can serv according buttons
             for (const vkey in admin_vos) {
-                if (admin_vos[vkey]['id'] === this.perunsettings.getPerunVO().toString()) {
+                if (admin_vos[vkey]['id'] === environment.vo.toString()) {
                     this.is_vo_admin = true;
                 }
             }
@@ -89,11 +93,12 @@ export class ClientOverviewComponent implements OnInit {
     /**
      * Get all computecenters.
      */
-    getComputeCenters() {
+    getComputeCenters(): void {
         this.facilityService.getComputeCenters().subscribe(result => {
             for (const cc of result) {
-                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
-                                                                  cc['compute_center_login'], cc['compute_center_support_mail'])
+                const compute_center: ComputecenterComponent = new ComputecenterComponent(
+                    cc['compute_center_facility_id'], cc['compute_center_name'],
+                    cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             }
 
@@ -131,7 +136,7 @@ export class ClientOverviewComponent implements OnInit {
     postClient(host: string, port: string, location: string): void {
 
         if (host && port && location) {
-            this.clientservice.postClient(host, port, location).subscribe(data => {
+            this.clientservice.postClient(host, port, location).subscribe(() => {
 
                 this.getClientsChecked();
             });
@@ -143,7 +148,7 @@ export class ClientOverviewComponent implements OnInit {
      * @param {number} client_id
      */
     deleteClient(client_id: number): void {
-        this.clientservice.deleteClient(client_id).subscribe(data => {
+        this.clientservice.deleteClient(client_id).subscribe(() => {
 
             this.getClientsChecked();
         });

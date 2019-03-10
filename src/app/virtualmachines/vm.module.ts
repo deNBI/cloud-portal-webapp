@@ -16,6 +16,9 @@ import {PaginationModule} from 'ngx-bootstrap/pagination'
 import {PublicKeyModule} from '../shared_modules/public-key/public-key.module';
 import {ClickOutsideModule} from 'ng4-click-outside';
 
+/**
+ * VM module.
+ */
 @NgModule({
     imports: [
         ClickOutsideModule,

@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 
-import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
@@ -9,10 +8,13 @@ import {ImageService} from '../api-connector/image.service';
 import {FilterBaseClass} from '../shared_modules/baseClass/filter-base-class';
 import {VoService} from '../api-connector/vo.service';
 
+/**
+ * Vm overview componentn.
+ */
 @Component({
     selector: 'app-vm-overview',
     templateUrl: 'vmOverview.component.html',
-    providers: [VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
+    providers: [VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
 })
 
 export class VmOverviewComponent extends FilterBaseClass implements OnInit {
@@ -32,17 +34,17 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * How many vms are shown per page.
      * @type {number}
      */
-    vmsPerPage = 5;
+    vmsPerPage: number = 5;
     /**
      * Current page.
      * @type {number}
      */
-    currentPage = 1;
+    currentPage: number = 1;
     /**
      * Index where the vm list starts.
      * @type {number}
      */
-    vmStart = 0;
+    vmStart: number = 0;
     /**
      * How to connect for specific vm.
      */
@@ -51,7 +53,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * End of the vms.
      * @type {number}
      */
-    vmEnd = this.vmsPerPage;
+    vmEnd: number = this.vmsPerPage;
     /**
      * Name of vm which changed status.
      */
@@ -77,28 +79,28 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * String if the snapshot is done.
      * @type {string}
      */
-    snapshotNameCheckDone = false;
-    snapshotDone = 'Waiting';
+    snapshotNameCheckDone: boolean = false;
+    snapshotDone: string = 'Waiting';
     /**
      * Name of the snapshot.
      */
-    snapshotName = '';
+    snapshotName: string = '';
     /**
      * Tab which is shown own|all.
      * @type {string}
      */
-    tab = 'own';
+    tab: string = 'own';
     /**
      * The changed status.
      * @type {number}
      */
-    status_changed = 0;
+    status_changed: number = 0;
 
     /**
      * Timeout for checking vm status.
      * @type {number}
      */
-    private checkStatusTimeout = 1500;
+    private checkStatusTimeout: number = 1500;
     /**
      * Type of reboot HARD|SOFT.
      */
@@ -113,7 +115,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     reboot_done: boolean;
 
     constructor(private voService: VoService, private imageService: ImageService, private userservice: UserService,
-                private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
+                private virtualmachineservice: VirtualmachineService) {
         super()
     }
 
@@ -123,8 +125,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      */
     pageChanged(event): void {
 
-        const startItem = (event.page - 1) * event.itemsPerPage;
-        const endItem = event.page * event.itemsPerPage;
+        const startItem: number = (event.page - 1) * event.itemsPerPage;
+        const endItem: number = event.page * event.itemsPerPage;
         this.vmStart = startItem;
         this.vmEnd = endItem;
         this.vms_returned = this.vms_filtered.slice(startItem, endItem)
@@ -136,21 +138,17 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * @param {VirtualMachine} vm vm which is checked
      * @returns {boolean} True if it matches the filter
      */
-    checkFilter(vm: VirtualMachine) {
-        if (this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at)
+    checkFilter(vm: VirtualMachine): boolean {
+        return this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at)
             && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at)
-            && this.isFilterUsername(vm.username)) {
-            return true
-        } else {
-            return false
-        }
+            && this.isFilterUsername(vm.username)
 
     }
 
     /**
      * Apply filter to all vms.
      */
-    applyFilter() {
+    applyFilter(): void {
 
         this.vms_filtered = this.vms_content.filter(vm => this.checkFilter(vm));
 
@@ -166,14 +164,14 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Toggle tab own|all.
      * @param {string} tabString
      */
-    toggleTab(tabString: string) {
+    toggleTab(tabString: string): void {
         this.tab = tabString;
     }
 
     /**
      * Check status of all inactive vms.
      */
-    checkInactiveVms() {
+    checkInactiveVms(): void {
         this.virtualmachineservice.checkStatusInactiveVms().subscribe(vms => {
             this.vms_content = vms;
             for (const vm of this.vms_content) {
@@ -208,7 +206,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     /**
      * Reset the snapshotDone to waiting.
      */
-    resetSnapshotResult() {
+    resetSnapshotResult(): void {
         this.snapshotDone = 'Waiting';
     }
 
@@ -216,8 +214,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Check status of vm.
      * @param {string} openstackid  of the instance
      */
-    checkStatus(openstackid: string) {
-        this.virtualmachineservice.checkVmStatus(openstackid).subscribe(res => {
+    checkStatus(openstackid: string): void {
+        this.virtualmachineservice.checkVmStatus(openstackid).subscribe(() => {
 
                 this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
                         this.vms_content = vms;
@@ -270,7 +268,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * @param {string} openstack_id of the instance
      * @param {string} reboot_type HARD|SOFT
      */
-    public rebootVm(openstack_id: string, reboot_type: string) {
+    public rebootVm(openstack_id: string, reboot_type: string): void {
         this.virtualmachineservice.rebootVM(openstack_id, reboot_type).subscribe(result => {
             this.status_changed = 0;
 
@@ -288,31 +286,32 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Check Status of vm in loop till active.
      * @param {string} id of instance.
      */
-    check_status_loop(id: string) {
+    check_status_loop(id: string): void {
 
-        setTimeout(() => {
-            this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
-                res = res;
+        setTimeout(
+            () => {
+                this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
 
-                if (res['Started']) {
-                    this.reboot_done = true;
-                    if (this.tab === 'own') {
-                        this.getVms();
-                    } else if (this.tab === 'all') {
-                        this.getAllVms();
+                    if (res['Started']) {
+                        this.reboot_done = true;
+                        if (this.tab === 'own') {
+                            this.getVms();
+                        } else if (this.tab === 'all') {
+                            this.getAllVms();
 
+                        }
+
+                    } else {
+                        if (res['Error']) {
+                            this.status_check_error = true
+
+                        }
+                        this.check_status_loop(id)
                     }
 
-                } else {
-                    if (res['Error']) {
-                        this.status_check_error = true
-
-                    }
-                    this.check_status_loop(id)
-                }
-
-            })
-        },         this.checkStatusTimeout);
+                })
+            },
+            this.checkStatusTimeout);
     }
 
     /**
@@ -455,7 +454,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Check vm status.
      * @param {UserService} userservice
      */
-    checkVOstatus() {
+    checkVOstatus(): void {
         this.voService.isVo().subscribe(res => {
             this.is_vo_admin = res['Is_Vo_Manager'];
         })
@@ -466,12 +465,12 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * @param {string} snapshot_instance which is used for creating the snapshot
      * @param {string} snapshot_name name of the snapshot
      */
-    createSnapshot(snapshot_instance: string, snapshot_name: string) {
+    createSnapshot(snapshot_instance: string, snapshot_name: string): void {
         this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => {
             if (result['Error']) {
                 this.snapshotDone = result['Error'].toString();
             } else if (result['Created']) {
-                this.imageService.getSnapshot(result['Created']).subscribe(res => {
+                this.imageService.getSnapshot(result['Created']).subscribe(() => {
                 })
                 this.snapshotDone = 'true';
             }

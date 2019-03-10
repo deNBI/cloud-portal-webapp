@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Flavor} from './virtualmachinemodels/flavor'
 
 @Component({
@@ -6,10 +6,7 @@ import {Flavor} from './virtualmachinemodels/flavor'
     templateUrl: 'flavordetail.component.html'
 
 })
-export class FlavorDetailComponent implements OnInit {
+export class FlavorDetailComponent {
     @Input() flavor: Flavor;
     @Input() collapse2: boolean;
-
-    ngOnInit() {
-    }
 }

@@ -34,14 +34,14 @@ export class SnapshotOverviewComponent implements OnInit {
      * Actual delete status.
      * @type {Snapshot_Delete_Statuses}
      */
-    delete_status = this.delete_statuses.WAITING;
+    delete_status: number = this.delete_statuses.WAITING;
     /**
      * If site was initialized.
      * @type {boolean}
      */
-    isLoaded = false;
+    isLoaded: boolean = false;
 
-    private checkStatusTimeout = 5000;
+    private checkStatusTimeout: number = 5000;
 
     constructor(private imageService: ImageService) {
 
@@ -51,14 +51,14 @@ export class SnapshotOverviewComponent implements OnInit {
      * Set selected Snapshot.
      * @param {SnapshotModel} snapshot
      */
-    setSelectedSnapshot(snapshot: SnapshotModel) {
+    setSelectedSnapshot(snapshot: SnapshotModel): void {
         this.selected_snapshot = snapshot;
     }
 
     /**
      * Get snapshots by user.
      */
-    getSnapshots() {
+    getSnapshots(): void {
         this.imageService.getSnapshotsByUser().subscribe(result => {
             this.snapshots = result;
             this.isLoaded = true;
@@ -66,31 +66,33 @@ export class SnapshotOverviewComponent implements OnInit {
         })
     }
 
-    checkSnapShotsStatus() {
-        let all_active = true;
+    checkSnapShotsStatus(): void {
+        let all_active: boolean = true;
 
-        setTimeout(() => {
-            const observables = [];
-            for (const s of this.snapshots) {
+        setTimeout(
+            () => {
+                const observables = [];
+                for (const s of this.snapshots) {
 
-                observables.push(this.imageService.getSnapshot(s.snapshot_openstackid));
+                    observables.push(this.imageService.getSnapshot(s.snapshot_openstackid));
 
-            }
-            forkJoin(observables).subscribe(res => {
-                for (const i of res) {
-                    this.snapshots[res.indexOf(i)].snapshot_status = i['status'];
-                    if (i['status'] !== 'active') {
-                        all_active = false;
+                }
+                forkJoin(observables).subscribe(res => {
+                    for (const i of res) {
+                        this.snapshots[res.indexOf(i)].snapshot_status = i['status'];
+                        if (i['status'] !== 'active') {
+                            all_active = false;
+                        }
+
                     }
-
-                }
-                if (all_active) {
-                    return;
-                } else {
-                    this.checkSnapShotsStatus();
-                }
-            })
-        },         this.checkStatusTimeout);
+                    if (all_active) {
+                        return;
+                    } else {
+                        this.checkSnapShotsStatus();
+                    }
+                })
+            },
+            this.checkStatusTimeout);
 
     }
 
@@ -98,7 +100,7 @@ export class SnapshotOverviewComponent implements OnInit {
      * Delete snapshot.
      * @param {string} snapshot_id
      */
-    deleteSnapshot(snapshot_id: string) {
+    deleteSnapshot(snapshot_id: string): void {
         this.imageService.deleteSnapshot(snapshot_id).subscribe(result => {
 
             this.delete_status = 0;
