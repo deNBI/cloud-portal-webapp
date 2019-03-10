@@ -19,6 +19,10 @@ import {environment} from '../../environments/environment';
 
 export class AddcloudapplicationComponent extends AbstractBaseClasse {
 
+    /**
+     * If it is in production or dev mode.
+     * @type {boolean}
+     */
     public production: boolean = environment.production;
 
     /**
@@ -80,7 +84,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
 
     /**
      * If project is openstack project (everytime true)
-     * @type {boolean}
+     * @type {boolean} if it is a openstack project
      */
     project_application_openstack_project: boolean = true;
 
@@ -98,36 +102,38 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
     }
 
     /**
-     * This function concatenates a given key combined with a given value to a string
-     * which is used on the confirmation-modal.
-     * @param key the key to access a string in the array constantStrings
-     * @param val the value that is concatenated with the string from the array and an optional addition (depending on the key)
-     * @returns the concatenated string for the confirmation-modal
+     * Uses the data from the application form to fill the confirmation-modal with information.
+     * @param form the application form with corresponding data
      */
-    matchString(key: string, val: string): string {
-        if (key in this.constantStrings) {
-            switch (key) {
-                case 'project_application_lifetime': {
-                    return (`${this.constantStrings[key]}${val} months`);
-                }
-                case ('project_application_volume_limit'): {
-                    return (`${this.constantStrings[key]}${val} GB`);
-                }
-                case 'project_application_object_storage': {
-                    return (`${this.constantStrings[key]}${val}  GB`);
-                }
-                case 'project_application_report_allowed': {
-                    if (val) {
-                        return (`${this.constantStrings[key]}${val} Yes`);
-                    } else {
-                        return (`${this.constantStrings[key]} No`);
+    filterEnteredData(form: NgForm): void {
+        this.generateConstants();
+        this.totalNumberOfCores = 0;
+        this.totalRAM = 0;
+        this.valuesToConfirm = [];
+        for (const key in form.controls) {
+            if (form.controls[key].value) {
+                if (key === 'project_application_name') {
+                    this.projectName = form.controls[key].value;
+                    if (this.projectName.length > 50) {
+                        this.projectName = `${this.projectName.substring(0, 50)}...`;
                     }
                 }
-                default: {
-                    return (this.constantStrings[key] + val);
+                if (key in this.constantStrings) {
+                    this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
+
+                    const flavor: Flavor = this.keyIsVM(key.toString());
+                    if (flavor != null) {
+                        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * form.controls[key].value);
+                        const ram: number = flavor.ram * form.controls[key].value;
+                        this.totalRAM = this.totalRAM + ram
+                    }
                 }
             }
         }
+        if (!this.project_application_report_allowed) {
+            this.valuesToConfirm.push('Dissemination allowed: No')
+        }
+
     }
 
     /**
@@ -165,48 +171,40 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
     }
 
     /**
-     * Uses the data from the application form to fill the confirmation-modal with information.
-     * @param f the application form with corresponding data
+     * This function concatenates a given key combined with a given value to a string
+     * which is used on the confirmation-modal.
+     * @param key the key to access a string in the array constantStrings
+     * @param val the value that is concatenated with the string from the array and an optional addition (depending on the key)
+     * @returns the concatenated string for the confirmation-modal
      */
-    filterEnteredData(f: NgForm): void {
-        this.generateConstants();
-        this.totalNumberOfCores = 0;
-        this.totalRAM = 0;
-        this.valuesToConfirm = [];
-        for (const key in f.controls) {
-            if (f.controls[key].value) {
-                if (key === 'project_application_name') {
-                    this.projectName = f.controls[key].value;
-                    if (this.projectName.length > 50) {
-                        this.projectName = `${this.projectName.substring(0, 50)}...`;
+    matchString(key: string, val: string): string {
+        if (key in this.constantStrings) {
+            switch (key) {
+                case 'project_application_lifetime': {
+                    return (`${this.constantStrings[key]}${val} months`);
+                }
+                case ('project_application_volume_limit'): {
+                    return (`${this.constantStrings[key]}${val} GB`);
+                }
+                case 'project_application_object_storage': {
+                    return (`${this.constantStrings[key]}${val}  GB`);
+                }
+                case 'project_application_report_allowed': {
+                    if (val) {
+                        return (`${this.constantStrings[key]}${val} Yes`);
+                    } else {
+                        return (`${this.constantStrings[key]} No`);
                     }
                 }
-                if (key in this.constantStrings) {
-                    this.valuesToConfirm.push(this.matchString(key.toString(), f.controls[key].value.toString()));
-
-                    const flavor: Flavor = this.keyIsVM(key.toString());
-                    if (flavor != null) {
-                        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * f.controls[key].value);
-                        this.totalRAM = this.totalRAM + (flavor.ram * f.controls[key].value)
-                    }
+                default: {
+                    return (this.constantStrings[key] + val);
                 }
             }
         }
-        if (!this.project_application_report_allowed) {
-            this.valuesToConfirm.push('Dissemination allowed: No')
-        }
-
     }
 
     /**
-     * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
-     */
-    getListOfFlavors(): void {
-        this.flavorservice.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
-    }
-
-    /**
-     * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+     * Gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
      */
     getListOfTypes(): void {
         this.flavorservice.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
@@ -220,22 +218,29 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
     setListOfTypes(types: FlavorType[]): void {
         this.typeList = types;
         this.collapseList = new Array(types.length) as boolean[];
-        for (const t of types) {
+        for (const type of types) {
 
             this.collapseList.push(false); // AS FIX
-            if (t.long_name === 'Standart Flavor') {
-                this.collapseList[this.typeList.indexOf(t)] = true;
+            if (type.long_name === 'Standart Flavor') {
+                this.collapseList[this.typeList.indexOf(type)] = true;
             }
         }
 
     }
 
     /**
+     * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+     */
+    getListOfFlavors(): void {
+        this.flavorservice.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
+    }
+
+    /**
      * Submits a new cloud application.
      * Therefore checks if the different values are valid.
-     * @param {NgForm} f
+     * @param {NgForm} form
      */
-    onSubmit(f: NgForm): void {
+    onSubmit(form: NgForm): void {
         this.error = null;
         if (this.wronginput) {
 
@@ -248,10 +253,10 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
         } else {
             const values: { [key: string]: string | number | boolean } = {};
             values['project_application_openstack_project'] = this.project_application_openstack_project;
-            for (const v in f.controls) {
-                if (f.controls[v].value) {
+            for (const value in form.controls) {
+                if (form.controls[value].value) {
 
-                    values[v] = f.controls[v].value;
+                    values[value] = form.controls[value].value;
                 }
             }
             this.applicationsservice.addNewApplication(values).toPromise()
@@ -285,8 +290,8 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
         values['project_application_lifetime'] = 3;
         values['project_application_name'] = 'TestApplication';
         values['project_application_openstack_project'] = true;
-        for (const f of this.flavorList) {
-            const fname: string = `project_application_ ${f.name}`;
+        for (const flavor of this.flavorList) {
+            const fname: string = `project_application_ ${flavor.name}`;
             values[fname] = 1;
         }
         values['project_application_report_allowed'] = true;

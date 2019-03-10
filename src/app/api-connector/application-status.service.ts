@@ -19,7 +19,7 @@ export class ApplicationStatusService {
 
     /**
      * Get all application stati.
-     * @returns {Observable<any>}
+     * @returns {Observable<any>} List of all application stati
      */
     getAllApplicationStatus(): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}application_status/`, {
@@ -31,17 +31,16 @@ export class ApplicationStatusService {
      * Set status for an application.
      * @param {number} application_id id of the application
      * @param {number} status_id id of the status to set
-     * @returns {Observable<any>}
+     * @returns {Observable<any>} 200 if successfull
      */
     setApplicationStatus(application_id: number | string, status_id: number | string): Observable<any> {
 
         const params: HttpParams = new HttpParams().set('project_application_status', status_id.toString());
 
-        return this.http.patch(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, params,
-            {
-                headers: header,
-                withCredentials: true
-            })
+        return this.http.patch(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, params, {
+            headers: header,
+            withCredentials: true
+        })
     }
 
 }

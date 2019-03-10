@@ -79,7 +79,7 @@ export class GroupService {
 
     addMember(group_id: string | number, member_id: string | number, facility_id?: string | number): Observable<any> {
         const params: HttpParams = new HttpParams();
-        if (facility_id) {
+        if (facility_id !== null) {
             params.set('facility_id', facility_id.toString())
 
         }
@@ -95,7 +95,7 @@ export class GroupService {
     addAdmin(group_id: string | number, user_id: string | number, facility_id?: string | number): Observable<any> {
         const params: HttpParams = new HttpParams();
 
-        if (facility_id) {
+        if (facility_id !== null) {
             params.set('facility_id', facility_id.toString())
 
         }
@@ -111,7 +111,7 @@ export class GroupService {
     removeMember(group_id: number | string, member_id: number | string, facility_id?: number | string): Observable<any> {
         const params: HttpParams = new HttpParams();
 
-        if (facility_id) {
+        if (facility_id !== null) {
             params.set('facility_id', facility_id.toString())
 
         }
@@ -129,7 +129,7 @@ export class GroupService {
 
         const params: HttpParams = new HttpParams();
 
-        if (facility_id) {
+        if (facility_id !== null) {
             params.set('facility_id', facility_id.toString())
 
         }

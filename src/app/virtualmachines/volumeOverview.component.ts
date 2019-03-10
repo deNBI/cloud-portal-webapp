@@ -23,12 +23,6 @@ enum Volume_Action_Statuses {
 
 }
 
-enum Volume_Request_Statuses {
-    DELETE = 0,
-    DETACH = 1
-
-}
-
 /**
  * Volume overview component.
  */
@@ -89,7 +83,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * List of all projects from the user.
      * @type {any[]}
      */
-    projects: string[] = new Array();
+    projects: string[] = [];
     /**
      * Default diskspace.
      * @type {number}
@@ -115,89 +109,84 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
     }
 
-    /**
-     * Set request status.
-     * @param {number} status
-     */
-    setRequestStatus(status: number): void {
-        this.request_status = status;
+
+    ngOnInit(): void {
+        this.getVolumes();
+        this.getUserApprovedProjects();
+
     }
 
-    /**
-     * Set selected volume.
-     * @param {Volume} volume
-     */
-    setSelectedVolume(volume: Volume): void {
-        this.selected_volume = volume;
-    }
 
     /**
-     * Get all volumes from user.
+     * Attach a volume to an instance.
+     * @param {string} volume_id openstack_id of the volume
+     * @param {string} instance_id openstack_id of the instance
+     * @returns {void}
      */
-    getVolumes(): void {
-        this.vmService.getVolumesByUser().subscribe(result => {
-            this.volumes = result;
-            for (const volume of this.volumes) {
-                this.setCollapseStatus(volume.volume_openstackid, false);
+    attachVolume(volume_id: string, instance_id: string): void {
+        this.volume_action_status = Volume_Action_Statuses.ATTACHING;
+
+        this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
+
+            if (result['Attached'] && result['Attached'] === true) {
+                this.volume_action_status = Volume_Action_Statuses.ATTACHING_SUCCESSFULL;
+            } else {
+                this.volume_action_status = Volume_Action_Statuses.ERROR;
             }
-
-            this.isLoaded = true;
-
+            this.getVolumes();
         })
     }
 
-    /**
-     * Calc diskspace sum of selected project diskspace and additional diskspace of new volume.
-     */
-    calcDiskSpaceSum(): void {
-        this.selectedProjectDiskSpaceSum = parseInt(this.diskspace.toString(), 10)
-            + parseInt(this.selectedProjectDiskspaceUsed.toString(), 10);
-    }
 
     /**
-     * Get diskspace of selected project.
+     * Create an volume and attach to an instance.
+     * @param {string} volume_name name of the volume
+     * @param {number} diskspace diskspace of the volume
+     * @param {string} instance_id opentack_id of the instance
+     * @returns {void}
      */
-    getSelectedProjectDiskspace(): void {
-        this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe(result => {
-            if (result['Diskspace']) {
+    createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string): void {
+        this.volume_action_status = 7;
+        this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
+            if (result['Created']) {
+                const volume_id = result['Created'];
+                this.volume_action_status = Volume_Action_Statuses.ATTACHING;
 
-                this.selectedProjectDiskspaceMax = result['Diskspace'];
+                this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(res => {
 
-            } else if (result['Diskspace'] === null || result['Diskspace'] === 0) {
-                this.selectedProjectDiskspaceMax = 0;
+                    if (res['Attached'] && res['Attached'] === true) {
+                        this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED;
+                    } else {
+                        this.volume_action_status = Volume_Action_Statuses.ERROR;
+                    }
+                    this.getVolumes();
+                })
+            } else {
+                this.volume_action_status = Volume_Action_Statuses.ERROR;
             }
-
-        });
-        this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe(result => {
-            if (result['Diskspace']) {
-
-                this.selectedProjectDiskspaceUsed = result['Diskspace'];
-            } else if (result['Diskspace'] === 0 || result['Diskspace'] == null) {
-                this.selectedProjectDiskspaceUsed = 0;
-            }
+            this.getVolumes();
 
         })
 
     }
 
-    /**
-     * Get volumes of selected project.
-     */
-    getSelectedProjectVolumes(): void {
-        this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe(result => {
-            if (result['VolumeCounter']) {
-                this.selectedProjectVolumesMax = result['VolumeCounter'];
-            } else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) {
-                this.selectedProjectVolumesMax = 0;
-            }
-        });
-        this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
-            if (result['UsedVolumes']) {
-                this.selectedProjectVolumesUsed = result['UsedVolumes'];
-            } else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) {
 
-                this.selectedProjectVolumesUsed = 0;
+    /**
+     * Create an volume.
+     * @param {string} volume_name name of the volume.
+     * @param {number} diskspace diskspace of the new volume
+     * @param {string} instance_id openstack_id of instance.
+     * @returns {void}
+     */
+    createVolume(volume_name: string, diskspace: number, instance_id: string): void {
+        this.volume_action_status = Volume_Action_Statuses.WAITING;
+        this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
+            if (result['Created']) {
+                this.volume_action_status = Volume_Action_Statuses.WAIT_CREATION;
+            } else {
+                this.volume_action_status = Volume_Action_Statuses.ERROR;
             }
+            this.getVolumes();
 
         })
     }
@@ -206,6 +195,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * Delete Volume (detach first if attached).
      * @param {string} volume_id openstack_id of volume
      * @param {string} instance_id oopenstack_id of instance
+     * @returns {void}
      */
     deleteVolume(volume_id: string, instance_id?: string): void {
         this.volume_action_status = Volume_Action_Statuses.WAITING;
@@ -240,18 +230,18 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         }
     }
 
+
     /**
-     * Attach a volume to an instance.
+     * Detach volume from instance.
      * @param {string} volume_id openstack_id of the volume
-     * @param {string} instance_id openstack_id of the instance
+     * @param {string} instance_id openstack_id of the  instance
+     * @returns {void}
      */
-    attachVolume(volume_id: string, instance_id: string): void {
-        this.volume_action_status = Volume_Action_Statuses.ATTACHING;
-
-        this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
-
-            if (result['Attached'] && result['Attached'] === true) {
-                this.volume_action_status = Volume_Action_Statuses.ATTACHING_SUCCESSFULL;
+    detachVolume(volume_id: string, instance_id: string): void {
+        this.volume_action_status = Volume_Action_Statuses.DETACHING_VOLUME;
+        this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
+            if (result['Deleted'] && result['Deleted'] === true) {
+                this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_DETACHED_VOLUME;
             } else {
                 this.volume_action_status = Volume_Action_Statuses.ERROR;
             }
@@ -259,10 +249,12 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         })
     }
 
+
     /**
      * Rename a volume ( just in Django DB not in OpenStack).
      * @param {string} volume_id openstack_id of volume
      * @param {string} new_volume_name the new name
+     * @returns {void}
      */
     renameVolume(volume_id: string, new_volume_name: string): void {
         this.volume_action_status = Volume_Action_Statuses.CHANGING_NAME;
@@ -280,85 +272,25 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     }
 
     /**
-     * Create an volume.
-     * @param {string} volume_name name of the volume.
-     * @param {number} diskspace diskspace of the new volume
-     * @param {string} instance_id openstack_id of instance.
+     * Get all volumes from user.
+     * @returns {void}
      */
-    createVolume(volume_name: string, diskspace: number, instance_id: string): void {
-        this.volume_action_status = Volume_Action_Statuses.WAITING;
-        this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
-            if (result['Created']) {
-                this.volume_action_status = Volume_Action_Statuses.WAIT_CREATION;
-            } else {
-                this.volume_action_status = Volume_Action_Statuses.ERROR;
+    getVolumes(): void {
+        this.vmService.getVolumesByUser().subscribe(result => {
+            this.volumes = result;
+            for (const volume of this.volumes) {
+                this.setCollapseStatus(volume.volume_openstackid, false);
             }
-            this.getVolumes();
+
+            this.isLoaded = true;
 
         })
     }
 
-    /**
-     * Create an volume and attach to an instance.
-     * @param {string} volume_name name of the volume
-     * @param {number} diskspace diskspace of the volume
-     * @param {string} instance_id opentack_id of the instance
-     */
-    createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string): void {
-        this.volume_action_status = 7;
-        this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
-            if (result['Created']) {
-                const volume_id = result['Created'];
-                this.volume_action_status = Volume_Action_Statuses.ATTACHING;
-
-                this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(res => {
-
-                    if (res['Attached'] && res['Attached'] === true) {
-                        this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED;
-                    } else {
-                        this.volume_action_status = Volume_Action_Statuses.ERROR;
-                    }
-                    this.getVolumes();
-                })
-            } else {
-                this.volume_action_status = Volume_Action_Statuses.ERROR;
-            }
-            this.getVolumes();
-
-        })
-
-    }
-
-    /**
-     * Get all active vms from a project.
-     * @param {number} groupid id of the perun group from the project.
-     */
-    getActiveVmsByProject(groupid: number): void {
-        this.vmService.getActiveVmsByProject(groupid.toString()).subscribe(result => {
-
-            this.project_vms = result;
-        })
-    }
-
-    /**
-     * Detach volume from instance.
-     * @param {string} volume_id openstack_id of the volume
-     * @param {string} instance_id openstack_id of the  instance
-     */
-    detachVolume(volume_id: string, instance_id: string): void {
-        this.volume_action_status = Volume_Action_Statuses.DETACHING_VOLUME;
-        this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
-            if (result['Deleted'] && result['Deleted'] === true) {
-                this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_DETACHED_VOLUME;
-            } else {
-                this.volume_action_status = Volume_Action_Statuses.ERROR;
-            }
-            this.getVolumes();
-        })
-    }
 
     /**
      * Get all approved projects from the user.
+     * @returns {void}
      */
     getUserApprovedProjects(): void {
         this.groupService.getMemberGroupsStatus().subscribe(membergroups => {
@@ -369,10 +301,96 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         });
     }
 
-    ngOnInit(): void {
-        this.getVolumes();
-        this.getUserApprovedProjects();
+
+    /**
+     * Set request status.
+     * @param {number} status
+     * @returns {void}
+     */
+    setRequestStatus(status: number): void {
+        this.request_status = status;
+    }
+
+    /**
+     * Set selected volume.
+     * @param {Volume} volume
+     * @returns {void}
+     */
+    setSelectedVolume(volume: Volume): void {
+        this.selected_volume = volume;
+    }
+
+
+    /**
+     * Calc diskspace sum of selected project diskspace and additional diskspace of new volume.
+     */
+    calcDiskSpaceSum(): void {
+        this.selectedProjectDiskSpaceSum = parseInt(this.diskspace.toString(), 10)
+            + parseInt(this.selectedProjectDiskspaceUsed.toString(), 10);
+    }
+
+    /**
+     * Get diskspace of selected project.
+     * @returns {void}
+     */
+    getSelectedProjectDiskspace(): void {
+        this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe(result => {
+            if (result['Diskspace']) {
+
+                this.selectedProjectDiskspaceMax = result['Diskspace'];
+
+            } else if (result['Diskspace'] === null || result['Diskspace'] === 0) {
+                this.selectedProjectDiskspaceMax = 0;
+            }
+
+        });
+        this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe(result => {
+            if (result['Diskspace']) {
+
+                this.selectedProjectDiskspaceUsed = result['Diskspace'];
+            } else if (result['Diskspace'] === 0 || result['Diskspace'] == null) {
+                this.selectedProjectDiskspaceUsed = 0;
+            }
+
+        })
 
     }
+
+    /**
+     * Get volumes of selected project.
+     * @returns {void}
+     */
+    getSelectedProjectVolumes(): void {
+        this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe(result => {
+            if (result['VolumeCounter']) {
+                this.selectedProjectVolumesMax = result['VolumeCounter'];
+            } else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) {
+                this.selectedProjectVolumesMax = 0;
+            }
+        });
+        this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
+            if (result['UsedVolumes']) {
+                this.selectedProjectVolumesUsed = result['UsedVolumes'];
+            } else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) {
+
+                this.selectedProjectVolumesUsed = 0;
+            }
+
+        })
+    }
+
+
+    /**
+     * Get all active vms from a project.
+     * @param {number} groupid id of the perun group from the project.
+     * @returns {void}
+     */
+    getActiveVmsByProject(groupid: number): void {
+        this.vmService.getActiveVmsByProject(groupid.toString()).subscribe(result => {
+
+            this.project_vms = result;
+        })
+    }
+
 
 }

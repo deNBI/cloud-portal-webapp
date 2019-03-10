@@ -8,7 +8,7 @@ import {environment} from '../../environments/environment'
 export class ApiSettings {
     /**
      *  Provides base URL with trailing slash for all Portal API calls.
-     * @returns {string}
+     * @returns {string} the connector api base url
      */
     static getApiBaseURL(): string {
         return environment.apiBaseUrl;

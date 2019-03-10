@@ -7,7 +7,7 @@ import {Userinfo} from '../../userinfo/userinfo.model';
     selector: '[app-public-key]',
     templateUrl: './public-key.component.html',
     styleUrls: ['./public-key.component.scss'],
-    providers: [ ApiSettings, KeyService]
+    providers: [ApiSettings, KeyService]
 
 })
 export class PublicKeyComponent implements OnInit {

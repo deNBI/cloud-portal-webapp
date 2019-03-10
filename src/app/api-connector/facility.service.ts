@@ -144,10 +144,10 @@ export class FacilityService {
 
     /**
      * Sends an email to all members of the facility.
-     * @param facility
-     * @param subject
-     * @param message
-     * @param reply
+     * @param facility facility where to send the email
+     * @param subject subject of the email
+     * @param message message from the email
+     * @param reply reply address
      * @returns {Observable<any>}
      */
     sendMailToFacility(facility: string, subject: string, message: string, reply?: string): Observable<any> {

@@ -12,6 +12,7 @@ import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
  * Component to create single vm applications.
  */
 @Component({
+    selector: 'app-addsinglevm',
     templateUrl: 'addsinglevm.component.html',
     providers: [FlavorService, ApiSettings, ApplicationsService]
 })
@@ -52,11 +53,37 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
 
     }
 
+
+    /**
+     * Gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+     */
+    getListOfTypes(): void {
+        this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
+    }
+
+    /**
+     * Uses the param types to safe the available FlavorTypes to the array typeList.
+     * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
+     * @param types array of all available FlavorTypes
+     */
+    setListOfTypes(types: FlavorType[]): void {
+        this.typeList = types;
+        this.collapseList = new Array(types.length) as boolean[];
+        for (const type of types) {
+
+            this.collapseList.push(false); // AS FIX
+            if (type.long_name === 'Standart Flavor') {
+                this.collapseList[this.typeList.indexOf(type)] = true;
+            }
+        }
+
+    }
+
     /**
      * Submit simple vm application.
-     * @param {NgForm} f
+     * @param {NgForm} form
      */
-    onSubmit(f: NgForm): void {
+    onSubmit(form: NgForm): void {
         this.error = null;
         if (this.wronginput) {
             this.updateNotificationModal(
@@ -67,9 +94,9 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
             this.notificationModalStay = true;
         } else {
             const values: { [key: string]: string | number | boolean } = {};
-            for (const v in f.controls) {
-                if (f.controls[v].value) {
-                    values[v] = f.controls[v].value;
+            for (const value in form.controls) {
+                if (form.controls[value].value) {
+                    values[value] = form.controls[value].value;
                 }
             }
 
@@ -102,30 +129,6 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
         this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
     }
 
-    /**
-     * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
-     */
-    getListOfTypes(): void {
-        this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
-    }
-
-    /**
-     * Uses the param types to safe the available FlavorTypes to the array typeList.
-     * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
-     * @param types array of all available FlavorTypes
-     */
-    setListOfTypes(types: FlavorType[]): void {
-        this.typeList = types;
-        this.collapseList = new Array(types.length) as boolean[];
-        for (const t of types) {
-
-            this.collapseList.push(false); // AS FIX
-            if (t.long_name === 'Standart Flavor') {
-                this.collapseList[this.typeList.indexOf(t)] = true;
-            }
-        }
-
-    }
 
     /**
      * Check if shortname is valid.
@@ -144,8 +147,8 @@ export class AddsinglevmComponent extends AbstractBaseClasse {
         values['project_application_lifetime'] = 3;
         values['project_application_name'] = 'TestApplication';
         values['project_application_openstack_project'] = false;
-        for (const f of this.flavorList) {
-            const fname: string = `project_application_${f.name}`;
+        for (const flavor of this.flavorList) {
+            const fname: string = `project_application_${flavor.name}`;
             values[fname] = 1;
         }
         values['project_application_report_allowed'] = true;
