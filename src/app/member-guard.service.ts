@@ -1,13 +1,13 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot***REMOVED*** from '@angular/router';
-import ***REMOVED*** Observable***REMOVED*** from 'rxjs';
+import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***environment***REMOVED*** from '../environments/environment';
 import ***REMOVED***UserService***REMOVED*** from './api-connector/user.service';
 
 @Injectable()
 export class MemberGuardService implements CanActivate ***REMOVED***
 
-    constructor(private router: Router, private  userservice: UserService) ***REMOVED***
+    constructor(private router: Router, private userservice: UserService) ***REMOVED***
     ***REMOVED***
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean ***REMOVED***
@@ -48,7 +48,7 @@ export class MemberGuardService implements CanActivate ***REMOVED***
 
     ***REMOVED***
 
-     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean ***REMOVED***
+    canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean ***REMOVED***
         return new Promise((resolve, reject) => ***REMOVED***
             this.userservice.getLoggedUser().toPromise()
                 .then((result) => ***REMOVED***

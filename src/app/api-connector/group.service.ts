@@ -54,21 +54,21 @@ export class GroupService ***REMOVED***
 
     ***REMOVED***
 
-    isUserAdminOfGroup(groupid: string, userid: string): Observable<any> ***REMOVED***
+    isUserAdminOfGroup(groupid: number | string, userid: number | string): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/members/$***REMOVED***userid***REMOVED***/manager/`, ***REMOVED***
             withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 
-    getGroupAdminIds(groupid: string): Observable<any> ***REMOVED***
+    getGroupAdminIds(groupid: number | string): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/admins/ids/`, ***REMOVED***
             withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 
-    getGroupRichMembers(groupid: number): Observable<any> ***REMOVED***
+    getGroupRichMembers(groupid: number | string): Observable<any> ***REMOVED***
         const params: HttpParams = new HttpParams().set('groupid', groupid.toString());
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/richMembers/`, ***REMOVED***
@@ -77,10 +77,10 @@ export class GroupService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    addMember(group_id: string, member_id: string, facility_id?: string): Observable<any> ***REMOVED***
+    addMember(group_id: string | number, member_id: string | number, facility_id?: string | number): Observable<any> ***REMOVED***
         const params: HttpParams = new HttpParams();
         if (facility_id) ***REMOVED***
-            params.set('facility_id', facility_id)
+            params.set('facility_id', facility_id.toString())
 
         ***REMOVED***
 
@@ -92,11 +92,11 @@ export class GroupService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    addAdmin(group_id: string, user_id: string, facility_id?: string): Observable<any> ***REMOVED***
+    addAdmin(group_id: string | number, user_id: string | number, facility_id?: string | number): Observable<any> ***REMOVED***
         const params: HttpParams = new HttpParams();
 
         if (facility_id) ***REMOVED***
-            params.set('facility_id', facility_id)
+            params.set('facility_id', facility_id.toString())
 
         ***REMOVED***
 
@@ -108,7 +108,7 @@ export class GroupService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    removeMember(group_id: number, member_id: number, facility_id?: number): Observable<any> ***REMOVED***
+    removeMember(group_id: number | string, member_id: number | string, facility_id?: number | string): Observable<any> ***REMOVED***
         const params: HttpParams = new HttpParams();
 
         if (facility_id) ***REMOVED***
@@ -125,7 +125,7 @@ export class GroupService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    removeAdmin(group_id: number, user_id: number, facility_id?: number): Observable<any> ***REMOVED***
+    removeAdmin(group_id: number | string, user_id: number | string, facility_id?: number | string): Observable<any> ***REMOVED***
 
         const params: HttpParams = new HttpParams();
 
@@ -283,13 +283,13 @@ export class GroupService ***REMOVED***
         const params: HttpParams = new HttpParams().set('name', group_name).set('description', group_description.substring(0, 512));
 
         return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/`, params,
-                              ***REMOVED***
+            ***REMOVED***
                 withCredentials: true,
                 headers: header
             ***REMOVED***)
     ***REMOVED***
 
-    getLifetime(groupid: string): Observable<any> ***REMOVED***
+    getLifetime(groupid: string | number): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/lifetime/`, ***REMOVED***
             withCredentials: true

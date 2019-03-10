@@ -4,7 +4,7 @@ import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angu
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
-const header = new HttpHeaders(***REMOVED***
+const header: HttpHeaders = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken')
 ***REMOVED***);
 

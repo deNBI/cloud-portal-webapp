@@ -10,14 +10,14 @@ export class Project ***REMOVED***
         this._UserIsAdmin = value;
     ***REMOVED***
 
-    private _Id: number;
+    private _Id: number | string;
     private _Name: string;
     private _Description: string;
     private _DateCreated: string;
     private _DateEnd: string;
     private _DaysRunning: number;
     private _LifetimeDays: number;
-    private _Lifetime: number;
+    private _Lifetime: number | string;
     private _UserIsAdmin: boolean;
     private _UserIsPi: boolean;
     private _Status: number;
@@ -93,11 +93,7 @@ export class Project ***REMOVED***
         this._OpenStackProject = value;
     ***REMOVED***
 
-    get Lifetime(): number ***REMOVED***
-        return this._Lifetime;
-    ***REMOVED***
-
-    set Lifetime(value: number) ***REMOVED***
+    set Lifetime(value: number | string) ***REMOVED***
         this._Lifetime = value;
     ***REMOVED***
 
@@ -109,11 +105,15 @@ export class Project ***REMOVED***
         this._ComputeCenter = value;
     ***REMOVED***
 
-    get Id(): number ***REMOVED***
-        return this._Id;
+    get PerunId(): number ***REMOVED***
+        return this._PerunId;
     ***REMOVED***
 
-    set Id(value: number) ***REMOVED***
+    set PerunId(value: number) ***REMOVED***
+        this._PerunId = value;
+    ***REMOVED***
+
+    set Id(value: number | string) ***REMOVED***
         this._Id = value;
     ***REMOVED***
 

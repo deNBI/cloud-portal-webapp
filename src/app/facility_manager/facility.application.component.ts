@@ -7,7 +7,6 @@ import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connecto
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
 import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
 import ***REMOVED***ApplicationExtension***REMOVED*** from '../applications/application_extension.model';
-import ***REMOVED***SpecialHardware***REMOVED*** from '../applications/special_hardware.model';
 import ***REMOVED***ApplicationStatus***REMOVED*** from '../applications/application_status.model';
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service';
@@ -36,11 +35,6 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     collapse_status: ***REMOVED*** [id: string]: boolean ***REMOVED*** = ***REMOVED******REMOVED***;
 
     application_status: ApplicationStatus[] = [];
-    /**
-     * Avaiable Special Hardwares.
-     * @type ***REMOVED***Array***REMOVED***
-     */
-    special_hardware: SpecialHardware[] = [];
 
     /**
      * All available compute centers.
@@ -64,7 +58,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * If the site is loaded with values.
      * @type ***REMOVED***boolean***REMOVED***
      */
-    isLoaded = false;
+    isLoaded: boolean = false;
     /**
      * List of all applications.
      * @type ***REMOVED***Array***REMOVED***
@@ -78,11 +72,6 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     all_application_modifications: Application [] = [];
 
     applications_history: Application [] = [];
-    /**
-     * Special hardware id for FPGA.
-     * @type ***REMOVED***number***REMOVED***
-     */
-    public FPGA = 1;
 
     constructor(private userService: UserService,
                 private applicationstatusservice: ApplicationStatusService,
@@ -108,7 +97,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
         this.facilityService.getComputeCenters().subscribe(result => ***REMOVED***
             for (const cc of result) ***REMOVED***
                 const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
-                                                                  cc['compute_center_login'], cc['compute_center_support_mail'])
+                    cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             ***REMOVED***
 
@@ -153,11 +142,11 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * Get all application modification requests.
      * @param ***REMOVED***number***REMOVED*** facility id of the facility
      */
-    getAllApplicationsModifications(facility: number) ***REMOVED***
-        this.isLoaded = false
+    getAllApplicationsModifications(facility: number):void ***REMOVED***
+        this.isLoaded = false;
         // todo check if user is VO Admin
         this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility).subscribe(res => ***REMOVED***
-            if (Object.keys(res).length == 0) ***REMOVED***
+            if (Object.keys(res).length === 0) ***REMOVED***
                 this.isLoaded = true;
             ***REMOVED***
 
@@ -409,7 +398,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
             this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
-        ***REMOVED***,                                                                                                             error => ***REMOVED***
+        ***REMOVED***, error => ***REMOVED***
             this.updateNotificationModal('Failed', 'Failed to approve the application.', true, 'danger');
 
         ***REMOVED***)
@@ -419,8 +408,8 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * Decline an extension request.
      * @param ***REMOVED***number***REMOVED*** application_id
      */
-    public declineExtension(app: Application) ***REMOVED***
-        const modificaton_requested = 4
+    public declineExtension(app: Application):void ***REMOVED***
+        const modificaton_requested :number= 4;
         this.applicationstatusservice.setApplicationStatus(app.Id, modificaton_requested).subscribe(res => ***REMOVED***
             this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
             this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
@@ -441,7 +430,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
 
             this.all_applications = [];
             this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
-        ***REMOVED***,                                                                                                             error => ***REMOVED***
+        ***REMOVED***, error => ***REMOVED***
             this.updateNotificationModal('Failed', 'Failed to decline the application.', true, 'danger');
 
         ***REMOVED***)

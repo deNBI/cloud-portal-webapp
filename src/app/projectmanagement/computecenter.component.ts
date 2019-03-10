@@ -1,3 +1,6 @@
+/**
+ * ComputeCenter component.
+ */
 export class ComputecenterComponent ***REMOVED***
 
     private _FacilityId: string;

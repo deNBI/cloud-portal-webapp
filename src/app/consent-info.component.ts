@@ -7,5 +7,5 @@ import ***REMOVED***environment***REMOVED*** from '../environments/environment';
 
 ***REMOVED***)
 export class ConsentInfoComponent ***REMOVED***
-    voLoginLink = environment.login
+    voLoginLink: string = environment.login
 ***REMOVED***

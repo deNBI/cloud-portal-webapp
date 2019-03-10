@@ -12,42 +12,44 @@ import ***REMOVED***ProjectMemberApplication***REMOVED*** from './project_member
 import ***REMOVED***ComputecenterComponent***REMOVED*** from './computecenter.component';
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
 
+
+/**
+ * Projectoverview component.
+ */
 @Component(***REMOVED***
     templateUrl: 'overview.component.html',
     providers: [VoService, UserService, GroupService, PerunSettings, ApiSettings]
 ***REMOVED***)
 export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
-    debug_module = false;
+    debug_module: boolean = false;
     @Input() invitation_group_post: string = environment.invitation_group_post;
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
     @Input() invitation_group_pre: string = environment.invitation_group_pre;
     @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
-    is_admin = false;
+    is_admin: boolean = false;
     userprojects: ***REMOVED******REMOVED***[];
     member_id: number;
     admingroups: ***REMOVED******REMOVED***;
     filteredMembers = null;
-    application_action = '';
-    application_member_name = '';
-    application_action_done = false;
+    application_action: string = '';
+    application_member_name: string = '';
+    application_action_done: boolean = false;
     application_action_success: boolean;
     application_action_error_message: boolean;
     projects: Project[] = new Array();
-    loaded = true;
-    details_loaded = false;
+    loaded: boolean = true;
+    details_loaded: boolean = false;
 
     // modal variables for User list
-    public usersModal;
-    public usersModalProjectMembers: ProjectMember[] = new Array;
+    public usersModalProjectMembers: ProjectMember[] = [];
     public usersModalProjectID: number;
     public usersModalProjectName: string;
     public selectedProject: Project;
 
-    public isLoaded = false;
+    public isLoaded: boolean = false;
 
     // modal variables for Add User Modal
-    public addUserModal;
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
     public addUserModalRealName: string;
@@ -56,35 +58,27 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
     public UserModalFacilityDetails: [string, string][];
     public UserModalFacility: [string, number];
 
-    public passwordModalTitle = 'Changing Password';
-    public passwordModalType = 'info';
-    public passwordModalPassword = '';
-    public passwordModalFacility = '';
-    public passwordModalEmail = '';
+    public passwordModalTitle: string = 'Changing Password';
+    public passwordModalType: string = 'info';
+    public passwordModalPassword: string = '';
+    public passwordModalFacility: string = '';
+    public passwordModalEmail: string = '';
 
-    constructor(private perunsettings: PerunSettings,
-                private groupservice: GroupService,
-                private userservice: UserService,
-                private voservice: VoService) ***REMOVED***
+    constructor(private groupservice: GroupService,
+                private userservice: UserService,) ***REMOVED***
         super();
         this.getUserProjects();
 
     ***REMOVED***
 
-    public updateUserProjects() ***REMOVED***
-        this.projects = [];
-
-    ***REMOVED***
-
     setAddUserInvitationLink(): void ***REMOVED***
-        const uri = this.invitation_group_pre + this.addUserModalRealName + this.invitation_group_post + this.addUserModalRealName;
+        const uri: string = this.invitation_group_pre + this.addUserModalRealName + this.invitation_group_post + this.addUserModalRealName;
         this.addUserModalInvitationLink = uri
 
     ***REMOVED***
 
-    setUserFacilityPassword(facility: string, details: [string, string][]) ***REMOVED***
+    setUserFacilityPassword(facility: string, details: [string, string][]): void ***REMOVED***
         this.userservice.setUserFacilityPassword(facility).subscribe(result => ***REMOVED***
-            result = result;
             for (const key of details) ***REMOVED***
                 if (key[0] === 'Support') ***REMOVED***
                     this.passwordModalEmail = key[1];
@@ -103,18 +97,16 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    getProjectLifetime(project) ***REMOVED***
+    getProjectLifetime(project: Project): void ***REMOVED***
         this.details_loaded = false;
         if (!project.Lifetime) ***REMOVED***
             this.groupservice.getLifetime(project.Id).subscribe(res => ***REMOVED***
-                const lifetime = res['lifetime'];
-                let dateCreated = project.DateCreated;
-
-                let expirationDate;
-                dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
+                const lifetime: number | string = res['lifetime'];
+                const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
                 if (lifetime !== -1) ***REMOVED***
-                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-                    const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
+                    const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+                    const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
+                        .diff(moment(dateCreated), 'days'));
 
                     project.LifetimeDays = lifetimeDays;
                     project.DateEnd = expirationDate;
@@ -129,27 +121,28 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-    getUserProjects() ***REMOVED***
+    getUserProjects(): void ***REMOVED***
 
         this.groupservice.getGroupDetails().subscribe(result => ***REMOVED***
             this.userprojects = result;
             for (const group of this.userprojects) ***REMOVED***
                 const dateCreated = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
-                const dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                const is_pi = group['is_pi'];
-                const groupid = group['id'];
+                const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
+                const is_pi: boolean = group['is_pi'];
+                const groupid: string = group['id'];
                 const facility = group['compute_center'];
-                const shortname = group['shortname'];
+                const shortname: string = group['shortname'];
 
-                const realname = group['name'];
-                let compute_center = null;
+                const realname: string = group['name'];
+                let compute_center: ComputecenterComponent = null;
 
                 if (facility) ***REMOVED***
-                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'], facility['compute_center_name'],
-                                                                facility['compute_center_login'], facility['compute_center_support_mail']);
+                    compute_center = new ComputecenterComponent(
+                        facility['compute_center_facility_id'], facility['compute_center_name'],
+                        facility['compute_center_login'], facility['compute_center_support_mail']);
                 ***REMOVED***
 
-                const newProject = new Project(
+                const newProject: Project = new Project(
                     Number(groupid),
                     shortname,
                     group['description'],
@@ -167,19 +160,19 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-    resetAddUserModal() ***REMOVED***
+    resetAddUserModal(): void ***REMOVED***
         this.addUserModalProjectID = null;
         this.addUserModalProjectName = null;
         this.UserModalFacility = null;
     ***REMOVED***
 
-    filterMembers(searchString: string, groupid: number) ***REMOVED***
+    filterMembers(searchString: string, groupid: number): void ***REMOVED***
         this.userservice.getFilteredMembersOfdeNBIVo(searchString, groupid.toString()).subscribe(result => ***REMOVED***
             this.filteredMembers = result;
         ***REMOVED***)
     ***REMOVED***
 
-    getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
+    getMembesOfTheProject(projectid: number, projectname: string): void ***REMOVED***
         this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => ***REMOVED***
 
             this.usersModalProjectID = projectid;
@@ -188,10 +181,10 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
             this.groupservice.getGroupAdminIds(projectid.toString()).subscribe(result => ***REMOVED***
                 const admindIds = result['adminIds'];
                 for (const member of members) ***REMOVED***
-                    const member_id = member['id'];
-                    const user_id = member['userId'];
-                    const fullName = member['firstName'] + ' ' + member['lastName'];
-                    const projectMember = new ProjectMember(user_id, fullName, member_id);
+                    const member_id: string = member['id'];
+                    const user_id: string = member['userId'];
+                    const fullName: string = `$***REMOVED***member['firstName']***REMOVED*** $***REMOVED***member['lastName']***REMOVED***`;
+                    const projectMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
                     projectMember.ElixirId = member['elixirId'];
                     if (admindIds.indexOf(user_id) !== -1) ***REMOVED***
                         projectMember.IsPi = true;
@@ -207,22 +200,22 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    loadProjectApplications(project: number) ***REMOVED***
+    loadProjectApplications(project: number): void ***REMOVED***
         this.loaded = false;
         this.groupservice.getGroupApplications(project).subscribe(applications => ***REMOVED***
             this.selectedProject.ProjectMemberApplications = [];
 
-            const newProjectApplications = [];
+            const newProjectApplications: ProjectMemberApplication[] = [];
             if (applications.length === 0) ***REMOVED***
                 this.loaded = true;
 
             ***REMOVED***
             for (const application of applications) ***REMOVED***
-                const dateApplicationCreated = moment(application['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
-                const membername = application['displayName'];
+                const dateApplicationCreated: moment.Moment = moment(application['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const membername: string = application['displayName'];
 
-                const newMemberApplication = new ProjectMemberApplication(
-                    application['id'], membername, dateApplicationCreated.date() + '.' + (dateApplicationCreated.month() + 1)
+                const newMemberApplication: ProjectMemberApplication = new ProjectMemberApplication(
+                    application['id'], membername, `$***REMOVED***dateApplicationCreated.date()***REMOVED***.$***REMOVED***(dateApplicationCreated.month() + 1)***REMOVED***`
                     + '.' + dateApplicationCreated.year()
                 );
                 newProjectApplications.push(newMemberApplication);
@@ -236,11 +229,10 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-    approveMemberApplication(project: number, application: number, membername: string) ***REMOVED***
+    approveMemberApplication(project: number, application: number, membername: string): void ***REMOVED***
         this.loaded = false;
         this.application_action_done = false;
-        this.groupservice.approveGroupApplication(project, application).subscribe(result => ***REMOVED***
-            const tmp_application = result;
+        this.groupservice.approveGroupApplication(project, application).subscribe(tmp_application => ***REMOVED***
             this.selectedProject.ProjectMemberApplications = [];
 
             if (tmp_application['state'] === 'APPROVED') ***REMOVED***
@@ -262,12 +254,11 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    rejectMemberApplication(project: number, application: number, membername: string) ***REMOVED***
+    rejectMemberApplication(project: number, application: number, membername: string): void ***REMOVED***
         this.loaded = false;
         this.application_action_done = false;
 
-        this.groupservice.rejectGroupApplication(project, application).subscribe(result => ***REMOVED***
-                const tmp_application = result;
+        this.groupservice.rejectGroupApplication(project, application).subscribe(tmp_application => ***REMOVED***
                 this.selectedProject.ProjectMemberApplications = [];
 
                 if (tmp_application['state'] === 'REJECTED') ***REMOVED***
@@ -299,7 +290,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-    public showMembersOfTheProject(projectid: number, projectname: string, facility?: [string, number]) ***REMOVED***
+    public showMembersOfTheProject(projectid: number, projectname: string, facility?: [string, number]): void ***REMOVED***
         this.getMembesOfTheProject(projectid, projectname);
 
         if (facility) ***REMOVED***
@@ -312,7 +303,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-    public resetPasswordModal() ***REMOVED***
+    public resetPasswordModal(): void ***REMOVED***
         this.passwordModalTitle = 'Changing Password';
         this.passwordModalType = 'info';
         this.passwordModalPassword = '';
@@ -321,7 +312,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-    public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility?: [string, number]) ***REMOVED***
+    public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility?: [string, number]): void ***REMOVED***
         this.addUserModalProjectID = projectid;
         this.addUserModalProjectName = projectname;
         this.addUserModalRealName = realname;
@@ -336,15 +327,15 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
-    public addMember(groupid: number, memberid: number, firstName: string, lastName: string) ***REMOVED***
-        let facility_id = null
+    public addMember(groupid: number, memberid: number, firstName: string, lastName: string): void ***REMOVED***
+        let facility_id: string | number = null;
         if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
             facility_id = this.UserModalFacility[1]
         ***REMOVED***
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => ***REMOVED***
                 if (result.status === 200) ***REMOVED***
-                    this.updateNotificationModal('Success', 'Member ' + firstName + ' ' + lastName + ' added.', true, 'success');
+                    this.updateNotificationModal('Success', `Member ' + $***REMOVED***firstName***REMOVED*** $***REMOVED***lastName***REMOVED*** added.`, true, 'success');
 
                 ***REMOVED*** else ***REMOVED***
 
@@ -354,7 +345,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
             error => ***REMOVED***
 
                 if (error['name'] === 'AlreadyMemberException') ***REMOVED***
-                    this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a member of the project.', true, 'info');
+                    this.updateNotificationModal('Info', `$***REMOVED***firstName***REMOVED*** $***REMOVED***lastName***REMOVED*** is already a member of the project.`, true, 'info');
                 ***REMOVED*** else ***REMOVED***
                     this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
                 ***REMOVED***
@@ -362,52 +353,56 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string) ***REMOVED***
-        let facility_id = null;
+    public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string): void ***REMOVED***
+        let facility_id: string | number = null;
         if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
             facility_id = this.UserModalFacility[1]
         ***REMOVED***
-        this.groupservice.addMember(groupid, memberid, facility_id).subscribe(res => ***REMOVED***
-            this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
-                result => ***REMOVED***
+        this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
+            () => ***REMOVED***
+                this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
+                    result => ***REMOVED***
 
-                    if (result.status === 200) ***REMOVED***
-                        this.updateNotificationModal('Success', 'Admin ' + firstName + ' ' + lastName + ' added.', true, 'success');
+                        if (result.status === 200) ***REMOVED***
+                            this.updateNotificationModal('Success', `Admin $***REMOVED***firstName***REMOVED*** $***REMOVED***lastName***REMOVED*** added.`, true, 'success');
 
-                    ***REMOVED*** else ***REMOVED***
-                        this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-                    ***REMOVED***
-                ***REMOVED***, error => ***REMOVED***
-                    if (error['name'] === 'AlreadyAdminException') ***REMOVED***
-                        this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a admin of the project.',
-                                                     true, 'info');
-                    ***REMOVED*** else ***REMOVED***
-                        this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-                    ***REMOVED***
-                ***REMOVED***)
-        ***REMOVED***,                                                                    err => ***REMOVED***
-            this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
-                result => ***REMOVED***
+                        ***REMOVED*** else ***REMOVED***
+                            this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
+                        ***REMOVED***
+                    ***REMOVED***, error => ***REMOVED***
+                        if (error['name'] === 'AlreadyAdminException') ***REMOVED***
+                            this.updateNotificationModal(
+                                'Info', `$***REMOVED***firstName***REMOVED*** $***REMOVED***lastName***REMOVED*** is already a admin of the project.`,
+                                true, 'info');
+                        ***REMOVED*** else ***REMOVED***
+                            this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
+                        ***REMOVED***
+                    ***REMOVED***)
+            ***REMOVED***,
+            () => ***REMOVED***
+                this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
+                    result => ***REMOVED***
 
-                    if (result.status === 200) ***REMOVED***
-                        this.updateNotificationModal('Success', 'Admin ' + firstName + ' ' + lastName + ' added.', true, 'success');
+                        if (result.status === 200) ***REMOVED***
+                            this.updateNotificationModal('Success', `Admin $***REMOVED***firstName***REMOVED*** $***REMOVED***lastName***REMOVED*** added.`, true, 'success');
 
-                    ***REMOVED*** else ***REMOVED***
-                        this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-                    ***REMOVED***
-                ***REMOVED***, error => ***REMOVED***
-                    if (error['name'] === 'AlreadyAdminException') ***REMOVED***
-                        this.updateNotificationModal('Info', firstName + ' ' + lastName + ' is already a admin of the project.',
-                                                     true, 'info');
-                    ***REMOVED*** else ***REMOVED***
-                        this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-                    ***REMOVED***
-                ***REMOVED***)
-        ***REMOVED***)
+                        ***REMOVED*** else ***REMOVED***
+                            this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
+                        ***REMOVED***
+                    ***REMOVED***, error => ***REMOVED***
+                        if (error['name'] === 'AlreadyAdminException') ***REMOVED***
+                            this.updateNotificationModal(
+                                'Info', `$***REMOVED***firstName***REMOVED*** $***REMOVED***lastName***REMOVED*** is already a admin of the project.`,
+                                true, 'info');
+                        ***REMOVED*** else ***REMOVED***
+                            this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
+                        ***REMOVED***
+                    ***REMOVED***)
+            ***REMOVED***)
     ***REMOVED***
 
-    public promoteAdmin(groupid: number, userid: number, username: string) ***REMOVED***
-        let facility_id = null;
+    public promoteAdmin(groupid: number, userid: number, username: string): void ***REMOVED***
+        let facility_id: string | number = null;
         if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
             facility_id = this.UserModalFacility[1]
         ***REMOVED***
@@ -415,18 +410,18 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
             .then(result => ***REMOVED***
 
                 if (result.status === 200) ***REMOVED***
-                    this.updateNotificationModal('Success', username + ' promoted to Admin', true, 'success');
+                    this.updateNotificationModal('Success', `$***REMOVED***username***REMOVED*** promoted to Admin`, true, 'success');
 
                 ***REMOVED*** else ***REMOVED***
-                    this.updateNotificationModal('Failed', username + ' could not be promoted to Admin!', true, 'danger');
+                    this.updateNotificationModal('Failed', `$***REMOVED***username***REMOVED*** could not be promoted to Admin!`, true, 'danger');
                 ***REMOVED***
-            ***REMOVED***).catch(error => ***REMOVED***
-            this.updateNotificationModal('Failed', username + ' could not be promoted to Admin!', true, 'danger');
+            ***REMOVED***).catch(() => ***REMOVED***
+            this.updateNotificationModal('Failed', `$***REMOVED***username***REMOVED*** could not be promoted to Admin!`, true, 'danger');
         ***REMOVED***);
     ***REMOVED***
 
-    public removeAdmin(groupid: number, userid: number, name: string) ***REMOVED***
-        let facility_id = null;
+    public removeAdmin(groupid: number, userid: number, name: string): void ***REMOVED***
+        let facility_id: string | number = null;
         if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
             facility_id = this.UserModalFacility[1]
         ***REMOVED***
@@ -434,41 +429,43 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
             .then(result => ***REMOVED***
 
                 if (result.status === 200) ***REMOVED***
-                    this.updateNotificationModal('Success', name + ' was removed as Admin', true, 'success');
+                    this.updateNotificationModal('Success', `$***REMOVED***name***REMOVED*** was removed as Admin`, true, 'success');
 
                 ***REMOVED*** else ***REMOVED***
-                    this.updateNotificationModal('Failed', name + ' could not be removed as Admin!', true, 'danger');
+                    this.updateNotificationModal('Failed', `$***REMOVED***name***REMOVED*** could not be removed as Admin!`, true, 'danger');
                 ***REMOVED***
-            ***REMOVED***).catch(error => ***REMOVED***
-            this.updateNotificationModal('Failed', name + ' could not be removed as Admin!', true, 'danger');
+            ***REMOVED***).catch(() => ***REMOVED***
+            this.updateNotificationModal('Failed', `$***REMOVED***name***REMOVED*** could not be removed as Admin!`, true, 'danger'
+            );
         ***REMOVED***);
     ***REMOVED***
 
-    public removeMember(groupid: number, memberid: number, name: string) ***REMOVED***
-        let facility_id = null;
+    public removeMember(groupid: number, memberid: number, name: string): void ***REMOVED***
+        let facility_id: string | number = null;
         if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
             facility_id = this.UserModalFacility[1]
         ***REMOVED***
-        this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(result => ***REMOVED***
+        this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(
+            result => ***REMOVED***
 
                 if (result.status === 200) ***REMOVED***
-                    this.updateNotificationModal('Success', 'Member ' + name + ' removed from the group', true, 'success');
+                    this.updateNotificationModal('Success', `Member $***REMOVED***name***REMOVED***  removed from the group`, true, 'success');
 
                 ***REMOVED*** else ***REMOVED***
-                    this.updateNotificationModal('Failed', 'Member' + name + ' could not be removed !', true, 'danger');
+                    this.updateNotificationModal('Failed', `Member $***REMOVED***name***REMOVED***  could not be removed !`, true, 'danger');
                 ***REMOVED***
             ***REMOVED***,
-                                                                                 error => ***REMOVED***
-                this.updateNotificationModal('Failed', 'Member' + name + ' could not be removed !', true, 'danger');
+            () => ***REMOVED***
+                this.updateNotificationModal('Failed', `Member $***REMOVED***name***REMOVED***  could not be removed !`, true, 'danger');
             ***REMOVED***);
     ***REMOVED***
 
-    public resetFacilityDetailsModal() ***REMOVED***
+    public resetFacilityDetailsModal(): void ***REMOVED***
         this.UserModalFacility = null;
         this.UserModalFacilityDetails = null;
     ***REMOVED***
 
-    public comingSoon() ***REMOVED***
+    public comingSoon(): void ***REMOVED***
         alert('This function will be implemented soon.')
     ***REMOVED***
 ***REMOVED***

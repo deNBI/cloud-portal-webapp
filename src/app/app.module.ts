@@ -27,6 +27,9 @@ import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.direc
 import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
 import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sidebar.directive';
 
+/**
+ * App module.
+ */
 @NgModule(***REMOVED***
     imports: [
         BrowserModule,

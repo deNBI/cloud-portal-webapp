@@ -39,7 +39,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
 
     abstract checkFilter(obj: any): void
 
-    isFilterProjectId(id: number): boolean ***REMOVED***
+    isFilterProjectId(id: number | string): boolean ***REMOVED***
         if (!this.filterProjectId) ***REMOVED***
             return true;
         ***REMOVED*** else if (id.toString().indexOf(this.filterProjectId.toString()) === 0) ***REMOVED***

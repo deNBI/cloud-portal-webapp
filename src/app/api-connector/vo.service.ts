@@ -41,7 +41,7 @@ export class VoService ***REMOVED***
 
     ***REMOVED***
 
-    removeResourceFromGroup(groupid: string): Observable<any> ***REMOVED***
+    removeResourceFromGroup(groupid: number | string): Observable<any> ***REMOVED***
         return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/resource/`, ***REMOVED***
             withCredentials: true,
             headers: header
@@ -57,8 +57,8 @@ export class VoService ***REMOVED***
 
     ***REMOVED***
 
-    getProjectStatus(groupid: number): Observable<any> ***REMOVED***
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/' + groupid + '/status/`, ***REMOVED***
+    getProjectStatus(groupid: number | string): Observable<any> ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/status/`, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
@@ -71,7 +71,7 @@ export class VoService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    setProjectStatus(groupid: number, status: number): Observable<any> ***REMOVED***
+    setProjectStatus(groupid: number | string, status: number): Observable<any> ***REMOVED***
         const params: HttpParams = new HttpParams().set('status', status.toString());
 
         return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/status/`, params, ***REMOVED***
@@ -106,7 +106,7 @@ export class VoService ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** groupid id of the the group
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    getVoGroupRichMembers(groupid: number): Observable<any> ***REMOVED***
+    getVoGroupRichMembers(groupid: number | string): Observable<any> ***REMOVED***
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/members/`, ***REMOVED***
             withCredentials: true
         ***REMOVED***)

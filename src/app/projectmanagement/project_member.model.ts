@@ -7,14 +7,14 @@ export class ProjectMember ***REMOVED***
         this._Email = value;
     ***REMOVED***
 
-    private _Id: number;
-    private _MemberId: number;
+    private _Id: number | string;
+    private _MemberId: number | string;
     private _Username: string;
     private _IsPi: boolean;
     private _ElixirId: string;
     private _Email: string;
 
-    constructor(Id: number, Username: string, MemberId: number) ***REMOVED***
+    constructor(Id: number | string, Username: string, MemberId: number | string) ***REMOVED***
         this._Id = Id;
         this._Username = Username;
         this._MemberId = MemberId;
@@ -37,11 +37,12 @@ export class ProjectMember ***REMOVED***
         this._IsPi = value;
     ***REMOVED***
 
-    get Id(): number ***REMOVED***
+
+    get Id(): number | string ***REMOVED***
         return this._Id;
     ***REMOVED***
 
-    set Id(value: number) ***REMOVED***
+    set Id(value: number | string) ***REMOVED***
         this._Id = value;
     ***REMOVED***
 
@@ -53,11 +54,11 @@ export class ProjectMember ***REMOVED***
         this._Username = value;
     ***REMOVED***
 
-    get MemberId(): number ***REMOVED***
+    get MemberId(): number | string ***REMOVED***
         return this._MemberId;
     ***REMOVED***
 
-    set MemberId(value: number) ***REMOVED***
+    set MemberId(value: number | string) ***REMOVED***
         this._MemberId = value;
     ***REMOVED***
 ***REMOVED***
