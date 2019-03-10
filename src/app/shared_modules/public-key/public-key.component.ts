@@ -1,14 +1,13 @@
 import ***REMOVED***Component, Input, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***KeyService***REMOVED*** from '../../api-connector/key.service';
 import ***REMOVED***ApiSettings***REMOVED*** from '../../api-connector/api-settings.service';
-import ***REMOVED***PerunSettings***REMOVED*** from '../../perun-connector/connector-settings.service';
 import ***REMOVED***Userinfo***REMOVED*** from '../../userinfo/userinfo.model';
 
 @Component(***REMOVED***
     selector: '[app-public-key]',
     templateUrl: './public-key.component.html',
     styleUrls: ['./public-key.component.scss'],
-    providers: [PerunSettings, ApiSettings, KeyService]
+    providers: [ ApiSettings, KeyService]
 
 ***REMOVED***)
 export class PublicKeyComponent implements OnInit ***REMOVED***

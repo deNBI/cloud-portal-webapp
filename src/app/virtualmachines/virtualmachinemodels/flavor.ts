@@ -1,5 +1,8 @@
 import ***REMOVED***FlavorType***REMOVED*** from './flavorType';
 
+/**
+ * Flavor Class.
+ */
 export class Flavor ***REMOVED***
     private _id: string;
     private _name: string;

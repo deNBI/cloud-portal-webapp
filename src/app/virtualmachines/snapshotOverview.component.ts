@@ -34,14 +34,14 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
      * Actual delete status.
      * @type ***REMOVED***Snapshot_Delete_Statuses***REMOVED***
      */
-    delete_status = this.delete_statuses.WAITING;
+    delete_status: number = this.delete_statuses.WAITING;
     /**
      * If site was initialized.
      * @type ***REMOVED***boolean***REMOVED***
      */
-    isLoaded = false;
+    isLoaded: boolean = false;
 
-    private checkStatusTimeout = 5000;
+    private checkStatusTimeout: number = 5000;
 
     constructor(private imageService: ImageService) ***REMOVED***
 
@@ -51,14 +51,14 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
      * Set selected Snapshot.
      * @param ***REMOVED***SnapshotModel***REMOVED*** snapshot
      */
-    setSelectedSnapshot(snapshot: SnapshotModel) ***REMOVED***
+    setSelectedSnapshot(snapshot: SnapshotModel): void ***REMOVED***
         this.selected_snapshot = snapshot;
     ***REMOVED***
 
     /**
      * Get snapshots by user.
      */
-    getSnapshots() ***REMOVED***
+    getSnapshots(): void ***REMOVED***
         this.imageService.getSnapshotsByUser().subscribe(result => ***REMOVED***
             this.snapshots = result;
             this.isLoaded = true;
@@ -66,31 +66,33 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    checkSnapShotsStatus() ***REMOVED***
-        let all_active = true;
+    checkSnapShotsStatus(): void ***REMOVED***
+        let all_active: boolean = true;
 
-        setTimeout(() => ***REMOVED***
-            const observables = [];
-            for (const s of this.snapshots) ***REMOVED***
+        setTimeout(
+            () => ***REMOVED***
+                const observables = [];
+                for (const s of this.snapshots) ***REMOVED***
 
-                observables.push(this.imageService.getSnapshot(s.snapshot_openstackid));
+                    observables.push(this.imageService.getSnapshot(s.snapshot_openstackid));
 
-            ***REMOVED***
-            forkJoin(observables).subscribe(res => ***REMOVED***
-                for (const i of res) ***REMOVED***
-                    this.snapshots[res.indexOf(i)].snapshot_status = i['status'];
-                    if (i['status'] !== 'active') ***REMOVED***
-                        all_active = false;
+                ***REMOVED***
+                forkJoin(observables).subscribe(res => ***REMOVED***
+                    for (const i of res) ***REMOVED***
+                        this.snapshots[res.indexOf(i)].snapshot_status = i['status'];
+                        if (i['status'] !== 'active') ***REMOVED***
+                            all_active = false;
+                        ***REMOVED***
+
                     ***REMOVED***
-
-                ***REMOVED***
-                if (all_active) ***REMOVED***
-                    return;
-                ***REMOVED*** else ***REMOVED***
-                    this.checkSnapShotsStatus();
-                ***REMOVED***
-            ***REMOVED***)
-        ***REMOVED***,         this.checkStatusTimeout);
+                    if (all_active) ***REMOVED***
+                        return;
+                    ***REMOVED*** else ***REMOVED***
+                        this.checkSnapShotsStatus();
+                    ***REMOVED***
+                ***REMOVED***)
+            ***REMOVED***,
+            this.checkStatusTimeout);
 
     ***REMOVED***
 
@@ -98,7 +100,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
      * Delete snapshot.
      * @param ***REMOVED***string***REMOVED*** snapshot_id
      */
-    deleteSnapshot(snapshot_id: string) ***REMOVED***
+    deleteSnapshot(snapshot_id: string): void ***REMOVED***
         this.imageService.deleteSnapshot(snapshot_id).subscribe(result => ***REMOVED***
 
             this.delete_status = 0;

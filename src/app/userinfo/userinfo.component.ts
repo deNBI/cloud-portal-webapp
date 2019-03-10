@@ -1,7 +1,6 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 
 import ***REMOVED***Userinfo***REMOVED*** from './userinfo.model'
-import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connector-settings.service';
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***KeyService***REMOVED*** from '../api-connector/key.service';
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
@@ -10,7 +9,7 @@ import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.servi
 @Component(***REMOVED***
     selector: 'app-userinfo',
     templateUrl: 'userinfo.component.html',
-    providers: [GroupService, UserService, PerunSettings, ApiSettings, KeyService]
+    providers: [GroupService, UserService, ApiSettings, KeyService]
 ***REMOVED***)
 export class UserinfoComponent implements OnInit ***REMOVED***
     userinfo: Userinfo;

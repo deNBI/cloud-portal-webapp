@@ -1,4 +1,4 @@
-import ***REMOVED***Component, Input, OnInit***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, Input***REMOVED*** from '@angular/core';
 import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor'
 
 @Component(***REMOVED***
@@ -6,10 +6,7 @@ import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor'
     templateUrl: 'flavordetail.component.html'
 
 ***REMOVED***)
-export class FlavorDetailComponent implements OnInit ***REMOVED***
+export class FlavorDetailComponent ***REMOVED***
     @Input() flavor: Flavor;
     @Input() collapse2: boolean;
-
-    ngOnInit() ***REMOVED***
-    ***REMOVED***
 ***REMOVED***

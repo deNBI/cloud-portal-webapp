@@ -1,6 +1,9 @@
 import ***REMOVED***VirtualMachine***REMOVED*** from './virtualmachine';
-import ***REMOVED***Vmclient***REMOVED*** from './vmclient';
+import ***REMOVED***Client***REMOVED*** from './vmclient';
 
+/**
+ * Volume class.
+ */
 export class Volume ***REMOVED***
     volume_name: string;
     volume_project: string;
@@ -8,5 +11,5 @@ export class Volume ***REMOVED***
     volume_openstackid: string;
     volume_size: number;
     volume_virtualmachine: VirtualMachine;
-    volume_client = Vmclient;
+    volume_client: Client;
 ***REMOVED***

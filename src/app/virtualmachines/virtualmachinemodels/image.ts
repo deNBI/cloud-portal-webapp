@@ -1,3 +1,6 @@
+/**
+ * Image class.
+ */
 export class Image ***REMOVED***
     id: string;
     name: string;

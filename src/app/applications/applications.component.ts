@@ -2,7 +2,6 @@ import ***REMOVED***Component***REMOVED*** from '@angular/core';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
-import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connector-settings.service';
 import ***REMOVED***Application***REMOVED*** from './application.model';
 import ***REMOVED***ApplicationStatus***REMOVED*** from './application_status.model';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
@@ -16,14 +15,14 @@ import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/base
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
-import ***REMOVED***Vmclient***REMOVED*** from '../virtualmachines/virtualmachinemodels/vmclient';
+import ***REMOVED***Client***REMOVED*** from '../virtualmachines/virtualmachinemodels/vmclient';
 
 /**
  * Application Overview component.
  */
 @Component(***REMOVED***
     templateUrl: 'applications.component.html',
-    providers: [FacilityService, VoService, UserService, GroupService, PerunSettings, ApplicationStatusService,
+    providers: [FacilityService, VoService, UserService, GroupService, ApplicationStatusService,
         ApplicationsService, ApiSettings, FlavorService]
 ***REMOVED***)
 export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
@@ -31,7 +30,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
     /**
      * Limits information for Client tested/used for Simple Vm Project creation.
      */
-    notificationClientInfo: Vmclient[] = [];
+    notificationClientInfo: Client[] = [];
 
     /**
      * Applications of the user viewing the Application overview.
@@ -1035,11 +1034,11 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
         let manager_member_user_id: string;
         let new_group_id: string;
         this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
-            (res: Vmclient) => ***REMOVED***
+            (res: Client) => ***REMOVED***
                 if (res['Info']) ***REMOVED***
                     if (res['Clients']) ***REMOVED***
                         for (const client of res['Clients']) ***REMOVED***
-                            const newClient: Vmclient = new Vmclient();
+                            const newClient: Client = new Client();
                             newClient.location = client.location;
                             newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
                             newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
@@ -1083,7 +1082,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                                                 ***REMOVED*** else ***REMOVED***
                                                     this.applicationsservice.getApplicationClient(
                                                         application_id).subscribe((client: object) => ***REMOVED***
-                                                        const newClient: Vmclient = new Vmclient();
+                                                        const newClient: Client = new Client();
                                                         newClient.location = client['location'];
                                                         newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
                                                         newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];

@@ -1,5 +1,4 @@
 import ***REMOVED***Component, Input***REMOVED*** from '@angular/core';
-import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connector-settings.service';
 import ***REMOVED***Project***REMOVED*** from './project.model';
 import ***REMOVED***ProjectMember***REMOVED*** from './project_member.model'
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
@@ -12,13 +11,12 @@ import ***REMOVED***ProjectMemberApplication***REMOVED*** from './project_member
 import ***REMOVED***ComputecenterComponent***REMOVED*** from './computecenter.component';
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
 
-
 /**
  * Projectoverview component.
  */
 @Component(***REMOVED***
     templateUrl: 'overview.component.html',
-    providers: [VoService, UserService, GroupService, PerunSettings, ApiSettings]
+    providers: [VoService, UserService, GroupService, ApiSettings]
 ***REMOVED***)
 export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
@@ -65,7 +63,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
     public passwordModalEmail: string = '';
 
     constructor(private groupservice: GroupService,
-                private userservice: UserService,) ***REMOVED***
+                private userservice: UserService) ***REMOVED***
         super();
         this.getUserProjects();
 
@@ -126,7 +124,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         this.groupservice.getGroupDetails().subscribe(result => ***REMOVED***
             this.userprojects = result;
             for (const group of this.userprojects) ***REMOVED***
-                const dateCreated = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const dateCreated: moment.Moment = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
                 const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
                 const is_pi: boolean = group['is_pi'];
                 const groupid: string = group['id'];

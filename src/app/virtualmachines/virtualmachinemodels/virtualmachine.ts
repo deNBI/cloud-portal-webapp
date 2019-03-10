@@ -1,7 +1,10 @@
 import ***REMOVED***Image***REMOVED*** from './image';
 import ***REMOVED***Flavor***REMOVED*** from './flavor';
-import ***REMOVED***Vmclient***REMOVED*** from './vmclient';
+import ***REMOVED***Client***REMOVED*** from './vmclient';
 
+/**
+ * Virtualmachine class.
+ */
 export class VirtualMachine ***REMOVED***
     flavor: Flavor;
     image: Image;
@@ -9,7 +12,7 @@ export class VirtualMachine ***REMOVED***
     status: string;
     keyname: string;
     name: string;
-    client: Vmclient;
+    client: Client;
     openstackid: string;
     created_at: string;
     stopped_at: string;

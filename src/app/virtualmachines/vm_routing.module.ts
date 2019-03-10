@@ -49,6 +49,9 @@ const routes: Routes = [
     ***REMOVED***
 ];
 
+/**
+ * Vm routing module.
+ */
 @NgModule(***REMOVED***
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]

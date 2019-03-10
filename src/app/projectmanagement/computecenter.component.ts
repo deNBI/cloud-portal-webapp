@@ -41,11 +41,10 @@ export class ComputecenterComponent ***REMOVED***
     ***REMOVED***
 
     get Support(): string ***REMOVED***
-        return this._Support
+        return this._Support;
     ***REMOVED***
 
     set Support(value: string) ***REMOVED***
-        this.Support = value;
+        this._Support = value;
     ***REMOVED***
-
 ***REMOVED***

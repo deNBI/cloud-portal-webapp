@@ -20,8 +20,6 @@ import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
 import ***REMOVED***ConsentInfoComponent***REMOVED*** from './consent-info.component';
 // Layouts
 import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout.component';
-import ***REMOVED***SimpleLayoutComponent***REMOVED*** from './layouts/simple-layout.component';
-import ***REMOVED***PerunSettings***REMOVED*** from './perun-connector/connector-settings.service';
 import ***REMOVED***RegistrationInfoComponent***REMOVED*** from './registration-info.component';
 import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.directive';
 import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
@@ -46,7 +44,6 @@ import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sideba
     declarations: [
         AppComponent,
         FullLayoutComponent,
-        SimpleLayoutComponent,
         NAV_DROPDOWN_DIRECTIVES,
         BreadcrumbsComponent,
         SIDEBAR_TOGGLE_DIRECTIVES,
@@ -59,7 +56,6 @@ import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sideba
         useClass: HashLocationStrategy
     ***REMOVED***,
 
-        PerunSettings,
         ApiSettings,
         UserService
     ],

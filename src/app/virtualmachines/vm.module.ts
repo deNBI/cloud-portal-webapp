@@ -16,6 +16,9 @@ import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination
 import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared_modules/public-key/public-key.module';
 import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
 
+/**
+ * VM module.
+ */
 @NgModule(***REMOVED***
     imports: [
         ClickOutsideModule,

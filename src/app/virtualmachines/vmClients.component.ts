@@ -1,34 +1,38 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***Vmclient***REMOVED*** from './virtualmachinemodels/vmclient';
+import ***REMOVED***Client***REMOVED*** from './virtualmachinemodels/vmclient';
 import ***REMOVED***ClientService***REMOVED*** from '../api-connector/vmClients.service';
-import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connector-settings.service';
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
+import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
 
+
+/**
+ * Client component.
+ */
 @Component(***REMOVED***
     selector: 'app-client-overview',
     templateUrl: 'vmClients.component.html',
-    providers: [FacilityService, UserService, GroupService, ClientService, PerunSettings, ApiSettings]
+    providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings]
 ***REMOVED***)
 
 export class ClientOverviewComponent implements OnInit ***REMOVED***
     /**
      * All clients.
      */
-    clients: Vmclient[];
+    clients: Client[];
     /**
      * If user is vo.
      * @type ***REMOVED***boolean***REMOVED***
      */
-    is_vo_admin = false;
+    is_vo_admin: boolean = false;
     /**
      * Default status not added client.
      * @type ***REMOVED***string***REMOVED***
      */
-    checkStatus = 'Not checked';
+    checkStatus: string = 'Not checked';
     /**
      * All computecenters.
      * @type ***REMOVED***Array***REMOVED***
@@ -42,10 +46,10 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
      * If site is initialized with data.
      * @type ***REMOVED***boolean***REMOVED***
      */
-    isLoaded = false;
+    isLoaded: boolean = false;
 
-    constructor(private facilityService: FacilityService, private userservice: UserService, private groupservice: GroupService,
-                private clientservice: ClientService, private perunsettings: PerunSettings) ***REMOVED***
+    constructor(private facilityService: FacilityService, private userservice: UserService,
+                private clientservice: ClientService) ***REMOVED***
 
     ***REMOVED***
 
@@ -53,7 +57,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
      * Check if user is vo.
      * @param ***REMOVED***UserService***REMOVED*** userservice
      */
-    checkVOstatus(userservice: UserService) ***REMOVED***
+    checkVOstatus(userservice: UserService): void ***REMOVED***
         let user_id: number;
         let admin_vos: ***REMOVED******REMOVED***;
         this.userservice
@@ -65,10 +69,10 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
                 return userservice.getVosWhereUserIsAdmin().toPromise();
             ***REMOVED***).then(function (adminvos) ***REMOVED***
             admin_vos = adminvos;
-        ***REMOVED***).then(result => ***REMOVED***
+        ***REMOVED***).then(() => ***REMOVED***
             // check if user is a Vo admin so we can serv according buttons
             for (const vkey in admin_vos) ***REMOVED***
-                if (admin_vos[vkey]['id'] === this.perunsettings.getPerunVO().toString()) ***REMOVED***
+                if (admin_vos[vkey]['id'] === environment.vo.toString()) ***REMOVED***
                     this.is_vo_admin = true;
                 ***REMOVED***
             ***REMOVED***
@@ -89,11 +93,12 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     /**
      * Get all computecenters.
      */
-    getComputeCenters() ***REMOVED***
+    getComputeCenters(): void ***REMOVED***
         this.facilityService.getComputeCenters().subscribe(result => ***REMOVED***
             for (const cc of result) ***REMOVED***
-                const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
-                                                                  cc['compute_center_login'], cc['compute_center_support_mail'])
+                const compute_center: ComputecenterComponent = new ComputecenterComponent(
+                    cc['compute_center_facility_id'], cc['compute_center_name'],
+                    cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             ***REMOVED***
 
@@ -131,7 +136,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     postClient(host: string, port: string, location: string): void ***REMOVED***
 
         if (host && port && location) ***REMOVED***
-            this.clientservice.postClient(host, port, location).subscribe(data => ***REMOVED***
+            this.clientservice.postClient(host, port, location).subscribe(() => ***REMOVED***
 
                 this.getClientsChecked();
             ***REMOVED***);
@@ -143,7 +148,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** client_id
      */
     deleteClient(client_id: number): void ***REMOVED***
-        this.clientservice.deleteClient(client_id).subscribe(data => ***REMOVED***
+        this.clientservice.deleteClient(client_id).subscribe(() => ***REMOVED***
 
             this.getClientsChecked();
         ***REMOVED***);

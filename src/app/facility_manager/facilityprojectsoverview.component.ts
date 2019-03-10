@@ -1,5 +1,4 @@
 import ***REMOVED***Component, Input***REMOVED*** from '@angular/core';
-import ***REMOVED***PerunSettings***REMOVED*** from '../perun-connector/connector-settings.service';
 import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
 import ***REMOVED***ProjectMember***REMOVED*** from '../projectmanagement/project_member.model'
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
@@ -12,49 +11,47 @@ import * as moment from 'moment';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared_modules/baseClass/filter-base-class';
 
+/**
+ * Facility Project overview component.
+ */
 @Component(***REMOVED***
     templateUrl: 'facilityprojectsoverview.component.html',
-    providers: [FacilityService, UserService, GroupService, PerunSettings, ApiSettings]
+    providers: [FacilityService, UserService, GroupService, ApiSettings]
 ***REMOVED***)
 export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVED***
 
-    debug_module = false;
+    debug_module: boolean = false;
 
     @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
     member_id: number;
-    isLoaded = false;
+    isLoaded: boolean = false;
     projects: Project[] = new Array();
-    details_loaded = false;
+    details_loaded: boolean = false;
     /**
      * Approved group status.
      * @type ***REMOVED***number***REMOVED***
      */
-    STATUS_APPROVED = 2;
-
-    private EXPIRED = 0;
-    private EXPIRES_SOON = 1;
-    private VALID_LIFETIME = 2;
+    STATUS_APPROVED: number = 2;
 
     // modal variables for User list
-    public usersModal;
-    public usersModalProjectMembers: ProjectMember[] = new Array;
+    public usersModalProjectMembers: ProjectMember[] = [];
     public usersModalProjectID: number;
     public usersModalProjectName: string;
     public selectedProject: Project;
 
     public emailSubject: string;
     public emailText: string;
-    public emailStatus = 0;
-    public emailReply = '';
+    public emailStatus: number = 0;
+    public emailReply: string = '';
 
     public managerFacilities: [string, number][];
     public selectedFacility: [string, number];
-    projects_filtered: Project[] = new Array();
+    projects_filtered: Project[] = [];
 
     constructor(private groupservice: GroupService,
-                private  facilityservice: FacilityService) ***REMOVED***
-        super()
+                private facilityservice: FacilityService) ***REMOVED***
+        super();
 
         this.facilityservice.getManagerFacilities().subscribe(result => ***REMOVED***
             this.managerFacilities = result;
@@ -64,23 +61,18 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
         ***REMOVED***)
     ***REMOVED***
 
-    applyFilter() ***REMOVED***
+    applyFilter(): void ***REMOVED***
 
         this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
 
     ***REMOVED***
 
-    checkFilter(project: Project) ***REMOVED***
-        if (this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
-            && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)) ***REMOVED***
-            return true
-        ***REMOVED*** else ***REMOVED***
-            return false
-        ***REMOVED***
-
+    checkFilter(project: Project): boolean ***REMOVED***
+        return this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
+            && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)
     ***REMOVED***
 
-    onChangeSelectedFacility(value) ***REMOVED***
+    onChangeSelectedFacility(): void ***REMOVED***
         this.getFacilityProjects(this.selectedFacility['FacilityId'])
     ***REMOVED***
 
@@ -131,8 +123,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                 ***REMOVED***
                 if (tmp_facility) ***REMOVED***
                     compute_center = new ComputecenterComponent(tmp_facility['compute_center_facility_id'],
-                                                                tmp_facility['compute_center_name'],
-                                                                tmp_facility['compute_center_login'], tmp_facility['compute_center_support_mail']);
+                        tmp_facility['compute_center_name'],
+                        tmp_facility['compute_center_login'], tmp_facility['compute_center_support_mail']);
                 ***REMOVED***
 
                 const newProject = new Project(
@@ -169,7 +161,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
 
     sendMailToFacility(facility: string, subject: string, message: string, reply?: string) ***REMOVED***
         this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message),
-                                                encodeURIComponent(reply)).subscribe(result => ***REMOVED***
+            encodeURIComponent(reply)).subscribe(result => ***REMOVED***
 
                 if (result.status === 201) ***REMOVED***
                     this.emailStatus = 1;
@@ -177,7 +169,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                     this.emailStatus = 2;
                 ***REMOVED***
             ***REMOVED***,
-                                                 error => ***REMOVED***
+            error => ***REMOVED***
                 console.log(error);
                 this.emailStatus = 2;
             ***REMOVED***)

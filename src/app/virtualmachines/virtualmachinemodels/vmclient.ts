@@ -1,4 +1,7 @@
-export class Vmclient ***REMOVED***
+/**
+ * Clientclass
+ */
+export class Client ***REMOVED***
     private _id: string;
     private _host: string;
     private _status: string;
