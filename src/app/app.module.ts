@@ -27,6 +27,9 @@ import {AsideToggleDirective} from './shared/aside.directive';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
 
+/**
+ * App module.
+ */
 @NgModule({
     imports: [
         BrowserModule,

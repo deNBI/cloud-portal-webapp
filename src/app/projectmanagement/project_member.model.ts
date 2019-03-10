@@ -7,14 +7,14 @@ export class ProjectMember {
         this._Email = value;
     }
 
-    private _Id: number;
-    private _MemberId: number;
+    private _Id: number | string;
+    private _MemberId: number | string;
     private _Username: string;
     private _IsPi: boolean;
     private _ElixirId: string;
     private _Email: string;
 
-    constructor(Id: number, Username: string, MemberId: number) {
+    constructor(Id: number | string, Username: string, MemberId: number | string) {
         this._Id = Id;
         this._Username = Username;
         this._MemberId = MemberId;
@@ -37,11 +37,12 @@ export class ProjectMember {
         this._IsPi = value;
     }
 
-    get Id(): number {
+
+    get Id(): number | string {
         return this._Id;
     }
 
-    set Id(value: number) {
+    set Id(value: number | string) {
         this._Id = value;
     }
 
@@ -53,11 +54,11 @@ export class ProjectMember {
         this._Username = value;
     }
 
-    get MemberId(): number {
+    get MemberId(): number | string {
         return this._MemberId;
     }
 
-    set MemberId(value: number) {
+    set MemberId(value: number | string) {
         this._MemberId = value;
     }
 }

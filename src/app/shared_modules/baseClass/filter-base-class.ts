@@ -39,7 +39,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
 
     abstract checkFilter(obj: any): void
 
-    isFilterProjectId(id: number): boolean {
+    isFilterProjectId(id: number | string): boolean {
         if (!this.filterProjectId) {
             return true;
         } else if (id.toString().indexOf(this.filterProjectId.toString()) === 0) {

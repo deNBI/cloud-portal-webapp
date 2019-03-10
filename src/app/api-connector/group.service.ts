@@ -54,21 +54,21 @@ export class GroupService {
 
     }
 
-    isUserAdminOfGroup(groupid: string, userid: string): Observable<any> {
+    isUserAdminOfGroup(groupid: number | string, userid: number | string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/members/${userid}/manager/`, {
             withCredentials: true
         })
     }
 
-    getGroupAdminIds(groupid: string): Observable<any> {
+    getGroupAdminIds(groupid: number | string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/admins/ids/`, {
             withCredentials: true
         })
     }
 
-    getGroupRichMembers(groupid: number): Observable<any> {
+    getGroupRichMembers(groupid: number | string): Observable<any> {
         const params: HttpParams = new HttpParams().set('groupid', groupid.toString());
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/richMembers/`, {
@@ -77,10 +77,10 @@ export class GroupService {
         })
     }
 
-    addMember(group_id: string, member_id: string, facility_id?: string): Observable<any> {
+    addMember(group_id: string | number, member_id: string | number, facility_id?: string | number): Observable<any> {
         const params: HttpParams = new HttpParams();
         if (facility_id) {
-            params.set('facility_id', facility_id)
+            params.set('facility_id', facility_id.toString())
 
         }
 
@@ -92,11 +92,11 @@ export class GroupService {
         })
     }
 
-    addAdmin(group_id: string, user_id: string, facility_id?: string): Observable<any> {
+    addAdmin(group_id: string | number, user_id: string | number, facility_id?: string | number): Observable<any> {
         const params: HttpParams = new HttpParams();
 
         if (facility_id) {
-            params.set('facility_id', facility_id)
+            params.set('facility_id', facility_id.toString())
 
         }
 
@@ -108,7 +108,7 @@ export class GroupService {
         })
     }
 
-    removeMember(group_id: number, member_id: number, facility_id?: number): Observable<any> {
+    removeMember(group_id: number | string, member_id: number | string, facility_id?: number | string): Observable<any> {
         const params: HttpParams = new HttpParams();
 
         if (facility_id) {
@@ -125,7 +125,7 @@ export class GroupService {
         })
     }
 
-    removeAdmin(group_id: number, user_id: number, facility_id?: number): Observable<any> {
+    removeAdmin(group_id: number | string, user_id: number | string, facility_id?: number | string): Observable<any> {
 
         const params: HttpParams = new HttpParams();
 
@@ -283,13 +283,13 @@ export class GroupService {
         const params: HttpParams = new HttpParams().set('name', group_name).set('description', group_description.substring(0, 512));
 
         return this.http.post(`${ApiSettings.getApiBaseURL()}projects/`, params,
-                              {
+            {
                 withCredentials: true,
                 headers: header
             })
     }
 
-    getLifetime(groupid: string): Observable<any> {
+    getLifetime(groupid: string | number): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/lifetime/`, {
             withCredentials: true

@@ -41,7 +41,7 @@ export class VoService {
 
     }
 
-    removeResourceFromGroup(groupid: string): Observable<any> {
+    removeResourceFromGroup(groupid: number | string): Observable<any> {
         return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, {
             withCredentials: true,
             headers: header
@@ -57,8 +57,8 @@ export class VoService {
 
     }
 
-    getProjectStatus(groupid: number): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/' + groupid + '/status/`, {
+    getProjectStatus(groupid: number | string): Observable<any> {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/status/`, {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));
@@ -71,7 +71,7 @@ export class VoService {
         })
     }
 
-    setProjectStatus(groupid: number, status: number): Observable<any> {
+    setProjectStatus(groupid: number | string, status: number): Observable<any> {
         const params: HttpParams = new HttpParams().set('status', status.toString());
 
         return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/status/`, params, {
@@ -106,7 +106,7 @@ export class VoService {
      * @param {number} groupid id of the the group
      * @returns {Observable<any>}
      */
-    getVoGroupRichMembers(groupid: number): Observable<any> {
+    getVoGroupRichMembers(groupid: number | string): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/members/`, {
             withCredentials: true
         })

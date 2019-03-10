@@ -1,3 +1,6 @@
+/**
+ * ComputeCenter component.
+ */
 export class ComputecenterComponent {
 
     private _FacilityId: string;

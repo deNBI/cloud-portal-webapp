@@ -7,5 +7,5 @@ import {environment} from '../environments/environment';
 
 })
 export class RegistrationInfoComponent {
-    voRegistrationLink = environment.voRegistrationLink;
+    voRegistrationLink: string = environment.voRegistrationLink;
 }

@@ -7,7 +7,6 @@ import {PerunSettings} from '../perun-connector/connector-settings.service';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {Application} from '../applications/application.model';
 import {ApplicationExtension} from '../applications/application_extension.model';
-import {SpecialHardware} from '../applications/special_hardware.model';
 import {ApplicationStatus} from '../applications/application_status.model';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ApplicationsService} from '../api-connector/applications.service';
@@ -36,11 +35,6 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     collapse_status: { [id: string]: boolean } = {};
 
     application_status: ApplicationStatus[] = [];
-    /**
-     * Avaiable Special Hardwares.
-     * @type {Array}
-     */
-    special_hardware: SpecialHardware[] = [];
 
     /**
      * All available compute centers.
@@ -64,7 +58,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * If the site is loaded with values.
      * @type {boolean}
      */
-    isLoaded = false;
+    isLoaded: boolean = false;
     /**
      * List of all applications.
      * @type {Array}
@@ -78,11 +72,6 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     all_application_modifications: Application [] = [];
 
     applications_history: Application [] = [];
-    /**
-     * Special hardware id for FPGA.
-     * @type {number}
-     */
-    public FPGA = 1;
 
     constructor(private userService: UserService,
                 private applicationstatusservice: ApplicationStatusService,
@@ -108,7 +97,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
         this.facilityService.getComputeCenters().subscribe(result => {
             for (const cc of result) {
                 const compute_center = new ComputecenterComponent(cc['compute_center_facility_id'], cc['compute_center_name'],
-                                                                  cc['compute_center_login'], cc['compute_center_support_mail'])
+                    cc['compute_center_login'], cc['compute_center_support_mail'])
                 this.computeCenters.push(compute_center)
             }
 
@@ -153,11 +142,11 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * Get all application modification requests.
      * @param {number} facility id of the facility
      */
-    getAllApplicationsModifications(facility: number) {
-        this.isLoaded = false
+    getAllApplicationsModifications(facility: number):void {
+        this.isLoaded = false;
         // todo check if user is VO Admin
         this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility).subscribe(res => {
-            if (Object.keys(res).length == 0) {
+            if (Object.keys(res).length === 0) {
                 this.isLoaded = true;
             }
 
@@ -409,7 +398,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
             this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
-        },                                                                                                             error => {
+        }, error => {
             this.updateNotificationModal('Failed', 'Failed to approve the application.', true, 'danger');
 
         })
@@ -419,8 +408,8 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      * Decline an extension request.
      * @param {number} application_id
      */
-    public declineExtension(app: Application) {
-        const modificaton_requested = 4
+    public declineExtension(app: Application):void {
+        const modificaton_requested :number= 4;
         this.applicationstatusservice.setApplicationStatus(app.Id, modificaton_requested).subscribe(res => {
             this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
             this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
@@ -441,7 +430,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
 
             this.all_applications = [];
             this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
-        },                                                                                                             error => {
+        }, error => {
             this.updateNotificationModal('Failed', 'Failed to decline the application.', true, 'danger');
 
         })

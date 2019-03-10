@@ -33,12 +33,12 @@ export class ApplicationStatusService {
      * @param {number} status_id id of the status to set
      * @returns {Observable<any>}
      */
-    setApplicationStatus(application_id: string, status_id: string): Observable<any> {
+    setApplicationStatus(application_id: number | string, status_id: number | string): Observable<any> {
 
-        const params: HttpParams = new HttpParams().set('project_application_status', status_id);
+        const params: HttpParams = new HttpParams().set('project_application_status', status_id.toString());
 
         return this.http.patch(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, params,
-                               {
+            {
                 headers: header,
                 withCredentials: true
             })

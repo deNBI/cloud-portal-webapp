@@ -7,6 +7,9 @@ import * as moment from 'moment';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FilterBaseClass} from '../shared_modules/baseClass/filter-base-class';
 
+/**
+ * Vo Overview component.
+ */
 @Component({
     selector: 'app-vo-overview',
     templateUrl: 'voOverview.component.html',
@@ -27,15 +30,14 @@ export class VoOverviewComponent extends FilterBaseClass {
 
     public newsletterSubscriptionCounter: number;
     isLoaded: boolean = false;
-    details_loaded = false;
+    details_loaded: boolean = false;
 
     member_id: number;
     projects: Project[] = new Array();
     projects_filtered: Project[] = new Array();
 
     // modal variables for User list
-    public usersModal;
-    public usersModalProjectMembers: ProjectMember[] = new Array;
+    public usersModalProjectMembers: ProjectMember[] = [];
     public usersModalProjectID: number;
     public usersModalProjectName: string;
 
@@ -51,28 +53,26 @@ export class VoOverviewComponent extends FilterBaseClass {
 
     }
 
-    applyFilter() {
+    applyFilter(): void {
 
         this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
 
     }
 
-    checkFilter(project: Project) {
-        let facNameFilter = true;
+    checkFilter(project: Project): boolean {
+        let facNameFilter: boolean = true;
         if (project.ComputeCenter) {
             facNameFilter = this.isFilterFacilityName(project.ComputeCenter.Name)
         }
-        if (facNameFilter && this.isFilterProjectStatus(project.Status, project.LifetimeReached) && this.isFilterProjectName(project.Name)
-            && this.isFilterProjectId(project.Id)) {
-            return true;
 
-        } else {
-            return false
-        }
+        return facNameFilter
+            && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
+            && this.isFilterProjectName(project.Name)
+            && this.isFilterProjectId(project.Id)
 
     }
 
-    sendEmail(subject: string, message: string, reply?: string) {
+    sendEmail(subject: string, message: string, reply?: string): void {
         switch (this.emailType) {
             case 0: {
                 this.sendMailToVo(subject, message, reply);
@@ -82,10 +82,12 @@ export class VoOverviewComponent extends FilterBaseClass {
                 this.sendNewsletterToVo(subject, message, reply);
                 break;
             }
+            default:
+                return
         }
     }
 
-    sendNewsletterToVo(subject: string, message: string, reply?: string) {
+    sendNewsletterToVo(subject: string, message: string, reply?: string): void {
         this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
             .subscribe(result => {
                 if (result === 1) {
@@ -97,7 +99,7 @@ export class VoOverviewComponent extends FilterBaseClass {
 
     }
 
-    sendMailToVo(subject: string, message: string, reply?: string) {
+    sendMailToVo(subject: string, message: string, reply?: string): void {
         this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
             .subscribe(result => {
                 if (result === 1) {
@@ -109,26 +111,27 @@ export class VoOverviewComponent extends FilterBaseClass {
 
     }
 
-    setEmailType(type: number) {
+    setEmailType(type: number): void {
         this.emailType = type;
         switch (this.emailType) {
             case 0: {
-                this.emailHeader = 'Send email to all members of\n' +
-                    '                    the vo';
+                this.emailHeader = 'Send email to all members of the vo';
                 this.emailVerify = 'Are you sure you want to send this email to all members of the vo?';
                 break;
             }
             case 1: {
                 this.emailHeader = 'Send newsletter to vo';
-                this.emailVerify = 'Are you sure you want to send this newsletter?'
+                this.emailVerify = 'Are you sure you want to send this newsletter?';
                 break;
             }
+            default:
+                return
 
         }
 
     }
 
-    public resetEmailModal() {
+    public resetEmailModal(): void {
 
         this.emailHeader = null;
         this.emailSubject = null;
@@ -140,18 +143,19 @@ export class VoOverviewComponent extends FilterBaseClass {
 
     }
 
-    getProjectLifetime(project) {
+    getProjectLifetime(project: Project): void {
         this.details_loaded = false;
         if (!project.Lifetime) {
-            this.groupservice.getLifetime(project.Id).subscribe(res => {
-                const lifetime = res['lifetime'];
-                let dateCreated = project.DateCreated;
+            this.groupservice.getLifetime(project.Id.toString()).subscribe(res => {
+                const lifetime: number = res['lifetime'];
+                const dateCreatedString: string = project.DateCreated;
 
-                let expirationDate;
-                dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
+                let expirationDate: string;
+                const dateCreated: Date = moment(dateCreatedString, 'DD.MM.YYYY').toDate();
                 if (lifetime !== -1) {
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-                    const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
+                    const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
+                        .diff(moment(dateCreated), 'days'));
 
                     project.LifetimeDays = lifetimeDays;
                     project.DateEnd = expirationDate;
@@ -165,33 +169,36 @@ export class VoOverviewComponent extends FilterBaseClass {
         }
     }
 
-    getVoProjects() {
+    getVoProjects(): void {
         this.voserice.getAllGroupsWithDetails().subscribe(result => {
             const vo_projects = result;
             for (const group of vo_projects) {
                 const dateCreated = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
-                const dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                const is_pi = group['is_pi'];
-                const lifetime = group['lifetime'];
+                const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
+                const is_pi: boolean = group['is_pi'];
+                const lifetime: number = group['lifetime'];
 
-                const groupid = group['id'];
+                const groupid: number = group['id'];
                 const facility = group['compute_center'];
-                let shortname = group['shortname'];
+                let shortname: string = group['shortname'];
                 if (!shortname) {
                     shortname = group['name']
                 }
                 let compute_center = null;
 
                 if (facility) {
-                    compute_center = new ComputecenterComponent(facility['compute_center_facility_id'],
-                                                                facility['compute_center_name'], facility['compute_center_login'], facility['compute_center_support_mail']);
+                    compute_center = new ComputecenterComponent(
+                        facility['compute_center_facility_id'],
+                        facility['compute_center_name'],
+                        facility['compute_center_login'],
+                        facility['compute_center_support_mail']);
                 }
 
-                const newProject = new Project(
+                const newProject: Project = new Project(
                     Number(groupid),
                     shortname,
                     group['description'],
-                    dateCreated.date() + '.' + (dateCreated.month() + 1) + '.' + dateCreated.year(),
+                    `${dateCreated.date()}.${(dateCreated.month() + 1)}.${dateCreated.year()}`,
                     dateDayDifference,
                     is_pi,
                     true,
@@ -201,7 +208,8 @@ export class VoOverviewComponent extends FilterBaseClass {
                 let expirationDate: string = '';
                 if (lifetime !== -1) {
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-                    const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
+                    const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
+                        .diff(moment(dateCreated), 'days'));
 
                     newProject.LifetimeDays = lifetimeDays;
                     newProject.DateEnd = expirationDate;
@@ -218,34 +226,34 @@ export class VoOverviewComponent extends FilterBaseClass {
         })
     }
 
-    getProjectStatus(project) {
+    getProjectStatus(project: Project): void {
         this.voserice.getProjectStatus(project.Id).subscribe(res => {
             project.Status = res['status']
         })
     }
 
-    setProjectStatus(project, status: number) {
-        this.voserice.setProjectStatus(project.Id, status).subscribe(res => {
+    setProjectStatus(project: Project, status: number): void {
+        this.voserice.setProjectStatus(project.Id, status).subscribe(() => {
             this.getProjectStatus(project)
 
         })
     }
 
-    removeResourceFromGroup(groupid: number) {
-        this.voserice.removeResourceFromGroup(groupid.toString()).subscribe(res => {
+    removeResourceFromGroup(groupid: number): void {
+        this.voserice.removeResourceFromGroup(groupid.toString()).subscribe(() => {
         })
     }
 
-    getMembesOfTheProject(projectid: number, projectname: string) {
+    getMembesOfTheProject(projectid: number, projectname: string): void {
         this.voserice.getVoGroupRichMembers(projectid).subscribe(members => {
                 this.usersModalProjectID = projectid;
                 this.usersModalProjectName = projectname;
                 this.usersModalProjectMembers = new Array();
                 for (const member of members) {
-                    const member_id = member['id'];
-                    const user_id = member['userId'];
-                    const fullName = member['firstName'] + ' ' + member['lastName'];
-                    const newMember = new ProjectMember(user_id, fullName, member_id);
+                    const member_id: number = member['id'];
+                    const user_id: number = member['userId'];
+                    const fullName: string = `${member['firstName']}  ${member['lastName']}`;
+                    const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
                     newMember.ElixirId = member['elixirId'];
                     newMember.Email = member['email'];
                     this.usersModalProjectMembers.push(newMember);
@@ -255,7 +263,7 @@ export class VoOverviewComponent extends FilterBaseClass {
         )
     }
 
-    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) {
+    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]): void {
         this.getMembesOfTheProject(projectid, projectname);
 
     }

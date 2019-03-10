@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 
-const header = new HttpHeaders({
+const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
 });
 
