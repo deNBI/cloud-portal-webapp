@@ -73,153 +73,134 @@
                                         colspan="6">
                                         <div id="user_application-{{ application.Id }}"
                                              [class.collapse]="getCollapseStatus('user_application-' + application.Id)">
-                                            <div class="table-responsive">
-                                                <table class="table table-striped table-responsive">
-                                                    <tr [style.display]="application.Status != 'submitted' ? 'inherit' :'none'">
-                                                        <td>Facility</td>
-                                                        <td>
-                                                            {{application.ComputeCenter?.Name}}
-                                                        </td>
+                                            <table class="table table-striped table-responsive" style="width: 80%">
+                                                <tr *ngIf="application.Status != 'submitted'">
+                                                    <td>Facility</td>
+                                                    <td>
+                                                        {{application.ComputeCenter?.Name}}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 'modification requested'"></td>
 
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Dissemination allowed</td>
-                                                        <td>
-                                                            {{application.Dissemination}}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Description</td>
-                                                        <td>{{
-                                                            application.Description
-                                                            }}
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Horizon 2020</td>
-                                                        <td>
-                                                            {{application.Horizon2020}}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Comment</td>
-                                                        <td>{{
-                                                            application.Comment
-                                                            }}
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            {{application.ApplicationExtension?.Comment}}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><b>VMs</b>
-                                                        </td>
-                                                        <td>
-                                                            <span> Current: </span>
-                                                            {{application.VMsRequested}}
-                                                        </td>
+                                                </tr>
+                                                <tr >
+                                                    <td >Dissemination allowed</td>
+                                                    <td >
+                                                        {{application.Dissemination}}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 'modification requested'"></td>
 
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            Requested:
-                                                            {{application.ApplicationExtension?.VMsRequested}}
-                                                        </td>
-                                                    </tr>
-                                                    <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
-                                                        <td>Flavor: {{item.key}}</td>
-                                                        <td>{{item.value.counter}}</td>
-                                                        <td *ngIf="application.Status =='modification requested' ">
+                                                </tr>
+                                                <tr>
+                                                    <td>Description</td>
+                                                    <td>{{application.Description}}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 'modification requested'"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Horizon 2020</td>
+                                                    <td>
+                                                        {{application.Horizon2020}}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 'modification requested'"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Comment</td>
+                                                    <td>{{application.Comment}}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 'modification requested'">
+                                                        {{application.ApplicationExtension?.Comment}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>VMs</b>
+                                                    </td>
+                                                    <td>
+                                                        <span> Current: </span>
+                                                        {{application.VMsRequested}}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 'modification requested'">
+                                                        Requested:
+                                                        {{application.ApplicationExtension?.VMsRequested}}
+                                                    </td>
+                                                </tr>
+                                                <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
+                                                    <td>Flavor: {{item.key}}</td>
+                                                    <td>{{item.value.counter}}</td>
+                                                    <td *ngIf="application.Status =='modification requested' ">
                                                             <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 {{application.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}</span>
-                                                            <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                        <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
-                                                    </tr>
-                                                    <ng-container
-                                                            *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
-                                                        <tr *ngIf="!application.CurrentFlavors[item.key]">
-                                                            <td>Flavor: {{item.key}}</td>
-                                                            <td>0</td>
-                                                            <td>
-                                                                {{application.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}
-
-
-                                                            </td>
-
-
-                                                        </tr>
-                                                    </ng-container>
-
-                                                    <tr>
-                                                        <td>Cores</td>
-                                                        <td>{{
-                                                            application.TotalCores
-                                                            }}
-
-                                                        </td>
-
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            {{application.ApplicationExtension.TotalCores}}
-
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>RAM</td>
-                                                        <td>{{
-                                                            application.TotalRam}} GB
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            {{application.ApplicationExtension?.TotalRAM}}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Storage Limit</td>
-                                                        <td>{{
-                                                            application.VolumeLimit
-                                                            }} GB
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            {{application.ApplicationExtension?.VolumeLimit}}
-                                                            GB
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Volume Counter</td>
-
-                                                        <td>{{
-                                                            application.VolumeCounter
-                                                            }} volumes
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-
-
-                                                            {{application.ApplicationExtension?.VolumeCounter}} volumes
-                                                        </td>
-                                                    </tr>
-                                                    <tr *ngIf="application.OpenStackProject">
-                                                        <td>ObjectStorage</td>
-                                                        <td>{{
-                                                            application.ObjectStorage
-                                                            }} GB
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            {{application.ApplicationExtension?.ObjectStorage}}
-                                                            GB
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>OpenStackProject
-                                                        </td>
+                                                </tr>
+                                                <ng-container
+                                                        *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
+                                                    <tr *ngIf="!application.CurrentFlavors[item.key]">
+                                                        <td>Flavor: {{item.key}}</td>
+                                                        <td>0</td>
                                                         <td>
-                                                            {{application.OpenStackProject}}
+                                                            {{application.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}
+
+
                                                         </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            {{application.OpenStackProject}}
-                                                        </td>
+
+
                                                     </tr>
-                                                </table>
-                                            </div>
+                                                </ng-container>
+
+                                                <tr>
+                                                    <td>Cores</td>
+                                                    <td>{{application.TotalCores}}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 'modification requested'">
+                                                        {{application.ApplicationExtension.TotalCores}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RAM</td>
+                                                    <td>{{ application.TotalRam}} GB
+                                                    </td>
+                                                    <td *ngIf="application.Status == 'modification requested'">
+                                                        {{application.ApplicationExtension?.TotalRAM}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Storage Limit</td>
+                                                    <td>{{application.VolumeLimit}} GB
+                                                    </td>
+                                                    <td *ngIf="application.Status == 'modification requested'">
+                                                        {{application.ApplicationExtension?.VolumeLimit}}
+                                                        GB
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Volume Counter</td>
+                                                    <td>{{ application.VolumeCounter}} volumes
+                                                    </td>
+                                                    <td *ngIf="application.Status == 'modification requested'">
+                                                        {{application.ApplicationExtension?.VolumeCounter}} volumes
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="application.OpenStackProject">
+                                                    <td>ObjectStorage</td>
+                                                    <td>{{application.ObjectStorage}} GB
+                                                    </td>
+                                                    <td *ngIf="application.Status == 'modification requested'">
+                                                        {{application.ApplicationExtension?.ObjectStorage}}
+                                                        GB
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>OpenStackProject
+                                                    </td>
+                                                    <td>
+                                                        {{application.OpenStackProject}}
+                                                    </td>
+                                                    <td *ngIf="application.Status == 'modification requested'">
+                                                        {{application.OpenStackProject}}
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </div>
                                     </td>
                                 </tr>
