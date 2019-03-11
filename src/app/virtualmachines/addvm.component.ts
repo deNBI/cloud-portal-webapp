@@ -10,7 +10,7 @@ import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
 
 import ***REMOVED***ClientService***REMOVED*** from '../api-connector/vmClients.service';
-import ***REMOVED***Client***REMOVED*** from './virtualmachinemodels/vmclient';
+import ***REMOVED***Client***REMOVED*** from './clients/vmclient';
 import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
 import ***REMOVED***KeyService***REMOVED*** from '../api-connector/key.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';

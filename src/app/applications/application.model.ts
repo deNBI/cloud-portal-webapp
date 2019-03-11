@@ -286,11 +286,11 @@ export class Application ***REMOVED***
         this._DateStatusChanged = value;
     ***REMOVED***
 
-    get User(): number ***REMOVED***
+    get User(): string ***REMOVED***
         return this._User;
     ***REMOVED***
 
-    set User(value: number) ***REMOVED***
+    set User(value: string) ***REMOVED***
         this._User = value;
     ***REMOVED***
 
@@ -302,11 +302,11 @@ export class Application ***REMOVED***
         this._Status = value;
     ***REMOVED***
 
-    get UserEmail(): number ***REMOVED***
+    get UserEmail(): string ***REMOVED***
         return this._UserEmail;
     ***REMOVED***
 
-    set UserEmail(value: number) ***REMOVED***
+    set UserEmail(value: string) ***REMOVED***
         this._UserEmail = value;
     ***REMOVED***
 

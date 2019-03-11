@@ -1,4 +1,4 @@
-import ***REMOVED***Client***REMOVED*** from './vmclient';
+import ***REMOVED***Client***REMOVED*** from '../clients/vmclient';
 
 /**
  * Snapshot class.

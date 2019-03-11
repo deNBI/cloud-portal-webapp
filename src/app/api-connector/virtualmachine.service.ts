@@ -4,7 +4,7 @@ import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachines/virtualmachinemodels/virtualmachine';
-import ***REMOVED***Volume***REMOVED*** from '../virtualmachines/virtualmachinemodels/volume';
+import ***REMOVED***Volume***REMOVED*** from '../virtualmachines/volumes/volume';
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken')

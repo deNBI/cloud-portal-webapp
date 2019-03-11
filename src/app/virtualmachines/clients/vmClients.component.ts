@@ -1,12 +1,12 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***Client***REMOVED*** from './virtualmachinemodels/vmclient';
-import ***REMOVED***ClientService***REMOVED*** from '../api-connector/vmClients.service';
-import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
-import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
-import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
-import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
-import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
-import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
+import ***REMOVED***Client***REMOVED*** from './vmclient';
+import ***REMOVED***ClientService***REMOVED*** from '../../api-connector/vmClients.service';
+import ***REMOVED***ApiSettings***REMOVED*** from '../../api-connector/api-settings.service';
+import ***REMOVED***GroupService***REMOVED*** from '../../api-connector/group.service';
+import ***REMOVED***UserService***REMOVED*** from '../../api-connector/user.service';
+import ***REMOVED***ComputecenterComponent***REMOVED*** from '../../projectmanagement/computecenter.component';
+import ***REMOVED***FacilityService***REMOVED*** from '../../api-connector/facility.service';
+import ***REMOVED***VoService***REMOVED*** from '../../api-connector/vo.service';
 
 /**
  * Client component.
@@ -14,10 +14,11 @@ import ***REMOVED***environment***REMOVED*** from '../../environments/environmen
 @Component(***REMOVED***
     selector: 'app-client-overview',
     templateUrl: 'vmClients.component.html',
-    providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings]
+    providers: [FacilityService, VoService, UserService, GroupService, ClientService, ApiSettings]
 ***REMOVED***)
 
 export class ClientOverviewComponent implements OnInit ***REMOVED***
+
     /**
      * All clients.
      */
@@ -48,7 +49,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     isLoaded: boolean = false;
 
     constructor(private facilityService: FacilityService, private userservice: UserService,
-                private clientservice: ClientService) ***REMOVED***
+                private clientservice: ClientService, private voservice: VoService) ***REMOVED***
 
     ***REMOVED***
 
@@ -57,25 +58,9 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
      * @param ***REMOVED***UserService***REMOVED*** userservice
      */
     checkVOstatus(userservice: UserService): void ***REMOVED***
-        let user_id: number;
-        let admin_vos: ***REMOVED******REMOVED***;
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) ***REMOVED***
-                // TODO catch errors
-                user_id = userdata['id'];
-
-                return userservice.getVosWhereUserIsAdmin().toPromise();
-            ***REMOVED***).then(function (adminvos) ***REMOVED***
-            admin_vos = adminvos;
-        ***REMOVED***).then(() => ***REMOVED***
-            // check if user is a Vo admin so we can serv according buttons
-            for (const vkey in admin_vos) ***REMOVED***
-                if (admin_vos[vkey]['id'] === environment.vo.toString()) ***REMOVED***
-                    this.is_vo_admin = true;
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***);
+        this.voservice.isVo().subscribe(result => ***REMOVED***
+            this.is_vo_admin = result['Is_Vo_Manager'];
+        ***REMOVED***)
     ***REMOVED***
 
     /**

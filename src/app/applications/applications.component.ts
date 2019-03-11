@@ -15,7 +15,7 @@ import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modul
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
-import ***REMOVED***Client***REMOVED*** from '../virtualmachines/virtualmachinemodels/vmclient';
+import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/vmclient';
 
 /**
  * Application Overview component.

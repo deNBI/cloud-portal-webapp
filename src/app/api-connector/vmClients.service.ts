@@ -1,6 +1,6 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
-import ***REMOVED***Client***REMOVED*** from '../virtualmachines/virtualmachinemodels/vmclient';
+import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/vmclient';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 

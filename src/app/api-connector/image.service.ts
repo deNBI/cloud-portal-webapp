@@ -1,6 +1,6 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***Image***REMOVED*** from '../virtualmachines/virtualmachinemodels/image';
-import ***REMOVED***SnapshotModel***REMOVED*** from '../virtualmachines/virtualmachinemodels/snapshot.model';
+import ***REMOVED***SnapshotModel***REMOVED*** from '../virtualmachines/snapshots/snapshot.model';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';

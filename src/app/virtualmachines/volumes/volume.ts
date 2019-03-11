@@ -1,5 +1,5 @@
-import ***REMOVED***VirtualMachine***REMOVED*** from './virtualmachine';
-import ***REMOVED***Client***REMOVED*** from './vmclient';
+import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachinemodels/virtualmachine';
+import ***REMOVED***Client***REMOVED*** from '../clients/vmclient';
 
 /**
  * Volume class.

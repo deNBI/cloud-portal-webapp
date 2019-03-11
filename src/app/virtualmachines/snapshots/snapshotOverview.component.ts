@@ -1,6 +1,6 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
-import ***REMOVED***SnapshotModel***REMOVED*** from './virtualmachinemodels/snapshot.model';
+import ***REMOVED***ImageService***REMOVED*** from '../../api-connector/image.service';
+import ***REMOVED***SnapshotModel***REMOVED*** from './snapshot.model';
 import ***REMOVED***forkJoin***REMOVED*** from 'rxjs';
 
 enum Snapshot_Delete_Statuses ***REMOVED***
