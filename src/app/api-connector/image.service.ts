@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Image} from '../virtualmachines/virtualmachinemodels/image';
-import {SnapshotModel} from '../virtualmachines/virtualmachinemodels/snapshot.model';
+import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
 import {ApiSettings} from './api-settings.service';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';

@@ -193,13 +193,13 @@
                                                 <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
                                                     <td>RAM</td>
                                                     <td>{{ application.RamPerVM
-                                                        }}
+                                                        }} GB
                                                     </td>
                                                 </tr>
                                                 <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
                                                     <td>RAM</td>
                                                     <td>{{
-                                                        application.TotalRam}}
+                                                        application.TotalRam}} GB
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -478,7 +478,7 @@
                                                         app.TotalRam}} GB
                                                     </td>
                                                     <td>
-                                                        {{app.ApplicationExtension.TotalRAM}}
+                                                        {{app.ApplicationExtension.TotalRAM}} GB
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -749,7 +749,7 @@
                                                         application.TotalRam}} GB
                                                     </td>
                                                     <td *ngIf="application.ApplicationExtension">
-                                                        {{application.ApplicationExtension.TotalRAM}}
+                                                        {{application.ApplicationExtension.TotalRAM}} GB
                                                     </td>
                                                 </tr>
                                                 <tr>

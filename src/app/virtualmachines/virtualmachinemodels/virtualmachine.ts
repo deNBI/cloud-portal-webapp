@@ -1,6 +1,6 @@
 import {Image} from './image';
 import {Flavor} from './flavor';
-import {Client} from './vmclient';
+import {Client} from '../clients/vmclient';
 
 /**
  * Virtualmachine class.

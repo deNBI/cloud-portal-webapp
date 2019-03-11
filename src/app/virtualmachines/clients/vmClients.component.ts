@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Client} from './virtualmachinemodels/vmclient';
-import {ClientService} from '../api-connector/vmClients.service';
-import {ApiSettings} from '../api-connector/api-settings.service';
-import {GroupService} from '../api-connector/group.service';
-import {UserService} from '../api-connector/user.service';
-import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
-import {FacilityService} from '../api-connector/facility.service';
-import {environment} from '../../environments/environment';
+import {Client} from './vmclient';
+import {ClientService} from '../../api-connector/vmClients.service';
+import {ApiSettings} from '../../api-connector/api-settings.service';
+import {GroupService} from '../../api-connector/group.service';
+import {UserService} from '../../api-connector/user.service';
+import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
+import {FacilityService} from '../../api-connector/facility.service';
+import {VoService} from '../../api-connector/vo.service';
 
 /**
  * Client component.
@@ -14,10 +14,11 @@ import {environment} from '../../environments/environment';
 @Component({
     selector: 'app-client-overview',
     templateUrl: 'vmClients.component.html',
-    providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings]
+    providers: [FacilityService, VoService, UserService, GroupService, ClientService, ApiSettings]
 })
 
 export class ClientOverviewComponent implements OnInit {
+
     /**
      * All clients.
      */
@@ -48,7 +49,7 @@ export class ClientOverviewComponent implements OnInit {
     isLoaded: boolean = false;
 
     constructor(private facilityService: FacilityService, private userservice: UserService,
-                private clientservice: ClientService) {
+                private clientservice: ClientService, private voservice: VoService) {
 
     }
 
@@ -57,25 +58,9 @@ export class ClientOverviewComponent implements OnInit {
      * @param {UserService} userservice
      */
     checkVOstatus(userservice: UserService): void {
-        let user_id: number;
-        let admin_vos: {};
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) {
-                // TODO catch errors
-                user_id = userdata['id'];
-
-                return userservice.getVosWhereUserIsAdmin().toPromise();
-            }).then(function (adminvos) {
-            admin_vos = adminvos;
-        }).then(() => {
-            // check if user is a Vo admin so we can serv according buttons
-            for (const vkey in admin_vos) {
-                if (admin_vos[vkey]['id'] === environment.vo.toString()) {
-                    this.is_vo_admin = true;
-                }
-            }
-        });
+        this.voservice.isVo().subscribe(result => {
+            this.is_vo_admin = result['Is_Vo_Manager'];
+        })
     }
 
     /**

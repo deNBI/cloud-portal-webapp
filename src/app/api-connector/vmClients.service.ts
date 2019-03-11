@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {Client} from '../virtualmachines/virtualmachinemodels/vmclient';
+import {Client} from '../virtualmachines/clients/vmclient';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 

@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {VirtualMachineComponent} from '../virtualmachines/addvm.component';
-import {ClientOverviewComponent} from '../virtualmachines/vmClients.component';
+import {ClientOverviewComponent} from './clients/vmClients.component';
 import {VmOverviewComponent} from '../virtualmachines/vmOverview.component';
-import {VolumeOverviewComponent} from './volumeOverview.component';
-import {SnapshotOverviewComponent} from './snapshotOverview.component';
+import {VolumeOverviewComponent} from './volumes/volumeOverview.component';
+import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component';
 
 const routes: Routes = [
     {

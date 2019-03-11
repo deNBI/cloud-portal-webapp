@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ImageService} from '../api-connector/image.service';
-import {SnapshotModel} from './virtualmachinemodels/snapshot.model';
+import {ImageService} from '../../api-connector/image.service';
+import {SnapshotModel} from './snapshot.model';
 import {forkJoin} from 'rxjs';
 
 enum Snapshot_Delete_Statuses {

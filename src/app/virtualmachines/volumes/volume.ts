@@ -1,5 +1,5 @@
-import {VirtualMachine} from './virtualmachine';
-import {Client} from './vmclient';
+import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
+import {Client} from '../clients/vmclient';
 
 /**
  * Volume class.

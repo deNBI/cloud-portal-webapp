@@ -15,7 +15,7 @@ import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-ba
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
-import {Client} from '../virtualmachines/virtualmachinemodels/vmclient';
+import {Client} from '../virtualmachines/clients/vmclient';
 
 /**
  * Application Overview component.

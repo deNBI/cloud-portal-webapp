@@ -10,7 +10,7 @@ import {Userinfo} from '../userinfo/userinfo.model';
 import {ApiSettings} from '../api-connector/api-settings.service';
 
 import {ClientService} from '../api-connector/vmClients.service';
-import {Client} from './virtualmachinemodels/vmclient';
+import {Client} from './clients/vmclient';
 import {Application} from '../applications/application.model';
 import {KeyService} from '../api-connector/key.service';
 import {GroupService} from '../api-connector/group.service';

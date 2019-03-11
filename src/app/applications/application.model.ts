@@ -286,11 +286,11 @@ export class Application {
         this._DateStatusChanged = value;
     }
 
-    get User(): number {
+    get User(): string {
         return this._User;
     }
 
-    set User(value: number) {
+    set User(value: string) {
         this._User = value;
     }
 
@@ -302,11 +302,11 @@ export class Application {
         this._Status = value;
     }
 
-    get UserEmail(): number {
+    get UserEmail(): string {
         return this._UserEmail;
     }
 
-    set UserEmail(value: number) {
+    set UserEmail(value: string) {
         this._UserEmail = value;
     }
 

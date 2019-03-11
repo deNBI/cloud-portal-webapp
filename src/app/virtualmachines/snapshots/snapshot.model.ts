@@ -1,4 +1,4 @@
-import {Client} from './vmclient';
+import {Client} from '../clients/vmclient';
 
 /**
  * Snapshot class.

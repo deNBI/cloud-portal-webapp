@@ -1,27 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Volume} from './virtualmachinemodels/volume';
-import {VirtualmachineService} from '../api-connector/virtualmachine.service';
-import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
-import {GroupService} from '../api-connector/group.service';
-import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
-
-/**
- * Enum of all possible volume action statuses.
- */
-export enum Volume_Action_Statuses {
-    WAITING = 0,
-    SUCCESS = 1,
-    ERROR = 2,
-    DETACHING_VOLUME = 3,
-    SUCCESSFULLY_DETACHED_VOLUME = 4,
-    ATTACHING = 5,
-    ATTACHING_SUCCESSFULL = 6,
-    WAIT_CREATION = 7,
-    SUCCESSFULLY_CREATED_ATTACHED = 8,
-    CHANGING_NAME = 9,
-    CHANGING_NAME_SUCESSFULL = 10
-
-}
+import {Volume} from './volume';
+import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
+import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
+import {GroupService} from '../../api-connector/group.service';
+import {AbstractBaseClasse} from '../../shared/shared_modules/baseClass/abstract-base-class';
+import {VolumeActionStates} from './volume-action-states.enum';
+import {VolumeRequestStates} from './volume-request-states.enum';
 
 /**
  * Volume overview component.
@@ -34,8 +18,17 @@ export enum Volume_Action_Statuses {
 })
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit {
+    /**
+     * Enum of all volume action states.
+     */
+    volumeActionStates: typeof VolumeActionStates = VolumeActionStates;
 
-    Volume_Action_Statuses: Volume_Action_Statuses;
+    /**
+     * Enum of all request states.
+     * @type {VolumeRequestStates}
+     */
+    volumeRequestStates: typeof VolumeRequestStates = VolumeRequestStates;
+
     /**
      * Array of all volumes.
      */
@@ -124,14 +117,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * @returns {void}
      */
     attachVolume(volume_id: string, instance_id: string): void {
-        this.volume_action_status = this.Volume_Action_Statuses.ATTACHING;
+        this.volume_action_status = this.volumeActionStates.ATTACHING;
 
         this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
 
             if (result['Attached'] && result['Attached'] === true) {
-                this.volume_action_status = Volume_Action_Statuses.ATTACHING_SUCCESSFULL;
+                this.volume_action_status = this.volumeActionStates.ATTACHING_SUCCESSFULL;
             } else {
-                this.volume_action_status = Volume_Action_Statuses.ERROR;
+                this.volume_action_status = this.volumeActionStates.ERROR;
             }
             this.getVolumes();
         })
@@ -149,19 +142,19 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
             if (result['Created']) {
                 const volume_id = result['Created'];
-                this.volume_action_status = Volume_Action_Statuses.ATTACHING;
+                this.volume_action_status = this.volumeActionStates.ATTACHING;
 
                 this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(res => {
 
                     if (res['Attached'] && res['Attached'] === true) {
-                        this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_CREATED_ATTACHED;
+                        this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED;
                     } else {
-                        this.volume_action_status = Volume_Action_Statuses.ERROR;
+                        this.volume_action_status = this.volumeActionStates.ERROR;
                     }
                     this.getVolumes();
                 })
             } else {
-                this.volume_action_status = Volume_Action_Statuses.ERROR;
+                this.volume_action_status = this.volumeActionStates.ERROR;
             }
             this.getVolumes();
 
@@ -177,12 +170,12 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * @returns {void}
      */
     createVolume(volume_name: string, diskspace: number, instance_id: string): void {
-        this.volume_action_status = Volume_Action_Statuses.WAITING;
+        this.volume_action_status = this.volumeActionStates.WAITING;
         this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
             if (result['Created']) {
-                this.volume_action_status = Volume_Action_Statuses.WAIT_CREATION;
+                this.volume_action_status = this.volumeActionStates.WAIT_CREATION;
             } else {
-                this.volume_action_status = Volume_Action_Statuses.ERROR;
+                this.volume_action_status = this.volumeActionStates.ERROR;
             }
             this.getVolumes();
 
@@ -196,20 +189,20 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * @returns {void}
      */
     deleteVolume(volume_id: string, instance_id?: string): void {
-        this.volume_action_status = Volume_Action_Statuses.WAITING;
+        this.volume_action_status = this.volumeActionStates.WAITING;
 
         if (instance_id) {
-            this.volume_action_status = Volume_Action_Statuses.DETACHING_VOLUME;
+            this.volume_action_status = this.volumeActionStates.DETACHING_VOLUME;
             this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(res => {
                 if (res['Deleted'] && res['Deleted'] === true) {
-                    this.volume_action_status = Volume_Action_Statuses.WAITING;
+                    this.volume_action_status = this.volumeActionStates.WAITING;
                 }
 
                 this.vmService.deleteVolume(volume_id).subscribe(result => {
                     if (result['Deleted'] && result['Deleted'] === true) {
-                        this.volume_action_status = Volume_Action_Statuses.SUCCESS;
+                        this.volume_action_status = this.volumeActionStates.SUCCESS;
                     } else {
-                        this.volume_action_status = Volume_Action_Statuses.ERROR;
+                        this.volume_action_status = this.volumeActionStates.ERROR;
                     }
                     this.getVolumes();
                 })
@@ -218,9 +211,9 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         } else {
             this.vmService.deleteVolume(volume_id).subscribe(result => {
                 if (result['Deleted'] && result['Deleted'] === true) {
-                    this.volume_action_status = Volume_Action_Statuses.SUCCESS;
+                    this.volume_action_status = this.volumeActionStates.SUCCESS;
                 } else {
-                    this.volume_action_status = Volume_Action_Statuses.ERROR;
+                    this.volume_action_status = this.volumeActionStates.ERROR;
                 }
                 this.getVolumes();
 
@@ -235,12 +228,12 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * @returns {void}
      */
     detachVolume(volume_id: string, instance_id: string): void {
-        this.volume_action_status = Volume_Action_Statuses.DETACHING_VOLUME;
+        this.volume_action_status = this.volumeActionStates.DETACHING_VOLUME;
         this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
             if (result['Deleted'] && result['Deleted'] === true) {
-                this.volume_action_status = Volume_Action_Statuses.SUCCESSFULLY_DETACHED_VOLUME;
+                this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME;
             } else {
-                this.volume_action_status = Volume_Action_Statuses.ERROR;
+                this.volume_action_status = this.volumeActionStates.ERROR;
             }
             this.getVolumes();
         })
@@ -253,12 +246,12 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * @returns {void}
      */
     renameVolume(volume_id: string, new_volume_name: string): void {
-        this.volume_action_status = Volume_Action_Statuses.CHANGING_NAME;
+        this.volume_action_status = this.volumeActionStates.CHANGING_NAME;
         this.vmService.renameVolume(volume_id, new_volume_name).subscribe(result => {
                 if (result['volume_name'] === new_volume_name) {
-                    this.volume_action_status = Volume_Action_Statuses.CHANGING_NAME_SUCESSFULL;
+                    this.volume_action_status = this.volumeActionStates.CHANGING_NAME_SUCESSFULL;
                 } else {
-                    this.volume_action_status = Volume_Action_Statuses.ERROR;
+                    this.volume_action_status = this.volumeActionStates.ERROR;
                 }
                 this.getVolumes();
 
