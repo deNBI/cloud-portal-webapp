@@ -193,13 +193,13 @@
                                                 <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
                                                     <td>RAM</td>
                                                     <td>{{ application.RamPerVM
-                                                        }}
+                                                        }} GB
                                                     </td>
                                                 </tr>
                                                 <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
                                                     <td>RAM</td>
                                                     <td>{{
-                                                        application.TotalRam}}
+                                                        application.TotalRam}} GB
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -478,7 +478,7 @@
                                                         app.TotalRam}} GB
                                                     </td>
                                                     <td>
-                                                        {{app.ApplicationExtension.TotalRAM}}
+                                                        {{app.ApplicationExtension.TotalRAM}} GB
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -788,21 +788,6 @@
                                                         GB
                                                     </td>
                                                 </tr>
-                                                <!--tr *ngIf="application.OpenStackProject">
-                                                    <td>Special Hardware
-                                                    </td>
-                                                    <td><span
-                                                            style="margin-right: 5px;"
-                                                            class="badge badge-primary"
-                                                            *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
-                                                    </td>
-                                                    <td *ngIf="application.ApplicationExtension">
-                                                       <span style="margin-right: 5px;"
-                                                             class="badge badge-primary"
-                                                             *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">{{ sh }}</span>
-                                                    </td>
-                                                </tr-->
-
                                                 <tr>
                                                     <td>Last status
                                                         changed

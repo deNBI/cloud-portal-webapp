@@ -206,20 +206,6 @@
                                                             GB
                                                         </td>
                                                     </tr>
-                                                    <!--tr *ngIf="application.OpenStackProject">
-                                                        <td>Special Hardware
-                                                        </td>
-                                                        <td><span
-                                                                style="margin-right: 5px;"
-                                                                class="badge badge-primary"
-                                                                *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                       <span style="margin-right: 5px;"
-                                                             class="badge badge-primary"
-                                                             *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">{{ sh }}</span>
-                                                        </td>
-                                                    </tr-->
                                                     <tr>
                                                         <td>OpenStackProject
                                                         </td>
@@ -859,20 +845,6 @@
                                                                 GB
                                                             </td>
                                                         </tr>
-                                                        <!--tr *ngIf="application.OpenStackProject">
-                                                            <td>Special Hardware
-                                                            </td>
-                                                            <td><span
-                                                                    style="margin-right: 5px;"
-                                                                    class="badge badge-primary"
-                                                                    *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                       <span style="margin-right: 5px;"
-                                                             class="badge badge-primary"
-                                                             *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">{{ sh }}</span>
-                                                            </td>
-                                                        </tr-->
 
                                                         <tr>
                                                             <td>Last status
@@ -1280,37 +1252,6 @@
                             </div>
                             <span class="help-block">How much Object Storage do you need in the future?</span>
                         </div>
-                    </div>
-
-
-                    <div *ngIf="selectedApplication?.OpenStackProject" class="form-group row">
-                        <label class="col-md-4 form-control-label"><strong>Special
-                            Hardware </strong> <i
-                                data-balloon="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."
-                                data-balloon-pos="down"
-                                data-balloon-length="large"><i class="icon-question"
-                                                               style="cursor: pointer;"></i></i></label>
-                        <!-- not working properly yet
-                        <div class="col">
-                              <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">                                    <label>
-                                      <input type="checkbox" [checked]="(specialHardwareInUse(sh, selectedApplication))" disabled>
-                                      {{sh.Name}}
-                                  </label>
-                              </div>
-                              <span class="help-block">Currently used special hardware</span>
-                          </div> -->
-
-                        <!--div class="col">
-                            <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
-                                <label>
-                                    <input type="checkbox"
-                                           [checked]="( checkboxValue === true ? sh.Checked : False )"
-                                           (change)="sh.Checked = $event.target.checked;"/>
-                                    {{sh.Name}}
-                                </label>
-                            </div>
-                            <span class="help-block">Which special hardware do you need in the future?</span>
-                        </div-->
                     </div>
 
                     <div class="form-group row">
