@@ -193,13 +193,13 @@
                                                 <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
                                                     <td>RAM</td>
                                                     <td>***REMOVED******REMOVED*** application.RamPerVM
-                                                        ***REMOVED******REMOVED***
+                                                        ***REMOVED******REMOVED*** GB
                                                     </td>
                                                 </tr>
                                                 <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
                                                     <td>RAM</td>
                                                     <td>***REMOVED******REMOVED***
-                                                        application.TotalRam***REMOVED******REMOVED***
+                                                        application.TotalRam***REMOVED******REMOVED*** GB
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -478,7 +478,7 @@
                                                         app.TotalRam***REMOVED******REMOVED*** GB
                                                     </td>
                                                     <td>
-                                                        ***REMOVED******REMOVED***app.ApplicationExtension.TotalRAM***REMOVED******REMOVED***
+                                                        ***REMOVED******REMOVED***app.ApplicationExtension.TotalRAM***REMOVED******REMOVED*** GB
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -788,21 +788,6 @@
                                                         GB
                                                     </td>
                                                 </tr>
-                                                <!--tr *ngIf="application.OpenStackProject">
-                                                    <td>Special Hardware
-                                                    </td>
-                                                    <td><span
-                                                            style="margin-right: 5px;"
-                                                            class="badge badge-primary"
-                                                            *ngFor="let sh of application.SpecialHardware">***REMOVED******REMOVED*** sh["special_hardware_name"] ***REMOVED******REMOVED***</span>
-                                                    </td>
-                                                    <td *ngIf="application.ApplicationExtension">
-                                                       <span style="margin-right: 5px;"
-                                                             class="badge badge-primary"
-                                                             *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">***REMOVED******REMOVED*** sh ***REMOVED******REMOVED***</span>
-                                                    </td>
-                                                </tr-->
-
                                                 <tr>
                                                     <td>Last status
                                                         changed
