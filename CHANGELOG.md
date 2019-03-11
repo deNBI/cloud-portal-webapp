@@ -1,5 +1,40 @@
 #### Bug Fixes
 
+* **Applications:**  refresh fixed 
+
+#### Features
+
+* **Applications:**
+  * removed special hardware2 
+  * added history 
+  * now with modificaion 
+  * added arrow 
+* **Flavors:**
+  * now fold out 
+
+
+
+
+
+
+#### Features
+
+* **Applications:**
+  * changed to horizon 2020 ([efa9d30a](efa9d30a))
+  * added dissemination ([acbc5c46](acbc5c46))
+  * added european project ([ca198958](ca198958))
+* **Vms:** now visible for pi ([8119f6c8](8119f6c8))
+* **Vo:** now shows facility of projects ([b1f5950c](b1f5950c))
+* **logo:**
+  *  changed logo to new logo ([48a078ea](48a078ea))
+  *  added new logo to scss file ([bfde866c](bfde866c))
+
+
+
+
+
+#### Bug Fixes
+
 * **Resources:** fixed small bug ([fa057274](fa057274))
 * **VM:** fixed diskspace bug ([7ab58e55](7ab58e55))
 * **Vm:** fixed button bug ([e1168997](e1168997))
