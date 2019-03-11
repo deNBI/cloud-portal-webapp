@@ -4,6 +4,9 @@ import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***environment***REMOVED*** from '../environments/environment';
 import ***REMOVED***UserService***REMOVED*** from './api-connector/user.service';
 
+/**
+ * Guard which checks if the user is member of the vo.
+ */
 @Injectable()
 export class MemberGuardService implements CanActivate ***REMOVED***
 

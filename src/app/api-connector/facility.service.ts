@@ -46,7 +46,7 @@ export class FacilityService ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** status
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number, status: number): Observable<any> ***REMOVED***
+    getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/projects/`, ***REMOVED***
             withCredentials: true,
@@ -61,7 +61,7 @@ export class FacilityService ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** facility id of the facility
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    getFacilityResources(facility: number): Observable<any> ***REMOVED***
+    getFacilityResources(facility: number | string): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/projects/resources/`, ***REMOVED***
             withCredentials: true
@@ -75,7 +75,7 @@ export class FacilityService ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** facility
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    getFacilityApplicationsWaitingForConfirmation(facility: number): Observable<any> ***REMOVED***
+    getFacilityApplicationsWaitingForConfirmation(facility: number | string): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications/`, ***REMOVED***
             withCredentials: true
@@ -89,7 +89,7 @@ export class FacilityService ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** facility
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    getFacilityApplicationsHistory(facility: number): Observable<any> ***REMOVED***
+    getFacilityApplicationsHistory(facility: number | string): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications_history/`, ***REMOVED***
             withCredentials: true
@@ -102,8 +102,7 @@ export class FacilityService ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** facility
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    getFacilityModificationApplicationsWaitingForConfirmation(facility: number): Observable<any> ***REMOVED***
-
+    getFacilityModificationApplicationsWaitingForConfirmation(facility: number | string): Observable<any> ***REMOVED***
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/modification_applications/`, ***REMOVED***
             withCredentials: true
 
@@ -116,7 +115,7 @@ export class FacilityService ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** application_id
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    approveFacilityApplication(facility: number, application_id: number): Observable<any> ***REMOVED***
+    approveFacilityApplication(facility: number | string, application_id: number): Observable<any> ***REMOVED***
         const params: HttpParams = new HttpParams().set('action', 'approve');
 
         return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications/$***REMOVED***application_id***REMOVED***/status/`, params, ***REMOVED***

@@ -9,6 +9,9 @@ import ***REMOVED***FacilitymanagerRoutingModule***REMOVED*** from './facilityma
 import ***REMOVED***FacilityApplicationComponent***REMOVED*** from './facility.application.component';
 import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.component';
 
+/**
+ * Facilitymanager module.
+ */
 @NgModule(***REMOVED***
     imports: [
         FacilitymanagerRoutingModule,

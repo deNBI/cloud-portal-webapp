@@ -5,7 +5,7 @@ import ***REMOVED***ProjectMember***REMOVED*** from '../projectmanagement/projec
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import * as moment from 'moment';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
-import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared_modules/baseClass/filter-base-class';
+import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/filter-base-class';
 
 /**
  * Vo Overview component.

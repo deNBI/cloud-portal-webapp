@@ -3,7 +3,7 @@ import ***REMOVED***Volume***REMOVED*** from './virtualmachinemodels/volume';
 import ***REMOVED***VirtualmachineService***REMOVED*** from '../api-connector/virtualmachine.service';
 import ***REMOVED***VirtualMachine***REMOVED*** from './virtualmachinemodels/virtualmachine';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Enum of all possible volume action statuses.
@@ -109,13 +109,11 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
     ***REMOVED***
 
-
     ngOnInit(): void ***REMOVED***
         this.getVolumes();
         this.getUserApprovedProjects();
 
     ***REMOVED***
-
 
     /**
      * Attach a volume to an instance.
@@ -136,7 +134,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             this.getVolumes();
         ***REMOVED***)
     ***REMOVED***
-
 
     /**
      * Create an volume and attach to an instance.
@@ -169,7 +166,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         ***REMOVED***)
 
     ***REMOVED***
-
 
     /**
      * Create an volume.
@@ -230,7 +226,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         ***REMOVED***
     ***REMOVED***
 
-
     /**
      * Detach volume from instance.
      * @param ***REMOVED***string***REMOVED*** volume_id openstack_id of the volume
@@ -248,7 +243,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             this.getVolumes();
         ***REMOVED***)
     ***REMOVED***
-
 
     /**
      * Rename a volume ( just in Django DB not in OpenStack).
@@ -287,7 +281,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         ***REMOVED***)
     ***REMOVED***
 
-
     /**
      * Get all approved projects from the user.
      * @returns ***REMOVED***void***REMOVED***
@@ -300,7 +293,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
-
 
     /**
      * Set request status.
@@ -319,7 +311,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     setSelectedVolume(volume: Volume): void ***REMOVED***
         this.selected_volume = volume;
     ***REMOVED***
-
 
     /**
      * Calc diskspace sum of selected project diskspace and additional diskspace of new volume.
@@ -379,7 +370,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         ***REMOVED***)
     ***REMOVED***
 
-
     /**
      * Get all active vms from a project.
      * @param ***REMOVED***number***REMOVED*** groupid id of the perun group from the project.
@@ -391,6 +381,5 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             this.project_vms = result;
         ***REMOVED***)
     ***REMOVED***
-
 
 ***REMOVED***

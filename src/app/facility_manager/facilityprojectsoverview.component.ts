@@ -9,7 +9,7 @@ import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility
 
 import * as moment from 'moment';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
-import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared_modules/baseClass/filter-base-class';
+import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/filter-base-class';
 
 /**
  * Facility Project overview component.
@@ -26,7 +26,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
 
     member_id: number;
     isLoaded: boolean = false;
-    projects: Project[] = new Array();
+    projects: Project[] = [];
     details_loaded: boolean = false;
     /**
      * Approved group status.
@@ -76,18 +76,17 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
         this.getFacilityProjects(this.selectedFacility['FacilityId'])
     ***REMOVED***
 
-    getProjectLifetime(project) ***REMOVED***
+    getProjectLifetime(project: Project): void ***REMOVED***
         this.details_loaded = false;
         if (!project.Lifetime) ***REMOVED***
             this.groupservice.getLifetime(project.Id).subscribe(res => ***REMOVED***
-                const lifetime = res['lifetime'];
-                let dateCreated = project.DateCreated;
+                const lifetime: number = res['lifetime'];
+                const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
 
-                let expirationDate;
-                dateCreated = moment(dateCreated, 'DD.MM.YYYY').toDate();
                 if (lifetime !== -1) ***REMOVED***
-                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-                    const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
+                    const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+                    const lifetimeDays: number = Math.abs(
+                        moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
                     project.LifetimeDays = lifetimeDays;
                     project.DateEnd = expirationDate;
@@ -101,37 +100,38 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
         ***REMOVED***
     ***REMOVED***
 
-    getFacilityProjects(facility) ***REMOVED***
+    getFacilityProjects(facility: string): void ***REMOVED***
         this.projects = [];
 
         this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe(result => ***REMOVED***
             const facility_projects = result;
-            const is_pi = false;
-            const is_admin = false;
+            const is_pi: boolean = false;
+            const is_admin: boolean = false;
             for (const group of facility_projects) ***REMOVED***
-                const dateCreated = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
-                const dateDayDifference = Math.ceil(moment().diff(dateCreated, 'days', true));
-                const groupid = group['id'];
+                const dateCreated: moment.Moment = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
+                const groupid: string = group['id'];
                 const tmp_facility = group['compute_center'];
-                let shortname = group['shortname'];
-                let compute_center = null;
-                const lifetime = group['lifetime'];
-                let expirationDate;
+                let shortname: string = group['shortname'];
+                let compute_center: ComputecenterComponent = null;
+                const lifetime: number = group['lifetime'];
 
                 if (!shortname) ***REMOVED***
                     shortname = group['name']
                 ***REMOVED***
                 if (tmp_facility) ***REMOVED***
-                    compute_center = new ComputecenterComponent(tmp_facility['compute_center_facility_id'],
+                    compute_center = new ComputecenterComponent(
+                        tmp_facility['compute_center_facility_id'],
                         tmp_facility['compute_center_name'],
-                        tmp_facility['compute_center_login'], tmp_facility['compute_center_support_mail']);
+                        tmp_facility['compute_center_login'],
+                        tmp_facility['compute_center_support_mail']);
                 ***REMOVED***
 
-                const newProject = new Project(
+                const newProject: Project = new Project(
                     Number(groupid),
                     shortname,
                     group['description'],
-                    dateCreated.date() + '.' + (dateCreated.month() + 1) + '.' + dateCreated.year(),
+                    `$***REMOVED***dateCreated.date()***REMOVED***.$***REMOVED***(dateCreated.month() + 1)***REMOVED***.$***REMOVED***dateCreated.year()***REMOVED***`,
                     dateDayDifference,
                     is_pi,
                     is_admin,
@@ -139,8 +139,9 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                 newProject.Status = group['status'];
 
                 if (lifetime !== -1) ***REMOVED***
-                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-                    const lifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
+                    const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+                    const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY')
+                        .toDate()).diff(moment(dateCreated), 'days'));
 
                     newProject.LifetimeDays = lifetimeDays;
                     newProject.DateEnd = expirationDate;
@@ -159,9 +160,11 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
 
     ***REMOVED***
 
-    sendMailToFacility(facility: string, subject: string, message: string, reply?: string) ***REMOVED***
-        this.facilityservice.sendMailToFacility(facility, encodeURIComponent(subject), encodeURIComponent(message),
-            encodeURIComponent(reply)).subscribe(result => ***REMOVED***
+    sendMailToFacility(facility: string, subject: string, message: string, reply?: string): void ***REMOVED***
+        this.facilityservice.sendMailToFacility(
+            facility, encodeURIComponent(subject), encodeURIComponent(message),
+            encodeURIComponent(reply)).subscribe(
+            result => ***REMOVED***
 
                 if (result.status === 201) ***REMOVED***
                     this.emailStatus = 1;
@@ -176,16 +179,16 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
 
     ***REMOVED***
 
-    getMembesOfTheProject(projectid: number, projectname: string) ***REMOVED***
+    getMembesOfTheProject(projectid: number, projectname: string): void ***REMOVED***
         this.facilityservice.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId']).subscribe(members => ***REMOVED***
                 this.usersModalProjectID = projectid;
                 this.usersModalProjectName = projectname;
-                this.usersModalProjectMembers = new Array();
+                this.usersModalProjectMembers = [];
                 for (const member of members) ***REMOVED***
-                    const member_id = member['id'];
-                    const user_id = member['userId'];
-                    const fullName = member['firstName'] + ' ' + member['lastName'];
-                    const newMember = new ProjectMember(user_id, fullName, member_id);
+                    const member_id: string = member['id'];
+                    const user_id: string = member['userId'];
+                    const fullName: string = `$***REMOVED***member['firstName']***REMOVED*** $***REMOVED***member['lastName']***REMOVED***`;
+                    const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
                     newMember.ElixirId = member['elixirId'];
                     newMember.Email = member['email'];
                     this.usersModalProjectMembers.push(newMember);
@@ -195,21 +198,21 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
         )
     ***REMOVED***
 
-    public showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]) ***REMOVED***
-        this.getMembesOfTheProject(projectid, projectname);
+    public showMembersOfTheProject(project_id: number, projectname: string): void ***REMOVED***
+        this.getMembesOfTheProject(project_id, projectname);
 
     ***REMOVED***
 
-    public resetEmailModal() ***REMOVED***
+    public resetEmailModal(): void ***REMOVED***
 
         this.emailSubject = null;
         this.emailText = null;
-        this.emailReply = null
+        this.emailReply = null;
         this.emailStatus = 0;
 
     ***REMOVED***
 
-    public comingSoon() ***REMOVED***
+    public comingSoon(): void ***REMOVED***
         alert('This function will be implemented soon.')
     ***REMOVED***
 ***REMOVED***

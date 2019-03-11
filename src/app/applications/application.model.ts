@@ -5,7 +5,7 @@ import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanageme
  * Application class.
  */
 export class Application ***REMOVED***
-    private _Id: number;
+    private _Id: number | string;
     private _Name: string;
     private _Shortname: string;
     private _Institute: string;
@@ -30,7 +30,7 @@ export class Application ***REMOVED***
     private _OpenStackProject: boolean;
     private _DaysRunning: number;
     private _ApplicationExtension: ApplicationExtension;
-    private _PerunId: number;
+    private _PerunId: number | string;
     private _TotalCores: number;
     private _TotalRam: number;
     private _DateApproved: string;
@@ -150,11 +150,11 @@ export class Application ***REMOVED***
         this._ComputeCenter = value;
     ***REMOVED***
 
-    get Id(): number ***REMOVED***
+    get Id(): number | string ***REMOVED***
         return this._Id;
     ***REMOVED***
 
-    set Id(value: number) ***REMOVED***
+    set Id(value: number | string) ***REMOVED***
         this._Id = value;
     ***REMOVED***
 
@@ -310,11 +310,11 @@ export class Application ***REMOVED***
         this._UserEmail = value;
     ***REMOVED***
 
-    get PerunId(): number ***REMOVED***
+    get PerunId(): number | string ***REMOVED***
         return this._PerunId;
     ***REMOVED***
 
-    set PerunId(value: number) ***REMOVED***
+    set PerunId(value: number | string) ***REMOVED***
         this._PerunId = value;
     ***REMOVED***
 

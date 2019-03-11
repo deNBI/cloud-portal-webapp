@@ -7,7 +7,7 @@ import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap/modal';
 import ***REMOVED***AlertModule***REMOVED*** from 'ngx-bootstrap';
-import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared_modules/public-key/public-key.module';
+import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared/shared_modules/public-key/public-key.module';
 
 @NgModule(***REMOVED***
     imports: [

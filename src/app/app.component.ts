@@ -2,7 +2,9 @@ import ***REMOVED***AfterViewInit, Component, ViewChild***REMOVED*** from '@angu
 import ***REMOVED***Http, RequestOptions, XHRBackend***REMOVED*** from '@angular/http';
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap';
 
-
+/**
+ * App component.
+ */
 @Component(***REMOVED***
     selector: 'body',
     templateUrl: 'app.component.html',

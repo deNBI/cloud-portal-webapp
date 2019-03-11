@@ -128,7 +128,7 @@
                                                     <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
                                                         <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
                                                         <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
-                                                        <td *ngIf="application.Status == 4 ">
+                                                        <td *ngIf="application.Status =='modification requested' ">
                                                             <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
                                                             <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
@@ -149,25 +149,26 @@
                                                         </tr>
                                                     </ng-container>
 
-                                                    <tr *ngIf="application.OpenStackProject">
+                                                    <tr>
                                                         <td>Cores</td>
                                                         <td>***REMOVED******REMOVED***
                                                             application.TotalCores
                                                             ***REMOVED******REMOVED***
+
                                                         </td>
 
-                                                        <td *ngIf="application.OpenStackProject && application.Status == 'modification requested'">
+                                                        <td *ngIf="application.Status == 'modification requested'">
                                                             ***REMOVED******REMOVED***application.ApplicationExtension.TotalCores***REMOVED******REMOVED***
 
                                                         </td>
                                                     </tr>
 
-                                                    <tr *ngIf="application.OpenStackProject">
+                                                    <tr>
                                                         <td>RAM</td>
                                                         <td>***REMOVED******REMOVED***
                                                             application.TotalRam***REMOVED******REMOVED*** GB
                                                         </td>
-                                                        <td *ngIf="application.OpenStackProject && application.Status == 'modification requested'">
+                                                        <td *ngIf="application.Status == 'modification requested'">
                                                             ***REMOVED******REMOVED***application.ApplicationExtension?.TotalRAM***REMOVED******REMOVED***
                                                         </td>
                                                     </tr>
@@ -206,20 +207,7 @@
                                                             GB
                                                         </td>
                                                     </tr>
-                                                    <!--tr *ngIf="application.OpenStackProject">
-                                                        <td>Special Hardware
-                                                        </td>
-                                                        <td><span
-                                                                style="margin-right: 5px;"
-                                                                class="badge badge-primary"
-                                                                *ngFor="let sh of application.SpecialHardware">***REMOVED******REMOVED*** sh["special_hardware_name"] ***REMOVED******REMOVED***</span>
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                       <span style="margin-right: 5px;"
-                                                             class="badge badge-primary"
-                                                             *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">***REMOVED******REMOVED*** sh ***REMOVED******REMOVED***</span>
-                                                        </td>
-                                                    </tr-->
+
                                                     <tr>
                                                         <td>OpenStackProject
                                                         </td>
@@ -530,11 +518,13 @@
                                                             </tr>
                                                         </ng-container>
 
-                                                        <tr *ngIf="application.OpenStackProject">
+                                                        <tr>
                                                             <td>Total Cores</td>
                                                             <td>***REMOVED******REMOVED***
                                                                 application.TotalCores
                                                                 ***REMOVED******REMOVED***
+
+
                                                             </td>
 
                                                             <td *ngIf="application.Status == 4">
@@ -542,7 +532,7 @@
                                                             </td>
                                                         </tr>
 
-                                                        <tr *ngIf="application.OpenStackProject">
+                                                        <tr>
                                                             <td>Total RAM</td>
                                                             <td>***REMOVED******REMOVED***
                                                                 application.TotalRam***REMOVED******REMOVED*** GB
@@ -587,21 +577,6 @@
                                                                 GB
                                                             </td>
                                                         </tr>
-                                                        <!--tr *ngIf="application.OpenStackProject">
-                                                            <td>Special Hardware
-                                                            </td>
-                                                            <td><span
-                                                                    style="margin-right: 5px;"
-                                                                    class="badge badge-primary"
-                                                                    *ngFor="let sh of application.SpecialHardware">***REMOVED******REMOVED*** sh["special_hardware_name"] ***REMOVED******REMOVED***</span>
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                       <span style="margin-right: 5px;"
-                                                             class="badge badge-primary"
-                                                             *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">***REMOVED******REMOVED*** sh ***REMOVED******REMOVED***</span>
-                                                            </td>
-                                                        </tr-->
-
                                                         <tr>
                                                             <td>Last status
                                                                 changed
@@ -673,7 +648,8 @@
                                             ***REMOVED******REMOVED***
                                         </td>
                                         <td>
-                                            <button (click)="switchCollapseStatus('application_history-' + application.Id);getFacilityProject(application);"
+                                            <button
+                                                    (click)="switchCollapseStatus('application_history-' + application.Id);getFacilityProject(application);"
                                                     type="button"
                                                     class="btn btn-secondary">
                                                 <i class="fa fa-info-circle"></i>&nbsp;
@@ -805,7 +781,7 @@
                                                         </ng-container>
 
 
-                                                        <tr *ngIf="application.OpenStackProject">
+                                                        <tr>
                                                             <td>Total Cores</td>
                                                             <td>***REMOVED******REMOVED***application.TotalCores
                                                                 ***REMOVED******REMOVED***
@@ -1300,17 +1276,17 @@
                               <span class="help-block">Currently used special hardware</span>
                           </div> -->
 
-                        <!--div class="col">
-                            <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
-                                <label>
-                                    <input type="checkbox"
-                                           [checked]="( checkboxValue === true ? sh.Checked : False )"
-                                           (change)="sh.Checked = $event.target.checked;"/>
-                                    ***REMOVED******REMOVED***sh.Name***REMOVED******REMOVED***
-                                </label>
-                            </div>
-                            <span class="help-block">Which special hardware do you need in the future?</span>
-                        </div-->
+                    <!--div class="col">
+                        <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       [checked]="( checkboxValue === true ? sh.Checked : False )"
+                                       (change)="sh.Checked = $event.target.checked;"/>
+                                ***REMOVED******REMOVED***sh.Name***REMOVED******REMOVED***
+                            </label>
+                        </div>
+                        <span class="help-block">Which special hardware do you need in the future?</span>
+                    </div-->
                     <!--/div-->
 
                     <div class="form-group row">

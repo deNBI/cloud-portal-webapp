@@ -5,13 +5,14 @@ import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/appl
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modules/baseClass/abstract-base-class';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
 
 /**
  * This components provides the functions to create a new Cloud Application.
  */
 @Component(***REMOVED***
+    selector: 'app-addcloudapplication',
     templateUrl: 'addcloudapplication.component.html',
     providers: [ApiSettings, ApplicationsService, FlavorService],
     styleUrls: ['addcloudapplication.component.css']

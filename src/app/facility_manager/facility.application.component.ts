@@ -9,7 +9,7 @@ import ***REMOVED***ApplicationExtension***REMOVED*** from '../applications/appl
 import ***REMOVED***ApplicationStatus***REMOVED*** from '../applications/application_status.model';
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service';
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared_modules/baseClass/abstract-base-class';
+import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Application component
@@ -156,7 +156,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             ***REMOVED***
 
             for (const key in res) ***REMOVED***
-                if (res.has(key)) ***REMOVED***
+                if (res.hasOwnProperty(key)) ***REMOVED***
 
                     const aj = res[key];
                     const newApplication: Application = new Application();
@@ -196,11 +196,11 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
 
                     ***REMOVED***
                     if (aj['projectapplicationrenewal']) ***REMOVED***
-                        const r: ApplicationExtension = new ApplicationExtension();
+                        const newExtension: ApplicationExtension = new ApplicationExtension();
                         let requestExtensionTotalCores: number = 0;
                         let requestExtensionTotalRam: number = 0;
                         for (const flavor of aj['projectapplicationrenewal']['flavors']) ***REMOVED***
-                            r.addFlavorToRequested(
+                            newExtension.addFlavorToRequested(
                                 flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
                                 flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk);
                             requestExtensionTotalCores += flavor.vcpus * flavor.counter;
@@ -208,21 +208,21 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
 
                         ***REMOVED***
 
-                        r.TotalRAM = requestExtensionTotalRam;
-                        r.TotalCores = requestExtensionTotalCores;
+                        newExtension.TotalRAM = requestExtensionTotalRam;
+                        newExtension.TotalCores = requestExtensionTotalCores;
 
-                        r.Id = aj['projectapplicationrenewal']['project_application'];
-                        r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-                        r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-                        r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-                        r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-                        r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                        r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-                        r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-                        r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-                        r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                        newExtension.Id = aj['projectapplicationrenewal']['project_application'];
+                        newExtension.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                        newExtension.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                        newExtension.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                        newExtension.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                        newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                        newExtension.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                        newExtension.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                        newExtension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                        newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
 
-                        newApplication.ApplicationExtension = r;
+                        newApplication.ApplicationExtension = newExtension;
 
                     ***REMOVED***
                     this.all_application_modifications.push(newApplication);
@@ -250,7 +250,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             ***REMOVED***
 
             for (const key in res) ***REMOVED***
-                if (res.has(key)) ***REMOVED***
+                if (res.hasOwnProperty(key)) ***REMOVED***
 
                     const aj = res[key];
                     const newApplication: Application = new Application();
@@ -290,11 +290,11 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
 
                     ***REMOVED***
                     if (aj['projectapplicationrenewal']) ***REMOVED***
-                        const r: ApplicationExtension = new ApplicationExtension();
+                        const newExtension: ApplicationExtension = new ApplicationExtension();
                         let requestExtensionTotalCores: number = 0;
                         let requestExtensionTotalRam: number = 0;
                         for (const flavor of aj['projectapplicationrenewal']['flavors']) ***REMOVED***
-                            r.addFlavorToRequested(
+                            newExtension.addFlavorToRequested(
                                 flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
                                 flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk);
                             requestExtensionTotalCores += flavor.vcpus * flavor.counter;
@@ -302,21 +302,21 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
 
                         ***REMOVED***
 
-                        r.TotalRAM = requestExtensionTotalRam;
-                        r.TotalCores = requestExtensionTotalCores;
+                        newExtension.TotalRAM = requestExtensionTotalRam;
+                        newExtension.TotalCores = requestExtensionTotalCores;
 
-                        r.Id = aj['projectapplicationrenewal']['project_application'];
-                        r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-                        r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-                        r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-                        r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-                        r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                        r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-                        r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-                        r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-                        r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                        newExtension.Id = aj['projectapplicationrenewal']['project_application'];
+                        newExtension.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                        newExtension.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                        newExtension.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                        newExtension.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                        newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                        newExtension.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                        newExtension.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                        newExtension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                        newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
 
-                        newApplication.ApplicationExtension = r;
+                        newApplication.ApplicationExtension = newExtension;
 
                     ***REMOVED***
                     this.applications_history.push(newApplication);
@@ -341,7 +341,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             ***REMOVED***
 
             for (const key in res) ***REMOVED***
-                if (res.has(key)) ***REMOVED***
+                if (res.hasOwnProperty(key)) ***REMOVED***
                     const aj = res[key];
                     const newApplication: Application = new Application();
                     newApplication.Id = aj['project_application_id'];
@@ -525,7 +525,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
 
         const dummy: string = 'Unknown';
         for (const status of this.application_status) ***REMOVED***
-            if (status.Id === id) ***REMOVED***
+            if (status.Id.toString() === id.toString()) ***REMOVED***
                 return status.Name;
             ***REMOVED***
         ***REMOVED***
@@ -541,7 +541,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
     public getIdByStatus(name: string): number ***REMOVED***
         const dummy: number = -1;
         for (const status of this.application_status) ***REMOVED***
-            if (status.Name === name) ***REMOVED***
+            if (status.Name.toString() === name) ***REMOVED***
                 return status.Id;
             ***REMOVED***
         ***REMOVED***

@@ -5,7 +5,7 @@ import ***REMOVED***VirtualMachine***REMOVED*** from './virtualmachinemodels/vir
 import ***REMOVED***FullLayoutComponent***REMOVED*** from '../layouts/full-layout.component';
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
 import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
-import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared_modules/baseClass/filter-base-class';
+import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/filter-base-class';
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 
 /**
