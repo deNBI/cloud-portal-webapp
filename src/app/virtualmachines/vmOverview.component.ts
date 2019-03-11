@@ -5,7 +5,7 @@ import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 import {UserService} from '../api-connector/user.service';
 import {ImageService} from '../api-connector/image.service';
-import {FilterBaseClass} from '../shared_modules/baseClass/filter-base-class';
+import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
 import {VoService} from '../api-connector/vo.service';
 
 /**

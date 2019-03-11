@@ -2,7 +2,9 @@ import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {Http, RequestOptions, XHRBackend} from '@angular/http';
 import {ModalDirective} from 'ngx-bootstrap';
 
-
+/**
+ * App component.
+ */
 @Component({
     selector: 'body',
     templateUrl: 'app.component.html',

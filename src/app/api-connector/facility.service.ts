@@ -46,7 +46,7 @@ export class FacilityService {
      * @param {number} status
      * @returns {Observable<any>}
      */
-    getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number, status: number): Observable<any> {
+    getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
             withCredentials: true,
@@ -61,7 +61,7 @@ export class FacilityService {
      * @param {number} facility id of the facility
      * @returns {Observable<any>}
      */
-    getFacilityResources(facility: number): Observable<any> {
+    getFacilityResources(facility: number | string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/resources/`, {
             withCredentials: true
@@ -75,7 +75,7 @@ export class FacilityService {
      * @param {number} facility
      * @returns {Observable<any>}
      */
-    getFacilityApplicationsWaitingForConfirmation(facility: number): Observable<any> {
+    getFacilityApplicationsWaitingForConfirmation(facility: number | string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/`, {
             withCredentials: true
@@ -89,7 +89,7 @@ export class FacilityService {
      * @param {number} facility
      * @returns {Observable<any>}
      */
-    getFacilityApplicationsHistory(facility: number): Observable<any> {
+    getFacilityApplicationsHistory(facility: number | string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`, {
             withCredentials: true
@@ -102,8 +102,7 @@ export class FacilityService {
      * @param {number} facility
      * @returns {Observable<any>}
      */
-    getFacilityModificationApplicationsWaitingForConfirmation(facility: number): Observable<any> {
-
+    getFacilityModificationApplicationsWaitingForConfirmation(facility: number | string): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/modification_applications/`, {
             withCredentials: true
 
@@ -116,7 +115,7 @@ export class FacilityService {
      * @param {number} application_id
      * @returns {Observable<any>}
      */
-    approveFacilityApplication(facility: number, application_id: number): Observable<any> {
+    approveFacilityApplication(facility: number | string, application_id: number): Observable<any> {
         const params: HttpParams = new HttpParams().set('action', 'approve');
 
         return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`, params, {

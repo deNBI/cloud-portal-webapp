@@ -5,13 +5,14 @@ import {ApplicationsService} from '../api-connector/applications.service'
 import {FlavorService} from '../api-connector/flavor.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
-import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
+import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 import {environment} from '../../environments/environment';
 
 /**
  * This components provides the functions to create a new Cloud Application.
  */
 @Component({
+    selector: 'app-addcloudapplication',
     templateUrl: 'addcloudapplication.component.html',
     providers: [ApiSettings, ApplicationsService, FlavorService],
     styleUrls: ['addcloudapplication.component.css']

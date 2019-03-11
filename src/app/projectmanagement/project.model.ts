@@ -28,7 +28,7 @@ export class Project {
     private _OpenStackProject: boolean;
     private _LifetimeReached: number;
 
-    constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number,
+    constructor(Id: number | string, Name: string, Description: string, DateCreated: string, DaysRunning: number,
                 UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) {
         this._Id = Id;
         this._Name = Name;
@@ -97,6 +97,10 @@ export class Project {
         this._Lifetime = value;
     }
 
+    get Lifetime(): number | string {
+        return this._Lifetime;
+    }
+
     get ComputeCenter(): ComputecenterComponent {
         return this._ComputeCenter
     }
@@ -115,6 +119,10 @@ export class Project {
 
     set Id(value: number | string) {
         this._Id = value;
+    }
+
+    get Id(): number | string {
+        return this._Id;
     }
 
     get Name(): string {

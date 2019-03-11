@@ -5,7 +5,7 @@ import {ProjectMember} from '../projectmanagement/project_member.model';
 import {GroupService} from '../api-connector/group.service';
 import * as moment from 'moment';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
-import {FilterBaseClass} from '../shared_modules/baseClass/filter-base-class';
+import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
 
 /**
  * Vo Overview component.

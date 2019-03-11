@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {ApplicationsService} from '../api-connector/applications.service'
-import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
+import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
 import {environment} from '../../environments/environment';

@@ -4,6 +4,9 @@ import {Observable} from 'rxjs';
 import {environment} from '../environments/environment';
 import {UserService} from './api-connector/user.service';
 
+/**
+ * Guard which checks if the user is member of the vo.
+ */
 @Injectable()
 export class MemberGuardService implements CanActivate {
 

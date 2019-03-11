@@ -9,6 +9,9 @@ import {FacilitymanagerRoutingModule} from './facilitymanager-routing.module';
 import {FacilityApplicationComponent} from './facility.application.component';
 import {ResourcesComponent} from './resources/resources.component';
 
+/**
+ * Facilitymanager module.
+ */
 @NgModule({
     imports: [
         FacilitymanagerRoutingModule,

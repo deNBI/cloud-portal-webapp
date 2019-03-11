@@ -37,6 +37,9 @@ const routes: Routes = [
 
 ];
 
+/**
+ * Facilitymanager routing module.
+ */
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]

@@ -11,7 +11,7 @@ import {NgForm} from '@angular/forms';
 import {VoService} from '../api-connector/vo.service';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FacilityService} from '../api-connector/facility.service';
-import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
+import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
@@ -235,11 +235,11 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     setListOfTypes(types: FlavorType[]): void {
         this.typeList = types;
         this.collapseList = new Array(types.length) as boolean[];
-        for (const t of types) {
+        for (const type of types) {
 
             this.collapseList.push(false); // AS FIX
-            if (t.long_name === 'Standart Flavor') {
-                this.collapseList[this.typeList.indexOf(t)] = true;
+            if (type.long_name === 'Standart Flavor') {
+                this.collapseList[this.typeList.indexOf(type)] = true;
             }
         }
 
@@ -364,6 +364,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                         let requestExtensionTotalCores: number = 0;
                         let requestExtensionTotalRam: number = 0;
 
+
                         for (const flavor of aj['projectapplicationrenewal']['flavors']) {
                             newExtension.addFlavorToRequested(
                                 flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram, flavor.rootdisk,
@@ -404,9 +405,9 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      */
     getEndDate(approval: string, months: number): string {
         let date1: Date = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
-        const m: number = date1.getMonth();
-        if ((m + months) > 11) {
-            date1 = new Date(date1.getFullYear(), (m + months - 12), date1.getDate());
+        const month: number = date1.getMonth();
+        if ((month + months) > 11) {
+            date1 = new Date(date1.getFullYear(), (month + months - 12), date1.getDate());
         } else {
             date1.setMonth(date1.getMonth() + months);
         }
@@ -465,22 +466,22 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                         const aj: object = res[key];
                         const newApp: Application = new Application();
                         newApp.Id = aj['project_application_id'];
-
                         newApp.Name = aj['project_application_name'];
                         newApp.Shortname = aj['project_application_shortname'];
                         newApp.Description = aj['project_application_description'];
                         newApp.Lifetime = aj['project_application_lifetime'];
-
+                        newApp.VMsRequested = aj['project_application_vms_requested'];
+                        newApp.RamPerVM = aj['project_application_ram_per_vm'];
+                        newApp.TotalRam = aj['project_application_total_ram'];
+                        newApp.TotalCores = aj['project_application_total_cores'];
+                        newApp.CoresPerVM = aj['project_application_cores_per_vm'];
+                        newApp.VolumeLimit = aj['project_application_volume_limit'];
+                        newApp.VolumeCounter = aj['project_application_volume_counter'];
                         newApp.ObjectStorage = aj['project_application_object_storage'];
                         newApp.OpenStackProject = aj['project_application_openstack_project'];
-
-                        newApp.ObjectStorage = aj['project_application_object_storage'];
-                        newApp.SpecialHardware = aj['project_application_special_hardware'];
-
                         newApp.Institute = aj['project_application_institute'];
                         newApp.Workgroup = aj['project_application_workgroup'];
                         newApp.DateApproved = aj['project_application_date_approved'];
-
                         newApp.DateSubmitted = aj['project_application_date_submitted'];
                         newApp.DateStatusChanged = aj['project_application_date_status_changed'];
                         newApp.User = aj['project_application_user']['username'];
@@ -496,52 +497,48 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                 flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk)
 
                         }
-                        if (newApp.Status === this.APPROVED_STATUS) {
 
-                            newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateStatusChanged).getTime()))
-                                / (1000 * 3600 * 24));
+                        newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateStatusChanged).getTime()))
+                            / (1000 * 3600 * 24));
+                        newApp.Comment = aj['project_application_comment'];
+                        newApp.PerunId = aj['project_application_perun_id'];
+                        if (aj['projectapplicationrenewal']) {
+                            const newExtension: ApplicationExtension = new ApplicationExtension();
+                            let requestExtensionTotalCores: number = 0;
+                            let requestExtensionTotalRam: number = 0;
 
                             newApp.Comment = aj['project_application_comment'];
                             newApp.PerunId = aj['project_application_perun_id'];
-                            if (aj['projectapplicationrenewal']) {
-                                const r: ApplicationExtension = new ApplicationExtension();
-                                let requestExtensionTotalCores: number = 0;
-                                let requestExtensionTotalRam: number = 0;
+                            newApp.OpenStackProject = aj['project_application_openstack_project'];
 
-                                newApp.Comment = aj['project_application_comment'];
-                                newApp.PerunId = aj['project_application_perun_id'];
-                                newApp.OpenStackProject = aj['project_application_openstack_project'];
+                            for (const flavor of aj['projectapplicationrenewal']['flavors']) {
+                                newExtension.addFlavorToRequested(
+                                    flavor.flavor_name,
+                                    flavor.counter,
+                                    flavor.tag,
+                                    flavor.ram,
+                                    flavor.rootdisk,
+                                    flavor.vcpus,
+                                    flavor.gpu,
+                                    flavor.epheremal_disk);
+                                requestExtensionTotalCores += flavor.vcpus * flavor.counter;
+                                requestExtensionTotalRam += flavor.ram * flavor.counter;
 
-                                for (const flavor of aj['projectapplicationrenewal']['flavors']) {
-                                    r.addFlavorToRequested(
-                                        flavor.flavor_name,
-                                        flavor.counter,
-                                        flavor.tag,
-                                        flavor.ram,
-                                        flavor.rootdisk,
-                                        flavor.vcpus,
-                                        flavor.gpu,
-                                        flavor.epheremal_disk);
-                                    requestExtensionTotalCores += flavor.vcpus * flavor.counter;
-                                    requestExtensionTotalRam += flavor.ram * flavor.counter;
+                                newExtension.TotalRAM = requestExtensionTotalRam;
+                                newExtension.TotalCores = requestExtensionTotalCores;
 
-                                    r.TotalRAM = requestExtensionTotalRam;
-                                    r.TotalCores = requestExtensionTotalCores;
+                                newExtension.Id = aj['projectapplicationrenewal']['project_application'];
+                                newExtension.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+                                newExtension.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+                                newExtension.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+                                newExtension.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+                                newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+                                newExtension.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+                                newExtension.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+                                newExtension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+                                newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
 
-                                    r.Id = aj['projectapplicationrenewal']['project_application'];
-                                    r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-                                    r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-                                    r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-                                    r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-                                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                                    r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-                                    r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-                                    r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-                                    r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-
-                                    newApp.ApplicationExtension = r;
-
-                                }
+                                newApp.ApplicationExtension = newExtension;
 
                             }
                         }
@@ -687,10 +684,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             newApp.Id = aj['project_application_id'];
             newApp.Name = aj['project_application_name'];
             newApp.Shortname = aj['project_application_shortname'];
-            newApp.Lifetime = aj['project_application_lifetime'];
-            newApp.DateSubmitted = aj['project_application_date_submitted'];
-            newApp.Status = aj['project_application_status']['application_status_name'];
             newApp.Description = aj['project_application_description'];
+            newApp.Lifetime = aj['project_application_lifetime'];
             newApp.VMsRequested = aj['project_application_vms_requested'];
             newApp.RamPerVM = aj['project_application_ram_per_vm'];
             newApp.TotalRam = aj['project_application_total_ram'];
@@ -699,16 +694,18 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             newApp.VolumeLimit = aj['project_application_volume_limit'];
             newApp.VolumeCounter = aj['project_application_volume_counter'];
             newApp.ObjectStorage = aj['project_application_object_storage'];
-            newApp.SpecialHardware = aj['project_application_special_hardware'];
             newApp.OpenStackProject = aj['project_application_openstack_project'];
+            newApp.Institute = aj['project_application_institute'];
+            newApp.Workgroup = aj['project_application_workgroup'];
             newApp.DateApproved = aj['project_application_date_approved'];
+            newApp.DateSubmitted = aj['project_application_date_submitted'];
+            newApp.DateStatusChanged = aj['project_application_date_status_changed'];
+            newApp.User = aj['project_application_user']['username'];
+            newApp.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
+            newApp.UserEmail = aj['project_application_user']['email'];
+            newApp.Status = aj['project_application_status'];
             newApp.Dissemination = aj['project_application_report_allowed'];
             newApp.Horizon2020 = aj['project_application_horizon2020'];
-
-            newApp.PerunId = aj['project_application_perun_id'];
-            newApp.Horizon2020 = aj['project_application_horizon2020'];
-
-            newApp.Comment = aj['project_application_comment'];
             for (const flavor of aj['flavors']) {
                 newApp.addFlavorToCurrent(
                     flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
@@ -810,7 +807,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 this.getUserApplication(app);
 
                 for (const appl of this.user_applications) {
-                    if (this.selectedApplication.PerunId === appl.PerunId) {
+                    if (this.selectedApplication.PerunId.toString() === appl.PerunId.toString()) {
                         this.getUserApplication(appl);
                         break;
                     }
@@ -827,7 +824,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 this.getApplication(this.selectedApplication);
 
                 for (const appl of this.user_applications) {
-                    if (this.selectedApplication.PerunId === appl.PerunId) {
+                    if (this.selectedApplication.PerunId.toString() === appl.PerunId.toString()) {
                         this.getUserApplication(appl);
                         break;
                     }
@@ -851,7 +848,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             this.getApplication(this.selectedApplication);
 
             for (const app of this.user_applications) {
-                if (this.selectedApplication.PerunId === app.PerunId) {
+                if (this.selectedApplication.PerunId.toString() === app.PerunId.toString()) {
                     this.getUserApplication(app);
                     break;
                 }
@@ -866,14 +863,14 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      * @returns {string}
      */
     public getStatusById(id: number): string {
-        const s: string = 'Unknown';
+        const dummy: string = 'Unknown';
         for (const status of this.application_status) {
             if (status.Id === id) {
                 return status.Name;
             }
         }
 
-        return s;
+        return dummy;
     }
 
     /**

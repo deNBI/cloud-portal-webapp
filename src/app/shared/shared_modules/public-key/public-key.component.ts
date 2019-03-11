@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {KeyService} from '../../api-connector/key.service';
-import {ApiSettings} from '../../api-connector/api-settings.service';
-import {Userinfo} from '../../userinfo/userinfo.model';
+import {KeyService} from '../../../api-connector/key.service';
+import {ApiSettings} from '../../../api-connector/api-settings.service';
+import {Userinfo} from '../../../userinfo/userinfo.model';
 
 @Component({
     selector: '[app-public-key]',

@@ -91,7 +91,7 @@ export class ApplicationsService {
 
     }
 
-    approveRenewal(application_id: number): Observable<any> {
+    approveRenewal(application_id: number | string): Observable<any> {
 
         return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/${application_id}/status/`, null, {
             headers: header_csrf,
@@ -100,7 +100,7 @@ export class ApplicationsService {
 
     }
 
-    declineRenewal(application_id: number): Observable<any> {
+    declineRenewal(application_id: number | string): Observable<any> {
 
         return this.http.delete(`${ApiSettings.getApiBaseURL()}applicationRenewals/${application_id}/status/`, {
             headers: header_csrf,

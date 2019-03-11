@@ -3,7 +3,7 @@ import {Volume} from './virtualmachinemodels/volume';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {GroupService} from '../api-connector/group.service';
-import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
+import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Enum of all possible volume action statuses.
@@ -109,13 +109,11 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
     }
 
-
     ngOnInit(): void {
         this.getVolumes();
         this.getUserApprovedProjects();
 
     }
-
 
     /**
      * Attach a volume to an instance.
@@ -136,7 +134,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             this.getVolumes();
         })
     }
-
 
     /**
      * Create an volume and attach to an instance.
@@ -169,7 +166,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         })
 
     }
-
 
     /**
      * Create an volume.
@@ -230,7 +226,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         }
     }
 
-
     /**
      * Detach volume from instance.
      * @param {string} volume_id openstack_id of the volume
@@ -248,7 +243,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             this.getVolumes();
         })
     }
-
 
     /**
      * Rename a volume ( just in Django DB not in OpenStack).
@@ -287,7 +281,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         })
     }
 
-
     /**
      * Get all approved projects from the user.
      * @returns {void}
@@ -300,7 +293,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             }
         });
     }
-
 
     /**
      * Set request status.
@@ -319,7 +311,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     setSelectedVolume(volume: Volume): void {
         this.selected_volume = volume;
     }
-
 
     /**
      * Calc diskspace sum of selected project diskspace and additional diskspace of new volume.
@@ -379,7 +370,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         })
     }
 
-
     /**
      * Get all active vms from a project.
      * @param {number} groupid id of the perun group from the project.
@@ -391,6 +381,5 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             this.project_vms = result;
         })
     }
-
 
 }

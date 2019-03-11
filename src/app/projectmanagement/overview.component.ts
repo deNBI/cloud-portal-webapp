@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import {VoService} from '../api-connector/vo.service';
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
-import {AbstractBaseClasse} from '../shared_modules/baseClass/abstract-base-class';
+import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Projectoverview component.
@@ -35,13 +35,13 @@ export class OverviewComponent extends AbstractBaseClasse {
     application_action_done: boolean = false;
     application_action_success: boolean;
     application_action_error_message: boolean;
-    projects: Project[] = new Array();
+    projects: Project[] = [];
     loaded: boolean = true;
     details_loaded: boolean = false;
 
     // modal variables for User list
     public usersModalProjectMembers: ProjectMember[] = [];
-    public usersModalProjectID: number;
+    public usersModalProjectID: number | string;
     public usersModalProjectName: string;
     public selectedProject: Project;
 
@@ -141,7 +141,7 @@ export class OverviewComponent extends AbstractBaseClasse {
                 }
 
                 const newProject: Project = new Project(
-                    Number(groupid),
+                    groupid,
                     shortname,
                     group['description'],
                     moment(dateCreated).format('DD.MM.YYYY'),
@@ -170,7 +170,7 @@ export class OverviewComponent extends AbstractBaseClasse {
         })
     }
 
-    getMembesOfTheProject(projectid: number, projectname: string): void {
+    getMembersOfTheProject(projectid: number | string, projectname: string): void {
         this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => {
 
             this.usersModalProjectID = projectid;
@@ -288,8 +288,8 @@ export class OverviewComponent extends AbstractBaseClasse {
 
     }
 
-    public showMembersOfTheProject(projectid: number, projectname: string, facility?: [string, number]): void {
-        this.getMembesOfTheProject(projectid, projectname);
+    public showMembersOfTheProject(projectid: number | string, projectname: string, facility?: [string, number]): void {
+        this.getMembersOfTheProject(projectid, projectname);
 
         if (facility) {
             this.UserModalFacility = facility;

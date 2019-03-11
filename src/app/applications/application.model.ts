@@ -5,7 +5,7 @@ import {ComputecenterComponent} from '../projectmanagement/computecenter.compone
  * Application class.
  */
 export class Application {
-    private _Id: number;
+    private _Id: number | string;
     private _Name: string;
     private _Shortname: string;
     private _Institute: string;
@@ -30,7 +30,7 @@ export class Application {
     private _OpenStackProject: boolean;
     private _DaysRunning: number;
     private _ApplicationExtension: ApplicationExtension;
-    private _PerunId: number;
+    private _PerunId: number | string;
     private _TotalCores: number;
     private _TotalRam: number;
     private _DateApproved: string;
@@ -150,11 +150,11 @@ export class Application {
         this._ComputeCenter = value;
     }
 
-    get Id(): number {
+    get Id(): number | string {
         return this._Id;
     }
 
-    set Id(value: number) {
+    set Id(value: number | string) {
         this._Id = value;
     }
 
@@ -310,11 +310,11 @@ export class Application {
         this._UserEmail = value;
     }
 
-    get PerunId(): number {
+    get PerunId(): number | string {
         return this._PerunId;
     }
 
-    set PerunId(value: number) {
+    set PerunId(value: number | string) {
         this._PerunId = value;
     }
 
