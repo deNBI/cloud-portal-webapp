@@ -182,7 +182,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
 
                     newApplication.DateSubmitted = aj['project_application_date_submitted'];
                     newApplication.DateStatusChanged = aj['project_application_date_status_changed'];
-                    newApplication.User = aj['project_application_user']['username'];
+                   // newApplication.User = aj['project_application_user']['username'];
                     newApplication.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
                     newApplication.UserEmail = aj['project_application_user']['email'];
                     newApplication.Status = aj['project_application_status'];

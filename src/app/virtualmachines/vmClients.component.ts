@@ -8,7 +8,6 @@ import {ComputecenterComponent} from '../projectmanagement/computecenter.compone
 import {FacilityService} from '../api-connector/facility.service';
 import {environment} from '../../environments/environment';
 
-
 /**
  * Client component.
  */

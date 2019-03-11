@@ -8,7 +8,7 @@ import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-ba
 /**
  * Enum of all possible volume action statuses.
  */
-enum Volume_Action_Statuses {
+export enum Volume_Action_Statuses {
     WAITING = 0,
     SUCCESS = 1,
     ERROR = 2,
@@ -34,6 +34,8 @@ enum Volume_Action_Statuses {
 })
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit {
+
+    Volume_Action_Statuses: Volume_Action_Statuses;
     /**
      * Array of all volumes.
      */
@@ -122,7 +124,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * @returns {void}
      */
     attachVolume(volume_id: string, instance_id: string): void {
-        this.volume_action_status = Volume_Action_Statuses.ATTACHING;
+        this.volume_action_status = this.Volume_Action_Statuses.ATTACHING;
 
         this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
 
