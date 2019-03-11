@@ -84,7 +84,7 @@ export class GroupService ***REMOVED***
 
         ***REMOVED***
 
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***group_id***REMOVED***members/$***REMOVED***member_id***REMOVED***/`, params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***group_id***REMOVED***/members/$***REMOVED***member_id***REMOVED***/`, params, ***REMOVED***
             withCredentials: true,
             headers: header,
             // responseType: 'text',

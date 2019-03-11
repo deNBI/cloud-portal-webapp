@@ -321,8 +321,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      */
     getUserApplications(): void ***REMOVED***
         this.applicationsservice
-            .getUserApplications().subscribe((result: [***REMOVED*** [key: string]: string ***REMOVED***]) => ***REMOVED***
-            const res: [***REMOVED*** [key: string]: string ***REMOVED***] = result;
+            .getUserApplications().subscribe((res: [***REMOVED*** [key: string]: string ***REMOVED***]) => ***REMOVED***
             if (Object.keys(res).length === 0) ***REMOVED***
                 this.isLoaded_userApplication = true;
             ***REMOVED***
@@ -678,9 +677,9 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      */
     public getUserApplication(application: Application): void ***REMOVED***
         const index: number = this.user_applications.indexOf(application);
-
-        this.applicationsservice.getUserApplication(application.Id.toString()).subscribe((aj: object) => ***REMOVED***
+        this.applicationsservice.getUserApplication(application.Id).subscribe((aj: object) => ***REMOVED***
             const newApp: Application = new Application();
+
             newApp.Id = aj['project_application_id'];
             newApp.Name = aj['project_application_name'];
             newApp.Shortname = aj['project_application_shortname'];
@@ -700,12 +699,10 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
             newApp.DateApproved = aj['project_application_date_approved'];
             newApp.DateSubmitted = aj['project_application_date_submitted'];
             newApp.DateStatusChanged = aj['project_application_date_status_changed'];
-            newApp.User = aj['project_application_user']['username'];
-            newApp.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
-            newApp.UserEmail = aj['project_application_user']['email'];
             newApp.Status = aj['project_application_status'];
             newApp.Dissemination = aj['project_application_report_allowed'];
             newApp.Horizon2020 = aj['project_application_horizon2020'];
+
             for (const flavor of aj['flavors']) ***REMOVED***
                 newApp.addFlavorToCurrent(
                     flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
@@ -807,7 +804,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                 this.getUserApplication(app);
 
                 for (const appl of this.user_applications) ***REMOVED***
-                    if (this.selectedApplication.PerunId.toString() === appl.PerunId.toString()) ***REMOVED***
+                    if (this.selectedApplication.Id.toString() === appl.Id.toString()) ***REMOVED***
                         this.getUserApplication(appl);
                         break;
                     ***REMOVED***
@@ -824,7 +821,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                 this.getApplication(this.selectedApplication);
 
                 for (const appl of this.user_applications) ***REMOVED***
-                    if (this.selectedApplication.PerunId.toString() === appl.PerunId.toString()) ***REMOVED***
+                    if (this.selectedApplication.Id.toString() === appl.PerunId.toString()) ***REMOVED***
                         this.getUserApplication(appl);
                         break;
                     ***REMOVED***
@@ -932,7 +929,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                                 if (compute_center !== 'undefined') ***REMOVED***
                                     this.applicationstatusservice.setApplicationStatus(
                                         application_id,
-                                        this.application_statuses.WAIT_FOR_CONFIRMATION.toString())
+                                        this.application_statuses.WAIT_FOR_CONFIRMATION)
                                         .subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
                                                 if (result['Error']) ***REMOVED***
                                                     this.updateNotificationModal('Failed', result['Error'], true, 'danger');
@@ -941,7 +938,8 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                                                     this.updateNotificationModal('Success', 'The new project was created', true, 'success');
                                                 ***REMOVED***
                                                 for (const app of this.user_applications) ***REMOVED***
-                                                    if (app.Id.toString() === application_id) ***REMOVED***
+
+                                                    if (app.Id.toString() === application_id.toString()) ***REMOVED***
                                                         this.getUserApplication(app);
                                                         break;
 
@@ -949,7 +947,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
                                                 ***REMOVED***
                                                 for (const app of this.all_applications) ***REMOVED***
-                                                    if (app.Id.toString() === application_id) ***REMOVED***
+                                                    if (app.Id.toString() === application_id.toString()) ***REMOVED***
                                                         this.getApplication(app);
                                                         break;
 
@@ -972,26 +970,19 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
                                                     this.updateNotificationModal('Success', 'The new project was created', true, 'success');
                                                 ***REMOVED***
                                                 for (const appl of this.user_applications) ***REMOVED***
-                                                    if (appl.Id.toString() === application_id) ***REMOVED***
+                                                    if (appl.Id.toString() === application_id.toString()) ***REMOVED***
                                                         this.getUserApplication(appl);
                                                         break;
 
                                                     ***REMOVED***
-                                                    for (const app of this.user_applications) ***REMOVED***
-                                                        if (app.Id.toString() === application_id) ***REMOVED***
-                                                            this.getUserApplication(app);
-                                                            break;
-
-                                                        ***REMOVED***
+                                                ***REMOVED***
+                                                for (const app of this.all_applications) ***REMOVED***
+                                                    if (app.Id.toString() === application_id.toString()) ***REMOVED***
+                                                        this.getApplication(app);
+                                                        break;
 
                                                     ***REMOVED***
-                                                    for (const app of this.all_applications) ***REMOVED***
-                                                        if (app.Id.toString() === application_id) ***REMOVED***
-                                                            this.getApplication(app);
-                                                            break;
 
-                                                        ***REMOVED***
-                                                    ***REMOVED***
                                                 ***REMOVED***
                                             ***REMOVED***)
 

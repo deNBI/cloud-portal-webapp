@@ -31,8 +31,8 @@ export class ApplicationsService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    getUserApplication(project_id: string): Observable<any> ***REMOVED***
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/project_applications/$***REMOVED*** project_id ***REMOVED***/`, ***REMOVED***
+    getUserApplication(project_id: string | number): Observable<any> ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/project_applications/$***REMOVED***project_id***REMOVED***/`, ***REMOVED***
             headers: header_csrf,
             withCredentials: true
         ***REMOVED***)
