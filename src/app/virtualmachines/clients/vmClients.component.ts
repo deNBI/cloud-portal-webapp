@@ -55,9 +55,8 @@ export class ClientOverviewComponent implements OnInit {
 
     /**
      * Check if user is vo.
-     * @param {UserService} userservice
      */
-    checkVOstatus(userservice: UserService): void {
+    checkVOstatus(): void {
         this.voservice.isVo().subscribe(result => {
             this.is_vo_admin = result['Is_Vo_Manager'];
         })
@@ -139,7 +138,7 @@ export class ClientOverviewComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.checkVOstatus(this.userservice);
+        this.checkVOstatus();
         this.getClientsChecked();
         this.getComputeCenters();
 

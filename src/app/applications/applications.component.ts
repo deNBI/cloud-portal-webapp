@@ -321,8 +321,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      */
     getUserApplications(): void {
         this.applicationsservice
-            .getUserApplications().subscribe((result: [{ [key: string]: string }]) => {
-            const res: [{ [key: string]: string }] = result;
+            .getUserApplications().subscribe((res: [{ [key: string]: string }]) => {
             if (Object.keys(res).length === 0) {
                 this.isLoaded_userApplication = true;
             }
@@ -678,9 +677,9 @@ export class ApplicationsComponent extends AbstractBaseClasse {
      */
     public getUserApplication(application: Application): void {
         const index: number = this.user_applications.indexOf(application);
-
-        this.applicationsservice.getUserApplication(application.Id.toString()).subscribe((aj: object) => {
+        this.applicationsservice.getUserApplication(application.Id).subscribe((aj: object) => {
             const newApp: Application = new Application();
+
             newApp.Id = aj['project_application_id'];
             newApp.Name = aj['project_application_name'];
             newApp.Shortname = aj['project_application_shortname'];
@@ -700,12 +699,10 @@ export class ApplicationsComponent extends AbstractBaseClasse {
             newApp.DateApproved = aj['project_application_date_approved'];
             newApp.DateSubmitted = aj['project_application_date_submitted'];
             newApp.DateStatusChanged = aj['project_application_date_status_changed'];
-            newApp.User = aj['project_application_user']['username'];
-            newApp.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
-            newApp.UserEmail = aj['project_application_user']['email'];
             newApp.Status = aj['project_application_status'];
             newApp.Dissemination = aj['project_application_report_allowed'];
             newApp.Horizon2020 = aj['project_application_horizon2020'];
+
             for (const flavor of aj['flavors']) {
                 newApp.addFlavorToCurrent(
                     flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
@@ -807,7 +804,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 this.getUserApplication(app);
 
                 for (const appl of this.user_applications) {
-                    if (this.selectedApplication.PerunId.toString() === appl.PerunId.toString()) {
+                    if (this.selectedApplication.Id.toString() === appl.Id.toString()) {
                         this.getUserApplication(appl);
                         break;
                     }
@@ -824,7 +821,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                 this.getApplication(this.selectedApplication);
 
                 for (const appl of this.user_applications) {
-                    if (this.selectedApplication.PerunId.toString() === appl.PerunId.toString()) {
+                    if (this.selectedApplication.Id.toString() === appl.PerunId.toString()) {
                         this.getUserApplication(appl);
                         break;
                     }
@@ -932,7 +929,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                 if (compute_center !== 'undefined') {
                                     this.applicationstatusservice.setApplicationStatus(
                                         application_id,
-                                        this.application_statuses.WAIT_FOR_CONFIRMATION.toString())
+                                        this.application_statuses.WAIT_FOR_CONFIRMATION)
                                         .subscribe((result: { [key: string]: string }) => {
                                                 if (result['Error']) {
                                                     this.updateNotificationModal('Failed', result['Error'], true, 'danger');
@@ -941,7 +938,8 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                                     this.updateNotificationModal('Success', 'The new project was created', true, 'success');
                                                 }
                                                 for (const app of this.user_applications) {
-                                                    if (app.Id.toString() === application_id) {
+
+                                                    if (app.Id.toString() === application_id.toString()) {
                                                         this.getUserApplication(app);
                                                         break;
 
@@ -949,7 +947,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
                                                 }
                                                 for (const app of this.all_applications) {
-                                                    if (app.Id.toString() === application_id) {
+                                                    if (app.Id.toString() === application_id.toString()) {
                                                         this.getApplication(app);
                                                         break;
 
@@ -972,26 +970,19 @@ export class ApplicationsComponent extends AbstractBaseClasse {
                                                     this.updateNotificationModal('Success', 'The new project was created', true, 'success');
                                                 }
                                                 for (const appl of this.user_applications) {
-                                                    if (appl.Id.toString() === application_id) {
+                                                    if (appl.Id.toString() === application_id.toString()) {
                                                         this.getUserApplication(appl);
                                                         break;
 
                                                     }
-                                                    for (const app of this.user_applications) {
-                                                        if (app.Id.toString() === application_id) {
-                                                            this.getUserApplication(app);
-                                                            break;
-
-                                                        }
+                                                }
+                                                for (const app of this.all_applications) {
+                                                    if (app.Id.toString() === application_id.toString()) {
+                                                        this.getApplication(app);
+                                                        break;
 
                                                     }
-                                                    for (const app of this.all_applications) {
-                                                        if (app.Id.toString() === application_id) {
-                                                            this.getApplication(app);
-                                                            break;
 
-                                                        }
-                                                    }
                                                 }
                                             })
 

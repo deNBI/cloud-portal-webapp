@@ -121,8 +121,9 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
                 }
                 if (key in this.constantStrings) {
                     this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
+                    console.log(key)
 
-                    const flavor: Flavor = this.keyIsVM(key.toString());
+                    const flavor: Flavor = this.isKeyFlavor(key.toString());
                     if (flavor != null) {
                         this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * form.controls[key].value);
                         const ram: number = flavor.ram * form.controls[key].value;
@@ -152,13 +153,13 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
 
         for (const key in this.flavorList) {
             if (key in this.flavorList) {
-                this.constantStrings[`project_application_ ${this.flavorList[key].name}`] =
+                this.constantStrings[`project_application_${this.flavorList[key].name}`] =
                     `Number of VMs of type  ${this.flavorList[key].name}: `;
             }
         }
     }
 
-    keyIsVM(key: string): Flavor {
+    isKeyFlavor(key: string): Flavor {
         for (const fkey in this.flavorList) {
             if (fkey in this.flavorList) {
                 if (this.flavorList[fkey].name === key.substring(20)) {

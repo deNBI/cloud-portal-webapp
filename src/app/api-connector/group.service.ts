@@ -84,7 +84,7 @@ export class GroupService {
 
         }
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}members/${member_id}/`, params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/`, params, {
             withCredentials: true,
             headers: header,
             // responseType: 'text',

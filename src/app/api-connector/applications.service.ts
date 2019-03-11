@@ -31,8 +31,8 @@ export class ApplicationsService {
         })
     }
 
-    getUserApplication(project_id: string): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/${ project_id }/`, {
+    getUserApplication(project_id: string | number): Observable<any> {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/${project_id}/`, {
             headers: header_csrf,
             withCredentials: true
         })
