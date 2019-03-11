@@ -8,7 +8,7 @@ import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modul
 /**
  * Enum of all possible volume action statuses.
  */
-enum Volume_Action_Statuses ***REMOVED***
+export enum Volume_Action_Statuses ***REMOVED***
     WAITING = 0,
     SUCCESS = 1,
     ERROR = 2,
@@ -34,6 +34,8 @@ enum Volume_Action_Statuses ***REMOVED***
 ***REMOVED***)
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit ***REMOVED***
+
+    Volume_Action_Statuses: Volume_Action_Statuses;
     /**
      * Array of all volumes.
      */
@@ -122,7 +124,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * @returns ***REMOVED***void***REMOVED***
      */
     attachVolume(volume_id: string, instance_id: string): void ***REMOVED***
-        this.volume_action_status = Volume_Action_Statuses.ATTACHING;
+        this.volume_action_status = this.Volume_Action_Statuses.ATTACHING;
 
         this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => ***REMOVED***
 

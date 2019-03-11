@@ -22,8 +22,8 @@ export class Application ***REMOVED***
     private _Comment: string;
     private _DateSubmitted: string;
     private _DateStatusChanged: string;
-    private _User: number;
-    private _UserEmail: number;
+    private _User: string;
+    private _UserEmail: string;
     private _UserAffiliations: string[];
     private _Status: number;
     private _ComputeCenter: ComputecenterComponent;

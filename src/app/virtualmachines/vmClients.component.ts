@@ -8,7 +8,6 @@ import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanageme
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
 
-
 /**
  * Client component.
  */
