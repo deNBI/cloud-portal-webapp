@@ -10,12 +10,6 @@ const header: HttpHeaders = new HttpHeaders({
 
 });
 
-const header_csrf: HttpHeaders = new HttpHeaders({
-    'X-CSRFToken': Cookie.get('csrftoken'),
-    'Content-Type': 'application/json'
-
-});
-
 /**
  * Service which provides methods for creating application.
  */
@@ -25,29 +19,29 @@ export class ApplicationsService {
     }
 
     getUserApplications(): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/`, {
-            headers: header_csrf,
+         return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/`, {
+            headers: header,
             withCredentials: true
         })
     }
 
     getUserApplication(project_id: string | number): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/${project_id}/`, {
-            headers: header_csrf,
+            headers: header,
             withCredentials: true
         })
     }
 
     getApplication(app_id: string): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
-            headers: header_csrf,
+            headers: header,
             withCredentials: true
         })
     }
 
     getApplicationClient(app_id: string): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/client/`, {
-            headers: header_csrf,
+            headers: header,
             withCredentials: true
         })
     }
@@ -59,7 +53,7 @@ export class ApplicationsService {
      */
     getApplicationClientAvaiable(app_id: string): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/clients/resource/`, {
-            headers: header_csrf,
+            headers: header,
             withCredentials: true
         })
     }
@@ -67,7 +61,7 @@ export class ApplicationsService {
     getAllApplications(): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/`, {
             withCredentials: true,
-            headers: header_csrf
+            headers: header
 
         })
 
@@ -94,7 +88,7 @@ export class ApplicationsService {
     approveRenewal(application_id: number | string): Observable<any> {
 
         return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/${application_id}/status/`, null, {
-            headers: header_csrf,
+            headers: header,
             withCredentials: true
         })
 
@@ -103,7 +97,7 @@ export class ApplicationsService {
     declineRenewal(application_id: number | string): Observable<any> {
 
         return this.http.delete(`${ApiSettings.getApiBaseURL()}applicationRenewals/${application_id}/status/`, {
-            headers: header_csrf,
+            headers: header,
             withCredentials: true
         })
 
@@ -112,7 +106,7 @@ export class ApplicationsService {
     getAllApplicationsRenewalRequests(): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/`, {
             withCredentials: true,
-            headers: header_csrf
+            headers: header
 
         })
 
@@ -121,7 +115,7 @@ export class ApplicationsService {
     getApplicationsRenewalRequest(application_id: number): Observable<any> {
         return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/${application_id}/`, {
             withCredentials: true,
-            headers: header_csrf
+            headers: header
         })
 
     }
@@ -129,7 +123,7 @@ export class ApplicationsService {
     deleteApplication(application_id: string): Observable<any> {
 
         return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, {
-            headers: header_csrf,
+            headers: header,
             withCredentials: true
         })
 

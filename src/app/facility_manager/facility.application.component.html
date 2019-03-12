@@ -24,13 +24,13 @@
         <div class="card-block">
 
             <div class="alert alert-success"
-                 *ngIf="all_applications.length == 0" role="alert">
+                 *ngIf="all_applications_wfc.length == 0" role="alert">
                 <strong>No new Applications!</strong> There are no new project
                 applications for review.
             </div>
         </div>
 
-        <div *ngIf="all_applications.length != 0">
+        <div *ngIf="all_applications_wfc.length != 0">
             <div>
                 <table class="table  table-responsive table-striped">
                     <thead>
@@ -44,7 +44,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <ng-container *ngFor="let application of all_applications">
+                    <ng-container *ngFor="let application of all_applications_wfc">
                         <ng-container>
                             <tr>
                                 <td>{{ application.Name }}</td>
@@ -93,7 +93,7 @@
                                                     <td>{{
                                                         application.UserAffiliations}}
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -101,7 +101,7 @@
                                                     <td>
                                                         {{application_user[application.User]?.name}}
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -109,7 +109,7 @@
                                                     <td>
                                                         {{application_user[application.User]?.email}}
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -118,7 +118,7 @@
                                                         application.Description
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
 
@@ -128,7 +128,7 @@
                                                         application.Workgroup
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -136,7 +136,7 @@
                                                     <td>
                                                         {{application.OpenStackProject}}
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
 
@@ -145,7 +145,7 @@
                                                     <td>{{ application.Comment
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                         {{application.ApplicationExtension?.Comment}}
                                                     </td>
 
@@ -155,7 +155,7 @@
                                                     <td>{{ application.Lifetime
                                                         }} months
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                         {{application.ApplicationExtension?.Lifetime
                                                         +
                                                         application.Lifetime}}
@@ -168,7 +168,7 @@
                                                         application.VMsRequested
                                                         }} VMs
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                         {{application.ApplicationExtension?.VMsRequested}}
                                                         VMs
                                                     </td>
@@ -208,7 +208,7 @@
                                                         application.VolumeLimit
                                                         }} GB
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                         {{application.ApplicationExtension?.VolumeLimit}}
                                                         GB
                                                     </td>
@@ -219,7 +219,7 @@
                                                         application.VolumeCounter
                                                         }} volumes
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                         {{application.ApplicationExtension?.VolumeCounter}} volumes
                                                     </td>
                                                 </tr>
@@ -229,7 +229,7 @@
                                                         application.ObjectStorage
                                                         }} GB
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                         {{application.ApplicationExtension?.ObjectStorage}}
                                                         GB
                                                     </td>
@@ -241,7 +241,7 @@
                                                             class="badge badge-primary"
                                                             *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                        <span style="margin-right: 5px;"
                                                              class="badge badge-primary"
                                                              *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">{{ sh }}</span>
@@ -589,7 +589,7 @@
                     <tbody>
                     <ng-container
                             *ngFor="let application of applications_history">
-                        <ng-container *ngIf="application.Status != 1">
+                        <ng-container *ngIf="application.Status != application_states.SUBMITTED">
                             <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)}">
                                 <td>{{ application.Name }}</td>
                                 <td>{{application.Shortname}}</td>
@@ -633,7 +633,7 @@
                                                         application.Description
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -655,7 +655,7 @@
                                                         application.Workgroup
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -665,7 +665,7 @@
                                                     <td>
                                                         {{application.OpenStackProject}}
                                                     </td>
-                                                    <td *ngIf="application.Status == 4">
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
 
@@ -814,7 +814,7 @@
                                                     <td *ngIf="application.ApplicationExtension">
                                                     </td>
                                                 </tr>
-                                                <tr *ngIf="application.Status == 2">
+                                                <tr *ngIf="application.Status == application_states.APPROVED">
                                                     <td>DaysRunning
                                                     </td>
 

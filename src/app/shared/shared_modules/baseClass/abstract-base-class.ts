@@ -1,16 +1,16 @@
-enum Lifetime_Statuses {
+enum Lifetime_States {
     EXPIRED = 0,
     EXPIRES_SOON = 1,
     VALID_LIFETIME = 2
 }
 
-enum Project_Statuses {
+enum Project_States {
     ACTIVE = 2,
     SUSPENDED = 4
 
 }
 
-enum Application_Statuses {
+enum Application_States {
     SUBMITTED = 1,
     APPROVED = 2,
     DECLINED = 3,
@@ -42,9 +42,9 @@ export abstract class AbstractBaseClasse {
      */
     is_vo_admin: boolean = false;
 
-    lifetime_statuses = Lifetime_Statuses;
-    project_statuses = Project_Statuses;
-    application_statuses = Application_Statuses;
+    lifetime_states: typeof Lifetime_States = Lifetime_States;
+    project_states: typeof Project_States = Project_States;
+    application_states: typeof Application_States = Application_States;
     vm_statuses = Vm_Statuses;
 
     collapse_status: { [id: string]: boolean } = {};
@@ -117,16 +117,16 @@ export abstract class AbstractBaseClasse {
         this.collapse_status[id] = !this.getCollapseStatus(id);
     }
 
-    lifeTimeReached(lifetimeDays: number, running: number): Lifetime_Statuses {
+    lifeTimeReached(lifetimeDays: number, running: number): Lifetime_States {
         if ((lifetimeDays - running) < 0) {
             // expired
-            return this.lifetime_statuses.EXPIRED
+            return this.lifetime_states.EXPIRED
         } else if ((lifetimeDays - running) < 21) {
             // expires soon
-            return this.lifetime_statuses.EXPIRES_SOON
+            return this.lifetime_states.EXPIRES_SOON
         } else {
             // still valid
-            return this.lifetime_statuses.VALID_LIFETIME
+            return this.lifetime_states.VALID_LIFETIME
         }
 
     }

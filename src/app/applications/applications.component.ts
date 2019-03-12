@@ -75,7 +75,7 @@ export class ApplicationsComponent extends ApplicationBaseClass {
     constructor(applicationsservice: ApplicationsService,
                 applicationstatusservice: ApplicationStatusService,
                 userservice: UserService,
-               private groupservice: GroupService,
+                private groupservice: GroupService,
                 private voService: VoService,
                 facilityService: FacilityService,
                 private flavorService: FlavorService) {
@@ -121,8 +121,9 @@ export class ApplicationsComponent extends ApplicationBaseClass {
      * @param {Application} app
      */
     public getFacilityProject(app: Application): void {
-
-        if (!app.ComputeCenter && app.Status.toString() !== 'submitted') {
+        console.log(app.Status)
+        console.log( app.Status !== this.application_states.SUBMITTED)
+        if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED) {
             this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => {
                 const login: string = res['Login'];
                 const suport: string = res['Support'];
@@ -152,8 +153,8 @@ export class ApplicationsComponent extends ApplicationBaseClass {
 
                 this.isLoaded_AllApplication = true;
                 for (const app of this.all_applications) {
-                    if (app.Status === this.application_statuses.WAIT_FOR_CONFIRMATION ||
-                        app.Status === this.application_statuses.MODIFICATION_REQUESTED) {
+                    if (app.Status === this.application_states.WAIT_FOR_CONFIRMATION ||
+                        app.Status === this.application_states.MODIFICATION_REQUESTED) {
                         this.getFacilityProject(app);
                     }
                 }
@@ -485,7 +486,7 @@ export class ApplicationsComponent extends ApplicationBaseClass {
                                 if (compute_center !== 'undefined') {
                                     this.applicationstatusservice.setApplicationStatus(
                                         application_id,
-                                        this.application_statuses.WAIT_FOR_CONFIRMATION)
+                                        this.application_states.WAIT_FOR_CONFIRMATION)
                                         .subscribe((result: { [key: string]: string }) => {
                                                 if (result['Error']) {
                                                     this.updateNotificationModal('Failed', result['Error'], true, 'danger');
@@ -514,10 +515,10 @@ export class ApplicationsComponent extends ApplicationBaseClass {
                                 } else {
                                     this.groupservice.setPerunGroupStatus(
                                         new_group_id,
-                                        this.application_statuses.APPROVED.toString()).subscribe(() => {
+                                        this.application_states.APPROVED.toString()).subscribe(() => {
                                         this.applicationstatusservice.setApplicationStatus(
                                             application_id,
-                                            this.application_statuses.APPROVED.toString())
+                                            this.application_states.APPROVED.toString())
                                             .subscribe((result: { [key: string]: string }) => {
                                                 if (result['Error']) {
                                                     this.updateNotificationModal('Failed', result['Error'], true, 'danger');
@@ -612,7 +613,7 @@ export class ApplicationsComponent extends ApplicationBaseClass {
                 } else {
                     this.applicationstatusservice.setApplicationStatus(
                         application_id,
-                        this.application_statuses.APPROVED.toString()).subscribe((result: { [key: string]: string }) => {
+                        this.application_states.APPROVED.toString()).subscribe((result: { [key: string]: string }) => {
                         if (result['Error']) {
 
                             this.updateNotificationModal('Failed', result['Error'], true, 'danger');
@@ -700,7 +701,7 @@ export class ApplicationsComponent extends ApplicationBaseClass {
                 () => {
                     this.applicationstatusservice.setApplicationStatus(
                         application_id,
-                        this.application_statuses.WAIT_FOR_CONFIRMATION.toString())
+                        this.application_states.WAIT_FOR_CONFIRMATION.toString())
                         .subscribe(() => {
                             for (const app of this.all_applications) {
                                 if (app.Id.toString() === application_id) {
