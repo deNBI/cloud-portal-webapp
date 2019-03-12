@@ -293,7 +293,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
         values['project_application_name'] = 'TestApplication';
         values['project_application_openstack_project'] = true;
         for (const flavor of this.flavorList) ***REMOVED***
-            const fname: string = `project_application_ $***REMOVED***flavor.name***REMOVED***`;
+            const fname: string = `project_application_$***REMOVED***flavor.name***REMOVED***`;
             values[fname] = 1;
         ***REMOVED***
         values['project_application_report_allowed'] = true;

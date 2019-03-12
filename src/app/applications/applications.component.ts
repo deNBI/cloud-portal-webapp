@@ -75,7 +75,7 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
     constructor(applicationsservice: ApplicationsService,
                 applicationstatusservice: ApplicationStatusService,
                 userservice: UserService,
-               private groupservice: GroupService,
+                private groupservice: GroupService,
                 private voService: VoService,
                 facilityService: FacilityService,
                 private flavorService: FlavorService) ***REMOVED***
@@ -121,8 +121,9 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
      * @param ***REMOVED***Application***REMOVED*** app
      */
     public getFacilityProject(app: Application): void ***REMOVED***
-
-        if (!app.ComputeCenter && app.Status.toString() !== 'submitted') ***REMOVED***
+        console.log(app.Status)
+        console.log( app.Status !== this.application_states.SUBMITTED)
+        if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED) ***REMOVED***
             this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => ***REMOVED***
                 const login: string = res['Login'];
                 const suport: string = res['Support'];
@@ -152,8 +153,8 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
 
                 this.isLoaded_AllApplication = true;
                 for (const app of this.all_applications) ***REMOVED***
-                    if (app.Status === this.application_statuses.WAIT_FOR_CONFIRMATION ||
-                        app.Status === this.application_statuses.MODIFICATION_REQUESTED) ***REMOVED***
+                    if (app.Status === this.application_states.WAIT_FOR_CONFIRMATION ||
+                        app.Status === this.application_states.MODIFICATION_REQUESTED) ***REMOVED***
                         this.getFacilityProject(app);
                     ***REMOVED***
                 ***REMOVED***
@@ -485,7 +486,7 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
                                 if (compute_center !== 'undefined') ***REMOVED***
                                     this.applicationstatusservice.setApplicationStatus(
                                         application_id,
-                                        this.application_statuses.WAIT_FOR_CONFIRMATION)
+                                        this.application_states.WAIT_FOR_CONFIRMATION)
                                         .subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
                                                 if (result['Error']) ***REMOVED***
                                                     this.updateNotificationModal('Failed', result['Error'], true, 'danger');
@@ -514,10 +515,10 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
                                 ***REMOVED*** else ***REMOVED***
                                     this.groupservice.setPerunGroupStatus(
                                         new_group_id,
-                                        this.application_statuses.APPROVED.toString()).subscribe(() => ***REMOVED***
+                                        this.application_states.APPROVED.toString()).subscribe(() => ***REMOVED***
                                         this.applicationstatusservice.setApplicationStatus(
                                             application_id,
-                                            this.application_statuses.APPROVED.toString())
+                                            this.application_states.APPROVED.toString())
                                             .subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
                                                 if (result['Error']) ***REMOVED***
                                                     this.updateNotificationModal('Failed', result['Error'], true, 'danger');
@@ -612,7 +613,7 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
                 ***REMOVED*** else ***REMOVED***
                     this.applicationstatusservice.setApplicationStatus(
                         application_id,
-                        this.application_statuses.APPROVED.toString()).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
+                        this.application_states.APPROVED.toString()).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
                         if (result['Error']) ***REMOVED***
 
                             this.updateNotificationModal('Failed', result['Error'], true, 'danger');
@@ -700,7 +701,7 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
                 () => ***REMOVED***
                     this.applicationstatusservice.setApplicationStatus(
                         application_id,
-                        this.application_statuses.WAIT_FOR_CONFIRMATION.toString())
+                        this.application_states.WAIT_FOR_CONFIRMATION.toString())
                         .subscribe(() => ***REMOVED***
                             for (const app of this.all_applications) ***REMOVED***
                                 if (app.Id.toString() === application_id) ***REMOVED***

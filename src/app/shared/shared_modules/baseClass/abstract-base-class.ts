@@ -1,16 +1,16 @@
-enum Lifetime_Statuses ***REMOVED***
+enum Lifetime_States ***REMOVED***
     EXPIRED = 0,
     EXPIRES_SOON = 1,
     VALID_LIFETIME = 2
 ***REMOVED***
 
-enum Project_Statuses ***REMOVED***
+enum Project_States ***REMOVED***
     ACTIVE = 2,
     SUSPENDED = 4
 
 ***REMOVED***
 
-enum Application_Statuses ***REMOVED***
+enum Application_States ***REMOVED***
     SUBMITTED = 1,
     APPROVED = 2,
     DECLINED = 3,
@@ -42,9 +42,9 @@ export abstract class AbstractBaseClasse ***REMOVED***
      */
     is_vo_admin: boolean = false;
 
-    lifetime_statuses = Lifetime_Statuses;
-    project_statuses = Project_Statuses;
-    application_statuses = Application_Statuses;
+    lifetime_states: typeof Lifetime_States = Lifetime_States;
+    project_states: typeof Project_States = Project_States;
+    application_states: typeof Application_States = Application_States;
     vm_statuses = Vm_Statuses;
 
     collapse_status: ***REMOVED*** [id: string]: boolean ***REMOVED*** = ***REMOVED******REMOVED***;
@@ -117,16 +117,16 @@ export abstract class AbstractBaseClasse ***REMOVED***
         this.collapse_status[id] = !this.getCollapseStatus(id);
     ***REMOVED***
 
-    lifeTimeReached(lifetimeDays: number, running: number): Lifetime_Statuses ***REMOVED***
+    lifeTimeReached(lifetimeDays: number, running: number): Lifetime_States ***REMOVED***
         if ((lifetimeDays - running) < 0) ***REMOVED***
             // expired
-            return this.lifetime_statuses.EXPIRED
+            return this.lifetime_states.EXPIRED
         ***REMOVED*** else if ((lifetimeDays - running) < 21) ***REMOVED***
             // expires soon
-            return this.lifetime_statuses.EXPIRES_SOON
+            return this.lifetime_states.EXPIRES_SOON
         ***REMOVED*** else ***REMOVED***
             // still valid
-            return this.lifetime_statuses.VALID_LIFETIME
+            return this.lifetime_states.VALID_LIFETIME
         ***REMOVED***
 
     ***REMOVED***

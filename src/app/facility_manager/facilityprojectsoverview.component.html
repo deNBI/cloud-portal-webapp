@@ -68,30 +68,30 @@
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(project_statuses[project_statuses.ACTIVE]);applyFilter();"
+                                                   (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
                                                    checked/>
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-success">***REMOVED******REMOVED***project_statuses[project_statuses.ACTIVE]***REMOVED******REMOVED*** </span>
+                                                  class="badge badge-success">***REMOVED******REMOVED***project_states[project_states.ACTIVE]***REMOVED******REMOVED*** </span>
 
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(lifetime_statuses[lifetime_statuses.EXPIRED]);applyFilter();"
+                                                   (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
                                             />
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-danger">***REMOVED******REMOVED***lifetime_statuses[lifetime_statuses.EXPIRED]***REMOVED******REMOVED***</span>
+                                                  class="badge badge-danger">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRED]***REMOVED******REMOVED***</span>
 
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(lifetime_statuses[lifetime_statuses.EXPIRES_SOON]);applyFilter();"
+                                                   (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
                                             />
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-warning">***REMOVED******REMOVED***lifetime_statuses[lifetime_statuses.EXPIRES_SOON]***REMOVED******REMOVED***</span>
+                                                  class="badge badge-warning">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRES_SOON]***REMOVED******REMOVED***</span>
                                         </label>
                                     </div>
                                 </div>
@@ -104,15 +104,15 @@
                                 <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
                                 <td width="20%"><span style="word-break: break-all">***REMOVED******REMOVED*** project.RealName***REMOVED******REMOVED***</span>
                                 </td>
-                                <td>  <span *ngIf="project?.Status ==  project_statuses.ACTIVE"
+                                <td>  <span *ngIf="project?.Status ==  project_states.ACTIVE"
                                             style="margin-left: 5px"
-                                            class="badge badge-success">***REMOVED******REMOVED***project_statuses[project_statuses.ACTIVE]***REMOVED******REMOVED*** </span>
-                                    <span *ngIf="project?.LifetimeReached==lifetime_statuses.EXPIRED"
+                                            class="badge badge-success">***REMOVED******REMOVED***project_states[project_states.ACTIVE]***REMOVED******REMOVED*** </span>
+                                    <span *ngIf="project?.LifetimeReached==lifetime_states.EXPIRED"
                                           style="margin-left: 5px"
-                                          class="badge badge-danger">***REMOVED******REMOVED***lifetime_statuses[lifetime_statuses.EXPIRED]***REMOVED******REMOVED*** </span>
-                                    <span *ngIf="project?.LifetimeReached == lifetime_statuses.EXPIRES_SOON"
+                                          class="badge badge-danger">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRED]***REMOVED******REMOVED*** </span>
+                                    <span *ngIf="project?.LifetimeReached == lifetime_states.EXPIRES_SOON"
                                           style="margin-left: 5px"
-                                          class="badge badge-warning">***REMOVED******REMOVED***lifetime_statuses[lifetime_statuses.EXPIRES_SOON]***REMOVED******REMOVED***</span>
+                                          class="badge badge-warning">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRES_SOON]***REMOVED******REMOVED***</span>
                                 <td>
                                     <button class="btn btn-secondary"
                                             (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">

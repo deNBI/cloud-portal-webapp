@@ -157,7 +157,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
         newApp.Dissemination = aj['project_application_report_allowed'];
         newApp.Horizon2020 = aj['project_application_horizon2020'];
 
-        if (newApp.Status === this.application_statuses.APPROVED) ***REMOVED***
+        if (newApp.Status === this.application_states.APPROVED) ***REMOVED***
             newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
         ***REMOVED***

@@ -24,11 +24,11 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     changeFilterLifetime(lifetime_reached: number) ***REMOVED***
         let status: string;
         switch (lifetime_reached) ***REMOVED***
-            case this.lifetime_statuses.EXPIRED:
-                status = this.lifetime_statuses[this.lifetime_statuses.EXPIRED];
+            case this.lifetime_states.EXPIRED:
+                status = this.lifetime_states[this.lifetime_states.EXPIRED];
                 break;
-            case this.lifetime_statuses.EXPIRES_SOON:
-                status = this.lifetime_statuses[this.lifetime_statuses.EXPIRES_SOON];
+            case this.lifetime_states.EXPIRES_SOON:
+                status = this.lifetime_states[this.lifetime_states.EXPIRES_SOON];
 
         ***REMOVED***
         this.filterstatus_list[status] = !this.filterstatus_list[status];
@@ -87,19 +87,19 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
         let status: string;
         let lifetime_status: string;
         switch (status_number) ***REMOVED***
-            case this.project_statuses.ACTIVE:
-                status = this.project_statuses[this.project_statuses.ACTIVE];
+            case this.project_states.ACTIVE:
+                status = this.project_states[this.project_states.ACTIVE];
                 break;
-            case this.project_statuses.SUSPENDED:
-                status = this.project_statuses[this.project_statuses.SUSPENDED];
+            case this.project_states.SUSPENDED:
+                status = this.project_states[this.project_states.SUSPENDED];
                 break;
         ***REMOVED***
         switch (lifetime_reached) ***REMOVED***
-            case this.lifetime_statuses.EXPIRED:
-                lifetime_status = this.lifetime_statuses[this.lifetime_statuses.EXPIRED];
+            case this.lifetime_states.EXPIRED:
+                lifetime_status = this.lifetime_states[this.lifetime_states.EXPIRED];
                 break;
-            case this.lifetime_statuses.EXPIRES_SOON:
-                lifetime_status = this.lifetime_statuses[this.lifetime_statuses.EXPIRES_SOON];
+            case this.lifetime_states.EXPIRES_SOON:
+                lifetime_status = this.lifetime_states[this.lifetime_states.EXPIRES_SOON];
                 break;
         ***REMOVED***
 
@@ -198,22 +198,22 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
         let status: string;
         if (project_status) ***REMOVED***
             switch (project_status) ***REMOVED***
-                case this.project_statuses.ACTIVE:
-                    status = this.project_statuses[this.project_statuses.ACTIVE];
+                case this.project_states.ACTIVE:
+                    status = this.project_states[this.project_states.ACTIVE];
                     break;
-                case this.project_statuses.SUSPENDED:
-                    status = this.project_statuses[this.project_statuses.SUSPENDED];
+                case this.project_states.SUSPENDED:
+                    status = this.project_states[this.project_states.SUSPENDED];
                     break;
             ***REMOVED***
             this.filterstatus_list[status] = !this.filterstatus_list[status];
         ***REMOVED***
         if (lifetime_reached) ***REMOVED***
             switch (lifetime_reached) ***REMOVED***
-                case this.lifetime_statuses.EXPIRED:
-                    status = this.lifetime_statuses[this.lifetime_statuses.EXPIRED];
+                case this.lifetime_states.EXPIRED:
+                    status = this.lifetime_states[this.lifetime_states.EXPIRED];
                     break;
-                case this.lifetime_statuses.EXPIRES_SOON:
-                    status = this.lifetime_statuses[this.lifetime_statuses.EXPIRES_SOON];
+                case this.lifetime_states.EXPIRES_SOON:
+                    status = this.lifetime_states[this.lifetime_states.EXPIRES_SOON];
             ***REMOVED***
             this.filterstatus_list[status] = !this.filterstatus_list[status];
         ***REMOVED***
