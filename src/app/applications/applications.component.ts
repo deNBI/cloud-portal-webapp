@@ -3,19 +3,17 @@ import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/appl
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***Application***REMOVED*** from './application.model';
-import ***REMOVED***ApplicationStatus***REMOVED*** from './application_status.model';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
-import ***REMOVED***ApplicationExtension***REMOVED*** from './application_extension.model';
 import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
-import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modules/baseClass/abstract-base-class';
-import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/vmclient';
+import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
+import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
+import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 
 /**
  * Application Overview component.
@@ -25,24 +23,7 @@ import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/vmclien
     providers: [FacilityService, VoService, UserService, GroupService, ApplicationStatusService,
         ApplicationsService, ApiSettings, FlavorService]
 ***REMOVED***)
-export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
-
-    /**
-     * Limits information for Client tested/used for Simple Vm Project creation.
-     */
-    notificationClientInfo: Client[] = [];
-
-    /**
-     * Applications of the user viewing the Application overview.
-     * @type ***REMOVED***Array***REMOVED***
-     */
-    user_applications: Application[] = [];
-
-    /**
-     * If the user is a vo admin.
-     * @type ***REMOVED***boolean***REMOVED***
-     */
-    is_vo_admin: boolean = false;
+export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
 
     /**
      * All Applications, just visibile for a vo admin.
@@ -50,23 +31,12 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      */
     all_applications: Application[] = [];
 
-    /**
-     * Stati of the differen Applications.
-     * @type ***REMOVED***Array***REMOVED***
-     */
-
-    application_status: ApplicationStatus[] = [];
 
     /**
-     * All available compute centers.
-     * @type ***REMOVED***Array***REMOVED***
+     * Limits information for Client tested/used for Simple Vm Project creation.
      */
-    computeCenters: ComputecenterComponent[] = [];
+    notificationClientInfo: Client[] = [];
 
-    /**
-     * Selected Application.
-     */
-    selectedApplication: Application;
 
     /**
      * Id of the extension status.
@@ -78,39 +48,8 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      */
     public deleteId: number;
 
-    /**
-     * If all userApplications are loaded, important for the loader.
-     * @type ***REMOVED***boolean***REMOVED***
-     */
-    isLoaded_userApplication: boolean = false;
-
-    /**
-     * If all Applications are loaded, important for the loader.
-     * @type ***REMOVED***boolean***REMOVED***
-     */
-    isLoaded_AllApplication: boolean = false;
-
-    /**
-     * User which requested the Application ***REMOVED***id: Elixir Id of user : ***REMOVED***name and email***REMOVED******REMOVED***.
-     * @type ***REMOVED******REMOVED******REMOVED******REMOVED***
-     */
-    application_user: ***REMOVED*** [id: string]: ***REMOVED*** [id: string]: string ***REMOVED*** ***REMOVED*** = ***REMOVED******REMOVED***;
-
-    private APPROVED_STATUS: number = 2;
     private WAIT_FOR_EXTENSION_STATUS: number = 6;
 
-    /**
-     * List of flavors.
-     */public flavorList: Flavor[];
-
-    /**
-     * List of flavor types.
-     */
-    public typeList: FlavorType[];
-    /**
-     * List of all collapse booleans.
-     */
-    public collapseList: boolean[];
     /**
      * Total number of cores.
      * @type ***REMOVED***number***REMOVED***
@@ -133,15 +72,15 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * @param ***REMOVED***FacilityService***REMOVED*** facilityService
      * @param ***REMOVED***FlavorService***REMOVED*** flavorService
      */
-    constructor(private applicationsservice: ApplicationsService,
-                private applicationstatusservice: ApplicationStatusService,
-                private userservice: UserService,
-                private groupservice: GroupService,
+    constructor(applicationsservice: ApplicationsService,
+                applicationstatusservice: ApplicationStatusService,
+                userservice: UserService,
+               private groupservice: GroupService,
                 private voService: VoService,
-                private facilityService: FacilityService,
+                facilityService: FacilityService,
                 private flavorService: FlavorService) ***REMOVED***
 
-        super();
+        super(userservice, applicationstatusservice, applicationsservice, facilityService);
         this.voService.isVo().subscribe((result: ***REMOVED*** [key: string]: boolean ***REMOVED***) => ***REMOVED***
             this.is_vo_admin = result['Is_Vo_Manager'];
             this.getUserApplications();
@@ -164,7 +103,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
      * Checks if the key given represents a flavor and if so returns the respective Flavor
      * @param key the key which is checked
      */
-    keyIsVM(key: string): Flavor ***REMOVED***
+    isKeyFlavor(key: string): Flavor ***REMOVED***
         for (const fkey in this.flavorList) ***REMOVED***
             if (fkey in this.flavorList) ***REMOVED***
                 if (this.flavorList[fkey].name === key.substring(20)) ***REMOVED***
@@ -176,6 +115,134 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
         return null;
 
     ***REMOVED***
+
+    /**
+     * Get the facility of an application.
+     * @param ***REMOVED***Application***REMOVED*** app
+     */
+    public getFacilityProject(app: Application): void ***REMOVED***
+
+        if (!app.ComputeCenter && app.Status.toString() !== 'submitted') ***REMOVED***
+            this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => ***REMOVED***
+                const login: string = res['Login'];
+                const suport: string = res['Support'];
+                const facilityname: string = res['Facility'];
+                const facilityId: number = res['FacilityId'];
+
+                app.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
+
+            ***REMOVED***)
+        ***REMOVED***
+
+    ***REMOVED***
+
+    /**
+     * Get all Applications if user is admin.
+     */
+    getAllApplications(): void ***REMOVED***
+        // todo check if user is VO Admin
+
+        if (this.is_vo_admin) ***REMOVED***
+            this.applicationsservice.getAllApplications().subscribe((res: object) => ***REMOVED***
+                if (Object.keys(res).length === 0) ***REMOVED***
+                    this.isLoaded_userApplication = true;
+                ***REMOVED***
+                const newApps: Application [] = this.setNewApplications(res);
+                this.all_applications.push.apply(this.all_applications, newApps);
+
+                this.isLoaded_AllApplication = true;
+                for (const app of this.all_applications) ***REMOVED***
+                    if (app.Status === this.application_statuses.WAIT_FOR_CONFIRMATION ||
+                        app.Status === this.application_statuses.MODIFICATION_REQUESTED) ***REMOVED***
+                        this.getFacilityProject(app);
+                    ***REMOVED***
+                ***REMOVED***
+
+            ***REMOVED***)
+        ***REMOVED***
+    ***REMOVED***
+
+    /**
+     * Updates an application with the actual values.
+     * @param ***REMOVED***Application***REMOVED*** application
+     */
+    public getApplication(application: Application): void ***REMOVED***
+        const index: number = this.all_applications.indexOf(application);
+
+        this.applicationsservice.getApplication(application.Id.toString()).subscribe((aj: object) => ***REMOVED***
+            const newApp: Application = this.setNewApplication(aj);
+            this.all_applications[index] = newApp;
+            this.getFacilityProject(newApp);
+
+
+        ***REMOVED***);
+
+    ***REMOVED***
+
+    /**
+     * Gets all Application of the user viewing the application overview.
+     * Saves them in the userApplication array.
+     */
+    getUserApplications(): void ***REMOVED***
+        this.applicationsservice
+            .getUserApplications().subscribe((res: [***REMOVED*** [key: string]: string ***REMOVED***]) => ***REMOVED***
+            if (Object.keys(res).length === 0) ***REMOVED***
+                this.isLoaded_userApplication = true;
+            ***REMOVED***
+            const newApps: Application [] = this.setNewApplications(res);
+            this.user_applications.push.apply(this.user_applications, newApps);
+            this.isLoaded_userApplication = true;
+
+        ***REMOVED***)
+
+
+    ***REMOVED***
+
+    /**
+     * Gets a user application with the actual values.
+     * @param ***REMOVED***Application***REMOVED*** application
+     */
+    public getUserApplication(application: Application): void ***REMOVED***
+        let index: number = this.user_applications.indexOf(application);
+
+        this.applicationsservice.getUserApplication(application.Id.toString()).subscribe(aj => ***REMOVED***
+            const newApp: Application = this.setNewApplication(aj);
+
+            this.user_applications[index] = newApp;
+
+
+        ***REMOVED***)
+
+
+    ***REMOVED***
+
+    /**
+     * Check if active applications are available.
+     * @returns ***REMOVED***boolean***REMOVED***
+     */
+    public activeApplicationsAvailable(): boolean ***REMOVED***
+        for (const application of this.all_applications) ***REMOVED***
+            if (application.Status === 1 || application.Status === 4 || application.Status === 7 || application.Status === 6) ***REMOVED***
+                return true;
+            ***REMOVED***
+        ***REMOVED***
+    ***REMOVED***
+
+
+    /**
+     * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+     */
+    getListOfFlavors(): void ***REMOVED***
+        this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
+    ***REMOVED***
+
+    /**
+     * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+     */
+    getListOfTypes(): void ***REMOVED***
+        this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
+    ***REMOVED***
+
 
     /**
      * Resets the values of totalRAM und totalNumberOfCores to 0 and changes the text at the end of the extension form.
@@ -200,7 +267,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
         this.totalNumberOfCores = 0;
         for (const key in form.controls) ***REMOVED***
             if (form.controls[key].value) ***REMOVED***
-                const flavor: Flavor = this.keyIsVM(key.toString());
+                const flavor: Flavor = this.isKeyFlavor(key.toString());
                 if (flavor != null) ***REMOVED***
                     this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * form.controls[key].value);
                     this.totalRAM = this.totalRAM + (flavor.ram * form.controls[key].value);
@@ -213,71 +280,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-    /**
-     * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
-     */
-    getListOfFlavors(): void ***REMOVED***
-        this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
-    ***REMOVED***
-
-    /**
-     * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
-     */
-    getListOfTypes(): void ***REMOVED***
-        this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
-    ***REMOVED***
-
-    /**
-     * Uses the param types to safe the available FlavorTypes to the array typeList.
-     * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
-     * @param types array of all available FlavorTypes
-     */
-    setListOfTypes(types: FlavorType[]): void ***REMOVED***
-        this.typeList = types;
-        this.collapseList = new Array(types.length) as boolean[];
-        for (const type of types) ***REMOVED***
-
-            this.collapseList.push(false); // AS FIX
-            if (type.long_name === 'Standart Flavor') ***REMOVED***
-                this.collapseList[this.typeList.indexOf(type)] = true;
-            ***REMOVED***
-        ***REMOVED***
-
-    ***REMOVED***
-
-    /**
-     * Gets all available compute centers and saves them in the computeCenters attribute.
-     */
-    getComputeCenters(): void ***REMOVED***
-        this.facilityService.getComputeCenters().subscribe((result: [***REMOVED*** [key: string]: string ***REMOVED***]) => ***REMOVED***
-            for (const cc of result) ***REMOVED***
-                const compute_center: ComputecenterComponent = new ComputecenterComponent(
-                    cc['compute_center_facility_id'],
-                    cc['compute_center_name'],
-                    cc['compute_center_login'],
-                    cc['compute_center_support_mail']);
-                this.computeCenters.push(compute_center)
-            ***REMOVED***
-
-        ***REMOVED***)
-    ***REMOVED***
-
-    /**
-     * Gets all affialiations from a user.
-     * @param ***REMOVED***number***REMOVED*** user
-     */
-    getUserAffilaitions(user: number): void ***REMOVED***
-        this.userservice.getuserAffiliations(user).subscribe()
-    ***REMOVED***
-
-    /**
-     * Sets the selected application.
-     * @param application
-     */
-    setSelectedApplication(application: Application): void ***REMOVED***
-        this.selectedApplication = application;
-
-    ***REMOVED***
 
     /**
      * Submits an renewal request for an application.
@@ -315,87 +317,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-    /**
-     * Gets all Application of the user viewing the application overview.
-     * Saves them in the userApplication array.
-     */
-    getUserApplications(): void ***REMOVED***
-        this.applicationsservice
-            .getUserApplications().subscribe((res: [***REMOVED*** [key: string]: string ***REMOVED***]) => ***REMOVED***
-            if (Object.keys(res).length === 0) ***REMOVED***
-                this.isLoaded_userApplication = true;
-            ***REMOVED***
-            for (const key in res) ***REMOVED***
-                if (res.hasOwnProperty(key)) ***REMOVED***
-                    const aj: object = res[key];
-                    const newApp: Application = new Application();
-                    newApp.Id = aj['project_application_id'];
-                    newApp.Name = aj['project_application_name'];
-                    newApp.Shortname = aj['project_application_shortname'];
-                    newApp.Lifetime = aj['project_application_lifetime'];
-                    newApp.DateSubmitted = aj['project_application_date_submitted'];
-                    newApp.Status = aj['project_application_status']['application_status_name'];
-                    newApp.Description = aj['project_application_description'];
-                    newApp.VMsRequested = aj['project_application_vms_requested'];
-                    newApp.RamPerVM = aj['project_application_ram_per_vm'];
-                    newApp.TotalRam = aj['project_application_total_ram'];
-                    newApp.TotalCores = aj['project_application_total_cores'];
-                    newApp.CoresPerVM = aj['project_application_cores_per_vm'];
-                    newApp.VolumeLimit = aj['project_application_volume_limit'];
-                    newApp.VolumeCounter = aj['project_application_volume_counter'];
-                    newApp.ObjectStorage = aj['project_application_object_storage'];
-                    newApp.OpenStackProject = aj['project_application_openstack_project'];
-                    newApp.Comment = aj['project_application_comment'];
-                    newApp.PerunId = aj['project_application_perun_id'];
-                    newApp.DateApproved = aj['project_application_date_approved'];
-                    newApp.Dissemination = aj['project_application_report_allowed'];
-                    newApp.Horizon2020 = aj['project_application_horizon2020'];
-
-                    for (const flavor of aj['flavors']) ***REMOVED***
-                        newApp.addFlavorToCurrent(
-                            flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
-                            flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk)
-
-                    ***REMOVED***
-
-                    if (aj['projectapplicationrenewal']) ***REMOVED***
-                        const newExtension: ApplicationExtension = new ApplicationExtension();
-                        let requestExtensionTotalCores: number = 0;
-                        let requestExtensionTotalRam: number = 0;
-
-
-                        for (const flavor of aj['projectapplicationrenewal']['flavors']) ***REMOVED***
-                            newExtension.addFlavorToRequested(
-                                flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram, flavor.rootdisk,
-                                flavor.vcpus, flavor.gpu, flavor.epheremal_disk);
-                            requestExtensionTotalCores += flavor.vcpus * flavor.counter;
-                            requestExtensionTotalRam += flavor.ram * flavor.counter
-
-                        ***REMOVED***
-
-                        newExtension.TotalRAM = requestExtensionTotalRam;
-                        newExtension.TotalCores = requestExtensionTotalCores;
-
-                        newExtension.Id = aj['projectapplicationrenewal']['project_application'];
-                        newExtension.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-                        newExtension.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-                        newExtension.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-                        newExtension.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-                        newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                        newExtension.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-                        newExtension.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-                        newExtension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-                        newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-
-                        newApp.ApplicationExtension = newExtension;
-                    ***REMOVED***
-                    this.user_applications.push(newApp)
-                ***REMOVED***
-            ***REMOVED***
-            this.isLoaded_userApplication = true;
-
-        ***REMOVED***);
-    ***REMOVED***
 
     /**
      * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
@@ -431,320 +352,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
     ***REMOVED***
 
     /**
-     * Get all possible application stati.
-     */
-    getApplicationStatus(): void ***REMOVED***
-        this.applicationstatusservice.getAllApplicationStatus().toPromise()
-            .then((result: object) => ***REMOVED***
-                const res: object = result;
-                for (const key in res) ***REMOVED***
-                    if (res[key]) ***REMOVED***
-                        const asj: object = res[key];
-                        const aj: ApplicationStatus = new ApplicationStatus(asj['application_status_id'], asj['application_status_name']);
-                        this.application_status.push(aj)
-                    ***REMOVED***
-                ***REMOVED***
-            ***REMOVED***);
-    ***REMOVED***
-
-    /**
-     * Get all Applications if user is admin.
-     */
-    getAllApplications(): void ***REMOVED***
-        // todo check if user is VO Admin
-
-        if (this.is_vo_admin) ***REMOVED***
-            this.applicationsservice.getAllApplications().subscribe((res: object) => ***REMOVED***
-                if (Object.keys(res).length === 0) ***REMOVED***
-                    this.isLoaded_AllApplication = true;
-                ***REMOVED***
-
-                for (const key in res) ***REMOVED***
-                    if (res.hasOwnProperty(key)) ***REMOVED***
-
-                        const aj: object = res[key];
-                        const newApp: Application = new Application();
-                        newApp.Id = aj['project_application_id'];
-                        newApp.Name = aj['project_application_name'];
-                        newApp.Shortname = aj['project_application_shortname'];
-                        newApp.Description = aj['project_application_description'];
-                        newApp.Lifetime = aj['project_application_lifetime'];
-                        newApp.VMsRequested = aj['project_application_vms_requested'];
-                        newApp.RamPerVM = aj['project_application_ram_per_vm'];
-                        newApp.TotalRam = aj['project_application_total_ram'];
-                        newApp.TotalCores = aj['project_application_total_cores'];
-                        newApp.CoresPerVM = aj['project_application_cores_per_vm'];
-                        newApp.VolumeLimit = aj['project_application_volume_limit'];
-                        newApp.VolumeCounter = aj['project_application_volume_counter'];
-                        newApp.ObjectStorage = aj['project_application_object_storage'];
-                        newApp.OpenStackProject = aj['project_application_openstack_project'];
-                        newApp.Institute = aj['project_application_institute'];
-                        newApp.Workgroup = aj['project_application_workgroup'];
-                        newApp.DateApproved = aj['project_application_date_approved'];
-                        newApp.DateSubmitted = aj['project_application_date_submitted'];
-                        newApp.DateStatusChanged = aj['project_application_date_status_changed'];
-                        newApp.User = aj['project_application_user']['username'];
-                        newApp.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
-                        newApp.UserEmail = aj['project_application_user']['email'];
-                        newApp.Status = aj['project_application_status'];
-                        newApp.Dissemination = aj['project_application_report_allowed'];
-                        newApp.Horizon2020 = aj['project_application_horizon2020'];
-
-                        for (const flavor of aj['flavors']) ***REMOVED***
-                            newApp.addFlavorToCurrent(
-                                flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
-                                flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk)
-
-                        ***REMOVED***
-
-                        newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateStatusChanged).getTime()))
-                            / (1000 * 3600 * 24));
-                        newApp.Comment = aj['project_application_comment'];
-                        newApp.PerunId = aj['project_application_perun_id'];
-                        if (aj['projectapplicationrenewal']) ***REMOVED***
-                            const newExtension: ApplicationExtension = new ApplicationExtension();
-                            let requestExtensionTotalCores: number = 0;
-                            let requestExtensionTotalRam: number = 0;
-
-                            newApp.Comment = aj['project_application_comment'];
-                            newApp.PerunId = aj['project_application_perun_id'];
-                            newApp.OpenStackProject = aj['project_application_openstack_project'];
-
-                            for (const flavor of aj['projectapplicationrenewal']['flavors']) ***REMOVED***
-                                newExtension.addFlavorToRequested(
-                                    flavor.flavor_name,
-                                    flavor.counter,
-                                    flavor.tag,
-                                    flavor.ram,
-                                    flavor.rootdisk,
-                                    flavor.vcpus,
-                                    flavor.gpu,
-                                    flavor.epheremal_disk);
-                                requestExtensionTotalCores += flavor.vcpus * flavor.counter;
-                                requestExtensionTotalRam += flavor.ram * flavor.counter;
-
-                                newExtension.TotalRAM = requestExtensionTotalRam;
-                                newExtension.TotalCores = requestExtensionTotalCores;
-
-                                newExtension.Id = aj['projectapplicationrenewal']['project_application'];
-                                newExtension.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-                                newExtension.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-                                newExtension.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-                                newExtension.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-                                newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                                newExtension.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-                                newExtension.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-                                newExtension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-                                newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-
-                                newApp.ApplicationExtension = newExtension;
-
-                            ***REMOVED***
-                        ***REMOVED***
-                        this.all_applications.push(newApp);
-
-                        this.isLoaded_AllApplication = true;
-                        for (const app of this.all_applications) ***REMOVED***
-                            if (app.Status === this.application_statuses.WAIT_FOR_CONFIRMATION ||
-                                app.Status === this.application_statuses.MODIFICATION_REQUESTED) ***REMOVED***
-                                this.getFacilityProject(app);
-                            ***REMOVED***
-                        ***REMOVED***
-
-                    ***REMOVED***
-                ***REMOVED***
-            ***REMOVED***);
-        ***REMOVED*** else ***REMOVED***
-            this.isLoaded_AllApplication = true;
-
-        ***REMOVED***
-
-    ***REMOVED***
-
-    /**
-     * Get the facility of an application.
-     * @param ***REMOVED***Application***REMOVED*** app
-     */
-    public getFacilityProject(app: Application): void ***REMOVED***
-
-        if (!app.ComputeCenter && app.Status.toString() !== 'submitted') ***REMOVED***
-            this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => ***REMOVED***
-                const login: string = res['Login'];
-                const suport: string = res['Support'];
-                const facilityname: string = res['Facility'];
-                const facilityId: number = res['FacilityId'];
-
-                app.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
-
-            ***REMOVED***)
-        ***REMOVED***
-
-    ***REMOVED***
-
-    /**
-     * Updates an application with the actual values.
-     * @param ***REMOVED***Application***REMOVED*** application
-     */
-    public getApplication(application: Application): void ***REMOVED***
-        const index: number = this.all_applications.indexOf(application);
-
-        this.applicationsservice.getApplication(application.Id.toString()).subscribe((aj: object) => ***REMOVED***
-            const newApp: Application = new Application();
-            newApp.Id = aj['project_application_id'];
-
-            newApp.Name = aj['project_application_name'];
-            newApp.Shortname = aj['project_application_shortname'];
-            newApp.Description = aj['project_application_description'];
-            newApp.Lifetime = aj['project_application_lifetime'];
-
-            newApp.VMsRequested = aj['project_application_vms_requested'];
-            newApp.RamPerVM = aj['project_application_ram_per_vm'];
-
-            newApp.TotalRam = aj['project_application_total_ram'];
-            newApp.TotalCores = aj['project_application_total_cores'];
-            newApp.CoresPerVM = aj['project_application_cores_per_vm'];
-            newApp.VolumeLimit = aj['project_application_volume_limit'];
-            newApp.VolumeCounter = aj['project_application_volume_counter'];
-
-            newApp.ObjectStorage = aj['project_application_object_storage'];
-            newApp.OpenStackProject = aj['project_application_openstack_project'];
-
-            newApp.Institute = aj['project_application_institute'];
-            newApp.Workgroup = aj['project_application_workgroup'];
-            newApp.DateApproved = aj['project_application_date_approved'];
-
-            newApp.DateSubmitted = aj['project_application_date_submitted'];
-            newApp.DateStatusChanged = aj['project_application_date_status_changed'];
-            newApp.User = aj['project_application_user']['username'];
-            newApp.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
-            newApp.UserEmail = aj['project_application_user']['email'];
-            newApp.Status = aj['project_application_status'];
-            newApp.Dissemination = aj['project_application_report_allowed'];
-            newApp.Horizon2020 = aj['project_application_horizon2020'];
-
-            if (newApp.Status === this.application_statuses.APPROVED) ***REMOVED***
-                newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
-
-            ***REMOVED***
-            newApp.Comment = aj['project_application_comment'];
-            newApp.PerunId = aj['project_application_perun_id'];
-            for (const flavor of aj['flavors']) ***REMOVED***
-                newApp.addFlavorToCurrent(
-                    flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
-                    flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk)
-
-            ***REMOVED***
-            if (aj['projectapplicationrenewal']) ***REMOVED***
-                const r: ApplicationExtension = new ApplicationExtension();
-                let requestExtensionTotalCores: number = 0;
-                let requestExtensionTotalRam: number = 0;
-
-                for (const flavor of aj['projectapplicationrenewal']['flavors']) ***REMOVED***
-                    r.addFlavorToRequested(
-                        flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
-                        flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk);
-                    requestExtensionTotalCores += flavor.vcpus * flavor.counter;
-                    requestExtensionTotalRam += flavor.ram * flavor.counter
-
-                ***REMOVED***
-
-                r.TotalRAM = requestExtensionTotalRam;
-                r.TotalCores = requestExtensionTotalCores;
-
-                r.Id = aj['projectapplicationrenewal']['project_application'];
-                r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-                r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-                r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-                r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-                r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-                r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-                r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-                r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-
-                newApp.ApplicationExtension = r;
-            ***REMOVED***
-            this.getFacilityProject(newApp);
-
-            this.all_applications[index] = newApp;
-
-        ***REMOVED***)
-    ***REMOVED***
-
-    /**
-     * Gets a user application with the actual values.
-     * @param ***REMOVED***Application***REMOVED*** application
-     */
-    public getUserApplication(application: Application): void ***REMOVED***
-        const index: number = this.user_applications.indexOf(application);
-        this.applicationsservice.getUserApplication(application.Id).subscribe((aj: object) => ***REMOVED***
-            const newApp: Application = new Application();
-
-            newApp.Id = aj['project_application_id'];
-            newApp.Name = aj['project_application_name'];
-            newApp.Shortname = aj['project_application_shortname'];
-            newApp.Description = aj['project_application_description'];
-            newApp.Lifetime = aj['project_application_lifetime'];
-            newApp.VMsRequested = aj['project_application_vms_requested'];
-            newApp.RamPerVM = aj['project_application_ram_per_vm'];
-            newApp.TotalRam = aj['project_application_total_ram'];
-            newApp.TotalCores = aj['project_application_total_cores'];
-            newApp.CoresPerVM = aj['project_application_cores_per_vm'];
-            newApp.VolumeLimit = aj['project_application_volume_limit'];
-            newApp.VolumeCounter = aj['project_application_volume_counter'];
-            newApp.ObjectStorage = aj['project_application_object_storage'];
-            newApp.OpenStackProject = aj['project_application_openstack_project'];
-            newApp.Institute = aj['project_application_institute'];
-            newApp.Workgroup = aj['project_application_workgroup'];
-            newApp.DateApproved = aj['project_application_date_approved'];
-            newApp.DateSubmitted = aj['project_application_date_submitted'];
-            newApp.DateStatusChanged = aj['project_application_date_status_changed'];
-            newApp.Status = aj['project_application_status'];
-            newApp.Dissemination = aj['project_application_report_allowed'];
-            newApp.Horizon2020 = aj['project_application_horizon2020'];
-
-            for (const flavor of aj['flavors']) ***REMOVED***
-                newApp.addFlavorToCurrent(
-                    flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
-                    flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk)
-
-            ***REMOVED***
-            if (aj['projectapplicationrenewal']) ***REMOVED***
-                const newExtension: ApplicationExtension = new ApplicationExtension();
-                let requestExtensionTotalCores: number = 0;
-                let requestExtensionTotalRam: number = 0;
-
-                for (const flavor of aj['projectapplicationrenewal']['flavors']) ***REMOVED***
-                    newExtension.addFlavorToRequested(
-                        flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
-                        flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk);
-                    requestExtensionTotalCores += flavor.vcpus * flavor.counter;
-                    requestExtensionTotalRam += flavor.ram * flavor.counter
-
-                ***REMOVED***
-
-                newExtension.TotalRAM = requestExtensionTotalRam;
-                newExtension.TotalCores = requestExtensionTotalCores;
-                newExtension.Id = aj['projectapplicationrenewal']['project_application'];
-                newExtension.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-                newExtension.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-                newExtension.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-                newExtension.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-                newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-                newExtension.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-                newExtension.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-                newExtension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-                newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-
-                newApp.ApplicationExtension = newExtension;
-            ***REMOVED***
-            this.user_applications[index] = newApp;
-
-        ***REMOVED***)
-
-    ***REMOVED***
-
-    /**
      * Request an extension from an application.
      * @param data
      */
@@ -768,26 +375,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-    /**
-     * Get details of member like name and email by elixir.
-     * @param ***REMOVED***string***REMOVED*** elixir_id
-     * @param ***REMOVED***string***REMOVED*** collapse_id
-     */
-    public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string): void ***REMOVED***
-        if (!this.getCollapseStatus(collapse_id)) ***REMOVED***
-            if (!(elixir_id in this.application_user)) ***REMOVED***
-                this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
-
-                    const name: string = `$***REMOVED***result['firstName']***REMOVED*** $***REMOVED***result['lastName']***REMOVED***`;
-                    const appuser: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
-                    appuser['name'] = name;
-                    appuser['email'] = result['email'];
-                    this.application_user[elixir_id] = appuser;
-                ***REMOVED***)
-            ***REMOVED***
-        ***REMOVED***
-
-    ***REMOVED***
 
     /**
      * Approve an extension request.
@@ -854,37 +441,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    /**
-     * Get status name  by status id.
-     * @param ***REMOVED***number***REMOVED*** id
-     * @returns ***REMOVED***string***REMOVED***
-     */
-    public getStatusById(id: number): string ***REMOVED***
-        const dummy: string = 'Unknown';
-        for (const status of this.application_status) ***REMOVED***
-            if (status.Id === id) ***REMOVED***
-                return status.Name;
-            ***REMOVED***
-        ***REMOVED***
-
-        return dummy;
-    ***REMOVED***
-
-    /**
-     * Get id by status name.
-     * @param ***REMOVED***string***REMOVED*** name
-     * @returns ***REMOVED***number***REMOVED***
-     */
-    public getIdByStatus(name: string): number ***REMOVED***
-        const s: number = -1;
-        for (const status of this.application_status) ***REMOVED***
-            if (status.Name === name) ***REMOVED***
-                return status.Id;
-            ***REMOVED***
-        ***REMOVED***
-
-        return s;
-    ***REMOVED***
 
     /**
      * Remove Application from facility , where it is for confirmation
@@ -1206,21 +762,6 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
             ***REMOVED***);
     ***REMOVED***
 
-    /**
-     * Check if active applications are available.
-     * @returns ***REMOVED***boolean***REMOVED***
-     */
-    public activeApplicationsAvailable(): boolean ***REMOVED***
-        for (const application of this.all_applications) ***REMOVED***
-            if (application.Status === 1 || application.Status === 4 || application.Status === 7 || application.Status === 6) ***REMOVED***
-                return true;
-            ***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
-
-    public setApplicationStatus(status: number, app: Application): void ***REMOVED***
-        this.applicationstatusservice.setApplicationStatus(app.Id.toString(), status.toString()).subscribe()
-    ***REMOVED***
 
     /**
      * Set the id of the application which should be deleted.
@@ -1230,11 +771,5 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
         this.deleteId = applicationId;
     ***REMOVED***
 
-    /**
-     * Coming soon.
-     */
-    public comingSoon(): void ***REMOVED***
-        alert('This functinality will be implemented soon!')
-    ***REMOVED***
 
 ***REMOVED***

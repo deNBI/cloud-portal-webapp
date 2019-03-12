@@ -30,13 +30,24 @@ enum Vm_Statuses ***REMOVED***
 
 export abstract class AbstractBaseClasse ***REMOVED***
 
+    /**
+     * If the site is loaded with values.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
+    isLoaded: boolean = false;
+
+    /**
+     * If the user is a vo admin.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
+    is_vo_admin: boolean = false;
+
     lifetime_statuses = Lifetime_Statuses;
     project_statuses = Project_Statuses;
     application_statuses = Application_Statuses;
     vm_statuses = Vm_Statuses;
 
     collapse_status: ***REMOVED*** [id: string]: boolean ***REMOVED*** = ***REMOVED******REMOVED***;
-    isLoaded = false;
 
     // notification Modal variables
     public notificationModal;
