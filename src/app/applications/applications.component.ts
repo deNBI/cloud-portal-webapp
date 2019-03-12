@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApplicationsService} from '../api-connector/applications.service'
 import {ApplicationStatusService} from '../api-connector/application-status.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
@@ -23,7 +23,7 @@ import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
     providers: [FacilityService, VoService, UserService, GroupService, ApplicationStatusService,
         ApplicationsService, ApiSettings, FlavorService]
 })
-export class ApplicationsComponent extends ApplicationBaseClass {
+export class ApplicationsComponent extends ApplicationBaseClass implements OnInit {
 
     /**
      * All Applications, just visibile for a vo admin.
@@ -81,6 +81,10 @@ export class ApplicationsComponent extends ApplicationBaseClass {
                 private flavorService: FlavorService) {
 
         super(userservice, applicationstatusservice, applicationsservice, facilityService);
+    }
+
+    ngOnInit(): void {
+
         this.voService.isVo().subscribe((result: { [key: string]: boolean }) => {
             this.is_vo_admin = result['Is_Vo_Manager'];
             this.getUserApplications();
@@ -121,8 +125,7 @@ export class ApplicationsComponent extends ApplicationBaseClass {
      * @param {Application} app
      */
     public getFacilityProject(app: Application): void {
-        console.log(app.Status)
-        console.log( app.Status !== this.application_states.SUBMITTED)
+
         if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED) {
             this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => {
                 const login: string = res['Login'];
@@ -482,7 +485,7 @@ export class ApplicationsComponent extends ApplicationBaseClass {
                     this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
                     this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(() => {
                         this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => {
-                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(() => {
+                            this.groupservice.assignGroupToResource(new_group_id, compute_center).subscribe(() => {
                                 if (compute_center !== 'undefined') {
                                     this.applicationstatusservice.setApplicationStatus(
                                         application_id,
@@ -659,7 +662,7 @@ export class ApplicationsComponent extends ApplicationBaseClass {
                                                 }
 
                                                 for (const app of this.user_applications) {
-                                                    if (app.Id.toString() === application_id) {
+                                                    if (app.Id.toString() === application_id.toString()) {
                                                         this.getUserApplication(app);
                                                         break;
 
@@ -667,7 +670,7 @@ export class ApplicationsComponent extends ApplicationBaseClass {
 
                                                 }
                                                 for (const app of this.all_applications) {
-                                                    if (app.Id.toString() === application_id) {
+                                                    if (app.Id.toString() === application_id.toString()) {
                                                         this.getApplication(app);
                                                         break;
 
@@ -697,7 +700,7 @@ export class ApplicationsComponent extends ApplicationBaseClass {
 
     assignGroupToFacility(group_id: string, application_id: string, compute_center: string): void {
         if (compute_center !== 'undefined') {
-            this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(
+            this.groupservice.assignGroupToResource(group_id, compute_center).subscribe(
                 () => {
                     this.applicationstatusservice.setApplicationStatus(
                         application_id,
