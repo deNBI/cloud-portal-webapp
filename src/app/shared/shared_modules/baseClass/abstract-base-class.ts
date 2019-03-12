@@ -30,13 +30,24 @@ enum Vm_Statuses {
 
 export abstract class AbstractBaseClasse {
 
+    /**
+     * If the site is loaded with values.
+     * @type {boolean}
+     */
+    isLoaded: boolean = false;
+
+    /**
+     * If the user is a vo admin.
+     * @type {boolean}
+     */
+    is_vo_admin: boolean = false;
+
     lifetime_statuses = Lifetime_Statuses;
     project_statuses = Project_Statuses;
     application_statuses = Application_Statuses;
     vm_statuses = Vm_Statuses;
 
     collapse_status: { [id: string]: boolean } = {};
-    isLoaded = false;
 
     // notification Modal variables
     public notificationModal;
