@@ -1,4 +1,4 @@
-import ***REMOVED***Component***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
@@ -23,7 +23,7 @@ import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmach
     providers: [FacilityService, VoService, UserService, GroupService, ApplicationStatusService,
         ApplicationsService, ApiSettings, FlavorService]
 ***REMOVED***)
-export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
+export class ApplicationsComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
 
     /**
      * All Applications, just visibile for a vo admin.
@@ -81,6 +81,10 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
                 private flavorService: FlavorService) ***REMOVED***
 
         super(userservice, applicationstatusservice, applicationsservice, facilityService);
+    ***REMOVED***
+
+    ngOnInit(): void ***REMOVED***
+
         this.voService.isVo().subscribe((result: ***REMOVED*** [key: string]: boolean ***REMOVED***) => ***REMOVED***
             this.is_vo_admin = result['Is_Vo_Manager'];
             this.getUserApplications();
@@ -121,8 +125,7 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
      * @param ***REMOVED***Application***REMOVED*** app
      */
     public getFacilityProject(app: Application): void ***REMOVED***
-        console.log(app.Status)
-        console.log( app.Status !== this.application_states.SUBMITTED)
+
         if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED) ***REMOVED***
             this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => ***REMOVED***
                 const login: string = res['Login'];
@@ -482,7 +485,7 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
                     this.groupservice.addMember(new_group_id, manager_member_id, compute_center).subscribe();
                     this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center).subscribe(() => ***REMOVED***
                         this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => ***REMOVED***
-                            this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe(() => ***REMOVED***
+                            this.groupservice.assignGroupToResource(new_group_id, compute_center).subscribe(() => ***REMOVED***
                                 if (compute_center !== 'undefined') ***REMOVED***
                                     this.applicationstatusservice.setApplicationStatus(
                                         application_id,
@@ -659,7 +662,7 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
                                                 ***REMOVED***
 
                                                 for (const app of this.user_applications) ***REMOVED***
-                                                    if (app.Id.toString() === application_id) ***REMOVED***
+                                                    if (app.Id.toString() === application_id.toString()) ***REMOVED***
                                                         this.getUserApplication(app);
                                                         break;
 
@@ -667,7 +670,7 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
 
                                                 ***REMOVED***
                                                 for (const app of this.all_applications) ***REMOVED***
-                                                    if (app.Id.toString() === application_id) ***REMOVED***
+                                                    if (app.Id.toString() === application_id.toString()) ***REMOVED***
                                                         this.getApplication(app);
                                                         break;
 
@@ -697,7 +700,7 @@ export class ApplicationsComponent extends ApplicationBaseClass ***REMOVED***
 
     assignGroupToFacility(group_id: string, application_id: string, compute_center: string): void ***REMOVED***
         if (compute_center !== 'undefined') ***REMOVED***
-            this.groupservice.assignGroupToResource(group_id.toString(), compute_center).subscribe(
+            this.groupservice.assignGroupToResource(group_id, compute_center).subscribe(
                 () => ***REMOVED***
                     this.applicationstatusservice.setApplicationStatus(
                         application_id,
