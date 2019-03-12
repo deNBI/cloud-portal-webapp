@@ -143,32 +143,6 @@
                         <div class="form-group row">
                             <h5 class="col-md-12 form-control-label">Resources</h5>
                         </div>
-
-                        <div class="form-group row" [ngClass]="***REMOVED***
-                                'has-danger': f.controls.project_application_vms_requested?.invalid ,
-                                'has-success': f.controls.project_application_vms_requested?.valid
-                                ***REMOVED***">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
-                                of Virtual
-                                Machines* <i
-                                        data-balloon="A virtual machine allows you to run operating system of your choice with flexible resource parameters like number of CPUs and RAM."
-                                        data-balloon-pos="down" data-balloon-length="large"><i
-                                        class="icon-question"
-                                        style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input required class="form-control"
-                                           id="id_project_application_vms_requested"
-                                           name="project_application_vms_requested"
-                                           placeholder="e.g. 5"
-                                           type="number" min="1" step="1"
-                                           [(ngModel)]="project_application_vms_requested">
-                                    <span class="input-group-addon"> VMs
-                                    </span>
-                                </div>
-                                <span class="help-block">How many VMs would you run simultaneously?</span>
-                            </div>
-                        </div>
                         <div class="form-group row" [ngClass]="***REMOVED***
                                 'has-danger': f.controls.project_application_volume_limit?.invalid,
                                 'has-success': f.controls.project_application_volume_limit?.valid
@@ -220,7 +194,7 @@
                         </div>
 
                         <div *ngFor="let t of typeList">
-                            <div class="card"
+                            <div *ngIf="checkIfTypeGotSimpleVmFlavor(t)" class="card"
                             >
                                 <!--(click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"-->
                                 <div (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"
@@ -238,7 +212,7 @@
 
                                 </div>
                                 <!--*ngIf="collapseList[typeList.indexOf(t)]"-->
-                                <div *ngIf="collapseList[typeList.indexOf(t)]"
+                                <div *ngIf="collapseList[typeList.indexOf(t)] "
                                      class="form-group card-body">
                                     <div *ngFor="let f of flavorList">
                                         <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
