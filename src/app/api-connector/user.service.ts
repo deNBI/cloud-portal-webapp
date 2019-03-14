@@ -1,183 +1,158 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
-import ***REMOVED***URLSearchParams***REMOVED*** from '@angular/http';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
-import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
-import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
-const header = new HttpHeaders(***REMOVED***
-    'X-CSRFToken': Cookie.get("csrftoken")
+const header: HttpHeaders = new HttpHeaders(***REMOVED***
+    'X-CSRFToken': Cookie.get('csrftoken')
 ***REMOVED***);
 
-
+/**
+ * Service which provides user methods.
+ */
 @Injectable()
 export class UserService ***REMOVED***
-    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
     setUserFacilityPassword(facility: string): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('facility', facility)
+        const params: HttpParams = new HttpParams().set('facility', facility);
 
-        ;
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'users/setUserPassword/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/setUserPassword/`, params, ***REMOVED***
             withCredentials: true,
-            headers: header,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+            headers: header
+        ***REMOVED***)
     ***REMOVED***
 
     getLogins(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/logins/',
-            ***REMOVED***
-                withCredentials: true,
-            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/logins/`, ***REMOVED***
+            withCredentials: true
+        ***REMOVED***)
     ***REMOVED***
-
 
     getPreferredMailUser(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/preferredEmail/',
-            ***REMOVED***
-                withCredentials: true,
-            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/preferredEmail/`, ***REMOVED***
+            withCredentials: true
+        ***REMOVED***)
     ***REMOVED***
 
     requestChangePreferredMailUser(email: string): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('newPreferredEmail', email);
+        const params: HttpParams = new HttpParams().set('newPreferredEmail', email);
 
-
-        return this.http.post(this.settings.getApiBaseURL() + 'users/current/preferredEmail/', params,
-            ***REMOVED***
-                withCredentials: true,
-                headers: header,
-            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/preferredEmail/`, params, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***)
     ***REMOVED***
-
 
     getPendingPreferredMailUser(): Observable<any> ***REMOVED***
 
-
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/pendingPreferredEmails/',
-            ***REMOVED***
-                withCredentials: true,
-            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/pendingPreferredEmails/`, ***REMOVED***
+            withCredentials: true
+        ***REMOVED***)
     ***REMOVED***
 
-
-    getMemberDetailsByElixirId(elixir_id: string) ***REMOVED***
+    getMemberDetailsByElixirId(elixir_id: string): Observable<any> ***REMOVED***
         elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
-        return this.http.get(this.settings.getApiBaseURL() + 'users/' + elixir_id + '/member/',
-            ***REMOVED***
-                withCredentials: true,
 
-            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/$***REMOVED***elixir_id***REMOVED***/member/`, ***REMOVED***
+            withCredentials: true
 
-    ***REMOVED***
-
-    isMember(userid: string) ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'users/' + userid + '/member/status/',
-            ***REMOVED***
-                withCredentials: true,
-            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        ***REMOVED***)
 
     ***REMOVED***
 
-    getuserAffiliations(user_id: number) ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'users/' + user_id.toString() + '/affiliations/',
-            ***REMOVED***
-                withCredentials: true,
+    isMember(userid: string): Observable<any> ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/$***REMOVED***userid***REMOVED***/member/status/`, ***REMOVED***
+            withCredentials: true
+        ***REMOVED***)
 
-            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+    ***REMOVED***
+
+    getuserAffiliations(user_id: number): Observable<any> ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/$***REMOVED***user_id.toString()***REMOVED***/affiliations/`, ***REMOVED***
+            withCredentials: true
+
+        ***REMOVED***)
 
     ***REMOVED***
 
     getLoggedUser(): Observable<any> ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/',
-            ***REMOVED***
-                withCredentials: true,
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/`, ***REMOVED***
+            withCredentials: true
 
-            ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        ***REMOVED***)
     ***REMOVED***
 
     getMemberByUser(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + `users/current/member/`, ***REMOVED***
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/member/`, ***REMOVED***
+            withCredentials: true
+        ***REMOVED***)
     ***REMOVED***
-
 
     getMemberByExtSourceNameAndExtLogin(ext_login: string): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + `users/current/extLogin/member/`, ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/extLogin/member/`, ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***
-
-                extLogin: ext_login,
-
+                extLogin: ext_login
             ***REMOVED***
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        ***REMOVED***)
     ***REMOVED***
 
-
     getVosWhereUserIsAdmin(): Observable<any> ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/adminVos/', ***REMOVED***
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-        ;
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/adminVos/`, ***REMOVED***
+            withCredentials: true
+        ***REMOVED***)
     ***REMOVED***
 
     getGroupsWhereUserIsAdmin(): Observable<any> ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/adminGroups/', ***REMOVED***
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-        ;
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/adminGroups/`, ***REMOVED***
+            withCredentials: true
+        ***REMOVED***)
     ***REMOVED***
 
     setNewsletterSubscription(subscribed: boolean): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('subscribed', subscribed.toString());
+        const params: HttpParams = new HttpParams().set('subscribed', subscribed.toString());
 
-        return this.http.post(this.settings.getApiBaseURL() + 'newsletter/subscription/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/`, params, ***REMOVED***
             withCredentials: true,
-            headers: header,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+            headers: header
+        ***REMOVED***)
 
     ***REMOVED***
 
     getNewsletterSubscription(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'newsletter/subscription/', ***REMOVED***
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/`, ***REMOVED***
+            withCredentials: true
+        ***REMOVED***)
 
     ***REMOVED***
 
-    sendHelpMail(subject, message, reply): Observable<any> ***REMOVED***
+    sendHelpMail(subject: string, message: string, reply: string): Observable<any> ***REMOVED***
 
-        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+        const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-
-        return this.http.post(this.settings.getApiBaseURL() + 'users/current/helpMail/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/helpMail/`, params, ***REMOVED***
             withCredentials: true,
-            headers: header,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
+            headers: header
+        ***REMOVED***)
     ***REMOVED***
 
     getFilteredMembersOfdeNBIVo(searchString: string, groupid: string): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'users/filter/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/filter/`, ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***
-                searchString: searchString,
+                searchString: searchString
             ***REMOVED***
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
+        ***REMOVED***)
 
     ***REMOVED***
-
 
 ***REMOVED***

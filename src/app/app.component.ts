@@ -1,35 +1,22 @@
 import ***REMOVED***AfterViewInit, Component, ViewChild***REMOVED*** from '@angular/core';
-import ***REMOVED***RequestOptions, XHRBackend, Http***REMOVED*** from '@angular/http';
-import ***REMOVED***HttpInterceptor***REMOVED*** from "app/interceptor";
-import ***REMOVED***ModalDirective***REMOVED*** from "ngx-bootstrap";
+import ***REMOVED***Http, RequestOptions, XHRBackend***REMOVED*** from '@angular/http';
+import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap';
 
-
-export function httpInterceptor(backend: XHRBackend, options: RequestOptions, modal: AppComponent) ***REMOVED***
-  return new HttpInterceptor(backend, options, modal.getModal());
-***REMOVED***
-
+/**
+ * App component.
+ */
 @Component(***REMOVED***
-  selector: 'body',
-  templateUrl: 'app.component.html',
-  providers: [ ***REMOVED***
-    provide: Http,
-    useFactory: httpInterceptor,
-    deps: [XHRBackend, RequestOptions, AppComponent]
-  ***REMOVED***]
+    selector: 'body',
+    templateUrl: 'app.component.html',
+    providers: [***REMOVED***
+        provide: Http,
+        deps: [XHRBackend, RequestOptions, AppComponent]
+    ***REMOVED***]
 ***REMOVED***)
 export class AppComponent implements AfterViewInit ***REMOVED***
 
-  ngAfterViewInit(): void ***REMOVED***
-  ***REMOVED***
+    @ViewChild('timeoutModal') modal: ModalDirective;
 
-  @ViewChild('timeoutModal') modal: ModalDirective;
-
-  refresh() ***REMOVED***
-    window.sessionStorage.clear();
-    window.location.reload(true);
-  ***REMOVED***
-
-  getModal() ***REMOVED***
-    return this.modal;
-  ***REMOVED***
+    ngAfterViewInit(): void ***REMOVED***
+    ***REMOVED***
 ***REMOVED***

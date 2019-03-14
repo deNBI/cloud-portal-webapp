@@ -1,5 +1,5 @@
-import ***REMOVED***ProjectMemberApplication***REMOVED*** from "./project_member_application";
-import ***REMOVED***ComputecenterComponent***REMOVED*** from "./computecenter.component";
+import ***REMOVED***ProjectMemberApplication***REMOVED*** from './project_member_application';
+import ***REMOVED***ComputecenterComponent***REMOVED*** from './computecenter.component';
 
 export class Project ***REMOVED***
     get UserIsAdmin(): boolean ***REMOVED***
@@ -10,14 +10,14 @@ export class Project ***REMOVED***
         this._UserIsAdmin = value;
     ***REMOVED***
 
-    private _Id: number;
+    private _Id: number | string;
     private _Name: string;
     private _Description: string;
     private _DateCreated: string;
     private _DateEnd: string;
     private _DaysRunning: number;
     private _LifetimeDays: number;
-    private _Lifetime: number;
+    private _Lifetime: number | string;
     private _UserIsAdmin: boolean;
     private _UserIsPi: boolean;
     private _Status: number;
@@ -28,8 +28,8 @@ export class Project ***REMOVED***
     private _OpenStackProject: boolean;
     private _LifetimeReached: number;
 
-
-    constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) ***REMOVED***
+    constructor(Id: number | string, Name: string, Description: string, DateCreated: string, DaysRunning: number,
+                UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) ***REMOVED***
         this._Id = Id;
         this._Name = Name;
         this._Description = Description;
@@ -41,7 +41,7 @@ export class Project ***REMOVED***
 
     ***REMOVED***
 
-//todo exdend with additional information
+// todo exdend with additional information
 
     get LifetimeReached(): number ***REMOVED***
         return this._LifetimeReached
@@ -55,7 +55,6 @@ export class Project ***REMOVED***
 
         return this._RealName
     ***REMOVED***
-
 
     set RealName(value: string) ***REMOVED***
         this._RealName = value;
@@ -94,12 +93,12 @@ export class Project ***REMOVED***
         this._OpenStackProject = value;
     ***REMOVED***
 
-    get Lifetime(): number ***REMOVED***
-        return this._Lifetime;
+    set Lifetime(value: number | string) ***REMOVED***
+        this._Lifetime = value;
     ***REMOVED***
 
-    set Lifetime(value: number) ***REMOVED***
-        this._Lifetime = value;
+    get Lifetime(): number | string ***REMOVED***
+        return this._Lifetime;
     ***REMOVED***
 
     get ComputeCenter(): ComputecenterComponent ***REMOVED***
@@ -110,12 +109,20 @@ export class Project ***REMOVED***
         this._ComputeCenter = value;
     ***REMOVED***
 
-    get Id(): number ***REMOVED***
-        return this._Id;
+    get PerunId(): number ***REMOVED***
+        return this._PerunId;
     ***REMOVED***
 
-    set Id(value: number) ***REMOVED***
+    set PerunId(value: number) ***REMOVED***
+        this._PerunId = value;
+    ***REMOVED***
+
+    set Id(value: number | string) ***REMOVED***
         this._Id = value;
+    ***REMOVED***
+
+    get Id(): number | string ***REMOVED***
+        return this._Id;
     ***REMOVED***
 
     get Name(): string ***REMOVED***
@@ -158,7 +165,6 @@ export class Project ***REMOVED***
         this._DaysRunning = value;
     ***REMOVED***
 
-
     get UserIsPi(): boolean ***REMOVED***
         return this._UserIsPi;
     ***REMOVED***
@@ -166,6 +172,5 @@ export class Project ***REMOVED***
     set UserIsPi(value: boolean) ***REMOVED***
         this._UserIsPi = value;
     ***REMOVED***
-
 
 ***REMOVED***

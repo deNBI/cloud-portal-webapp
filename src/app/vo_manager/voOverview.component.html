@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="card-block">
-                    <div >
+                    <div>
                         <table class="table table-responsive table-striped">
                             <thead>
                             <tr>
@@ -51,7 +51,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                             <td><input style="width: 110px;" type="text" placeholder="Filter"
+                            <td><input style="width: 110px;" type="text" placeholder="Filter"
                                        name="filterFacilityName"
                                        [(ngModel)]="filterFacilityName"
                                        (ngModelChange)="applyFilter();">
@@ -72,20 +72,20 @@
                                     <div class="checkbox col-sm">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(project_statuses[project_statuses.ACTIVE]);applyFilter();"
+                                                   (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
                                                    checked/>
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-success">***REMOVED******REMOVED***project_statuses[project_statuses.ACTIVE]***REMOVED******REMOVED*** </span>
+                                                  class="badge badge-success">***REMOVED******REMOVED***project_states[project_states.ACTIVE]***REMOVED******REMOVED*** </span>
 
                                         </label>
                                     </div>
                                     <div class="checkbox col-sm">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(project_statuses[project_statuses.SUSPENDED]);applyFilter();"
+                                                   (change)="changeFilterStatus(project_states[project_states.SUSPENDED]);applyFilter();"
                                                    checked/>
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-warning">***REMOVED******REMOVED***project_statuses[project_statuses.SUSPENDED]***REMOVED******REMOVED*** </span>
+                                                  class="badge badge-warning">***REMOVED******REMOVED***project_states[project_states.SUSPENDED]***REMOVED******REMOVED*** </span>
                                         </label>
                                     </div>
                                 </div>
@@ -93,20 +93,20 @@
                                     <div class="checkbox col-sm">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(lifetime_statuses[lifetime_statuses.EXPIRED]);applyFilter();"
+                                                   (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
                                             />
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-danger">***REMOVED******REMOVED***lifetime_statuses[lifetime_statuses.EXPIRED]***REMOVED******REMOVED***</span>
+                                                  class="badge badge-danger">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRED]***REMOVED******REMOVED***</span>
 
                                         </label>
                                     </div>
                                     <div class="checkbox col-sm">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(lifetime_statuses[lifetime_statuses.EXPIRES_SOON]);applyFilter();"
+                                                   (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
                                             />
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-warning">***REMOVED******REMOVED***lifetime_statuses[lifetime_statuses.EXPIRES_SOON]***REMOVED******REMOVED***</span>
+                                                  class="badge badge-warning">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRES_SOON]***REMOVED******REMOVED***</span>
                                         </label>
                                     </div>
                                 </div>
@@ -126,19 +126,19 @@
                                         Show Details
                                     </button>
                                 </td>
-                                <td>  <span *ngIf="project?.Status ==  project_statuses.ACTIVE"
+                                <td>  <span *ngIf="project?.Status ==  project_states.ACTIVE"
                                             style="margin-left: 5px"
-                                            class="badge badge-success">***REMOVED******REMOVED***project_statuses[project_statuses.ACTIVE]***REMOVED******REMOVED*** </span>
-                                    <span *ngIf="project?.LifetimeReached==lifetime_statuses.EXPIRED"
+                                            class="badge badge-success">***REMOVED******REMOVED***project_states[project_states.ACTIVE]***REMOVED******REMOVED*** </span>
+                                    <span *ngIf="project?.LifetimeReached==lifetime_states.EXPIRED"
                                           style="margin-left: 5px"
-                                          class="badge badge-danger">***REMOVED******REMOVED***lifetime_statuses[lifetime_statuses.EXPIRED]***REMOVED******REMOVED*** </span>
-                                    <span *ngIf="project?.LifetimeReached == lifetime_statuses.EXPIRES_SOON"
+                                          class="badge badge-danger">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRED]***REMOVED******REMOVED*** </span>
+                                    <span *ngIf="project?.LifetimeReached == lifetime_states.EXPIRES_SOON"
                                           style="margin-left: 5px"
-                                          class="badge badge-warning">***REMOVED******REMOVED***lifetime_statuses[lifetime_statuses.EXPIRES_SOON]***REMOVED******REMOVED***</span>
-                                    <span *ngIf="project?.Status == project_statuses.SUSPENDED"
+                                          class="badge badge-warning">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRES_SOON]***REMOVED******REMOVED***</span>
+                                    <span *ngIf="project?.Status == project_states.SUSPENDED"
                                           style="margin-left: 5px"
-                                          class="badge badge-warning">***REMOVED******REMOVED***project_statuses[project_statuses.SUSPENDED]***REMOVED******REMOVED*** </span>
-                                    <span *ngIf="project?.Status !=  project_statuses.SUSPENDED && project?.Status !=  project_statuses.ACTIVE"
+                                          class="badge badge-warning">***REMOVED******REMOVED***project_states[project_states.SUSPENDED]***REMOVED******REMOVED*** </span>
+                                    <span *ngIf="project?.Status !=  project_states.SUSPENDED && project?.Status !=  project_states.ACTIVE"
                                           style="margin-left: 5px"
                                           class="badge badge-danger">NOT SET </span>
                                 </td>
@@ -208,7 +208,7 @@
                     <tr *ngFor="let member of usersModalProjectMembers">
                         <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
                         <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
-                        <td >***REMOVED******REMOVED*** member.ElixirId***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED*** member.ElixirId***REMOVED******REMOVED***</td>
                         <td>***REMOVED******REMOVED***member.Email***REMOVED******REMOVED***</td>
                         <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
                     </tr>
@@ -441,7 +441,7 @@
                         class="fa fa-spinner fa-spin"
                         style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
                 </div>
-                <div >
+                <div>
                     <table *ngIf="details_loaded" class="table  table-responsivetable-striped">
                         <thead>
                         <th>Description</th>

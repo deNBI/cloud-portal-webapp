@@ -11,7 +11,7 @@
 
             </div>
             <div class="alert alert-info">
-         <h5> For help visit our wiki at <a href="https://cloud.denbi.de/wiki/">https://cloud.denbi.de/wiki/</a></h5>
+                <h5> For help visit our wiki at <a href="https://cloud.denbi.de/wiki/">https://cloud.denbi.de/wiki/</a></h5>
             </div>
         </div>
     </div>
@@ -45,13 +45,14 @@
                         </div>
                     </div>
 
-                                      <div class="form-group row" [ngClass]="***REMOVED***'has-danger':emailRep.invalid && (emailRep.dirty || emailRep.touched),
+                    <div class="form-group row" [ngClass]="***REMOVED***'has-danger':emailRep.invalid && (emailRep.dirty || emailRep.touched),
                     'has-success':emailRep.valid && (emailRep.dirty || emailRep.touched)
                     ***REMOVED***">
-                        <label class="col-md-12 control-label" ><strong>Reply to*</strong></label>
+                        <label class="col-md-12 control-label"><strong>Reply to*</strong></label>
                         <div class="col-md-12">
                             <input required id="Reply to" name="emailReply" placeholder="" class="form-control"
-                                   type="text"  [(ngModel)]="emailReply" #emailRep="ngModel" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`***REMOVED***|***REMOVED***~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+                                   type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
+                                   pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`***REMOVED***|***REMOVED***~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
 
                         </div>
                     </div>
@@ -87,7 +88,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Send email</h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -119,7 +120,7 @@
                 <h4 class="modal-title" *ngIf="emailStatus == 0"> Waiting </h4>
                 <h4 class="modal-title" *ngIf="emailStatus == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="emailStatus == 2"> Error </h4>
-              <button type="button" class="close" style="cursor: pointer" (click)="successModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="successModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

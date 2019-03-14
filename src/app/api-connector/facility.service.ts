@@ -1,20 +1,20 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
-import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
-import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
-const header = new HttpHeaders(***REMOVED***
-    'X-CSRFToken': Cookie.get("csrftoken")
+const header: HttpHeaders = new HttpHeaders(***REMOVED***
+    'X-CSRFToken': Cookie.get('csrftoken')
 ***REMOVED***);
 
-
+/**
+ * Service which provides methods for the facilities.
+ */
 @Injectable()
 export class FacilityService ***REMOVED***
-    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
-
 
     /**
      * Get all available computecenters.
@@ -22,11 +22,10 @@ export class FacilityService ***REMOVED***
      */
     getComputeCenters(): Observable<any> ***REMOVED***
 
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/`, ***REMOVED***
+            withCredentials: true
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/', ***REMOVED***
-            withCredentials: true,
-
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+        ***REMOVED***)
     ***REMOVED***
 
     /**
@@ -35,12 +34,11 @@ export class FacilityService ***REMOVED***
      */
     getManagerFacilities(): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'facilityManagers/current/facilities/', ***REMOVED***
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***facilityManagers/current/facilities/`, ***REMOVED***
+            withCredentials: true
+        ***REMOVED***)
 
     ***REMOVED***
-
 
     /**
      * Get allowed groups from a facility with a specific status.
@@ -48,14 +46,13 @@ export class FacilityService ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** status
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number, status: number): Observable<any> ***REMOVED***
+    getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/', ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/projects/`, ***REMOVED***
             withCredentials: true,
             params: ***REMOVED***status: status.toString()***REMOVED***
 
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
+        ***REMOVED***)
 
     ***REMOVED***
 
@@ -64,30 +61,26 @@ export class FacilityService ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** facility id of the facility
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    getFacilityResources(facility: number): Observable<any> ***REMOVED***
+    getFacilityResources(facility: number | string): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/resources/', ***REMOVED***
-            withCredentials: true,
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/projects/resources/`, ***REMOVED***
+            withCredentials: true
 
-
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
+        ***REMOVED***)
 
     ***REMOVED***
-
 
     /**
      * Gets all facility applications which are waiting for conirmation.
      * @param ***REMOVED***number***REMOVED*** facility
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    getFacilityApplicationsWaitingForConfirmation(facility: number): Observable<any> ***REMOVED***
+    getFacilityApplicationsWaitingForConfirmation(facility: number | string): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/', ***REMOVED***
-            withCredentials: true,
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications/`, ***REMOVED***
+            withCredentials: true
 
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
+        ***REMOVED***)
 
     ***REMOVED***
 
@@ -96,31 +89,24 @@ export class FacilityService ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** facility
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    getFacilityApplicationsHistory(facility: number): Observable<any> ***REMOVED***
+    getFacilityApplicationsHistory(facility: number | string): Observable<any> ***REMOVED***
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications_history/', ***REMOVED***
-            withCredentials: true,
-
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications_history/`, ***REMOVED***
+            withCredentials: true
+        ***REMOVED***)
 
     ***REMOVED***
 
-
-
-      /**
+    /**
      * Gets all facility modification applications which are waiting for conirmation.
      * @param ***REMOVED***number***REMOVED*** facility
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    getFacilityModificationApplicationsWaitingForConfirmation(facility: number): Observable<any> ***REMOVED***
+    getFacilityModificationApplicationsWaitingForConfirmation(facility: number | string): Observable<any> ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/modification_applications/`, ***REMOVED***
+            withCredentials: true
 
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/modification_applications/', ***REMOVED***
-            withCredentials: true,
-
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
-
+        ***REMOVED***)
     ***REMOVED***
 
     /**
@@ -129,17 +115,14 @@ export class FacilityService ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** application_id
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    approveFacilityApplication(facility: number, application_id: number): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('action', 'approve');
+    approveFacilityApplication(facility: number | string, application_id: number): Observable<any> ***REMOVED***
+        const params: HttpParams = new HttpParams().set('action', 'approve');
 
-
-        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications/$***REMOVED***application_id***REMOVED***/status/`, params, ***REMOVED***
             withCredentials: true,
             headers: header,
             observe: 'response'
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
-
+        ***REMOVED***)
     ***REMOVED***
 
     /**
@@ -149,36 +132,33 @@ export class FacilityService ***REMOVED***
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
     declineFacilityApplication(facility: number, application_id: number): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('action', 'decline');
+        const params: HttpParams = new HttpParams().set('action', 'decline');
 
-
-        return this.http.post(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/applications/' + application_id + '/status/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications/$***REMOVED***application_id***REMOVED***/status/`, params, ***REMOVED***
             withCredentials: true,
             headers: header,
             observe: 'response'
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
-
+        ***REMOVED***)
     ***REMOVED***
 
     /**
      * Sends an email to all members of the facility.
-     * @param facility
-     * @param subject
-     * @param message
-     * @param reply
+     * @param facility facility where to send the email
+     * @param subject subject of the email
+     * @param message message from the email
+     * @param reply reply address
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
-    sendMailToFacility(facility, subject, message, reply?): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('subject', subject).set('facility_id', facility).set('message', message).set('reply', reply);
+    sendMailToFacility(facility: string, subject: string, message: string, reply?: string): Observable<any> ***REMOVED***
+        const params: HttpParams = new HttpParams().set('subject', subject)
+            .set('facility_id', facility).set('message', message).set('reply', reply);
 
-        return this.http.post(this.settings.getApiBaseURL() + 'facilityManagers/current/facilityMail/', params, ***REMOVED***
-            withCredentials: true,
-            headers: header,
-            observe: 'response'
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
-
+        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***facilityManagers/current/facilityMail/`, params, ***REMOVED***
+                withCredentials: true,
+                headers: header,
+                observe: 'response'
+            ***REMOVED***
+        )
     ***REMOVED***
 
     /**
@@ -188,9 +168,10 @@ export class FacilityService ***REMOVED***
      * @returns ***REMOVED***Observable<any>***REMOVED***
      */
     getFacilityGroupRichMembers(groupid: number, facility: number): Observable<any> ***REMOVED***
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/' + facility + '/projects/' + groupid + '/members/', ***REMOVED***
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/projects/$***REMOVED***groupid***REMOVED***/members/`, ***REMOVED***
+                withCredentials: true
+            ***REMOVED***
+        )
     ***REMOVED***
 
 ***REMOVED***

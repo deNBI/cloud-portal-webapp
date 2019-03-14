@@ -1,10 +1,11 @@
-import ***REMOVED***ApplicationExtension***REMOVED*** from "./application_extension.model";
-import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
-import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
+import ***REMOVED***ApplicationExtension***REMOVED*** from './application_extension.model';
+import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 
-
+/**
+ * Application class.
+ */
 export class Application ***REMOVED***
-    private _Id: number;
+    private _Id: number | string;
     private _Name: string;
     private _Shortname: string;
     private _Institute: string;
@@ -21,30 +22,33 @@ export class Application ***REMOVED***
     private _Comment: string;
     private _DateSubmitted: string;
     private _DateStatusChanged: string;
-    private _User: number;
-    private _UserEmail: number;
+    private _User: string;
+    private _UserEmail: string;
     private _UserAffiliations: string[];
     private _Status: number;
     private _ComputeCenter: ComputecenterComponent;
     private _OpenStackProject: boolean;
     private _DaysRunning: number;
     private _ApplicationExtension: ApplicationExtension;
-    private _PerunId: number;
+    private _PerunId: number | string;
     private _TotalCores: number;
     private _TotalRam: number;
     private _DateApproved: string;
     private _Horizon2020: string;
-
-
     private _Dissemination: boolean;
-    private _CurrentFlavors: ***REMOVED*** [id: string]: ***REMOVED*** counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number ***REMOVED*** ***REMOVED***;
-
+    private _CurrentFlavors: ***REMOVED***
+        [id: string]: ***REMOVED***
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        ***REMOVED***
+    ***REMOVED***;
 
     constructor() ***REMOVED***
         this._CurrentFlavors = ***REMOVED******REMOVED***;
     ***REMOVED***
 
-    public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number): void ***REMOVED***
+    public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number,
+                              vcpus: number, gpu: number, epheremal_disk: number): void ***REMOVED***
         this._CurrentFlavors[name] = ***REMOVED***
             counter: counter,
             tag: tag,
@@ -55,7 +59,8 @@ export class Application ***REMOVED***
             epheremal_disk: epheremal_disk
         ***REMOVED***;
     ***REMOVED***
-     get Dissemination(): boolean ***REMOVED***
+
+    get Dissemination(): boolean ***REMOVED***
         return this._Dissemination;
     ***REMOVED***
 
@@ -63,11 +68,21 @@ export class Application ***REMOVED***
         this._Dissemination = value;
     ***REMOVED***
 
-    get CurrentFlavors(): ***REMOVED*** [id: string]: ***REMOVED*** counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number ***REMOVED*** ***REMOVED*** ***REMOVED***
+    get CurrentFlavors(): ***REMOVED***
+        [id: string]: ***REMOVED***
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        ***REMOVED***
+    ***REMOVED*** ***REMOVED***
         return this._CurrentFlavors
     ***REMOVED***
 
-    set CurrentFlavors(value: ***REMOVED*** [id: string]: ***REMOVED*** counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number ***REMOVED*** ***REMOVED***) ***REMOVED***
+    set CurrentFlavors(value: ***REMOVED***
+        [id: string]: ***REMOVED***
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        ***REMOVED***
+    ***REMOVED***) ***REMOVED***
         this._CurrentFlavors = value;
     ***REMOVED***
 
@@ -127,7 +142,6 @@ export class Application ***REMOVED***
         this._OpenStackProject = value;
     ***REMOVED***
 
-
     get ComputeCenter(): ComputecenterComponent ***REMOVED***
         return this._ComputeCenter
     ***REMOVED***
@@ -136,11 +150,11 @@ export class Application ***REMOVED***
         this._ComputeCenter = value;
     ***REMOVED***
 
-    get Id(): number ***REMOVED***
+    get Id(): number | string ***REMOVED***
         return this._Id;
     ***REMOVED***
 
-    set Id(value: number) ***REMOVED***
+    set Id(value: number | string) ***REMOVED***
         this._Id = value;
     ***REMOVED***
 
@@ -224,7 +238,6 @@ export class Application ***REMOVED***
         this._VolumeLimit = value;
     ***REMOVED***
 
-
     get VolumeCounter(): number ***REMOVED***
         return this._VolumeCounter;
     ***REMOVED***
@@ -273,11 +286,11 @@ export class Application ***REMOVED***
         this._DateStatusChanged = value;
     ***REMOVED***
 
-    get User(): number ***REMOVED***
+    get User(): string ***REMOVED***
         return this._User;
     ***REMOVED***
 
-    set User(value: number) ***REMOVED***
+    set User(value: string) ***REMOVED***
         this._User = value;
     ***REMOVED***
 
@@ -289,23 +302,21 @@ export class Application ***REMOVED***
         this._Status = value;
     ***REMOVED***
 
-
-    get UserEmail(): number ***REMOVED***
+    get UserEmail(): string ***REMOVED***
         return this._UserEmail;
     ***REMOVED***
 
-    set UserEmail(value: number) ***REMOVED***
+    set UserEmail(value: string) ***REMOVED***
         this._UserEmail = value;
     ***REMOVED***
 
-    get PerunId(): number ***REMOVED***
+    get PerunId(): number | string ***REMOVED***
         return this._PerunId;
     ***REMOVED***
 
-    set PerunId(value: number) ***REMOVED***
+    set PerunId(value: number | string) ***REMOVED***
         this._PerunId = value;
     ***REMOVED***
-
 
     get Horizon2020(): string ***REMOVED***
         return this._Horizon2020;
