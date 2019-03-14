@@ -1,31 +1,33 @@
-import { Directive, HostListener, ElementRef } from '@angular/core';
+import {Directive, ElementRef, HostListener} from '@angular/core';
 
 @Directive({
-  selector: '[appNavDropdown]'
+    selector: '[appNavDropdown]'
 })
 export class NavDropdownDirective {
 
-  constructor(private el: ElementRef) { }
+    constructor(private el: ElementRef) {
+    }
 
-  toggle() {
-    this.el.nativeElement.classList.toggle('open');
-  }
+    toggle() {
+        this.el.nativeElement.classList.toggle('open');
+    }
 }
 
 /**
-* Allows the dropdown to be toggled via click.
-*/
+ * Allows the dropdown to be toggled via click.
+ */
 @Directive({
-  selector: '[appNavDropdownToggle]'
+    selector: '[appNavDropdownToggle]'
 })
 export class NavDropdownToggleDirective {
-  constructor(private dropdown: NavDropdownDirective) {}
+    constructor(private dropdown: NavDropdownDirective) {
+    }
 
-  @HostListener('click', ['$event'])
-  toggleOpen($event: any) {
-    $event.preventDefault();
-    this.dropdown.toggle();
-  }
+    @HostListener('click', ['$event'])
+    toggleOpen($event: any) {
+        $event.preventDefault();
+        this.dropdown.toggle();
+    }
 }
 
 export const NAV_DROPDOWN_DIRECTIVES = [NavDropdownDirective, NavDropdownToggleDirective];

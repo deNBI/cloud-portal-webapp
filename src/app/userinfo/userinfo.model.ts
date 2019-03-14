@@ -1,91 +1,92 @@
 export class Userinfo {
 
-  private _Id: number;
-  private _FirstName: string;
-  private _LastName: string;
-  private _MemberId: number;
-  private _ElixirId: string;
-  private _PublicKey: string;
-  private _UserLogin: string;
-  private _Email:string;
-  private _PendingEmails:string[];
+    private _Id: number;
+    private _FirstName: string;
+    private _LastName: string;
+    private _MemberId: number;
+    private _ElixirId: string;
+    private _PublicKey: string;
+    private _UserLogin: string;
+    private _Email: string;
+    private _PendingEmails: string[];
 
-  constructor() {
-    this.LastName = " ";
-    this.FirstName = " ";
-    this.Id = -1;
-  }
+    constructor() {
+        this.LastName = ' ';
+        this.FirstName = ' ';
+        this.Id = -1;
+    }
 
-  get PendingEmails():string[]{
-    return this._PendingEmails;
-  }
+    get PendingEmails(): string[] {
+        return this._PendingEmails;
+    }
 
-  set PendingEmails(value:string[]){
-    this._PendingEmails=value;
-  }
+    set PendingEmails(value: string[]) {
+        this._PendingEmails = value;
+    }
 
-  get Email():string{
-    return this._Email;
-  }
+    get Email(): string {
+        return this._Email;
+    }
 
-  set Email(value:string){
-    this._Email=value;
-  }
-  get Id(): number {
-    return this._Id;
-  }
+    set Email(value: string) {
+        this._Email = value;
+    }
 
-  set Id(value: number) {
-    this._Id = value;
-  }
+    get Id(): number {
+        return this._Id;
+    }
 
-  get FirstName(): string {
-    return this._FirstName;
-  }
+    set Id(value: number) {
+        this._Id = value;
+    }
 
-  set FirstName(value: string) {
-    this._FirstName = value;
-  }
+    get FirstName(): string {
+        return this._FirstName;
+    }
 
-  get LastName(): string {
-    return this._LastName;
-  }
+    set FirstName(value: string) {
+        this._FirstName = value;
+    }
 
-  set LastName(value: string) {
-    this._LastName = value;
-  }
+    get LastName(): string {
+        return this._LastName;
+    }
 
-  get MemberId(): number {
-    return this._MemberId;
-  }
+    set LastName(value: string) {
+        this._LastName = value;
+    }
 
-  set MemberId(value: number) {
-    this._MemberId = value;
-  }
+    get MemberId(): number {
+        return this._MemberId;
+    }
 
-  set ElxirId(value: string) {
-    this._ElixirId = value;
-  }
+    set MemberId(value: number) {
+        this._MemberId = value;
+    }
 
-  get ElxirId() {
-    return this._ElixirId
-  }
+    set ElxirId(value: string) {
+        this._ElixirId = value;
+    }
 
-  set PublicKey(value: string) {
-    this._PublicKey = value;
-  }
+    get ElxirId() {
+        return this._ElixirId
+    }
 
-  get PublicKey() {
-    return this._PublicKey
-  }
+    set PublicKey(value: string) {
+        this._PublicKey = value;
+    }
 
-  set UserLogin(value: string) {
+    get PublicKey() {
+        return this._PublicKey
+    }
 
-    this._UserLogin = value;
-  }
+    set UserLogin(value: string) {
 
-  get UserLogin() {
-    return this._UserLogin
-  }
+        this._UserLogin = value;
+    }
+
+    get UserLogin() {
+        return this._UserLogin
+    }
 
 }

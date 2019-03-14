@@ -3,7 +3,7 @@
 <div *ngIf="isLoaded" class="card">
 
     <div class="card-header">
-        <i class="icon-refresh icons"  style="cursor: pointer;"(click)="refreshVms()"></i><strong>Instance</strong>
+        <i class="icon-refresh icons" style="cursor: pointer;" (click)="refreshVms()"></i><strong>Instance</strong>
         –Overview
     </div>
     <div *ngIf="is_vo_admin">
@@ -141,31 +141,33 @@
                              [ngClass]="getCollapseStatus(vm.openstackid) ? 'btn-group open': 'btn-group'"
                         >
 
-                            <button  class="btn btn-secondary" type="button"
+                            <button class="btn btn-secondary" type="button"
                                     *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
                                     (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();">
 
                                 Create Snapshot
                             </button>
-                            <button *ngIf="vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]" style="cursor: pointer;" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                            <button *ngIf="vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]" style="cursor: pointer;"
+                                    class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                     data-toggle="dropdown"
                                     type="button" aria-haspopup="true" aria-expanded="false"
                                     (click)="switchCollapseStatus(vm.openstackid)"></button>
                             <ul class="dropdown-menu " role="menu">
-                                <li  style="cursor: pointer;" role="menuitem"
+                                <li style="cursor: pointer;" role="menuitem"
                                     *ngIf="vm.status ==vm_statuses[vm_statuses.ACTIVE]">
                                     <a class="dropdown-item"
                                        (click)="status_changed_vm=vm.name;stopVm(vm.openstackid,vm.name);stopModal.show();">Stop
                                         Vm</a>
                                 </li>
 
-                                <li  style="cursor: pointer;" *ngIf="vm.status ==vm_statuses[vm_statuses.SUSPENDED]"
+                                <li style="cursor: pointer;" *ngIf="vm.status ==vm_statuses[vm_statuses.SUSPENDED]"
                                     role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();">Resume
                                         Vm</a>
                                 </li>
-                                <li style="cursor: pointer;" *ngIf="vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != 'FREEMIUM'"
+                                <li style="cursor: pointer;"
+                                    *ngIf="vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != 'FREEMIUM'"
                                     role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="checkStatus(vm.openstackid);">Check Status
@@ -177,14 +179,16 @@
                                        (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();">Delete
                                         Vm</a>
                                 </li>
-                                <li style="cursor: pointer;" *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.client.features['VM_REBOOT']"
+                                <li style="cursor: pointer;"
+                                    *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.client.features['VM_REBOOT']"
                                     role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="status_check_error=false;reboot_done=false;status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;reboot_type='HARD';rebootModal.show();">Hard
                                         Reboot Vm
                                     </a>
                                 </li>
-                                <li style="cursor: pointer;" *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.client.features['VM_REBOOT']"
+                                <li style="cursor: pointer;"
+                                    *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.client.features['VM_REBOOT']"
                                     role="menuitem">
                                     <a class="dropdown-item"
                                        (click)="status_check_error=false;reboot_done=false;status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;reboot_type='SOFT';rebootModal.show();">Soft

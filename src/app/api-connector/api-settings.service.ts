@@ -1,33 +1,26 @@
 import {Injectable} from '@angular/core';
-import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {environment} from '../../environments/environment'
+
+/**
+ * Class for getting base urls.
+ */
 @Injectable()
 export class ApiSettings {
-  constructor() {}
+    /**
+     *  Provides base URL with trailing slash for all Portal API calls.
+     * @returns {string} the connector api base url
+     */
+    static getApiBaseURL(): string {
+        return environment.apiBaseUrl;
+    }
 
-  /*
-    Provides base URL with trailing slash for all Portal API calls.
-   */
-  getApiBaseURL(): string {
-    return environment.apiBaseUrl;
-  }
-  getConnectorBaseUrl(): string {
-    return environment.apiBaseUrl;
-  }
-
-  /*
-    Returns the format of the API call.
-    default is JSON
-   */
-  getApiFormat(): string{
-    return 'json';
-  }
-
-  getCSRFToken(): string{
-    return Cookie.get("csrftoken");
-  }
-
-  getAccessToken(): string{
-    return Cookie.get("access_token");
-  }
+    /**
+     *  Returns the format of the API call.
+     * @returns {string} 'json'
+     */
+    static getApiFormat(): string {
+        return 'json';
+    }
+    constructor() {
+    }
 }

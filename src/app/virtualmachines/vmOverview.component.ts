@@ -1,23 +1,21 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
 
-import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {VirtualmachineService} from "../api-connector/virtualmachine.service";
-import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
-import {FullLayoutComponent} from "../layouts/full-layout.component";
-import {UserService} from "../api-connector/user.service";
-import {ImageService} from "../api-connector/image.service";
-import {Vmclient} from "./virtualmachinemodels/vmclient";
-import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
-import {Image} from "./virtualmachinemodels/image";
-import {VoService} from "../api-connector/vo.service";
+import {VirtualmachineService} from '../api-connector/virtualmachine.service';
+import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
+import {FullLayoutComponent} from '../layouts/full-layout.component';
+import {UserService} from '../api-connector/user.service';
+import {ImageService} from '../api-connector/image.service';
+import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
+import {VoService} from '../api-connector/vo.service';
 
+/**
+ * Vm overview componentn.
+ */
 @Component({
-    selector: 'vm-overview',
+    selector: 'app-vm-overview',
     templateUrl: 'vmOverview.component.html',
-    providers: [VoService,ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
+    providers: [VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
 })
-
 
 export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     /**
@@ -36,17 +34,17 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * How many vms are shown per page.
      * @type {number}
      */
-    vmsPerPage = 5;
+    vmsPerPage: number = 5;
     /**
      * Current page.
      * @type {number}
      */
-    currentPage = 1;
+    currentPage: number = 1;
     /**
      * Index where the vm list starts.
      * @type {number}
      */
-    vmStart = 0;
+    vmStart: number = 0;
     /**
      * How to connect for specific vm.
      */
@@ -55,7 +53,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * End of the vms.
      * @type {number}
      */
-    vmEnd = this.vmsPerPage;
+    vmEnd: number = this.vmsPerPage;
     /**
      * Name of vm which changed status.
      */
@@ -81,7 +79,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * String if the snapshot is done.
      * @type {string}
      */
-    snapshotNameCheckDone = false;
+    snapshotNameCheckDone: boolean = false;
     snapshotDone: string = 'Waiting';
     /**
      * Name of the snapshot.
@@ -91,7 +89,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Tab which is shown own|all.
      * @type {string}
      */
-    tab = 'own';
+    tab: string = 'own';
     /**
      * The changed status.
      * @type {number}
@@ -116,8 +114,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      */
     reboot_done: boolean;
 
-
-    constructor(private voService:VoService,private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
+    constructor(private voService: VoService, private imageService: ImageService, private userservice: UserService,
+                private virtualmachineservice: VirtualmachineService) {
         super()
     }
 
@@ -127,35 +125,30 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      */
     pageChanged(event): void {
 
-        const startItem = (event.page - 1) * event.itemsPerPage;
-        const endItem = event.page * event.itemsPerPage;
+        const startItem: number = (event.page - 1) * event.itemsPerPage;
+        const endItem: number = event.page * event.itemsPerPage;
         this.vmStart = startItem;
         this.vmEnd = endItem;
         this.vms_returned = this.vms_filtered.slice(startItem, endItem)
 
     }
 
-
     /**
      * Check if vm corresponds the filter.
      * @param {VirtualMachine} vm vm which is checked
      * @returns {boolean} True if it matches the filter
      */
-    checkFilter(vm: VirtualMachine) {
-        if (this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at) && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at) && this.isFilterUsername(vm.username)) {
-            return true
-        }
-        else {
-            return false
-        }
-
+    checkFilter(vm: VirtualMachine): boolean {
+        return this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at)
+            && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at)
+            && this.isFilterUsername(vm.username)
 
     }
 
     /**
      * Apply filter to all vms.
      */
-    applyFilter() {
+    applyFilter(): void {
 
         this.vms_filtered = this.vms_content.filter(vm => this.checkFilter(vm));
 
@@ -165,31 +158,29 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
         this.currentPage = 1
 
-
     }
 
     /**
      * Toggle tab own|all.
      * @param {string} tabString
      */
-    toggleTab(tabString: string) {
+    toggleTab(tabString: string): void {
         this.tab = tabString;
     }
 
     /**
      * Check status of all inactive vms.
      */
-    checkInactiveVms() {
+    checkInactiveVms(): void {
         this.virtualmachineservice.checkStatusInactiveVms().subscribe(vms => {
             this.vms_content = vms;
-            for (let vm of this.vms_content) {
-                if (vm.created_at != '') {
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+            for (const vm of this.vms_content) {
+                if (vm.created_at !== '') {
+                    vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                 }
-                if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
-                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                }
-                else {
+                if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                    vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                } else {
                     vm.stopped_at = ''
                 }
             }
@@ -210,14 +201,12 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
             this.snapshotNameCheckDone = true;
         })
 
-
     }
-
 
     /**
      * Reset the snapshotDone to waiting.
      */
-    resetSnapshotResult() {
+    resetSnapshotResult(): void {
         this.snapshotDone = 'Waiting';
     }
 
@@ -225,25 +214,22 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Check status of vm.
      * @param {string} openstackid  of the instance
      */
-    checkStatus(openstackid: string) {
-        this.virtualmachineservice.checkVmStatus(openstackid).subscribe(res => {
-
+    checkStatus(openstackid: string): void {
+        this.virtualmachineservice.checkVmStatus(openstackid).subscribe(() => {
 
                 this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
                         this.vms_content = vms;
-                        for (let vm of this.vms_content) {
-                            if (vm.created_at != '') {
-                                vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                        for (const vm of this.vms_content) {
+                            if (vm.created_at !== '') {
+                                vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                             }
-                            if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
-                                vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                            }
-                            else {
+                            if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                                vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                            } else {
                                 vm.stopped_at = ''
                             }
                         }
                         this.applyFilter()
-
 
                     }
                 );
@@ -261,22 +247,18 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
             this.status_changed = 0;
 
-
             if (this.tab === 'own') {
                 this.getVms();
-            }
-            else if (this.tab === 'all') {
+            } else if (this.tab === 'all') {
                 this.getAllVms();
 
             }
 
             if (result['deleted'] === true) {
                 this.status_changed = 1;
-            }
-            else {
+            } else {
                 this.status_changed = 2;
             }
-
 
         })
     }
@@ -286,19 +268,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * @param {string} openstack_id of the instance
      * @param {string} reboot_type HARD|SOFT
      */
-    public rebootVm(openstack_id: string, reboot_type: string) {
+    public rebootVm(openstack_id: string, reboot_type: string): void {
         this.virtualmachineservice.rebootVM(openstack_id, reboot_type).subscribe(result => {
             this.status_changed = 0;
-
 
             if (result['reboot']) {
                 this.status_changed = 1;
                 this.check_status_loop(openstack_id)
-            }
-            else {
+            } else {
                 this.status_changed = 2;
             }
-
 
         })
     }
@@ -307,35 +286,32 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Check Status of vm in loop till active.
      * @param {string} id of instance.
      */
-    check_status_loop(id: string) {
+    check_status_loop(id: string): void {
 
-        setTimeout(() => {
-            this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
-                res = res;
+        setTimeout(
+            () => {
+                this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
 
-                if (res['Started']) {
-                    this.reboot_done = true;
-                    if (this.tab === 'own') {
-                        this.getVms();
+                    if (res['Started']) {
+                        this.reboot_done = true;
+                        if (this.tab === 'own') {
+                            this.getVms();
+                        } else if (this.tab === 'all') {
+                            this.getAllVms();
+
+                        }
+
+                    } else {
+                        if (res['Error']) {
+                            this.status_check_error = true
+
+                        }
+                        this.check_status_loop(id)
                     }
-                    else if (this.tab === 'all') {
-                        this.getAllVms();
 
-                    }
-
-
-                }
-                else {
-                    if (res['Error']) {
-                        this.status_check_error = true
-
-
-                    }
-                    this.check_status_loop(id)
-                }
-
-            })
-        }, this.checkStatusTimeout);
+                })
+            },
+            this.checkStatusTimeout);
     }
 
     /**
@@ -347,22 +323,18 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
             this.status_changed = 0;
 
-
             if (this.tab === 'own') {
                 this.getVms();
-            }
-            else if (this.tab === 'all') {
+            } else if (this.tab === 'all') {
                 this.getAllVms();
 
             }
 
             if (result['stopped']) {
                 this.status_changed = 1;
-            }
-            else {
+            } else {
                 this.status_changed = 2;
             }
-
 
         })
     }
@@ -375,17 +347,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
                 this.vms_content = vms;
 
-                for (let vm of this.vms_content) {
-                    this.setCollapseStatus(vm.openstackid, false)
+                for (const vm of this.vms_content) {
+                    this.setCollapseStatus(vm.openstackid, false);
 
-                    if (vm.created_at != '') {
-                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                    if (vm.created_at !== '') {
+                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                     }
 
-                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    }
-                    else {
+                    if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                    } else {
                         vm.stopped_at = ''
                     }
                 }
@@ -401,17 +372,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
                 this.vms_content = vms;
 
-                for (let vm of this.vms_content) {
-                    this.setCollapseStatus(vm.openstackid, false)
+                for (const vm of this.vms_content) {
+                    this.setCollapseStatus(vm.openstackid, false);
 
-                    if (vm.created_at != '') {
-                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                    if (vm.created_at !== '') {
+                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                     }
 
-                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    }
-                    else {
+                    if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                    } else {
                         vm.stopped_at = ''
                     }
                 }
@@ -420,7 +390,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
             }
         );
-
 
     }
 
@@ -432,22 +401,18 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
         this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => {
 
-
             this.status_changed = 0;
-
 
             if (this.tab === 'own') {
                 this.getVms();
-            }
-            else if (this.tab === 'all') {
+            } else if (this.tab === 'all') {
                 this.getAllVms();
 
             }
 
             if (result['resumed']) {
                 this.status_changed = 1;
-            }
-            else {
+            } else {
                 this.status_changed = 2;
             }
 
@@ -460,23 +425,20 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     getAllVms(): void {
         this.virtualmachineservice.getAllVM().subscribe(vms => {
                 this.vms_content = vms;
-                for (let vm of this.vms_content) {
+                for (const vm of this.vms_content) {
                     this.setCollapseStatus(vm.openstackid, false)
 
-
-                    if (vm.created_at != '') {
-                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
+                    if (vm.created_at !== '') {
+                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                     }
-                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    }
-                    else {
+                    if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                    } else {
                         vm.stopped_at = ''
                     }
 
                 }
                 this.applyFilter();
-
 
             }
         );
@@ -492,10 +454,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Check vm status.
      * @param {UserService} userservice
      */
-    checkVOstatus() {
-       this.voService.isVo().subscribe(res =>{
-           this.is_vo_admin=res['Is_Vo_Manager'];
-       })
+    checkVOstatus(): void {
+        this.voService.isVo().subscribe(res => {
+            this.is_vo_admin = res['Is_Vo_Manager'];
+        })
     }
 
     /**
@@ -503,13 +465,12 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * @param {string} snapshot_instance which is used for creating the snapshot
      * @param {string} snapshot_name name of the snapshot
      */
-    createSnapshot(snapshot_instance: string, snapshot_name: string) {
+    createSnapshot(snapshot_instance: string, snapshot_name: string): void {
         this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => {
             if (result['Error']) {
                 this.snapshotDone = result['Error'].toString();
-            }
-            else if (result['Created']) {
-                this.imageService.getSnapshot(result['Created']).subscribe(res => {
+            } else if (result['Created']) {
+                this.imageService.getSnapshot(result['Created']).subscribe(() => {
                 })
                 this.snapshotDone = 'true';
             }

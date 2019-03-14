@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
-import {FacilityProjectsOverviewComponent} from "../facility_manager/facilityprojectsoverview.component";
-import {ImageTagComponent} from "../facility_manager/imagetags.component";
-import {FacilityApplicationComponent} from "./facility.application.component";
-import {ResourcesComponent} from "./resources/resources.component";
+import {RouterModule, Routes} from '@angular/router';
+import {FacilityProjectsOverviewComponent} from '../facility_manager/facilityprojectsoverview.component';
+import {ImageTagComponent} from '../facility_manager/imagetags.component';
+import {FacilityApplicationComponent} from './facility.application.component';
+import {ResourcesComponent} from './resources/resources.component';
 
 const routes: Routes = [
 
@@ -35,9 +35,11 @@ const routes: Routes = [
         }
     }
 
-
 ];
 
+/**
+ * Facilitymanager routing module.
+ */
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
