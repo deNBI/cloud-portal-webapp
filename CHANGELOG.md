@@ -1,24 +1,46 @@
+#### Features
+
+* **Applications:**
+  * removed special hardware
+  * added history 
+  * now with modificaion at facility tab
+ 
+* **Flavors:**
+  * now flavors fold out
+  
+* **Service:** removed perun settings 
+* **Tslin:**
+  * updated config 
+
 #### Bug Fixes
 
-* **Resources:** fixed small bug ([fa057274](fa057274))
-* **VM:** fixed diskspace bug ([7ab58e55](7ab58e55))
-* **Vm:** fixed button bug ([e1168997](e1168997))
+* **Applications:**
+  * fixed request bug
+
+
+
+
+#### Bug Fixes
+
+* **Resources:** fixed small bug 
+* **VM:** fixed diskspace bug 
+* **Vm:** fixed button bug
 
 #### Features
 
-* **Applications:** added GPU ([e02102b3](e02102b3))
-* **Flavors:** now public url ([86dc7a91](86dc7a91))
-* **PublicKey:** added word break ([38f9a75c](38f9a75c))
-* **Resource:** added class ([94b03a40](94b03a40))
+* **Applications:** added GPU 
+* **Flavors:** now public url 
+* **PublicKey:** added word break 
+* **Resource:** added class 
 * **Resources:**
-  * added date ([a16bd999](a16bd999))
-  * added csv convert ([5a73aa76](5a73aa76))
-  * now at vo listet for all facilities ([89a7a5a9](89a7a5a9))
-  * addet to vo ([469f1a85](469f1a85))
+  * added date 
+  * added csv convert 
+  * now at vo listet for all facilities 
+  * addet to vo 
 * **VmOverview:**
-  * asking status forom OpenStack ([cc2316dd](cc2316dd))
-  * Connect modal bigger,refresh button ([36f796bb](36f796bb))
-* **license:**  add license ([15f35421](15f35421))
+  * asking status forom OpenStack 
+  * Connect modal bigger,refresh button 
+* **license:**  add license 
 
 
 
