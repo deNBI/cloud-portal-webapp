@@ -5,6 +5,7 @@ import {ComputecenterComponent} from '../projectmanagement/computecenter.compone
  * Application class.
  */
 export class Application {
+
     private _Id: number | string;
     private _Name: string;
     private _Shortname: string;
@@ -35,6 +36,7 @@ export class Application {
     private _TotalRam: number;
     private _DateApproved: string;
     private _Horizon2020: string;
+    private _ElixirProject: string;
     private _Dissemination: boolean;
     private _CurrentFlavors: {
         [id: string]: {
@@ -324,5 +326,13 @@ export class Application {
 
     set Horizon2020(value: string) {
         this._Horizon2020 = value;
+    }
+
+    get ElixirProject(): string {
+      return this._ElixirProject;
+    }
+
+    set ElixirProject(value: string) {
+      this._ElixirProject = value;
     }
 }
