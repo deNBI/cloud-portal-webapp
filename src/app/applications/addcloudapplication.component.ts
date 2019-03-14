@@ -121,7 +121,6 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse {
                 }
                 if (key in this.constantStrings) {
                     this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
-                    console.log(key)
 
                     const flavor: Flavor = this.isKeyFlavor(key.toString());
                     if (flavor != null) {
