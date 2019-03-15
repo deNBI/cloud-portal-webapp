@@ -24,6 +24,7 @@ import {RegistrationInfoComponent} from './registration-info.component';
 import {AsideToggleDirective} from './shared/aside.directive';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
+import {ApplicationBaseClass} from './shared/shared_modules/baseClass/application-base-class';
 
 /**
  * App module.
@@ -39,7 +40,8 @@ import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
         ModalModule.forRoot(),
         PopoverModule,
         PaginationModule.forRoot(),
-        ExportAsModule
+        ExportAsModule,
+        ApplicationBaseClass
     ],
     declarations: [
         AppComponent,
