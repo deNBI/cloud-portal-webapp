@@ -492,6 +492,8 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
         this.constantStrings['project_application_institute'] = 'Your institute: ';
         this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
         this.constantStrings['project_application_horizon2020'] = 'Horizon2020: ';
+                this.constantStrings['project_application_elixir_project'] = 'Elixir Project: ';
+
         this.constantStrings['project_application_report_allowed'] = 'Dissemination allowed: ';
 
         for (const key in this.flavorList) ***REMOVED***
