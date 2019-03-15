@@ -5,6 +5,7 @@ import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanageme
  * Application class.
  */
 export class Application ***REMOVED***
+
     private _Id: number | string;
     private _Name: string;
     private _Shortname: string;
@@ -35,6 +36,7 @@ export class Application ***REMOVED***
     private _TotalRam: number;
     private _DateApproved: string;
     private _Horizon2020: string;
+    private _ElixirProject: string;
     private _Dissemination: boolean;
     private _CurrentFlavors: ***REMOVED***
         [id: string]: ***REMOVED***
@@ -324,5 +326,13 @@ export class Application ***REMOVED***
 
     set Horizon2020(value: string) ***REMOVED***
         this._Horizon2020 = value;
+    ***REMOVED***
+
+    get ElixirProject(): string ***REMOVED***
+      return this._ElixirProject;
+    ***REMOVED***
+
+    set ElixirProject(value: string) ***REMOVED***
+      this._ElixirProject = value;
     ***REMOVED***
 ***REMOVED***
