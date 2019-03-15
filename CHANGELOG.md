@@ -1,13 +1,17 @@
+
 #### Features
 
 * **Applications:**
   * removed special hardware
+  * added elixir project
   * added history 
   * now with modificaion at facility tab
+  
+* **Modification:** now with summarize 
  
 * **Flavors:**
   * now flavors fold out
-  
+
 * **Service:** removed perun settings 
 * **Tslin:**
   * updated config 
