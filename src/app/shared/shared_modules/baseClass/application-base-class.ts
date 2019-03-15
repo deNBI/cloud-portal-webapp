@@ -11,6 +11,7 @@ import {FacilityService} from '../../../api-connector/facility.service';
 import {Component} from '@angular/core';
 import {ApplicationStatusService} from '../../../api-connector/application-status.service';
 import {UserService} from '../../../api-connector/user.service';
+import {NgForm} from '@angular/forms';
 
 /**
  * Application base component..
@@ -61,6 +62,34 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
      */
     collapseList: boolean[];
 
+
+    /**
+     * Total number of cores.
+     * @type {number}
+     */
+    totalNumberOfCores: number = 0;
+    /**
+     * Total number of ram.
+     * @type {number}
+     */
+    totalRAM: number = 0;
+    /**
+     * Values to confirm.
+     */
+    valuesToConfirm: string[];
+
+    extension_request = false;
+
+    /**
+     * If shortname is valid.
+     * @type {boolean}
+     */
+    public wronginput: boolean = false;
+    /**
+     *
+     */
+    constantStrings: Object;
+
     /**
      * List of flavors.
      */
@@ -71,6 +100,14 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
      * @type {boolean}
      */
     isLoaded_userApplication: boolean = false;
+
+    /**
+     * Name of the project.
+     */
+    public projectName: string;
+
+    public project_application_report_allowed: boolean = false;
+
 
     /**
      * Applications of the user viewing the Application overview.
@@ -382,6 +419,133 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
             }
         }
 
+    }
+
+
+    /**
+     * Uses the data from the application form to fill the confirmation-modal with information.
+     * @param form the application form with corresponding data
+     */
+    filterEnteredData(form: NgForm): void {
+        this.generateConstants();
+        this.totalNumberOfCores = 0;
+        this.totalRAM = 0;
+        this.valuesToConfirm = [];
+        for (const key in form.controls) {
+            if (form.controls[key].value) {
+                if (key === 'project_application_name') {
+                    this.projectName = form.controls[key].value;
+                    if (this.projectName.length > 50) {
+                        this.projectName = `${this.projectName.substring(0, 50)}...`;
+                    }
+                }
+                if (key in this.constantStrings) {
+                    this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
+
+                    const flavor: Flavor = this.isKeyFlavor(key.toString());
+                    if (flavor != null) {
+                        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * form.controls[key].value);
+                        const ram: number = flavor.ram * form.controls[key].value;
+                        this.totalRAM = this.totalRAM + ram
+                    }
+                }
+            }
+
+
+        }
+        if (!this.project_application_report_allowed && !this.extension_request) {
+            this.valuesToConfirm.push('Dissemination allowed: No');
+        }
+
+
+    }
+
+    /**
+     * Check if shortname is valid.
+     * @param {string} shortname
+     */
+    public checkShortname(shortname: string): void {
+        this.wronginput = !/^[a-zA-Z0-9\s]*$/.test(shortname);
+    }
+
+    /**
+     * Fills the array constantStrings with values dependent of keys which are used to indicate inputs from the application-form
+     */
+    generateConstants(): void {
+        this.constantStrings = [];
+        this.constantStrings['project_application_shortname'] = 'Shortname: ';
+        this.constantStrings['project_application_description'] = 'Description: ';
+        this.constantStrings['project_application_comment'] = 'Comment: ';
+
+        this.constantStrings['project_application_lifetime'] = 'Lifetime of your project: ';
+        this.constantStrings['project_application_volume_counter'] = 'Number of volumes for additional storage: ';
+        this.constantStrings['project_application_object_storage'] = 'Additional object storage: ';
+        this.constantStrings['project_application_volume_limit'] = 'Additional storage space for your VMs: ';
+        this.constantStrings['project_application_comment'] = 'Comment: ';
+                this.constantStrings['project_application_renewal_comment'] = 'Comment: ';
+
+        this.constantStrings['project_application_renewal_lifetime'] = 'Lifetime of your project: ';
+        this.constantStrings['project_application_renewal_volume_counter'] = 'Number of volumes for additional storage: ';
+        this.constantStrings['project_application_renewal_object_storage'] = 'Additional object storage: ';
+        this.constantStrings['project_application_renewal_volume_limit'] = 'Additional storage space for your VMs: ';
+
+        this.constantStrings['project_application_institute'] = 'Your institute: ';
+        this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
+        this.constantStrings['project_application_horizon2020'] = 'Horizon2020: ';
+        this.constantStrings['project_application_report_allowed'] = 'Dissemination allowed: ';
+
+        for (const key in this.flavorList) {
+            if (key in this.flavorList) {
+                this.constantStrings[`project_application_${this.flavorList[key].name}`] =
+                    `Number of VMs of type  ${this.flavorList[key].name}: `;
+            }
+        }
+    }
+
+    isKeyFlavor(key: string): Flavor {
+        for (const fkey in this.flavorList) {
+            if (fkey in this.flavorList) {
+                if (this.flavorList[fkey].name === key.substring(20)) {
+                    return this.flavorList[fkey];
+                }
+            }
+        }
+
+        return null;
+
+    }
+
+    /**
+     * This function concatenates a given key combined with a given value to a string
+     * which is used on the confirmation-modal.
+     * @param key the key to access a string in the array constantStrings
+     * @param val the value that is concatenated with the string from the array and an optional addition (depending on the key)
+     * @returns the concatenated string for the confirmation-modal
+     */
+    matchString(key: string, val: string): string {
+        if (key in this.constantStrings) {
+            switch (key) {
+                case 'project_application_lifetime': {
+                    return (`${this.constantStrings[key]}${val} months`);
+                }
+                case ('project_application_volume_limit'): {
+                    return (`${this.constantStrings[key]}${val} GB`);
+                }
+                case 'project_application_object_storage': {
+                    return (`${this.constantStrings[key]}${val}  GB`);
+                }
+                case 'project_application_report_allowed': {
+                    if (val) {
+                        return (`${this.constantStrings[key]} Yes`);
+                    } else {
+                        return (`${this.constantStrings[key]} No`);
+                    }
+                }
+                default: {
+                    return (this.constantStrings[key] + val);
+                }
+            }
+        }
     }
 
 }
