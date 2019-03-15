@@ -51,7 +51,6 @@ import {ApplicationBaseClass} from "./shared/shared_modules/baseClass/applicatio
         AsideToggleDirective,
         RegistrationInfoComponent,
         ConsentInfoComponent,
-        ApplicationBaseClass
     ],
     providers: [{
         provide: LocationStrategy,
