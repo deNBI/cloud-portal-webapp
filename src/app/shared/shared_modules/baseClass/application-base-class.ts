@@ -484,7 +484,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
         this.constantStrings['project_application_object_storage'] = 'Additional object storage: ';
         this.constantStrings['project_application_volume_limit'] = 'Additional storage space for your VMs: ';
         this.constantStrings['project_application_comment'] = 'Comment: ';
-                this.constantStrings['project_application_renewal_comment'] = 'Comment: ';
+        this.constantStrings['project_application_renewal_comment'] = 'Comment: ';
 
         this.constantStrings['project_application_renewal_lifetime'] = 'Lifetime of your project: ';
         this.constantStrings['project_application_renewal_volume_counter'] = 'Number of volumes for additional storage: ';
@@ -494,7 +494,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
         this.constantStrings['project_application_institute'] = 'Your institute: ';
         this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
         this.constantStrings['project_application_horizon2020'] = 'Horizon2020: ';
-                this.constantStrings['project_application_elixir_project'] = 'Elixir Project: ';
+        this.constantStrings['project_application_elixir_project'] = 'Elixir Project: ';
 
         this.constantStrings['project_application_report_allowed'] = 'Dissemination allowed: ';
 

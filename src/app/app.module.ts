@@ -24,6 +24,7 @@ import ***REMOVED***RegistrationInfoComponent***REMOVED*** from './registration-
 import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.directive';
 import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
 import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sidebar.directive';
+import ***REMOVED***ApplicationBaseClass***REMOVED*** from './shared/shared_modules/baseClass/application-base-class';
 
 /**
  * App module.
@@ -39,7 +40,8 @@ import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sideba
         ModalModule.forRoot(),
         PopoverModule,
         PaginationModule.forRoot(),
-        ExportAsModule
+        ExportAsModule,
+        ApplicationBaseClass
     ],
     declarations: [
         AppComponent,
