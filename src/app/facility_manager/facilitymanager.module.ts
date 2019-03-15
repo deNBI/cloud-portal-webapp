@@ -8,6 +8,7 @@ import {ImageTagComponent} from '../facility_manager/imagetags.component';
 import {FacilitymanagerRoutingModule} from './facilitymanager-routing.module';
 import {FacilityApplicationComponent} from './facility.application.component';
 import {ResourcesComponent} from './resources/resources.component';
+import {ApplicationBaseClass} from "../shared/shared_modules/baseClass/application-base-class";
 
 /**
  * Facilitymanager module.
@@ -25,7 +26,8 @@ import {ResourcesComponent} from './resources/resources.component';
         FacilityProjectsOverviewComponent,
         ImageTagComponent,
         FacilityApplicationComponent,
-        ResourcesComponent
+        ResourcesComponent,
+        ApplicationBaseClass
     ]
 })
 export class FacilitymanagerModule {

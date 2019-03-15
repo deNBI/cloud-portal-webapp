@@ -9,6 +9,7 @@ import {ModalModule} from 'ngx-bootstrap/modal';
 import {AddsinglevmComponent} from './addsinglevm.component';
 import {AddcloudapplicationComponent} from './addcloudapplication.component';
 import {ClickOutsideModule} from 'ng4-click-outside';
+import {ApplicationBaseClass} from "../shared/shared_modules/baseClass/application-base-class";
 
 /**
  * Applications Module.
@@ -26,7 +27,8 @@ import {ClickOutsideModule} from 'ng4-click-outside';
     declarations: [
         ApplicationsComponent,
         AddsinglevmComponent,
-        AddcloudapplicationComponent
+        AddcloudapplicationComponent,
+        ApplicationBaseClass
     ]
 })
 export class ApplicationsModule {
