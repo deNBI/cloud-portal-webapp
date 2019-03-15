@@ -51,7 +51,6 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from "./shared/shared_modu
         AsideToggleDirective,
         RegistrationInfoComponent,
         ConsentInfoComponent,
-        ApplicationBaseClass
     ],
     providers: [***REMOVED***
         provide: LocationStrategy,
