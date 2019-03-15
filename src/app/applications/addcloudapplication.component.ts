@@ -5,8 +5,8 @@ import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/appl
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modules/baseClass/abstract-base-class';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
+import ***REMOVED***ApplicationBaseClass***REMOVED*** from 'app/shared/shared_modules/baseClass/application-base-class';
 
 /**
  * This components provides the functions to create a new Cloud Application.
@@ -18,7 +18,7 @@ import ***REMOVED***environment***REMOVED*** from '../../environments/environmen
     styleUrls: ['addcloudapplication.component.css']
 ***REMOVED***)
 
-export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED***
+export class AddcloudapplicationComponent extends ApplicationBaseClass ***REMOVED***
 
     /**
      * If it is in production or dev mode.
@@ -30,14 +30,6 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
      * List of all collapse booleans.
      */
     public collapseList: boolean[];
-
-    public project_application_report_allowed: boolean = false;
-
-    /**
-     * If shortname is valid.
-     * @type ***REMOVED***boolean***REMOVED***
-     */
-    public wronginput: boolean = false;
 
     /**
      * Contains errors recieved when submitting an application.
@@ -57,29 +49,7 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
      */
     public typeList: FlavorType[];
 
-    /**
-     * Total number of cores.
-     * @type ***REMOVED***number***REMOVED***
-     */
-    public totalNumberOfCores: number = 0;
-    /**
-     * Total number of ram.
-     * @type ***REMOVED***number***REMOVED***
-     */
-    public totalRAM: number = 0;
-    /**
-     * Values to confirm.
-     */
-    public valuesToConfirm: string[];
-    /**
-     *
-     */
-    public constantStrings: Object;
 
-    /**
-     * Name of the project.
-     */
-    public projectName: string;
     public acknowledgeModalTitle: string = 'Acknowledge';
     public acknowledgeModalType: string = 'info';
 
@@ -95,113 +65,11 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
      * @param ***REMOVED***ApplicationsService***REMOVED*** applicationsservice
      * @param ***REMOVED***FlavorService***REMOVED*** flavorservice
      */
-    constructor(private applicationsservice: ApplicationsService, private flavorservice: FlavorService) ***REMOVED***
-        super();
+    constructor(applicationsservice: ApplicationsService, private flavorservice: FlavorService) ***REMOVED***
+        super(null, null, applicationsservice, null);
         this.getListOfFlavors();
         this.getListOfTypes();
 
-    ***REMOVED***
-
-    /**
-     * Uses the data from the application form to fill the confirmation-modal with information.
-     * @param form the application form with corresponding data
-     */
-    filterEnteredData(form: NgForm): void ***REMOVED***
-        this.generateConstants();
-        this.totalNumberOfCores = 0;
-        this.totalRAM = 0;
-        this.valuesToConfirm = [];
-        for (const key in form.controls) ***REMOVED***
-            if (form.controls[key].value) ***REMOVED***
-                if (key === 'project_application_name') ***REMOVED***
-                    this.projectName = form.controls[key].value;
-                    if (this.projectName.length > 50) ***REMOVED***
-                        this.projectName = `$***REMOVED***this.projectName.substring(0, 50)***REMOVED***...`;
-                    ***REMOVED***
-                ***REMOVED***
-                if (key in this.constantStrings) ***REMOVED***
-                    this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
-
-                    const flavor: Flavor = this.isKeyFlavor(key.toString());
-                    if (flavor != null) ***REMOVED***
-                        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * form.controls[key].value);
-                        const ram: number = flavor.ram * form.controls[key].value;
-                        this.totalRAM = this.totalRAM + ram
-                    ***REMOVED***
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***
-        if (!this.project_application_report_allowed) ***REMOVED***
-            this.valuesToConfirm.push('Dissemination allowed: No')
-        ***REMOVED***
-
-    ***REMOVED***
-
-    /**
-     * Fills the array constantStrings with values dependent of keys which are used to indicate inputs from the application-form
-     */
-    generateConstants(): void ***REMOVED***
-        this.constantStrings = [];
-        this.constantStrings['project_application_lifetime'] = 'Lifetime of your project: ';
-        this.constantStrings['project_application_volume_counter'] = 'Number of volumes for additional storage: ';
-        this.constantStrings['project_application_object_storage'] = 'Additional object storage: ';
-        this.constantStrings['project_application_volume_limit'] = 'Additional storage space for your VMs: ';
-        this.constantStrings['project_application_institute'] = 'Your institute: ';
-        this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
-        this.constantStrings['project_application_report_allowed'] = 'Dissemination allowed: ';
-
-        for (const key in this.flavorList) ***REMOVED***
-            if (key in this.flavorList) ***REMOVED***
-                this.constantStrings[`project_application_$***REMOVED***this.flavorList[key].name***REMOVED***`] =
-                    `Number of VMs of type  $***REMOVED***this.flavorList[key].name***REMOVED***: `;
-            ***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
-
-    isKeyFlavor(key: string): Flavor ***REMOVED***
-        for (const fkey in this.flavorList) ***REMOVED***
-            if (fkey in this.flavorList) ***REMOVED***
-                if (this.flavorList[fkey].name === key.substring(20)) ***REMOVED***
-                    return this.flavorList[fkey];
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***
-
-        return null;
-
-    ***REMOVED***
-
-    /**
-     * This function concatenates a given key combined with a given value to a string
-     * which is used on the confirmation-modal.
-     * @param key the key to access a string in the array constantStrings
-     * @param val the value that is concatenated with the string from the array and an optional addition (depending on the key)
-     * @returns the concatenated string for the confirmation-modal
-     */
-    matchString(key: string, val: string): string ***REMOVED***
-        if (key in this.constantStrings) ***REMOVED***
-            switch (key) ***REMOVED***
-                case 'project_application_lifetime': ***REMOVED***
-                    return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED*** months`);
-                ***REMOVED***
-                case ('project_application_volume_limit'): ***REMOVED***
-                    return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED*** GB`);
-                ***REMOVED***
-                case 'project_application_object_storage': ***REMOVED***
-                    return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED***  GB`);
-                ***REMOVED***
-                case 'project_application_report_allowed': ***REMOVED***
-                    if (val) ***REMOVED***
-                        return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED*** Yes`);
-                    ***REMOVED*** else ***REMOVED***
-                        return (`$***REMOVED***this.constantStrings[key]***REMOVED*** No`);
-                    ***REMOVED***
-                ***REMOVED***
-                default: ***REMOVED***
-                    return (this.constantStrings[key] + val);
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***
     ***REMOVED***
 
     /**
@@ -323,11 +191,4 @@ export class AddcloudapplicationComponent extends AbstractBaseClasse ***REMOVED*
 
     ***REMOVED***
 
-    /**
-     * Check if shortname is valid.
-     * @param ***REMOVED***string***REMOVED*** shortname
-     */
-    public checkShortname(shortname: string): void ***REMOVED***
-        this.wronginput = !/^[a-zA-Z0-9\s]*$/.test(shortname);
-    ***REMOVED***
 ***REMOVED***

@@ -7,6 +7,7 @@ import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinem
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
+import ***REMOVED***ApplicationBaseClass***REMOVED*** from "../shared/shared_modules/baseClass/application-base-class";
 
 /**
  * Component to create single vm applications.
@@ -16,7 +17,7 @@ import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmach
     templateUrl: 'addsinglevm.component.html',
     providers: [FlavorService, ApiSettings, ApplicationsService]
 ***REMOVED***)
-export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
+export class AddsinglevmComponent extends ApplicationBaseClass ***REMOVED***
 
     /**
      * List of flavor types.
@@ -46,8 +47,8 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
     public acknowledgeModalTitle: string = 'Acknowledge';
     public acknowledgeModalType: string = 'info';
 
-    constructor(private applicationsservice: ApplicationsService, private flavorService: FlavorService) ***REMOVED***
-        super();
+    constructor( applicationsservice: ApplicationsService, private flavorService: FlavorService) ***REMOVED***
+        super(null, null, applicationsservice, null);
         this.getListOfFlavors();
         this.getListOfTypes();
 

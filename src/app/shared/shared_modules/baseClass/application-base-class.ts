@@ -11,6 +11,7 @@ import ***REMOVED***FacilityService***REMOVED*** from '../../../api-connector/fa
 import ***REMOVED***Component***REMOVED*** from '@angular/core';
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../../../api-connector/application-status.service';
 import ***REMOVED***UserService***REMOVED*** from '../../../api-connector/user.service';
+import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
 
 /**
  * Application base component..
@@ -61,6 +62,34 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
      */
     collapseList: boolean[];
 
+
+    /**
+     * Total number of cores.
+     * @type ***REMOVED***number***REMOVED***
+     */
+    totalNumberOfCores: number = 0;
+    /**
+     * Total number of ram.
+     * @type ***REMOVED***number***REMOVED***
+     */
+    totalRAM: number = 0;
+    /**
+     * Values to confirm.
+     */
+    valuesToConfirm: string[];
+
+    extension_request = false;
+
+    /**
+     * If shortname is valid.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
+    public wronginput: boolean = false;
+    /**
+     *
+     */
+    constantStrings: Object;
+
     /**
      * List of flavors.
      */
@@ -71,6 +100,14 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
      * @type ***REMOVED***boolean***REMOVED***
      */
     isLoaded_userApplication: boolean = false;
+
+    /**
+     * Name of the project.
+     */
+    public projectName: string;
+
+    public project_application_report_allowed: boolean = false;
+
 
     /**
      * Applications of the user viewing the Application overview.
@@ -384,6 +421,135 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
             ***REMOVED***
         ***REMOVED***
 
+    ***REMOVED***
+
+
+    /**
+     * Uses the data from the application form to fill the confirmation-modal with information.
+     * @param form the application form with corresponding data
+     */
+    filterEnteredData(form: NgForm): void ***REMOVED***
+        this.generateConstants();
+        this.totalNumberOfCores = 0;
+        this.totalRAM = 0;
+        this.valuesToConfirm = [];
+        for (const key in form.controls) ***REMOVED***
+            if (form.controls[key].value) ***REMOVED***
+                if (key === 'project_application_name') ***REMOVED***
+                    this.projectName = form.controls[key].value;
+                    if (this.projectName.length > 50) ***REMOVED***
+                        this.projectName = `$***REMOVED***this.projectName.substring(0, 50)***REMOVED***...`;
+                    ***REMOVED***
+                ***REMOVED***
+                if (key in this.constantStrings) ***REMOVED***
+                    this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
+
+                    const flavor: Flavor = this.isKeyFlavor(key.toString());
+                    if (flavor != null) ***REMOVED***
+                        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * form.controls[key].value);
+                        const ram: number = flavor.ram * form.controls[key].value;
+                        this.totalRAM = this.totalRAM + ram
+                    ***REMOVED***
+                ***REMOVED***
+            ***REMOVED***
+
+
+        ***REMOVED***
+        if (!this.project_application_report_allowed && !this.extension_request) ***REMOVED***
+            this.valuesToConfirm.push('Dissemination allowed: No');
+        ***REMOVED***
+
+
+    ***REMOVED***
+
+    /**
+     * Check if shortname is valid.
+     * @param ***REMOVED***string***REMOVED*** shortname
+     */
+    public checkShortname(shortname: string): void ***REMOVED***
+        this.wronginput = !/^[a-zA-Z0-9\s]*$/.test(shortname);
+    ***REMOVED***
+
+    /**
+     * Fills the array constantStrings with values dependent of keys which are used to indicate inputs from the application-form
+     */
+    generateConstants(): void ***REMOVED***
+        this.constantStrings = [];
+        this.constantStrings['project_application_shortname'] = 'Shortname: ';
+        this.constantStrings['project_application_description'] = 'Description: ';
+        this.constantStrings['project_application_comment'] = 'Comment: ';
+
+        this.constantStrings['project_application_lifetime'] = 'Lifetime of your project: ';
+        this.constantStrings['project_application_volume_counter'] = 'Number of volumes for additional storage: ';
+        this.constantStrings['project_application_object_storage'] = 'Additional object storage: ';
+        this.constantStrings['project_application_volume_limit'] = 'Additional storage space for your VMs: ';
+        this.constantStrings['project_application_comment'] = 'Comment: ';
+                this.constantStrings['project_application_renewal_comment'] = 'Comment: ';
+
+        this.constantStrings['project_application_renewal_lifetime'] = 'Lifetime of your project: ';
+        this.constantStrings['project_application_renewal_volume_counter'] = 'Number of volumes for additional storage: ';
+        this.constantStrings['project_application_renewal_object_storage'] = 'Additional object storage: ';
+        this.constantStrings['project_application_renewal_volume_limit'] = 'Additional storage space for your VMs: ';
+
+        this.constantStrings['project_application_institute'] = 'Your institute: ';
+        this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
+        this.constantStrings['project_application_horizon2020'] = 'Horizon2020: ';
+                this.constantStrings['project_application_elixir_project'] = 'Elixir Project: ';
+
+        this.constantStrings['project_application_report_allowed'] = 'Dissemination allowed: ';
+
+        for (const key in this.flavorList) ***REMOVED***
+            if (key in this.flavorList) ***REMOVED***
+                this.constantStrings[`project_application_$***REMOVED***this.flavorList[key].name***REMOVED***`] =
+                    `Number of VMs of type  $***REMOVED***this.flavorList[key].name***REMOVED***: `;
+            ***REMOVED***
+        ***REMOVED***
+    ***REMOVED***
+
+    isKeyFlavor(key: string): Flavor ***REMOVED***
+        for (const fkey in this.flavorList) ***REMOVED***
+            if (fkey in this.flavorList) ***REMOVED***
+                if (this.flavorList[fkey].name === key.substring(20)) ***REMOVED***
+                    return this.flavorList[fkey];
+                ***REMOVED***
+            ***REMOVED***
+        ***REMOVED***
+
+        return null;
+
+    ***REMOVED***
+
+    /**
+     * This function concatenates a given key combined with a given value to a string
+     * which is used on the confirmation-modal.
+     * @param key the key to access a string in the array constantStrings
+     * @param val the value that is concatenated with the string from the array and an optional addition (depending on the key)
+     * @returns the concatenated string for the confirmation-modal
+     */
+    matchString(key: string, val: string): string ***REMOVED***
+        if (key in this.constantStrings) ***REMOVED***
+            switch (key) ***REMOVED***
+                case 'project_application_lifetime': ***REMOVED***
+                    return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED*** months`);
+                ***REMOVED***
+                case ('project_application_volume_limit'): ***REMOVED***
+                    return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED*** GB`);
+                ***REMOVED***
+                case 'project_application_object_storage': ***REMOVED***
+                    return (`$***REMOVED***this.constantStrings[key]***REMOVED***$***REMOVED***val***REMOVED***  GB`);
+                ***REMOVED***
+                case 'project_application_report_allowed': ***REMOVED***
+                    if (val) ***REMOVED***
+                        return (`$***REMOVED***this.constantStrings[key]***REMOVED*** Yes`);
+                    ***REMOVED*** else ***REMOVED***
+                        return (`$***REMOVED***this.constantStrings[key]***REMOVED*** No`);
+                    ***REMOVED***
+                ***REMOVED***
+                default: ***REMOVED***
+                    return (this.constantStrings[key] + val);
+                ***REMOVED***
+            ***REMOVED***
+        ***REMOVED***
     ***REMOVED***
 
 ***REMOVED***
