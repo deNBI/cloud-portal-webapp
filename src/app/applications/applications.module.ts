@@ -28,7 +28,6 @@ import {ApplicationBaseClass} from "../shared/shared_modules/baseClass/applicati
         ApplicationsComponent,
         AddsinglevmComponent,
         AddcloudapplicationComponent,
-        ApplicationBaseClass
     ]
 })
 export class ApplicationsModule {

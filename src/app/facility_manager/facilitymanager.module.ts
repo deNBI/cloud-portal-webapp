@@ -27,7 +27,7 @@ import {ApplicationBaseClass} from "../shared/shared_modules/baseClass/applicati
         ImageTagComponent,
         FacilityApplicationComponent,
         ResourcesComponent,
-        ApplicationBaseClass
+
     ]
 })
 export class FacilitymanagerModule {
