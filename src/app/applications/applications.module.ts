@@ -28,7 +28,6 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from "../shared/shared_mod
         ApplicationsComponent,
         AddsinglevmComponent,
         AddcloudapplicationComponent,
-        ApplicationBaseClass
     ]
 ***REMOVED***)
 export class ApplicationsModule ***REMOVED***

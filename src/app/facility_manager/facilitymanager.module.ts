@@ -27,7 +27,7 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from "../shared/shared_mod
         ImageTagComponent,
         FacilityApplicationComponent,
         ResourcesComponent,
-        ApplicationBaseClass
+
     ]
 ***REMOVED***)
 export class FacilitymanagerModule ***REMOVED***
