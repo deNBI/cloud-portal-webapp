@@ -8,7 +8,6 @@ import ***REMOVED***ImageTagComponent***REMOVED*** from '../facility_manager/ima
 import ***REMOVED***FacilitymanagerRoutingModule***REMOVED*** from './facilitymanager-routing.module';
 import ***REMOVED***FacilityApplicationComponent***REMOVED*** from './facility.application.component';
 import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.component';
-import ***REMOVED***ApplicationBaseClass***REMOVED*** from "../shared/shared_modules/baseClass/application-base-class";
 
 /**
  * Facilitymanager module.

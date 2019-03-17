@@ -238,7 +238,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    removeResourceFromGroup(groupid: number): void ***REMOVED***
+    removeResourceFromGroup(groupid: number | string): void ***REMOVED***
         this.voserice.removeResourceFromGroup(groupid.toString()).subscribe(() => ***REMOVED***
         ***REMOVED***)
     ***REMOVED***

@@ -25,6 +25,7 @@ import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.direc
 import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
 import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sidebar.directive';
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from "./shared/shared_modules/baseClass/application-base-class";
+import ***REMOVED***SharedModuleModule***REMOVED*** from "./shared/shared_modules/shared-module.module";
 
 /**
  * App module.
@@ -40,7 +41,8 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from "./shared/shared_modu
         ModalModule.forRoot(),
         PopoverModule,
         PaginationModule.forRoot(),
-        ExportAsModule
+        ExportAsModule,
+        SharedModuleModule
     ],
     declarations: [
         AppComponent,
@@ -50,7 +52,7 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from "./shared/shared_modu
         SIDEBAR_TOGGLE_DIRECTIVES,
         AsideToggleDirective,
         RegistrationInfoComponent,
-        ConsentInfoComponent,
+        ConsentInfoComponent
     ],
     providers: [***REMOVED***
         provide: LocationStrategy,

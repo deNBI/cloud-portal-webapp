@@ -17,6 +17,7 @@ import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
  * Application base component..
  */
 @Component(***REMOVED***
+    template:'',
     providers: [FacilityService, ApplicationsService, FlavorService]
 ***REMOVED***)
 export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***

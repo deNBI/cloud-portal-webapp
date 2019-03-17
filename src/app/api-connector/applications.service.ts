@@ -19,7 +19,7 @@ export class ApplicationsService ***REMOVED***
     ***REMOVED***
 
     getUserApplications(): Observable<any> ***REMOVED***
-         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/project_applications/`, ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/project_applications/`, ***REMOVED***
             headers: header,
             withCredentials: true
         ***REMOVED***)
@@ -120,7 +120,7 @@ export class ApplicationsService ***REMOVED***
 
     ***REMOVED***
 
-    deleteApplication(application_id: string): Observable<any> ***REMOVED***
+    deleteApplication(application_id: string | number): Observable<any> ***REMOVED***
 
         return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***application_id***REMOVED***/`, ***REMOVED***
             headers: header,
