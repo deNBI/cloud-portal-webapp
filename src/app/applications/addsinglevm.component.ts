@@ -54,18 +54,6 @@ export class AddsinglevmComponent extends ApplicationBaseClass {
 
     }
 
-    checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
-        for (const flav of this.flavorList) {
-            if (flav.type.shortcut === type.shortcut && flav.simple_vm) {
-                return true
-            }
-
-        }
-        return false
-
-    }
-
-
     /**
      * Gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
      */

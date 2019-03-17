@@ -159,6 +159,17 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
         this.applicationstatusservice.setApplicationStatus(app.Id.toString(), status.toString()).subscribe()
     }
 
+    checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
+        for (const flav of this.flavorList) {
+            if (flav.type.shortcut === type.shortcut && flav.simple_vm) {
+                return true
+            }
+
+        }
+        return false
+
+    }
+
     setNewApplication(aj): Application {
 
         const newApp: Application = new Application();
