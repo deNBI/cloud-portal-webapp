@@ -87,6 +87,18 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
     ***REMOVED***
 
 
+    checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean ***REMOVED***
+        for (const flav of this.flavorList) ***REMOVED***
+            if (flav.type.shortcut === type.shortcut && flav.simple_vm) ***REMOVED***
+                return true
+            ***REMOVED***
+
+        ***REMOVED***
+        return false
+
+    ***REMOVED***
+
+
     /**
      * Submit simple vm application.
      * @param ***REMOVED***NgForm***REMOVED*** f

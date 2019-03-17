@@ -220,7 +220,7 @@
                         </div>
 
                         <div *ngFor="let t of typeList">
-                            <div class="card"
+                            <div *ngIf="checkIfTypeGotSimpleVmFlavor(t)" class="card"
                             >
                                 <!--(click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"-->
                                 <div (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"
