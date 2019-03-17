@@ -1094,7 +1094,7 @@
 
                     <div>
                         <div *ngFor="let t of typeList">
-                            <div  *ngIf="selectedApplication?.OpenStackProject || checkIfTypeGotSimpleVmFlavor(t)"class="card">
+                            <div *ngIf="selectedApplication?.OpenStackProject || checkIfTypeGotSimpleVmFlavor(t)" class="card">
                                 <div (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"
                                      style="cursor: pointer;" id="flavor-card" class="card-header">
 
@@ -1107,10 +1107,11 @@
 
 
                                 </div>
-                                <div  *ngIf="collapseList[typeList.indexOf(t)]" class="form-group card-body">
+                                <div *ngIf="collapseList[typeList.indexOf(t)]" class="form-group card-body">
                                     <div *ngFor="let fl of flavorList" class="form-group row">
-                                        <div *ngIf="fl.type.shortcut == t.shortcut"
-                                             class="form-group row">
+                                        <div
+                                                *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || selectedApplication?.OpenStackProject )"
+                                                class="form-group row">
                                             <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
                                                 Number of cores: {{fl.vcpus}}<br>
                                                 RAM: {{fl.ram}} GB</label>

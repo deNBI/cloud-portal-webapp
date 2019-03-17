@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {ApplicationsService} from '../api-connector/applications.service'
 import {SpecialHardwareService} from '../api-connector/special-hardware.service'
 import {ApplicationStatusService} from '../api-connector/application-status.service'
@@ -7,24 +7,18 @@ import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {Application} from "./application.model";
 import {ApplicationStatus} from "./application_status.model";
 import {SpecialHardware} from "./special_hardware.model"
-import {ModalDirective} from "ngx-bootstrap";
-import {ResourcesManager} from "../perun-connector/resources_manager";
 import {GroupService} from "../api-connector/group.service";
 import * as moment from 'moment';
 import {UserService} from "../api-connector/user.service";
 import {ApplicationExtension} from "./application_extension.model";
 import {NgForm} from '@angular/forms';
-import {forkJoin} from 'rxjs';
 import {VoService} from "../api-connector/vo.service";
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
 import {FacilityService} from "../api-connector/facility.service";
-import {Project} from "../projectmanagement/project.model";
 import {AbstractBaseClasse} from "../shared_modules/baseClass/abstract-base-class";
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
-import _date = moment.unitOfTime._date;
-import {forEach} from '@angular/router/src/utils/collection';
 import {Vmclient} from "../virtualmachines/virtualmachinemodels/vmclient";
 
 
@@ -79,7 +73,7 @@ export class ApplicationsComponent extends AbstractBaseClasse {
     /**
      * Selected Application.
      */
-    selectedApplication: Application;
+    selectedApplication: Application=null;
 
     /**
      * Id of the extension status.
@@ -134,12 +128,12 @@ export class ApplicationsComponent extends AbstractBaseClasse {
 
     /**
      * List of flavors.
-     */public flavorList: Flavor[];
+     */public flavorList: Flavor[] = [];
 
     /**
      * List of flavor types.
      */
-    public typeList: FlavorType[];
+    public typeList: FlavorType[] = [];
     /**
      * List of all collapse booleans.
      */
