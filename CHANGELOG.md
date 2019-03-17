@@ -1,5 +1,10 @@
 #### Bug Fixes
 
+* **Applications:** fixed simple vm flavors 
+
+
+#### Bug Fixes
+
 * **Applications:**  refresh fixed 
 
 #### Features
