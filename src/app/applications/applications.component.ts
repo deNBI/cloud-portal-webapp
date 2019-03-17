@@ -1,4 +1,4 @@
-import ***REMOVED***Component, ViewChild***REMOVED*** from '@angular/core';
+import ***REMOVED***Component***REMOVED*** from '@angular/core';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***SpecialHardwareService***REMOVED*** from '../api-connector/special-hardware.service'
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service'
@@ -7,24 +7,18 @@ import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connecto
 import ***REMOVED***Application***REMOVED*** from "./application.model";
 import ***REMOVED***ApplicationStatus***REMOVED*** from "./application_status.model";
 import ***REMOVED***SpecialHardware***REMOVED*** from "./special_hardware.model"
-import ***REMOVED***ModalDirective***REMOVED*** from "ngx-bootstrap";
-import ***REMOVED***ResourcesManager***REMOVED*** from "../perun-connector/resources_manager";
 import ***REMOVED***GroupService***REMOVED*** from "../api-connector/group.service";
 import * as moment from 'moment';
 import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
 import ***REMOVED***ApplicationExtension***REMOVED*** from "./application_extension.model";
 import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
-import ***REMOVED***forkJoin***REMOVED*** from 'rxjs';
 import ***REMOVED***VoService***REMOVED*** from "../api-connector/vo.service";
 import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
 import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
-import ***REMOVED***Project***REMOVED*** from "../projectmanagement/project.model";
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from "../shared_modules/baseClass/abstract-base-class";
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
-import _date = moment.unitOfTime._date;
-import ***REMOVED***forEach***REMOVED*** from '@angular/router/src/utils/collection';
 import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachines/virtualmachinemodels/vmclient";
 
 
@@ -79,7 +73,7 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
     /**
      * Selected Application.
      */
-    selectedApplication: Application;
+    selectedApplication: Application=null;
 
     /**
      * Id of the extension status.
@@ -134,12 +128,12 @@ export class ApplicationsComponent extends AbstractBaseClasse ***REMOVED***
 
     /**
      * List of flavors.
-     */public flavorList: Flavor[];
+     */public flavorList: Flavor[] = [];
 
     /**
      * List of flavor types.
      */
-    public typeList: FlavorType[];
+    public typeList: FlavorType[] = [];
     /**
      * List of all collapse booleans.
      */

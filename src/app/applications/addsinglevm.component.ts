@@ -22,7 +22,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
     /**
      * List of flavor types.
      */
-    public typeList: FlavorType[];
+    public typeList: FlavorType[]=[];
     /**
      * List of all collapse booleans.
      */
@@ -38,7 +38,7 @@ export class AddsinglevmComponent extends AbstractBaseClasse ***REMOVED***
     /**
      * List of flavors.
      */
-    public flavorList: Flavor[];
+    public flavorList: Flavor[]=[];
 
 
     public production = environment.production;
