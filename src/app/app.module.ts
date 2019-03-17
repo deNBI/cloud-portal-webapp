@@ -25,6 +25,7 @@ import {AsideToggleDirective} from './shared/aside.directive';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
 import {ApplicationBaseClass} from "./shared/shared_modules/baseClass/application-base-class";
+import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
 
 /**
  * App module.
@@ -40,7 +41,8 @@ import {ApplicationBaseClass} from "./shared/shared_modules/baseClass/applicatio
         ModalModule.forRoot(),
         PopoverModule,
         PaginationModule.forRoot(),
-        ExportAsModule
+        ExportAsModule,
+        SharedModuleModule
     ],
     declarations: [
         AppComponent,
@@ -50,7 +52,7 @@ import {ApplicationBaseClass} from "./shared/shared_modules/baseClass/applicatio
         SIDEBAR_TOGGLE_DIRECTIVES,
         AsideToggleDirective,
         RegistrationInfoComponent,
-        ConsentInfoComponent,
+        ConsentInfoComponent
     ],
     providers: [{
         provide: LocationStrategy,

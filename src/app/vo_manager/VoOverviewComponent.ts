@@ -238,7 +238,7 @@ export class VoOverviewComponent extends FilterBaseClass {
         })
     }
 
-    removeResourceFromGroup(groupid: number): void {
+    removeResourceFromGroup(groupid: number | string): void {
         this.voserice.removeResourceFromGroup(groupid.toString()).subscribe(() => {
         })
     }

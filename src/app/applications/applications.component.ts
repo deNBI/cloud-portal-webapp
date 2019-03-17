@@ -253,7 +253,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
      * @param elemIDcores the ID of the label containing the number of cores
      * @param elemIDram the ID of the label containing the amount of RAM
      */
-    protected unsetValues(elemIDcores: string, elemIDram: string): void {
+    unsetValues(elemIDcores: string, elemIDram: string): void {
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
         document.getElementById(elemIDcores).innerHTML = `Number of total cores:  ${this.totalNumberOfCores.toString()}`;
@@ -751,7 +751,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
      * Delete an application.
      * @param application_id
      */
-    public deleteApplication(application_id: string): void {
+    public deleteApplication(application_id: string|number): void {
         this.applicationsservice.deleteApplication(application_id).toPromise()
             .then(() => {
                 this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');

@@ -17,6 +17,7 @@ import {NgForm} from '@angular/forms';
  * Application base component..
  */
 @Component({
+    template:'',
     providers: [FacilityService, ApplicationsService, FlavorService]
 })
 export class ApplicationBaseClass extends AbstractBaseClasse {
