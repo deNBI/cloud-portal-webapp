@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import * as moment from 'moment';
-import {Project} from "../projectmanagement/project.model";
 import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
 import {FacilityService} from "../api-connector/facility.service";
 import {UserService} from "../api-connector/user.service";
@@ -458,7 +456,7 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
             this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
 
             this.all_applications = [];
-                            this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
+            this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
             this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
         }, error => {
@@ -616,7 +614,11 @@ export class FacilityApplicationComponent extends AbstractBaseClasse implements 
      */
     onChangeSelectedFacility(value) {
         this.all_applications = [];
-        this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
+        this.all_application_modifications = [];
+        this.applications_history = [];
+        this.getAllApplicationsWFC(this.selectedFacility ['FacilityId']);
+        this.getAllApplicationsModifications(this.selectedFacility ['FacilityId']);
+        this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
     }
 
 
