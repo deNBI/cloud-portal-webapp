@@ -380,6 +380,11 @@
                     </form>
                 </div>
                 <div class="card-footer">
+                     <div *ngIf="f.invalid" class=" form-group row alert alert-warning">
+                        Some required fields are incorrect or not filled in yet.
+                        Please check if all required (*) fields are filled in correctly.
+
+                    </div>
                     <div class="form-group row">
                         <p class="col-md-12 form-control-label">By submitting this application you
                             agree to the
