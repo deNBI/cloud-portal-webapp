@@ -1076,7 +1076,7 @@
                                        name="project_application_renewal_lifetime"
                                        placeholder="e.g 3"
                                        type="number" min="0" max="12" step="1" ngModel required
-                                       pattern="^([1-9]|1[012])$">
+                                       pattern="^([0-9]|1[012])$">
                                 <span class="input-group-addon"> months</span>
                             </div>
                             <span class="help-block">Number of months you want to extend the project</span>
@@ -1289,6 +1289,11 @@
 
 
                 </form>
+                <div *ngIf="f.invalid" class=" form-group row alert alert-warning">
+                    Some required fields are incorrect or not filled in yet.
+                    Please check if all required (*) fields are filled in correctly.
+
+                </div>
 
 
                 <div class="modal-footer">
