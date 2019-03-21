@@ -132,8 +132,8 @@
                                            type="number" min="1" max="12" step="1" ngModel required
                                            pattern="^([1-9]|1[012])$"
                                     >
-                                    <span class="input-group-addon"> months
-                                    </span>
+                                  <div class="input-group-append"><span class="input-group-text"> months
+                                    </span></div>
                                 </div>
                                 <span class="help-block">How long would you like to run this project (12 month is maximum)?</span>
                             </div>
@@ -161,8 +161,8 @@
                                            name="project_application_volume_limit"
                                            placeholder="e.g. 20"
                                            type="number" min="1" step="1" [ngModel]="20">
-                                    <span class="input-group-addon"> GB
-                                    </span>
+                                  <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
                                 </div>
                                 <span class="help-block">How many extra storage do you need for your VMs?</span>
                             </div>
@@ -202,17 +202,17 @@
 
 
                                     {{t.long_name}}
-                                    <i *ngIf="collapseList[typeList.indexOf(t)]"
+                                    <i *ngIf="!collapseList[typeList.indexOf(t)]"
                                        style="float: right;font-size: 25px"
                                        class="icon-arrow-up"></i>
-                                    <i *ngIf="!collapseList[typeList.indexOf(t)]"
+                                    <i *ngIf="collapseList[typeList.indexOf(t)]"
                                        style="float: right;font-size: 25px"
                                        class="icon-arrow-down"></i>
 
 
                                 </div>
                                 <!--*ngIf="collapseList[typeList.indexOf(t)]"-->
-                                <div *ngIf="collapseList[typeList.indexOf(t)] "
+                                <div *ngIf="!collapseList[typeList.indexOf(t)] "
                                      class="form-group card-body">
                                     <div *ngFor="let f of flavorList">
                                         <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
@@ -233,8 +233,8 @@
                                                            type="number" min="0" step="1"
                                                            value="0" placeholder="0"
                                                            (ngModel)="'project_application_' + f.name">
-                                                    <span class="input-group-addon"> VMs
-                                    </span>
+                                                  <div class="input-group-append"><span class="input-group-text"> VMs
+                                    </span></div>
                                                 </div>
                                                 <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
                                             </div>
@@ -330,13 +330,13 @@
 
 
                                 <label
-                                        class="switch switch-text switch-primary-outline-alt">
+                                        class="switch switch-label switch-outline-primary-alt">
                                     <input type="checkbox" class="switch-input"
                                            name="project_application_report_allowed"
                                            [(ngModel)]="project_application_report_allowed"
                                     >
-                                    <span class="switch-label" data-on="Yes"
-                                          data-off="No"></span>
+                                    <span class="switch-slider" data-checked="Yes"
+                                          data-unchecked="No"></span>
                                     <span class="switch-handle"></span></label>
                                 <p> Do you permit the de.NBI Cloud to publicly mention your
                                     project's participation?</p>
@@ -471,7 +471,7 @@
                     and take changes.
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-striped table-responsive">
+                    <table class="table table-striped">
                         <tr *ngFor="let str of valuesToConfirm">
                             <td>{{str}}</td>
                         </tr>

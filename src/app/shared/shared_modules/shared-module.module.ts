@@ -8,6 +8,7 @@ import {ApplicationBaseClass} from './baseClass/application-base-class';
         CommonModule
     ],
     declarations: [ApplicationBaseClass]
+
 })
 export class SharedModuleModule {
 }
