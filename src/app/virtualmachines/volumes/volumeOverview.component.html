@@ -15,7 +15,7 @@
     <div>
         <div>
             <div class="table-responsive">
-                <table class="table table-striped table-responsive ">
+                <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>Project</th>
@@ -402,9 +402,9 @@
                         <div class="input-group">
                             <input min="0" step="1" [value]="diskspace"
                                    (input)="diskspace = $event.target.value;calcDiskSpaceSum();"
-                                   type="number" placeholder="e.g 8 "><span
-                                class="input-group-addon"> GB
-                                    </span>
+                                   type="number" placeholder="e.g 8 "><div class="input-group-append"><span
+                          class="input-group-text"> GB
+                                    </span></div>
 
 
                         </div>

@@ -18,11 +18,19 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/static/webapp/assets",
-              "src/static/webapp"
+              "src/static/webapp",
+              "src/static/webapp/assets/img"
             ],
             "styles": [
+              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/scss/style.scss"
             ],
+            "stylePreprocessorOptions": ***REMOVED***
+              "includePaths": [
+                "./node_modules"
+              ]
+            ***REMOVED***,
             "scripts": [
               "node_modules/chart.js/dist/Chart.bundle.min.js",
               "node_modules/chart.js/dist/Chart.min.js"
@@ -100,21 +108,30 @@
               "node_modules/chart.js/dist/Chart.min.js"
             ],
             "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
               "src/scss/style.scss"
             ],
+            "stylePreprocessorOptions": ***REMOVED***
+              "includePaths": [
+                "./node_modules"
+              ]
+            ***REMOVED***,
             "assets": [
               "src/static/webapp/assets",
               "src/static/webapp"
             ]
-          ***REMOVED***,"configurations": ***REMOVED***
+          ***REMOVED***,
+          "configurations": ***REMOVED***
             "production": ***REMOVED***
-                         "fileReplacements": [
+              "fileReplacements": [
                 ***REMOVED***
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 ***REMOVED***
               ]
-            ***REMOVED******REMOVED***
+            ***REMOVED***
+          ***REMOVED***
         ***REMOVED***,
         "lint": ***REMOVED***
           "builder": "@angular-devkit/build-angular:tslint",

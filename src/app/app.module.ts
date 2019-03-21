@@ -5,7 +5,6 @@ import ***REMOVED***BrowserModule***REMOVED*** from '@angular/platform-browser';
 import ***REMOVED***BsDropdownModule***REMOVED*** from 'ngx-bootstrap/dropdown';
 import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
 import ***REMOVED***AppComponent***REMOVED*** from './app.component';
-import ***REMOVED***NAV_DROPDOWN_DIRECTIVES***REMOVED*** from './shared/nav-dropdown.directive';
 
 import ***REMOVED***HttpClientModule***REMOVED*** from '@angular/common/http';
 import ***REMOVED***ChartsModule***REMOVED*** from 'ng2-charts/ng2-charts';
@@ -19,19 +18,32 @@ import ***REMOVED***UserService***REMOVED*** from './api-connector/user.service'
 import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
 import ***REMOVED***ConsentInfoComponent***REMOVED*** from './consent-info.component';
 // Layouts
+import ***REMOVED***
+  AppAsideModule,
+  AppBreadcrumbModule,
+  AppHeaderModule,
+  AppFooterModule,
+  AppSidebarModule,
+***REMOVED*** from '@coreui/angular';
 import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout.component';
 import ***REMOVED***RegistrationInfoComponent***REMOVED*** from './registration-info.component';
 import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.directive';
-import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
-import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sidebar.directive';
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from "./shared/shared_modules/baseClass/application-base-class";
 import ***REMOVED***SharedModuleModule***REMOVED*** from "./shared/shared_modules/shared-module.module";
+import ***REMOVED***PerfectScrollbarModule***REMOVED*** from 'ngx-perfect-scrollbar';
+
 
 /**
  * App module.
  */
 @NgModule(***REMOVED***
     imports: [
+        AppAsideModule,
+        AppBreadcrumbModule.forRoot(),
+        AppHeaderModule,
+        AppFooterModule,
+        AppSidebarModule,
+        PerfectScrollbarModule,
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
@@ -47,9 +59,6 @@ import ***REMOVED***SharedModuleModule***REMOVED*** from "./shared/shared_module
     declarations: [
         AppComponent,
         FullLayoutComponent,
-        NAV_DROPDOWN_DIRECTIVES,
-        BreadcrumbsComponent,
-        SIDEBAR_TOGGLE_DIRECTIVES,
         AsideToggleDirective,
         RegistrationInfoComponent,
         ConsentInfoComponent
