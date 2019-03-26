@@ -17,7 +17,7 @@ import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
  * Application base component..
  */
 @Component(***REMOVED***
-    template:'',
+    template: '',
     providers: [FacilityService, ApplicationsService, FlavorService]
 ***REMOVED***)
 export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
@@ -94,7 +94,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
     /**
      * List of flavors.
      */
-    flavorList: Flavor[];
+    flavorList: Flavor[] = [];
 
     /**
      * If all userApplications are loaded, important for the loader.
