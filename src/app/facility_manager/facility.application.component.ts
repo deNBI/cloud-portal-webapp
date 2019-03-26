@@ -198,7 +198,11 @@ export class FacilityApplicationComponent extends ApplicationBaseClass implement
      */
     onChangeSelectedFacility(): void {
         this.all_applications_wfc = [];
-        this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
+        this.all_application_modifications = [];
+        this.applications_history = [];
+        this.getAllApplicationsWFC(this.selectedFacility['FacilityId']);
+        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+        this.getAllApplicationsModifications(this.selectedFacility['FacilityId']);
     }
 
     ngOnInit(): void {
