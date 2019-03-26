@@ -1061,7 +1061,7 @@
                                        name="project_application_renewal_lifetime"
                                        placeholder="e.g 3"
                                        type="number" min="0" max="12" step="1" ngModel required
-                                       pattern="^([1-9]|1[012])$">
+                                       pattern="^([0-9]|1[012])$">
                                 <span class="input-group-addon"> months</span>
                             </div>
                             <span class="help-block">Number of months you want to extend the project</span>
@@ -1097,7 +1097,8 @@
                                 </div>
                                 <div *ngIf="collapseList[typeList.indexOf(t)]" class="form-group card-body">
                                     <div *ngFor="let fl of flavorList" class="form-group row">
-                                        <div *ngIf="fl.type.shortcut == t.shortcut"
+                                        <div
+                                                *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || selectedApplication?.OpenStackProject)"
                                              class="form-group row">
                                             <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***</strong><br>
                                                 Number of cores: ***REMOVED******REMOVED***fl.vcpus***REMOVED******REMOVED***<br>
@@ -1310,6 +1311,10 @@
 
 
                 <div class="modal-footer">
+                      <div *ngIf="f.invalid" class="form-group row alert alert-warning">
+                        Some required fields are incorrect or not filled in yet.
+                        Please check if all required (*) fields are filled in correctly.
+                    </div>
                     <div class="label">
                         By submitting this application you agree to the cloud usage policy.
                     </div>
