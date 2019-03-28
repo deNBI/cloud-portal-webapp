@@ -3,6 +3,8 @@ import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
+import ***REMOVED***RamFactor***REMOVED*** from "../facility_manager/resources/ram-factor";
+import ***REMOVED***CoreFactor***REMOVED*** from "../facility_manager/resources/core-factor";
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -123,6 +125,68 @@ export class FacilityService ***REMOVED***
             headers: header,
             observe: 'response'
         ***REMOVED***)
+    ***REMOVED***
+
+    /**
+     * Add a new CoreFactor.
+     * @param ***REMOVED***number | string***REMOVED*** facility
+     * @param ***REMOVED***number | string***REMOVED*** cores
+     * @param ***REMOVED***number | string***REMOVED*** factor
+     * @returns ***REMOVED***Observable<any>***REMOVED***
+     */
+    addCoresFactor(facility: number | string, cores: number | string, factor: number | string): Observable<CoreFactor[]> ***REMOVED***
+        const params: HttpParams = new HttpParams().set('type', 'cores').set('cores', cores.toString()).set('factor', factor.toString());
+
+        return this.http.post<CoreFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/`, params, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***)
+    ***REMOVED***
+
+    /**
+     * Add a new RamFactor
+     * @param ***REMOVED***number | string***REMOVED*** facility
+     * @param ***REMOVED***number | string***REMOVED*** ram
+     * @param ***REMOVED***number | string***REMOVED*** factor
+     * @returns ***REMOVED***Observable<any>***REMOVED***
+     */
+    addRamFactor(facility: number | string, ram: number | string, factor: number | string): Observable<RamFactor[]> ***REMOVED***
+        const params: HttpParams = new HttpParams().set('type', 'ram').set('ram', ram.toString()).set('factor', factor.toString());
+
+        return this.http.post<RamFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/`, params, ***REMOVED***
+            withCredentials: true,
+            headers: header,
+        ***REMOVED***)
+    ***REMOVED***
+
+    /**
+     * Get CoreFactors from a facility.
+     * @param ***REMOVED***number | string***REMOVED*** facility
+     * @returns ***REMOVED***Observable<any>***REMOVED***
+     */
+    getCoreFactor(facility: number | string): Observable<CoreFactor[]> ***REMOVED***
+        const params: HttpParams = new HttpParams().set('type', 'cores');
+
+        return this.http.get<CoreFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/`, ***REMOVED***
+                withCredentials: true,
+                params: params
+            ***REMOVED***
+        )
+    ***REMOVED***
+
+    /**
+     * Get Ramactors from a facility.
+     * @param ***REMOVED***number | string***REMOVED*** facility
+     * @returns ***REMOVED***Observable<any>***REMOVED***
+     */
+    getRamFactor(facility: number | string): Observable<RamFactor[]> ***REMOVED***
+        const params: HttpParams = new HttpParams().set('type', 'ram');
+
+        return this.http.get<RamFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/`, ***REMOVED***
+                withCredentials: true,
+                params: params
+            ***REMOVED***
+        )
     ***REMOVED***
 
     /**

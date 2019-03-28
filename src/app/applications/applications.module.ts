@@ -22,7 +22,7 @@ import ***REMOVED***SharedModuleModule***REMOVED*** from "../shared/shared_modul
         TabsModule,
         CommonModule,
         FormsModule,
-        ModalModule.forRoot(),
+        ModalModule.forRoot()
     ],
     declarations: [
         ApplicationsComponent,
