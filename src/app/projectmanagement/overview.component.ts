@@ -120,7 +120,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
     ***REMOVED***
 
    copyLink(text:string) ***REMOVED***
-        const event = (e: ClipboardEvent) => ***REMOVED***
+        const event = e => ***REMOVED***
             e.clipboardData.setData('text/plain', text);
             e.preventDefault();
             // ...('copy', e), as event is outside scope
