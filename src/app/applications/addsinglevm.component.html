@@ -314,16 +314,16 @@
                                 <span class="help-block">Is your project part of a Horizon 2020 project?</span>
                             </div>
                         </div>
-                      <div class="form-group row">
-                        <label class="col-md-4 form-control-label" for="text-input"><strong>Elixir Project</strong></label>
-                        <div class="col-md-8">
-                          <input type="text" id="id_project_application_elixir_project"
-                                 name="project_application_elixir_project" class="form-control"
-                                 maxlength="2048"
-                                 placeholder='Name of the project' [ngModel]="''">
-                          <span class="help-block">Is your project part of an Elixir project?</span>
+                        <div class="form-group row">
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>Elixir Project</strong></label>
+                            <div class="col-md-8">
+                                <input type="text" id="id_project_application_elixir_project"
+                                       name="project_application_elixir_project" class="form-control"
+                                       maxlength="2048"
+                                       placeholder='Name of the project' [ngModel]="''">
+                                <span class="help-block">Is your project part of an Elixir project?</span>
+                            </div>
                         </div>
-                      </div>
                         <div class="form-group row">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>
                             <div class="col-md-8">
@@ -350,6 +350,10 @@
                     </form>
                 </div>
                 <div class="card-footer">
+                    <div *ngIf="f.invalid" class="form-group row alert alert-warning">
+                        Some required fields are incorrect or not filled in yet.
+                        Please check if all required (*) fields are filled in correctly.
+                    </div>
                     <div class="form-group row">
                         <p class="col-md-12 form-control-label">By submitting this application you
                             agree to the
