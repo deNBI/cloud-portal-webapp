@@ -22,7 +22,7 @@ import {SharedModuleModule} from "../shared/shared_modules/shared-module.module"
         TabsModule,
         CommonModule,
         FormsModule,
-        ModalModule.forRoot(),
+        ModalModule.forRoot()
     ],
     declarations: [
         ApplicationsComponent,

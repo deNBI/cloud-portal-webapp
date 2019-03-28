@@ -3,6 +3,8 @@ import {ApiSettings} from './api-settings.service';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {RamFactor} from "../facility_manager/resources/ram-factor";
+import {CoreFactor} from "../facility_manager/resources/core-factor";
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -123,6 +125,68 @@ export class FacilityService {
             headers: header,
             observe: 'response'
         })
+    }
+
+    /**
+     * Add a new CoreFactor.
+     * @param {number | string} facility
+     * @param {number | string} cores
+     * @param {number | string} factor
+     * @returns {Observable<any>}
+     */
+    addCoresFactor(facility: number | string, cores: number | string, factor: number | string): Observable<CoreFactor[]> {
+        const params: HttpParams = new HttpParams().set('type', 'cores').set('cores', cores.toString()).set('factor', factor.toString());
+
+        return this.http.post<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/`, params, {
+            withCredentials: true,
+            headers: header,
+        })
+    }
+
+    /**
+     * Add a new RamFactor
+     * @param {number | string} facility
+     * @param {number | string} ram
+     * @param {number | string} factor
+     * @returns {Observable<any>}
+     */
+    addRamFactor(facility: number | string, ram: number | string, factor: number | string): Observable<RamFactor[]> {
+        const params: HttpParams = new HttpParams().set('type', 'ram').set('ram', ram.toString()).set('factor', factor.toString());
+
+        return this.http.post<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/`, params, {
+            withCredentials: true,
+            headers: header,
+        })
+    }
+
+    /**
+     * Get CoreFactors from a facility.
+     * @param {number | string} facility
+     * @returns {Observable<any>}
+     */
+    getCoreFactor(facility: number | string): Observable<CoreFactor[]> {
+        const params: HttpParams = new HttpParams().set('type', 'cores');
+
+        return this.http.get<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/`, {
+                withCredentials: true,
+                params: params
+            }
+        )
+    }
+
+    /**
+     * Get Ramactors from a facility.
+     * @param {number | string} facility
+     * @returns {Observable<any>}
+     */
+    getRamFactor(facility: number | string): Observable<RamFactor[]> {
+        const params: HttpParams = new HttpParams().set('type', 'ram');
+
+        return this.http.get<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/`, {
+                withCredentials: true,
+                params: params
+            }
+        )
     }
 
     /**

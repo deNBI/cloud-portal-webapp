@@ -25,7 +25,7 @@ import {ResourcesComponent} from './resources/resources.component';
         FacilityProjectsOverviewComponent,
         ImageTagComponent,
         FacilityApplicationComponent,
-        ResourcesComponent,
+        ResourcesComponent
 
     ]
 })

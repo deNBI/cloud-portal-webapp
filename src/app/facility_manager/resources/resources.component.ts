@@ -2,9 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {FacilityService} from '../../api-connector/facility.service';
 import {Resources} from '../../vo_manager/resources/resources';
 import * as jspdf from 'jspdf';
-
 import html2canvas from 'html2canvas';
 import {ExportAsConfig, ExportAsService} from 'ngx-export-as'
+import {CoreFactor} from "./core-factor";
+import {RamFactor} from "./ram-factor";
+import {forkJoin} from 'rxjs';
 
 @Component({
     selector: 'app-resources',
@@ -28,7 +30,8 @@ export class ResourcesComponent implements OnInit {
     totalResource: Resources;
     tableId: string = 'contentToConvert';
     today: number = Date.now();
-
+    coreFactors: CoreFactor[] = [];
+    ramFactors: RamFactor[] = [];
     exportAsConfigCSV: ExportAsConfig = {
         type: 'csv',
         elementId: this.tableId
@@ -39,11 +42,22 @@ export class ResourcesComponent implements OnInit {
 
     }
 
+    public getRamCoreFactors(): void {
+        forkJoin(
+            this.facilityService.getCoreFactor(this.selectedFacility['FacilityId']),
+            this.facilityService.getRamFactor(this.selectedFacility['FacilityId'])).subscribe(res => {
+            this.coreFactors = res[0];
+            this.ramFactors = res[1];
+        })
+
+    }
+
     constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
         this.facilityService.getManagerFacilities().subscribe((result: [string, number][]) => {
             this.managerFacilities = result;
             this.selectedFacility = this.managerFacilities[0];
-            this.getSelectedFacilityResources()
+            this.getSelectedFacilityResources();
+            this.getRamCoreFactors();
 
         })
     }
@@ -83,6 +97,19 @@ export class ResourcesComponent implements OnInit {
             }
         )
 
+    }
+
+    addCoreFactor(cores: string | number, factor: string | number): void {
+        this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor).subscribe(res => {
+            console.log(res)
+            this.coreFactors = res;
+        })
+    }
+
+    addRamFactor(ram: string | number, factor: string | number): void {
+        this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor).subscribe(res => {
+            this.ramFactors = res;
+        })
     }
 
     public tableToPDF(): void {
