@@ -7,7 +7,7 @@
         ***REMOVED******REMOVED***selectedFacility['Facility']***REMOVED******REMOVED***</h4></div>
     <div style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
                                              (ngModelChange)="onChangeSelectedFacility($event)"
-                                             class="form-control col-md-1" name="selectedFacility">
+                                             class="form-control " name="selectedFacility">
         <option *ngFor="  let facility of managerFacilities"
                 [ngValue]="facility">
             ***REMOVED******REMOVED***facility['Facility']***REMOVED******REMOVED***
@@ -21,7 +21,7 @@
 
 
         </div>
-        <div class="card-block">
+        <div class="card-body">
 
             <div class="alert alert-success"
                  *ngIf="all_applications_wfc.length == 0" role="alert">
@@ -31,8 +31,8 @@
         </div>
 
         <div *ngIf="all_applications_wfc.length != 0">
-            <div>
-                <table class="table  table-responsive table-striped">
+            <div class="table-responsive">
+                <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>Project Name</th>
@@ -86,8 +86,8 @@
                                     colspan="6">
                                     <div id="application_review-***REMOVED******REMOVED*** application.Id ***REMOVED******REMOVED***"
                                          [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
-                                        <div>
-                                            <table class="table  table-responsive table-striped">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
                                                 <tr>
                                                     <td>User Affiliations</td>
                                                     <td>***REMOVED******REMOVED***
@@ -271,7 +271,7 @@
 
 
         </div>
-        <div class="card-block">
+        <div class="card-body">
 
             <div class="alert alert-success"
                  *ngIf="all_application_modifications.length == 0" role="alert">
@@ -281,8 +281,8 @@
         </div>
 
         <div *ngIf="all_application_modifications.length != 0">
-            <div>
-                <table class="table  table-responsive table-striped">
+            <div class="table-responsive">
+                <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>Project Name</th>
@@ -336,9 +336,8 @@
                                     colspan="6">
                                     <div id="application_review-***REMOVED******REMOVED*** app.Id ***REMOVED******REMOVED***"
                                          [class.collapse]="getCollapseStatus('application_review-' + app.Id)">
-                                        <div>
-                                            <table class="table table-striped"
-                                                   table-responsive>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
                                                 <tr>
                                                     <td>User
                                                         Affiliations
@@ -564,16 +563,16 @@
         <div class="card-header">
             <i class="fa fa-align-justify"></i> Application history
         </div>
-        <div class="card-block" *ngIf="applications_history.length == 0">
+        <div class="card-body" *ngIf="applications_history.length == 0">
             <div class="alert alert-warning" role="alert">
                 <strong>No Applications!</strong> There are no
                 applications at all!
             </div>
         </div>
 
-        <div *ngIf="applications_history.length > 0" class="card-block">
-            <div>
-                <table class="table table-responsive table-striped table-hover">
+        <div *ngIf="applications_history.length > 0" class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
                     <thead>
                     <tr>
 
@@ -624,8 +623,8 @@
                                     colspan="6">
                                     <div id="application_history-***REMOVED******REMOVED*** application.Id ***REMOVED******REMOVED***"
                                          [class.collapse]="getCollapseStatus('application_history-' + application.Id)">
-                                        <div>
-                                            <table class="table table-striped table-responsive">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
                                                 <tr>
                                                     <td>Description
                                                     </td>

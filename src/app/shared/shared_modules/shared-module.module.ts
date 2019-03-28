@@ -8,6 +8,7 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from './baseClass/applicat
         CommonModule
     ],
     declarations: [ApplicationBaseClass]
+
 ***REMOVED***)
 export class SharedModuleModule ***REMOVED***
 ***REMOVED***
