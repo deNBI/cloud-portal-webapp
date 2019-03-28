@@ -5,7 +5,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {AppComponent} from './app.component';
-import {NAV_DROPDOWN_DIRECTIVES} from './shared/nav-dropdown.directive';
 
 import {HttpClientModule} from '@angular/common/http';
 import {ChartsModule} from 'ng2-charts/ng2-charts';
@@ -19,19 +18,32 @@ import {UserService} from './api-connector/user.service';
 import {AppRoutingModule} from './app.routing';
 import {ConsentInfoComponent} from './consent-info.component';
 // Layouts
+import {
+  AppAsideModule,
+  AppBreadcrumbModule,
+  AppHeaderModule,
+  AppFooterModule,
+  AppSidebarModule,
+} from '@coreui/angular';
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {RegistrationInfoComponent} from './registration-info.component';
 import {AsideToggleDirective} from './shared/aside.directive';
-import {BreadcrumbsComponent} from './shared/breadcrumb.component';
-import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
 import {ApplicationBaseClass} from "./shared/shared_modules/baseClass/application-base-class";
 import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
+import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
+
 
 /**
  * App module.
  */
 @NgModule({
     imports: [
+        AppAsideModule,
+        AppBreadcrumbModule.forRoot(),
+        AppHeaderModule,
+        AppFooterModule,
+        AppSidebarModule,
+        PerfectScrollbarModule,
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
@@ -47,9 +59,6 @@ import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
     declarations: [
         AppComponent,
         FullLayoutComponent,
-        NAV_DROPDOWN_DIRECTIVES,
-        BreadcrumbsComponent,
-        SIDEBAR_TOGGLE_DIRECTIVES,
         AsideToggleDirective,
         RegistrationInfoComponent,
         ConsentInfoComponent
