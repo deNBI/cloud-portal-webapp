@@ -51,7 +51,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
     public addUserModalRealName: string;
-    public addUserModalInvitationLink: string;
+    public addUserModalInvitationLink: string='';
 
     public UserModalFacilityDetails: [string, string][];
     public UserModalFacility: [string, number];
@@ -117,6 +117,17 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
             this.details_loaded = true;
         ***REMOVED***
 
+    ***REMOVED***
+
+   copyLink(text:string) ***REMOVED***
+        const event = e => ***REMOVED***
+            e.clipboardData.setData('text/plain', text);
+            e.preventDefault();
+            // ...('copy', e), as event is outside scope
+            document.removeEventListener('copy', e);
+        ***REMOVED***
+        document.addEventListener('copy', event);
+        document.execCommand('copy');
     ***REMOVED***
 
     getUserProjects(): void ***REMOVED***
