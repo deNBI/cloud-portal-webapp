@@ -51,7 +51,7 @@ export class OverviewComponent extends AbstractBaseClasse {
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
     public addUserModalRealName: string;
-    public addUserModalInvitationLink: string;
+    public addUserModalInvitationLink: string='';
 
     public UserModalFacilityDetails: [string, string][];
     public UserModalFacility: [string, number];
@@ -117,6 +117,17 @@ export class OverviewComponent extends AbstractBaseClasse {
             this.details_loaded = true;
         }
 
+    }
+
+   copyLink(text:string) {
+        const event = (e: ClipboardEvent) => {
+            e.clipboardData.setData('text/plain', text);
+            e.preventDefault();
+            // ...('copy', e), as event is outside scope
+            document.removeEventListener('copy', e);
+        }
+        document.addEventListener('copy', event);
+        document.execCommand('copy');
     }
 
     getUserProjects(): void {
