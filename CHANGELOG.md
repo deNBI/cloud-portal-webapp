@@ -1,4 +1,35 @@
 
+##  (2019-03-29)
+
+
+#### Features
+
+* **Application:** added elixir ([fcb8eff8](fcb8eff8))
+* **Applications:** fixed single vm flavors ([994f7d80](994f7d80))
+* **Client:**  removed delete btn ([10b81c1f](10b81c1f))
+* **Facility:** add facility llimits ([69cee988](69cee988))
+* **Factors:** added add delete method ([4e909b3b](4e909b3b))
+* **Modification:** now with summarize ([07b1a77c](07b1a77c))
+* **Project:** now copy linkt to clipboard ([a4760e68](a4760e68))
+* **Projects:** now with terminated ([4c429f71](4c429f71))
+* **Service:** removed settings ([6a004172](6a004172))
+* **Tslin:**
+  * updated config ([dd3b0d41](dd3b0d41))
+
+
+#### Bug Fixes
+
+* **Application:**
+  * fixed approve bug ([03554947](03554947))
+  * message ([3e7e4af3](3e7e4af3))
+* **Applications:**
+  * fixed initialisation bug ([768e4b8a](768e4b8a))
+  * fixed shared bug ([2f890be0](2f890be0))
+  * fixed request bug ([fba443d4](fba443d4))
+
+
+
+
 #### Features
 
 * **Applications:**
