@@ -7,12 +7,16 @@
 
 
         </h1>
-        <button (click)="factorModal.show()">test</button>
         <div class="card" style="width: 100%">
             <div class="card-header">
                 <i class="fa fa-align-justify"></i> Resources
 
+                        <button style="float:right" class="btn btn-primary" (click)="getRamCoreFactors();factorModal.show()">Set
+                            Limits</button>
+
+
             </div>
+
             <div><select [(ngModel)]="selectedFacility"
                          (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
                          class="form-control" name="selectedFacility">
@@ -144,7 +148,7 @@
                             <tr>
                                 <td>{{cF.cores}}</td>
                                 <td>{{cF.factor}}</td>
-                                <td><i style="cursor: pointer;" class="icon-minus h2"></i></td>
+                                <td><i (click)="deleteCoreFactor(cF.id)" style="cursor: pointer;" class="icon-minus h2"></i></td>
                             </tr>
                         </ng-container>
 
@@ -172,7 +176,7 @@
                             <tr>
                                 <td>{{rF.ram}}</td>
                                 <td>{{rF.factor}}</td>
-                                <td><i style="cursor: pointer;" class="icon-minus h2"></i></td>
+                                <td><i (click)="deleteRamFactor(rF.id)" style="cursor: pointer;" class="icon-minus h2"></i></td>
 
                             </tr>
                         </ng-container>

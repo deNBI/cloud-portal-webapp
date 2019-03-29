@@ -5,6 +5,7 @@ import {ComputecenterComponent} from '../../projectmanagement/computecenter.comp
  */
 export class CoreFactor {
 
+    private _id:string;
     private _factor: number;
     private _cores: number;
     private _compute_center: ComputecenterComponent;
@@ -13,6 +14,15 @@ export class CoreFactor {
         this._factor = factor;
         this._cores = cores;
         this._compute_center = compute_center;
+    }
+
+
+    get id(): string {
+        return this._id;
+    }
+
+    set id(value: string) {
+        this._id = value;
     }
 
     get factor(): number {

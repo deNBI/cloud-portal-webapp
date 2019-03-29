@@ -137,9 +137,9 @@ export class FacilityService {
     addCoresFactor(facility: number | string, cores: number | string, factor: number | string): Observable<CoreFactor[]> {
         const params: HttpParams = new HttpParams().set('type', 'cores').set('cores', cores.toString()).set('factor', factor.toString());
 
-        return this.http.post<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/`, params, {
+        return this.http.post<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/`, params, {
             withCredentials: true,
-            headers: header,
+            headers: header
         })
     }
 
@@ -153,9 +153,37 @@ export class FacilityService {
     addRamFactor(facility: number | string, ram: number | string, factor: number | string): Observable<RamFactor[]> {
         const params: HttpParams = new HttpParams().set('type', 'ram').set('ram', ram.toString()).set('factor', factor.toString());
 
-        return this.http.post<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/`, params, {
+        return this.http.post<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/`, params, {
             withCredentials: true,
-            headers: header,
+            headers: header
+        })
+    }
+
+    /**
+     * Deletes an RamFactor.
+     * @param {number | string} facility
+     * @param {number | string} factor_id
+     * @returns {Observable<RamFactor[]>}
+     */
+    deleteRamFactor(facility: number | string, factor_id: number | string): Observable<RamFactor[]> {
+
+        return this.http.delete<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor_id}/`, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
+    /**
+     * Deletes an CoreFactor.
+     * @param {number | string} facility
+     * @param {number | string} factor_id
+     * @returns {Observable<RamFactor[]>}
+     */
+    deleteCoreFactor(facility: number | string, factor_id: number | string): Observable<CoreFactor[]> {
+
+        return this.http.delete<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/${factor_id}/`, {
+            withCredentials: true,
+            headers: header
         })
     }
 
@@ -167,7 +195,7 @@ export class FacilityService {
     getCoreFactor(facility: number | string): Observable<CoreFactor[]> {
         const params: HttpParams = new HttpParams().set('type', 'cores');
 
-        return this.http.get<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/`, {
+        return this.http.get<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/`, {
                 withCredentials: true,
                 params: params
             }
@@ -182,7 +210,7 @@ export class FacilityService {
     getRamFactor(facility: number | string): Observable<RamFactor[]> {
         const params: HttpParams = new HttpParams().set('type', 'ram');
 
-        return this.http.get<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/`, {
+        return this.http.get<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/`, {
                 withCredentials: true,
                 params: params
             }

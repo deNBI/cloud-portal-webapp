@@ -4,7 +4,7 @@ import {ComputecenterComponent} from '../../projectmanagement/computecenter.comp
  * RamFactor class.
  */
 export class RamFactor {
-
+    private _id:string;
     private _factor: number;
     private _ram: number;
     private _compute_center: ComputecenterComponent;
@@ -13,6 +13,15 @@ export class RamFactor {
         this._factor = factor;
         this._ram = ram;
         this._compute_center = compute_center;
+    }
+
+
+    get id(): string {
+        return this._id;
+    }
+
+    set id(value: string) {
+        this._id = value;
     }
 
     get factor(): number {

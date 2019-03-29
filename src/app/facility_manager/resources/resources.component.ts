@@ -37,9 +37,32 @@ export class ResourcesComponent implements OnInit {
         elementId: this.tableId
     };
 
+
+    constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
+        this.facilityService.getManagerFacilities().subscribe((result: [string, number][]) => {
+            this.managerFacilities = result;
+            this.selectedFacility = this.managerFacilities[0];
+            this.getSelectedFacilityResources();
+
+        })
+    }
+
     public tableToCSV(): void {
         this.exportAsService.save(this.exportAsConfigCSV, this.tableId);
 
+    }
+
+
+    public deleteCoreFactor(id: string | number): void {
+        this.facilityService.deleteCoreFactor(this.selectedFacility['FacilityId'], id).subscribe((res: CoreFactor[]) => {
+            this.coreFactors = res;
+        })
+    }
+
+    public deleteRamFactor(id: string | number): void {
+        this.facilityService.deleteRamFactor(this.selectedFacility['FacilityId'], id).subscribe((res: RamFactor[]) => {
+            this.ramFactors = res;
+        })
     }
 
     public getRamCoreFactors(): void {
@@ -52,15 +75,7 @@ export class ResourcesComponent implements OnInit {
 
     }
 
-    constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
-        this.facilityService.getManagerFacilities().subscribe((result: [string, number][]) => {
-            this.managerFacilities = result;
-            this.selectedFacility = this.managerFacilities[0];
-            this.getSelectedFacilityResources();
-            this.getRamCoreFactors();
 
-        })
-    }
 
     public getSelectedFacilityResources(): void {
         this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe((res: object) => {
@@ -101,7 +116,6 @@ export class ResourcesComponent implements OnInit {
 
     addCoreFactor(cores: string | number, factor: string | number): void {
         this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor).subscribe(res => {
-            console.log(res)
             this.coreFactors = res;
         })
     }
