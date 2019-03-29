@@ -84,14 +84,14 @@ export class ResourcesComponent implements OnInit ***REMOVED***
                     res['simpleVmApplications']['totalRam'],
                     res['simpleVmApplications']['totalCores'],
                     res['simpleVmApplications']['totalVms'], res['simpleVmApplications']['totalVolumeLimit'],
-                    res['simpleVmApplications']['totalVolumeCounter'], 0, 0, 0);
+                    res['simpleVmApplications']['totalVolumeCounter'], 0, res['simpleVmApplications']['totalGPU']);
                 this.openstackApprovedResources = new Resources(
                     'Approved OpenStack',
                     res['approvedOpenStackApplications']['totalRam'],
                     res['approvedOpenStackApplications']['totalCores'],
                     res['approvedOpenStackApplications']['totalVms'], res['approvedOpenStackApplications']['totalVolumeLimit'],
                     res['approvedOpenStackApplications']['totalVolumeCounter'],
-                    res['approvedOpenStackApplications']['totalObjectStorage'], res['approvedOpenStackApplications']['totalFPGA'],
+                    res['approvedOpenStackApplications']['totalObjectStorage'],
                     res['approvedOpenStackApplications']['totalGPU']);
                 this.openstackWFCResources = new Resources(
                     'Wait for Confirmation OpenStack',
@@ -99,14 +99,14 @@ export class ResourcesComponent implements OnInit ***REMOVED***
                     res['wfcOpenStackApplications']['totalCores'],
                     res['wfcOpenStackApplications']['totalVms'], res['wfcOpenStackApplications']['totalVolumeLimit'],
                     res['wfcOpenStackApplications']['totalVolumeCounter'],
-                    res['wfcOpenStackApplications']['totalObjectStorage'], res['wfcOpenStackApplications']['totalFPGA'],
-                    res['wfcOpenStackApplications']['totalGPU'])
+                    res['wfcOpenStackApplications']['totalObjectStorage'],
+                    res['wfcOpenStackApplications']['totalGPU']);
                 this.totalResource = new Resources(
                     'Total',
                     res['total']['totalRam'], res['total']['totalCores'],
                     res['total']['totalVms'], res['total']['totalVolumeLimit'],
                     res['total']['totalVolumeCounter'], res['total']['totalObjectStorage'],
-                    res['total']['totalFPGA'], res['total']['totalGPU']);
+                    res['total']['totalGPU']);
 
                 this.isLoaded = true;
             ***REMOVED***

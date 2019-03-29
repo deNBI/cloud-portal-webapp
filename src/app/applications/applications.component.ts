@@ -327,7 +327,10 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
      * @param approval date in string when the application was approved
      * @param months number of months the application is permitted
      */
-    getEndDate(approval: string, months: number): string ***REMOVED***
+    getEndDate(months: number, approval?: string,): string ***REMOVED***
+        if (!approval) ***REMOVED***
+            return ''
+        ***REMOVED***
         let date1: Date = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
         const month: number = date1.getMonth();
         if ((month + months) > 11) ***REMOVED***
@@ -352,7 +355,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
             return
         ***REMOVED***
 
-        return `$***REMOVED***sa.DateApproved***REMOVED*** - $***REMOVED***this.getEndDate(sa.DateApproved, sa.Lifetime)***REMOVED***`;
+        return `$***REMOVED***sa.DateApproved***REMOVED*** - $***REMOVED***this.getEndDate( sa.Lifetime,sa.DateApproved,)***REMOVED***`;
     ***REMOVED***
 
     /**
@@ -379,6 +382,24 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
     ***REMOVED***
 
+    /**
+     * Terminateda project.
+     * Deletes the Perun Group and sets the application status to terminated.
+     * @param ***REMOVED***Application***REMOVED*** app
+     */
+    public terminateProject(app: Application): void ***REMOVED***
+        this.applicationstatusservice.setApplicationStatus(app.Id, this.application_states.TERMINATED).subscribe(res => ***REMOVED***
+            this.getApplication(app);
+            if (res === 'null') ***REMOVED***
+                this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
+
+            ***REMOVED*** else ***REMOVED***
+                this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
+
+            ***REMOVED***
+
+        ***REMOVED***)
+    ***REMOVED***
 
     /**
      * Approve an extension request.
@@ -751,7 +772,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
      * Delete an application.
      * @param application_id
      */
-    public deleteApplication(application_id: string|number): void ***REMOVED***
+    public deleteApplication(application_id: string | number): void ***REMOVED***
         this.applicationsservice.deleteApplication(application_id).toPromise()
             .then(() => ***REMOVED***
                 this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
