@@ -31,6 +31,12 @@ import {AsideToggleDirective} from './shared/aside.directive';
 import {ApplicationBaseClass} from "./shared/shared_modules/baseClass/application-base-class";
 import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
+import {BreadcrumbsComponent} from "./shared/breadcrumb.component";
+import {NavDropdownDirective, NavDropdownToggleDirective} from "./shared/nav-dropdown.directive";
+import {
+    MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
+    SidebarToggleDirective
+} from "./shared/sidebar.directive";
 
 
 /**
@@ -61,7 +67,16 @@ import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
         FullLayoutComponent,
         AsideToggleDirective,
         RegistrationInfoComponent,
-        ConsentInfoComponent
+        ConsentInfoComponent,
+        BreadcrumbsComponent,
+        NavDropdownDirective,
+        SidebarToggleDirective,
+        SidebarMinimizeDirective,
+        MobileSidebarToggleDirective,
+        SidebarOffCanvasCloseDirective,
+        NavDropdownToggleDirective
+
+
     ],
     providers: [{
         provide: LocationStrategy,
