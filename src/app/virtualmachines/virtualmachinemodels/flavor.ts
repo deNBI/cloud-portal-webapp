@@ -1,5 +1,8 @@
-import {FlavorType} from "./flavorType";
+import {FlavorType} from './flavorType';
 
+/**
+ * Flavor Class.
+ */
 export class Flavor {
     private _id: string;
     private _name: string;
@@ -10,7 +13,6 @@ export class Flavor {
     private _epheremal_disk: number;
     private _type: FlavorType;
     private _simple_vm: boolean;
-
 
     get id(): string {
         return this._id;
@@ -84,10 +86,4 @@ export class Flavor {
         this._simple_vm = value;
     }
 
-
 }
-
-
-
-
-

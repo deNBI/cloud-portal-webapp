@@ -1,10 +1,12 @@
-import {ApplicationExtension} from "./application_extension.model";
-import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
-import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {ApplicationExtension} from './application_extension.model';
+import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 
-
+/**
+ * Application class.
+ */
 export class Application {
-    private _Id: number;
+
+    private _Id: number | string;
     private _Name: string;
     private _Shortname: string;
     private _Institute: string;
@@ -21,30 +23,34 @@ export class Application {
     private _Comment: string;
     private _DateSubmitted: string;
     private _DateStatusChanged: string;
-    private _User: number;
-    private _UserEmail: number;
+    private _User: string;
+    private _UserEmail: string;
     private _UserAffiliations: string[];
     private _Status: number;
     private _ComputeCenter: ComputecenterComponent;
     private _OpenStackProject: boolean;
     private _DaysRunning: number;
     private _ApplicationExtension: ApplicationExtension;
-    private _PerunId: number;
+    private _PerunId: number | string;
     private _TotalCores: number;
     private _TotalRam: number;
     private _DateApproved: string;
     private _Horizon2020: string;
-
-
+    private _ElixirProject: string;
     private _Dissemination: boolean;
-    private _CurrentFlavors: { [id: string]: { counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number } };
-
+    private _CurrentFlavors: {
+        [id: string]: {
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        }
+    };
 
     constructor() {
         this._CurrentFlavors = {};
     }
 
-    public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number): void {
+    public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number,
+                              vcpus: number, gpu: number, epheremal_disk: number): void {
         this._CurrentFlavors[name] = {
             counter: counter,
             tag: tag,
@@ -55,7 +61,8 @@ export class Application {
             epheremal_disk: epheremal_disk
         };
     }
-     get Dissemination(): boolean {
+
+    get Dissemination(): boolean {
         return this._Dissemination;
     }
 
@@ -63,11 +70,21 @@ export class Application {
         this._Dissemination = value;
     }
 
-    get CurrentFlavors(): { [id: string]: { counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number } } {
+    get CurrentFlavors(): {
+        [id: string]: {
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        }
+    } {
         return this._CurrentFlavors
     }
 
-    set CurrentFlavors(value: { [id: string]: { counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number } }) {
+    set CurrentFlavors(value: {
+        [id: string]: {
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        }
+    }) {
         this._CurrentFlavors = value;
     }
 
@@ -127,7 +144,6 @@ export class Application {
         this._OpenStackProject = value;
     }
 
-
     get ComputeCenter(): ComputecenterComponent {
         return this._ComputeCenter
     }
@@ -136,11 +152,11 @@ export class Application {
         this._ComputeCenter = value;
     }
 
-    get Id(): number {
+    get Id(): number | string {
         return this._Id;
     }
 
-    set Id(value: number) {
+    set Id(value: number | string) {
         this._Id = value;
     }
 
@@ -224,7 +240,6 @@ export class Application {
         this._VolumeLimit = value;
     }
 
-
     get VolumeCounter(): number {
         return this._VolumeCounter;
     }
@@ -273,11 +288,11 @@ export class Application {
         this._DateStatusChanged = value;
     }
 
-    get User(): number {
+    get User(): string {
         return this._User;
     }
 
-    set User(value: number) {
+    set User(value: string) {
         this._User = value;
     }
 
@@ -289,23 +304,21 @@ export class Application {
         this._Status = value;
     }
 
-
-    get UserEmail(): number {
+    get UserEmail(): string {
         return this._UserEmail;
     }
 
-    set UserEmail(value: number) {
+    set UserEmail(value: string) {
         this._UserEmail = value;
     }
 
-    get PerunId(): number {
+    get PerunId(): number | string {
         return this._PerunId;
     }
 
-    set PerunId(value: number) {
+    set PerunId(value: number | string) {
         this._PerunId = value;
     }
-
 
     get Horizon2020(): string {
         return this._Horizon2020;
@@ -313,5 +326,13 @@ export class Application {
 
     set Horizon2020(value: string) {
         this._Horizon2020 = value;
+    }
+
+    get ElixirProject(): string {
+      return this._ElixirProject;
+    }
+
+    set ElixirProject(value: string) {
+      this._ElixirProject = value;
     }
 }

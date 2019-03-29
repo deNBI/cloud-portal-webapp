@@ -11,7 +11,12 @@
             <div class="card-header">
                 <i class="fa fa-align-justify"></i> Resources
 
+                        <button style="float:right" class="btn btn-primary" (click)="getRamCoreFactors();factorModal.show()">Set
+                            Limits</button>
+
+
             </div>
+
             <div><select [(ngModel)]="selectedFacility"
                          (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
                          class="form-control" name="selectedFacility">
@@ -21,87 +26,89 @@
 
             </select></div>
 
-            <div class="card-block" style="width: 100%">
+            <div class="card-body" style="width: 100%">
 
 
-                <table id="contentToConvert"
-                       class="table table-responsive table-striped table-bordered table"
-                       style="width: 100%">
-                    <thead>
-                    <tr>
-                        <th colspan="5"><h1>Facility: {{selectedFacility['Facility']}} {{today | date:'dd-MM-yyyy'}}</h1></th>
-                    </tr>
-                    </thead>
-                    <thead>
-                    <tr>
-                        <th>{{today | date:'dd-MM-yyyy'}}</th>
-                        <th>{{openstackApprovedResources.resource_name}}</th>
-                        <th>{{openstackWFCResources.resource_name}}</th>
-                        <th>{{simpleVmRessource.resource_name}}</th>
-                        <th>{{totalResource.resource_name}}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                <div class="table-responsive">
+                    <table id="contentToConvert"
+                           class="table table-striped table-bordered"
+                           style="width: 100%">
+                        <thead>
+                        <tr>
+                            <th colspan="5"><h1>Facility: {{selectedFacility['Facility']}} {{today |
+                                date:'dd-MM-yyyy'}}</h1></th>
+                        </tr>
+                        </thead>
+                        <thead>
+                        <tr>
+                            <th>{{today | date:'dd-MM-yyyy'}}</th>
+                            <th>{{openstackApprovedResources.resource_name}}</th>
+                            <th>{{openstackWFCResources.resource_name}}</th>
+                            <th>{{simpleVmRessource.resource_name}}</th>
+                            <th>{{totalResource.resource_name}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-                    <tr>
-                        <th>Ram [GB]</th>
-                        <td>{{openstackApprovedResources.totalRam}}</td>
-                        <td>{{openstackWFCResources.totalRam}}</td>
-                        <td>{{simpleVmRessource.totalRam}}</td>
-                        <td>{{totalResource.totalRam}}</td>
-                    </tr>
-                    <tr>
-                        <th>Cores</th>
-                        <td>{{openstackApprovedResources.totalCores}}</td>
-                        <td>{{openstackWFCResources.totalCores}}</td>
-                        <td>{{simpleVmRessource.totalCores}}</td>
-                        <td>{{totalResource.totalCores}}</td>
-                    </tr>
-                    <tr>
-                        <th>Vms</th>
-                        <td>{{openstackApprovedResources.totalVms}}</td>
-                        <td>{{openstackWFCResources.totalVms}}</td>
-                        <td>{{simpleVmRessource.totalVms}}</td>
-                        <td>{{totalResource.totalVms}}</td>
-                    </tr>
-                    <tr>
-                        <th>Volumes</th>
-                        <td>{{openstackApprovedResources.totalVolumeCounter}}</td>
-                        <td>{{openstackWFCResources.totalVolumeCounter}}</td>
-                        <td>{{simpleVmRessource.totalVolumeCounter}}</td>
-                        <td>{{totalResource.totalVolumeCounter}}</td>
-                    </tr>
-                    <tr>
-                        <th>Volumes Storage [GB]</th>
-                        <td>{{openstackApprovedResources.totalVolumeLimit}}</td>
-                        <td>{{openstackWFCResources.totalVolumeLimit}}</td>
-                        <td>{{simpleVmRessource.totalVolumeLimit}}</td>
-                        <td>{{totalResource.totalVolumeLimit}}</td>
-                    </tr>
-                    <tr>
-                        <th>Object Storage [GB]</th>
-                        <td>{{openstackApprovedResources.totalObjectStorage}}</td>
-                        <td>{{openstackWFCResources.totalObjectStorage}}</td>
-                        <td></td>
-                        <td>{{totalResource.totalObjectStorage}}</td>
-                    </tr>
-                    <tr>
-                        <th>FPGA</th>
-                        <td>{{openstackApprovedResources.totalFPGA}}</td>
-                        <td>{{openstackWFCResources.totalFPGA}}</td>
-                        <td></td>
-                        <td>{{totalResource.totalFPGA}}</td>
-                    </tr>
-                    <tr>
-                        <th>GPU</th>
-                        <td>{{openstackApprovedResources.totalGPU}}</td>
-                        <td>{{openstackWFCResources.totalGPU}}</td>
-                        <td></td>
-                        <td>{{totalResource.totalGPU}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-
+                        <tr>
+                            <th>Ram [GB]</th>
+                            <td>{{openstackApprovedResources.totalRam}}</td>
+                            <td>{{openstackWFCResources.totalRam}}</td>
+                            <td>{{simpleVmRessource.totalRam}}</td>
+                            <td>{{totalResource.totalRam}}</td>
+                        </tr>
+                        <tr>
+                            <th>Cores</th>
+                            <td>{{openstackApprovedResources.totalCores}}</td>
+                            <td>{{openstackWFCResources.totalCores}}</td>
+                            <td>{{simpleVmRessource.totalCores}}</td>
+                            <td>{{totalResource.totalCores}}</td>
+                        </tr>
+                        <tr>
+                            <th>Vms</th>
+                            <td>{{openstackApprovedResources.totalVms}}</td>
+                            <td>{{openstackWFCResources.totalVms}}</td>
+                            <td>{{simpleVmRessource.totalVms}}</td>
+                            <td>{{totalResource.totalVms}}</td>
+                        </tr>
+                        <tr>
+                            <th>Volumes</th>
+                            <td>{{openstackApprovedResources.totalVolumeCounter}}</td>
+                            <td>{{openstackWFCResources.totalVolumeCounter}}</td>
+                            <td>{{simpleVmRessource.totalVolumeCounter}}</td>
+                            <td>{{totalResource.totalVolumeCounter}}</td>
+                        </tr>
+                        <tr>
+                            <th>Volumes Storage [GB]</th>
+                            <td>{{openstackApprovedResources.totalVolumeLimit}}</td>
+                            <td>{{openstackWFCResources.totalVolumeLimit}}</td>
+                            <td>{{simpleVmRessource.totalVolumeLimit}}</td>
+                            <td>{{totalResource.totalVolumeLimit}}</td>
+                        </tr>
+                        <tr>
+                            <th>Object Storage [GB]</th>
+                            <td>{{openstackApprovedResources.totalObjectStorage}}</td>
+                            <td>{{openstackWFCResources.totalObjectStorage}}</td>
+                            <td></td>
+                            <td>{{totalResource.totalObjectStorage}}</td>
+                        </tr>
+                        <tr>
+                            <th>FPGA</th>
+                            <td>{{openstackApprovedResources.totalFPGA}}</td>
+                            <td>{{openstackWFCResources.totalFPGA}}</td>
+                            <td></td>
+                            <td>{{totalResource.totalFPGA}}</td>
+                        </tr>
+                        <tr>
+                            <th>GPU</th>
+                            <td>{{openstackApprovedResources.totalGPU}}</td>
+                            <td>{{openstackWFCResources.totalGPU}}</td>
+                            <td></td>
+                            <td>{{totalResource.totalGPU}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div>
                 <button (click)="tableToPDF()">Download PDF</button>
@@ -111,3 +118,99 @@
         <!--/.col-->
     </div>
 </div>
+
+
+<div bsModal #factorModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-info modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Resources Factors</h4>
+                <button type="button" class="close" style="cursor: pointer"
+                        (click)="factorModal.hide()"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <th>Cores</th>
+                        <th>Factor</th>
+                        <th>Actions</th>
+                        </thead>
+                        <tbody>
+                        <ng-container
+                                *ngFor="let cF of coreFactors">
+                            <tr>
+                                <td>{{cF.cores}}</td>
+                                <td>{{cF.factor}}</td>
+                                <td><i (click)="deleteCoreFactor(cF.id)" style="cursor: pointer;" class="icon-minus h2"></i></td>
+                            </tr>
+                        </ng-container>
+
+                        <tr>
+                            <td><input type="text" placeholder="Cores" #cores></td>
+                            <td><input type="text" placeholder="Factor" #coresFactor></td>
+                            <td><i style="cursor: pointer;" (click)="addCoreFactor(cores.value,coresFactor.value);"
+                                   class="icon-plus h2"></i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered    ">
+                        <thead>
+                        <th>Ram</th>
+                        <th>Factor</th>
+                        <th>Actions</th>
+                        </thead>
+                        <tbody>
+                        <ng-container
+                                *ngFor="let rF of ramFactors">
+                            <tr>
+                                <td>{{rF.ram}}</td>
+                                <td>{{rF.factor}}</td>
+                                <td><i (click)="deleteRamFactor(rF.id)" style="cursor: pointer;" class="icon-minus h2"></i></td>
+
+                            </tr>
+                        </ng-container>
+
+                        <tr>
+                            <td><input type="text" placeholder="Ram" #ram></td>
+                            <td><input type="text" placeholder="Factor" #ramFactor></td>
+                            <td><i style="cursor: pointer;" (click)="addRamFactor(ram.value,ramFactor.value);" class="icon-plus h2"></i>
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            (click)="factorModal.hide()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+
+
+
+
+
+
+
+

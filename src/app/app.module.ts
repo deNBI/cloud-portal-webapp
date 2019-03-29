@@ -1,35 +1,49 @@
-import {BrowserModule} from '@angular/platform-browser';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {LocationStrategy, HashLocationStrategy} from '@angular/common';
+import {BrowserModule} from '@angular/platform-browser';
 
-import {AppComponent} from './app.component';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TabsModule} from 'ngx-bootstrap/tabs';
-import {NAV_DROPDOWN_DIRECTIVES} from './shared/nav-dropdown.directive';
+import {AppComponent} from './app.component';
 
-import {ChartsModule} from 'ng2-charts/ng2-charts';
-import {SIDEBAR_TOGGLE_DIRECTIVES} from './shared/sidebar.directive';
-import {AsideToggleDirective} from './shared/aside.directive';
-import {PopoverModule} from 'ngx-popover';
-import {BreadcrumbsComponent} from './shared/breadcrumb.component';
-import {PerunSettings} from "./perun-connector/connector-settings.service";
-import {ApiSettings} from "./api-connector/api-settings.service";
 import {HttpClientModule} from '@angular/common/http';
-// Routing Module
-import {AppRoutingModule} from './app.routing';
+import {ChartsModule} from 'ng2-charts/ng2-charts';
+import {ModalModule} from 'ngx-bootstrap';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {ExportAsModule} from 'ngx-export-as';
-
+import {PopoverModule} from 'ngx-popover';
+import {ApiSettings} from './api-connector/api-settings.service';
+import {UserService} from './api-connector/user.service';
+// Routing Module
+import {AppRoutingModule} from './app.routing';
+import {ConsentInfoComponent} from './consent-info.component';
 // Layouts
+import {
+  AppAsideModule,
+  AppBreadcrumbModule,
+  AppHeaderModule,
+  AppFooterModule,
+  AppSidebarModule,
+} from '@coreui/angular';
 import {FullLayoutComponent} from './layouts/full-layout.component';
-import {SimpleLayoutComponent} from './layouts/simple-layout.component';
-import {ModalModule} from "ngx-bootstrap";
-import {RegistrationInfoComponent} from "./registration-info.component";
-import {UserService} from "./api-connector/user.service";
-import {ConsentInfoComponent} from "./consent-info.component";
+import {RegistrationInfoComponent} from './registration-info.component';
+import {AsideToggleDirective} from './shared/aside.directive';
+import {ApplicationBaseClass} from "./shared/shared_modules/baseClass/application-base-class";
+import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
+import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 
+
+/**
+ * App module.
+ */
 @NgModule({
     imports: [
+        AppAsideModule,
+        AppBreadcrumbModule.forRoot(),
+        AppHeaderModule,
+        AppFooterModule,
+        AppSidebarModule,
+        PerfectScrollbarModule,
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
@@ -39,25 +53,21 @@ import {ConsentInfoComponent} from "./consent-info.component";
         ModalModule.forRoot(),
         PopoverModule,
         PaginationModule.forRoot(),
-        ExportAsModule
+        ExportAsModule,
+        SharedModuleModule
     ],
     declarations: [
         AppComponent,
         FullLayoutComponent,
-        SimpleLayoutComponent,
-        NAV_DROPDOWN_DIRECTIVES,
-        BreadcrumbsComponent,
-        SIDEBAR_TOGGLE_DIRECTIVES,
         AsideToggleDirective,
         RegistrationInfoComponent,
-        ConsentInfoComponent,
+        ConsentInfoComponent
     ],
     providers: [{
         provide: LocationStrategy,
         useClass: HashLocationStrategy
     },
 
-        PerunSettings,
         ApiSettings,
         UserService
     ],

@@ -1,8 +1,10 @@
 import {Image} from './image';
 import {Flavor} from './flavor';
-import {Vmclient} from "./vmclient";
+import {Client} from '../clients/vmclient';
 
-
+/**
+ * Virtualmachine class.
+ */
 export class VirtualMachine {
     flavor: Flavor;
     image: Image;
@@ -10,7 +12,7 @@ export class VirtualMachine {
     status: string;
     keyname: string;
     name: string;
-    client: Vmclient;
+    client: Client;
     openstackid: string;
     created_at: string;
     stopped_at: string;
@@ -19,6 +21,4 @@ export class VirtualMachine {
     floating_ip: string;
     ssh_command: string;
 
-
 }
-

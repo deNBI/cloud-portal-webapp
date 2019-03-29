@@ -12,71 +12,67 @@
                 <i class="fa fa-align-justify"></i> Resources
 
             </div>
-            <div id="resourcesTable" class="card-block" style="width: 100%">
+            <div id="resourcesTable" class="card-body" style="width: 100%">
 
 
-                <table class="table table-responsive table-striped table-bordered table"
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered"
                        style="width: 100%">
-                    <thead>
-                    <tr>
+                  <thead>
+                  <tr>
                     <th>{{today | date:'dd-MM-yyyy'}}</th>
 
                     <th *ngFor="let r of voResources">{{r.resource_name}}</th>
                     <th>{{totalResource.resource_name}}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                  </tr>
+                  </thead>
+                  <tbody>
 
-                    <tr>
-                        <th>Ram [GB]</th>
-                        <td *ngFor="let r of voResources">{{r.totalRam}}</td>
+                  <tr>
+                    <th>Ram [GB]</th>
+                    <td *ngFor="let r of voResources">{{r.totalRam}}</td>
 
-                        <td>{{totalResource.totalRam}}</td>
-                    </tr>
-                    <tr>
-                        <th>Cores</th>
-                        <td *ngFor="let r of voResources">{{r.totalCores}}</td>
+                    <td>{{totalResource.totalRam}}</td>
+                  </tr>
+                  <tr>
+                    <th>Cores</th>
+                    <td *ngFor="let r of voResources">{{r.totalCores}}</td>
 
-                        <td>{{totalResource.totalCores}}</td>
-                    </tr>
-                    <tr>
-                        <th>Vms</th>
-                        <td *ngFor="let r of voResources">{{r.totalVms}}</td>
+                    <td>{{totalResource.totalCores}}</td>
+                  </tr>
+                  <tr>
+                    <th>Vms</th>
+                    <td *ngFor="let r of voResources">{{r.totalVms}}</td>
 
-                        <td>{{totalResource.totalVms}}</td>
-                    </tr>
-                    <tr>
-                        <th>Volumes</th>
-                        <td *ngFor="let r of voResources">{{r.totalVolumeCounter}}</td>
+                    <td>{{totalResource.totalVms}}</td>
+                  </tr>
+                  <tr>
+                    <th>Volumes</th>
+                    <td *ngFor="let r of voResources">{{r.totalVolumeCounter}}</td>
 
-                        <td>{{totalResource.totalVolumeCounter}}</td>
-                    </tr>
-                    <tr>
-                        <th>Volumes Storage [GB]</th>
-                        <td *ngFor="let r of voResources">{{r.totalVolumeLimit}}</td>
+                    <td>{{totalResource.totalVolumeCounter}}</td>
+                  </tr>
+                  <tr>
+                    <th>Volumes Storage [GB]</th>
+                    <td *ngFor="let r of voResources">{{r.totalVolumeLimit}}</td>
 
-                        <td>{{totalResource.totalVolumeLimit}}</td>
-                    </tr>
-                    <tr>
-                        <th>Object Storage [GB]</th>
-                        <td *ngFor="let r of voResources">{{r.totalObjectStorage}}</td>
+                    <td>{{totalResource.totalVolumeLimit}}</td>
+                  </tr>
+                  <tr>
+                    <th>Object Storage [GB]</th>
+                    <td *ngFor="let r of voResources">{{r.totalObjectStorage}}</td>
 
-                        <td>{{totalResource.totalObjectStorage}}</td>
-                    </tr>
-                    <tr>
-                        <th>FPGA</th>
-                        <td *ngFor="let r of voResources">{{r.totalFPGA}}</td>
+                    <td>{{totalResource.totalObjectStorage}}</td>
+                  </tr>
+                  <tr>
+                    <th>GPU</th>
+                    <td *ngFor="let r of voResources">{{r.totalGPU}}</td>
 
-                        <td>{{totalResource.totalFPGA}}</td>
-                    </tr>
-                    <tr>
-                        <th>GPU</th>
-                        <td *ngFor="let r of voResources">{{r.totalGPU}}</td>
-
-                        <td>{{totalResource.totalGPU}}</td>
-                    </tr>
-                    </tbody>
+                    <td>{{totalResource.totalGPU}}</td>
+                  </tr>
+                  </tbody>
                 </table>
+              </div>
 
             </div>
             <div>

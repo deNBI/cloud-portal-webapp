@@ -1,8 +1,6 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
-import {FacilityProjectsOverviewComponent} from "../facility_manager/facilityprojectsoverview.component";
+import {RouterModule, Routes} from '@angular/router';
 import {OverviewComponent} from './overview.component';
-import {ImageTagComponent} from "../facility_manager/imagetags.component";
 
 const routes: Routes = [
     {
@@ -12,9 +10,7 @@ const routes: Routes = [
             title: 'Project overview'
         }
 
-    },
-
-
+    }
 
 ];
 

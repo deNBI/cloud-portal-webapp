@@ -4,434 +4,383 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
-import {Vmclient} from "../virtualmachines/virtualmachinemodels/vmclient";
 
-const header = new HttpHeaders({
-    'X-CSRFToken': Cookie.get("csrftoken")
+const header: HttpHeaders = new HttpHeaders({
+    'X-CSRFToken': Cookie.get('csrftoken')
 });
 
-
+/**
+ * Service which provides Group methods.
+ */
 @Injectable()
 export class GroupService {
 
-    constructor(private http: HttpClient, private settings: ApiSettings) {
+    constructor(private http: HttpClient) {
     }
-
-
-
-
 
     getFacilityByGroup(groupid: string): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/computecenter/', {
-            withCredentials: true,
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/computecenter/`, {
+            withCredentials: true
         }).pipe(catchError((error: any) => throwError(error.error)));
 
     }
 
-    getClient(groupid:string):Observable<any>{
+    getClient(groupid: string): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/client/', {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/`, {
             withCredentials: true,
             headers: header
         }).pipe(catchError((error: any) => throwError(error.error)));
 
     }
-
-
-
 
     assignGroupToResource(groupid: string, computecenter: string): Observable<any> {
-        let params = new HttpParams().set('compute_center', computecenter)
+        const params: HttpParams = new HttpParams().set('compute_center', computecenter);
 
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/' + groupid +'/resource/', params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/resource/`, params, {
             withCredentials: true,
             headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
+        })
 
     }
 
-     removeGroupFromResource(groupid: string): Observable<any> {
+    removeGroupFromResource(groupid: string): Observable<any> {
 
-        return this.http.delete(this.settings.getApiBaseURL() + 'projects/' + groupid +'/resource/', {
+        return this.http.delete(`${ApiSettings.getApiBaseURL()}projects/${groupid}/resource/`, {
             withCredentials: true,
             headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-
-    }
-
-    isUserAdminOfGroup(groupid: string, userid: string): Observable<any> {
-
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/members/' + userid + '/manager/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
 
     }
 
+    isUserAdminOfGroup(groupid: number | string, userid: number | string): Observable<any> {
 
-    getGroupAdminIds(groupid: string): Observable<any> {
-
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/admins/ids/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/members/${userid}/manager/`, {
+            withCredentials: true
+        })
     }
 
-    getGroupRichMembers(groupid: number): Observable<any> {
-        let params = new HttpParams().set('groupid', groupid.toString());
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/richMembers/', {
+    getGroupAdminIds(groupid: number | string): Observable<any> {
+
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/admins/ids/`, {
+            withCredentials: true
+        })
+    }
+
+    getGroupRichMembers(groupid: number | string): Observable<any> {
+        const params: HttpParams = new HttpParams().set('groupid', groupid.toString());
+
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/richMembers/`, {
             withCredentials: true,
             params: params
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
     }
 
-
-    addMember(group_id: number, member_id: number, facility_id?: number) {
-        let params = new HttpParams()
-        if (facility_id) {
+    addMember(group_id: string | number, member_id: string | number, facility_id?: string | number): Observable<any> {
+        const params: HttpParams = new HttpParams();
+        if (facility_id !== null) {
             params.set('facility_id', facility_id.toString())
 
         }
 
-
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/' + group_id + '/members/' + member_id + '/', params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/`, params, {
             withCredentials: true,
             headers: header,
-            //responseType: 'text',
+            // responseType: 'text',
             observe: 'response'
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
     }
 
+    addAdmin(group_id: string | number, user_id: string | number, facility_id?: string | number): Observable<any> {
+        const params: HttpParams = new HttpParams();
 
-    addAdmin(group_id: number, user_id: number, facility_id?: number): Observable<any> {
-        let params = new HttpParams();
-
-
-        if (facility_id) {
+        if (facility_id !== null) {
             params.set('facility_id', facility_id.toString())
 
         }
 
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/' + group_id + '/admins/' + user_id + '/', params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/admins/${user_id}/`, params, {
             withCredentials: true,
             headers: header,
-            //responseType: 'text',
+            // responseType: 'text',
             observe: 'response'
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
     }
 
+    removeMember(group_id: number | string, member_id: number | string, facility_id?: number | string): Observable<any> {
+        const params: HttpParams = new HttpParams();
 
-    removeMember(group_id: number, member_id: number,  facility_id?: number): Observable<any> {
-        let params = new HttpParams();
-
-
-        if (facility_id) {
+        if (facility_id !== null) {
             params.set('facility_id', facility_id.toString())
 
         }
 
-
-        return this.http.request('delete',this.settings.getApiBaseURL() +'projects/' + group_id + '/members/' + member_id + '/', {
+        return this.http.request('delete', `${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/`, {
             withCredentials: true,
             headers: header,
-            body:params,
+            body: params,
             responseType: 'text',
             observe: 'response'
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
     }
 
+    removeAdmin(group_id: number | string, user_id: number | string, facility_id?: number | string): Observable<any> {
 
-    removeAdmin(group_id: number, user_id: number, facility_id?: number): Observable<any> {
+        const params: HttpParams = new HttpParams();
 
-        let params = new HttpParams()
-
-        if (facility_id) {
+        if (facility_id !== null) {
             params.set('facility_id', facility_id.toString())
 
         }
 
-
-        return this.http.request('delete',this.settings.getApiBaseURL() + 'projects/' + group_id + '/admins/' + user_id + '/', {
+        return this.http.request('delete', `${ApiSettings.getApiBaseURL()}projects/${group_id}/admins/${user_id}/`, {
             withCredentials: true,
             headers: header,
             responseType: 'text',
             body: params,
             observe: 'response'
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
     }
-
 
     setDescription(groupid: string, description: string): Observable<any> {
 
-        let params = new HttpParams().set('description', description).set('groupid', groupid);
+        const params: HttpParams = new HttpParams().set('description', description).set('groupid', groupid);
 
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/'+ groupid + '/attributes/description/', params, {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/description/`, params, {
             withCredentials: true,
             headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-
-    }
-
-
-    setPerunGroupStatus(group_id: number, status: number): Observable<any> {
-
-        let params = new HttpParams().set('status', status.toString());
-
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/'+ group_id + '/attributes/status/', params, {
-            withCredentials: true,
-            headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-    }
-
-    setGroupVolumeLimit(group_id: number, value: number): Observable<any> {
-
-
-        let params = new HttpParams().set('value', value.toString());
-
-
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/'+ group_id + '/attributes/volumeLimit/', params, {
-            withCredentials: true,
-            headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-    }
-
-
-    setGroupVolumeCounter(group_id: number, value: number): Observable<any> {
-
-        let params = new HttpParams().set('value', value.toString());
-
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/'+ group_id + '/attributes/volumesCounter/', params, {
-            withCredentials: true,
-            headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-    }
-
-    setdeNBIDirectAcces(group_id: number, value: boolean): Observable<any> {
-
-        let params = new HttpParams().set('value', value.toString());
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/'+ group_id + '/attributes/directAccess/', params, {
-            withCredentials: true,
-            headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-    }
-
-
-    setName(groupid: string, name: string): Observable<any> {
-        let params = new HttpParams().set('name', name);
-
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/'+ groupid + '/attributes/name/', params, {
-            withCredentials: true,
-            headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-    }
-
-
-    getName(groupid: string): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/'+ groupid + '/attributes/name/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
 
     }
 
+    setPerunGroupStatus(group_id: string, status: string): Observable<any> {
 
-    setShortname(groupid: string, shortname: string): Observable<any> {
-        let params = new HttpParams().set('shortname', shortname)
+        const params: HttpParams = new HttpParams().set('status', status);
 
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/' + groupid +'/attributes/shortname/', params, {
-            withCredentials: true,
-            headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-    }
-
-
-    getShortame(groupid: string): Observable<any> {
-
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/attributes/shortname/', {
-            withCredentials: true,
-            params: {groupid: groupid}
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-    }
-
-    getGroupDetails(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/details/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-
-    }
-
-
-    getGroupApplications(group: number): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + group + '/applications/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-
-    }
-
-    approveGroupApplication(groupid: number, application: number): Observable<any> {
-
-
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/' + groupid + '/applications/' + application + '/status/', null,{
-            withCredentials: true,
-            headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-    }
-
-    rejectGroupApplication(groupid: number, application: number): Observable<any> {
-
-
-        return this.http.delete(this.settings.getApiBaseURL() + 'projects/' + groupid + '/applications/' + application + '/status/',{
-            withCredentials: true,
-            headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-    }
-
-
-    getMemberGroupsStatus(): Observable<any> {
-
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/singlevm/', {
-            withCredentials: true,
-            headers: header
-
-        }).pipe(catchError((error: any) => throwError(error.error)));
-    }
-
-
-
-
-    setLifetime(groupid: string, lifetime: string): Observable<any> {
-        let params = new HttpParams().set('lifetime', lifetime);
-
-
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/'+ groupid + '/attributes/lifetime/', params, {
-            withCredentials: true,
-            headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-
-    }
-
-    createGroup(group_name: string, group_description: string): Observable<any> {
-        let params = new HttpParams().set('name', group_name).set('description', group_description.substring(0, 512));
-
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/', params,
-            {
-                withCredentials: true,
-                headers: header
-            }).pipe(catchError((error: any) => throwError(error.error)));
-    }
-
-
-    getLifetime(groupid: string): Observable<any> {
-
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/'+ groupid + '/attributes/lifetime/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-    }
-
-    setPerunId(groupid: string, applicationId: string): Observable<any> {
-        let params = new HttpParams().set('applicationId', applicationId);
-
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/'+ groupid + '/attributes/perunId/', params, {
-            withCredentials: true,
-            headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-
-    }
-
-
-    getGroupMembers(groupid: string): Observable<any> {
-
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid + '/members/', {
-            withCredentials: true,
-            headers: header
-
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-
-    }
-
-
-    getGroupMaxDiskspace(groupid: string): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/attributes/approvedDiskspace/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-    }
-
-    getGroupUsedDiskspace(groupid: string): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/attributes/usedDiskspace/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-
-    }
-
-
-    getVolumesUsed(groupid: string): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/attributes/usedVolumes/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
-    }
-
-    getVolumeCounter(groupid: string): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/attributes/volumesCounter/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
-    }
-
-    getGroupApprovedVms(groupid: string): Observable<any> {
-
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/'  + groupid +'/attributes/approvedVms/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-
-    }
-
-    getGroupUsedVms(groupid: string): Observable<any> {
-
-        return this.http.get(this.settings.getApiBaseURL() + 'projects/' + groupid +'/attributes/usedVms/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
-
-    }
-
-
-    setPerunGroupAttributes(application_id: number, groupid: number): Observable<any> {
-        let params = new HttpParams()
-            .set('application_id', application_id.toString());
-
-        return this.http.post(this.settings.getApiBaseURL() + 'projects/' + groupid + '/attributes/', params, {
-            withCredentials: true,
-            headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
-    }
-
-
-    isFreemiumActive(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'freemium/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error.error)));
-    }
-
-    addMemberToFreemium(): Observable<any> {
-
-        return this.http.post(this.settings.getApiBaseURL() + 'freemium/', {
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/attributes/status/`, params, {
             withCredentials: true,
             headers: header
         })
     }
 
+    setGroupVolumeLimit(group_id: number, value: number): Observable<any> {
+
+        const params: HttpParams = new HttpParams().set('value', value.toString());
+
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}attributes/volumeLimit/`, params, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
+    setGroupVolumeCounter(group_id: number, value: number): Observable<any> {
+
+        const params: HttpParams = new HttpParams().set('value', value.toString());
+
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/attributes/volumesCounter/`, params, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
+    setdeNBIDirectAcces(group_id: number, value: boolean): Observable<any> {
+
+        const params: HttpParams = new HttpParams().set('value', value.toString());
+
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/attributes/directAccess/`, params, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
+    setName(groupid: string, name: string): Observable<any> {
+        const params: HttpParams = new HttpParams().set('name', name);
+
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/name/`, params, {
+            withCredentials: true,
+            headers: header
+        })
+    }
+
+    getName(groupid: string): Observable<any> {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/name/`, {
+            withCredentials: true
+        })
+
+    }
+
+    setShortname(groupid: string, shortname: string): Observable<any> {
+        const params: HttpParams = new HttpParams().set('shortname', shortname)
+
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/shortname/`, params, {
+            withCredentials: true,
+            headers: header
+        })
+
+    }
+
+    getShortame(groupid: string): Observable<any> {
+
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/shortname/`, {
+            withCredentials: true,
+            params: {groupid: groupid}
+        })
+
+    }
+
+    getGroupDetails(): Observable<any> {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/details/`, {
+            withCredentials: true
+        })
+    }
+
+    getGroupApplications(group: number): Observable<any> {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${group}/applications/`, {
+            withCredentials: true
+        })
+
+    }
+
+    approveGroupApplication(groupid: number, application: number): Observable<any> {
+
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/applications/${application}/status/`, null, {
+            withCredentials: true,
+            headers: header
+        })
+
+    }
+
+    rejectGroupApplication(groupid: number, application: number): Observable<any> {
+
+        return this.http.delete(`${ApiSettings.getApiBaseURL()}projects/${groupid}/applications/${application}/status/`, {
+            withCredentials: true,
+            headers: header
+        })
+
+    }
+
+    getMemberGroupsStatus(): Observable<any> {
+
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/singlevm/`, {
+            withCredentials: true,
+            headers: header
+
+        })
+    }
+
+    setLifetime(groupid: string, lifetime: string): Observable<any> {
+        const params: HttpParams = new HttpParams().set('lifetime', lifetime);
+
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/lifetime/`, params, {
+            withCredentials: true,
+            headers: header
+        })
+
+    }
+
+    createGroup(group_name: string, group_description: string): Observable<any> {
+        const params: HttpParams = new HttpParams().set('name', group_name).set('description', group_description.substring(0, 512));
+
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/`, params,
+            {
+                withCredentials: true,
+                headers: header
+            })
+    }
+
+    getLifetime(groupid: string | number): Observable<any> {
+
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/lifetime/`, {
+            withCredentials: true
+        })
+
+    }
+
+    setPerunId(groupid: string, applicationId: string): Observable<any> {
+        const params: HttpParams = new HttpParams().set('applicationId', applicationId);
+
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/perunId/`, params, {
+            withCredentials: true,
+            headers: header
+        })
+
+    }
+
+    getGroupMembers(groupid: string): Observable<any> {
+
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/members/`, {
+            withCredentials: true,
+            headers: header
+
+        })
+
+    }
+
+    getGroupMaxDiskspace(groupid: string): Observable<any> {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/approvedDiskspace/`, {
+            withCredentials: true
+        })
+
+    }
+
+    getGroupUsedDiskspace(groupid: string): Observable<any> {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedDiskspace/`, {
+            withCredentials: true
+        })
+
+    }
+
+    getVolumesUsed(groupid: string): Observable<any> {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedVolumes/`, {
+            withCredentials: true
+        })
+    }
+
+    getVolumeCounter(groupid: string): Observable<any> {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/volumesCounter/`, {
+            withCredentials: true
+        })
+    }
+
+    getGroupApprovedVms(groupid: string): Observable<any> {
+
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/approvedVms/`, {
+            withCredentials: true
+        })
+
+    }
+
+    getGroupUsedVms(groupid: string): Observable<any> {
+
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedVms/`, {
+            withCredentials: true
+        })
+
+    }
+
+    setPerunGroupAttributes(application_id: string, groupid: string): Observable<any> {
+        const params: HttpParams = new HttpParams()
+            .set('application_id', application_id.toString());
+
+        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/`, params, {
+            withCredentials: true,
+            headers: header
+        }).pipe(catchError((error: any) => throwError(error.error)));
+    }
+
+    isFreemiumActive(): Observable<any> {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}freemium/`, {
+            withCredentials: true
+        }).pipe(catchError((error: any) => throwError(error.error)));
+    }
+
+    addMemberToFreemium(): Observable<any> {
+
+        return this.http.post(`${ApiSettings.getApiBaseURL()}freemium/`, {
+            withCredentials: true,
+            headers: header
+        })
+    }
 
 }

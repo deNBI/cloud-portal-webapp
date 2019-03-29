@@ -1,25 +1,23 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
-
+import {RouterModule, Routes} from '@angular/router';
 // Layouts
+import {ConsentInfoComponent} from './consent-info.component';
 import {FullLayoutComponent} from './layouts/full-layout.component';
-import {SimpleLayoutComponent} from './layouts/simple-layout.component';
 import {MemberGuardService} from './member-guard.service';
-import {RegistrationInfoComponent} from "./registration-info.component";
-import {ConsentInfoComponent} from "./consent-info.component";
+import {RegistrationInfoComponent} from './registration-info.component';
 
 export const routes: Routes = [
     {
         path: '',
         redirectTo: 'userinfo',
-        pathMatch: 'full',
+        pathMatch: 'full'
     },
     {
         path: 'registration-info',
         component: RegistrationInfoComponent,
         pathMatch: 'full'
     },
-       {
+    {
         path: 'consent-info',
         component: ConsentInfoComponent,
         pathMatch: 'full'
@@ -57,7 +55,7 @@ export const routes: Routes = [
                 path: 'vo-manager',
                 loadChildren: './vo_manager/VoManager.module#VoManagerModule'
             },
-              {
+            {
                 path: 'facility-manager',
                 loadChildren: './facility_manager/facilitymanager.module#FacilitymanagerModule'
             }
@@ -66,7 +64,9 @@ export const routes: Routes = [
     }
 ];
 
-
+/**
+ * App routing module.
+ */
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule],

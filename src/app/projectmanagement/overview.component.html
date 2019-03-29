@@ -2,15 +2,15 @@
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
     <div class="row">
         <!--/.col-->
-        <h1>Projects Overview</h1>
+        <h1 class="col-md-8 ">Projects Overview</h1>
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Projects
                 </div>
-                <div class="card-block">
-                    <div>
-                        <table class="table  table-responsive table-striped">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
                             <thead>
                             <tr>
                                 <th>Project ID</th>
@@ -80,7 +80,7 @@
                                             Applications
                                         </button>
                                         <h4 *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)"><span
-                                                class="badge badge-default">Project Member </span></h4>
+                                                class="badge badge-dark">Project Member </span></h4>
                                     </div>
                                 </td>
                             </tr>
@@ -108,8 +108,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div >
-                    <table class="table  table-responsive table-striped" style="margin: 5px">
+                <div class="table-responsive">
+                    <table class="table table-striped" style="margin: 5px">
                         <thead>
                         <tr>
                             <th>User ID</th>
@@ -169,42 +169,44 @@
             </div>
             <div class="modal-body">
 
-              <div class="container-fluid">
+                <div class="container-fluid">
                     <div class="row">
                         <p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
                             four characters of his name:</p>
                     </div>
                     <div class="row">
                         <div class="col-md-8">
-                          <input style="width: 100%" placeholder="" #searchString>
+                            <input style="width: 100%" placeholder="" #searchString>
                         </div>
                         <div class="col-md-4">
-                          <button type="button" class="btn btn-primary"
-                                (click)="filterMembers(searchString.value,addUserModalProjectID )"><i
-                                class="fa fa-search"></i> Search Member
-                          </button>
+                            <button type="button" class="btn btn-primary"
+                                    (click)="filterMembers(searchString.value,addUserModalProjectID )"><i
+                                    class="fa fa-search"></i> Search Member
+                            </button>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-md-12">
-                        <strong>Please note</strong> that if you can not find the user, he is not registered for a
-                          a de.NBI Cloud account. In that case you can invite him by sending him the following link:
-                        <br>
-                        <br>
-                        <ul>
+                            <strong>Please note</strong> that if you can not find the user, he is not registered for a
+                            a de.NBI Cloud account. In that case you can invite him by sending him the following link:
+                            <br>
+                            <br>
+                            <ul>
 
-                            <li><pre>{{addUserModalInvitationLink}}</pre>
-                            </li>
-                        </ul>
-                        <br>
-                        After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
-                      Read more about the process <a target="_blank" href="{{wiki_group_invitation}}">here</a>.
+                                <li>
+                                    <pre >{{addUserModalInvitationLink}}</pre>
+                                    <button (click)="copyLink(addUserModalInvitationLink)" >Copy link</button>
+                                </li>
+                            </ul>
+                            <br>
+                            After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
+                            Read more about the process <a target="_blank" href="{{wiki_group_invitation}}">here</a>.
                         </div>
                     </div>
 
-                    <div>
-                        <table *ngIf="filteredMembers!==null" class="table  table-responsive table-bordered table-striped table-sm">
+                    <div class="table-responsive">
+                        <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
                             <thead>
 
                             <th></th>
@@ -385,8 +387,8 @@
                 <div *ngIf="!details_loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
                                                                            style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
                 </div>
-                <div>
-                    <table *ngIf="details_loaded" class="table table-responsive table-striped">
+                <div class="table-responsive">
+                    <table *ngIf="details_loaded" class="table table-striped">
                         <thead>
                         <th>Description</th>
                         <th>Date created (d/m/y)</th>
@@ -438,8 +440,8 @@
                                                                    style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
                 </div>
 
-                <div *ngIf="loaded">
-                    <table class="table table-bordered table-responsive table-striped table-sm">
+                <div *ngIf="loaded" class="table-responsive">
+                    <table class="table table-bordered table-striped table-sm">
                         <thead>
 
                         <th>Name</th>

@@ -1,64 +1,81 @@
+
+##  (2019-03-29)
+
+
+#### Features
+
+* **Application:** added elixir ([fcb8eff8](fcb8eff8))
+* **Applications:** fixed single vm flavors ([994f7d80](994f7d80))
+* **Client:**  removed delete btn ([10b81c1f](10b81c1f))
+* **Facility:** add facility llimits ([69cee988](69cee988))
+* **Factors:** added add delete method ([4e909b3b](4e909b3b))
+* **Modification:** now with summarize ([07b1a77c](07b1a77c))
+* **Project:** now copy linkt to clipboard ([a4760e68](a4760e68))
+* **Projects:** now with terminated ([4c429f71](4c429f71))
+* **Service:** removed settings ([6a004172](6a004172))
+* **Tslin:**
+  * updated config ([dd3b0d41](dd3b0d41))
+
+
 #### Bug Fixes
 
-* **Applications:** fixed simple vm flavors 
+* **Application:**
+  * fixed approve bug ([03554947](03554947))
+  * message ([3e7e4af3](3e7e4af3))
+* **Applications:**
+  * fixed initialisation bug ([768e4b8a](768e4b8a))
+  * fixed shared bug ([2f890be0](2f890be0))
+  * fixed request bug ([fba443d4](fba443d4))
 
 
-#### Bug Fixes
 
-* **Applications:**  refresh fixed 
 
 #### Features
 
 * **Applications:**
-  * removed special hardware2 
+  * removed special hardware
+  * added elixir project
   * added history 
-  * now with modificaion 
-  * added arrow 
+  * now with modificaion at facility tab
+  
+* **Modification:** now with summarize 
+ 
 * **Flavors:**
-  * now fold out 
+  * now flavors fold out
 
+* **Service:** removed perun settings 
+* **Tslin:**
+  * updated config 
 
-
-
-
-
-#### Features
+#### Bug Fixes
 
 * **Applications:**
-  * changed to horizon 2020 ([efa9d30a](efa9d30a))
-  * added dissemination ([acbc5c46](acbc5c46))
-  * added european project ([ca198958](ca198958))
-* **Vms:** now visible for pi ([8119f6c8](8119f6c8))
-* **Vo:** now shows facility of projects ([b1f5950c](b1f5950c))
-* **logo:**
-  *  changed logo to new logo ([48a078ea](48a078ea))
-  *  added new logo to scss file ([bfde866c](bfde866c))
-
+  * fixed request bug
 
 
 
 
 #### Bug Fixes
 
-* **Resources:** fixed small bug ([fa057274](fa057274))
-* **VM:** fixed diskspace bug ([7ab58e55](7ab58e55))
-* **Vm:** fixed button bug ([e1168997](e1168997))
+* **Resources:** fixed small bug 
+* **VM:** fixed diskspace bug 
+* **Vm:** fixed button bug
 
 #### Features
 
-* **Applications:** added GPU ([e02102b3](e02102b3))
-* **Flavors:** now public url ([86dc7a91](86dc7a91))
-* **PublicKey:** added word break ([38f9a75c](38f9a75c))
-* **Resource:** added class ([94b03a40](94b03a40))
+* **Applications:** added GPU 
+* **Flavors:** now public url 
+* **PublicKey:** added word break 
+* **Resource:** added class 
 * **Resources:**
-  * added date ([a16bd999](a16bd999))
-  * added csv convert ([5a73aa76](5a73aa76))
-  * now at vo listet for all facilities ([89a7a5a9](89a7a5a9))
-  * addet to vo ([469f1a85](469f1a85))
+  * added date 
+  * added csv convert 
+  * now at vo listet for all facilities 
+  * addet to vo 
 * **VmOverview:**
-  * asking status forom OpenStack ([cc2316dd](cc2316dd))
-  * Connect modal bigger,refresh button ([36f796bb](36f796bb))
-* **license:**  add license ([15f35421](15f35421))
+  * asking status forom OpenStack 
+  * Connect modal bigger,refresh button 
+* **license:**  add license 
 
 
 

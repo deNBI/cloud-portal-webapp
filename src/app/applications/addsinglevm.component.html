@@ -132,8 +132,8 @@
                                            type="number" min="1" max="12" step="1" ngModel required
                                            pattern="^([1-9]|1[012])$"
                                     >
-                                    <span class="input-group-addon"> months
-                                    </span>
+                                  <div class="input-group-append"><span class="input-group-text"> months
+                                    </span></div>
                                 </div>
                                 <span class="help-block">How long would you like to run this project (12 month is maximum)?</span>
                             </div>
@@ -161,8 +161,8 @@
                                            name="project_application_volume_limit"
                                            placeholder="e.g. 20"
                                            type="number" min="1" step="1" [ngModel]="20">
-                                    <span class="input-group-addon"> GB
-                                    </span>
+                                  <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
                                 </div>
                                 <span class="help-block">How many extra storage do you need for your VMs?</span>
                             </div>
@@ -202,15 +202,17 @@
 
 
                                     {{t.long_name}}
-                                    <i *ngIf="collapseList[typeList.indexOf(t)]" style="float: right;font-size: 25px"
+                                    <i *ngIf="!collapseList[typeList.indexOf(t)]"
+                                       style="float: right;font-size: 25px"
                                        class="icon-arrow-up"></i>
-                                    <i *ngIf="!collapseList[typeList.indexOf(t)]" style="float: right;font-size: 25px"
+                                    <i *ngIf="collapseList[typeList.indexOf(t)]"
+                                       style="float: right;font-size: 25px"
                                        class="icon-arrow-down"></i>
 
 
                                 </div>
                                 <!--*ngIf="collapseList[typeList.indexOf(t)]"-->
-                                <div *ngIf="collapseList[typeList.indexOf(t)]"
+                                <div *ngIf="!collapseList[typeList.indexOf(t)] "
                                      class="form-group card-body">
                                     <div *ngFor="let f of flavorList">
                                         <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
@@ -231,8 +233,8 @@
                                                            type="number" min="0" step="1"
                                                            value="0" placeholder="0"
                                                            (ngModel)="'project_application_' + f.name">
-                                                    <span class="input-group-addon"> VMs
-                                    </span>
+                                                  <div class="input-group-append"><span class="input-group-text"> VMs
+                                    </span></div>
                                                 </div>
                                                 <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
                                             </div>
@@ -302,7 +304,8 @@
                             <h5 class="col-md-6 form-control-label">Additional Information</h5>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon 2020</strong></label>
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon
+                                2020</strong></label>
                             <div class="col-md-8">
                                 <input type="text" id="id_project_application_horizon2020"
                                        name="project_application_horizon2020" class="form-control"
@@ -312,18 +315,28 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-md-4 form-control-label" for="text-input"><strong>Elixir Project</strong></label>
+                            <div class="col-md-8">
+                                <input type="text" id="id_project_application_elixir_project"
+                                       name="project_application_elixir_project" class="form-control"
+                                       maxlength="2048"
+                                       placeholder='Name of the project' [ngModel]="''">
+                                <span class="help-block">Is your project part of an Elixir project?</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>
                             <div class="col-md-8">
 
 
                                 <label
-                                        class="switch switch-text switch-primary-outline-alt">
+                                        class="switch switch-label switch-outline-primary-alt">
                                     <input type="checkbox" class="switch-input"
                                            name="project_application_report_allowed"
                                            [(ngModel)]="project_application_report_allowed"
                                     >
-                                    <span class="switch-label" data-on="Yes"
-                                          data-off="No"></span>
+                                    <span class="switch-slider" data-checked="Yes"
+                                          data-unchecked="No"></span>
                                     <span class="switch-handle"></span></label>
                                 <p> Do you permit the de.NBI Cloud to publicly mention your
                                     project's participation?</p>
@@ -337,10 +350,9 @@
                     </form>
                 </div>
                 <div class="card-footer">
-                    <div *ngIf="f.invalid" class=" form-group row alert alert-warning">
+                    <div *ngIf="f.invalid" class="form-group row alert alert-warning">
                         Some required fields are incorrect or not filled in yet.
                         Please check if all required (*) fields are filled in correctly.
-
                     </div>
                     <div class="form-group row">
                         <p class="col-md-12 form-control-label">By submitting this application you
@@ -348,7 +360,7 @@
                             cloud
                             usage policy.</p>
                     </div>
-                    <button (click)="acknowledgemodal.show()"
+                    <button (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
                             [disabled]="f.invalid"
                             class="btn btn-sm btn-primary"><i
                             class="fa fa-dot-circle-o"></i> Submit
@@ -415,7 +427,12 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-{{ acknowledgeModalType }}" role="alert">
-                    {{ acknowledgeModalMessage }}
+                    The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the
+                    Federal Ministry of Education and Research (BMBF)!
+                    We would highly appreciate the following citation in your next publication(s):
+                    This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure
+                    (de.NBI)
+                    (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).
                 </div>
             </div>
             <div class="modal-footer">
@@ -434,3 +451,60 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<div bsModal #submitModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{projectName}}</h4>
+                <button type="button" class="close" style="cursor: pointer;"
+                        (click)="submitModal.hide()"
+                        data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    <strong>Please check the data you have entered and confirm your application
+                        below.</strong><br>
+                    If the entered data mismatches with your requirements cancel this confirmation
+                    and take changes.
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tr *ngFor="let str of valuesToConfirm">
+                            <td>{{str}}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Number of cores in total:
+                                {{totalNumberOfCores.toString()}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Value of RAM in total: {{totalRAM.toString()}} GBs</strong>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+
+
+                <button class="btn btn-success col-md4" type="button"
+                        (click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
+                </button>
+                <button class="btn  btn-primary col-md-4" type="reset"
+                        (click)="submitModal.hide();">Cancel
+                </button>
+
+            </div>
+        </div><!-- /.modal-content -->L
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+

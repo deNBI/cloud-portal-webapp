@@ -1,70 +1,64 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {Vmclient} from "../virtualmachines/virtualmachinemodels/vmclient";
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {Client} from '../virtualmachines/clients/vmclient';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 
-
-const header = new HttpHeaders({
-    'X-CSRFToken': Cookie.get("csrftoken")
+const header: HttpHeaders = new HttpHeaders({
+    'X-CSRFToken': Cookie.get('csrftoken')
 });
 
+/**
+ * Service which provides client methods.
+ */
 @Injectable()
 export class ClientService {
-    clientURL = this.settings.getConnectorBaseUrl() + 'clients/';
+    clientURL: string = `${ApiSettings.getApiBaseURL()}clients/`;
 
-    constructor(private http: HttpClient, private settings: ApiSettings) {
+    constructor(private http: HttpClient) {
     }
 
+    isClientAvaiable(): Observable<Client> {
 
-
-    isClientAvaiable(): Observable<Vmclient> {
-
-
-        return this.http.get<Vmclient>(this.clientURL + 'active/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get<Client>(`${this.clientURL}active/`, {
+            withCredentials: true
+        })
     }
 
-    getClientsChecked(): Observable<Vmclient[]> {
+    getClientsChecked(): Observable<Client[]> {
 
-        return this.http.get<Vmclient[]>(this.clientURL, {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get<Client[]>(this.clientURL, {
+            withCredentials: true
+        })
     }
 
     checkClient(host: string, port: string): Observable<any> {
-        let params = new HttpParams().set('host', host).set('port', port);
+        const params: HttpParams = new HttpParams().set('host', host).set('port', port);
 
-
-        return this.http.post(this.clientURL + 'checkClient/', params, {
+        return this.http.post(`${this.clientURL}checkClient/`, params, {
             withCredentials: true,
-            headers: header,
-        }).pipe(catchError((error: any) => throwError(error)));
-        ;
+            headers: header
+        })
 
     }
 
     postClient(host: string, port: string, location: string): Observable<any> {
 
-        let params = new HttpParams().set('host', host).set('port', port).set('location', location);
+        const params: HttpParams = new HttpParams().set('host', host).set('port', port).set('location', location);
 
-
-        return this.http.post(this.clientURL , params, {
+        return this.http.post(this.clientURL, params, {
             withCredentials: true,
-            headers: header,
-        }).pipe(catchError((error: any) => throwError(error)));
-
+            headers: header
+        })
     }
 
-    deleteClient(client_id:number): Observable<any> {
-        return this.http.delete(this.clientURL + client_id +'/', {
+    deleteClient(client_id: number): Observable<any> {
+        return this.http.delete(`${this.clientURL}${client_id }/`, {
             withCredentials: true,
-            headers: header,
-        }).pipe(catchError((error: any) => throwError(error)));
+            headers: header
+        })
 
     }
 }
