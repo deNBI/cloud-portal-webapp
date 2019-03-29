@@ -327,7 +327,10 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
      * @param approval date in string when the application was approved
      * @param months number of months the application is permitted
      */
-    getEndDate(approval: string, months: number): string {
+    getEndDate(months: number, approval?: string,): string {
+        if (!approval) {
+            return ''
+        }
         let date1: Date = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
         const month: number = date1.getMonth();
         if ((month + months) > 11) {
@@ -352,7 +355,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
             return
         }
 
-        return `${sa.DateApproved} - ${this.getEndDate(sa.DateApproved, sa.Lifetime)}`;
+        return `${sa.DateApproved} - ${this.getEndDate( sa.Lifetime,sa.DateApproved,)}`;
     }
 
     /**
@@ -379,6 +382,24 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
     }
 
+    /**
+     * Terminateda project.
+     * Deletes the Perun Group and sets the application status to terminated.
+     * @param {Application} app
+     */
+    public terminateProject(app: Application): void {
+        this.applicationstatusservice.setApplicationStatus(app.Id, this.application_states.TERMINATED).subscribe(res => {
+            this.getApplication(app);
+            if (res === 'null') {
+                this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
+
+            } else {
+                this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
+
+            }
+
+        })
+    }
 
     /**
      * Approve an extension request.
@@ -751,7 +772,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
      * Delete an application.
      * @param application_id
      */
-    public deleteApplication(application_id: string|number): void {
+    public deleteApplication(application_id: string | number): void {
         this.applicationsservice.deleteApplication(application_id).toPromise()
             .then(() => {
                 this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');

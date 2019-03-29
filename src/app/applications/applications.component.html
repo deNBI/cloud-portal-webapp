@@ -645,6 +645,13 @@
                                                     class="btn btn-secondary">
                                                 Remove Application
                                             </button>
+                                            <button
+                                                    *ngIf="application.Status != application_states.SUBMITTED &&  application.Status != application_states.TERMINATED"
+                                                    (click)="setSelectedApplication(application);terminateModal.show();"
+                                                    type="button"
+                                                    class="btn btn-secondary">
+                                               Terminate Application
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning)}">
@@ -1009,6 +1016,38 @@
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"
                         (click)="deleteModal.hide()">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #terminateModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Terminate Application</h4>
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="terminateModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="alert alert-warning" role="alert">
+                    Are you sure you want to terminate this application?
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-4"
+                        (click)="terminateProject(selectedApplication);terminateModal.hide();notificationModal.show()">
+                    Yes
+                </button>
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="terminateModal.hide()">Cancel
                 </button>
             </div>
         </div><!-- /.modal-content -->
