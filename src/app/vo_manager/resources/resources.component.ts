@@ -45,14 +45,14 @@ export class ResourcesComponent implements OnInit {
                     const resource: Resources = new Resources(
                         resp, res[resp]['totalRam'], res[resp]['totalCores'],
                         res[resp]['totalVms'], res[resp]['totalVolumeLimit'], res[resp]['totalVolumeCounter'],
-                        res[resp]['totalObjectStorage'], res[resp]['totalFPGA'], res[resp]['totalGPU']);
+                        res[resp]['totalObjectStorage'], res[resp]['totalGPU']);
                     this.voResources.push(resource);
                 } else {
                     this.totalResource = new Resources(
                         'Total', res['Total']['totalRam'], res['Total']['totalCores'],
                         res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
                         res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'],
-                        res['Total']['totalFPGA'], res['Total']['totalGPU']);
+                        res['Total']['totalGPU']);
                 }
             }
 

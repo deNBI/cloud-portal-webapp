@@ -10,11 +10,10 @@ export class Resources {
     private _totalVolumeLimit: number = 0;
     private _totalVolumeCounter: number = 0;
     private _totalObjectStorage: number = 0;
-    private _totalFPGA: number = 0;
     private _totalGPU: number = 0;
 
     constructor(resource_name: string, totalRam: number, totalCores: number, totalVms: number, totalVolumeLimit: number,
-                totalVolumeCounter: number, totalObjectStorage: number, totalFPGA: number, totalGPU: number) {
+                totalVolumeCounter: number, totalObjectStorage: number,  totalGPU: number) {
         this._resource_name = resource_name;
         this._totalRam = totalRam;
         this._totalCores = totalCores;
@@ -22,7 +21,6 @@ export class Resources {
         this._totalVolumeLimit = totalVolumeLimit;
         this._totalVolumeCounter = totalVolumeCounter;
         this._totalObjectStorage = totalObjectStorage;
-        this._totalFPGA = totalFPGA;
         this._totalGPU = totalGPU;
     }
 
@@ -80,14 +78,6 @@ export class Resources {
 
     set totalObjectStorage(value: number) {
         this._totalObjectStorage = value;
-    }
-
-    get totalFPGA(): number {
-        return this._totalFPGA;
-    }
-
-    set totalFPGA(value: number) {
-        this._totalFPGA = value;
     }
 
     get totalGPU(): number {
