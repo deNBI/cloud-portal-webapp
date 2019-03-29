@@ -137,9 +137,9 @@ export class FacilityService ***REMOVED***
     addCoresFactor(facility: number | string, cores: number | string, factor: number | string): Observable<CoreFactor[]> ***REMOVED***
         const params: HttpParams = new HttpParams().set('type', 'cores').set('cores', cores.toString()).set('factor', factor.toString());
 
-        return this.http.post<CoreFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/`, params, ***REMOVED***
+        return this.http.post<CoreFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/coreFactors/`, params, ***REMOVED***
             withCredentials: true,
-            headers: header,
+            headers: header
         ***REMOVED***)
     ***REMOVED***
 
@@ -153,9 +153,37 @@ export class FacilityService ***REMOVED***
     addRamFactor(facility: number | string, ram: number | string, factor: number | string): Observable<RamFactor[]> ***REMOVED***
         const params: HttpParams = new HttpParams().set('type', 'ram').set('ram', ram.toString()).set('factor', factor.toString());
 
-        return this.http.post<RamFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/`, params, ***REMOVED***
+        return this.http.post<RamFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/ramFactors/`, params, ***REMOVED***
             withCredentials: true,
-            headers: header,
+            headers: header
+        ***REMOVED***)
+    ***REMOVED***
+
+    /**
+     * Deletes an RamFactor.
+     * @param ***REMOVED***number | string***REMOVED*** facility
+     * @param ***REMOVED***number | string***REMOVED*** factor_id
+     * @returns ***REMOVED***Observable<RamFactor[]>***REMOVED***
+     */
+    deleteRamFactor(facility: number | string, factor_id: number | string): Observable<RamFactor[]> ***REMOVED***
+
+        return this.http.delete<RamFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/ramFactors/$***REMOVED***factor_id***REMOVED***/`, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***)
+    ***REMOVED***
+
+    /**
+     * Deletes an CoreFactor.
+     * @param ***REMOVED***number | string***REMOVED*** facility
+     * @param ***REMOVED***number | string***REMOVED*** factor_id
+     * @returns ***REMOVED***Observable<RamFactor[]>***REMOVED***
+     */
+    deleteCoreFactor(facility: number | string, factor_id: number | string): Observable<CoreFactor[]> ***REMOVED***
+
+        return this.http.delete<CoreFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/coreFactors/$***REMOVED***factor_id***REMOVED***/`, ***REMOVED***
+            withCredentials: true,
+            headers: header
         ***REMOVED***)
     ***REMOVED***
 
@@ -167,7 +195,7 @@ export class FacilityService ***REMOVED***
     getCoreFactor(facility: number | string): Observable<CoreFactor[]> ***REMOVED***
         const params: HttpParams = new HttpParams().set('type', 'cores');
 
-        return this.http.get<CoreFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/`, ***REMOVED***
+        return this.http.get<CoreFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/coreFactors/`, ***REMOVED***
                 withCredentials: true,
                 params: params
             ***REMOVED***
@@ -182,7 +210,7 @@ export class FacilityService ***REMOVED***
     getRamFactor(facility: number | string): Observable<RamFactor[]> ***REMOVED***
         const params: HttpParams = new HttpParams().set('type', 'ram');
 
-        return this.http.get<RamFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/`, ***REMOVED***
+        return this.http.get<RamFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/ramFactors/`, ***REMOVED***
                 withCredentials: true,
                 params: params
             ***REMOVED***

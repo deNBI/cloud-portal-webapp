@@ -4,7 +4,7 @@ import ***REMOVED***ComputecenterComponent***REMOVED*** from '../../projectmanag
  * RamFactor class.
  */
 export class RamFactor ***REMOVED***
-
+    private _id:string;
     private _factor: number;
     private _ram: number;
     private _compute_center: ComputecenterComponent;
@@ -13,6 +13,15 @@ export class RamFactor ***REMOVED***
         this._factor = factor;
         this._ram = ram;
         this._compute_center = compute_center;
+    ***REMOVED***
+
+
+    get id(): string ***REMOVED***
+        return this._id;
+    ***REMOVED***
+
+    set id(value: string) ***REMOVED***
+        this._id = value;
     ***REMOVED***
 
     get factor(): number ***REMOVED***

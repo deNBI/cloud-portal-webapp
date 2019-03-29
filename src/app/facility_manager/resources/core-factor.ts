@@ -5,6 +5,7 @@ import ***REMOVED***ComputecenterComponent***REMOVED*** from '../../projectmanag
  */
 export class CoreFactor ***REMOVED***
 
+    private _id:string;
     private _factor: number;
     private _cores: number;
     private _compute_center: ComputecenterComponent;
@@ -13,6 +14,15 @@ export class CoreFactor ***REMOVED***
         this._factor = factor;
         this._cores = cores;
         this._compute_center = compute_center;
+    ***REMOVED***
+
+
+    get id(): string ***REMOVED***
+        return this._id;
+    ***REMOVED***
+
+    set id(value: string) ***REMOVED***
+        this._id = value;
     ***REMOVED***
 
     get factor(): number ***REMOVED***

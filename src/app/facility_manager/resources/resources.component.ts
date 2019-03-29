@@ -37,9 +37,32 @@ export class ResourcesComponent implements OnInit ***REMOVED***
         elementId: this.tableId
     ***REMOVED***;
 
+
+    constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) ***REMOVED***
+        this.facilityService.getManagerFacilities().subscribe((result: [string, number][]) => ***REMOVED***
+            this.managerFacilities = result;
+            this.selectedFacility = this.managerFacilities[0];
+            this.getSelectedFacilityResources();
+
+        ***REMOVED***)
+    ***REMOVED***
+
     public tableToCSV(): void ***REMOVED***
         this.exportAsService.save(this.exportAsConfigCSV, this.tableId);
 
+    ***REMOVED***
+
+
+    public deleteCoreFactor(id: string | number): void ***REMOVED***
+        this.facilityService.deleteCoreFactor(this.selectedFacility['FacilityId'], id).subscribe((res: CoreFactor[]) => ***REMOVED***
+            this.coreFactors = res;
+        ***REMOVED***)
+    ***REMOVED***
+
+    public deleteRamFactor(id: string | number): void ***REMOVED***
+        this.facilityService.deleteRamFactor(this.selectedFacility['FacilityId'], id).subscribe((res: RamFactor[]) => ***REMOVED***
+            this.ramFactors = res;
+        ***REMOVED***)
     ***REMOVED***
 
     public getRamCoreFactors(): void ***REMOVED***
@@ -52,15 +75,7 @@ export class ResourcesComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
-    constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) ***REMOVED***
-        this.facilityService.getManagerFacilities().subscribe((result: [string, number][]) => ***REMOVED***
-            this.managerFacilities = result;
-            this.selectedFacility = this.managerFacilities[0];
-            this.getSelectedFacilityResources();
-            this.getRamCoreFactors();
 
-        ***REMOVED***)
-    ***REMOVED***
 
     public getSelectedFacilityResources(): void ***REMOVED***
         this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe((res: object) => ***REMOVED***
@@ -101,7 +116,6 @@ export class ResourcesComponent implements OnInit ***REMOVED***
 
     addCoreFactor(cores: string | number, factor: string | number): void ***REMOVED***
         this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor).subscribe(res => ***REMOVED***
-            console.log(res)
             this.coreFactors = res;
         ***REMOVED***)
     ***REMOVED***
