@@ -25,7 +25,7 @@ import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.
         FacilityProjectsOverviewComponent,
         ImageTagComponent,
         FacilityApplicationComponent,
-        ResourcesComponent,
+        ResourcesComponent
 
     ]
 ***REMOVED***)
