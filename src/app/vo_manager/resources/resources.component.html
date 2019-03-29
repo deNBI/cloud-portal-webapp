@@ -12,71 +12,67 @@
                 <i class="fa fa-align-justify"></i> Resources
 
             </div>
-            <div id="resourcesTable" class="card-block" style="width: 100%">
+            <div id="resourcesTable" class="card-body" style="width: 100%">
 
 
-                <table class="table table-responsive table-striped table-bordered table"
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered"
                        style="width: 100%">
-                    <thead>
-                    <tr>
+                  <thead>
+                  <tr>
                     <th>***REMOVED******REMOVED***today | date:'dd-MM-yyyy'***REMOVED******REMOVED***</th>
 
                     <th *ngFor="let r of voResources">***REMOVED******REMOVED***r.resource_name***REMOVED******REMOVED***</th>
                     <th>***REMOVED******REMOVED***totalResource.resource_name***REMOVED******REMOVED***</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                  </tr>
+                  </thead>
+                  <tbody>
 
-                    <tr>
-                        <th>Ram [GB]</th>
-                        <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalRam***REMOVED******REMOVED***</td>
+                  <tr>
+                    <th>Ram [GB]</th>
+                    <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalRam***REMOVED******REMOVED***</td>
 
-                        <td>***REMOVED******REMOVED***totalResource.totalRam***REMOVED******REMOVED***</td>
-                    </tr>
-                    <tr>
-                        <th>Cores</th>
-                        <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalCores***REMOVED******REMOVED***</td>
+                    <td>***REMOVED******REMOVED***totalResource.totalRam***REMOVED******REMOVED***</td>
+                  </tr>
+                  <tr>
+                    <th>Cores</th>
+                    <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalCores***REMOVED******REMOVED***</td>
 
-                        <td>***REMOVED******REMOVED***totalResource.totalCores***REMOVED******REMOVED***</td>
-                    </tr>
-                    <tr>
-                        <th>Vms</th>
-                        <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalVms***REMOVED******REMOVED***</td>
+                    <td>***REMOVED******REMOVED***totalResource.totalCores***REMOVED******REMOVED***</td>
+                  </tr>
+                  <tr>
+                    <th>Vms</th>
+                    <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalVms***REMOVED******REMOVED***</td>
 
-                        <td>***REMOVED******REMOVED***totalResource.totalVms***REMOVED******REMOVED***</td>
-                    </tr>
-                    <tr>
-                        <th>Volumes</th>
-                        <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalVolumeCounter***REMOVED******REMOVED***</td>
+                    <td>***REMOVED******REMOVED***totalResource.totalVms***REMOVED******REMOVED***</td>
+                  </tr>
+                  <tr>
+                    <th>Volumes</th>
+                    <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalVolumeCounter***REMOVED******REMOVED***</td>
 
-                        <td>***REMOVED******REMOVED***totalResource.totalVolumeCounter***REMOVED******REMOVED***</td>
-                    </tr>
-                    <tr>
-                        <th>Volumes Storage [GB]</th>
-                        <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalVolumeLimit***REMOVED******REMOVED***</td>
+                    <td>***REMOVED******REMOVED***totalResource.totalVolumeCounter***REMOVED******REMOVED***</td>
+                  </tr>
+                  <tr>
+                    <th>Volumes Storage [GB]</th>
+                    <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalVolumeLimit***REMOVED******REMOVED***</td>
 
-                        <td>***REMOVED******REMOVED***totalResource.totalVolumeLimit***REMOVED******REMOVED***</td>
-                    </tr>
-                    <tr>
-                        <th>Object Storage [GB]</th>
-                        <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalObjectStorage***REMOVED******REMOVED***</td>
+                    <td>***REMOVED******REMOVED***totalResource.totalVolumeLimit***REMOVED******REMOVED***</td>
+                  </tr>
+                  <tr>
+                    <th>Object Storage [GB]</th>
+                    <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalObjectStorage***REMOVED******REMOVED***</td>
 
-                        <td>***REMOVED******REMOVED***totalResource.totalObjectStorage***REMOVED******REMOVED***</td>
-                    </tr>
-                    <tr>
-                        <th>FPGA</th>
-                        <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalFPGA***REMOVED******REMOVED***</td>
+                    <td>***REMOVED******REMOVED***totalResource.totalObjectStorage***REMOVED******REMOVED***</td>
+                  </tr>
+                  <tr>
+                    <th>GPU</th>
+                    <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalGPU***REMOVED******REMOVED***</td>
 
-                        <td>***REMOVED******REMOVED***totalResource.totalFPGA***REMOVED******REMOVED***</td>
-                    </tr>
-                    <tr>
-                        <th>GPU</th>
-                        <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalGPU***REMOVED******REMOVED***</td>
-
-                        <td>***REMOVED******REMOVED***totalResource.totalGPU***REMOVED******REMOVED***</td>
-                    </tr>
-                    </tbody>
+                    <td>***REMOVED******REMOVED***totalResource.totalGPU***REMOVED******REMOVED***</td>
+                  </tr>
+                  </tbody>
                 </table>
+              </div>
 
             </div>
             <div>

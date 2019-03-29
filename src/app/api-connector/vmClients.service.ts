@@ -1,70 +1,64 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
-import ***REMOVED***Vmclient***REMOVED*** from "../virtualmachines/virtualmachinemodels/vmclient";
-import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
-import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/vmclient';
+import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
-
-const header = new HttpHeaders(***REMOVED***
-    'X-CSRFToken': Cookie.get("csrftoken")
+const header: HttpHeaders = new HttpHeaders(***REMOVED***
+    'X-CSRFToken': Cookie.get('csrftoken')
 ***REMOVED***);
 
+/**
+ * Service which provides client methods.
+ */
 @Injectable()
 export class ClientService ***REMOVED***
-    clientURL = this.settings.getConnectorBaseUrl() + 'clients/';
+    clientURL: string = `$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***clients/`;
 
-    constructor(private http: HttpClient, private settings: ApiSettings) ***REMOVED***
+    constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
+    isClientAvaiable(): Observable<Client> ***REMOVED***
 
-
-    isClientAvaiable(): Observable<Vmclient> ***REMOVED***
-
-
-        return this.http.get<Vmclient>(this.clientURL + 'active/', ***REMOVED***
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get<Client>(`$***REMOVED***this.clientURL***REMOVED***active/`, ***REMOVED***
+            withCredentials: true
+        ***REMOVED***)
     ***REMOVED***
 
-    getClientsChecked(): Observable<Vmclient[]> ***REMOVED***
+    getClientsChecked(): Observable<Client[]> ***REMOVED***
 
-        return this.http.get<Vmclient[]>(this.clientURL, ***REMOVED***
-            withCredentials: true,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get<Client[]>(this.clientURL, ***REMOVED***
+            withCredentials: true
+        ***REMOVED***)
     ***REMOVED***
 
     checkClient(host: string, port: string): Observable<any> ***REMOVED***
-        let params = new HttpParams().set('host', host).set('port', port);
+        const params: HttpParams = new HttpParams().set('host', host).set('port', port);
 
-
-        return this.http.post(this.clientURL + 'checkClient/', params, ***REMOVED***
+        return this.http.post(`$***REMOVED***this.clientURL***REMOVED***checkClient/`, params, ***REMOVED***
             withCredentials: true,
-            headers: header,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-        ;
+            headers: header
+        ***REMOVED***)
 
     ***REMOVED***
 
     postClient(host: string, port: string, location: string): Observable<any> ***REMOVED***
 
-        let params = new HttpParams().set('host', host).set('port', port).set('location', location);
+        const params: HttpParams = new HttpParams().set('host', host).set('port', port).set('location', location);
 
-
-        return this.http.post(this.clientURL , params, ***REMOVED***
+        return this.http.post(this.clientURL, params, ***REMOVED***
             withCredentials: true,
-            headers: header,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
-
+            headers: header
+        ***REMOVED***)
     ***REMOVED***
 
-    deleteClient(client_id:number): Observable<any> ***REMOVED***
-        return this.http.delete(this.clientURL + client_id +'/', ***REMOVED***
+    deleteClient(client_id: number): Observable<any> ***REMOVED***
+        return this.http.delete(`$***REMOVED***this.clientURL***REMOVED***$***REMOVED***client_id ***REMOVED***/`, ***REMOVED***
             withCredentials: true,
-            headers: header,
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error)));
+            headers: header
+        ***REMOVED***)
 
     ***REMOVED***
 ***REMOVED***

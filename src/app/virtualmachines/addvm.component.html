@@ -5,7 +5,7 @@
                 <i class="fa fa-align-justify"></i> Public Key
             </div>
 
-            <div class="card-block">
+            <div class="card-body">
 
                 <div style="padding:5px" class="alert alert-info"><strong>Info: </strong>
                     You need to set a valid SSH Key before you can start a machine. Please set a
@@ -13,8 +13,8 @@
                     your <a
                             href="#/userinfo">personal data page</a>.
                 </div>
-                <div  style="width: 100%">
-                    <table  table-responsive class="table table-striped">
+                <div style="width: 100%" class="table-responsive">
+                    <table class="table table-striped">
 
                         <tr app-public-key [userinfo]="userinfo"></tr>
                     </table>
@@ -121,8 +121,8 @@
                             </div>
 
                             <div class="col-md-9">
-                                <flavor-detail [collapse2]="collapsed2"
-                                               [flavor]="selectedFlavor"></flavor-detail>
+                                <app-flavor-detail [collapse2]="collapsed2"
+                                                   [flavor]="selectedFlavor"></app-flavor-detail>
                             </div>
 
                             <div *ngIf="selectedProject" class="form-group row"
@@ -153,8 +153,8 @@
                                 </button>
                             </div>
                             <div class="col-md-9">
-                                <image-detail [collapse1]="collapsed1"
-                                              [image]="selectedImage"></image-detail>
+                                <app-image-detail [collapse1]="collapsed1"
+                                                  [image]="selectedImage"></app-image-detail>
                             </div>
 
 
@@ -198,9 +198,10 @@
                                         <input min="0" step="1" [value]="diskspace"
                                                (input)="diskspace = $event.target.value"
                                                type="number"
-                                               placeholder="e.g 8 "><span
-                                            class="input-group-addon"> GB
-                                    </span>
+                                               placeholder="e.g 8 ">
+                                      <div class="input-group-append"><span
+                                        class="input-group-text"> GB
+                                    </span></div>
 
                                         <div class="col-md-6">
                                             <strong>current: ***REMOVED******REMOVED***selectedProjectDiskspaceUsed***REMOVED******REMOVED*** | max

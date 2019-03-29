@@ -1,25 +1,23 @@
 import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***Routes, RouterModule***REMOVED*** from '@angular/router';
-
+import ***REMOVED***RouterModule, Routes***REMOVED*** from '@angular/router';
 // Layouts
+import ***REMOVED***ConsentInfoComponent***REMOVED*** from './consent-info.component';
 import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout.component';
-import ***REMOVED***SimpleLayoutComponent***REMOVED*** from './layouts/simple-layout.component';
 import ***REMOVED***MemberGuardService***REMOVED*** from './member-guard.service';
-import ***REMOVED***RegistrationInfoComponent***REMOVED*** from "./registration-info.component";
-import ***REMOVED***ConsentInfoComponent***REMOVED*** from "./consent-info.component";
+import ***REMOVED***RegistrationInfoComponent***REMOVED*** from './registration-info.component';
 
 export const routes: Routes = [
     ***REMOVED***
         path: '',
         redirectTo: 'userinfo',
-        pathMatch: 'full',
+        pathMatch: 'full'
     ***REMOVED***,
     ***REMOVED***
         path: 'registration-info',
         component: RegistrationInfoComponent,
         pathMatch: 'full'
     ***REMOVED***,
-       ***REMOVED***
+    ***REMOVED***
         path: 'consent-info',
         component: ConsentInfoComponent,
         pathMatch: 'full'
@@ -57,7 +55,7 @@ export const routes: Routes = [
                 path: 'vo-manager',
                 loadChildren: './vo_manager/VoManager.module#VoManagerModule'
             ***REMOVED***,
-              ***REMOVED***
+            ***REMOVED***
                 path: 'facility-manager',
                 loadChildren: './facility_manager/facilitymanager.module#FacilitymanagerModule'
             ***REMOVED***
@@ -66,7 +64,9 @@ export const routes: Routes = [
     ***REMOVED***
 ];
 
-
+/**
+ * App routing module.
+ */
 @NgModule(***REMOVED***
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule],

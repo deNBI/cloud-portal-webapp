@@ -1,5 +1,8 @@
-import ***REMOVED***FlavorType***REMOVED*** from "./flavorType";
+import ***REMOVED***FlavorType***REMOVED*** from './flavorType';
 
+/**
+ * Flavor Class.
+ */
 export class Flavor ***REMOVED***
     private _id: string;
     private _name: string;
@@ -10,7 +13,6 @@ export class Flavor ***REMOVED***
     private _epheremal_disk: number;
     private _type: FlavorType;
     private _simple_vm: boolean;
-
 
     get id(): string ***REMOVED***
         return this._id;
@@ -84,10 +86,4 @@ export class Flavor ***REMOVED***
         this._simple_vm = value;
     ***REMOVED***
 
-
 ***REMOVED***
-
-
-
-
-

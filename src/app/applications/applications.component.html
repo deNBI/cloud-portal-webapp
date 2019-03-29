@@ -3,24 +3,24 @@
 
 </div>
 <div *ngIf="isLoaded_userApplication && isLoaded_AllApplication"
-     class="animated fadeIn" ng-app>
+     class="animated fadeIn">
     <div class="row">
         <!--/.col-->
-        <h1>Applications Overview</h1>
+        <div class="col-md-8"><h1>Applications Overview</h1></div>
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Your applications
                 </div>
-                <div class="card-block" *ngIf="user_applications.length == 0">
+                <div class="card-body" *ngIf="user_applications.length == 0">
                     <div class="alert alert-success" role="alert">
                         <strong>No Applications!</strong> You have no
                         applications in review.
                     </div>
                 </div>
-                <div *ngIf="user_applications.length > 0" class="card-block">
+                <div *ngIf="user_applications.length > 0" class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-responsive">
+                        <table class="table table-striped">
                             <thead>
                             <tr>
                                 <th>Project Name</th>
@@ -39,7 +39,7 @@
                                     <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED*** application.Lifetime ***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>
-                                    <td>***REMOVED******REMOVED*** application.Status ***REMOVED******REMOVED***</td>
+                                    <td>***REMOVED******REMOVED*** getStatusById(application.Status) ***REMOVED******REMOVED***</td>
                                     <td>
 
                                         <button (click)="switchCollapseStatus('user_application-' + application.Id);getFacilityProject(application);"
@@ -52,14 +52,14 @@
                                         </button>
 
 
-                                        <button *ngIf="application.Status == 'submitted'"
+                                        <button *ngIf="application.Status == application_states.SUBMITTED"
                                                 (click)="deleteModal.show();setDeleteId(application.Id)"
                                                 type="button"
 
                                                 class="btn btn-secondary">
                                             Remove Application
                                         </button>
-                                        <button *ngIf="application.Status == 'approved' || application.Status == 'modification declined'"
+                                        <button *ngIf="application.Status == application_states.APPROVED || application.Status == application_states.MODIFICATION_DECLINED"
                                                 (click)="setSelectedApplication(application);ngFormSetDefault(f);extensionModal.show()"
                                                 type="button"
                                                 class="btn btn-secondary">
@@ -72,152 +72,136 @@
                                     <td [class.collapse_no_margin]="getCollapseStatus('user_application-' + application.Id)"
                                         colspan="6">
                                         <div id="user_application-***REMOVED******REMOVED*** application.Id ***REMOVED******REMOVED***"
-                                             [class.collapse]="getCollapseStatus('user_application-' + application.Id)">
-                                            <div class="table-responsive">
-                                                <table class="table table-striped table-responsive">
-                                                    <tr [style.display]="application.Status != 'submitted' ? 'inherit' :'none'">
-                                                        <td>Facility</td>
-                                                        <td>
-                                                            ***REMOVED******REMOVED***application.ComputeCenter?.Name***REMOVED******REMOVED***
-                                                        </td>
+                                             [class.collapse]="getCollapseStatus('user_application-' + application.Id)"
+                                             class="table-responsive">
+                                            <table class="table table-striped" style="width: 80%">
+                                                <tr *ngIf="application.Status != application_states.SUBMITTED">
+                                                    <td>Facility</td>
+                                                    <td>
+                                                        ***REMOVED******REMOVED***application.ComputeCenter?.Name***REMOVED******REMOVED***
+                                                    </td>
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"></td>
 
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Dissemination allowed</td>
-                                                        <td>
-                                                            ***REMOVED******REMOVED***application.Dissemination***REMOVED******REMOVED***
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Description</td>
-                                                        <td>***REMOVED******REMOVED***
-                                                            application.Description
-                                                            ***REMOVED******REMOVED***
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Horizon 2020</td>
-                                                        <td>
-                                                            ***REMOVED******REMOVED***application.Horizon2020***REMOVED******REMOVED***
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Comment</td>
-                                                        <td>***REMOVED******REMOVED***
-                                                            application.Comment
-                                                            ***REMOVED******REMOVED***
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.Comment***REMOVED******REMOVED***
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><b>VMs</b>
-                                                        </td>
-                                                        <td>
-                                                            <span> Current: </span>
-                                                            ***REMOVED******REMOVED***application.VMsRequested***REMOVED******REMOVED***
-                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Dissemination allowed</td>
+                                                    <td>
+                                                        ***REMOVED******REMOVED***application.Dissemination***REMOVED******REMOVED***
+                                                    </td>
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"></td>
 
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            Requested:
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.VMsRequested***REMOVED******REMOVED***
-                                                        </td>
-                                                    </tr>
-                                                    <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
-                                                        <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
-                                                        <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
-                                                        <td *ngIf="application.Status == 4 ">
+                                                </tr>
+                                                <tr>
+                                                    <td>Description</td>
+                                                    <td>***REMOVED******REMOVED***application.Description***REMOVED******REMOVED***
+                                                    </td>
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Horizon 2020</td>
+                                                    <td>
+                                                        ***REMOVED******REMOVED***application.Horizon2020***REMOVED******REMOVED***
+                                                    </td>
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Comment</td>
+                                                    <td>***REMOVED******REMOVED***application.Comment***REMOVED******REMOVED***
+                                                    </td>
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        ***REMOVED******REMOVED***application.ApplicationExtension?.Comment***REMOVED******REMOVED***
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>VMs</b>
+                                                    </td>
+                                                    <td>
+                                                        <span> Current: </span>
+                                                        ***REMOVED******REMOVED***application.VMsRequested***REMOVED******REMOVED***
+                                                    </td>
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        Requested:
+                                                        ***REMOVED******REMOVED***application.ApplicationExtension?.VMsRequested***REMOVED******REMOVED***
+                                                    </td>
+                                                </tr>
+                                                <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
+                                                    <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
+                                                    <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
+                                                    <td *ngIf="application.Status =='modification requested' ">
                                                             <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
-                                                            <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                        <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
-                                                    </tr>
-                                                    <ng-container
-                                                            *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
-                                                        <tr *ngIf="!application.CurrentFlavors[item.key]">
-                                                            <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
-                                                            <td>0</td>
-                                                            <td>
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***
-
-
-                                                            </td>
-
-
-                                                        </tr>
-                                                    </ng-container>
-
-                                                    <tr *ngIf="application.OpenStackProject">
-                                                        <td>Cores</td>
-                                                        <td>***REMOVED******REMOVED***
-                                                            application.TotalCores
-                                                            ***REMOVED******REMOVED***
-                                                        </td>
-
-                                                        <td *ngIf="application.OpenStackProject && application.Status == 'modification requested'">
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension.TotalCores***REMOVED******REMOVED***
-
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr *ngIf="application.OpenStackProject">
-                                                        <td>RAM</td>
-                                                        <td>***REMOVED******REMOVED***
-                                                            application.TotalRam***REMOVED******REMOVED*** GB
-                                                        </td>
-                                                        <td *ngIf="application.OpenStackProject && application.Status == 'modification requested'">
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.TotalRAM***REMOVED******REMOVED***
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Storage Limit</td>
-                                                        <td>***REMOVED******REMOVED***
-                                                            application.VolumeLimit
-                                                            ***REMOVED******REMOVED*** GB
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeLimit***REMOVED******REMOVED***
-                                                            GB
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Volume Counter</td>
-
-                                                        <td>***REMOVED******REMOVED***
-                                                            application.VolumeCounter
-                                                            ***REMOVED******REMOVED*** volumes
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-
-
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED*** volumes
-                                                        </td>
-                                                    </tr>
-                                                    <tr *ngIf="application.OpenStackProject">
-                                                        <td>ObjectStorage</td>
-                                                        <td>***REMOVED******REMOVED***
-                                                            application.ObjectStorage
-                                                            ***REMOVED******REMOVED*** GB
-                                                        </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.ObjectStorage***REMOVED******REMOVED***
-                                                            GB
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>OpenStackProject
-                                                        </td>
+                                                </tr>
+                                                <ng-container
+                                                        *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
+                                                    <tr *ngIf="!application.CurrentFlavors[item.key]">
+                                                        <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
+                                                        <td>0</td>
                                                         <td>
-                                                            ***REMOVED******REMOVED***application.OpenStackProject***REMOVED******REMOVED***
+                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***
+
+
                                                         </td>
-                                                        <td *ngIf="application.Status == 'modification requested'">
-                                                            ***REMOVED******REMOVED***application.OpenStackProject***REMOVED******REMOVED***
-                                                        </td>
+
+
                                                     </tr>
-                                                </table>
-                                            </div>
+                                                </ng-container>
+
+                                                <tr>
+                                                    <td>Cores</td>
+                                                    <td>***REMOVED******REMOVED***application.TotalCores***REMOVED******REMOVED***
+                                                    </td>
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        ***REMOVED******REMOVED***application.ApplicationExtension.TotalCores***REMOVED******REMOVED***
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RAM</td>
+                                                    <td>***REMOVED******REMOVED*** application.TotalRam***REMOVED******REMOVED*** GB
+                                                    </td>
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        ***REMOVED******REMOVED***application.ApplicationExtension?.TotalRAM***REMOVED******REMOVED***
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Storage Limit</td>
+                                                    <td>***REMOVED******REMOVED***application.VolumeLimit***REMOVED******REMOVED*** GB
+                                                    </td>
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeLimit***REMOVED******REMOVED***
+                                                        GB
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Volume Counter</td>
+                                                    <td>***REMOVED******REMOVED*** application.VolumeCounter***REMOVED******REMOVED*** volumes
+                                                    </td>
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED*** volumes
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="application.OpenStackProject">
+                                                    <td>ObjectStorage</td>
+                                                    <td>***REMOVED******REMOVED***application.ObjectStorage***REMOVED******REMOVED*** GB
+                                                    </td>
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        ***REMOVED******REMOVED***application.ApplicationExtension?.ObjectStorage***REMOVED******REMOVED***
+                                                        GB
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>OpenStackProject
+                                                    </td>
+                                                    <td>
+                                                        ***REMOVED******REMOVED***application.OpenStackProject***REMOVED******REMOVED***
+                                                    </td>
+                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        ***REMOVED******REMOVED***application.OpenStackProject***REMOVED******REMOVED***
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </div>
                                     </td>
                                 </tr>
@@ -235,18 +219,18 @@
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Applications for review
                 </div>
-                <div class="card-block"
-                     *ngIf="this.activeApplicationsAvailable() == false">
+                <div class="card-body"
+                     *ngIf="!this.activeApplicationsAvailable()">
                     <div class="alert alert-success" role="alert">
                         <strong>No new Applications!</strong> There are no new
                         project applications for review.
                     </div>
                 </div>
 
-                <div *ngIf="this.activeApplicationsAvailable() == true"
-                     class="card-block">
-                    <div>
-                        <table class="table table-striped table-responsive">
+                <div *ngIf="this.activeApplicationsAvailable()"
+                     class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
                             <thead>
                             <tr>
                                 <th>Project Name</th>
@@ -262,7 +246,7 @@
                             <ng-container
                                     *ngFor="let application of all_applications">
                                 <ng-container
-                                        *ngIf="application.Status == 1 || application.Status == 4 || application.Status == 6 || application.Status == 7">
+                                        *ngIf="application.Status == application_states.SUBMITTED || application.Status == application_states.MODIFICATION_REQUESTED || application.Status == application_states.WAIT_FOR_CONFIRMATION || application.Status == application_states.CONFIRMATION_DENIED">
                                     <tr>
                                         <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
@@ -276,7 +260,7 @@
 
                                         <td>
                                             <select
-                                                    [style.display]="application.OpenStackProject && (application.Status == 1 || application.Status == 7 || (!application.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
+                                                    [style.display]="application.OpenStackProject && (application.Status == application_states.SUBMITTED || application.Status == application_states.CONFIRMATION_DENIED || (!application.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
                                                     class="form-control"
                                                     #selectedComputeCenter>
 
@@ -287,13 +271,13 @@
                                                     ***REMOVED******REMOVED***computeCenter.Name***REMOVED******REMOVED***
                                                 </option>
                                             </select>
-                                            <span [style.display]="application.Status != 1 ? 'inherit' :'none'">***REMOVED******REMOVED***application.ComputeCenter?.Name***REMOVED******REMOVED***</span>
+                                            <span *ngIf="application.Status != application_states.SUBMITTED">***REMOVED******REMOVED***application.ComputeCenter?.Name***REMOVED******REMOVED***</span>
                                         </td>
 
 
                                         <td>
                                             <button
-                                                    *ngIf="application.Status == 7 || (application.Status == 6 && !application.ComputeCenter?.FacilityId )"
+                                                    *ngIf="application.Status == application_states.CONFIRMATION_DENIED || (application.Status == application_states.WAIT_FOR_CONFIRMATION && !application.ComputeCenter?.FacilityId )"
 
                                                     (click)="resetNotificationModal();assignGroupToFacility(application.PerunId,application.Id,selectedComputeCenter.value); notificationModal.show();"
 
@@ -304,7 +288,7 @@
                                                 Assign
                                             </button>
                                             <button
-                                                    *ngIf="application.Status == 6 && application.ComputeCenter?.FacilityId"
+                                                    *ngIf="application.Status == application_states.WAIT_FOR_CONFIRMATION && application.ComputeCenter?.FacilityId"
 
                                                     (click)="resetNotificationModal();removeApplicationFromFacilityConfirmation(application);"
 
@@ -314,7 +298,7 @@
                                                 <i class="fa fa-check"></i>&nbsp;
                                                 Reassign
                                             </button>
-                                            <button *ngIf="application.Status == 1 && application.OpenStackProject"
+                                            <button *ngIf="application.Status == application_states.SUBMITTED && application.OpenStackProject"
 
                                                     (click)="resetNotificationModal();createOpenStackProjectGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
 
@@ -326,7 +310,7 @@
                                                 & Create
                                             </button>
 
-                                            <button *ngIf="application.Status == 1 && !application.OpenStackProject"
+                                            <button *ngIf="application.Status == application_states.SUBMITTED && !application.OpenStackProject"
 
                                                     (click)="resetNotificationModal();createSimpleVmProjectGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
 
@@ -337,7 +321,7 @@
                                                 Approve
                                                 & Create
                                             </button>
-                                            <button *ngIf="application.Status == 4"
+                                            <button *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"
 
                                                     (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
                                                     type="button"
@@ -347,14 +331,14 @@
                                                 Modification
                                             </button>
 
-                                            <button *ngIf="application.Status == 1"
+                                            <button *ngIf="application.Status == application_states.SUBMITTED"
                                                     (click)='declineApplication(application.Id)'
                                                     type="button"
                                                     class="btn btn-secondary">
                                                 <i class="fa fa-close"></i>&nbsp;
                                                 Decline
                                             </button>
-                                            <button *ngIf="application.Status == 4"
+                                            <button *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"
                                                     type="button"
                                                     class="btn btn-secondary"
                                                     (click)="setSelectedApplication(application);declineExtension(application.Id);resultModal.show();">
@@ -380,9 +364,8 @@
                                             colspan="6">
                                             <div id="application_review-***REMOVED******REMOVED*** application.Id ***REMOVED******REMOVED***"
                                                  [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
-                                                <div>
-                                                    <table class="table table-striped"
-                                                           table-responsive>
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped">
 
                                                         <tr>
                                                             <td>User
@@ -391,7 +374,7 @@
                                                             <td>***REMOVED******REMOVED***
                                                                 application.UserAffiliations***REMOVED******REMOVED***
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -399,7 +382,7 @@
                                                             <td>
                                                                 ***REMOVED******REMOVED***application_user[application.User]?.name***REMOVED******REMOVED***
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -407,7 +390,7 @@
                                                             <td>
                                                                 ***REMOVED******REMOVED***application_user[application.User]?.email***REMOVED******REMOVED***
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -417,7 +400,7 @@
                                                                 application.Description
                                                                 ***REMOVED******REMOVED***
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -439,7 +422,7 @@
                                                                 application.Workgroup
                                                                 ***REMOVED******REMOVED***
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -449,7 +432,7 @@
                                                             <td>
                                                                 ***REMOVED******REMOVED***application.OpenStackProject***REMOVED******REMOVED***
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                             </td>
                                                         </tr>
 
@@ -459,7 +442,7 @@
                                                                 application.Comment
                                                                 ***REMOVED******REMOVED***
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.Comment***REMOVED******REMOVED***
                                                             </td>
 
@@ -470,7 +453,7 @@
                                                                 application.Lifetime
                                                                 ***REMOVED******REMOVED*** months
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.Lifetime
                                                                 +
                                                                 application.Lifetime***REMOVED******REMOVED***
@@ -485,7 +468,7 @@
                                                                 <span>Current:</span>
                                                                 ***REMOVED******REMOVED***application.VMsRequested***REMOVED******REMOVED***
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                                 Requested:
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.VMsRequested***REMOVED******REMOVED***
                                                             </td>
@@ -495,7 +478,7 @@
                                                         <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
                                                             <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
                                                             <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
-                                                            <td *ngIf="application.Status == 4 ">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED ">
                                                             <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
                                                                 <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
@@ -516,24 +499,26 @@
                                                             </tr>
                                                         </ng-container>
 
-                                                        <tr *ngIf="application.OpenStackProject">
+                                                        <tr>
                                                             <td>Total Cores</td>
                                                             <td>***REMOVED******REMOVED***
                                                                 application.TotalCores
                                                                 ***REMOVED******REMOVED***
+
+
                                                             </td>
 
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.TotalCores***REMOVED******REMOVED***
                                                             </td>
                                                         </tr>
 
-                                                        <tr *ngIf="application.OpenStackProject">
+                                                        <tr>
                                                             <td>Total RAM</td>
                                                             <td>***REMOVED******REMOVED***
                                                                 application.TotalRam***REMOVED******REMOVED*** GB
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension.TotalRAM***REMOVED******REMOVED***
                                                             </td>
                                                         </tr>
@@ -544,7 +529,7 @@
                                                                 application.VolumeLimit
                                                                 ***REMOVED******REMOVED*** GB
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeLimit***REMOVED******REMOVED***
                                                                 GB
                                                             </td>
@@ -557,7 +542,7 @@
                                                                 application.VolumeCounter
                                                                 ***REMOVED******REMOVED*** volumes
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED*** volumes
                                                             </td>
                                                         </tr>
@@ -568,26 +553,11 @@
                                                                 application.ObjectStorage
                                                                 ***REMOVED******REMOVED*** GB
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.ObjectStorage***REMOVED******REMOVED***
                                                                 GB
                                                             </td>
                                                         </tr>
-                                                        <!--tr *ngIf="application.OpenStackProject">
-                                                            <td>Special Hardware
-                                                            </td>
-                                                            <td><span
-                                                                    style="margin-right: 5px;"
-                                                                    class="badge badge-primary"
-                                                                    *ngFor="let sh of application.SpecialHardware">***REMOVED******REMOVED*** sh["special_hardware_name"] ***REMOVED******REMOVED***</span>
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                       <span style="margin-right: 5px;"
-                                                             class="badge badge-primary"
-                                                             *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">***REMOVED******REMOVED*** sh ***REMOVED******REMOVED***</span>
-                                                            </td>
-                                                        </tr-->
-
                                                         <tr>
                                                             <td>Last status
                                                                 changed
@@ -596,7 +566,7 @@
                                                                 application.DateStatusChanged
                                                                 ***REMOVED******REMOVED***
                                                             </td>
-                                                            <td *ngIf="application.Status == 4">
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                             </td>
                                                         </tr>
 
@@ -621,16 +591,16 @@
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Application history
                 </div>
-                <div class="card-block" *ngIf="all_applications.length == 0">
+                <div class="card-body" *ngIf="all_applications.length == 0">
                     <div class="alert alert-warning" role="alert">
                         <strong>No Applications!</strong> There are no
                         applications at all!
                     </div>
                 </div>
 
-                <div *ngIf="all_applications.length > 0" class="card-block">
-                    <div>
-                        <table class="table table-responsive table-striped table-hover">
+                <div *ngIf="all_applications.length > 0" class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
                             <thead>
                             <tr>
 
@@ -646,7 +616,7 @@
                             <tbody>
                             <ng-container
                                     *ngFor="let application of all_applications">
-                                <ng-container *ngIf="application.Status != 1">
+                                <ng-container *ngIf="application.Status != application_states.SUBMITTED">
                                     <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)***REMOVED***">
                                         <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
@@ -659,7 +629,8 @@
                                             ***REMOVED******REMOVED***
                                         </td>
                                         <td>
-                                            <button (click)="switchCollapseStatus('application_history-' + application.Id);getFacilityProject(application);"
+                                            <button
+                                                    (click)="switchCollapseStatus('application_history-' + application.Id);getFacilityProject(application);"
                                                     type="button"
                                                     class="btn btn-secondary">
                                                 <i class="fa fa-info-circle"></i>&nbsp;
@@ -674,6 +645,13 @@
                                                     class="btn btn-secondary">
                                                 Remove Application
                                             </button>
+                                            <button
+                                                    *ngIf="application.Status != application_states.SUBMITTED &&  application.Status != application_states.TERMINATED"
+                                                    (click)="setSelectedApplication(application);terminateModal.show();"
+                                                    type="button"
+                                                    class="btn btn-secondary">
+                                               Terminate Application
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning)***REMOVED***">
@@ -682,219 +660,250 @@
                                             <div id="application_history-***REMOVED******REMOVED*** application.Id ***REMOVED******REMOVED***"
                                                  [class.collapse]="getCollapseStatus('application_history-' + application.Id)">
                                                 <div>
-                                                    <table class="table table-striped table-responsive">
-                                                        <tr>
-                                                            <td>Description
-                                                            </td>
-                                                            <td>***REMOVED******REMOVED***
-                                                                application.Description
-                                                                ***REMOVED******REMOVED***
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Horizon 2020</td>
-                                                            <td>
-                                                                ***REMOVED******REMOVED***application.Horizon2020***REMOVED******REMOVED***
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Dissemination allowed</td>
-                                                            <td>
-                                                                ***REMOVED******REMOVED***application.Dissemination***REMOVED******REMOVED***
-                                                            </td>
-                                                        </tr>
+                                                  <div class="table-responsive">
+                                                    <table class="table table-striped">
+                                                      <tr>
+                                                        <td>Description
+                                                        </td>
+                                                        <td>***REMOVED******REMOVED***
+                                                          application.Description
+                                                          ***REMOVED******REMOVED***
+                                                        </td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>Horizon 2020</td>
+                                                        <td>
+                                                          ***REMOVED******REMOVED***application.Horizon2020***REMOVED******REMOVED***
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>Dissemination allowed</td>
+                                                        <td>
+                                                          ***REMOVED******REMOVED***application.Dissemination***REMOVED******REMOVED***
+                                                        </td>
+                                                      </tr>
 
-                                                        <tr>
-                                                            <td>Workgroup</td>
-                                                            <td>***REMOVED******REMOVED***
-                                                                application.Workgroup
-                                                                ***REMOVED******REMOVED***
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                OpenStackProject
-                                                            </td>
-                                                            <td>
-                                                                ***REMOVED******REMOVED***application.OpenStackProject***REMOVED******REMOVED***
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                            </td>
-                                                        </tr>
+                                                      <tr>
+                                                        <td>Workgroup</td>
+                                                        <td>***REMOVED******REMOVED***
+                                                          application.Workgroup
+                                                          ***REMOVED******REMOVED***
+                                                        </td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>
+                                                          OpenStackProject
+                                                        </td>
+                                                        <td>
+                                                          ***REMOVED******REMOVED***application.OpenStackProject***REMOVED******REMOVED***
+                                                        </td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        </td>
+                                                      </tr>
 
-                                                        <tr>
-                                                            <td>Comment</td>
-                                                            <td>***REMOVED******REMOVED***
-                                                                application.Comment
-                                                                ***REMOVED******REMOVED***
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.Comment***REMOVED******REMOVED***
-                                                            </td>
+                                                      <tr>
+                                                        <td>Comment</td>
+                                                        <td>***REMOVED******REMOVED***
+                                                          application.Comment
+                                                          ***REMOVED******REMOVED***
+                                                        </td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension?.Comment***REMOVED******REMOVED***
+                                                        </td>
 
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Lifetime</td>
-                                                            <td>***REMOVED******REMOVED***
-                                                                application.Lifetime
-                                                                ***REMOVED******REMOVED*** months
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.Lifetime
-                                                                +
-                                                                application.Lifetime***REMOVED******REMOVED***
-                                                                months
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><b>VMs</b>
-                                                            </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>Lifetime</td>
+                                                        <td>***REMOVED******REMOVED***
+                                                          application.Lifetime
+                                                          ***REMOVED******REMOVED*** months
+                                                        </td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension?.Lifetime
+                                                        +
+                                                        application.Lifetime***REMOVED******REMOVED***
+                                                          months
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td><b>VMs</b>
+                                                        </td>
 
-                                                            <td>
-                                                                Current:
-                                                                ***REMOVED******REMOVED***application.VMsRequested***REMOVED******REMOVED***
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4 ">
-                                                                Requested:
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension.VMsRequested***REMOVED******REMOVED***
-                                                            </td>
+                                                        <td>
+                                                          Current:
+                                                          ***REMOVED******REMOVED***application.VMsRequested***REMOVED******REMOVED***
+                                                        </td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED ">
+                                                          Requested:
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension.VMsRequested***REMOVED******REMOVED***
+                                                        </td>
 
 
-                                                        </tr>
+                                                      </tr>
 
-                                                        <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
-                                                            <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
-                                                            <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
-                                                            <td *ngIf="application.Status == 4 ">
-                                                            <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                      <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
+                                                        <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
+                                                        <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED ">
+                                                            <span
+                                                              *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
-                                                                <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                          <span
+                                                            *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
-                                                        </tr>
-                                                        <ng-container
-                                                                *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
-                                                            <tr *ngIf="!application.CurrentFlavors[item.key]">
-                                                                <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
-                                                                <td>0</td>
-                                                                <td>
-                                                                    ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***
+                                                      </tr>
+                                                      <ng-container
+                                                        *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
+                                                        <tr *ngIf="!application.CurrentFlavors[item.key]">
+                                                          <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
+                                                          <td>0</td>
+                                                          <td>
+                                                            ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***
 
 
-                                                                </td>
+                                                          </td>
 
-
-                                                            </tr>
-                                                        </ng-container>
-
-
-                                                        <tr *ngIf="application.OpenStackProject">
-                                                            <td>Total Cores</td>
-                                                            <td>***REMOVED******REMOVED***application.TotalCores
-                                                                ***REMOVED******REMOVED***
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension.TotalCores***REMOVED******REMOVED***
-                                                            </td>
-                                                        </tr>
-                                                        <tr *ngIf="application.OpenStackProject">
-                                                            <td>Total RAM</td>
-                                                            <td>***REMOVED******REMOVED***
-                                                                application.TotalRam***REMOVED******REMOVED*** GB
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension.TotalRAM***REMOVED******REMOVED***
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Storage Limit
-                                                            </td>
-                                                            <td>***REMOVED******REMOVED***
-                                                                application.VolumeLimit
-                                                                ***REMOVED******REMOVED*** GB
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeLimit***REMOVED******REMOVED***
-                                                                GB
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Volume
-                                                                Counter
-                                                            </td>
-                                                            <td>***REMOVED******REMOVED***
-                                                                application.VolumeCounter
-                                                                ***REMOVED******REMOVED*** volumes
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED*** volumes
-                                                            </td>
-                                                        </tr>
-                                                        <tr *ngIf="application.OpenStackProject">
-                                                            <td>ObjectStorage
-                                                            </td>
-                                                            <td>***REMOVED******REMOVED***
-                                                                application.ObjectStorage
-                                                                ***REMOVED******REMOVED*** GB
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.ObjectStorage***REMOVED******REMOVED***
-                                                                GB
-                                                            </td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td>Last status
-                                                                changed
-                                                            </td>
-                                                            <td>***REMOVED******REMOVED***
-                                                                application.DateStatusChanged
-                                                                ***REMOVED******REMOVED***
-                                                            </td>
-                                                            <td *ngIf="application.Status == 4">
-                                                            </td>
-                                                        </tr>
-                                                        <tr *ngIf="application.Status == 2">
-                                                            <td>DaysRunning
-                                                            </td>
-
-                                                            <td>
-                                                                ***REMOVED******REMOVED***application.DaysRunning***REMOVED******REMOVED***
-                                                            </td>
 
                                                         </tr>
-                                                        <tr *ngIf="application.ComputeCenter">
-
-                                                            <td>Facility
-                                                                Details
-                                                            </td>
-                                                            <td>
-                                                                <ul *ngIf="application.ComputeCenter.Name">
-                                                                    <li *ngIf="application.OpenStackProject">
-                                                                        <a
-                                                                                target="_blank"
-                                                                                href="application.ComputeCenter.Login">Login:
-                                                                            ***REMOVED******REMOVED***application.ComputeCenter.Login***REMOVED******REMOVED***</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        Support:
-                                                                        ***REMOVED******REMOVED***application.ComputeCenter.Support***REMOVED******REMOVED***
-                                                                    </li>
-
-                                                                    <!--button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
-                                                                            class="btn btn-primary">Set your OpenStack API password
-                                                                    </button-->
+                                                      </ng-container>
 
 
-                                                                </ul>
-                                                            </td>
+                                                      <tr>
+                                                        <td>Total Cores</td>
+                                                        <td>***REMOVED******REMOVED***application.TotalCores
+                                                          ***REMOVED******REMOVED***
+                                                        </td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension.TotalCores***REMOVED******REMOVED***
+                                                        </td>
+                                                      </tr>
+                                                      <tr *ngIf="application.OpenStackProject">
+                                                        <td>Total RAM</td>
+                                                        <td>***REMOVED******REMOVED***
+                                                          application.TotalRam***REMOVED******REMOVED*** GB
+                                                        </td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension.TotalRAM***REMOVED******REMOVED***
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>Storage Limit
+                                                        </td>
+                                                        <td>***REMOVED******REMOVED***
+                                                          application.VolumeLimit
+                                                          ***REMOVED******REMOVED*** GB
+                                                        </td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeLimit***REMOVED******REMOVED***
+                                                          GB
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>Volume
+                                                          Counter
+                                                        </td>
+                                                        <td>***REMOVED******REMOVED***
+                                                          application.VolumeCounter
+                                                          ***REMOVED******REMOVED*** volumes
+                                                        </td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED*** volumes
+                                                        </td>
+                                                      </tr>
+                                                      <tr *ngIf="application.OpenStackProject">
+                                                        <td>ObjectStorage
+                                                        </td>
+                                                        <td>***REMOVED******REMOVED***
+                                                          application.ObjectStorage
+                                                          ***REMOVED******REMOVED*** GB
+                                                        </td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension?.ObjectStorage***REMOVED******REMOVED***
+                                                          GB
+                                                        </td>
+                                                      </tr>
+                                                      <!--tr *ngIf="application.OpenStackProject">
+                                                          <td>Special Hardware
+                                                          </td>
+                                                          <td><span
+                                                                  style="margin-right: 5px;"
+                                                                  class="badge badge-primary"
+                                                                  *ngFor="let sh of application.SpecialHardware">***REMOVED******REMOVED*** sh["special_hardware_name"] ***REMOVED******REMOVED***</span>
+                                                          </td>
+                                                          <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                     <span style="margin-right: 5px;"
+                                                           class="badge badge-primary"
+                                                           *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">***REMOVED******REMOVED*** sh ***REMOVED******REMOVED***</span>
+                                                          </td>
+                                                      </tr-->
 
-                                                        </tr>
+                                                      <tr>
+                                                        <td>Last status
+                                                          changed
+                                                        </td>
+                                                        <td>***REMOVED******REMOVED***
+                                                          application.DateStatusChanged
+                                                          ***REMOVED******REMOVED***
+                                                        </td>
+                                                        <td
+                                                          *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        </td>
+                                                      </tr>
+                                                      <tr *ngIf="application.Status == application_states.APPROVED">
+                                                        <td>DaysRunning
+                                                        </td>
+
+                                                        <td>
+                                                          ***REMOVED******REMOVED***application.DaysRunning***REMOVED******REMOVED***
+                                                        </td>
+
+                                                      </tr>
+                                                      <tr *ngIf="application.ComputeCenter">
+
+                                                        <td>Facility
+                                                          Details
+                                                        </td>
+                                                        <td>
+                                                          <ul *ngIf="application.ComputeCenter.Name">
+                                                            <li *ngIf="application.OpenStackProject">
+                                                              <a
+                                                                target="_blank"
+                                                                href="application.ComputeCenter.Login">Login:
+                                                                ***REMOVED******REMOVED***application.ComputeCenter.Login***REMOVED******REMOVED***</a>
+                                                            </li>
+                                                            <li>
+                                                              Support:
+                                                              ***REMOVED******REMOVED***application.ComputeCenter.Support***REMOVED******REMOVED***
+                                                            </li>
+
+                                                            <!--button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
+                                                                    class="btn btn-primary">Set your OpenStack API password
+                                                            </button-->
+
+
+                                                          </ul>
+                                                        </td>
+
+                                                      </tr>
 
                                                     </table>
+                                                  </div>
                                                 </div>
 
                                             </div>
@@ -935,10 +944,10 @@
                     ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
                 </div>
                 <div *ngIf="notificationClientInfo.length > 0">
-                    <div *ngFor="let c of notificationClientInfo">
+                    <div *ngFor="let c of notificationClientInfo" class="table-responsive">
                         <br>
                         <p>Client: ***REMOVED******REMOVED***c.location***REMOVED******REMOVED***</p>
-                        <table class="table table-responsive table-striped">
+                        <table class="table table-striped">
                             <thead>
                             <tr>
                                 <td></td>
@@ -1013,6 +1022,38 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div bsModal #terminateModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Terminate Application</h4>
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="terminateModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="alert alert-warning" role="alert">
+                    Are you sure you want to terminate this application?
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-success col-md-4"
+                        (click)="terminateProject(selectedApplication);terminateModal.hide();notificationModal.show()">
+                    Yes
+                </button>
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="terminateModal.hide()">Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div bsModal #extensionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
@@ -1077,7 +1118,9 @@
                                        placeholder="e.g 3"
                                        type="number" min="0" max="12" step="1" ngModel required
                                        pattern="^([0-9]|1[012])$">
-                                <span class="input-group-addon"> months</span>
+                              <div class="input-group-append">
+                                <span class="input-group-text"> months</span>
+                              </div>
                             </div>
                             <span class="help-block">Number of months you want to extend the project</span>
                         </div>
@@ -1095,14 +1138,17 @@
                     <div>
                         <div *ngFor="let t of typeList">
                             <div *ngIf="selectedApplication?.OpenStackProject || checkIfTypeGotSimpleVmFlavor(t)" class="card">
+
                                 <div (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"
                                      style="cursor: pointer;" id="flavor-card" class="card-header">
 
 
                                     ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
-                                    <i *ngIf="collapseList[typeList.indexOf(t)]" style="float: right;font-size: 25px"
+                                    <i *ngIf="collapseList[typeList.indexOf(t)]"
+                                       style="float: right;font-size: 25px"
                                        class="icon-arrow-up"></i>
-                                    <i *ngIf="!collapseList[typeList.indexOf(t)]" style="float: right;font-size: 25px"
+                                    <i *ngIf="!collapseList[typeList.indexOf(t)]"
+                                       style="float: right;font-size: 25px"
                                        class="icon-arrow-down"></i>
 
 
@@ -1110,8 +1156,8 @@
                                 <div *ngIf="collapseList[typeList.indexOf(t)]" class="form-group card-body">
                                     <div *ngFor="let fl of flavorList" class="form-group row">
                                         <div
-                                                *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || selectedApplication?.OpenStackProject )"
-                                                class="form-group row">
+                                                *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || selectedApplication?.OpenStackProject)"
+                                             class="form-group row">
                                             <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***</strong><br>
                                                 Number of cores: ***REMOVED******REMOVED***fl.vcpus***REMOVED******REMOVED***<br>
                                                 RAM: ***REMOVED******REMOVED***fl.ram***REMOVED******REMOVED*** GB</label>
@@ -1122,7 +1168,7 @@
                                                            type="text"
                                                            value="***REMOVED******REMOVED***selectedApplication?.CurrentFlavors[fl.name]?.counter***REMOVED******REMOVED***"
                                                            placeholder="NDA" disabled>
-                                                    <span class="input-group-addon"> VMs</span>
+                                                  <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
                                                 </div>
                                                 <span class="help-block">Currently approved of this type </span>
                                             </div>
@@ -1136,7 +1182,7 @@
                                                            placeholder="e.g 1"
                                                            (ngModel)="'project_application_' + fl.name"
                                                     >
-                                                    <span class="input-group-addon"> VMs</span>
+                                                  <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
                                                 </div>
                                                 <span class="help-block">Number of VMs you would like to run in the future</span>
                                             </div>
@@ -1165,8 +1211,8 @@
                                        value="***REMOVED******REMOVED***selectedApplication?.VolumeLimit***REMOVED******REMOVED***"
                                        placeholder="NDA"
                                        type="text" disabled>
-                                <span class="input-group-addon"> GB
-                                    </span>
+                              <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
                             </div>
                             <span class="help-block">Current extra storage</span>
                         </div>
@@ -1181,8 +1227,8 @@
                                        placeholder="e.g. 20"
                                        value="***REMOVED******REMOVED***selectedApplication?.VolumeLimit***REMOVED******REMOVED***"
                                        type="number" min="1" step="1" [ngModel]="20">
-                                <span class="input-group-addon"> GB
-                                    </span>
+                              <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
                             </div>
                             <span class="help-block">How much extra storage do you need in the future?</span>
                         </div>
@@ -1239,8 +1285,8 @@
                                        placeholder="NDA"
                                        value="***REMOVED******REMOVED***selectedApplication?.ObjectStorage***REMOVED******REMOVED***"
                                        type="text" disabled>
-                                <span class="input-group-addon"> GB
-                                    </span>
+                              <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
                             </div>
                             <span class="help-block">Current Object Storage capacity</span>
                         </div>
@@ -1256,18 +1302,49 @@
                                        placeholder="e.g. 8"
                                        value="***REMOVED******REMOVED***selectedApplication?.ObjectStorage***REMOVED******REMOVED***"
                                        type="number" min="0" step="1" [ngModel]="0">
-                                <span class="input-group-addon"> GB
-                                    </span>
+                              <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
                             </div>
                             <span class="help-block">How much Object Storage do you need in the future?</span>
                         </div>
                     </div>
 
+
+                    <!--div *ngIf="selectedApplication?.OpenStackProject" class="form-group row">
+                        <label class="col-md-4 form-control-label"><strong>Special
+                            Hardware </strong> <i
+                                data-balloon="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."
+                                data-balloon-pos="down"
+                                data-balloon-length="large"><i class="icon-question"
+                                                               style="cursor: pointer;"></i></i></label>
+                        <!-- not working properly yet
+                        <div class="col">
+                              <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">                                    <label>
+                                      <input type="checkbox" [checked]="(specialHardwareInUse(sh, selectedApplication))" disabled>
+                                      ***REMOVED******REMOVED***sh.Name***REMOVED******REMOVED***
+                                  </label>
+                              </div>
+                              <span class="help-block">Currently used special hardware</span>
+                          </div> -->
+
+                    <!--div class="col">
+                        <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       [checked]="( checkboxValue === true ? sh.Checked : False )"
+                                       (change)="sh.Checked = $event.target.checked;"/>
+                                ***REMOVED******REMOVED***sh.Name***REMOVED******REMOVED***
+                            </label>
+                        </div>
+                        <span class="help-block">Which special hardware do you need in the future?</span>
+                    </div-->
+                    <!--/div-->
+
                     <div class="form-group row">
                         <label class="col-md-4 form-control-label"
                                for="text-input"><strong>Comment</strong></label>
                         <div class="col-md-8">
-                <textarea type="text" id="id_project_application_renewal__comment"
+                <textarea type="text" id="id_project_application_renewal_comment"
                           name="project_application_renewal_comment" class="form-control"
                           maxlength="8192"
                           placeholder='' [ngModel]="selectedApplication?.Comment"></textarea>
@@ -1297,12 +1374,16 @@
 
 
                 <div class="modal-footer">
+                      <div *ngIf="f.invalid" class="form-group row alert alert-warning">
+                        Some required fields are incorrect or not filled in yet.
+                        Please check if all required (*) fields are filled in correctly.
+                    </div>
                     <div class="label">
                         By submitting this application you agree to the cloud usage policy.
                     </div>
-                    <button type="button" class="btn  btn-primary" type="submit" name="_save"
+                    <button type="button" class="btn  btn-primary"
                             form="application_form"
-                            (click)="extensionModal.hide();resultModal.show()"
+                            (click)="extension_request=true;filterEnteredData(f); submitModal.show();"
                             [disabled]="f.invalid"><i
                             class="fa fa-dot-circle-o">
 
@@ -1320,6 +1401,60 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
+
+<div bsModal #submitModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">***REMOVED******REMOVED***projectName***REMOVED******REMOVED***</h4>
+                <button type="button" class="close" style="cursor: pointer;"
+                        (click)="submitModal.hide()"
+                        data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    <strong>Please check the data you have entered and confirm your application
+                        below.</strong><br>
+                    If the entered data mismatches with your requirements cancel this confirmation
+                    and take changes.
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tr *ngFor="let str of valuesToConfirm">
+                            <td>***REMOVED******REMOVED***str***REMOVED******REMOVED***</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Number of cores in total:
+                                ***REMOVED******REMOVED***totalNumberOfCores.toString()***REMOVED******REMOVED***</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Value of RAM in total: ***REMOVED******REMOVED***totalRAM.toString()***REMOVED******REMOVED*** GBs</strong>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+
+
+                <button class="btn btn-success col-md4" type="button"
+                        (click)="resultModal.show(); extensionModal.hide(); submitModal.hide();onSubmit(f);">Confirm Application
+                </button>
+                <button class="btn  btn-primary col-md-4" type="reset"
+                        (click)="submitModal.hide();">Cancel
+                </button>
+
+            </div>
+        </div><!-- /.modal-content -->L
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 <div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"

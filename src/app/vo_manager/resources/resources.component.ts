@@ -1,11 +1,13 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***VoService***REMOVED*** from "../../api-connector/vo.service";
-import ***REMOVED***FacilityService***REMOVED*** from "../../api-connector/facility.service";
+import ***REMOVED***VoService***REMOVED*** from '../../api-connector/vo.service';
 import * as jspdf from 'jspdf';
-import ***REMOVED***Resources***REMOVED*** from "./resources";
+import ***REMOVED***Resources***REMOVED*** from './resources';
 import html2canvas from 'html2canvas';
-import ***REMOVED***ExportAsService, ExportAsConfig***REMOVED*** from 'ngx-export-as'
+import ***REMOVED***ExportAsConfig, ExportAsService***REMOVED*** from 'ngx-export-as'
 
+/**
+ * Resource component.
+ */
 @Component(***REMOVED***
     selector: 'app-resources',
     templateUrl: './resources.component.html',
@@ -14,13 +16,12 @@ import ***REMOVED***ExportAsService, ExportAsConfig***REMOVED*** from 'ngx-expor
 ***REMOVED***)
 export class ResourcesComponent implements OnInit ***REMOVED***
 
-    isLoaded = false;
+    isLoaded: boolean = false;
     voResources: Resources[] = [];
     totalResource: Resources;
-    fileName = 'VoResources';
-    tableId = 'resourcesTable';
+    fileName: string = 'VoResources';
+    tableId: string = 'resourcesTable';
     today: number = Date.now();
-
 
     exportAsConfigCSV: ExportAsConfig = ***REMOVED***
         type: 'csv',
@@ -32,54 +33,52 @@ export class ResourcesComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
-    public tableToCSV() ***REMOVED***
+    public tableToCSV(): void ***REMOVED***
         this.exportAsService.save(this.exportAsConfigCSV, this.fileName);
 
     ***REMOVED***
 
-
-    public getVoProjectResources() ***REMOVED***
+    public getVoProjectResources(): void ***REMOVED***
         this.voservice.getVoProjectResources().subscribe(res => ***REMOVED***
-            for (let r in res) ***REMOVED***
-                if (r != 'Total') ***REMOVED***
-                    let resource = new Resources(r, res[r]['totalRam'], res[r]['totalCores'],
-                        res[r]['totalVms'], res[r]['totalVolumeLimit'], res[r]['totalVolumeCounter'],
-                        res[r]['totalObjectStorage'], res[r]['totalFPGA'], res[r]['totalGPU']);
+            for (const resp in res) ***REMOVED***
+                if (resp !== 'Total') ***REMOVED***
+                    const resource: Resources = new Resources(
+                        resp, res[resp]['totalRam'], res[resp]['totalCores'],
+                        res[resp]['totalVms'], res[resp]['totalVolumeLimit'], res[resp]['totalVolumeCounter'],
+                        res[resp]['totalObjectStorage'], res[resp]['totalGPU']);
                     this.voResources.push(resource);
-                ***REMOVED***
-                else ***REMOVED***
-                    this.totalResource = new Resources('Total', res['Total']['totalRam'], res['Total']['totalCores'], res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
-                        res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'], res['Total']['totalFPGA'], res['Total']['totalGPU']);
+                ***REMOVED*** else ***REMOVED***
+                    this.totalResource = new Resources(
+                        'Total', res['Total']['totalRam'], res['Total']['totalCores'],
+                        res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
+                        res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'],
+                        res['Total']['totalGPU']);
                 ***REMOVED***
             ***REMOVED***
-
 
             this.isLoaded = true;
         ***REMOVED***)
 
     ***REMOVED***
 
-
-    public tableToPDF() ***REMOVED***
-        var data = document.getElementById(this.tableId);
+    public tableToPDF(): void ***REMOVED***
+        const data = document.getElementById(this.tableId);
         html2canvas(data).then(canvas => ***REMOVED***
             // Few necessary setting options
-            var imgWidth = 208;
-            var pageHeight = 295;
-            var imgHeight = canvas.height * imgWidth / canvas.width;
-            var heightLeft = imgHeight;
+            const imgWidth: number = 208;
+            const pageHeight: number = 295;
+            const imgHeight: number = canvas.height * imgWidth / canvas.width;
+            const heightLeft: number = imgHeight;
 
-            const contentDataURL = canvas.toDataURL('image/png')
-            let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
-            var position = 0;
+            const contentDataURL: string = canvas.toDataURL('image/png');
+            const pdf: jspdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+            const position: number = 0;
             pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
             pdf.save('VoResources.pdf'); // Generated PDF
         ***REMOVED***);
     ***REMOVED***
 
-
-    ngOnInit() ***REMOVED***
+    ngOnInit(): void ***REMOVED***
     ***REMOVED***
-
 
 ***REMOVED***

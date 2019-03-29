@@ -1,3 +1,6 @@
+/**
+ * Application Extension class.
+ */
 export class ApplicationExtension ***REMOVED***
 
     private _Id: number;
@@ -14,13 +17,17 @@ export class ApplicationExtension ***REMOVED***
     private _OpenStackProject: boolean;
     private _TotalCores: number;
     private _TotalRAM: number;
-    private _RequestedFlavors: ***REMOVED*** [id: string]: ***REMOVED*** counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number ***REMOVED*** ***REMOVED***;
+    private _RequestedFlavors: ***REMOVED***
+        [id: string]: ***REMOVED***
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        ***REMOVED***
+    ***REMOVED***;
 
     constructor() ***REMOVED***
         this._RequestedFlavors = ***REMOVED******REMOVED***;
 
     ***REMOVED***
-
 
     /**
      * Add Flavor to requested flavor list.
@@ -33,7 +40,8 @@ export class ApplicationExtension ***REMOVED***
      * @param ***REMOVED***number***REMOVED*** gpu gpu of the flavors
      * @param ***REMOVED***number***REMOVED*** epheremal_disk epheremal_disk of the flavor
      */
-    public addFlavorToRequested(name: string, counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number): void ***REMOVED***
+    public addFlavorToRequested(name: string, counter: number, tag: string, ram: number, rootdisk: number,
+                                vcpus: number, gpu: number, epheremal_disk: number): void ***REMOVED***
         this._RequestedFlavors[name] = ***REMOVED***
             counter: counter,
             tag: tag,
@@ -45,14 +53,23 @@ export class ApplicationExtension ***REMOVED***
         ***REMOVED***;
     ***REMOVED***
 
-    get RequestedFlavors(): ***REMOVED*** [id: string]: ***REMOVED*** counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number ***REMOVED*** ***REMOVED*** ***REMOVED***
+    get RequestedFlavors(): ***REMOVED***
+        [id: string]: ***REMOVED***
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        ***REMOVED***
+    ***REMOVED*** ***REMOVED***
         return this._RequestedFlavors
     ***REMOVED***
 
-    set RequestedFlavors(value: ***REMOVED*** [id: string]: ***REMOVED*** counter: number, tag: string, ram: number, rootdisk: number, vcpus: number, gpu: number, epheremal_disk: number ***REMOVED*** ***REMOVED***) ***REMOVED***
+    set RequestedFlavors(value: ***REMOVED***
+        [id: string]: ***REMOVED***
+            counter: number, tag: string, ram: number, rootdisk: number,
+            vcpus: number, gpu: number, epheremal_disk: number
+        ***REMOVED***
+    ***REMOVED***) ***REMOVED***
         this._RequestedFlavors = value;
     ***REMOVED***
-
 
     get TotalCores(): number ***REMOVED***
         return this._TotalCores;
@@ -78,7 +95,6 @@ export class ApplicationExtension ***REMOVED***
         this._Lifetime = value;
     ***REMOVED***
 
-
     get OpenStackProject(): boolean ***REMOVED***
         return this._OpenStackProject
     ***REMOVED***
@@ -86,7 +102,6 @@ export class ApplicationExtension ***REMOVED***
     set OpenStackProject(value: boolean) ***REMOVED***
         this._OpenStackProject = value;
     ***REMOVED***
-
 
     get Id(): number ***REMOVED***
         return this._Id;
@@ -96,7 +111,6 @@ export class ApplicationExtension ***REMOVED***
         this._Id = value;
     ***REMOVED***
 
-
     set Comment(value: string) ***REMOVED***
         this._Comment = value;
     ***REMOVED***
@@ -104,7 +118,6 @@ export class ApplicationExtension ***REMOVED***
     get Comment(): string ***REMOVED***
         return this._Comment;
     ***REMOVED***
-
 
     get VMsRequested(): number ***REMOVED***
         return this._VMsRequested;
@@ -138,7 +151,6 @@ export class ApplicationExtension ***REMOVED***
         this._VolumeLimit = value;
     ***REMOVED***
 
-
     get VolumeCounter(): number ***REMOVED***
         return this._VolumeCounter;
     ***REMOVED***
@@ -163,7 +175,6 @@ export class ApplicationExtension ***REMOVED***
         this._SpecialHardware = value;
     ***REMOVED***
 
-
     get DateSubmitted(): string ***REMOVED***
         return this._DateSubmitted;
     ***REMOVED***
@@ -171,6 +182,5 @@ export class ApplicationExtension ***REMOVED***
     set DateSubmitted(value: string) ***REMOVED***
         this._DateSubmitted = value;
     ***REMOVED***
-
 
 ***REMOVED***

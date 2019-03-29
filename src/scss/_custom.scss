@@ -1,4 +1,9 @@
 // Here you can add other styles
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/modal";
+
 .btn***REMOVED***
   cursor: pointer;
 ***REMOVED***
@@ -9,4 +14,21 @@ header ***REMOVED***
 
 #header-help ***REMOVED***
   padding-right: 19px;
+***REMOVED***
+
+.modal ***REMOVED***
+  background-color: rgba(0,0,0,0.3);
+***REMOVED***
+
+.modal-backdrop ***REMOVED***
+  position: relative;
+***REMOVED***
+
+.card-body ***REMOVED***
+  flex: 1 1 auto;
+  padding: 1.25rem;
+***REMOVED***
+
+.collapse_no_margin***REMOVED***
+  margin: 0;
 ***REMOVED***
