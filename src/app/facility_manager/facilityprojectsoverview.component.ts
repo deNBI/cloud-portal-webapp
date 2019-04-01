@@ -34,6 +34,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
      */
     STATUS_APPROVED: number = 2;
 
+    selectedProjectType: string = 'ALL';
+
     // modal variables for User list
     public usersModalProjectMembers: ProjectMember[] = [];
     public usersModalProjectID: number;
@@ -162,7 +164,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
 
     sendMailToFacility(facility: string, subject: string, message: string, reply?: string): void ***REMOVED***
         this.facilityservice.sendMailToFacility(
-            facility, encodeURIComponent(subject), encodeURIComponent(message),
+            facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
             encodeURIComponent(reply)).subscribe(
             result => ***REMOVED***
 
