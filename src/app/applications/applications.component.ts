@@ -124,7 +124,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
      * Get the facility of an application.
      * @param ***REMOVED***Application***REMOVED*** app
      */
-    public getFacilityProject(app: Application): void ***REMOVED***
+    getFacilityProject(app: Application): void ***REMOVED***
 
         if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED && app.Status !== this.application_states.TERMINATED) ***REMOVED***
             this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => ***REMOVED***
