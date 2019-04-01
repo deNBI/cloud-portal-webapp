@@ -55,11 +55,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      */
     vmEnd: number = this.vmsPerPage;
     /**
-     * Name of vm which changed status.
+     * application_status_name of vm which changed status.
      */
     status_changed_vm: string;
     /**
-     * Id of vm which changed status.
+     * application_status_id of vm which changed status.
      */
     status_changed_vm_id: string;
 
@@ -82,7 +82,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     snapshotNameCheckDone: boolean = false;
     snapshotDone: string = 'Waiting';
     /**
-     * Name of the snapshot.
+     * application_status_name of the snapshot.
      */
     snapshotName: string = '';
     /**

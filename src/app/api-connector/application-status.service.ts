@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {ApplicationStatus} from '../applications/application_status.model';
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -21,8 +22,8 @@ export class ApplicationStatusService {
      * Get all application stati.
      * @returns {Observable<any>} List of all application stati
      */
-    getAllApplicationStatus(): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}application_status/`, {
+    getAllApplicationStatus(): Observable<ApplicationStatus[]> {
+        return this.http.get<ApplicationStatus[]>(`${ApiSettings.getApiBaseURL()}application_status/`, {
             withCredentials: true
         })
     }

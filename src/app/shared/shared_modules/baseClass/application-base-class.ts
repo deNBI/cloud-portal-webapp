@@ -49,7 +49,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
 
 
     /**
-     * User which requested the Application {id: Elixir Id of user : {name and email}}.
+     * User which requested the Application {id: Elixir application_status_id of user : {name and email}}.
      * @type {{}}
      */
     application_user: { [id: string]: { [id: string]: string } } = {};
@@ -103,7 +103,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
     isLoaded_userApplication: boolean = false;
 
     /**
-     * Name of the project.
+     * application_status_name of the project.
      */
     public projectName: string;
 
@@ -131,8 +131,8 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
     getIdByStatus(name: string): number {
         const s: number = -1;
         for (const status of this.application_status) {
-            if (status.Name === name) {
-                return status.Id;
+            if (status.application_status_name === name) {
+                return status.application_status_id;
             }
         }
 
@@ -371,17 +371,9 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
      * Get all possible application stati.
      */
     getApplicationStatus(): void {
-        this.applicationstatusservice.getAllApplicationStatus().toPromise()
-            .then((result: object) => {
-                const res: object = result;
-                for (const key in res) {
-                    if (res[key]) {
-                        const asj: object = res[key];
-                        const aj: ApplicationStatus = new ApplicationStatus(asj['application_status_id'], asj['application_status_name']);
-                        this.application_status.push(aj)
-                    }
-                }
-            });
+        this.applicationstatusservice.getAllApplicationStatus().subscribe((stati: ApplicationStatus[]) => {
+            this.application_status = stati;
+        })
     }
 
     /**
@@ -392,8 +384,8 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
     public getStatusById(id: number): string {
         const dummy: string = 'Unknown';
         for (const status of this.application_status) {
-            if (status.Id === id) {
-                return status.Name;
+            if (status.application_status_id === id) {
+                return status.application_status_name;
             }
         }
 

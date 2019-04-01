@@ -39,12 +39,12 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
 
     /**
-     * Id of the extension status.
+     * application_status_id of the extension status.
      * @type {number}
      */
     extension_status: number = 0;
     /**
-     * Id of Application set for deletion.
+     * application_status_id of Application set for deletion.
      */
     public deleteId: number;
 
