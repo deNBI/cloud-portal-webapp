@@ -167,6 +167,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
             facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
             encodeURIComponent(reply)).subscribe(
             result => ***REMOVED***
+                this.selectedProjectType = 'ALL';
 
                 if (result.status === 201) ***REMOVED***
                     this.emailStatus = 1;
@@ -175,6 +176,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                 ***REMOVED***
             ***REMOVED***,
             error => ***REMOVED***
+                this.selectedProjectType = 'ALL';
+
                 console.log(error);
                 this.emailStatus = 2;
             ***REMOVED***)
