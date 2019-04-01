@@ -124,7 +124,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
      * Get the facility of an application.
      * @param {Application} app
      */
-    public getFacilityProject(app: Application): void {
+    getFacilityProject(app: Application): void {
 
         if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED && app.Status !== this.application_states.TERMINATED) {
             this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => {
