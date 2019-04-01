@@ -1,16 +1,16 @@
 <app-header
-  [asideMenuToggler]="false"
-  [sidebarToggler]="false"
-  [mobileAsideMenuToggler]="false"
-  [navbarBrand]="{src: 'static/webapp/assets/img/denbi_cloud_logo.svg', style: 'padding: 0.5rem 1rem',alt: 'test'}"
-  [navbarBrandRouterLink]="'/'"
-  >
-  <ul class="nav navbar-nav ml-md-auto">
-    <li><strong class="text-muted" style="cursor: pointer;padding-right: 2pc" routerLinkActive="active"
-                [routerLink]="['/userinfo']"
-    >{{login_name}}</strong></li>
+        [asideMenuToggler]="false"
+        [sidebarToggler]="false"
+        [mobileAsideMenuToggler]="false"
+        [navbarBrand]="{src: 'static/webapp/assets/img/denbi_cloud_logo.svg', style: 'padding: 0.5rem 1rem',alt: 'test'}"
+        [navbarBrandRouterLink]="'/'"
+>
+    <ul class="nav navbar-nav ml-md-auto">
+        <li><strong class="text-muted" style="cursor: pointer;padding-right: 2pc" routerLinkActive="active"
+                    [routerLink]="['/userinfo']"
+        >{{login_name}}</strong></li>
 
-  </ul>
+    </ul>
 </app-header>
 <div class="app-body">
     <div class="sidebar">
@@ -44,8 +44,8 @@
                        routerLinkActive="active" [routerLink]="['/applications']"><i
                             class="nav-icon icon-drawer"></i> Applications</a>
                 </li>
-                <li class="nav-item nav-dropdown" appNavDropdown>
-                    <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;"
+                <li class="nav-item nav-dropdown  {{navbar_state}}" appNavDropdown>
+                    <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;" (click)="toggle_new_application()"
                        appNavDropdownToggle><i
                             class="nav-icon icon-pencil"></i> New Application</a>
                     <ul class="nav-dropdown-items">
@@ -77,8 +77,8 @@
                             class="nav-icon icon-screen-desktop"></i> New Instance</a>
                 </li>
                 <li *ngIf="vm_project_member || get_is_vo_admin()"
-                    class="nav-item nav-dropdown" appNavDropdown>
-                    <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;"
+                    class="nav-item nav-dropdown {{overview_state}}" appNavDropdown>
+                    <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;"  (click)="toggle_overview();"
                        appNavDropdownToggle><i
                             class="nav-icon icon-list" onmouseover="" style="cursor: pointer;"></i> Overviews</a>
                     <ul class="nav-dropdown-items">
@@ -159,15 +159,15 @@
     <main class="main">
 
         <!-- Breadcrumb-->
-      <!--
-        <ol class="breadcrumb">
-          <app-breadcrumbs></app-breadcrumbs>
-        </ol>
-        -->
+        <!--
+          <ol class="breadcrumb">
+            <app-breadcrumbs></app-breadcrumbs>
+          </ol>
+          -->
 
-      <cui-breadcrumb>
+        <cui-breadcrumb>
 
-      </cui-breadcrumb>
+        </cui-breadcrumb>
 
         <div class="container-fluid">
             <router-outlet></router-outlet>
@@ -176,5 +176,5 @@
 </div>
 
 <app-footer>
-  <a href="https://cloud.denbi.de">de.NBI</a> &copy; {{ year }}
+    <a href="https://cloud.denbi.de">de.NBI</a> &copy; {{ year }}
 </app-footer>

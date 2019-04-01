@@ -81,11 +81,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                 private flavorService: FlavorService) {
 
         super(userservice, applicationstatusservice, applicationsservice, facilityService);
-    }
-
-    ngOnInit(): void {
-
-        this.voService.isVo().subscribe((result: { [key: string]: boolean }) => {
+          this.voService.isVo().subscribe((result: { [key: string]: boolean }) => {
             this.is_vo_admin = result['Is_Vo_Manager'];
             this.getUserApplications();
             this.getApplicationStatus();
@@ -101,6 +97,11 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
         });
         this.getListOfFlavors();
         this.getListOfTypes();
+    }
+
+    ngOnInit(): void {
+
+
     }
 
     /**
@@ -159,6 +160,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
         if (this.is_vo_admin) {
             this.applicationsservice.getAllApplications().subscribe((res: object) => {
+                console.log(res)
                 if (Object.keys(res).length === 0) {
                     this.isLoaded_userApplication = true;
                 }
@@ -199,6 +201,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
      * Saves them in the userApplication array.
      */
     getUserApplications(): void {
+        console.log('test')
         this.applicationsservice
             .getUserApplications().subscribe((res: [{ [key: string]: string }]) => {
             if (Object.keys(res).length === 0) {
