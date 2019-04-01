@@ -49,7 +49,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
 
 
     /**
-     * User which requested the Application ***REMOVED***id: Elixir Id of user : ***REMOVED***name and email***REMOVED******REMOVED***.
+     * User which requested the Application ***REMOVED***id: Elixir application_status_id of user : ***REMOVED***name and email***REMOVED******REMOVED***.
      * @type ***REMOVED******REMOVED******REMOVED******REMOVED***
      */
     application_user: ***REMOVED*** [id: string]: ***REMOVED*** [id: string]: string ***REMOVED*** ***REMOVED*** = ***REMOVED******REMOVED***;
@@ -103,7 +103,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
     isLoaded_userApplication: boolean = false;
 
     /**
-     * Name of the project.
+     * application_status_name of the project.
      */
     public projectName: string;
 
@@ -131,8 +131,8 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
     getIdByStatus(name: string): number ***REMOVED***
         const s: number = -1;
         for (const status of this.application_status) ***REMOVED***
-            if (status.Name === name) ***REMOVED***
-                return status.Id;
+            if (status.application_status_name === name) ***REMOVED***
+                return status.application_status_id;
             ***REMOVED***
         ***REMOVED***
 
@@ -371,17 +371,9 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
      * Get all possible application stati.
      */
     getApplicationStatus(): void ***REMOVED***
-        this.applicationstatusservice.getAllApplicationStatus().toPromise()
-            .then((result: object) => ***REMOVED***
-                const res: object = result;
-                for (const key in res) ***REMOVED***
-                    if (res[key]) ***REMOVED***
-                        const asj: object = res[key];
-                        const aj: ApplicationStatus = new ApplicationStatus(asj['application_status_id'], asj['application_status_name']);
-                        this.application_status.push(aj)
-                    ***REMOVED***
-                ***REMOVED***
-            ***REMOVED***);
+        this.applicationstatusservice.getAllApplicationStatus().subscribe((stati: ApplicationStatus[]) => ***REMOVED***
+            this.application_status = stati;
+        ***REMOVED***)
     ***REMOVED***
 
     /**
@@ -392,8 +384,8 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
     public getStatusById(id: number): string ***REMOVED***
         const dummy: string = 'Unknown';
         for (const status of this.application_status) ***REMOVED***
-            if (status.Id === id) ***REMOVED***
-                return status.Name;
+            if (status.application_status_id === id) ***REMOVED***
+                return status.application_status_name;
             ***REMOVED***
         ***REMOVED***
 

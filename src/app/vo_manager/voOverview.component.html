@@ -113,7 +113,7 @@
 
                             <tr *ngFor="let project of projects_filtered">
                                 <!-- [ngStyle]="***REMOVED***'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)***REMOVED***"-->
-                                <td>***REMOVED******REMOVED***project?.ComputeCenter?.Name***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED***project?.ComputeCenter?.application_status_name***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
 
@@ -204,7 +204,7 @@
                   </thead>
                   <tbody>
                   <tr *ngFor="let member of usersModalProjectMembers">
-                    <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
+                    <td>***REMOVED******REMOVED*** member.application_status_id ***REMOVED******REMOVED***</td>
                     <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
                     <td>***REMOVED******REMOVED*** member.ElixirId***REMOVED******REMOVED***</td>
                     <td>***REMOVED******REMOVED***member.Email***REMOVED******REMOVED***</td>

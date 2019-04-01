@@ -146,7 +146,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     projects: string[] = new Array();
 
     /**
-     * Id of the freemium project.
+     * application_status_id of the freemium project.
      * @type ***REMOVED***number***REMOVED***
      */
     FREEMIUM_ID: number = environment.freemium_project_id;

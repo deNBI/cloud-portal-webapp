@@ -37,7 +37,7 @@
                                 </td>
 
                                 <td>
-                                    <p *ngIf="project.ComputeCenter?.Name">***REMOVED******REMOVED***project.ComputeCenter.Name***REMOVED******REMOVED***</p>
+                                    <p *ngIf="project.ComputeCenter?.Name">***REMOVED******REMOVED***project.ComputeCenter.application_status_name***REMOVED******REMOVED***</p>
                                     <ul *ngIf="project.ComputeCenter?.Name">
                                         <li *ngIf="project.OpenStackProject"> Login: <a target="_blank"
                                                                                         href="***REMOVED******REMOVED***project.ComputeCenter.Login***REMOVED******REMOVED***">
@@ -120,7 +120,7 @@
                         </thead>
                         <tbody>
                         <tr *ngFor="let member of usersModalProjectMembers" [ngStyle]="***REMOVED***'color':isPi(member)***REMOVED***">
-                            <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
+                            <td>***REMOVED******REMOVED*** member.application_status_id ***REMOVED******REMOVED***</td>
                             <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
                             <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
                             <td>
@@ -450,7 +450,7 @@
                         </thead>
                         <tbody *ngFor="  let application of selectedProject?.ProjectMemberApplications">
 
-                        <td>***REMOVED******REMOVED***application.Name***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***application.application_status_name***REMOVED******REMOVED***</td>
                         <td>***REMOVED******REMOVED***application.DateCreated***REMOVED******REMOVED***</td>
                         <td>
                             <button
