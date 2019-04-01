@@ -167,6 +167,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
             facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
             encodeURIComponent(reply)).subscribe(
             result => {
+                this.selectedProjectType = 'ALL';
 
                 if (result.status === 201) {
                     this.emailStatus = 1;
@@ -175,6 +176,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                 }
             },
             error => {
+                this.selectedProjectType = 'ALL';
+
                 console.log(error);
                 this.emailStatus = 2;
             })
