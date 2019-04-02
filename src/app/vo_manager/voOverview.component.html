@@ -113,7 +113,7 @@
 
                             <tr *ngFor="let project of projects_filtered">
                                 <!-- [ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}"-->
-                                <td>{{project?.ComputeCenter?.application_status_name}}</td>
+                                <td>{{project?.ComputeCenter?.Name}}</td>
                                 <td>{{ project.Id }}</td>
                                 <td>{{ project.Name }}</td>
 
@@ -204,7 +204,7 @@
                   </thead>
                   <tbody>
                   <tr *ngFor="let member of usersModalProjectMembers">
-                    <td>{{ member.application_status_id }}</td>
+                    <td>{{ member.Id}}</td>
                     <td>{{ member.MemberId }}</td>
                     <td>{{ member.ElixirId}}</td>
                     <td>{{member.Email}}</td>

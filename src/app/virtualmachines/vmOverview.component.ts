@@ -7,6 +7,7 @@ import {UserService} from '../api-connector/user.service';
 import {ImageService} from '../api-connector/image.service';
 import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
 import {VoService} from '../api-connector/vo.service';
+import {IResponseTemplate} from "../api-connector/response-template";
 
 /**
  * Vm overview componentn.
@@ -55,11 +56,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      */
     vmEnd: number = this.vmsPerPage;
     /**
-     * application_status_name of vm which changed status.
+     * name of vm which changed status.
      */
     status_changed_vm: string;
     /**
-     * application_status_id of vm which changed status.
+     * id of vm which changed status.
      */
     status_changed_vm_id: string;
 
@@ -82,7 +83,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     snapshotNameCheckDone: boolean = false;
     snapshotDone: string = 'Waiting';
     /**
-     * application_status_name of the snapshot.
+     * name of the snapshot.
      */
     snapshotName: string = '';
     /**
@@ -455,8 +456,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * @param {UserService} userservice
      */
     checkVOstatus(): void {
-        this.voService.isVo().subscribe(res => {
-            this.is_vo_admin = res['Is_Vo_Manager'];
+        this.voService.isVo().subscribe((result: IResponseTemplate) => {
+            this.is_vo_admin = <boolean><Boolean>result.value;
         })
     }
 

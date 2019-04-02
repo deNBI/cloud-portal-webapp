@@ -37,7 +37,7 @@
                                 </td>
 
                                 <td>
-                                    <p *ngIf="project.ComputeCenter?.Name">{{project.ComputeCenter.application_status_name}}</p>
+                                    <p *ngIf="project.ComputeCenter?.Name">{{project.ComputeCenter.Name}}</p>
                                     <ul *ngIf="project.ComputeCenter?.Name">
                                         <li *ngIf="project.OpenStackProject"> Login: <a target="_blank"
                                                                                         href="{{project.ComputeCenter.Login}}">
@@ -120,7 +120,7 @@
                         </thead>
                         <tbody>
                         <tr *ngFor="let member of usersModalProjectMembers" [ngStyle]="{'color':isPi(member)}">
-                            <td>{{ member.application_status_id }}</td>
+                            <td>{{ member.Id }}</td>
                             <td>{{ member.MemberId }}</td>
                             <td>{{ member.Username }}</td>
                             <td>
@@ -450,7 +450,7 @@
                         </thead>
                         <tbody *ngFor="  let application of selectedProject?.ProjectMemberApplications">
 
-                        <td>{{application.application_status_name}}</td>
+                        <td>{{application.Name}}</td>
                         <td>{{application.DateCreated}}</td>
                         <td>
                             <button

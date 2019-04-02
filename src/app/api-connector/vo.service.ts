@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {IResponseTemplate} from "./response-template";
+import {Resources} from "../vo_manager/resources/resources";
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -18,16 +19,16 @@ export class VoService {
     constructor(private http: HttpClient) {
     }
 
-    isVo(): Observable<any> {
+    isVo(): Observable<IResponseTemplate> {
 
-        return this.http.get(`${ApiSettings.getApiBaseURL()}voManagers/current/status/`, {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/status/`, {
             withCredentials: true
         })
     }
 
-    getNewsletterSubscriptionCounter(): Observable<any> {
+    getNewsletterSubscriptionCounter(): Observable<IResponseTemplate> {
 
-        return this.http.get(`${ApiSettings.getApiBaseURL()}newsletter/subscription/counter/`, {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/counter/`, {
             withCredentials: true
 
         })
@@ -41,7 +42,7 @@ export class VoService {
 
     }
 
-    removeResourceFromGroup(groupid: number | string): Observable<any> {
+    removeResourceFromGroup(groupid: number | string): Observable<object> {
         return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, {
             withCredentials: true,
             headers: header
@@ -57,15 +58,15 @@ export class VoService {
 
     }
 
-    getProjectStatus(groupid: number | string): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/status/`, {
+    getProjectStatus(groupid: number | string): Observable<IResponseTemplate> {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/status/`, {
             withCredentials: true,
             headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
     }
 
-    getVoProjectResources(): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/resources/`, {
+    getVoProjectResources(): Observable<Resources[]> {
+        return this.http.get<Resources[]> (`${ApiSettings.getApiBaseURL()}vo/projects/resources/`, {
             withCredentials: true,
             headers: header
         })

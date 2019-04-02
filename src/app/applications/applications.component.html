@@ -35,7 +35,7 @@
                             <ng-container
                                     *ngFor="let application of user_applications">
                                 <tr>
-                                    <td>{{ application.application_status_name }}</td>
+                                    <td>{{ application.Name }}</td>
                                     <td>{{application.Shortname}}</td>
                                     <td>{{ application.Lifetime }}</td>
                                     <td>{{ application.DateSubmitted }}</td>
@@ -71,7 +71,7 @@
                                 <tr>
                                     <td [class.collapse_no_margin]="getCollapseStatus('user_application-' + application.Id)"
                                         colspan="6">
-                                        <div id="user_application-{{ application.application_status_id }}"
+                                        <div id="user_application-{{ application.id }}"
                                              [class.collapse]="getCollapseStatus('user_application-' + application.Id)"
                                              class="table-responsive">
                                             <table class="table table-striped" style="width: 80%">
@@ -248,7 +248,7 @@
                                 <ng-container
                                         *ngIf="application.Status == application_states.SUBMITTED || application.Status == application_states.MODIFICATION_REQUESTED || application.Status == application_states.WAIT_FOR_CONFIRMATION || application.Status == application_states.CONFIRMATION_DENIED">
                                     <tr>
-                                        <td>{{ application.application_status_name }}</td>
+                                        <td>{{ application.Name }}</td>
                                         <td>{{application.Shortname}}</td>
                                         <td>{{ application.DateSubmitted }}
                                         </td>
@@ -268,7 +268,7 @@
                                                 </option>
                                                 <option *ngFor="let computeCenter of computeCenters"
                                                         value="{{computeCenter.FacilityId}}">
-                                                    {{computeCenter.application_status_name}}
+                                                    {{computeCenter.Name}}
                                                 </option>
                                             </select>
                                             <span *ngIf="application.Status != application_states.SUBMITTED">{{application.ComputeCenter?.Name}}</span>
@@ -362,7 +362,7 @@
                                     <tr>
                                         <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + application.Id)"
                                             colspan="6">
-                                            <div id="application_review-{{ application.application_status_id }}"
+                                            <div id="application_review-{{ application.id }}"
                                                  [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
                                                 <div class="table-responsive">
                                                     <table class="table table-striped">
@@ -618,7 +618,7 @@
                                     *ngFor="let application of all_applications">
                                 <ng-container *ngIf="application.Status != application_states.SUBMITTED">
                                     <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)}">
-                                        <td>{{ application.application_status_name }}</td>
+                                        <td>{{ application.Name }}</td>
                                         <td>{{application.Shortname}}</td>
                                         <td>{{ application.DateSubmitted }}
                                         </td>
@@ -657,7 +657,7 @@
                                     <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning)}">
                                         <td [class.collapse_no_margin]="getCollapseStatus('application_history-' + application.Id)"
                                             colspan="6">
-                                            <div id="application_history-{{ application.application_status_id }}"
+                                            <div id="application_history-{{ application.id }}"
                                                  [class.collapse]="getCollapseStatus('application_history-' + application.Id)">
                                                 <div>
                                                   <div class="table-responsive">

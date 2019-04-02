@@ -146,7 +146,7 @@ export class VirtualMachineComponent implements OnInit {
     projects: string[] = new Array();
 
     /**
-     * application_status_id of the freemium project.
+     * id of the freemium project.
      * @type {number}
      */
     FREEMIUM_ID: number = environment.freemium_project_id;

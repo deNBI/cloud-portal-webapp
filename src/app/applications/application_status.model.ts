@@ -4,7 +4,7 @@
 export class ApplicationStatus {
 
     /**
-     * application_status_id of the status.
+     * id of the status.
      */
     private _application_status_id: number;
 

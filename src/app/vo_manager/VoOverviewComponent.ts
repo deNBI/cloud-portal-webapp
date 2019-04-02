@@ -6,6 +6,7 @@ import {GroupService} from '../api-connector/group.service';
 import * as moment from 'moment';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
+import {IResponseTemplate} from "../api-connector/response-template";
 
 /**
  * Vo Overview component.
@@ -47,8 +48,8 @@ export class VoOverviewComponent extends FilterBaseClass {
     constructor(private voserice: VoService, private groupservice: GroupService) {
         super();
         this.getVoProjects();
-        this.voserice.getNewsletterSubscriptionCounter().subscribe(result => {
-            this.newsletterSubscriptionCounter = result['subscribed'];
+        this.voserice.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate) => {
+            this.newsletterSubscriptionCounter = <number>result.value
         });
 
     }
@@ -184,8 +185,9 @@ export class VoOverviewComponent extends FilterBaseClass {
                     shortname = group['name']
                 }
                 let compute_center: ComputecenterComponent = null;
-
+                console.log(facility)
                 if (facility) {
+
                     compute_center = new ComputecenterComponent(
                         facility['compute_center_facility_id'],
                         facility['compute_center_name'],
@@ -226,8 +228,8 @@ export class VoOverviewComponent extends FilterBaseClass {
     }
 
     getProjectStatus(project: Project): void {
-        this.voserice.getProjectStatus(project.Id).subscribe(res => {
-            project.Status = res['status']
+        this.voserice.getProjectStatus(project.Id).subscribe((res: IResponseTemplate) => {
+            project.Status = <number>res.value;
         })
     }
 
@@ -239,8 +241,7 @@ export class VoOverviewComponent extends FilterBaseClass {
     }
 
     removeResourceFromGroup(groupid: number | string): void {
-        this.voserice.removeResourceFromGroup(groupid.toString()).subscribe(() => {
-        })
+        this.voserice.removeResourceFromGroup(groupid.toString()).subscribe()
     }
 
     getMembesOfTheProject(projectid: number, projectname: string): void {

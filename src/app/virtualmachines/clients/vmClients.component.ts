@@ -7,6 +7,7 @@ import {UserService} from '../../api-connector/user.service';
 import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
 import {FacilityService} from '../../api-connector/facility.service';
 import {VoService} from '../../api-connector/vo.service';
+import {IResponseTemplate} from "../../api-connector/response-template";
 
 /**
  * Client component.
@@ -54,12 +55,14 @@ export class ClientOverviewComponent implements OnInit {
     }
 
     /**
-     * Check if user is vo.
+     * Check vm status.
+     * @param {UserService} userservice
      */
     checkVOstatus(): void {
-        this.voservice.isVo().subscribe(result => {
-            this.is_vo_admin = result['Is_Vo_Manager'];
+        this.voservice.isVo().subscribe((result: IResponseTemplate) => {
+            this.is_vo_admin = <boolean><Boolean>result.value;
         })
+
     }
 
     /**

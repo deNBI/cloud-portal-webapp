@@ -49,7 +49,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
 
 
     /**
-     * User which requested the Application {id: Elixir application_status_id of user : {name and email}}.
+     * User which requested the Application {id: Elixir id of user : {name and email}}.
      * @type {{}}
      */
     application_user: { [id: string]: { [id: string]: string } } = {};
@@ -103,7 +103,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
     isLoaded_userApplication: boolean = false;
 
     /**
-     * application_status_name of the project.
+     * Name of the project.
      */
     public projectName: string;
 

@@ -47,7 +47,7 @@
                     <ng-container *ngFor="let application of all_applications_wfc">
                         <ng-container>
                             <tr>
-                                <td>{{ application.application_status_name }}</td>
+                                <td>{{ application.Name }}</td>
                                 <td>{{application.Shortname}}</td>
                                 <td>{{ application.DateSubmitted }}</td>
                                 <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
@@ -84,7 +84,7 @@
                             <tr>
                                 <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + application.Id)"
                                     colspan="6">
-                                    <div id="application_review-{{ application.application_status_id }}"
+                                    <div id="application_review-{{ application.id }}"
                                          [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">
@@ -297,7 +297,7 @@
                     <ng-container *ngFor="let app of all_application_modifications">
                         <ng-container>
                             <tr>
-                                <td>{{ app.application_status_name }}</td>
+                                <td>{{ app.Name }}</td>
                                 <td>{{app.Shortname}}</td>
                                 <td>{{ app.DateSubmitted }}</td>
                                 <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
@@ -334,7 +334,7 @@
                             <tr>
                                 <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + app.Id)"
                                     colspan="6">
-                                    <div id="application_review-{{ app.application_status_id }}"
+                                    <div id="application_review-{{ app.id }}"
                                          [class.collapse]="getCollapseStatus('application_review-' + app.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">
@@ -590,7 +590,7 @@
                             *ngFor="let application of applications_history">
                         <ng-container *ngIf="application.Status != application_states.SUBMITTED">
                             <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)}">
-                                <td>{{ application.application_status_name }}</td>
+                                <td>{{ application.Name }}</td>
                                 <td>{{application.Shortname}}</td>
                                 <td>{{ application.DateSubmitted }}
                                 </td>
@@ -621,7 +621,7 @@
                             <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning)}">
                                 <td [class.collapse_no_margin]="getCollapseStatus('application_history-' + application.Id)"
                                     colspan="6">
-                                    <div id="application_history-{{ application.application_status_id }}"
+                                    <div id="application_history-{{ application.id }}"
                                          [class.collapse]="getCollapseStatus('application_history-' + application.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">
