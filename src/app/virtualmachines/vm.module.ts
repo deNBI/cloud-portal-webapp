@@ -15,6 +15,7 @@ import ***REMOVED***SnapshotOverviewComponent***REMOVED*** from './snapshots/sna
 import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination'
 import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared/shared_modules/public-key/public-key.module';
 import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
+import ***REMOVED*** BsDropdownModule ***REMOVED*** from 'ngx-bootstrap';
 
 /**
  * VM module.
@@ -28,7 +29,8 @@ import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
         CommonModule,
         FormsModule,
         ModalModule.forRoot(),
-        PaginationModule.forRoot()
+        PaginationModule.forRoot(),
+        BsDropdownModule.forRoot()
 
     ],
     declarations: [

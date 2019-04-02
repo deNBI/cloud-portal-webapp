@@ -32,7 +32,6 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from "./shared/shared_modu
 import ***REMOVED***SharedModuleModule***REMOVED*** from "./shared/shared_modules/shared-module.module";
 import ***REMOVED***PerfectScrollbarModule***REMOVED*** from 'ngx-perfect-scrollbar';
 import ***REMOVED***BreadcrumbsComponent***REMOVED*** from "./shared/breadcrumb.component";
-import ***REMOVED***NavDropdownDirective, NavDropdownToggleDirective***REMOVED*** from "./shared/nav-dropdown.directive";
 import ***REMOVED***
     MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
     SidebarToggleDirective
@@ -69,12 +68,10 @@ import ***REMOVED***
         RegistrationInfoComponent,
         ConsentInfoComponent,
         BreadcrumbsComponent,
-        NavDropdownDirective,
         SidebarToggleDirective,
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
-        SidebarOffCanvasCloseDirective,
-        NavDropdownToggleDirective
+        SidebarOffCanvasCloseDirective
 
 
     ],

@@ -28,7 +28,7 @@
     </div>
 
 
-    <div class="table-responsive">
+    <div class="table-responsive" style="overflow-x: visible; overflow-y: visible">
 
         <table class="table table-striped col-md-12">
             <thead>
@@ -136,10 +136,9 @@
                     </td>
 
                     <td>
-                        <div (clickOutside)="setCollapseStatus(vm.openstackid,false)"
+                        <div
                              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
-                             [ngClass]="getCollapseStatus(vm.openstackid) ? 'btn-group open': 'btn-group'"
-                        >
+                             class="btn-group" dropdown>
 
                             <button class="btn btn-secondary" type="button"
                                     *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
@@ -149,10 +148,9 @@
                             </button>
                             <button *ngIf="vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]" style="cursor: pointer;"
                                     class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                                    data-toggle="dropdown"
                                     type="button" aria-haspopup="true" aria-expanded="false"
-                                    (click)="switchCollapseStatus(vm.openstackid)"></button>
-                            <ul class="dropdown-menu " role="menu">
+                                    dropdownToggle aria-controls="dropdown-split"></button>
+                            <ul class="dropdown-menu" role="menu" *dropdownMenu>
                                 <li style="cursor: pointer;" role="menuitem"
                                     *ngIf="vm.status ==vm_statuses[vm_statuses.ACTIVE]">
                                     <a class="dropdown-item"
