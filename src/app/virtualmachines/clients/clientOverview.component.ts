@@ -23,6 +23,11 @@ export class ClientOverviewComponent implements OnInit {
      * All clients.
      */
     clients: Client[];
+
+    /**
+     * Selected Client;
+     */
+    selectedClient: Client;
     /**
      * If user is vo.
      * @type {boolean}
@@ -135,6 +140,14 @@ export class ClientOverviewComponent implements OnInit {
 
             this.getClientsChecked();
         });
+    }
+
+    updateClient(host: string, port: string, location: string, id: string): void {
+        this.clientservice.updateClient(new Client(host, port, location, id)).subscribe((res: Client) => {
+            this.clients[this.clients.indexOf(this.selectedClient)] = res;
+            this.selectedClient = null;
+        })
+
     }
 
     ngOnInit(): void {
