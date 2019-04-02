@@ -14,7 +14,7 @@
     </div>
     <div>
         <div>
-            <div class="table-responsive">
+            <div class="table-responsive" style="overflow-x: visible; overflow-y: visible">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -38,18 +38,15 @@
                         <td>{{volume.volume_name}}</td>
                         <td>{{volume.volume_size }} GB</td>
                         <td>
-                            <div
-                                    (clickOutside)="setCollapseStatus(volume.volume_openstackid,false)"
-                                    [ngClass]="getCollapseStatus(volume.volume_openstackid) ? 'btn-group open': 'btn-group'">
+                            <div class="btn-group" dropdown>
                                 <button class="btn btn-secondary"
                                         (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
                                         type="button">Delete Volume
                                 </button>
                                 <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                                        data-toggle="dropdown"
                                         type="button" aria-haspopup="true" aria-expanded="false"
-                                        (click)="switchCollapseStatus(volume.volume_openstackid)"></button>
-                                <ul class="dropdown-menu " role="menu">
+                                        dropdownToggle aria-controls="dropdown-split"></button>
+                                <ul class="dropdown-menu " role="menu" *dropdownMenu>
                                     <li *ngIf="volume.volume_virtualmachine" role="menuitem">
                                         <a class="dropdown-item"
                                            (click)="setRequestStatus(1);setSelectedVolume(volume);verifyModal.show();">Detach
