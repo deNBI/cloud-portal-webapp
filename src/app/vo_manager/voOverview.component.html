@@ -9,15 +9,15 @@
 
 
             <button (click)="setEmailType(1);emailModal.show();" type="button "
-                    class="btn btn-secondary"
+                    class="btn btn-outline-primary"
                     style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i
                     class="icon-envelope-letter"></i>
                 Send newsletter (***REMOVED******REMOVED***newsletterSubscriptionCounter***REMOVED******REMOVED***)
             </button>
 
             <button (click)="setEmailType(0);emailModal.show();" type="button "
-                    class="btn btn-secondary"
-                    style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i
+                    class="btn btn-outline-primary"
+                    style="margin-bottom: auto;margin-left: 5px; margin-top: auto"><i
                     class="icon-envelope-letter"></i>
                 Send email
             </button>
@@ -156,7 +156,7 @@
                                     </button>
                                     <button *ngIf="project.Status == 2" style="margin-left: 5px"
                                             type="button"
-                                            class="btn btn-secondary"
+                                            class="btn btn-warning"
                                             (click)="selectedProject = project;suspendModal.show();"
 
                                     >

@@ -51,7 +51,8 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
     public addUserModalRealName: string;
-    public addUserModalInvitationLink: string='';
+    public addUserModalInvitationLink: string = '';
+    public showLink: boolean = true;
 
     public UserModalFacilityDetails: [string, string][];
     public UserModalFacility: [string, number];
