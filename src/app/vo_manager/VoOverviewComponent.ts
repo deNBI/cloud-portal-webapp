@@ -90,8 +90,8 @@ export class VoOverviewComponent extends FilterBaseClass {
 
     sendNewsletterToVo(subject: string, message: string, reply?: string): void {
         this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
-            .subscribe(result => {
-                if (result === 1) {
+            .subscribe((result: IResponseTemplate) => {
+                if (<boolean><Boolean>result.value === true) {
                     this.emailStatus = 1;
                 } else {
                     this.emailStatus = 2;
@@ -102,8 +102,8 @@ export class VoOverviewComponent extends FilterBaseClass {
 
     sendMailToVo(subject: string, message: string, reply?: string): void {
         this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
-            .subscribe(result => {
-                if (result === 1) {
+            .subscribe((result: IResponseTemplate) => {
+                if (<boolean><Boolean>result.value === true) {
                     this.emailStatus = 1;
                 } else {
                     this.emailStatus = 2;

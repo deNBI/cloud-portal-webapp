@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {IResponseTemplate} from './response-template';
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -34,31 +35,24 @@ export class ClientService {
         })
     }
 
-    checkClient(host: string, port: string): Observable<any> {
+    checkClient(host: string, port: string): Observable<IResponseTemplate> {
         const params: HttpParams = new HttpParams().set('host', host).set('port', port);
 
-        return this.http.post(`${this.clientURL}checkClient/`, params, {
+        return this.http.post<IResponseTemplate>(`${this.clientURL}checkClient/`, params, {
             withCredentials: true,
             headers: header
         })
 
     }
 
-    postClient(host: string, port: string, location: string): Observable<any> {
+    postClient(host: string, port: string, location: string): Observable<Client> {
 
         const params: HttpParams = new HttpParams().set('host', host).set('port', port).set('location', location);
 
-        return this.http.post(this.clientURL, params, {
+        return this.http.post<Client>(this.clientURL, params, {
             withCredentials: true,
             headers: header
         })
     }
 
-    deleteClient(client_id: number): Observable<any> {
-        return this.http.delete(`${this.clientURL}${client_id }/`, {
-            withCredentials: true,
-            headers: header
-        })
-
-    }
 }

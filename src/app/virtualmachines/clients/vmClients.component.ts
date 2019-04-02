@@ -69,7 +69,7 @@ export class ClientOverviewComponent implements OnInit {
      * Get all clients status checked.
      */
     getClientsChecked(): void {
-        this.clientservice.getClientsChecked().subscribe(clients => {
+        this.clientservice.getClientsChecked().subscribe((clients: Client[]) => {
             this.clients = clients;
             this.isLoaded = true;
         });
@@ -100,9 +100,9 @@ export class ClientOverviewComponent implements OnInit {
         if (host && port) {
             this.clientservice.checkClient(host, port).subscribe(data => {
 
-                if (!data['status']) {
+                if (!data.value) {
                     this.checkStatus = 'No Connection';
-                } else if (data['status']) {
+                } else if (data.value) {
                     this.checkStatus = 'Connected';
                 } else {
                     this.checkStatus = 'check failed';
@@ -122,23 +122,12 @@ export class ClientOverviewComponent implements OnInit {
     postClient(host: string, port: string, location: string): void {
 
         if (host && port && location) {
-            this.clientservice.postClient(host, port, location).subscribe(() => {
-
-                this.getClientsChecked();
+            this.clientservice.postClient(host, port, location).subscribe((newClient: Client) => {
+                this.clients.push(newClient);
             });
         }
     }
 
-    /**
-     * Delete a client.
-     * @param {number} client_id
-     */
-    deleteClient(client_id: number): void {
-        this.clientservice.deleteClient(client_id).subscribe(() => {
-
-            this.getClientsChecked();
-        });
-    }
 
     ngOnInit(): void {
         this.checkVOstatus();

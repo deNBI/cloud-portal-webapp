@@ -66,7 +66,7 @@ export class VoService {
     }
 
     getVoProjectResources(): Observable<Resources[]> {
-        return this.http.get<Resources[]> (`${ApiSettings.getApiBaseURL()}vo/projects/resources/`, {
+        return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/resources/`, {
             withCredentials: true,
             headers: header
         })
@@ -81,21 +81,21 @@ export class VoService {
         })
     }
 
-    sendNewsletterToVo(subject: string, message: string, reply?: string): Observable<any> {
+    sendNewsletterToVo(subject: string, message: string, reply?: string): Observable<IResponseTemplate> {
 
         const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}voManagers/current/newsletter/`, params, {
+        return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/newsletter/`, params, {
             withCredentials: true,
             headers: header
         })
 
     }
 
-    sendMailToVo(subject: string, message: string, reply?: string): Observable<any> {
+    sendMailToVo(subject: string, message: string, reply?: string): Observable<IResponseTemplate> {
         const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/`, params, {
+        return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/`, params, {
             withCredentials: true,
             headers: header
         })
