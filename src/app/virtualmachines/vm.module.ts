@@ -15,6 +15,7 @@ import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component'
 import {PaginationModule} from 'ngx-bootstrap/pagination'
 import {PublicKeyModule} from '../shared/shared_modules/public-key/public-key.module';
 import {ClickOutsideModule} from 'ng4-click-outside';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 /**
  * VM module.
@@ -28,7 +29,8 @@ import {ClickOutsideModule} from 'ng4-click-outside';
         CommonModule,
         FormsModule,
         ModalModule.forRoot(),
-        PaginationModule.forRoot()
+        PaginationModule.forRoot(),
+        BsDropdownModule.forRoot()
 
     ],
     declarations: [
