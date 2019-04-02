@@ -1,4 +1,4 @@
-import ***REMOVED***Client***REMOVED*** from '../clients/vmclient';
+import ***REMOVED***Client***REMOVED*** from '../clients/client.model';
 
 /**
  * Snapshot class.

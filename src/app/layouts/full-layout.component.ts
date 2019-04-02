@@ -1,6 +1,6 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
-import ***REMOVED***ClientService***REMOVED*** from '../api-connector/vmClients.service';
+import ***REMOVED***ClientService***REMOVED*** from "../api-connector/client.service";
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
