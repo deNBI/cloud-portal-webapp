@@ -1,10 +1,11 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
-import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
-import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "./response-template";
+import ***REMOVED***Resources***REMOVED*** from "../vo_manager/resources/resources";
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -18,16 +19,16 @@ export class VoService ***REMOVED***
     constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
-    isVo(): Observable<any> ***REMOVED***
+    isVo(): Observable<IResponseTemplate> ***REMOVED***
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***voManagers/current/status/`, ***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***voManagers/current/status/`, ***REMOVED***
             withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 
-    getNewsletterSubscriptionCounter(): Observable<any> ***REMOVED***
+    getNewsletterSubscriptionCounter(): Observable<IResponseTemplate> ***REMOVED***
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/counter/`, ***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/counter/`, ***REMOVED***
             withCredentials: true
 
         ***REMOVED***)
@@ -41,7 +42,7 @@ export class VoService ***REMOVED***
 
     ***REMOVED***
 
-    removeResourceFromGroup(groupid: number | string): Observable<any> ***REMOVED***
+    removeResourceFromGroup(groupid: number | string): Observable<object> ***REMOVED***
         return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/resource/`, ***REMOVED***
             withCredentials: true,
             headers: header
@@ -57,15 +58,15 @@ export class VoService ***REMOVED***
 
     ***REMOVED***
 
-    getProjectStatus(groupid: number | string): Observable<any> ***REMOVED***
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/status/`, ***REMOVED***
+    getProjectStatus(groupid: number | string): Observable<IResponseTemplate> ***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/status/`, ***REMOVED***
             withCredentials: true,
             headers: header
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+        ***REMOVED***)
     ***REMOVED***
 
-    getVoProjectResources(): Observable<any> ***REMOVED***
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/resources/`, ***REMOVED***
+    getVoProjectResources(): Observable<Resources[]> ***REMOVED***
+        return this.http.get<Resources[]> (`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/resources/`, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)

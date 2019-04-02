@@ -35,7 +35,7 @@
                             <ng-container
                                     *ngFor="let application of user_applications">
                                 <tr>
-                                    <td>***REMOVED******REMOVED*** application.application_status_name ***REMOVED******REMOVED***</td>
+                                    <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED*** application.Lifetime ***REMOVED******REMOVED***</td>
                                     <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>
@@ -71,7 +71,7 @@
                                 <tr>
                                     <td [class.collapse_no_margin]="getCollapseStatus('user_application-' + application.Id)"
                                         colspan="6">
-                                        <div id="user_application-***REMOVED******REMOVED*** application.application_status_id ***REMOVED******REMOVED***"
+                                        <div id="user_application-***REMOVED******REMOVED*** application.id ***REMOVED******REMOVED***"
                                              [class.collapse]="getCollapseStatus('user_application-' + application.Id)"
                                              class="table-responsive">
                                             <table class="table table-striped" style="width: 80%">
@@ -248,7 +248,7 @@
                                 <ng-container
                                         *ngIf="application.Status == application_states.SUBMITTED || application.Status == application_states.MODIFICATION_REQUESTED || application.Status == application_states.WAIT_FOR_CONFIRMATION || application.Status == application_states.CONFIRMATION_DENIED">
                                     <tr>
-                                        <td>***REMOVED******REMOVED*** application.application_status_name ***REMOVED******REMOVED***</td>
+                                        <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***
                                         </td>
@@ -268,7 +268,7 @@
                                                 </option>
                                                 <option *ngFor="let computeCenter of computeCenters"
                                                         value="***REMOVED******REMOVED***computeCenter.FacilityId***REMOVED******REMOVED***">
-                                                    ***REMOVED******REMOVED***computeCenter.application_status_name***REMOVED******REMOVED***
+                                                    ***REMOVED******REMOVED***computeCenter.Name***REMOVED******REMOVED***
                                                 </option>
                                             </select>
                                             <span *ngIf="application.Status != application_states.SUBMITTED">***REMOVED******REMOVED***application.ComputeCenter?.Name***REMOVED******REMOVED***</span>
@@ -362,7 +362,7 @@
                                     <tr>
                                         <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + application.Id)"
                                             colspan="6">
-                                            <div id="application_review-***REMOVED******REMOVED*** application.application_status_id ***REMOVED******REMOVED***"
+                                            <div id="application_review-***REMOVED******REMOVED*** application.id ***REMOVED******REMOVED***"
                                                  [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
                                                 <div class="table-responsive">
                                                     <table class="table table-striped">
@@ -618,7 +618,7 @@
                                     *ngFor="let application of all_applications">
                                 <ng-container *ngIf="application.Status != application_states.SUBMITTED">
                                     <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)***REMOVED***">
-                                        <td>***REMOVED******REMOVED*** application.application_status_name ***REMOVED******REMOVED***</td>
+                                        <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                         <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***
                                         </td>
@@ -657,7 +657,7 @@
                                     <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning)***REMOVED***">
                                         <td [class.collapse_no_margin]="getCollapseStatus('application_history-' + application.Id)"
                                             colspan="6">
-                                            <div id="application_history-***REMOVED******REMOVED*** application.application_status_id ***REMOVED******REMOVED***"
+                                            <div id="application_history-***REMOVED******REMOVED*** application.id ***REMOVED******REMOVED***"
                                                  [class.collapse]="getCollapseStatus('application_history-' + application.Id)">
                                                 <div>
                                                   <div class="table-responsive">

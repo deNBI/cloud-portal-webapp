@@ -47,7 +47,7 @@
                     <ng-container *ngFor="let application of all_applications_wfc">
                         <ng-container>
                             <tr>
-                                <td>***REMOVED******REMOVED*** application.application_status_name ***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>
                                 <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
@@ -84,7 +84,7 @@
                             <tr>
                                 <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + application.Id)"
                                     colspan="6">
-                                    <div id="application_review-***REMOVED******REMOVED*** application.application_status_id ***REMOVED******REMOVED***"
+                                    <div id="application_review-***REMOVED******REMOVED*** application.id ***REMOVED******REMOVED***"
                                          [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">
@@ -297,7 +297,7 @@
                     <ng-container *ngFor="let app of all_application_modifications">
                         <ng-container>
                             <tr>
-                                <td>***REMOVED******REMOVED*** app.application_status_name ***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED*** app.Name ***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED***app.Shortname***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** app.DateSubmitted ***REMOVED******REMOVED***</td>
                                 <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
@@ -334,7 +334,7 @@
                             <tr>
                                 <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + app.Id)"
                                     colspan="6">
-                                    <div id="application_review-***REMOVED******REMOVED*** app.application_status_id ***REMOVED******REMOVED***"
+                                    <div id="application_review-***REMOVED******REMOVED*** app.id ***REMOVED******REMOVED***"
                                          [class.collapse]="getCollapseStatus('application_review-' + app.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">
@@ -590,7 +590,7 @@
                             *ngFor="let application of applications_history">
                         <ng-container *ngIf="application.Status != application_states.SUBMITTED">
                             <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)***REMOVED***">
-                                <td>***REMOVED******REMOVED*** application.application_status_name ***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***
                                 </td>
@@ -621,7 +621,7 @@
                             <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning)***REMOVED***">
                                 <td [class.collapse_no_margin]="getCollapseStatus('application_history-' + application.Id)"
                                     colspan="6">
-                                    <div id="application_history-***REMOVED******REMOVED*** application.application_status_id ***REMOVED******REMOVED***"
+                                    <div id="application_history-***REMOVED******REMOVED*** application.id ***REMOVED******REMOVED***"
                                          [class.collapse]="getCollapseStatus('application_history-' + application.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">

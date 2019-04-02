@@ -6,6 +6,7 @@ import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.servi
 import * as moment from 'moment';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/filter-base-class';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
 
 /**
  * Vo Overview component.
@@ -47,8 +48,8 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     constructor(private voserice: VoService, private groupservice: GroupService) ***REMOVED***
         super();
         this.getVoProjects();
-        this.voserice.getNewsletterSubscriptionCounter().subscribe(result => ***REMOVED***
-            this.newsletterSubscriptionCounter = result['subscribed'];
+        this.voserice.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate) => ***REMOVED***
+            this.newsletterSubscriptionCounter = <number>result.value
         ***REMOVED***);
 
     ***REMOVED***
@@ -184,8 +185,9 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
                     shortname = group['name']
                 ***REMOVED***
                 let compute_center: ComputecenterComponent = null;
-
+                console.log(facility)
                 if (facility) ***REMOVED***
+
                     compute_center = new ComputecenterComponent(
                         facility['compute_center_facility_id'],
                         facility['compute_center_name'],
@@ -226,8 +228,8 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     ***REMOVED***
 
     getProjectStatus(project: Project): void ***REMOVED***
-        this.voserice.getProjectStatus(project.Id).subscribe(res => ***REMOVED***
-            project.Status = res['status']
+        this.voserice.getProjectStatus(project.Id).subscribe((res: IResponseTemplate) => ***REMOVED***
+            project.Status = <number>res.value;
         ***REMOVED***)
     ***REMOVED***
 
@@ -239,8 +241,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     ***REMOVED***
 
     removeResourceFromGroup(groupid: number | string): void ***REMOVED***
-        this.voserice.removeResourceFromGroup(groupid.toString()).subscribe(() => ***REMOVED***
-        ***REMOVED***)
+        this.voserice.removeResourceFromGroup(groupid.toString()).subscribe()
     ***REMOVED***
 
     getMembesOfTheProject(projectid: number, projectname: string): void ***REMOVED***

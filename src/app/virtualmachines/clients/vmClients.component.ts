@@ -7,6 +7,7 @@ import ***REMOVED***UserService***REMOVED*** from '../../api-connector/user.serv
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../../projectmanagement/computecenter.component';
 import ***REMOVED***FacilityService***REMOVED*** from '../../api-connector/facility.service';
 import ***REMOVED***VoService***REMOVED*** from '../../api-connector/vo.service';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../../api-connector/response-template";
 
 /**
  * Client component.
@@ -54,12 +55,14 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     /**
-     * Check if user is vo.
+     * Check vm status.
+     * @param ***REMOVED***UserService***REMOVED*** userservice
      */
     checkVOstatus(): void ***REMOVED***
-        this.voservice.isVo().subscribe(result => ***REMOVED***
-            this.is_vo_admin = result['Is_Vo_Manager'];
+        this.voservice.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
+            this.is_vo_admin = <boolean><Boolean>result.value;
         ***REMOVED***)
+
     ***REMOVED***
 
     /**
