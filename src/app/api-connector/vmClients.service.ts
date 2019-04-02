@@ -5,6 +5,7 @@ import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
+import ***REMOVED***IResponseTemplate***REMOVED*** from './response-template';
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -34,31 +35,24 @@ export class ClientService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    checkClient(host: string, port: string): Observable<any> ***REMOVED***
+    checkClient(host: string, port: string): Observable<IResponseTemplate> ***REMOVED***
         const params: HttpParams = new HttpParams().set('host', host).set('port', port);
 
-        return this.http.post(`$***REMOVED***this.clientURL***REMOVED***checkClient/`, params, ***REMOVED***
+        return this.http.post<IResponseTemplate>(`$***REMOVED***this.clientURL***REMOVED***checkClient/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
 
     ***REMOVED***
 
-    postClient(host: string, port: string, location: string): Observable<any> ***REMOVED***
+    postClient(host: string, port: string, location: string): Observable<Client> ***REMOVED***
 
         const params: HttpParams = new HttpParams().set('host', host).set('port', port).set('location', location);
 
-        return this.http.post(this.clientURL, params, ***REMOVED***
+        return this.http.post<Client>(this.clientURL, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
     ***REMOVED***
 
-    deleteClient(client_id: number): Observable<any> ***REMOVED***
-        return this.http.delete(`$***REMOVED***this.clientURL***REMOVED***$***REMOVED***client_id ***REMOVED***/`, ***REMOVED***
-            withCredentials: true,
-            headers: header
-        ***REMOVED***)
-
-    ***REMOVED***
 ***REMOVED***

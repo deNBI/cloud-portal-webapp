@@ -69,7 +69,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
      * Get all clients status checked.
      */
     getClientsChecked(): void ***REMOVED***
-        this.clientservice.getClientsChecked().subscribe(clients => ***REMOVED***
+        this.clientservice.getClientsChecked().subscribe((clients: Client[]) => ***REMOVED***
             this.clients = clients;
             this.isLoaded = true;
         ***REMOVED***);
@@ -100,9 +100,9 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         if (host && port) ***REMOVED***
             this.clientservice.checkClient(host, port).subscribe(data => ***REMOVED***
 
-                if (!data['status']) ***REMOVED***
+                if (!data.value) ***REMOVED***
                     this.checkStatus = 'No Connection';
-                ***REMOVED*** else if (data['status']) ***REMOVED***
+                ***REMOVED*** else if (data.value) ***REMOVED***
                     this.checkStatus = 'Connected';
                 ***REMOVED*** else ***REMOVED***
                     this.checkStatus = 'check failed';
@@ -122,23 +122,12 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     postClient(host: string, port: string, location: string): void ***REMOVED***
 
         if (host && port && location) ***REMOVED***
-            this.clientservice.postClient(host, port, location).subscribe(() => ***REMOVED***
-
-                this.getClientsChecked();
+            this.clientservice.postClient(host, port, location).subscribe((newClient: Client) => ***REMOVED***
+                this.clients.push(newClient);
             ***REMOVED***);
         ***REMOVED***
     ***REMOVED***
 
-    /**
-     * Delete a client.
-     * @param ***REMOVED***number***REMOVED*** client_id
-     */
-    deleteClient(client_id: number): void ***REMOVED***
-        this.clientservice.deleteClient(client_id).subscribe(() => ***REMOVED***
-
-            this.getClientsChecked();
-        ***REMOVED***);
-    ***REMOVED***
 
     ngOnInit(): void ***REMOVED***
         this.checkVOstatus();

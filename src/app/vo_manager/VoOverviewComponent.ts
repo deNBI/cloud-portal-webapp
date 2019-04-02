@@ -90,8 +90,8 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
 
     sendNewsletterToVo(subject: string, message: string, reply?: string): void ***REMOVED***
         this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
-            .subscribe(result => ***REMOVED***
-                if (result === 1) ***REMOVED***
+            .subscribe((result: IResponseTemplate) => ***REMOVED***
+                if (<boolean><Boolean>result.value === true) ***REMOVED***
                     this.emailStatus = 1;
                 ***REMOVED*** else ***REMOVED***
                     this.emailStatus = 2;
@@ -102,8 +102,8 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
 
     sendMailToVo(subject: string, message: string, reply?: string): void ***REMOVED***
         this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
-            .subscribe(result => ***REMOVED***
-                if (result === 1) ***REMOVED***
+            .subscribe((result: IResponseTemplate) => ***REMOVED***
+                if (<boolean><Boolean>result.value === true) ***REMOVED***
                     this.emailStatus = 1;
                 ***REMOVED*** else ***REMOVED***
                     this.emailStatus = 2;

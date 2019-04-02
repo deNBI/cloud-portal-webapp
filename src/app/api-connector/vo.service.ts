@@ -66,7 +66,7 @@ export class VoService ***REMOVED***
     ***REMOVED***
 
     getVoProjectResources(): Observable<Resources[]> ***REMOVED***
-        return this.http.get<Resources[]> (`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/resources/`, ***REMOVED***
+        return this.http.get<Resources[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/resources/`, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
@@ -81,21 +81,21 @@ export class VoService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    sendNewsletterToVo(subject: string, message: string, reply?: string): Observable<any> ***REMOVED***
+    sendNewsletterToVo(subject: string, message: string, reply?: string): Observable<IResponseTemplate> ***REMOVED***
 
         const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***voManagers/current/newsletter/`, params, ***REMOVED***
+        return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***voManagers/current/newsletter/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
 
     ***REMOVED***
 
-    sendMailToVo(subject: string, message: string, reply?: string): Observable<any> ***REMOVED***
+    sendMailToVo(subject: string, message: string, reply?: string): Observable<IResponseTemplate> ***REMOVED***
         const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***voManagers/current/voMail/`, params, ***REMOVED***
+        return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***voManagers/current/voMail/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
