@@ -47,7 +47,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     public usersModalProjectName: string;
 
     public managerFacilities: [string, number][];
-    public selectedFacility: [string, number];
+    // public selectedFacility: [string, number];
 
     constructor(private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) ***REMOVED***
         super();
@@ -79,6 +79,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     ***REMOVED***
 
     sendEmail(subject: string, message: string, reply?: string): void ***REMOVED***
+      console.log(this.emailType);
         switch (this.emailType) ***REMOVED***
             case 0: ***REMOVED***
                 this.sendMailToVo(subject, message, this.selectedFacility.toString(), this.selectedProjectType, reply);
