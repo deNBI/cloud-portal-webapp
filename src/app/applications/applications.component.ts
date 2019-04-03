@@ -10,7 +10,7 @@ import {VoService} from '../api-connector/vo.service';
 import {FacilityService} from '../api-connector/facility.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
-import {Client} from '../virtualmachines/clients/vmclient';
+import {Client} from "../virtualmachines/clients/client.model";
 import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
@@ -81,7 +81,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                 private flavorService: FlavorService) {
 
         super(userservice, applicationstatusservice, applicationsservice, facilityService);
-          this.voService.isVo().subscribe((result: { [key: string]: boolean }) => {
+        this.voService.isVo().subscribe((result: { [key: string]: boolean }) => {
             this.is_vo_admin = result['Is_Vo_Manager'];
             this.getUserApplications();
             this.getApplicationStatus();
@@ -631,7 +631,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                 if (res['Info']) {
                     if (res['Clients']) {
                         for (const client of res['Clients']) {
-                            const newClient: Client = new Client();
+                            const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
                             newClient.location = client.location;
                             newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
                             newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
@@ -675,8 +675,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                                                 } else {
                                                     this.applicationsservice.getApplicationClient(
                                                         application_id).subscribe((client: object) => {
-                                                        const newClient: Client = new Client();
-                                                        newClient.location = client['location'];
+                                                        const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
                                                         newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
                                                         newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
                                                         newClient.maxVMs = client['max_ressources']['maxTotalInstances'];

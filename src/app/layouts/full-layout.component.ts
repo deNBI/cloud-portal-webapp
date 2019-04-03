@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiSettings} from '../api-connector/api-settings.service';
-import {ClientService} from '../api-connector/vmClients.service';
+import {ClientService} from "../api-connector/client.service";
 import {FacilityService} from '../api-connector/facility.service';
 import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
