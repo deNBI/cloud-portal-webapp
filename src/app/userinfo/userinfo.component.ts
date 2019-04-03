@@ -50,9 +50,9 @@ export class UserinfoComponent implements OnInit {
 
     }
 
-    isFreemiumActive() {
-        this.groupService.isFreemiumActive().subscribe(result => {
-            this.freemium_active = result['Freemium'];
+    isFreemiumActive(): void {
+        this.groupService.isFreemiumActive().subscribe((result: IResponseTemplate) => {
+            this.freemium_active = <boolean><Boolean> result.value;
 
         });
     }
@@ -167,7 +167,7 @@ export class UserinfoComponent implements OnInit {
     }
 
     is_vm_project_member() {
-        this.groupService.getMemberGroupsStatus().subscribe(result => {
+        this.groupService.getSimpleVmByUser().subscribe(result => {
             if (result.length > 0) {
                 this.is_project_member = true
             } else {

@@ -21,7 +21,6 @@ export class ImageTagComponent {
         })
     }
 
-
     addTag(tag: string, description: string): void {
         this.imageService.addImageTags(tag, description).subscribe((newTag: ImageTag) => {
             this.imageTags.push(newTag)

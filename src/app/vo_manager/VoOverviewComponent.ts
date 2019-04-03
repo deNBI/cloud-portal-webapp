@@ -147,8 +147,8 @@ export class VoOverviewComponent extends FilterBaseClass {
     getProjectLifetime(project: Project): void {
         this.details_loaded = false;
         if (!project.Lifetime) {
-            this.groupservice.getLifetime(project.Id.toString()).subscribe(res => {
-                const lifetime: number = res['lifetime'];
+            this.groupservice.getLifetime(project.Id.toString()).subscribe((time: IResponseTemplate) => {
+                const lifetime: number = <number>time.value;
                 const dateCreatedString: string = project.DateCreated;
 
                 let expirationDate: string;

@@ -192,9 +192,9 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      */
     validSnapshotName(e) {
         this.snapshotNameCheckDone = false;
-        this.imageService.checkSnapshotNameVaiable(this.snapshotName).subscribe(res => {
+        this.imageService.checkSnapshotNameAvailable(this.snapshotName).subscribe((res: IResponseTemplate) => {
 
-            this.validSnapshotNameBool = this.snapshotName.length > 0 && res['valid']
+            this.validSnapshotNameBool = this.snapshotName.length > 0 && <boolean><Boolean>res.value;
             this.snapshotNameCheckDone = true;
         })
 

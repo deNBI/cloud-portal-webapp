@@ -57,7 +57,7 @@ export class FullLayoutComponent implements OnInit {
     }
 
     is_vm_project_member(): void {
-        this.groupService.getMemberGroupsStatus().subscribe(result => {
+        this.groupService.getSimpleVmByUser().subscribe(result => {
             if (result.length > 0) {
                 this.vm_project_member = true
             }

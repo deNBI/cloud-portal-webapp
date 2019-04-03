@@ -30,17 +30,10 @@ export class ImageService {
 
     }
 
-    getImagesSnapshotsNames(): Observable<any> {
 
-        return this.http.get<Image[]>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
-            withCredentials: true
-        })
+    checkSnapshotNameAvailable(snapshot_name: string): Observable<IResponseTemplate> {
 
-    }
-
-    checkSnapshotNameVaiable(snapshot_name: string): Observable<any> {
-
-        return this.http.get<Image[]>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
             withCredentials: true,
             params: {snapshot_name: snapshot_name}
 
@@ -76,7 +69,7 @@ export class ImageService {
 
     deleteImageTag(imageTag: string): Observable<IResponseTemplate> {
 
-        return this.http.delete<IResponseTemplate> (`${ApiSettings.getApiBaseURL()}imageTags/${imageTag}/`, {
+        return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageTags/${imageTag}/`, {
             withCredentials: true,
             headers: header
         })
