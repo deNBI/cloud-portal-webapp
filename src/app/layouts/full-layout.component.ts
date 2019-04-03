@@ -73,7 +73,6 @@ export class FullLayoutComponent implements OnInit {
     }
 
     toggle_overview(): void {
-        console.log(this.overview_state)
         if (this.overview_state === 'closed') {
             this.overview_state = 'open'
         } else {

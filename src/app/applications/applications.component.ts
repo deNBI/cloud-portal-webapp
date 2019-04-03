@@ -160,8 +160,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
         // todo check if user is VO Admin
 
         if (this.is_vo_admin) {
-            this.applicationsservice.getAllApplications().subscribe((res: object) => {
-                console.log(res)
+            this.applicationsservice.getAllApplications().subscribe(res  => {
                 if (Object.keys(res).length === 0) {
                     this.isLoaded_userApplication = true;
                 }
@@ -200,7 +199,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
      * Saves them in the userApplication array.
      */
     getUserApplications(): void {
-        console.log('test')
         this.applicationsservice
             .getUserApplications().subscribe((res: [{ [key: string]: string }]) => {
             if (Object.keys(res).length === 0) {

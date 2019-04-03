@@ -30,7 +30,7 @@ export class Application {
     private _ComputeCenter: ComputecenterComponent;
     private _OpenStackProject: boolean;
     private _DaysRunning: number;
-    private _ApplicationExtension: ApplicationExtension;
+    private _ApplicationExtension: ApplicationExtension = null;
     private _PerunId: number | string;
     private _TotalCores: number;
     private _TotalRam: number;
@@ -329,10 +329,10 @@ export class Application {
     }
 
     get ElixirProject(): string {
-      return this._ElixirProject;
+        return this._ElixirProject;
     }
 
     set ElixirProject(value: string) {
-      this._ElixirProject = value;
+        this._ElixirProject = value;
     }
 }
