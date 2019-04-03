@@ -10,7 +10,7 @@ import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
-import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/vmclient';
+import ***REMOVED***Client***REMOVED*** from "../virtualmachines/clients/client.model";
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
@@ -632,7 +632,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                 if (res['Info']) ***REMOVED***
                     if (res['Clients']) ***REMOVED***
                         for (const client of res['Clients']) ***REMOVED***
-                            const newClient: Client = new Client();
+                            const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
                             newClient.location = client.location;
                             newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
                             newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
@@ -676,8 +676,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                                                 ***REMOVED*** else ***REMOVED***
                                                     this.applicationsservice.getApplicationClient(
                                                         application_id).subscribe((client: object) => ***REMOVED***
-                                                        const newClient: Client = new Client();
-                                                        newClient.location = client['location'];
+                                                        const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
                                                         newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
                                                         newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
                                                         newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
