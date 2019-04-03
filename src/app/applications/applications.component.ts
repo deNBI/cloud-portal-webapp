@@ -137,9 +137,9 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
      * Get the facility of an application.
      * @param {Application} app
      */
-    public getFacilityProject(app: Application): void {
+    getFacilityProject(app: Application): void {
 
-        if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED) {
+        if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED && app.Status !== this.application_states.TERMINATED) {
             this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => {
                 const login: string = res['Login'];
                 const suport: string = res['Support'];
@@ -191,8 +191,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
             const newApp: Application = this.setNewApplication(aj);
             this.all_applications[index] = newApp;
             this.getFacilityProject(newApp);
-
-
         });
 
     }

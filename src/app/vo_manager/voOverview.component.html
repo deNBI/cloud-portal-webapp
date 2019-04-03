@@ -3,21 +3,21 @@
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
     <div class="row">
         <!--/.col-->
-      <div class="col-md-8"><h1>Vo Overview</h1></div>
+        <div class="col-md-8"><h1>Vo Overview</h1></div>
 
         <div class="col-lg-12">
 
 
             <button (click)="setEmailType(1);emailModal.show();" type="button "
-                    class="btn btn-secondary"
+                    class="btn btn-outline-primary"
                     style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i
                     class="icon-envelope-letter"></i>
                 Send newsletter ({{newsletterSubscriptionCounter}})
             </button>
 
             <button (click)="setEmailType(0);emailModal.show();" type="button "
-                    class="btn btn-secondary"
-                    style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i
+                    class="btn btn-outline-primary"
+                    style="margin-bottom: auto;margin-left: 5px; margin-top: auto"><i
                     class="icon-envelope-letter"></i>
                 Send email
             </button>
@@ -156,7 +156,7 @@
                                     </button>
                                     <button *ngIf="project.Status == 2" style="margin-left: 5px"
                                             type="button"
-                                            class="btn btn-secondary"
+                                            class="btn btn-warning"
                                             (click)="selectedProject = project;suspendModal.show();"
 
                                     >
@@ -190,30 +190,30 @@
                 </button>
             </div>
             <div class="modal-body">
-              <div class="table-responsive">
-                <table class="table table-striped" style="word-wrap: break-word;table-layout: fixed">
-                  <thead>
-                  <tr>
-                    <th>User ID</th>
-                    <th>Member ID</th>
-                    <th>Elixir ID</th>
-                    <th>Email</th>
-                    <th>Full Name</th>
+                <div class="table-responsive">
+                    <table class="table table-striped" style="word-wrap: break-word;table-layout: fixed">
+                        <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Member ID</th>
+                            <th>Elixir ID</th>
+                            <th>Email</th>
+                            <th>Full Name</th>
 
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr *ngFor="let member of usersModalProjectMembers">
-                    <td>{{ member.Id}}</td>
-                    <td>{{ member.MemberId }}</td>
-                    <td>{{ member.ElixirId}}</td>
-                    <td>{{member.Email}}</td>
-                    <td>{{ member.Username }}</td>
-                  </tr>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let member of usersModalProjectMembers">
+                            <td>{{ member.Id }}</td>
+                            <td>{{ member.MemberId }}</td>
+                            <td>{{ member.ElixirId}}</td>
+                            <td>{{member.Email}}</td>
+                            <td>{{ member.Username }}</td>
+                        </tr>
 
-                  </tbody>
-                </table>
-              </div>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close
@@ -239,6 +239,38 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="email_form" #f="ngForm">
+
+                    <div class="form-group row" *ngIf="emailType == 0">
+                        <label
+                                class="col-md-12 control-label"><strong>Which facility should receive the email?</strong></label>
+                        <div class="col-md-12">
+                            <select class="form-control" [(ngModel)]="selectedFacility"
+                                    name="selectedFacility" id="selectedFacility">
+                                <option value="ALL" > All
+                                <option *ngFor="let cc of computecenters" [ngValue]="cc.FacilityId">
+                                    {{cc.Name}}
+                                </option>
+
+                            </select></div>
+                    </div>
+
+                    <div class="form-group row" *ngIf="emailType == 0 && selectedFacility != 'ALL'">
+                        <label
+                                class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
+                        <div class="col-md-12">
+                            <select class="form-control" [(ngModel)]="selectedProjectType"
+                                    name="selectedProjectType" id="selectedProjectType">
+                                <option value="ALL" selected> All
+                                </option>
+                                <option value="SVP">
+                                    Simple VM
+                                </option>
+                                <option value="OVP">
+                                    OpenStack
+                                </option>
+
+                            </select></div>
+                    </div>
                     <div class="form-group row"
                          [ngClass]="{'has-danger':emailSub.invalid && (emailSub.dirty || emailSub.touched),
                     'has-success':emailSub.valid && (emailSub.dirty || emailSub.touched)

@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
 import {IResponseTemplate} from "../api-connector/response-template";
+import {FacilityService} from "../api-connector/facility.service";
 
 /**
  * Vo Overview component.
@@ -14,7 +15,7 @@ import {IResponseTemplate} from "../api-connector/response-template";
 @Component({
     selector: 'app-vo-overview',
     templateUrl: 'voOverview.component.html',
-    providers: [VoService, GroupService]
+    providers: [VoService, GroupService, FacilityService]
 
 })
 
@@ -28,6 +29,10 @@ export class VoOverviewComponent extends FilterBaseClass {
     public emailVerify: string;
     public emailType: number;
     public selectedProject: Project;
+    computecenters: ComputecenterComponent[] = [];
+
+    selectedProjectType: string = 'ALL';
+    selectedFacility: string | number = 'ALL';
 
     public newsletterSubscriptionCounter: number;
     isLoaded: boolean = false;
@@ -43,13 +48,15 @@ export class VoOverviewComponent extends FilterBaseClass {
     public usersModalProjectName: string;
 
     public managerFacilities: [string, number][];
-    public selectedFacility: [string, number];
 
-    constructor(private voserice: VoService, private groupservice: GroupService) {
+    // public selectedFacility: [string, number];
+
+    constructor(private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) {
         super();
         this.getVoProjects();
         this.voserice.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate) => {
             this.newsletterSubscriptionCounter = <number>result.value
+
         });
 
     }
@@ -74,9 +81,10 @@ export class VoOverviewComponent extends FilterBaseClass {
     }
 
     sendEmail(subject: string, message: string, reply?: string): void {
+        console.log(this.emailType);
         switch (this.emailType) {
             case 0: {
-                this.sendMailToVo(subject, message, reply);
+                this.sendMailToVo(subject, message, this.selectedFacility.toString(), this.selectedProjectType, reply);
                 break;
             }
             case 1: {
@@ -86,6 +94,7 @@ export class VoOverviewComponent extends FilterBaseClass {
             default:
                 return
         }
+
     }
 
     sendNewsletterToVo(subject: string, message: string, reply?: string): void {
@@ -100,14 +109,17 @@ export class VoOverviewComponent extends FilterBaseClass {
 
     }
 
-    sendMailToVo(subject: string, message: string, reply?: string): void {
-        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
+    sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): void {
+        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), facility, type, encodeURIComponent(reply))
             .subscribe((result: IResponseTemplate) => {
                 if (<boolean><Boolean>result.value === true) {
+
                     this.emailStatus = 1;
                 } else {
                     this.emailStatus = 2;
                 }
+                this.selectedProjectType = 'ALL';
+                this.selectedFacility = 'ALL';
             })
 
     }
@@ -142,6 +154,21 @@ export class VoOverviewComponent extends FilterBaseClass {
         this.emailReply = '';
         this.emailStatus = 0;
 
+    }
+
+    /**
+     * Get all computecenters.
+     */
+    getComputeCenters(): void {
+        this.facilityService.getComputeCenters().subscribe(result => {
+            for (const cc of result) {
+                const compute_center: ComputecenterComponent = new ComputecenterComponent(
+                    cc['compute_center_facility_id'], cc['compute_center_name'],
+                    cc['compute_center_login'], cc['compute_center_support_mail']);
+                this.computecenters.push(compute_center)
+            }
+
+        })
     }
 
     getProjectLifetime(project: Project): void {

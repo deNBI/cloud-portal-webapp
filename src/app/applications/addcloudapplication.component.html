@@ -266,27 +266,6 @@
                                 <span class="help-block">How much object storage would you need?</span>
                             </div>
                         </div>
-
-
-                        <!--div class="form-group row">
-                            <label class="col-md-4 form-control-label">Special Hardware <i
-                                    data-balloon="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."
-                                    data-balloon-pos="down"
-                                    data-balloon-length="large"><i class="icon-question"
-                                                                   style="cursor: pointer;"></i></i></label>
-                            <div class="col-md-8">
-                                <div *ngFor="let sh of special_hardware; let i=index;"
-                                     class="checkbox">
-                                    <label>
-                                        <input type="checkbox"
-                                               [checked]="( checkboxValue === true ? sh.Checked : False )"
-                                               (change)="sh.Checked = $event.target.checked;"/>
-                                        {{sh.application_status_name}}
-                                    </label>
-                                </div>
-                                <span class="help-block">Which special Hardware would you need?</span>
-                            </div>
-                        </div-->
                         <div class="form-group row">
                             <label class="col-md-4 form-control-label"
                                    for="text-input"><strong>Comment</strong></label>
@@ -397,7 +376,7 @@
                             usage policy.</p>
                     </div>
                     <button (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
-                            class="btn btn-sm btn-primary" [disabled]="f.invalid">
+                            class="btn btn-sm btn-success" [disabled]="f.invalid">
                         <i class="fa fa-dot-circle-o"></i>
                         Submit Application
                     </button>
@@ -479,7 +458,7 @@
 
 
                 <button type="button" (click)="acknowledgemodal.hide();" type="reset"
-                        class="btn  btn-info"> Close
+                        class="btn  btn-warning"> Close
                 </button>
 
             </div>
@@ -532,7 +511,7 @@
                 <button class="btn btn-success col-md4" type="button"
                         (click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
                 </button>
-                <button class="btn  btn-primary col-md-4" type="reset"
+                <button class="btn  btn-warning col-md-4" type="reset"
                         (click)="submitModal.hide();">Cancel
                 </button>
 

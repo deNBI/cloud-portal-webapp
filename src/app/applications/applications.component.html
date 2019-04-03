@@ -42,29 +42,33 @@
                                     <td>{{ getStatusById(application.Status) }}</td>
                                     <td>
 
-                                        <button (click)="switchCollapseStatus('user_application-' + application.Id);getFacilityProject(application);"
-                                                type="button"
-                                                class="btn btn-secondary">
-                                            <i class="fa fa-info-circle"></i>&nbsp;
-                                            <span [hidden]="!getCollapseStatus('user_application-' + application.Id)">Show</span><span
-                                                [hidden]="getCollapseStatus('user_application-' + application.Id)">Hide</span>
-                                            Information
+                                      <div class="btn-group-vertical">
+                                        <button
+                                          (click)="switchCollapseStatus('user_application-' + application.Id);getFacilityProject(application);"
+                                          type="button"
+                                          class="btn btn-secondary" style="margin: auto auto 5px">
+                                          <i class="fa fa-info-circle"></i>&nbsp;
+                                          <span
+                                            [hidden]="!getCollapseStatus('user_application-' + application.Id)">Show</span><span
+                                          [hidden]="getCollapseStatus('user_application-' + application.Id)">Hide</span>
+                                          Information
                                         </button>
-
-
                                         <button *ngIf="application.Status == application_states.SUBMITTED"
                                                 (click)="deleteModal.show();setDeleteId(application.Id)"
                                                 type="button"
-
-                                                class="btn btn-secondary">
-                                            Remove Application
+                                                style="margin: auto auto 5px"
+                                                class="btn btn-danger">
+                                          Remove Application
                                         </button>
-                                        <button *ngIf="application.Status == application_states.APPROVED || application.Status == application_states.MODIFICATION_DECLINED"
-                                                (click)="setSelectedApplication(application);ngFormSetDefault(f);extensionModal.show()"
-                                                type="button"
-                                                class="btn btn-secondary">
-                                            Request Extension/Modification
+                                        <button
+                                          *ngIf="application.Status == application_states.APPROVED || application.Status == application_states.MODIFICATION_DECLINED"
+                                          (click)="setSelectedApplication(application);ngFormSetDefault(f);extensionModal.show()"
+                                          type="button"
+                                          class="btn btn-warning"
+                                          style="margin: auto auto 5px">
+                                          Request Extension/Modification
                                         </button>
+                                      </div>
                                     </td>
                                 </tr>
 
@@ -276,86 +280,97 @@
 
 
                                         <td>
+                                          <div class="btn-group">
                                             <button
-                                                    *ngIf="application.Status == application_states.CONFIRMATION_DENIED || (application.Status == application_states.WAIT_FOR_CONFIRMATION && !application.ComputeCenter?.FacilityId )"
+                                              *ngIf="application.Status == application_states.CONFIRMATION_DENIED || (application.Status == application_states.WAIT_FOR_CONFIRMATION && !application.ComputeCenter?.FacilityId )"
+                                              style="margin: auto 2.5px"
+                                              (click)="resetNotificationModal();assignGroupToFacility(application.PerunId,application.Id,selectedComputeCenter.value); notificationModal.show();"
 
-                                                    (click)="resetNotificationModal();assignGroupToFacility(application.PerunId,application.Id,selectedComputeCenter.value); notificationModal.show();"
 
-
-                                                    type="button"
-                                                    class="btn btn-secondary">
-                                                <i class="fa fa-check"></i>&nbsp;
-                                                Assign
+                                              type="button"
+                                              class="btn btn-secondary">
+                                              <i class="fa fa-check"></i>&nbsp;
+                                              Assign
                                             </button>
                                             <button
-                                                    *ngIf="application.Status == application_states.WAIT_FOR_CONFIRMATION && application.ComputeCenter?.FacilityId"
+                                              *ngIf="application.Status == application_states.WAIT_FOR_CONFIRMATION && application.ComputeCenter?.FacilityId"
+                                              style="margin: auto 2.5px"
+                                              (click)="resetNotificationModal();removeApplicationFromFacilityConfirmation(application);"
 
-                                                    (click)="resetNotificationModal();removeApplicationFromFacilityConfirmation(application);"
 
-
-                                                    type="button"
-                                                    class="btn btn-secondary">
-                                                <i class="fa fa-check"></i>&nbsp;
-                                                Reassign
+                                              type="button"
+                                              class="btn btn-secondary">
+                                              <i class="fa fa-check"></i>&nbsp;
+                                              Reassign
                                             </button>
-                                            <button *ngIf="application.Status == application_states.SUBMITTED && application.OpenStackProject"
+                                            <button
+                                              *ngIf="application.Status == application_states.SUBMITTED && application.OpenStackProject"
+                                              style="margin: auto 2.5px"
+                                              (click)="resetNotificationModal();createOpenStackProjectGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
 
-                                                    (click)="resetNotificationModal();createOpenStackProjectGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
 
-
-                                                    type="button"
-                                                    class="btn btn-secondary">
-                                                <i class="fa fa-check"></i>&nbsp;
-                                                Approve
-                                                & Create
+                                              type="button"
+                                              class="btn btn-success">
+                                              <i class="fa fa-check"></i>&nbsp;
+                                              Approve
+                                              & Create
                                             </button>
 
-                                            <button *ngIf="application.Status == application_states.SUBMITTED && !application.OpenStackProject"
+                                            <button
+                                              *ngIf="application.Status == application_states.SUBMITTED && !application.OpenStackProject"
+                                              style="margin: auto 2.5px"
+                                              (click)="resetNotificationModal();createSimpleVmProjectGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
 
-                                                    (click)="resetNotificationModal();createSimpleVmProjectGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
 
-
-                                                    type="button"
-                                                    class="btn btn-secondary">
-                                                <i class="fa fa-check"></i>&nbsp;
-                                                Approve
-                                                & Create
+                                              type="button"
+                                              class="btn btn-success">
+                                              <i class="fa fa-check"></i>&nbsp;
+                                              Approve
+                                              & Create
                                             </button>
-                                            <button *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"
-
-                                                    (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
-                                                    type="button"
-                                                    class="btn btn-secondary">
-                                                <i class="fa fa-check"></i>&nbsp;
-                                                Approve
-                                                Modification
+                                            <button
+                                              *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"
+                                              style="margin: auto 2.5px"
+                                              (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
+                                              type="button"
+                                              class="btn btn-success">
+                                              <i class="fa fa-check"></i>&nbsp;
+                                              Approve
+                                              Modification
                                             </button>
 
                                             <button *ngIf="application.Status == application_states.SUBMITTED"
                                                     (click)='declineApplication(application.Id)'
                                                     type="button"
-                                                    class="btn btn-secondary">
-                                                <i class="fa fa-close"></i>&nbsp;
-                                                Decline
+                                                    class="btn btn-danger"
+                                                    style="margin: auto 2.5px">
+                                              <i class="fa fa-close"></i>&nbsp;
+                                              Decline
                                             </button>
-                                            <button *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"
-                                                    type="button"
-                                                    class="btn btn-secondary"
-                                                    (click)="setSelectedApplication(application);declineExtension(application.Id);resultModal.show();">
-                                                <i
-                                                        class="fa fa-close"></i>&nbsp;
-                                                Decline Modification
+                                            <button
+                                              *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"
+                                              type="button"
+                                              class="btn btn-danger"
+                                              style="margin: auto 2.5px"
+                                              (click)="setSelectedApplication(application);declineExtension(application.Id);resultModal.show();">
+                                              <i
+                                                class="fa fa-close"></i>&nbsp;
+                                              Decline Modification
                                             </button>
 
 
-                                            <button (click)="switchCollapseStatus('application_review-' + application.Id);  getMemberDetailsByElixirIdIfCollapsed(application.User,'application_review-' + application.Id);"
-                                                    type="button"
-                                                    class="btn btn-secondary">
-                                                <i class="fa fa-info-circle"></i>&nbsp;
-                                                <span [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
-                                                    [hidden]="getCollapseStatus('application_review-' + application.Id)">Hide</span>
-                                                Information
+                                            <button
+                                              (click)="switchCollapseStatus('application_review-' + application.Id);  getMemberDetailsByElixirIdIfCollapsed(application.User,'application_review-' + application.Id);"
+                                              type="button"
+                                              class="btn btn-secondary"
+                                              style="margin: auto 2.5px">
+                                              <i class="fa fa-info-circle"></i>&nbsp;
+                                              <span
+                                                [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
+                                              [hidden]="getCollapseStatus('application_review-' + application.Id)">Hide</span>
+                                              Information
                                             </button>
+                                          </div>
                                         </td>
                                     </tr>
 
@@ -629,29 +644,35 @@
                                             }}
                                         </td>
                                         <td>
+                                          <div class="btn-group">
                                             <button
-                                                    (click)="switchCollapseStatus('application_history-' + application.Id);getFacilityProject(application);"
-                                                    type="button"
-                                                    class="btn btn-secondary">
-                                                <i class="fa fa-info-circle"></i>&nbsp;
-                                                <span [hidden]="!getCollapseStatus('application_history-' + application.Id)"
-                                                >Show</span><span
-                                                    [hidden]="getCollapseStatus('application_history-' + application.Id)"
-                                                    style="margin-left: 5px">Hide</span>
-                                                Information
+                                              (click)="switchCollapseStatus('application_history-' + application.Id);getFacilityProject(application);"
+                                              type="button"
+                                              class="btn btn-secondary"
+                                              style="margin: auto 2.5px">
+                                              <i class="fa fa-info-circle"></i>&nbsp;
+                                              <span
+                                                [hidden]="!getCollapseStatus('application_history-' + application.Id)"
+                                              >Show</span><span
+                                              [hidden]="getCollapseStatus('application_history-' + application.Id)"
+                                              style="margin-left: 5px">Hide</span>
+                                              Information
                                             </button>
                                             <button (click)="deleteModal.show();setDeleteId(application.Id)"
                                                     type="button"
-                                                    class="btn btn-secondary">
-                                                Remove Application
+                                                    class="btn btn-danger"
+                                                    style="margin: auto 2.5px">
+                                              Remove Application
                                             </button>
                                             <button
-                                                    *ngIf="application.Status != application_states.SUBMITTED &&  application.Status != application_states.TERMINATED"
-                                                    (click)="setSelectedApplication(application);terminateModal.show();"
-                                                    type="button"
-                                                    class="btn btn-secondary">
-                                               Terminate Application
+                                              *ngIf="application.Status != application_states.SUBMITTED &&  application.Status != application_states.TERMINATED"
+                                              (click)="setSelectedApplication(application);terminateModal.show();"
+                                              type="button"
+                                              class="btn btn-warning"
+                                              style="margin: auto 2.5px">
+                                              Terminate Application
                                             </button>
+                                          </div>
                                         </td>
                                     </tr>
                                     <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning)}">
@@ -1308,38 +1329,6 @@
                             <span class="help-block">How much Object Storage do you need in the future?</span>
                         </div>
                     </div>
-
-
-                    <!--div *ngIf="selectedApplication?.OpenStackProject" class="form-group row">
-                        <label class="col-md-4 form-control-label"><strong>Special
-                            Hardware </strong> <i
-                                data-balloon="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."
-                                data-balloon-pos="down"
-                                data-balloon-length="large"><i class="icon-question"
-                                                               style="cursor: pointer;"></i></i></label>
-                        <!-- not working properly yet
-                        <div class="col">
-                              <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">                                    <label>
-                                      <input type="checkbox" [checked]="(specialHardwareInUse(sh, selectedApplication))" disabled>
-                                      {{sh.application_status_name}}
-                                  </label>
-                              </div>
-                              <span class="help-block">Currently used special hardware</span>
-                          </div> -->
-
-                    <!--div class="col">
-                        <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
-                            <label>
-                                <input type="checkbox"
-                                       [checked]="( checkboxValue === true ? sh.Checked : False )"
-                                       (change)="sh.Checked = $event.target.checked;"/>
-                                {{sh.application_status_name}}
-                            </label>
-                        </div>
-                        <span class="help-block">Which special hardware do you need in the future?</span>
-                    </div-->
-                    <!--/div-->
-
                     <div class="form-group row">
                         <label class="col-md-4 form-control-label"
                                for="text-input"><strong>Comment</strong></label>

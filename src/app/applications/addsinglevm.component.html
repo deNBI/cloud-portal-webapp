@@ -362,7 +362,7 @@
                     </div>
                     <button (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
                             [disabled]="f.invalid"
-                            class="btn btn-sm btn-primary"><i
+                            class="btn btn-sm btn-success"><i
                             class="fa fa-dot-circle-o"></i> Submit
                         Application
                     </button>
@@ -444,7 +444,7 @@
 
 
                 <button type="button" (click)="acknowledgemodal.hide();" type="reset"
-                        class="btn  btn-info"> Close
+                        class="btn  btn-warning"> Close
                 </button>
 
             </div>
@@ -498,7 +498,7 @@
                 <button class="btn btn-success col-md4" type="button"
                         (click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
                 </button>
-                <button class="btn  btn-primary col-md-4" type="reset"
+                <button class="btn  btn-warning col-md-4" type="reset"
                         (click)="submitModal.hide();">Cancel
                 </button>
 

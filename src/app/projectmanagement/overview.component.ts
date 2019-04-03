@@ -54,6 +54,8 @@ export class OverviewComponent extends AbstractBaseClasse {
     public addUserModalRealName: string;
     public addUserModalInvitationLink: string = '';
 
+    public showLink: boolean = true;
+
     public UserModalFacilityDetails: [string, string][];
     public UserModalFacility: [string, number];
 

@@ -35,6 +35,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
      */
     STATUS_APPROVED: number = 2;
 
+    selectedProjectType: string = 'ALL';
+
     // modal variables for User list
     public usersModalProjectMembers: ProjectMember[] = [];
     public usersModalProjectID: number;
@@ -163,9 +165,10 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
 
     sendMailToFacility(facility: string, subject: string, message: string, reply?: string): void {
         this.facilityservice.sendMailToFacility(
-            facility, encodeURIComponent(subject), encodeURIComponent(message),
+            facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
             encodeURIComponent(reply)).subscribe(
             result => {
+                this.selectedProjectType = 'ALL';
 
                 if (result.status === 201) {
                     this.emailStatus = 1;
@@ -174,6 +177,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                 }
             },
             error => {
+                this.selectedProjectType = 'ALL';
+
                 console.log(error);
                 this.emailStatus = 2;
             })
