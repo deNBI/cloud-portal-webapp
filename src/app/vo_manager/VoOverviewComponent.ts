@@ -47,7 +47,7 @@ export class VoOverviewComponent extends FilterBaseClass {
     public usersModalProjectName: string;
 
     public managerFacilities: [string, number][];
-    public selectedFacility: [string, number];
+    // public selectedFacility: [string, number];
 
     constructor(private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) {
         super();
@@ -79,6 +79,7 @@ export class VoOverviewComponent extends FilterBaseClass {
     }
 
     sendEmail(subject: string, message: string, reply?: string): void {
+      console.log(this.emailType);
         switch (this.emailType) {
             case 0: {
                 this.sendMailToVo(subject, message, this.selectedFacility.toString(), this.selectedProjectType, reply);
