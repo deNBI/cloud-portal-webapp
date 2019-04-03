@@ -9,6 +9,7 @@ import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap/modal';
 import ***REMOVED***AddsinglevmComponent***REMOVED*** from './addsinglevm.component';
 import ***REMOVED***AddcloudapplicationComponent***REMOVED*** from './addcloudapplication.component';
 import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
+import ***REMOVED*** MinAmoutValidatorDirective, MaxAmoutValidatorDirective, IntegerValidatorDirective ***REMOVED*** from './numberValidations.directive';
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from "../shared/shared_modules/baseClass/application-base-class";
 import ***REMOVED***SharedModuleModule***REMOVED*** from "../shared/shared_modules/shared-module.module";
 
@@ -28,6 +29,9 @@ import ***REMOVED***SharedModuleModule***REMOVED*** from "../shared/shared_modul
         ApplicationsComponent,
         AddsinglevmComponent,
         AddcloudapplicationComponent,
+        MinAmoutValidatorDirective,
+        MaxAmoutValidatorDirective,
+        IntegerValidatorDirective
     ]
 ***REMOVED***)
 export class ApplicationsModule ***REMOVED***

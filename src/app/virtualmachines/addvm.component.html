@@ -39,17 +39,16 @@
 
                     <form id="application_form" #f="ngForm"
                           class="form-horizontal">
-                        <div class="form-group row"
-                             [ngClass]="***REMOVED***'has-danger':f.controls.selectedProject?.invalid && (f.controls.selectedProject?.dirty || f.controls.selectedProject.touched),
-                             'has-success':f.controls.selectedProject?.valid && (f.controls.selectedProject?.dirty || f.controls.selectedProject?.touched)***REMOVED***"
-                        >
+                        <div class="form-group row">
                             <label class="col-md-3 form-control-label"><strong>Project*</strong></label>
 
                             <div class="col-md-6">
 
                                 <select required class="form-control" name="selectedProject"
                                         [(ngModel)]="selectedProject"
-                                        (ngModelChange)="getSelectedProjectClient();">
+                                        (ngModelChange)="getSelectedProjectClient();"
+                                        [ngClass]="***REMOVED***'is-invalid':f.controls.selectedProject?.invalid && (f.controls.selectedProject?.dirty || f.controls.selectedProject.touched),
+                             'is-valid':f.controls.selectedProject?.valid && (f.controls.selectedProject?.dirty || f.controls.selectedProject?.touched)***REMOVED***">
                                     <option value="undefined" disabled selected hidden> Please
                                         Select
                                     </option>
@@ -74,15 +73,15 @@
                                         Vms</strong>
                                 </div>
                             </div>
-                            <div *ngIf="selectedProject" class="form-group row"
-                                 [ngClass]="***REMOVED***'has-danger':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
-                             'has-success':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)***REMOVED***">
+                            <div *ngIf="selectedProject" class="form-group row">
                                 <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <input required id="id_instance_name" name="instance_name"
                                                class="form-control"
-                                               type="text" placeholder="Instancename" ngModel>
+                                               type="text" placeholder="Instancename" ngModel
+                                               [ngClass]="***REMOVED***'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
+                             'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)***REMOVED***">
                                     </div>
                                     <div style="color: dodgerblue">Info: The instance name will also
                                         be the hostname of the vm.
@@ -91,16 +90,16 @@
 
                                 </div>
                             </div>
-                            <div *ngIf="selectedProject" class="form-group row"
-                                 [ngClass]="***REMOVED***'has-danger':f.controls.selectedFlavor?.invalid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched),
-                             'has-success':f.controls.selectedFlavor?.valid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched)***REMOVED***">
+                            <div *ngIf="selectedProject" class="form-group row">
                                 <label class="col-md-3 form-control-label"><strong>Flavor*</strong></label>
                                 <div class="col-md-6">
 
 
                                     <select required class="form-control col-md-6"
                                             name="selectedFlavor"
-                                            [(ngModel)]="selectedFlavor">
+                                            [(ngModel)]="selectedFlavor"
+                                            [ngClass]="***REMOVED***'is-invalid':f.controls.selectedFlavor?.invalid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched),
+                             'is-valid':f.controls.selectedFlavor?.valid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched)***REMOVED***">
                                         <option value="undefined" disabled selected hidden> Please
                                             Select
                                         </option>
@@ -125,15 +124,15 @@
                                                    [flavor]="selectedFlavor"></app-flavor-detail>
                             </div>
 
-                            <div *ngIf="selectedProject" class="form-group row"
-                                 [ngClass]="***REMOVED***'has-danger':f.controls.selectedImage?.invalid && (f.controls.selectedImage?.dirty || f.controls.selectedImage.touched),
-                             'has-success':f.controls.selectedImage?.valid && (f.controls.selectedImage?.dirty || f.controls.selectedImage?.touched)***REMOVED***">
+                            <div *ngIf="selectedProject" class="form-group row">
                                 <label class="col-md-3 form-control-label"><strong>Image*</strong></label>
 
                                 <div class="col-md-6">
 
                                     <select required class="form-control" name="selectedImage"
-                                            [(ngModel)]="selectedImage">
+                                            [(ngModel)]="selectedImage"
+                                            [ngClass]="***REMOVED***'is-invalid':f.controls.selectedImage?.invalid && (f.controls.selectedImage?.dirty || f.controls.selectedImage.touched),
+                             'is-valid':f.controls.selectedImage?.valid && (f.controls.selectedImage?.dirty || f.controls.selectedImage?.touched)***REMOVED***">
                                         <option value="undefined" disabled selected hidden> Please
                                             Select
                                         </option>
@@ -172,8 +171,6 @@
                                 </div>
                             </div>
                             <div class="form-group row"
-                                 [ngClass]="***REMOVED***'has-danger':diskspace > 0 && volumeName == '',
-                             'has-success': diskspace == 0 || (diskspace > 0 && volumeName != '')***REMOVED***"
                                  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
                                 <label *ngIf="diskspace <= 0" class="col-md-3 form-control-label">Volumename</label>
                                 <label *ngIf="diskspace > 0"
@@ -183,7 +180,9 @@
                                     <div class="input-group">
                                         <input type="text" placeholder="Volumename"
                                                [value]="volumeName"
-                                               (input)="volumeName = $event.target.value">
+                                               (input)="volumeName = $event.target.value"
+                                               [ngClass]="***REMOVED***'is-invalid':diskspace > 0 && volumeName == '',
+                             'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')***REMOVED***">
                                     </div>
                                 </div>
                             </div>
