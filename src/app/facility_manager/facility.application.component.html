@@ -439,7 +439,7 @@
                                                     <td>{{item.value.counter}}</td>
                                                     <td>
                                                             <span *ngIf="app.ApplicationExtension?.RequestedFlavors[item.key]">
-                                                                {{app?.ApplicationExtension.RequestedFlavors[item.key]?.counter}}</span>
+                                                                {{app?.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}</span>
                                                         <span *ngIf="!app.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
                                                 </tr>
@@ -477,7 +477,7 @@
                                                         app.TotalRam}} GB
                                                     </td>
                                                     <td>
-                                                        {{app.ApplicationExtension.TotalRAM}} GB
+                                                        {{app.ApplicationExtension?.TotalRAM}} GB
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -702,7 +702,7 @@
                                                     </td>
                                                     <td *ngIf="application.ApplicationExtension ">
                                                         Requested:
-                                                        {{application.ApplicationExtension.VMsRequested}}
+                                                        {{application.ApplicationExtension?.VMsRequested}}
                                                     </td>
 
 
@@ -739,7 +739,7 @@
                                                         }}
                                                     </td>
                                                     <td *ngIf="application.ApplicationExtension">
-                                                        {{application.ApplicationExtension.TotalCores}}
+                                                        {{application.ApplicationExtension?.TotalCores}}
                                                     </td>
                                                 </tr>
                                                 <tr *ngIf="application.OpenStackProject">
@@ -748,7 +748,7 @@
                                                         application.TotalRam}} GB
                                                     </td>
                                                     <td *ngIf="application.ApplicationExtension">
-                                                        {{application.ApplicationExtension.TotalRAM}} GB
+                                                        {{application.ApplicationExtension?.TotalRAM}} GB
                                                     </td>
                                                 </tr>
                                                 <tr>
