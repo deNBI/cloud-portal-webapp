@@ -36,9 +36,10 @@ export class UserinfoComponent implements OnInit ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    getPendingPreferredMailUser() ***REMOVED***
-        this.userservice.getPendingPreferredMailUser().subscribe(res => ***REMOVED***
-            this.userinfo.PendingEmails = res['pendingEmails'];
+    getPendingPreferredMailUser(): void ***REMOVED***
+        this.userservice.getPendingPreferredMailUser().subscribe((res: IResponseTemplate) => ***REMOVED***
+            this.userinfo.PendingEmails = <string[]>res.value;
+
         ***REMOVED***)
     ***REMOVED***
 
@@ -56,9 +57,14 @@ export class UserinfoComponent implements OnInit ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    setNewsletterSubscription(e) ***REMOVED***
-        this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => ***REMOVED***
-        ***REMOVED***)
+    setNewsletterSubscription(e): void ***REMOVED***
+        if (this.newsletter_subscribed) ***REMOVED***
+            this.userservice.setNewsletterSubscriptionWhenSubscribed().subscribe();
+        ***REMOVED***
+        else ***REMOVED***
+            this.userservice.setNewsletterSubscriptionWhenNotSubscribed().subscribe();
+        ***REMOVED***
+
     ***REMOVED***
 
     importKey(publicKey: string, keyname: string) ***REMOVED***
@@ -91,7 +97,7 @@ export class UserinfoComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     // Returns the preffered Mail of the logged in User
-    getPreferredMail() ***REMOVED***
+    getPreferredMail(): void ***REMOVED***
         this.userservice.getPreferredMailUser().subscribe()
     ***REMOVED***
 
@@ -123,10 +129,10 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
             ***REMOVED***)
         ***REMOVED***);
-        this.userservice.getPreferredMailUser().subscribe(r => ***REMOVED***
-            this.userinfo.Email = r['preferredEmail'];
-            this.userservice.getPendingPreferredMailUser().subscribe(res => ***REMOVED***
-                this.userinfo.PendingEmails = res['pendingEmails'];
+        this.userservice.getPreferredMailUser().subscribe((prefEmail: IResponseTemplate) => ***REMOVED***
+            this.userinfo.Email = <string>prefEmail.value;
+            this.userservice.getPendingPreferredMailUser().subscribe((pendingEmails: IResponseTemplate) => ***REMOVED***
+                this.userinfo.PendingEmails = <string[]>pendingEmails.value;
                 this.userservice.getNewsletterSubscription().subscribe((subscribed: IResponseTemplate) => ***REMOVED***
 
                     if (<boolean><Boolean>subscribed.value) ***REMOVED***

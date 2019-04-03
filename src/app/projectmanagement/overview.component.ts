@@ -75,26 +75,6 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-    setUserFacilityPassword(facility: string, details: [string, string][]): void ***REMOVED***
-        this.userservice.setUserFacilityPassword(facility).subscribe(result => ***REMOVED***
-            for (const key of details) ***REMOVED***
-                if (key[0] === 'Support') ***REMOVED***
-                    this.passwordModalEmail = key[1];
-                ***REMOVED***
-            ***REMOVED***
-
-            this.passwordModalFacility = facility;
-            if (result['Error']) ***REMOVED***
-                this.passwordModalTitle = 'Set or update password';
-                this.passwordModalType = 'warning'
-            ***REMOVED*** else ***REMOVED***
-                this.passwordModalTitle = 'Success';
-                this.passwordModalType = 'success';
-                this.passwordModalPassword = result.toString()
-            ***REMOVED***
-        ***REMOVED***)
-    ***REMOVED***
-
     getProjectLifetime(project: Project): void ***REMOVED***
         this.details_loaded = false;
         if (!project.Lifetime) ***REMOVED***
