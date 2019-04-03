@@ -175,8 +175,8 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.UserModalFacility = null;
     }
 
-    filterMembers(searchString: string, groupid: number): void {
-        this.userservice.getFilteredMembersOfdeNBIVo(searchString, groupid.toString()).subscribe(result => {
+    filterMembers(searchString: string): void {
+        this.userservice.getFilteredMembersOfdeNBIVo(searchString).subscribe(result => {
             this.filteredMembers = result;
         })
     }

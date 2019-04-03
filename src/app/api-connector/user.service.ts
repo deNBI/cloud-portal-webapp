@@ -3,6 +3,7 @@ import {ApiSettings} from './api-settings.service';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {IResponseTemplate} from "./response-template";
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -126,25 +127,25 @@ export class UserService {
 
     }
 
-    getNewsletterSubscription(): Observable<any> {
+    getNewsletterSubscription(): Observable<IResponseTemplate> {
 
-        return this.http.get(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, {
             withCredentials: true
         })
 
     }
 
-    sendHelpMail(subject: string, message: string, reply: string): Observable<any> {
+    sendHelpMail(subject: string, message: string, reply: string): Observable<IResponseTemplate> {
 
         const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/helpMail/`, params, {
+        return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/helpMail/`, params, {
             withCredentials: true,
             headers: header
         })
     }
 
-    getFilteredMembersOfdeNBIVo(searchString: string, groupid: string): Observable<any> {
+    getFilteredMembersOfdeNBIVo(searchString: string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}users/filter/`, {
             withCredentials: true,

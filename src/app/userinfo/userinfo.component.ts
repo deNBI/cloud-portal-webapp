@@ -5,6 +5,7 @@ import {ApiSettings} from '../api-connector/api-settings.service'
 import {KeyService} from '../api-connector/key.service';
 import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
+import {IResponseTemplate} from "../api-connector/response-template";
 
 @Component({
     selector: 'app-userinfo',
@@ -126,9 +127,9 @@ export class UserinfoComponent implements OnInit {
             this.userinfo.Email = r['preferredEmail'];
             this.userservice.getPendingPreferredMailUser().subscribe(res => {
                 this.userinfo.PendingEmails = res['pendingEmails'];
-                this.userservice.getNewsletterSubscription().subscribe(result => {
-                    result = result['subscribed'];
-                    if (result.toString() === 'true') {
+                this.userservice.getNewsletterSubscription().subscribe((subscribed: IResponseTemplate) => {
+
+                    if (<boolean><Boolean>subscribed.value) {
                         this.newsletter_subscribed = true;
                     } else {
                         this.newsletter_subscribed = false;
