@@ -15,6 +15,7 @@ import {Application} from '../applications/application.model';
 import {KeyService} from '../api-connector/key.service';
 import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
+import {IResponseTemplate} from "../api-connector/response-template";
 
 /**
  * Start virtualmachine component.
@@ -193,8 +194,8 @@ export class VirtualMachineComponent implements OnInit {
      * Get the public key of the user.
      */
     getUserPublicKey(): void {
-        this.keyservice.getKey().subscribe(result => {
-            this.userinfo.PublicKey = result['public_key'];
+        this.keyservice.getKey().subscribe((key: IResponseTemplate) => {
+            this.userinfo.PublicKey = <string>key.value;
         })
     }
 
@@ -354,7 +355,7 @@ export class VirtualMachineComponent implements OnInit {
      */
     initializeData(): void {
         forkJoin(this.groupService.getMemberGroupsStatus(), this.keyservice.getKey()).subscribe(result => {
-            this.userinfo.PublicKey = result[1]['public_key'];
+            this.userinfo.PublicKey = <string> result[1]['value'];
             this.validatePublicKey();
             const membergroups = result[0];
             for (const project of membergroups) {
