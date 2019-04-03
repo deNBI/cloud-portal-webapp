@@ -5,6 +5,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from '../virtualmachines/volumes/volume';
+import {IResponseTemplate} from "./response-template";
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -121,22 +122,22 @@ export class VirtualmachineService {
 
     }
 
-    createVolume(volume_name: string, volume_diskspace: string, vm_openstackid: string): Observable<any> {
+    createVolume(volume_name: string, volume_diskspace: string, vm_openstackid: string): Observable<Volume> {
         const params: HttpParams = new HttpParams().set('volume_name', volume_name)
             .set('volume_diskspace', volume_diskspace)
             .set('vm_openstackid', vm_openstackid);
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}volumes/`, params, {
+        return this.http.post<Volume> (`${ApiSettings.getApiBaseURL()}volumes/`, params, {
             withCredentials: true,
             headers: header
         })
     }
 
-    attachVolumetoServer(volume_id: string, instance_id: string): Observable<any> {
+    attachVolumetoServer(volume_id: string, instance_id: string): Observable<IResponseTemplate> {
 
         const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'attach');
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
+        return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
                 withCredentials: true,
                 headers: header
             }
@@ -144,29 +145,29 @@ export class VirtualmachineService {
 
     }
 
-    renameVolume(volume_id: string, new_volume_name: string): Observable<any> {
+    renameVolume(volume_id: string, new_volume_name: string): Observable<Volume> {
         const params: HttpParams = new HttpParams().set('new_volume_name', new_volume_name);
 
-        return this.http.patch(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/`, params, {
+        return this.http.patch<Volume>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/`, params, {
             withCredentials: true,
             headers: header
         })
 
     }
 
-    deleteVolume(volume_id: string): Observable<any> {
+    deleteVolume(volume_id: string): Observable<IResponseTemplate> {
 
-        return this.http.delete(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/`, {
+        return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/`, {
             withCredentials: true,
             headers: header
         })
     }
 
-    deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<any> {
+    deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<IResponseTemplate> {
 
         const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'detach');
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
+        return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
             withCredentials: true,
             headers: header
         })

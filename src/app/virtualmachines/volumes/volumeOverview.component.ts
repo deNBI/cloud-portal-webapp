@@ -6,6 +6,7 @@ import {GroupService} from '../../api-connector/group.service';
 import {AbstractBaseClasse} from '../../shared/shared_modules/baseClass/abstract-base-class';
 import {VolumeActionStates} from './volume-action-states.enum';
 import {VolumeRequestStates} from './volume-request-states.enum';
+import {IResponseTemplate} from "../../api-connector/response-template";
 
 /**
  * Volume overview component.
@@ -119,9 +120,9 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     attachVolume(volume_id: string, instance_id: string): void {
         this.volume_action_status = this.volumeActionStates.ATTACHING;
 
-        this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(result => {
+        this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe((result: IResponseTemplate) => {
 
-            if (result['Attached'] && result['Attached'] === true) {
+            if (result.value == 'attached') {
                 this.volume_action_status = this.volumeActionStates.ATTACHING_SUCCESSFULL;
             } else {
                 this.volume_action_status = this.volumeActionStates.ERROR;
@@ -139,14 +140,12 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      */
     createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string): void {
         this.volume_action_status = 7;
-        this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
-            if (result['Created']) {
-                const volume_id = result['Created'];
+        this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe((newVolume: Volume) => {
+            if (newVolume.volume_openstackid) {
                 this.volume_action_status = this.volumeActionStates.ATTACHING;
+                this.vmService.attachVolumetoServer(newVolume.volume_openstackid, instance_id).subscribe((res: IResponseTemplate) => {
 
-                this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe(res => {
-
-                    if (res['Attached'] && res['Attached'] === true) {
+                    if (res.value === 'attached') {
                         this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED;
                     } else {
                         this.volume_action_status = this.volumeActionStates.ERROR;
@@ -171,14 +170,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      */
     createVolume(volume_name: string, diskspace: number, instance_id: string): void {
         this.volume_action_status = this.volumeActionStates.WAITING;
-        this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(result => {
-            if (result['Created']) {
+        this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe((newVolume: Volume) => {
+            if (newVolume.volume_openstackid) {
                 this.volume_action_status = this.volumeActionStates.WAIT_CREATION;
+                this.volumes.push(newVolume)
             } else {
                 this.volume_action_status = this.volumeActionStates.ERROR;
             }
-            this.getVolumes();
-
         })
     }
 
@@ -193,13 +191,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
         if (instance_id) {
             this.volume_action_status = this.volumeActionStates.DETACHING_VOLUME;
-            this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(res => {
-                if (res['Deleted'] && res['Deleted'] === true) {
+            this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe((res: IResponseTemplate) => {
+                console.log(res.value)
+                if (res.value === 'deleted') {
                     this.volume_action_status = this.volumeActionStates.WAITING;
                 }
 
-                this.vmService.deleteVolume(volume_id).subscribe(result => {
-                    if (result['Deleted'] && result['Deleted'] === true) {
+                this.vmService.deleteVolume(volume_id).subscribe((result: IResponseTemplate) => {
+                    if (result.value === 'deleted') {
                         this.volume_action_status = this.volumeActionStates.SUCCESS;
                     } else {
                         this.volume_action_status = this.volumeActionStates.ERROR;
@@ -209,8 +208,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             })
 
         } else {
-            this.vmService.deleteVolume(volume_id).subscribe(result => {
-                if (result['Deleted'] && result['Deleted'] === true) {
+            this.vmService.deleteVolume(volume_id).subscribe((result: IResponseTemplate) => {
+                console.log(result)
+                console.log(result.value === 'deleted')
+                if (result.value === 'deleted') {
                     this.volume_action_status = this.volumeActionStates.SUCCESS;
                 } else {
                     this.volume_action_status = this.volumeActionStates.ERROR;
@@ -230,7 +231,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     detachVolume(volume_id: string, instance_id: string): void {
         this.volume_action_status = this.volumeActionStates.DETACHING_VOLUME;
         this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
-            if (result['Deleted'] && result['Deleted'] === true) {
+            if (result.value === 'deleted') {
                 this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME;
             } else {
                 this.volume_action_status = this.volumeActionStates.ERROR;
@@ -245,15 +246,15 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * @param {string} new_volume_name the new name
      * @returns {void}
      */
-    renameVolume(volume_id: string, new_volume_name: string): void {
+    renameVolume(volume: Volume, new_volume_name: string): void {
         this.volume_action_status = this.volumeActionStates.CHANGING_NAME;
-        this.vmService.renameVolume(volume_id, new_volume_name).subscribe(result => {
-                if (result['volume_name'] === new_volume_name) {
+        this.vmService.renameVolume(volume.volume_openstackid, new_volume_name).subscribe((changed_volume: Volume) => {
+                if (changed_volume.volume_name === new_volume_name) {
                     this.volume_action_status = this.volumeActionStates.CHANGING_NAME_SUCESSFULL;
                 } else {
                     this.volume_action_status = this.volumeActionStates.ERROR;
                 }
-                this.getVolumes();
+                this.volumes[this.volumes.indexOf(volume)] = changed_volume;
 
             }
         )
