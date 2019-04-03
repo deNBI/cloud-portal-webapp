@@ -211,10 +211,7 @@
             <div class="modal-body">
                 <div class="modal-body">
                     <form class="form-horizontal" id="email_form" #f="ngForm">
-                        <div class="form-group row"
-                             [ngClass]="{'has-danger':emailSub.invalid && (emailSub.dirty || emailSub.touched),
-                    'has-success':emailSub.valid && (emailSub.dirty || emailSub.touched)
-                    }">
+                        <div class="form-group row">
                             <label class="col-md-12 control-label"><strong>Email
                                 subject*</strong></label>
                             <div class="col-md-12">
@@ -222,35 +219,40 @@
                                        placeholder="Subject"
                                        class="form-control"
                                        type="text" [(ngModel)]="emailSubject" minlength="1"
-                                       #emailSub="ngModel">
+                                       #emailSub="ngModel"
+                                       [ngClass]="{'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
+                    'is-valid':emailSub.valid && (emailSub.dirty || emailSub.touched)
+                    }">
 
                             </div>
                         </div>
 
-                        <div class="form-group row" [ngClass]="{'has-danger':emailRep.invalid && (emailRep.dirty || emailRep.touched),
-                    'has-success':emailRep.valid && (emailRep.dirty || emailRep.touched)
-                    }">
+                        <div class="form-group row">
                             <label class="col-md-12 control-label"><strong>Reply to
                                 (optional)</strong></label>
                             <div class="col-md-12">
                                 <input id="Reply to" name="emailReply" placeholder=""
                                        class="form-control"
                                        type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
-                                       pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+                                       pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                                       [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
+                    'is-valid':emailRep.valid && (emailRep.dirty || emailRep.touched)
+                    }">
 
                             </div>
                         </div>
                         <!-- Textarea -->
-                        <div class="form-group row" [ngClass]="{'has-danger':emailT.invalid && (emailT.dirty || emailT.touched),
-                    'has-success':emailT.valid && (emailT.dirty || emailT.touched)
-                    }">
+                        <div class="form-group row">
                             <label class="col-md-12 control-label"><strong>Email
                                 text*</strong></label>
                             <div class="col-md-12">
                             <textarea minlength="1" required class="form-control" id="emailText"
                                       name="emailText"
                                       [(ngModel)]="emailText"
-                                      type="text" #emailT="ngModel"></textarea>
+                                      type="text" #emailT="ngModel"
+                                      [ngClass]="{'is-invalid':emailT.invalid && (emailT.dirty || emailT.touched),
+                    'is-valid':emailT.valid && (emailT.dirty || emailT.touched)
+                    }"></textarea>
                             </div>
                         </div>
                     </form>
