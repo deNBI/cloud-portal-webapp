@@ -159,7 +159,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
         // todo check if user is VO Admin
 
         if (this.is_vo_admin) ***REMOVED***
-            this.applicationsservice.getAllApplications().subscribe((res: object) => ***REMOVED***
+            this.applicationsservice.getAllApplications().subscribe(res  => ***REMOVED***
                 if (Object.keys(res).length === 0) ***REMOVED***
                     this.isLoaded_userApplication = true;
                 ***REMOVED***
