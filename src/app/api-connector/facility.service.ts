@@ -241,9 +241,9 @@ export class FacilityService {
      * @param reply reply address
      * @returns {Observable<any>}
      */
-    sendMailToFacility(facility: string, subject: string, message: string, reply?: string): Observable<any> {
+    sendMailToFacility(facility: string, subject: string, message: string, project_type: string, reply?: string): Observable<any> {
         const params: HttpParams = new HttpParams().set('subject', subject)
-            .set('facility_id', facility).set('message', message).set('reply', reply);
+            .set('facility_id', facility).set('message', message).set('reply', reply).set('type', project_type);
 
         return this.http.post(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityMail/`, params, {
                 withCredentials: true,
