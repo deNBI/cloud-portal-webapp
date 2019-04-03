@@ -8,14 +8,13 @@ import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {ApplicationsService} from '../api-connector/applications.service'
 import {Userinfo} from '../userinfo/userinfo.model';
 import {ApiSettings} from '../api-connector/api-settings.service';
-
-import {ClientService} from '../api-connector/vmClients.service';
-import {Client} from './clients/vmclient';
+import {ClientService} from "../api-connector/client.service";
 import {Application} from '../applications/application.model';
 import {KeyService} from '../api-connector/key.service';
 import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
-import {IResponseTemplate} from "../api-connector/response-template";
+import {IResponseTemplate} from '../api-connector/response-template';
+import {Client} from "./clients/client.model";
 
 /**
  * Start virtualmachine component.

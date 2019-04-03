@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Client} from './vmclient';
-import {ClientService} from '../../api-connector/vmClients.service';
+import {Client} from './client.model';
+import {ClientService} from '../../api-connector/client.service';
 import {ApiSettings} from '../../api-connector/api-settings.service';
 import {GroupService} from '../../api-connector/group.service';
 import {UserService} from '../../api-connector/user.service';
@@ -14,7 +14,7 @@ import {IResponseTemplate} from "../../api-connector/response-template";
  */
 @Component({
     selector: 'app-client-overview',
-    templateUrl: 'vmClients.component.html',
+    templateUrl: 'clientOverview.html',
     providers: [FacilityService, VoService, UserService, GroupService, ClientService, ApiSettings]
 })
 
@@ -24,6 +24,11 @@ export class ClientOverviewComponent implements OnInit {
      * All clients.
      */
     clients: Client[];
+
+    /**
+     * Selected Client;
+     */
+    selectedClient: Client;
     /**
      * If user is vo.
      * @type {boolean}
@@ -129,10 +134,19 @@ export class ClientOverviewComponent implements OnInit {
     }
 
 
+    updateClient(host: string, port: string, location: string, id: string): void {
+        this.clientservice.updateClient(new Client(host, port, location, id)).subscribe((res: Client) => {
+            this.clients[this.clients.indexOf(this.selectedClient)] = res;
+            this.selectedClient = null;
+        })
+
+    }
+
     ngOnInit(): void {
         this.checkVOstatus();
         this.getClientsChecked();
         this.getComputeCenters();
+        this.clientservice.updateClient(new Client('test', '8432', 'da', '2')).subscribe()
 
     }
 
