@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/filter-base-class';
 import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
+import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
 
 /**
  * Vo Overview component.
@@ -14,7 +15,7 @@ import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/respon
 @Component(***REMOVED***
     selector: 'app-vo-overview',
     templateUrl: 'voOverview.component.html',
-    providers: [VoService, GroupService]
+    providers: [VoService, GroupService, FacilityService]
 
 ***REMOVED***)
 
@@ -28,6 +29,10 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     public emailVerify: string;
     public emailType: number;
     public selectedProject: Project;
+    computecenters: ComputecenterComponent[] = [];
+
+    selectedProjectType: string = 'ALL';
+    selectedFacility: string | number = 'ALL';
 
     public newsletterSubscriptionCounter: number;
     isLoaded: boolean = false;
@@ -43,13 +48,15 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     public usersModalProjectName: string;
 
     public managerFacilities: [string, number][];
-    public selectedFacility: [string, number];
 
-    constructor(private voserice: VoService, private groupservice: GroupService) ***REMOVED***
+    // public selectedFacility: [string, number];
+
+    constructor(private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) ***REMOVED***
         super();
         this.getVoProjects();
         this.voserice.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate) => ***REMOVED***
             this.newsletterSubscriptionCounter = <number>result.value
+
         ***REMOVED***);
 
     ***REMOVED***
@@ -74,9 +81,10 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     ***REMOVED***
 
     sendEmail(subject: string, message: string, reply?: string): void ***REMOVED***
+        console.log(this.emailType);
         switch (this.emailType) ***REMOVED***
             case 0: ***REMOVED***
-                this.sendMailToVo(subject, message, reply);
+                this.sendMailToVo(subject, message, this.selectedFacility.toString(), this.selectedProjectType, reply);
                 break;
             ***REMOVED***
             case 1: ***REMOVED***
@@ -86,6 +94,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
             default:
                 return
         ***REMOVED***
+
     ***REMOVED***
 
     sendNewsletterToVo(subject: string, message: string, reply?: string): void ***REMOVED***
@@ -100,14 +109,17 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
 
     ***REMOVED***
 
-    sendMailToVo(subject: string, message: string, reply?: string): void ***REMOVED***
-        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
+    sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): void ***REMOVED***
+        this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), facility, type, encodeURIComponent(reply))
             .subscribe((result: IResponseTemplate) => ***REMOVED***
                 if (<boolean><Boolean>result.value === true) ***REMOVED***
+
                     this.emailStatus = 1;
                 ***REMOVED*** else ***REMOVED***
                     this.emailStatus = 2;
                 ***REMOVED***
+                this.selectedProjectType = 'ALL';
+                this.selectedFacility = 'ALL';
             ***REMOVED***)
 
     ***REMOVED***
@@ -142,6 +154,21 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
         this.emailReply = '';
         this.emailStatus = 0;
 
+    ***REMOVED***
+
+    /**
+     * Get all computecenters.
+     */
+    getComputeCenters(): void ***REMOVED***
+        this.facilityService.getComputeCenters().subscribe(result => ***REMOVED***
+            for (const cc of result) ***REMOVED***
+                const compute_center: ComputecenterComponent = new ComputecenterComponent(
+                    cc['compute_center_facility_id'], cc['compute_center_name'],
+                    cc['compute_center_login'], cc['compute_center_support_mail']);
+                this.computecenters.push(compute_center)
+            ***REMOVED***
+
+        ***REMOVED***)
     ***REMOVED***
 
     getProjectLifetime(project: Project): void ***REMOVED***

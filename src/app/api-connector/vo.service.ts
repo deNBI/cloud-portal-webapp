@@ -92,8 +92,10 @@ export class VoService ***REMOVED***
 
     ***REMOVED***
 
-    sendMailToVo(subject: string, message: string, reply?: string): Observable<IResponseTemplate> ***REMOVED***
-        const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+    sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): Observable<any> ***REMOVED***
+        const params: HttpParams = new HttpParams()
+            .set('subject', subject).set('message', message)
+            .set('reply', reply).set('facility', facility).set('type', type);
 
         return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***voManagers/current/voMail/`, params, ***REMOVED***
             withCredentials: true,
