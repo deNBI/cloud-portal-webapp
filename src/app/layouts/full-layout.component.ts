@@ -73,7 +73,6 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     toggle_overview(): void ***REMOVED***
-        console.log(this.overview_state)
         if (this.overview_state === 'closed') ***REMOVED***
             this.overview_state = 'open'
         ***REMOVED*** else ***REMOVED***

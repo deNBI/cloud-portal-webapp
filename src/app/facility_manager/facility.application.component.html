@@ -439,7 +439,7 @@
                                                     <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
                                                     <td>
                                                             <span *ngIf="app.ApplicationExtension?.RequestedFlavors[item.key]">
-                                                                ***REMOVED******REMOVED***app?.ApplicationExtension.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
+                                                                ***REMOVED******REMOVED***app?.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
                                                         <span *ngIf="!app.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
                                                 </tr>
@@ -477,7 +477,7 @@
                                                         app.TotalRam***REMOVED******REMOVED*** GB
                                                     </td>
                                                     <td>
-                                                        ***REMOVED******REMOVED***app.ApplicationExtension.TotalRAM***REMOVED******REMOVED*** GB
+                                                        ***REMOVED******REMOVED***app.ApplicationExtension?.TotalRAM***REMOVED******REMOVED*** GB
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -702,7 +702,7 @@
                                                     </td>
                                                     <td *ngIf="application.ApplicationExtension ">
                                                         Requested:
-                                                        ***REMOVED******REMOVED***application.ApplicationExtension.VMsRequested***REMOVED******REMOVED***
+                                                        ***REMOVED******REMOVED***application.ApplicationExtension?.VMsRequested***REMOVED******REMOVED***
                                                     </td>
 
 
@@ -739,7 +739,7 @@
                                                         ***REMOVED******REMOVED***
                                                     </td>
                                                     <td *ngIf="application.ApplicationExtension">
-                                                        ***REMOVED******REMOVED***application.ApplicationExtension.TotalCores***REMOVED******REMOVED***
+                                                        ***REMOVED******REMOVED***application.ApplicationExtension?.TotalCores***REMOVED******REMOVED***
                                                     </td>
                                                 </tr>
                                                 <tr *ngIf="application.OpenStackProject">
@@ -748,7 +748,7 @@
                                                         application.TotalRam***REMOVED******REMOVED*** GB
                                                     </td>
                                                     <td *ngIf="application.ApplicationExtension">
-                                                        ***REMOVED******REMOVED***application.ApplicationExtension.TotalRAM***REMOVED******REMOVED*** GB
+                                                        ***REMOVED******REMOVED***application.ApplicationExtension?.TotalRAM***REMOVED******REMOVED*** GB
                                                     </td>
                                                 </tr>
                                                 <tr>

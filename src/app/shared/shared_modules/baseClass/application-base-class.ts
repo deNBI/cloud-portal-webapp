@@ -206,13 +206,13 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
         newApp.Dissemination = aj['project_application_report_allowed'];
         newApp.Horizon2020 = aj['project_application_horizon2020'];
         newApp.ElixirProject = aj['project_application_elixir_project'];
+         newApp.Comment = aj['project_application_comment'];
+        newApp.PerunId = aj['project_application_perun_id'];
 
         if (newApp.Status === this.application_states.APPROVED) ***REMOVED***
             newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
 
         ***REMOVED***
-        newApp.Comment = aj['project_application_comment'];
-        newApp.PerunId = aj['project_application_perun_id'];
         for (const flavor of aj['flavors']) ***REMOVED***
             newApp.addFlavorToCurrent(
                 flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
