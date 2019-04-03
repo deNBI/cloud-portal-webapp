@@ -36,9 +36,10 @@ export class UserinfoComponent implements OnInit {
         })
     }
 
-    getPendingPreferredMailUser() {
-        this.userservice.getPendingPreferredMailUser().subscribe(res => {
-            this.userinfo.PendingEmails = res['pendingEmails'];
+    getPendingPreferredMailUser(): void {
+        this.userservice.getPendingPreferredMailUser().subscribe((res: IResponseTemplate) => {
+            this.userinfo.PendingEmails = <string[]>res.value;
+
         })
     }
 
@@ -56,9 +57,14 @@ export class UserinfoComponent implements OnInit {
         });
     }
 
-    setNewsletterSubscription(e) {
-        this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => {
-        })
+    setNewsletterSubscription(e): void {
+        if (this.newsletter_subscribed) {
+            this.userservice.setNewsletterSubscriptionWhenSubscribed().subscribe();
+        }
+        else {
+            this.userservice.setNewsletterSubscriptionWhenNotSubscribed().subscribe();
+        }
+
     }
 
     importKey(publicKey: string, keyname: string) {
@@ -91,7 +97,7 @@ export class UserinfoComponent implements OnInit {
     }
 
     // Returns the preffered Mail of the logged in User
-    getPreferredMail() {
+    getPreferredMail(): void {
         this.userservice.getPreferredMailUser().subscribe()
     }
 
@@ -123,10 +129,10 @@ export class UserinfoComponent implements OnInit {
 
             })
         });
-        this.userservice.getPreferredMailUser().subscribe(r => {
-            this.userinfo.Email = r['preferredEmail'];
-            this.userservice.getPendingPreferredMailUser().subscribe(res => {
-                this.userinfo.PendingEmails = res['pendingEmails'];
+        this.userservice.getPreferredMailUser().subscribe((prefEmail: IResponseTemplate) => {
+            this.userinfo.Email = <string>prefEmail.value;
+            this.userservice.getPendingPreferredMailUser().subscribe((pendingEmails: IResponseTemplate) => {
+                this.userinfo.PendingEmails = <string[]>pendingEmails.value;
                 this.userservice.getNewsletterSubscription().subscribe((subscribed: IResponseTemplate) => {
 
                     if (<boolean><Boolean>subscribed.value) {

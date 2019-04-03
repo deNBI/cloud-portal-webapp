@@ -393,14 +393,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
     }
 
     /**
-     * Gets all affialiations from a user.
-     * @param {number} user
-     */
-    getUserAffilaitions(user: number): void {
-        this.userservice.getuserAffiliations(user).subscribe()
-    }
-
-    /**
      * Sets the selected application.
      * @param application
      */

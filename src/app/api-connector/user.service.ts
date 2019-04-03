@@ -17,15 +17,6 @@ export class UserService {
     constructor(private http: HttpClient) {
     }
 
-    setUserFacilityPassword(facility: string): Observable<any> {
-        const params: HttpParams = new HttpParams().set('facility', facility);
-
-        return this.http.post(`${ApiSettings.getApiBaseURL()}users/setUserPassword/`, params, {
-            withCredentials: true,
-            headers: header
-        })
-    }
-
     getLogins(): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/logins/`, {
@@ -33,9 +24,9 @@ export class UserService {
         })
     }
 
-    getPreferredMailUser(): Observable<any> {
+    getPreferredMailUser(): Observable<IResponseTemplate>  {
 
-        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, {
+        return this.http.get<IResponseTemplate> (`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, {
             withCredentials: true
         })
     }
@@ -49,9 +40,9 @@ export class UserService {
         })
     }
 
-    getPendingPreferredMailUser(): Observable<any> {
+    getPendingPreferredMailUser(): Observable<IResponseTemplate> {
 
-        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/pendingPreferredEmails/`, {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/pendingPreferredEmails/`, {
             withCredentials: true
         })
     }
@@ -60,21 +51,6 @@ export class UserService {
         elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}users/${elixir_id}/member/`, {
-            withCredentials: true
-
-        })
-
-    }
-
-    isMember(userid: string): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}users/${userid}/member/status/`, {
-            withCredentials: true
-        })
-
-    }
-
-    getuserAffiliations(user_id: number): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}users/${user_id.toString()}/affiliations/`, {
             withCredentials: true
 
         })
@@ -105,22 +81,20 @@ export class UserService {
         })
     }
 
-    getVosWhereUserIsAdmin(): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/adminVos/`, {
-            withCredentials: true
+    setNewsletterSubscriptionWhenSubscribed(): Observable<IResponseTemplate> {
+        const params: HttpParams = new HttpParams().set('subscribed', true.toString());
+
+        return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
+            withCredentials: true,
+            headers: header
         })
+
     }
 
-    getGroupsWhereUserIsAdmin(): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/adminGroups/`, {
-            withCredentials: true
-        })
-    }
+    setNewsletterSubscriptionWhenNotSubscribed(): Observable<IResponseTemplate> {
+        const params: HttpParams = new HttpParams().set('subscribed', false.toString());
 
-    setNewsletterSubscription(subscribed: boolean): Observable<any> {
-        const params: HttpParams = new HttpParams().set('subscribed', subscribed.toString());
-
-        return this.http.post(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
+        return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
             withCredentials: true,
             headers: header
         })
