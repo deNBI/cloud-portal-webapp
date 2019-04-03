@@ -15,6 +15,7 @@ import ***REMOVED***Application***REMOVED*** from '../applications/application.m
 import ***REMOVED***KeyService***REMOVED*** from '../api-connector/key.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
 
 /**
  * Start virtualmachine component.
@@ -193,8 +194,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      * Get the public key of the user.
      */
     getUserPublicKey(): void ***REMOVED***
-        this.keyservice.getKey().subscribe(result => ***REMOVED***
-            this.userinfo.PublicKey = result['public_key'];
+        this.keyservice.getKey().subscribe((key: IResponseTemplate) => ***REMOVED***
+            this.userinfo.PublicKey = <string>key.value;
         ***REMOVED***)
     ***REMOVED***
 
@@ -354,7 +355,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      */
     initializeData(): void ***REMOVED***
         forkJoin(this.groupService.getMemberGroupsStatus(), this.keyservice.getKey()).subscribe(result => ***REMOVED***
-            this.userinfo.PublicKey = result[1]['public_key'];
+            this.userinfo.PublicKey = <string> result[1]['value'];
             this.validatePublicKey();
             const membergroups = result[0];
             for (const project of membergroups) ***REMOVED***

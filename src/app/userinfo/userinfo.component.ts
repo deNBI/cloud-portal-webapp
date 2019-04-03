@@ -69,11 +69,9 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
     importKey(publicKey: string, keyname: string) ***REMOVED***
 
-        const re = /\+/gi;
+        const re: RegExp = /\+/gi;
 
-        const newstr = publicKey.replace(re, '%2B');
-
-        this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(result => ***REMOVED***
+        this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(() => ***REMOVED***
             this.getUserPublicKey();
         ***REMOVED***);
     ***REMOVED***
@@ -89,9 +87,9 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
-    getUserPublicKey() ***REMOVED***
-        this.keyservice.getKey().subscribe(result => ***REMOVED***
-            this.userinfo.PublicKey = result['public_key'];
+    getUserPublicKey(): void ***REMOVED***
+        this.keyservice.getKey().subscribe((key: IResponseTemplate) => ***REMOVED***
+            this.userinfo.PublicKey = <string>key.value;
             this.isLoaded = true;
         ***REMOVED***)
     ***REMOVED***
