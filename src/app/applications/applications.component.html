@@ -745,7 +745,7 @@
                                                         <td
                                                           *ngIf="application.Status == application_states.MODIFICATION_REQUESTED ">
                                                           Requested:
-                                                          ***REMOVED******REMOVED***application.ApplicationExtension.VMsRequested***REMOVED******REMOVED***
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension?.VMsRequested***REMOVED******REMOVED***
                                                         </td>
 
 
@@ -786,7 +786,7 @@
                                                         </td>
                                                         <td
                                                           *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                                          ***REMOVED******REMOVED***application.ApplicationExtension.TotalCores***REMOVED******REMOVED***
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension?.TotalCores***REMOVED******REMOVED***
                                                         </td>
                                                       </tr>
                                                       <tr *ngIf="application.OpenStackProject">
