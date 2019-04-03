@@ -8,6 +8,7 @@ import {ImageService} from '../api-connector/image.service';
 import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
 import {VoService} from '../api-connector/vo.service';
 import {IResponseTemplate} from "../api-connector/response-template";
+import {SnapshotModel} from "./snapshots/snapshot.model";
 
 /**
  * Vm overview componentn.
@@ -486,13 +487,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * @param {string} snapshot_name name of the snapshot
      */
     createSnapshot(snapshot_instance: string, snapshot_name: string): void {
-        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => {
-            if (result['Error']) {
-                this.snapshotDone = result['Error'].toString();
-            } else if (result['Created']) {
-                this.imageService.getSnapshot(result['Created']).subscribe(() => {
-                })
+        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe((newSnapshot: SnapshotModel) => {
+            if (newSnapshot.snapshot_openstackid) {
                 this.snapshotDone = 'true';
+
+            } else {
+                this.snapshotDone = 'error';
+
             }
 
         })

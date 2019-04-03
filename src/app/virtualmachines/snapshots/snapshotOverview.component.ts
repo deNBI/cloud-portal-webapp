@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ImageService} from '../../api-connector/image.service';
 import {SnapshotModel} from './snapshot.model';
 import {forkJoin} from 'rxjs';
+import {IResponseTemplate} from "../../api-connector/response-template";
 
 enum Snapshot_Delete_Statuses {
     WAITING = 0,
@@ -101,13 +102,13 @@ export class SnapshotOverviewComponent implements OnInit {
      * @param {string} snapshot_id
      */
     deleteSnapshot(snapshot_id: string): void {
-        this.imageService.deleteSnapshot(snapshot_id).subscribe(result => {
+        this.imageService.deleteSnapshot(snapshot_id).subscribe((result: IResponseTemplate) => {
 
             this.delete_status = 0;
 
-            if (result['Deleted'] && result['Deleted'] === true) {
+            if (<boolean><Boolean>result.value) {
                 this.delete_status = 1;
-            } else if (result['Info']) {
+            } else if (result.value) {
                 this.delete_status = 3;
 
             } else {
