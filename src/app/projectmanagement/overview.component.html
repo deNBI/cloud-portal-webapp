@@ -70,7 +70,7 @@
                                                 (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.RealName,project.ComputeCenter);setAddUserInvitationLink(); addUserModal.show();"
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
                                                 type="button" style="margin-bottom: 5px"
-                                                class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
+                                                class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Add Member
                                         </button>
                                         <button
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
@@ -195,8 +195,14 @@
                             <ul>
 
                                 <li>
-                                    <pre >{{addUserModalInvitationLink}}</pre>
-                                    <button (click)="copyLink(addUserModalInvitationLink)" >Copy link</button>
+                                    <pre [hidden]="showLink">{{addUserModalInvitationLink}}</pre>
+                                  <div class="btn-group-vertical">
+                                    <button class="btn btn-primary" style="margin-bottom: 5px" (click)="showLink = !showLink">
+                                      <span [hidden]="!showLink">Show</span>
+                                      <span [hidden]="showLink">Hide</span>
+                                      link</button>
+                                    <button class="btn btn-success" (click)="copyLink(addUserModalInvitationLink)" >Copy link</button>
+                                  </div>
                                 </li>
                             </ul>
                             <br>
