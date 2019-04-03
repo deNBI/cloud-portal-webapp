@@ -3,6 +3,7 @@ import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "./response-template";
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -126,25 +127,25 @@ export class UserService ***REMOVED***
 
     ***REMOVED***
 
-    getNewsletterSubscription(): Observable<any> ***REMOVED***
+    getNewsletterSubscription(): Observable<IResponseTemplate> ***REMOVED***
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/`, ***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/`, ***REMOVED***
             withCredentials: true
         ***REMOVED***)
 
     ***REMOVED***
 
-    sendHelpMail(subject: string, message: string, reply: string): Observable<any> ***REMOVED***
+    sendHelpMail(subject: string, message: string, reply: string): Observable<IResponseTemplate> ***REMOVED***
 
         const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/helpMail/`, params, ***REMOVED***
+        return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/helpMail/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
     ***REMOVED***
 
-    getFilteredMembersOfdeNBIVo(searchString: string, groupid: string): Observable<any> ***REMOVED***
+    getFilteredMembersOfdeNBIVo(searchString: string): Observable<any> ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/filter/`, ***REMOVED***
             withCredentials: true,

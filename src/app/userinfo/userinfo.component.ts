@@ -5,6 +5,7 @@ import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings
 import ***REMOVED***KeyService***REMOVED*** from '../api-connector/key.service';
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
 
 @Component(***REMOVED***
     selector: 'app-userinfo',
@@ -126,9 +127,9 @@ export class UserinfoComponent implements OnInit ***REMOVED***
             this.userinfo.Email = r['preferredEmail'];
             this.userservice.getPendingPreferredMailUser().subscribe(res => ***REMOVED***
                 this.userinfo.PendingEmails = res['pendingEmails'];
-                this.userservice.getNewsletterSubscription().subscribe(result => ***REMOVED***
-                    result = result['subscribed'];
-                    if (result.toString() === 'true') ***REMOVED***
+                this.userservice.getNewsletterSubscription().subscribe((subscribed: IResponseTemplate) => ***REMOVED***
+
+                    if (<boolean><Boolean>subscribed.value) ***REMOVED***
                         this.newsletter_subscribed = true;
                     ***REMOVED*** else ***REMOVED***
                         this.newsletter_subscribed = false;
