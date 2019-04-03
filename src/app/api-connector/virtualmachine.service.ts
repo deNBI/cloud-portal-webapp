@@ -77,38 +77,38 @@ export class VirtualmachineService {
         })
     }
 
-    deleteVM(openstack_id: string): Observable<any> {
+    deleteVM(openstack_id: string): Observable<VirtualMachine> {
 
-        return this.http.delete(`${this.baseVmUrl}${openstack_id}/`, {
+        return this.http.delete<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/`, {
             withCredentials: true,
             headers: header
         })
 
     }
 
-    stopVM(openstack_id: string): Observable<any> {
+    stopVM(openstack_id: string): Observable<VirtualMachine> {
         const params: HttpParams = new HttpParams().set('os_action', 'stop');
 
-        return this.http.post(`${this.baseVmUrl}${openstack_id}/action/`, params, {
+        return this.http.post<VirtualMachine> (`${this.baseVmUrl}${openstack_id}/action/`, params, {
             withCredentials: true,
             headers: header
         })
     }
 
-    rebootVM(openstack_id: string, reboot_type: string): Observable<any> {
+    rebootVM(openstack_id: string, reboot_type: string): Observable<IResponseTemplate> {
         const params: HttpParams = new HttpParams().set('os_action', 'reboot').set('reboot_type', reboot_type);
 
-        return this.http.post(`${this.baseVmUrl}${openstack_id}/action/`, params, {
+        return this.http.post<IResponseTemplate> (`${this.baseVmUrl}${openstack_id}/action/`, params, {
             withCredentials: true,
             headers: header
         })
     }
 
-    resumeVM(openstack_id: string): Observable<any> {
+    resumeVM(openstack_id: string): Observable<VirtualMachine> {
 
         const params: HttpParams = new HttpParams().set('os_action', 'resume');
 
-        return this.http.post(`${this.baseVmUrl}${openstack_id}/action/`, params, {
+        return this.http.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/action/`, params, {
             withCredentials: true,
             headers: header
         })

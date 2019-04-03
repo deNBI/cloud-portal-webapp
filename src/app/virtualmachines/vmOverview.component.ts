@@ -55,14 +55,9 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * @type {number}
      */
     vmEnd: number = this.vmsPerPage;
-    /**
-     * name of vm which changed status.
-     */
-    status_changed_vm: string;
-    /**
-     * id of vm which changed status.
-     */
-    status_changed_vm_id: string;
+
+
+    selectedVm: VirtualMachine = null;
 
     /**
      * If user is vo admin.
@@ -215,26 +210,22 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Check status of vm.
      * @param {string} openstackid  of the instance
      */
-    checkStatus(openstackid: string): void {
-        this.virtualmachineservice.checkVmStatus(openstackid).subscribe(() => {
+    checkStatus(vm: VirtualMachine): void {
+        this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
-                this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
-                        this.vms_content = vms;
-                        for (const vm of this.vms_content) {
-                            if (vm.created_at !== '') {
-                                vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
-                            }
-                            if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
-                                vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
-                            } else {
-                                vm.stopped_at = ''
-                            }
-                        }
-                        this.applyFilter()
+                this.setCollapseStatus(updated_vm.openstackid, false);
 
-                    }
-                );
+                if (updated_vm.created_at !== '') {
+                    updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+                }
+                if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+                    updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+                } else {
+                    updated_vm.stopped_at = ''
+                }
 
+                this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+                this.applyFilter();
             }
         )
     }
@@ -243,19 +234,23 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Delete Vm.
      * @param {string} openstack_id of instance
      */
-    deleteVm(openstack_id: string): void {
-        this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => {
+    deleteVm(vm: VirtualMachine): void {
+        this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
-            this.status_changed = 0;
+            this.setCollapseStatus(updated_vm.openstackid, false);
 
-            if (this.tab === 'own') {
-                this.getVms();
-            } else if (this.tab === 'all') {
-                this.getAllVms();
-
+            if (updated_vm.created_at !== '') {
+                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+            }
+            if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+                updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+            } else {
+                updated_vm.stopped_at = ''
             }
 
-            if (result['deleted'] === true) {
+            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+            this.applyFilter();
+            if (updated_vm.status === 'DELETED') {
                 this.status_changed = 1;
             } else {
                 this.status_changed = 2;
@@ -269,13 +264,15 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * @param {string} openstack_id of the instance
      * @param {string} reboot_type HARD|SOFT
      */
-    public rebootVm(openstack_id: string, reboot_type: string): void {
-        this.virtualmachineservice.rebootVM(openstack_id, reboot_type).subscribe(result => {
+    public
+
+    rebootVm(vm: VirtualMachine, reboot_type: string): void {
+        this.virtualmachineservice.rebootVM(vm.openstackid, reboot_type).subscribe((result: IResponseTemplate) => {
             this.status_changed = 0;
 
-            if (result['reboot']) {
+            if (<boolean><Boolean>result.value) {
                 this.status_changed = 1;
-                this.check_status_loop(openstack_id)
+                this.check_status_loop(vm)
             } else {
                 this.status_changed = 2;
             }
@@ -287,51 +284,68 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Check Status of vm in loop till active.
      * @param {string} id of instance.
      */
-    check_status_loop(id: string): void {
+    check_status_loop(vm: VirtualMachine): void {
 
         setTimeout(
             () => {
-                this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
+                this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
-                    if (res['Started']) {
+                    if (updated_vm.status === 'ACTIVE') {
                         this.reboot_done = true;
-                        if (this.tab === 'own') {
-                            this.getVms();
-                        } else if (this.tab === 'all') {
-                            this.getAllVms();
+                        this.setCollapseStatus(updated_vm.openstackid, false);
 
+                        if (updated_vm.created_at !== '') {
+                            updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+                        }
+                        if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+                            updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+                        } else {
+                            updated_vm.stopped_at = ''
                         }
 
+                        this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+                        this.applyFilter();
+
                     } else {
-                        if (res['Error']) {
+                        if (vm['error']) {
                             this.status_check_error = true
 
                         }
-                        this.check_status_loop(id)
+                        this.check_status_loop(vm)
                     }
 
                 })
-            },
-            this.checkStatusTimeout);
+            }
+            ,
+            this.checkStatusTimeout
+        )
+        ;
     }
 
     /**
      * Stop a vm.
      * @param {string} openstack_id of instance.
      */
-    stopVm(openstack_id: string): void {
-        this.virtualmachineservice.stopVM(openstack_id).subscribe(result => {
+    stopVm(vm: VirtualMachine): void {
+        this.virtualmachineservice.stopVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
             this.status_changed = 0;
 
-            if (this.tab === 'own') {
-                this.getVms();
-            } else if (this.tab === 'all') {
-                this.getAllVms();
+            this.setCollapseStatus(updated_vm.openstackid, false);
 
+            if (updated_vm.created_at !== '') {
+                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+            }
+            if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+                updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+            } else {
+                updated_vm.stopped_at = ''
             }
 
-            if (result['stopped']) {
+            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+            this.applyFilter();
+
+            if (updated_vm.status === 'SUSPENDED') {
                 this.status_changed = 1;
             } else {
                 this.status_changed = 2;
@@ -398,20 +412,25 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
      * Resume a vm.
      * @param {string} openstack_id of instance.
      */
-    resumeVM(openstack_id: string): void {
+    resumeVM(vm: VirtualMachine): void {
 
-        this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => {
+        this.virtualmachineservice.resumeVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
             this.status_changed = 0;
+            this.setCollapseStatus(updated_vm.openstackid, false);
 
-            if (this.tab === 'own') {
-                this.getVms();
-            } else if (this.tab === 'all') {
-                this.getAllVms();
-
+            if (updated_vm.created_at !== '') {
+                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+            }
+            if (updated_vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+            } else {
+                updated_vm.stopped_at = ''
             }
 
-            if (result['resumed']) {
+            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+            this.applyFilter();
+            if (updated_vm.status === 'ACTIVE') {
                 this.status_changed = 1;
             } else {
                 this.status_changed = 2;
@@ -427,7 +446,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         this.virtualmachineservice.getAllVM().subscribe(vms => {
                 this.vms_content = vms;
                 for (const vm of this.vms_content) {
-                    this.setCollapseStatus(vm.openstackid, false)
+                    this.setCollapseStatus(vm.openstackid, false);
 
                     if (vm.created_at !== '') {
                         vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
