@@ -16,7 +16,12 @@ export class Client ***REMOVED***
     private _maxVolumeLimit: number;
     private _assignedVolumesStorage: number;
 
-    constructor() ***REMOVED***
+
+    constructor(host: string, port: string, location: string, id: string) ***REMOVED***
+        this._host = host;
+        this._port = port;
+        this._location = location;
+        this._id = id;
     ***REMOVED***
 
     get id(): string ***REMOVED***

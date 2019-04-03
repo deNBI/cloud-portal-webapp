@@ -1,6 +1,6 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
-import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/vmclient';
+import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/client.model';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 
@@ -56,6 +56,17 @@ export class ClientService ***REMOVED***
 
     deleteClient(client_id: number): Observable<any> ***REMOVED***
         return this.http.delete(`$***REMOVED***this.clientURL***REMOVED***$***REMOVED***client_id ***REMOVED***/`, ***REMOVED***
+            withCredentials: true,
+            headers: header
+        ***REMOVED***)
+
+    ***REMOVED***
+
+    updateClient(client: Client): Observable<Client> ***REMOVED***
+        const params: HttpParams = new HttpParams().set('host', client.host).set('port', client.port).set('location', client.location);
+
+
+        return this.http.patch<Client>(`$***REMOVED***this.clientURL***REMOVED***$***REMOVED***client.id ***REMOVED***/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
