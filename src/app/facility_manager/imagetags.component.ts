@@ -1,5 +1,6 @@
 import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
 import ***REMOVED***Component***REMOVED*** from '@angular/core';
+import ***REMOVED***ImageTag***REMOVED*** from "./image-tag";
 
 /**
  * ImageTag component.
@@ -11,28 +12,27 @@ import ***REMOVED***Component***REMOVED*** from '@angular/core';
 export class ImageTagComponent ***REMOVED***
     isLoaded: boolean = false;
 
-    imageTags: [string, string][];
+    imageTags: ImageTag[];
 
     constructor(private imageService: ImageService) ***REMOVED***
-        this.imageService.getImageTags().subscribe(result => ***REMOVED***
-            this.imageTags = result;
+        this.imageService.getImageTags().subscribe((tags: ImageTag[]) => ***REMOVED***
+            this.imageTags = tags;
             this.isLoaded = true;
         ***REMOVED***)
     ***REMOVED***
 
 
     addTag(tag: string, description: string): void ***REMOVED***
-        this.imageService.addImageTags(tag, description).subscribe(() => ***REMOVED***
-            this.imageService.getImageTags().subscribe(result => ***REMOVED***
-                this.imageTags = result
-            ***REMOVED***)
+        this.imageService.addImageTags(tag, description).subscribe((newTag: ImageTag) => ***REMOVED***
+            this.imageTags.push(newTag)
+
         ***REMOVED***)
     ***REMOVED***
 
     deleteTag(tag: string): void ***REMOVED***
         this.imageService.deleteImageTag(tag).subscribe(() => ***REMOVED***
-            this.imageService.getImageTags().subscribe(result => ***REMOVED***
-                this.imageTags = result
+            this.imageService.getImageTags().subscribe((tags: ImageTag[]) => ***REMOVED***
+                this.imageTags = tags;
             ***REMOVED***)
         ***REMOVED***)
     ***REMOVED***
