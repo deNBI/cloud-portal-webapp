@@ -10,6 +10,7 @@ import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 import ***REMOVED***ProjectMemberApplication***REMOVED*** from './project_member_application';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from './computecenter.component';
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modules/baseClass/abstract-base-class';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
 
 /**
  * Projectoverview component.
@@ -51,7 +52,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
     public addUserModalProjectID: number;
     public addUserModalProjectName: string;
     public addUserModalRealName: string;
-    public addUserModalInvitationLink: string='';
+    public addUserModalInvitationLink: string = '';
 
     public UserModalFacilityDetails: [string, string][];
     public UserModalFacility: [string, number];
@@ -78,8 +79,8 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
     getProjectLifetime(project: Project): void ***REMOVED***
         this.details_loaded = false;
         if (!project.Lifetime) ***REMOVED***
-            this.groupservice.getLifetime(project.Id).subscribe(res => ***REMOVED***
-                const lifetime: number | string = res['lifetime'];
+            this.groupservice.getLifetime(project.Id).subscribe((time: IResponseTemplate) => ***REMOVED***
+                const lifetime: number | string = <number>time.value;
                 const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
                 if (lifetime !== -1) ***REMOVED***
                     const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
@@ -99,7 +100,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-   copyLink(text:string) ***REMOVED***
+    copyLink(text: string) ***REMOVED***
         const event = e => ***REMOVED***
             e.clipboardData.setData('text/plain', text);
             e.preventDefault();

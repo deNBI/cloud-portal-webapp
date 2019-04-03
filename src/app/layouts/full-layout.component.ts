@@ -57,7 +57,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     is_vm_project_member(): void ***REMOVED***
-        this.groupService.getMemberGroupsStatus().subscribe(result => ***REMOVED***
+        this.groupService.getSimpleVmByUser().subscribe(result => ***REMOVED***
             if (result.length > 0) ***REMOVED***
                 this.vm_project_member = true
             ***REMOVED***

@@ -354,7 +354,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      * Gets all groups of the user and his key.
      */
     initializeData(): void ***REMOVED***
-        forkJoin(this.groupService.getMemberGroupsStatus(), this.keyservice.getKey()).subscribe(result => ***REMOVED***
+        forkJoin(this.groupService.getSimpleVmByUser(), this.keyservice.getKey()).subscribe(result => ***REMOVED***
             this.userinfo.PublicKey = <string> result[1]['value'];
             this.validatePublicKey();
             const membergroups = result[0];
@@ -370,46 +370,23 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      * Get vms diskpace and used from the selected project.
      */
     getSelectedProjectDiskspace(): void ***REMOVED***
-        this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
-            if (result['Diskspace']) ***REMOVED***
-
-                this.selectedProjectDiskspaceMax = result['Diskspace'];
-
-            ***REMOVED*** else if (result['Diskspace'] === null || result['Diskspace'] === 0) ***REMOVED***
-                this.selectedProjectDiskspaceMax = 0;
-            ***REMOVED***
-
-        ***REMOVED***);
-        this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
-            if (result['Diskspace']) ***REMOVED***
-
-                this.selectedProjectDiskspaceUsed = result['Diskspace'];
-            ***REMOVED*** else if (result['Diskspace'] === 0 || result['Diskspace'] == null) ***REMOVED***
-                this.selectedProjectDiskspaceUsed = 0;
-            ***REMOVED***
-
+        forkJoin(
+            this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()),
+            this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => ***REMOVED***
+            this.selectedProjectDiskspaceMax = <number>res[0].value;
+            this.selectedProjectDiskspaceUsed = <number>res[1].value;
         ***REMOVED***)
-
     ***REMOVED***
 
     /**
      * Get volumes max and used from the selected project.
      */
     getSelectedProjectVolumes(): void ***REMOVED***
-        this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
-            if (result['VolumeCounter']) ***REMOVED***
-                this.selectedProjectVolumesMax = result['VolumeCounter'];
-            ***REMOVED*** else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) ***REMOVED***
-                this.selectedProjectVolumesMax = 0;
-            ***REMOVED***
-        ***REMOVED***);
-        this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
-            if (result['UsedVolumes']) ***REMOVED***
-                this.selectedProjectVolumesUsed = result['UsedVolumes'];
-            ***REMOVED*** else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) ***REMOVED***
-
-                this.selectedProjectVolumesUsed = 0;
-            ***REMOVED***
+        forkJoin(
+            this.groupService.getVolumeCounter(this.selectedProject[1].toString()),
+            this.groupService.getVolumesUsed(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => ***REMOVED***
+            this.selectedProjectVolumesMax = <number>res[0].value;
+            this.selectedProjectVolumesUsed = <number>res[1].value;
 
         ***REMOVED***)
     ***REMOVED***
@@ -418,23 +395,11 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      * Get vms max and used from the selected project.
      */
     getSelectedProjectVms(): void ***REMOVED***
-        this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
-            if (result['NumberVms']) ***REMOVED***
-
-                this.selectedProjectVmsMax = result['NumberVms'];
-
-            ***REMOVED*** else if (result['NumberVms'] === null || result['NumberVms'] === 0) ***REMOVED***
-                this.selectedProjectVmsMax = 0;
-            ***REMOVED***
-
-        ***REMOVED***);
-        this.groupService.getGroupUsedVms(this.selectedProject[1].toString()).subscribe(result => ***REMOVED***
-            if (result['NumberVms']) ***REMOVED***
-
-                this.selectedProjectVmsUsed = result['NumberVms'];
-            ***REMOVED*** else if (result['NumberVms'] === 0 || result['NumberVms'] == null) ***REMOVED***
-                this.selectedProjectVmsUsed = 0;
-            ***REMOVED***
+        forkJoin(
+            this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()),
+            this.groupService.getGroupUsedVms(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => ***REMOVED***
+            this.selectedProjectVmsMax = <number>res[0].value;
+            this.selectedProjectVmsUsed = <number>res[1].value
 
         ***REMOVED***)
 

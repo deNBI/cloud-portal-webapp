@@ -282,7 +282,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
      * @returns ***REMOVED***void***REMOVED***
      */
     getUserApprovedProjects(): void ***REMOVED***
-        this.groupService.getMemberGroupsStatus().subscribe(membergroups => ***REMOVED***
+        this.groupService.getSimpleVmByUser().subscribe(membergroups => ***REMOVED***
             for (const project of membergroups) ***REMOVED***
                 this.projects.push(project);
 

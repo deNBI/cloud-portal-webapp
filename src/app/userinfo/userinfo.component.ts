@@ -50,9 +50,9 @@ export class UserinfoComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
-    isFreemiumActive() ***REMOVED***
-        this.groupService.isFreemiumActive().subscribe(result => ***REMOVED***
-            this.freemium_active = result['Freemium'];
+    isFreemiumActive(): void ***REMOVED***
+        this.groupService.isFreemiumActive().subscribe((result: IResponseTemplate) => ***REMOVED***
+            this.freemium_active = <boolean><Boolean> result.value;
 
         ***REMOVED***);
     ***REMOVED***
@@ -167,7 +167,7 @@ export class UserinfoComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     is_vm_project_member() ***REMOVED***
-        this.groupService.getMemberGroupsStatus().subscribe(result => ***REMOVED***
+        this.groupService.getSimpleVmByUser().subscribe(result => ***REMOVED***
             if (result.length > 0) ***REMOVED***
                 this.is_project_member = true
             ***REMOVED*** else ***REMOVED***

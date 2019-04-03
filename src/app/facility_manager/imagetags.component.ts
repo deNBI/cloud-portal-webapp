@@ -21,7 +21,6 @@ export class ImageTagComponent ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-
     addTag(tag: string, description: string): void ***REMOVED***
         this.imageService.addImageTags(tag, description).subscribe((newTag: ImageTag) => ***REMOVED***
             this.imageTags.push(newTag)

@@ -4,6 +4,7 @@ import ***REMOVED***Observable, throwError***REMOVED*** from 'rxjs';
 import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "./response-template";
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -260,23 +261,13 @@ export class GroupService ***REMOVED***
 
     ***REMOVED***
 
-    getMemberGroupsStatus(): Observable<any> ***REMOVED***
+    getSimpleVmByUser(): Observable<any> ***REMOVED***
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/singlevm/`, ***REMOVED***
+        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/simpleVm/`, ***REMOVED***
             withCredentials: true,
             headers: header
 
         ***REMOVED***)
-    ***REMOVED***
-
-    setLifetime(groupid: string, lifetime: string): Observable<any> ***REMOVED***
-        const params: HttpParams = new HttpParams().set('lifetime', lifetime);
-
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/lifetime/`, params, ***REMOVED***
-            withCredentials: true,
-            headers: header
-        ***REMOVED***)
-
     ***REMOVED***
 
     createGroup(group_name: string, group_description: string): Observable<any> ***REMOVED***
@@ -289,20 +280,10 @@ export class GroupService ***REMOVED***
             ***REMOVED***)
     ***REMOVED***
 
-    getLifetime(groupid: string | number): Observable<any> ***REMOVED***
+    getLifetime(groupid: string | number): Observable<IResponseTemplate> ***REMOVED***
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/lifetime/`, ***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/lifetime/`, ***REMOVED***
             withCredentials: true
-        ***REMOVED***)
-
-    ***REMOVED***
-
-    setPerunId(groupid: string, applicationId: string): Observable<any> ***REMOVED***
-        const params: HttpParams = new HttpParams().set('applicationId', applicationId);
-
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/perunId/`, params, ***REMOVED***
-            withCredentials: true,
-            headers: header
         ***REMOVED***)
 
     ***REMOVED***
@@ -317,43 +298,43 @@ export class GroupService ***REMOVED***
 
     ***REMOVED***
 
-    getGroupMaxDiskspace(groupid: string): Observable<any> ***REMOVED***
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/approvedDiskspace/`, ***REMOVED***
+    getGroupMaxDiskspace(groupid: string): Observable<IResponseTemplate> ***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/approvedDiskspace/`, ***REMOVED***
             withCredentials: true
         ***REMOVED***)
 
     ***REMOVED***
 
-    getGroupUsedDiskspace(groupid: string): Observable<any> ***REMOVED***
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/usedDiskspace/`, ***REMOVED***
+    getGroupUsedDiskspace(groupid: string): Observable<IResponseTemplate>***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/usedDiskspace/`, ***REMOVED***
             withCredentials: true
         ***REMOVED***)
 
     ***REMOVED***
 
-    getVolumesUsed(groupid: string): Observable<any> ***REMOVED***
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/usedVolumes/`, ***REMOVED***
+    getVolumesUsed(groupid: string): Observable<IResponseTemplate> ***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/usedVolumes/`, ***REMOVED***
             withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 
-    getVolumeCounter(groupid: string): Observable<any> ***REMOVED***
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/volumesCounter/`, ***REMOVED***
+    getVolumeCounter(groupid: string): Observable<IResponseTemplate> ***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/volumesCounter/`, ***REMOVED***
             withCredentials: true
         ***REMOVED***)
     ***REMOVED***
 
-    getGroupApprovedVms(groupid: string): Observable<any> ***REMOVED***
+    getGroupApprovedVms(groupid: string): Observable<IResponseTemplate> ***REMOVED***
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/approvedVms/`, ***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/approvedVms/`, ***REMOVED***
             withCredentials: true
         ***REMOVED***)
 
     ***REMOVED***
 
-    getGroupUsedVms(groupid: string): Observable<any> ***REMOVED***
+    getGroupUsedVms(groupid: string): Observable<IResponseTemplate> ***REMOVED***
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/usedVms/`, ***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/usedVms/`, ***REMOVED***
             withCredentials: true
         ***REMOVED***)
 
@@ -369,10 +350,10 @@ export class GroupService ***REMOVED***
         ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
     ***REMOVED***
 
-    isFreemiumActive(): Observable<any> ***REMOVED***
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***freemium/`, ***REMOVED***
+    isFreemiumActive(): Observable<IResponseTemplate> ***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***freemium/`, ***REMOVED***
             withCredentials: true
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+        ***REMOVED***)
     ***REMOVED***
 
     addMemberToFreemium(): Observable<any> ***REMOVED***
