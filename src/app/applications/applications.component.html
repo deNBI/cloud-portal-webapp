@@ -62,7 +62,7 @@
                                         </button>
                                         <button
                                           *ngIf="application.Status == application_states.APPROVED || application.Status == application_states.MODIFICATION_DECLINED"
-                                          (click)="setSelectedApplication(application);ngFormSetDefault(f);extensionModal.show()"
+                                          (click)="setSelectedApplication(application);calculateRamCores();extensionModal.show()"
                                           type="button"
                                           class="btn btn-warning"
                                           style="margin: auto auto 5px">
@@ -1202,8 +1202,13 @@
                                                            name="project_application_{{fl.name}}"
                                                            type="number" min="0" step="1"
                                                            placeholder="e.g 1"
-                                                           (ngModel)="'project_application_' + fl.name"
-                                                    >
+                                                           [ngModel]="selectedApplication?.CurrentFlavors[fl.name]?.counter"
+                                                           #name = "ngModel"
+                                                           appMinAmount="0" appIntegerOrNull
+                                                           [ngClass]="{
+                                'is-invalid': name?.invalid,
+                                'is-valid': name?.valid
+                                }">
                                                   <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
                                                 </div>
                                                 <span class="help-block">Number of VMs you would like to run in the future</span>
@@ -1383,11 +1388,11 @@
                     <strong>
                         <div class="form-group row">
                             <label #corenumbers id="corenumbers" class="col">Number of total
-                                cores:</label>
+                                cores: {{totalNumberOfCores}}</label>
                         </div>
                         <div class="form-group row">
                             <label #ramnumbers id="ramnumbers" class="col">Amount of total
-                                RAM: </label>
+                                RAM: {{totalRAM}} </label>
                         </div>
                     </strong>
 
@@ -1401,10 +1406,6 @@
 
 
                 <div class="modal-footer">
-                      <div *ngIf="f.invalid" class="form-group row alert alert-warning">
-                        Some required fields are incorrect or not filled in yet.
-                        Please check if all required (*) fields are filled in correctly.
-                    </div>
                     <div class="label">
                         By submitting this application you agree to the cloud usage policy.
                     </div>
