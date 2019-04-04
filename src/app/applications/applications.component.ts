@@ -10,7 +10,7 @@ import {VoService} from '../api-connector/vo.service';
 import {FacilityService} from '../api-connector/facility.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
-import {Client} from '../virtualmachines/clients/vmclient';
+import {Client} from "../virtualmachines/clients/client.model";
 import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
@@ -81,7 +81,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                 private flavorService: FlavorService) {
 
         super(userservice, applicationstatusservice, applicationsservice, facilityService);
-          this.voService.isVo().subscribe((result: { [key: string]: boolean }) => {
+        this.voService.isVo().subscribe((result: { [key: string]: boolean }) => {
             this.is_vo_admin = result['Is_Vo_Manager'];
             this.getUserApplications();
             this.getApplicationStatus();
@@ -136,9 +136,9 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
      * Get the facility of an application.
      * @param {Application} app
      */
-    public getFacilityProject(app: Application): void {
+    getFacilityProject(app: Application): void {
 
-        if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED) {
+        if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED && app.Status !== this.application_states.TERMINATED) {
             this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => {
                 const login: string = res['Login'];
                 const suport: string = res['Support'];
@@ -159,7 +159,8 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
         // todo check if user is VO Admin
 
         if (this.is_vo_admin) {
-            this.applicationsservice.getAllApplications().subscribe((res: object) => {
+
+            this.applicationsservice.getAllApplications().subscribe(res  => {
                 if (Object.keys(res).length === 0) {
                     this.isLoaded_userApplication = true;
                 }
@@ -189,8 +190,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
             const newApp: Application = this.setNewApplication(aj);
             this.all_applications[index] = newApp;
             this.getFacilityProject(newApp);
-
-
         });
 
     }
@@ -364,7 +363,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
             return
         }
 
-        return `${sa.DateApproved} - ${this.getEndDate( sa.Lifetime,sa.DateApproved,)}`;
+        return `${sa.DateApproved} - ${this.getEndDate(sa.Lifetime, sa.DateApproved,)}`;
     }
 
     /**
@@ -630,7 +629,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                 if (res['Info']) {
                     if (res['Clients']) {
                         for (const client of res['Clients']) {
-                            const newClient: Client = new Client();
+                            const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
                             newClient.location = client.location;
                             newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
                             newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
@@ -674,8 +673,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                                                 } else {
                                                     this.applicationsservice.getApplicationClient(
                                                         application_id).subscribe((client: object) => {
-                                                        const newClient: Client = new Client();
-                                                        newClient.location = client['location'];
+                                                        const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
                                                         newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
                                                         newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
                                                         newClient.maxVMs = client['max_ressources']['maxTotalInstances'];

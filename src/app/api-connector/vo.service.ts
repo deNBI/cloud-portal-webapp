@@ -91,8 +91,11 @@ export class VoService {
 
     }
 
-    sendMailToVo(subject: string, message: string, reply?: string): Observable<any> {
-        const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+    sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): Observable<any> {
+        const params: HttpParams = new HttpParams()
+            .set('subject', subject).set('message', message)
+            .set('reply', reply).set('facility', facility).set('type', type);
+
 
         return this.http.post(`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/`, params, {
             withCredentials: true,
