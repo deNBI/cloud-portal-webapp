@@ -160,6 +160,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
         // todo check if user is VO Admin
 
         if (this.is_vo_admin) ***REMOVED***
+
             this.applicationsservice.getAllApplications().subscribe(res  => ***REMOVED***
                 if (Object.keys(res).length === 0) ***REMOVED***
                     this.isLoaded_userApplication = true;
@@ -193,6 +194,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
         ***REMOVED***);
 
     ***REMOVED***
+
 
     /**
      * Gets all Application of the user viewing the application overview.
@@ -267,20 +269,32 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     unsetValues(elemIDcores: string, elemIDram: string): void ***REMOVED***
         this.totalRAM = 0;
         this.totalNumberOfCores = 0;
-        document.getElementById(elemIDcores).innerHTML = `Number of total cores:  $***REMOVED***this.totalNumberOfCores.toString()***REMOVED***`;
-        document.getElementById(elemIDram).innerHTML = `Total amout of RAM:  $***REMOVED***this.totalRAM.toString()***REMOVED*** GB`;
+        //document.getElementById(elemIDcores).innerHTML = `Number of total cores:  $***REMOVED***this.totalNumberOfCores.toString()***REMOVED***`;
+        //document.getElementById(elemIDram).innerHTML = `Total amout of RAM:  $***REMOVED***this.totalRAM.toString()***REMOVED*** GB`;
 
     ***REMOVED***
 
+    calculateRamCores() ***REMOVED***
+      this.totalNumberOfCores=0;
+      this.totalRAM=0;
+      for (const key in this.selectedApplication.CurrentFlavors) ***REMOVED***
+        const flavor = this.selectedApplication.CurrentFlavors[key];
+         if (flavor != null) ***REMOVED***
+            this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * flavor.counter);
+            this.totalRAM = this.totalRAM + (flavor.ram * flavor.counter);
+
+        ***REMOVED***
+
+      ***REMOVED***
+    ***REMOVED***
     /**
      * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
      * @param form the form which contains the input-fields
      */
     protected valuesChanged(form: NgForm): void ***REMOVED***
-
-        this.totalRAM = 0;
-        this.totalNumberOfCores = 0;
-        for (const key in form.controls) ***REMOVED***
+      this.totalNumberOfCores=0;
+      this.totalRAM=0;
+      for (const key in form.controls) ***REMOVED***
             if (form.controls[key].value) ***REMOVED***
                 const flavor: Flavor = this.isKeyFlavor(key.toString());
                 if (flavor != null) ***REMOVED***
@@ -290,8 +304,8 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
             ***REMOVED***
         ***REMOVED***
 
-        document.getElementById('corenumbers').innerHTML = `Number of total cores:  $***REMOVED***this.totalNumberOfCores.toString()***REMOVED***`;
-        document.getElementById('ramnumbers').innerHTML = `Total amout of RAM:  $***REMOVED***this.totalRAM.toString()***REMOVED*** GB`;
+      //  document.getElementById('corenumbers').innerHTML = `Number of total cores:  $***REMOVED***this.totalNumberOfCores.toString()***REMOVED***`;
+        //document.getElementById('ramnumbers').innerHTML = `Total amout of RAM:  $***REMOVED***this.totalRAM.toString()***REMOVED*** GB`;
 
     ***REMOVED***
 
@@ -314,23 +328,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
     ***REMOVED***
 
-    /**
-     * Sets the default values in the request renewal form.
-     * @param ***REMOVED***NgForm***REMOVED*** form
-     */
-    ngFormSetDefault(form: NgForm): void ***REMOVED***
-        form.reset(***REMOVED***
-            project_application_renewal_vms_requested: this.selectedApplication.VMsRequested,
-            project_application_renewal_cores_per_vm: this.selectedApplication.CoresPerVM,
-            project_application_renewal_ram_per_vm: this.selectedApplication.RamPerVM,
-            project_application_renewal_volume_limit: this.selectedApplication.VolumeLimit,
-            project_application_renewal_volume_counter: this.selectedApplication.VolumeCounter,
-            project_application_renewal_object_storage: this.selectedApplication.ObjectStorage,
-            project_application_renewal_comment: this.selectedApplication.Comment
 
-        ***REMOVED***)
-
-    ***REMOVED***
 
 
     /**
