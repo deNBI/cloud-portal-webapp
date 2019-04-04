@@ -177,14 +177,15 @@
                 <form class="form-horizontal" id="email_form" #f="ngForm">
 
 
-                    <div class="form-group row" [ngClass]="{'has-danger':emailChang.invalid && (emailChang.dirty || emailChang.touched),
-                    'has-success':emailChang.valid && (emailChang.dirty || emailChang.touched)
-                    }">
+                    <div class="form-group row">
                         <label class="col-md-12 control-label"><strong>New Email:</strong></label>
                         <div class="col-md-12">
                             <input required id="emailChange" name="emailChang" placeholder="" class="form-control"
                                    type="text" [(ngModel)]="emailChange" #emailChang="ngModel"
-                                   pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+                                   pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                                   [ngClass]="{'is-invalid':emailChang.invalid && (emailChang.dirty || emailChang.touched),
+                    'is-valid':emailChang.valid && (emailChang.dirty || emailChang.touched)
+                    }">
 
                         </div>
                     </div>
