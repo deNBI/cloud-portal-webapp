@@ -62,7 +62,7 @@
                                         </button>
                                         <button
                                           *ngIf="application.Status == application_states.APPROVED || application.Status == application_states.MODIFICATION_DECLINED"
-                                          (click)="setSelectedApplication(application);ngFormSetDefault(f);extensionModal.show()"
+                                          (click)="setSelectedApplication(application);calculateRamCores();extensionModal.show()"
                                           type="button"
                                           class="btn btn-warning"
                                           style="margin: auto auto 5px">
@@ -1129,16 +1129,17 @@
                         </div>
 
                         <div class="col">
-                            <div class="input-group" [ngClass]="{
-                                'has-danger': f.controls.project_application_renewal_lifetime?.invalid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched),
-                                'has-success': f.controls.project_application_renewal_lifetime?.valid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched)
-                                }">
+                            <div class="input-group">
                                 <input class="form-control"
                                        id="id_project_application_renewal_lifetime"
                                        name="project_application_renewal_lifetime"
                                        placeholder="e.g 3"
                                        type="number" min="0" max="12" step="1" ngModel required
-                                       pattern="^([0-9]|1[012])$">
+                                       appInteger appMinAmount="0" appMaxAmount="12"
+                                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_renewal_lifetime?.invalid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched),
+                                'is-valid': f.controls.project_application_renewal_lifetime?.valid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched)
+                                }">
                               <div class="input-group-append">
                                 <span class="input-group-text"> months</span>
                               </div>
@@ -1201,8 +1202,13 @@
                                                            name="project_application_{{fl.name}}"
                                                            type="number" min="0" step="1"
                                                            placeholder="e.g 1"
-                                                           (ngModel)="'project_application_' + fl.name"
-                                                    >
+                                                           [ngModel]="selectedApplication?.CurrentFlavors[fl.name]?.counter"
+                                                           #name = "ngModel"
+                                                           appMinAmount="0" appIntegerOrNull
+                                                           [ngClass]="{
+                                'is-invalid': name?.invalid,
+                                'is-valid': name?.valid
+                                }">
                                                   <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
                                                 </div>
                                                 <span class="help-block">Number of VMs you would like to run in the future</span>
@@ -1238,16 +1244,18 @@
                             <span class="help-block">Current extra storage</span>
                         </div>
                         <div class="col">
-                            <div class="input-group" [ngClass]="{
-                                'has-danger': f.controls.project_application_renewal_volume_limit?.invalid,
-                                'has-success': f.controls.project_application_renewal_volume_limit?.valid
-                                }">
+                            <div class="input-group">
                                 <input class="form-control"
                                        id="id_project_application_renewal_volume_limit"
                                        name="project_application_renewal_volume_limit"
                                        placeholder="e.g. 20"
                                        value="{{selectedApplication?.VolumeLimit}}"
-                                       type="number" min="1" step="1" [ngModel]="20">
+                                       type="number" min="1" step="1" [ngModel]="20"
+                                       appMinAmount="1" appInteger
+                                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_renewal_volume_limit?.invalid,
+                                'is-valid': f.controls.project_application_renewal_volume_limit?.valid
+                                }">
                               <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
                             </div>
@@ -1275,17 +1283,18 @@
                         </div>
 
                         <div class="col">
-                            <div class="input-group"
-                                 [ngClass]="{
-                                'has-danger': f.controls.project_application_renewal_volume_counter?.invalid,
-                                'has-success': f.controls.project_application_renewal_volume_counter?.valid
-                                }">
+                            <div class="input-group">
                                 <input required class="form-control"
                                        id="id_project_application_renewal_volume_counter"
                                        name="project_application_renewal_volume_counter"
                                        placeholder="e.g. 20"
                                        type="number" min="0" step="1"
-                                       [ngModel]="selectedApplication?.VolumeCounter">
+                                       [ngModel]="selectedApplication?.VolumeCounter"
+                                       appMinAmount="0" appInteger
+                                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_renewal_volume_counter?.invalid,
+                                'is-valid': f.controls.project_application_renewal_volume_counter?.valid
+                                }">
                             </div>
                             <span class="help-block">How many storage volumes do you need in the future?</span>
                         </div>
@@ -1313,16 +1322,18 @@
                         </div>
 
                         <div *ngIf="selectedApplication?.OpenStackProject" class="col">
-                            <div class="input-group" [ngClass]="{
-                                'has-danger': f.controls.project_application_renewal_object_storage?.invalid ,
-                                'has-success': f.controls.project_application_renewal_object_storage?.valid
-                                }" required>
+                            <div class="input-group">
                                 <input class="form-control"
                                        id="id_project_application_renewal_object_storage"
                                        name="project_application_renewal_object_storage"
                                        placeholder="e.g. 8"
                                        value="{{selectedApplication?.ObjectStorage}}"
-                                       type="number" min="0" step="1" [ngModel]="0">
+                                       type="number" min="0" step="1" [ngModel]="0"
+                                       appInteger appMinAmount="0" required
+                                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_renewal_object_storage?.invalid ,
+                                'is-valid': f.controls.project_application_renewal_object_storage?.valid
+                                }">
                               <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
                             </div>
@@ -1345,11 +1356,11 @@
                     <strong>
                         <div class="form-group row">
                             <label #corenumbers id="corenumbers" class="col">Number of total
-                                cores:</label>
+                                cores: {{totalNumberOfCores}}</label>
                         </div>
                         <div class="form-group row">
                             <label #ramnumbers id="ramnumbers" class="col">Amount of total
-                                RAM: </label>
+                                RAM: {{totalRAM}} </label>
                         </div>
                     </strong>
 
@@ -1363,10 +1374,6 @@
 
 
                 <div class="modal-footer">
-                      <div *ngIf="f.invalid" class="form-group row alert alert-warning">
-                        Some required fields are incorrect or not filled in yet.
-                        Please check if all required (*) fields are filled in correctly.
-                    </div>
                     <div class="label">
                         By submitting this application you agree to the cloud usage policy.
                     </div>
