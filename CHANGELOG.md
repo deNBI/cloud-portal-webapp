@@ -1,4 +1,26 @@
 
+
+
+##  (2019-04-04)
+
+
+#### Features
+
+* **Client:** able to change host and port ([53a75d93](53a75d93))
+* **Email:**
+  * added for vo ([35de3ebd](35de3ebd))
+  * splitted in projects ([1600f987](1600f987))
+* **Virtualmachines:**
+  * addet warning ([2ac3ab9f](2ac3ab9f))
+  * addet warning ([d9a0d01c](d9a0d01c))
+
+#### Bug Fixes
+
+* **Applications:** fixed facilityid error ([2ec8ebe1](2ec8ebe1))
+* **validations:**  validations working correctly now ([d96f7ba4](d96f7ba4))
+
+
+
 ##  (2019-03-29)
 
 
