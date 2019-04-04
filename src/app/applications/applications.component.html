@@ -157,7 +157,7 @@
                                                     <td>***REMOVED******REMOVED***application.TotalCores***REMOVED******REMOVED***
                                                     </td>
                                                     <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                                        ***REMOVED******REMOVED***application.ApplicationExtension.TotalCores***REMOVED******REMOVED***
+                                                        ***REMOVED******REMOVED***application.ApplicationExtension?.TotalCores***REMOVED******REMOVED***
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -534,7 +534,7 @@
                                                                 application.TotalRam***REMOVED******REMOVED*** GB
                                                             </td>
                                                             <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension.TotalRAM***REMOVED******REMOVED***
+                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.TotalRAM***REMOVED******REMOVED***
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -766,7 +766,7 @@
                                                         <td
                                                           *ngIf="application.Status == application_states.MODIFICATION_REQUESTED ">
                                                           Requested:
-                                                          ***REMOVED******REMOVED***application.ApplicationExtension.VMsRequested***REMOVED******REMOVED***
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension?.VMsRequested***REMOVED******REMOVED***
                                                         </td>
 
 
@@ -807,7 +807,7 @@
                                                         </td>
                                                         <td
                                                           *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                                          ***REMOVED******REMOVED***application.ApplicationExtension.TotalCores***REMOVED******REMOVED***
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension?.TotalCores***REMOVED******REMOVED***
                                                         </td>
                                                       </tr>
                                                       <tr *ngIf="application.OpenStackProject">
@@ -817,7 +817,7 @@
                                                         </td>
                                                         <td
                                                           *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                                          ***REMOVED******REMOVED***application.ApplicationExtension.TotalRAM***REMOVED******REMOVED***
+                                                          ***REMOVED******REMOVED***application.ApplicationExtension?.TotalRAM***REMOVED******REMOVED***
                                                         </td>
                                                       </tr>
                                                       <tr>
@@ -1340,38 +1340,6 @@
                             <span class="help-block">How much Object Storage do you need in the future?</span>
                         </div>
                     </div>
-
-
-                    <!--div *ngIf="selectedApplication?.OpenStackProject" class="form-group row">
-                        <label class="col-md-4 form-control-label"><strong>Special
-                            Hardware </strong> <i
-                                data-balloon="GPU means Graphics Processing Unit and is often used for machine learning. A field programmable gate array (FPGA) represents a reconfigurable computing architecture."
-                                data-balloon-pos="down"
-                                data-balloon-length="large"><i class="icon-question"
-                                                               style="cursor: pointer;"></i></i></label>
-                        <!-- not working properly yet
-                        <div class="col">
-                              <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">                                    <label>
-                                      <input type="checkbox" [checked]="(specialHardwareInUse(sh, selectedApplication))" disabled>
-                                      ***REMOVED******REMOVED***sh.Name***REMOVED******REMOVED***
-                                  </label>
-                              </div>
-                              <span class="help-block">Currently used special hardware</span>
-                          </div> -->
-
-                    <!--div class="col">
-                        <div *ngFor="let sh of special_hardware; let i=index;" class="checkbox">
-                            <label>
-                                <input type="checkbox"
-                                       [checked]="( checkboxValue === true ? sh.Checked : False )"
-                                       (change)="sh.Checked = $event.target.checked;"/>
-                                ***REMOVED******REMOVED***sh.Name***REMOVED******REMOVED***
-                            </label>
-                        </div>
-                        <span class="help-block">Which special hardware do you need in the future?</span>
-                    </div-->
-                    <!--/div-->
-
                     <div class="form-group row">
                         <label class="col-md-4 form-control-label"
                                for="text-input"><strong>Comment</strong></label>

@@ -8,13 +8,12 @@ import ***REMOVED***VirtualmachineService***REMOVED*** from '../api-connector/vi
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
-
-import ***REMOVED***ClientService***REMOVED*** from '../api-connector/vmClients.service';
-import ***REMOVED***Client***REMOVED*** from './clients/vmclient';
+import ***REMOVED***ClientService***REMOVED*** from "../api-connector/client.service";
 import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
 import ***REMOVED***KeyService***REMOVED*** from '../api-connector/key.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
+import ***REMOVED***Client***REMOVED*** from "./clients/client.model";
 
 /**
  * Start virtualmachine component.

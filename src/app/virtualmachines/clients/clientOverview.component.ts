@@ -1,6 +1,6 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***Client***REMOVED*** from './vmclient';
-import ***REMOVED***ClientService***REMOVED*** from '../../api-connector/vmClients.service';
+import ***REMOVED***Client***REMOVED*** from './client.model';
+import ***REMOVED***ClientService***REMOVED*** from '../../api-connector/client.service';
 import ***REMOVED***ApiSettings***REMOVED*** from '../../api-connector/api-settings.service';
 import ***REMOVED***GroupService***REMOVED*** from '../../api-connector/group.service';
 import ***REMOVED***UserService***REMOVED*** from '../../api-connector/user.service';
@@ -13,7 +13,7 @@ import ***REMOVED***VoService***REMOVED*** from '../../api-connector/vo.service'
  */
 @Component(***REMOVED***
     selector: 'app-client-overview',
-    templateUrl: 'vmClients.component.html',
+    templateUrl: 'clientOverview.html',
     providers: [FacilityService, VoService, UserService, GroupService, ClientService, ApiSettings]
 ***REMOVED***)
 
@@ -23,6 +23,11 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
      * All clients.
      */
     clients: Client[];
+
+    /**
+     * Selected Client;
+     */
+    selectedClient: Client;
     /**
      * If user is vo.
      * @type ***REMOVED***boolean***REMOVED***
@@ -137,10 +142,19 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
+    updateClient(host: string, port: string, location: string, id: string): void ***REMOVED***
+        this.clientservice.updateClient(new Client(host, port, location, id)).subscribe((res: Client) => ***REMOVED***
+            this.clients[this.clients.indexOf(this.selectedClient)] = res;
+            this.selectedClient = null;
+        ***REMOVED***)
+
+    ***REMOVED***
+
     ngOnInit(): void ***REMOVED***
         this.checkVOstatus();
         this.getClientsChecked();
         this.getComputeCenters();
+        this.clientservice.updateClient(new Client('test', '8432', 'da', '2')).subscribe()
 
     ***REMOVED***
 
