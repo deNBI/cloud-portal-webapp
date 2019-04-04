@@ -96,7 +96,7 @@
 
                                     </div>
                                 </div>
-                            </div>
+
                             <div *ngIf="selectedProject" class="form-group row">
                                 <label class="col-md-3 form-control-label"><strong>Flavor*</strong></label>
                                 <div class="col-md-6">
@@ -249,15 +249,17 @@
                                 </button>
                                 <br><br><br>
                             </div>
-                            <div class="alert alert-danger"
-                                 *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
-                                corresponding client is currently offline.
-                                If you have any questions please contact cloud@denbi.de.
-                            </div>
+
+                        </div>
                         </div>
 
 
                     </form>
+                  <div class="alert alert-danger"
+                       *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
+                    corresponding client is currently offline.
+                    If you have any questions please contact cloud@denbi.de.
+                  </div>
 
 
                 </div>
@@ -272,6 +274,7 @@
 
     </div>
 </div>
+
 
 
 <div bsModal #infoModal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
