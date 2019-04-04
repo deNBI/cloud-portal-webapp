@@ -17,7 +17,7 @@ export class MinAmoutValidatorDirective implements Validator ***REMOVED***
 
 export function minAmountValidator(val: number): ValidatorFn ***REMOVED***
   return (control: AbstractControl): ***REMOVED***[key: string]: any***REMOVED*** | null => ***REMOVED***
-    const less: any = control.value < val;
+    const less: boolean = control.value < val;
 
     return less ? ***REMOVED***'minVal': ***REMOVED***value: control.value***REMOVED******REMOVED*** : null;
   ***REMOVED***;
@@ -39,7 +39,7 @@ export class MaxAmoutValidatorDirective implements Validator ***REMOVED***
 
 export function maxAmountValidator(val: number): ValidatorFn ***REMOVED***
   return (control: AbstractControl): ***REMOVED***[key: string]: any***REMOVED*** | null => ***REMOVED***
-    const more: any = control.value > val;
+    const more: boolean = control.value > val;
 
     return more ? ***REMOVED***'maxVal': ***REMOVED***value: control.value***REMOVED******REMOVED*** : null;
   ***REMOVED***;
@@ -59,8 +59,28 @@ export class IntegerValidatorDirective implements Validator ***REMOVED***
 
 export function integerValidator(): ValidatorFn ***REMOVED***
   return (control: AbstractControl): ***REMOVED***[key: string]: any***REMOVED*** | null => ***REMOVED***
-    const integer: any = Number.isInteger(control.value);
+    const integer: boolean = Number.isInteger(control.value);
 
     return integer ? null : ***REMOVED***'integer': ***REMOVED***value: control.value***REMOVED******REMOVED***;
+  ***REMOVED***;
+***REMOVED***
+
+@Directive(***REMOVED***
+  selector: '[appIntegerOrNull]',
+  providers: [
+    ***REMOVED*** provide: NG_VALIDATORS, useExisting: IntegerOrNullValidatorDirective, multi: true ***REMOVED***
+  ]
+***REMOVED***)
+export class IntegerOrNullValidatorDirective implements Validator ***REMOVED***
+  validate(control: AbstractControl): ***REMOVED***[key: string]: any***REMOVED*** | null ***REMOVED***
+    return integerOrNullValidator()(control);
+  ***REMOVED***
+***REMOVED***
+
+export function integerOrNullValidator(): ValidatorFn ***REMOVED***
+  return (control: AbstractControl): ***REMOVED***[key: string]: any***REMOVED*** | null => ***REMOVED***
+    const integer: boolean = (Number.isInteger(control.value) || !control.value);
+
+    return integer ? null : ***REMOVED***'integerOrNull': ***REMOVED***value: control.value***REMOVED******REMOVED***;
   ***REMOVED***;
 ***REMOVED***

@@ -171,7 +171,7 @@
                               <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
                                    class="form-group row">
 
-                                <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</strong><br>
+                                <label class="col-md-4 form-control-label" for="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</strong><br>
                                   Number of cores: ***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***<br>
                                   RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED*** GB<br>
                                   <span *ngIf="f.type.shortcut == 'GPU'">
@@ -184,8 +184,14 @@
                                            id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
                                            name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
                                            type="number" min="0" step="1"
-                                           value="0" placeholder="0"
-                                           (ngModel)="'project_application_' + f.name">
+                                           placeholder="0"
+                                           [ngModel]="0"
+                                           #name = "ngModel"
+                                           appMinAmount="0" appInteger
+                                           [ngClass]="***REMOVED***
+                                'is-invalid': name?.invalid,
+                                'is-valid': name?.valid
+                                ***REMOVED***">
                                     <div class="input-group-append"><span class="input-group-text"> VMs
                                     </span></div>
                                   </div>

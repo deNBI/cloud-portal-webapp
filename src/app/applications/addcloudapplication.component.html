@@ -182,8 +182,14 @@
                                            id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
                                            name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
                                            type="number" min="0" step="1"
-                                           value="0" placeholder="0"
-                                           (ngModel)="'project_application_' + f.name">
+                                           placeholder="0"
+                                           [ngModel]="0"
+                                           #name = "ngModel"
+                                           appMinAmount="0" appInteger
+                                           [ngClass]="***REMOVED***
+                                'is-invalid': name?.invalid,
+                                'is-valid': name?.valid
+                                ***REMOVED***">
                                     <div class="input-group-append"><span class="input-group-text">VMs</span></div>
                                   </div>
                                   <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
