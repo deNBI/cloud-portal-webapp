@@ -266,7 +266,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
                         this.check_status_loop(id)
                     ***REMOVED*** else ***REMOVED***
                         this.resetProgressBar();
-                        this.create_error = <IResponseTemplate> newVm;
+                        this.create_error = <IResponseTemplate> <any>newVm;
                         this.getSelectedProjectDiskspace();
                         this.getSelectedProjectVms();
                         this.getSelectedProjectVolumes();
@@ -312,7 +312,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
                     this.check_status_loop(newVm.openstackid);
                 ***REMOVED*** else ***REMOVED***
                     this.creating_vm_status = 'Creating';
-                    this.create_error = <IResponseTemplate> newVm;
+                    this.create_error = <IResponseTemplate> <any>newVm;
                 ***REMOVED***
 
             ***REMOVED***);
