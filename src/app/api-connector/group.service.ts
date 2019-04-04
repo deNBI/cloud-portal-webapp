@@ -5,6 +5,7 @@ import ***REMOVED***catchError***REMOVED*** from 'rxjs/operators';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 import ***REMOVED***IResponseTemplate***REMOVED*** from "./response-template";
+import ***REMOVED***Client***REMOVED*** from "../virtualmachines/clients/client.model";
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -23,16 +24,16 @@ export class GroupService ***REMOVED***
 
         return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/computecenter/`, ***REMOVED***
             withCredentials: true
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+        ***REMOVED***)
 
     ***REMOVED***
 
-    getClient(groupid: string): Observable<any> ***REMOVED***
+    getClient(groupid: string): Observable<Client> ***REMOVED***
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/client/`, ***REMOVED***
+        return this.http.get<Client>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/client/`, ***REMOVED***
             withCredentials: true,
             headers: header
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+        ***REMOVED***)
 
     ***REMOVED***
 
@@ -347,7 +348,7 @@ export class GroupService ***REMOVED***
         return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
-        ***REMOVED***).pipe(catchError((error: any) => throwError(error.error)));
+        ***REMOVED***)
     ***REMOVED***
 
     isFreemiumActive(): Observable<IResponseTemplate> ***REMOVED***

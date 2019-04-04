@@ -15,6 +15,7 @@ import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.servi
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
 import ***REMOVED***Client***REMOVED*** from "./clients/client.model";
+import ***REMOVED***VirtualMachine***REMOVED*** from "./virtualmachinemodels/virtualmachine";
 
 /**
  * Start virtualmachine component.
@@ -27,7 +28,7 @@ import ***REMOVED***Client***REMOVED*** from "./clients/client.model";
 ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
 
-    data: string = '';
+    newVm: VirtualMachine = null;
     creating_vm_status: string = 'Creating..';
     creating_vm_prograss_bar: string = 'progress-bar-animated';
     checking_vm_status: string = '';
@@ -44,6 +45,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      * All image of a project.
      */
     images: Image[];
+
+    create_error: IResponseTemplate;
 
     /**
      * All flavors of a project.
@@ -243,16 +246,16 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
         setTimeout(
             () => ***REMOVED***
-                this.virtualmachineservice.checkVmStatus(id).subscribe(res => ***REMOVED***
-                    if (res['Started'] || res['Error']) ***REMOVED***
+                this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => ***REMOVED***
+                    if (newVm.status === 'ACTIVE') ***REMOVED***
                         this.resetProgressBar();
-                        this.data = res;
+                        this.newVm = newVm;
                         this.getSelectedProjectDiskspace();
                         this.getSelectedProjectVms();
                         this.getSelectedProjectVolumes();
 
-                    ***REMOVED*** else ***REMOVED***
-                        if (res['Waiting'] === 'PORT_CLOSED') ***REMOVED***
+                    ***REMOVED*** else if (newVm.status) ***REMOVED***
+                        if (newVm.status === 'PORT_CLOSED') ***REMOVED***
                             this.checking_vm_status = 'Active';
                             this.checking_vm_status_progress_bar = '';
                             this.creating_vm_prograss_bar = '';
@@ -261,6 +264,12 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
                         ***REMOVED***
                         this.check_status_loop(id)
+                    ***REMOVED*** else ***REMOVED***
+                        this.resetProgressBar();
+                        this.create_error = <IResponseTemplate> newVm;
+                        this.getSelectedProjectDiskspace();
+                        this.getSelectedProjectVms();
+                        this.getSelectedProjectVolumes();
                     ***REMOVED***
 
                 ***REMOVED***)
@@ -277,27 +286,33 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      * @param ***REMOVED***string***REMOVED*** projectid
      */
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string): void ***REMOVED***
+        this.create_error = null;
+
         if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) ***REMOVED***
+            this.create_error = null;
             const re: RegExp = /\+/gi;
 
             const flavor_fixed: string = flavor.replace(re, '%2B');
 
             this.virtualmachineservice.startVM(
                 flavor_fixed, image, servername, project, projectid,
-                this.volumeName, this.diskspace.toString()).subscribe(data => ***REMOVED***
+                this.volumeName, this.diskspace.toString()).subscribe((newVm: VirtualMachine) => ***REMOVED***
 
-                if (data['Created']) ***REMOVED***
+                if (newVm.status === 'Build') ***REMOVED***
                     this.creating_vm_status = 'Created';
                     this.creating_vm_prograss_bar = '';
                     this.checking_vm_status = 'Checking status..';
                     this.checking_vm_status_progress_bar = 'progress-bar-animated';
                     this.checking_vm_status_width = 33;
+                    this.check_status_loop(newVm.openstackid);
 
-                    this.check_status_loop(data['Created']);
+                ***REMOVED*** else if (newVm.status) ***REMOVED***
+                    this.creating_vm_status = 'Creating';
+                    this.newVm = newVm;
+                    this.check_status_loop(newVm.openstackid);
                 ***REMOVED*** else ***REMOVED***
                     this.creating_vm_status = 'Creating';
-
-                    this.data = data
+                    this.create_error = <IResponseTemplate> newVm;
                 ***REMOVED***
 
             ***REMOVED***);
@@ -305,7 +320,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
         ***REMOVED*** else ***REMOVED***
             this.creating_vm_status = 'Creating';
 
-            this.data = 'INVALID'
+            this.newVm = null;
 
         ***REMOVED***
     ***REMOVED***
@@ -317,9 +332,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      */
     getSelectedProjectClient(groupid: number): void ***REMOVED***
         this.client_checked = false;
-        this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => ***REMOVED***
-            this.selectedProjectClient = res;
-            if (res['status'] === 'Connected') ***REMOVED***
+        this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client) => ***REMOVED***
+            if (client.status && client.status === 'Connected') ***REMOVED***
                 this.client_avaiable = true;
 
                 this.getSelectedProjectDiskspace();
@@ -333,7 +347,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
                 this.client_checked = true;
 
             ***REMOVED***
-            this.selectedProjectClient = res;
+            this.selectedProjectClient = client;
 
         ***REMOVED***)
     ***REMOVED***
@@ -342,10 +356,10 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
      * Reset the data attribute.
      */
     resetData(): void ***REMOVED***
-        if (this.data === 'INVALID') ***REMOVED***
+        if (this.newVm === null) ***REMOVED***
             return;
         ***REMOVED***
-        this.data = '';
+        this.newVm = null;
     ***REMOVED***
 
     /**

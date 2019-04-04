@@ -103,7 +103,7 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
      */
     checkClient(host: string, port: string): void ***REMOVED***
         if (host && port) ***REMOVED***
-            this.clientservice.checkClient(host, port).subscribe(data => ***REMOVED***
+            this.clientservice.checkClient(host, port).subscribe((data: IResponseTemplate) => ***REMOVED***
 
                 if (!data.value) ***REMOVED***
                     this.checkStatus = 'No Connection';
