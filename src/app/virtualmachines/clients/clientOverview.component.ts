@@ -103,7 +103,7 @@ export class ClientOverviewComponent implements OnInit {
      */
     checkClient(host: string, port: string): void {
         if (host && port) {
-            this.clientservice.checkClient(host, port).subscribe(data => {
+            this.clientservice.checkClient(host, port).subscribe((data: IResponseTemplate) => {
 
                 if (!data.value) {
                     this.checkStatus = 'No Connection';

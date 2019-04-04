@@ -15,6 +15,7 @@ import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {Client} from "./clients/client.model";
+import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 
 /**
  * Start virtualmachine component.
@@ -27,7 +28,7 @@ import {Client} from "./clients/client.model";
 })
 export class VirtualMachineComponent implements OnInit {
 
-    data: string = '';
+    newVm: VirtualMachine = null;
     creating_vm_status: string = 'Creating..';
     creating_vm_prograss_bar: string = 'progress-bar-animated';
     checking_vm_status: string = '';
@@ -44,6 +45,8 @@ export class VirtualMachineComponent implements OnInit {
      * All image of a project.
      */
     images: Image[];
+
+    create_error: IResponseTemplate;
 
     /**
      * All flavors of a project.
@@ -243,16 +246,16 @@ export class VirtualMachineComponent implements OnInit {
 
         setTimeout(
             () => {
-                this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
-                    if (res['Started'] || res['Error']) {
+                this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => {
+                    if (newVm.status === 'ACTIVE') {
                         this.resetProgressBar();
-                        this.data = res;
+                        this.newVm = newVm;
                         this.getSelectedProjectDiskspace();
                         this.getSelectedProjectVms();
                         this.getSelectedProjectVolumes();
 
-                    } else {
-                        if (res['Waiting'] === 'PORT_CLOSED') {
+                    } else if (newVm.status) {
+                        if (newVm.status === 'PORT_CLOSED') {
                             this.checking_vm_status = 'Active';
                             this.checking_vm_status_progress_bar = '';
                             this.creating_vm_prograss_bar = '';
@@ -261,6 +264,12 @@ export class VirtualMachineComponent implements OnInit {
 
                         }
                         this.check_status_loop(id)
+                    } else {
+                        this.resetProgressBar();
+                        this.create_error = <IResponseTemplate> newVm;
+                        this.getSelectedProjectDiskspace();
+                        this.getSelectedProjectVms();
+                        this.getSelectedProjectVolumes();
                     }
 
                 })
@@ -277,27 +286,33 @@ export class VirtualMachineComponent implements OnInit {
      * @param {string} projectid
      */
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string): void {
+        this.create_error = null;
+
         if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
+            this.create_error = null;
             const re: RegExp = /\+/gi;
 
             const flavor_fixed: string = flavor.replace(re, '%2B');
 
             this.virtualmachineservice.startVM(
                 flavor_fixed, image, servername, project, projectid,
-                this.volumeName, this.diskspace.toString()).subscribe(data => {
+                this.volumeName, this.diskspace.toString()).subscribe((newVm: VirtualMachine) => {
 
-                if (data['Created']) {
+                if (newVm.status === 'Build') {
                     this.creating_vm_status = 'Created';
                     this.creating_vm_prograss_bar = '';
                     this.checking_vm_status = 'Checking status..';
                     this.checking_vm_status_progress_bar = 'progress-bar-animated';
                     this.checking_vm_status_width = 33;
+                    this.check_status_loop(newVm.openstackid);
 
-                    this.check_status_loop(data['Created']);
+                } else if (newVm.status) {
+                    this.creating_vm_status = 'Creating';
+                    this.newVm = newVm;
+                    this.check_status_loop(newVm.openstackid);
                 } else {
                     this.creating_vm_status = 'Creating';
-
-                    this.data = data
+                    this.create_error = <IResponseTemplate> newVm;
                 }
 
             });
@@ -305,7 +320,7 @@ export class VirtualMachineComponent implements OnInit {
         } else {
             this.creating_vm_status = 'Creating';
 
-            this.data = 'INVALID'
+            this.newVm = null;
 
         }
     }
@@ -317,9 +332,8 @@ export class VirtualMachineComponent implements OnInit {
      */
     getSelectedProjectClient(groupid: number): void {
         this.client_checked = false;
-        this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => {
-            this.selectedProjectClient = res;
-            if (res['status'] === 'Connected') {
+        this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client) => {
+            if (client.status && client.status === 'Connected') {
                 this.client_avaiable = true;
 
                 this.getSelectedProjectDiskspace();
@@ -333,7 +347,7 @@ export class VirtualMachineComponent implements OnInit {
                 this.client_checked = true;
 
             }
-            this.selectedProjectClient = res;
+            this.selectedProjectClient = client;
 
         })
     }
@@ -342,10 +356,10 @@ export class VirtualMachineComponent implements OnInit {
      * Reset the data attribute.
      */
     resetData(): void {
-        if (this.data === 'INVALID') {
+        if (this.newVm === null) {
             return;
         }
-        this.data = '';
+        this.newVm = null;
     }
 
     /**

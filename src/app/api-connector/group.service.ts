@@ -5,6 +5,7 @@ import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {IResponseTemplate} from "./response-template";
+import {Client} from "../virtualmachines/clients/client.model";
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -23,16 +24,16 @@ export class GroupService {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/computecenter/`, {
             withCredentials: true
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
 
     }
 
-    getClient(groupid: string): Observable<any> {
+    getClient(groupid: string): Observable<Client> {
 
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/`, {
+        return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/`, {
             withCredentials: true,
             headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
 
     }
 
@@ -347,7 +348,7 @@ export class GroupService {
         return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/`, params, {
             withCredentials: true,
             headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
     }
 
     isFreemiumActive(): Observable<IResponseTemplate> {
