@@ -5,6 +5,7 @@ import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
 
 /**
  * FullLayout component.
@@ -56,7 +57,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     is_vm_project_member(): void ***REMOVED***
-        this.groupService.getMemberGroupsStatus().subscribe(result => ***REMOVED***
+        this.groupService.getSimpleVmByUser().subscribe(result => ***REMOVED***
             if (result.length > 0) ***REMOVED***
                 this.vm_project_member = true
             ***REMOVED***
@@ -80,8 +81,8 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     checkVOstatus(): void ***REMOVED***
-        this.voService.isVo().subscribe(result => ***REMOVED***
-            this.is_vo_admin = result['Is_Vo_Manager'];
+        this.voService.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
+            this.is_vo_admin = <boolean><Boolean>result.value;
         ***REMOVED***)
     ***REMOVED***
 

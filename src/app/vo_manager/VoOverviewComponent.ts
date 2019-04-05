@@ -6,6 +6,7 @@ import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.servi
 import * as moment from 'moment';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/filter-base-class';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
 import ***REMOVED***FacilityService***REMOVED*** from "../api-connector/facility.service";
 
 /**
@@ -47,14 +48,15 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     public usersModalProjectName: string;
 
     public managerFacilities: [string, number][];
+
     // public selectedFacility: [string, number];
 
     constructor(private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) ***REMOVED***
         super();
         this.getVoProjects();
-        this.getComputeCenters();
-        this.voserice.getNewsletterSubscriptionCounter().subscribe(result => ***REMOVED***
-            this.newsletterSubscriptionCounter = result['subscribed'];
+        this.voserice.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate) => ***REMOVED***
+            this.newsletterSubscriptionCounter = <number>result.value
+
         ***REMOVED***);
 
     ***REMOVED***
@@ -79,7 +81,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     ***REMOVED***
 
     sendEmail(subject: string, message: string, reply?: string): void ***REMOVED***
-      console.log(this.emailType);
+        console.log(this.emailType);
         switch (this.emailType) ***REMOVED***
             case 0: ***REMOVED***
                 this.sendMailToVo(subject, message, this.selectedFacility.toString(), this.selectedProjectType, reply);
@@ -97,8 +99,8 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
 
     sendNewsletterToVo(subject: string, message: string, reply?: string): void ***REMOVED***
         this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
-            .subscribe(result => ***REMOVED***
-                if (result === 1) ***REMOVED***
+            .subscribe((result: IResponseTemplate) => ***REMOVED***
+                if (<boolean><Boolean>result.value === true) ***REMOVED***
                     this.emailStatus = 1;
                 ***REMOVED*** else ***REMOVED***
                     this.emailStatus = 2;
@@ -109,8 +111,9 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
 
     sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): void ***REMOVED***
         this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), facility, type, encodeURIComponent(reply))
-            .subscribe(result => ***REMOVED***
-                if (result === 1) ***REMOVED***
+            .subscribe((result: IResponseTemplate) => ***REMOVED***
+                if (<boolean><Boolean>result.value === true) ***REMOVED***
+
                     this.emailStatus = 1;
                 ***REMOVED*** else ***REMOVED***
                     this.emailStatus = 2;
@@ -171,8 +174,8 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     getProjectLifetime(project: Project): void ***REMOVED***
         this.details_loaded = false;
         if (!project.Lifetime) ***REMOVED***
-            this.groupservice.getLifetime(project.Id.toString()).subscribe(res => ***REMOVED***
-                const lifetime: number = res['lifetime'];
+            this.groupservice.getLifetime(project.Id.toString()).subscribe((time: IResponseTemplate) => ***REMOVED***
+                const lifetime: number = <number>time.value;
                 const dateCreatedString: string = project.DateCreated;
 
                 let expirationDate: string;
@@ -209,8 +212,9 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
                     shortname = group['name']
                 ***REMOVED***
                 let compute_center: ComputecenterComponent = null;
-
+                console.log(facility)
                 if (facility) ***REMOVED***
+
                     compute_center = new ComputecenterComponent(
                         facility['compute_center_facility_id'],
                         facility['compute_center_name'],
@@ -251,8 +255,8 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     ***REMOVED***
 
     getProjectStatus(project: Project): void ***REMOVED***
-        this.voserice.getProjectStatus(project.Id).subscribe(res => ***REMOVED***
-            project.Status = res['status']
+        this.voserice.getProjectStatus(project.Id).subscribe((res: IResponseTemplate) => ***REMOVED***
+            project.Status = <number>res.value;
         ***REMOVED***)
     ***REMOVED***
 
@@ -264,8 +268,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     ***REMOVED***
 
     removeResourceFromGroup(groupid: number | string): void ***REMOVED***
-        this.voserice.removeResourceFromGroup(groupid.toString()).subscribe(() => ***REMOVED***
-        ***REMOVED***)
+        this.voserice.removeResourceFromGroup(groupid.toString()).subscribe()
     ***REMOVED***
 
     getMembesOfTheProject(projectid: number, projectname: string): void ***REMOVED***

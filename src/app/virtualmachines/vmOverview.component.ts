@@ -7,6 +7,8 @@ import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service
 import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
 import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/filter-base-class';
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
+import ***REMOVED***SnapshotModel***REMOVED*** from "./snapshots/snapshot.model";
 
 /**
  * Vm overview componentn.
@@ -54,14 +56,9 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * @type ***REMOVED***number***REMOVED***
      */
     vmEnd: number = this.vmsPerPage;
-    /**
-     * Name of vm which changed status.
-     */
-    status_changed_vm: string;
-    /**
-     * Id of vm which changed status.
-     */
-    status_changed_vm_id: string;
+
+
+    selectedVm: VirtualMachine = null;
 
     /**
      * If user is vo admin.
@@ -82,7 +79,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
     snapshotNameCheckDone: boolean = false;
     snapshotDone: string = 'Waiting';
     /**
-     * Name of the snapshot.
+     * name of the snapshot.
      */
     snapshotName: string = '';
     /**
@@ -195,9 +192,9 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      */
     validSnapshotName(e) ***REMOVED***
         this.snapshotNameCheckDone = false;
-        this.imageService.checkSnapshotNameVaiable(this.snapshotName).subscribe(res => ***REMOVED***
+        this.imageService.checkSnapshotNameAvailable(this.snapshotName).subscribe((res: IResponseTemplate) => ***REMOVED***
 
-            this.validSnapshotNameBool = this.snapshotName.length > 0 && res['valid']
+            this.validSnapshotNameBool = this.snapshotName.length > 0 && <boolean><Boolean>res.value;
             this.snapshotNameCheckDone = true;
         ***REMOVED***)
 
@@ -214,26 +211,22 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * Check status of vm.
      * @param ***REMOVED***string***REMOVED*** openstackid  of the instance
      */
-    checkStatus(openstackid: string): void ***REMOVED***
-        this.virtualmachineservice.checkVmStatus(openstackid).subscribe(() => ***REMOVED***
+    checkStatus(vm: VirtualMachine): void ***REMOVED***
+        this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => ***REMOVED***
 
-                this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
-                        this.vms_content = vms;
-                        for (const vm of this.vms_content) ***REMOVED***
-                            if (vm.created_at !== '') ***REMOVED***
-                                vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
-                            ***REMOVED***
-                            if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
-                                vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
-                            ***REMOVED*** else ***REMOVED***
-                                vm.stopped_at = ''
-                            ***REMOVED***
-                        ***REMOVED***
-                        this.applyFilter()
+                this.setCollapseStatus(updated_vm.openstackid, false);
 
-                    ***REMOVED***
-                );
+                if (updated_vm.created_at !== '') ***REMOVED***
+                    updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+                ***REMOVED***
+                if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                    updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+                ***REMOVED*** else ***REMOVED***
+                    updated_vm.stopped_at = ''
+                ***REMOVED***
 
+                this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+                this.applyFilter();
             ***REMOVED***
         )
     ***REMOVED***
@@ -242,19 +235,23 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * Delete Vm.
      * @param ***REMOVED***string***REMOVED*** openstack_id of instance
      */
-    deleteVm(openstack_id: string): void ***REMOVED***
-        this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => ***REMOVED***
+    deleteVm(vm: VirtualMachine): void ***REMOVED***
+        this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => ***REMOVED***
 
-            this.status_changed = 0;
+            this.setCollapseStatus(updated_vm.openstackid, false);
 
-            if (this.tab === 'own') ***REMOVED***
-                this.getVms();
-            ***REMOVED*** else if (this.tab === 'all') ***REMOVED***
-                this.getAllVms();
-
+            if (updated_vm.created_at !== '') ***REMOVED***
+                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+            ***REMOVED***
+            if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+            ***REMOVED*** else ***REMOVED***
+                updated_vm.stopped_at = ''
             ***REMOVED***
 
-            if (result['deleted'] === true) ***REMOVED***
+            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+            this.applyFilter();
+            if (updated_vm.status === 'DELETED') ***REMOVED***
                 this.status_changed = 1;
             ***REMOVED*** else ***REMOVED***
                 this.status_changed = 2;
@@ -268,13 +265,15 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * @param ***REMOVED***string***REMOVED*** openstack_id of the instance
      * @param ***REMOVED***string***REMOVED*** reboot_type HARD|SOFT
      */
-    public rebootVm(openstack_id: string, reboot_type: string): void ***REMOVED***
-        this.virtualmachineservice.rebootVM(openstack_id, reboot_type).subscribe(result => ***REMOVED***
+    public
+
+    rebootVm(vm: VirtualMachine, reboot_type: string): void ***REMOVED***
+        this.virtualmachineservice.rebootVM(vm.openstackid, reboot_type).subscribe((result: IResponseTemplate) => ***REMOVED***
             this.status_changed = 0;
 
-            if (result['reboot']) ***REMOVED***
+            if (<boolean><Boolean>result.value) ***REMOVED***
                 this.status_changed = 1;
-                this.check_status_loop(openstack_id)
+                this.check_status_loop(vm)
             ***REMOVED*** else ***REMOVED***
                 this.status_changed = 2;
             ***REMOVED***
@@ -286,51 +285,68 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * Check Status of vm in loop till active.
      * @param ***REMOVED***string***REMOVED*** id of instance.
      */
-    check_status_loop(id: string): void ***REMOVED***
+    check_status_loop(vm: VirtualMachine): void ***REMOVED***
 
         setTimeout(
             () => ***REMOVED***
-                this.virtualmachineservice.checkVmStatus(id).subscribe(res => ***REMOVED***
+                this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => ***REMOVED***
 
-                    if (res['Started']) ***REMOVED***
+                    if (updated_vm.status === 'ACTIVE') ***REMOVED***
                         this.reboot_done = true;
-                        if (this.tab === 'own') ***REMOVED***
-                            this.getVms();
-                        ***REMOVED*** else if (this.tab === 'all') ***REMOVED***
-                            this.getAllVms();
+                        this.setCollapseStatus(updated_vm.openstackid, false);
 
+                        if (updated_vm.created_at !== '') ***REMOVED***
+                            updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+                        ***REMOVED***
+                        if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                            updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+                        ***REMOVED*** else ***REMOVED***
+                            updated_vm.stopped_at = ''
                         ***REMOVED***
 
+                        this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+                        this.applyFilter();
+
                     ***REMOVED*** else ***REMOVED***
-                        if (res['Error']) ***REMOVED***
+                        if (vm['error']) ***REMOVED***
                             this.status_check_error = true
 
                         ***REMOVED***
-                        this.check_status_loop(id)
+                        this.check_status_loop(vm)
                     ***REMOVED***
 
                 ***REMOVED***)
-            ***REMOVED***,
-            this.checkStatusTimeout);
+            ***REMOVED***
+            ,
+            this.checkStatusTimeout
+        )
+        ;
     ***REMOVED***
 
     /**
      * Stop a vm.
      * @param ***REMOVED***string***REMOVED*** openstack_id of instance.
      */
-    stopVm(openstack_id: string): void ***REMOVED***
-        this.virtualmachineservice.stopVM(openstack_id).subscribe(result => ***REMOVED***
+    stopVm(vm: VirtualMachine): void ***REMOVED***
+        this.virtualmachineservice.stopVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => ***REMOVED***
 
             this.status_changed = 0;
 
-            if (this.tab === 'own') ***REMOVED***
-                this.getVms();
-            ***REMOVED*** else if (this.tab === 'all') ***REMOVED***
-                this.getAllVms();
+            this.setCollapseStatus(updated_vm.openstackid, false);
 
+            if (updated_vm.created_at !== '') ***REMOVED***
+                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+            ***REMOVED***
+            if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+            ***REMOVED*** else ***REMOVED***
+                updated_vm.stopped_at = ''
             ***REMOVED***
 
-            if (result['stopped']) ***REMOVED***
+            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+            this.applyFilter();
+
+            if (updated_vm.status === 'SUSPENDED') ***REMOVED***
                 this.status_changed = 1;
             ***REMOVED*** else ***REMOVED***
                 this.status_changed = 2;
@@ -397,20 +413,25 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * Resume a vm.
      * @param ***REMOVED***string***REMOVED*** openstack_id of instance.
      */
-    resumeVM(openstack_id: string): void ***REMOVED***
+    resumeVM(vm: VirtualMachine): void ***REMOVED***
 
-        this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => ***REMOVED***
+        this.virtualmachineservice.resumeVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => ***REMOVED***
 
             this.status_changed = 0;
+            this.setCollapseStatus(updated_vm.openstackid, false);
 
-            if (this.tab === 'own') ***REMOVED***
-                this.getVms();
-            ***REMOVED*** else if (this.tab === 'all') ***REMOVED***
-                this.getAllVms();
-
+            if (updated_vm.created_at !== '') ***REMOVED***
+                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+            ***REMOVED***
+            if (updated_vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+            ***REMOVED*** else ***REMOVED***
+                updated_vm.stopped_at = ''
             ***REMOVED***
 
-            if (result['resumed']) ***REMOVED***
+            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+            this.applyFilter();
+            if (updated_vm.status === 'ACTIVE') ***REMOVED***
                 this.status_changed = 1;
             ***REMOVED*** else ***REMOVED***
                 this.status_changed = 2;
@@ -426,7 +447,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
         this.virtualmachineservice.getAllVM().subscribe(vms => ***REMOVED***
                 this.vms_content = vms;
                 for (const vm of this.vms_content) ***REMOVED***
-                    this.setCollapseStatus(vm.openstackid, false)
+                    this.setCollapseStatus(vm.openstackid, false);
 
                     if (vm.created_at !== '') ***REMOVED***
                         vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
@@ -455,8 +476,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * @param ***REMOVED***UserService***REMOVED*** userservice
      */
     checkVOstatus(): void ***REMOVED***
-        this.voService.isVo().subscribe(res => ***REMOVED***
-            this.is_vo_admin = res['Is_Vo_Manager'];
+        this.voService.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
+            this.is_vo_admin = <boolean><Boolean>result.value;
         ***REMOVED***)
     ***REMOVED***
 
@@ -466,13 +487,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
      * @param ***REMOVED***string***REMOVED*** snapshot_name name of the snapshot
      */
     createSnapshot(snapshot_instance: string, snapshot_name: string): void ***REMOVED***
-        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => ***REMOVED***
-            if (result['Error']) ***REMOVED***
-                this.snapshotDone = result['Error'].toString();
-            ***REMOVED*** else if (result['Created']) ***REMOVED***
-                this.imageService.getSnapshot(result['Created']).subscribe(() => ***REMOVED***
-                ***REMOVED***)
+        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe((newSnapshot: SnapshotModel) => ***REMOVED***
+            if (newSnapshot.snapshot_openstackid) ***REMOVED***
                 this.snapshotDone = 'true';
+
+            ***REMOVED*** else ***REMOVED***
+                this.snapshotDone = 'error';
+
             ***REMOVED***
 
         ***REMOVED***)

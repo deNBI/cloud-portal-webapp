@@ -5,6 +5,7 @@ import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angu
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import ***REMOVED***Volume***REMOVED*** from '../virtualmachines/volumes/volume';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "./response-template";
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -76,38 +77,38 @@ export class VirtualmachineService ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
-    deleteVM(openstack_id: string): Observable<any> ***REMOVED***
+    deleteVM(openstack_id: string): Observable<VirtualMachine> ***REMOVED***
 
-        return this.http.delete(`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/`, ***REMOVED***
+        return this.http.delete<VirtualMachine>(`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/`, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
 
     ***REMOVED***
 
-    stopVM(openstack_id: string): Observable<any> ***REMOVED***
+    stopVM(openstack_id: string): Observable<VirtualMachine> ***REMOVED***
         const params: HttpParams = new HttpParams().set('os_action', 'stop');
 
-        return this.http.post(`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/action/`, params, ***REMOVED***
+        return this.http.post<VirtualMachine> (`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/action/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
     ***REMOVED***
 
-    rebootVM(openstack_id: string, reboot_type: string): Observable<any> ***REMOVED***
+    rebootVM(openstack_id: string, reboot_type: string): Observable<IResponseTemplate> ***REMOVED***
         const params: HttpParams = new HttpParams().set('os_action', 'reboot').set('reboot_type', reboot_type);
 
-        return this.http.post(`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/action/`, params, ***REMOVED***
+        return this.http.post<IResponseTemplate> (`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/action/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
     ***REMOVED***
 
-    resumeVM(openstack_id: string): Observable<any> ***REMOVED***
+    resumeVM(openstack_id: string): Observable<VirtualMachine> ***REMOVED***
 
         const params: HttpParams = new HttpParams().set('os_action', 'resume');
 
-        return this.http.post(`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/action/`, params, ***REMOVED***
+        return this.http.post<VirtualMachine>(`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/action/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
@@ -121,22 +122,22 @@ export class VirtualmachineService ***REMOVED***
 
     ***REMOVED***
 
-    createVolume(volume_name: string, volume_diskspace: string, vm_openstackid: string): Observable<any> ***REMOVED***
+    createVolume(volume_name: string, volume_diskspace: string, vm_openstackid: string): Observable<Volume> ***REMOVED***
         const params: HttpParams = new HttpParams().set('volume_name', volume_name)
             .set('volume_diskspace', volume_diskspace)
             .set('vm_openstackid', vm_openstackid);
 
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***volumes/`, params, ***REMOVED***
+        return this.http.post<Volume> (`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***volumes/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
     ***REMOVED***
 
-    attachVolumetoServer(volume_id: string, instance_id: string): Observable<any> ***REMOVED***
+    attachVolumetoServer(volume_id: string, instance_id: string): Observable<IResponseTemplate> ***REMOVED***
 
         const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'attach');
 
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***volumes/$***REMOVED***volume_id***REMOVED***/action/`, params, ***REMOVED***
+        return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***volumes/$***REMOVED***volume_id***REMOVED***/action/`, params, ***REMOVED***
                 withCredentials: true,
                 headers: header
             ***REMOVED***
@@ -144,29 +145,29 @@ export class VirtualmachineService ***REMOVED***
 
     ***REMOVED***
 
-    renameVolume(volume_id: string, new_volume_name: string): Observable<any> ***REMOVED***
+    renameVolume(volume_id: string, new_volume_name: string): Observable<Volume> ***REMOVED***
         const params: HttpParams = new HttpParams().set('new_volume_name', new_volume_name);
 
-        return this.http.patch(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***volumes/$***REMOVED***volume_id***REMOVED***/`, params, ***REMOVED***
+        return this.http.patch<Volume>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***volumes/$***REMOVED***volume_id***REMOVED***/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
 
     ***REMOVED***
 
-    deleteVolume(volume_id: string): Observable<any> ***REMOVED***
+    deleteVolume(volume_id: string): Observable<IResponseTemplate> ***REMOVED***
 
-        return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***volumes/$***REMOVED***volume_id***REMOVED***/`, ***REMOVED***
+        return this.http.delete<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***volumes/$***REMOVED***volume_id***REMOVED***/`, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
     ***REMOVED***
 
-    deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<any> ***REMOVED***
+    deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<IResponseTemplate> ***REMOVED***
 
         const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'detach');
 
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***volumes/$***REMOVED***volume_id***REMOVED***/action/`, params, ***REMOVED***
+        return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***volumes/$***REMOVED***volume_id***REMOVED***/action/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)

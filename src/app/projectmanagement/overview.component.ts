@@ -10,6 +10,7 @@ import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 import ***REMOVED***ProjectMemberApplication***REMOVED*** from './project_member_application';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from './computecenter.component';
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modules/baseClass/abstract-base-class';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
 
 /**
  * Projectoverview component.
@@ -52,6 +53,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
     public addUserModalProjectName: string;
     public addUserModalRealName: string;
     public addUserModalInvitationLink: string = '';
+
     public showLink: boolean = true;
 
     public UserModalFacilityDetails: [string, string][];
@@ -76,31 +78,11 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-    setUserFacilityPassword(facility: string, details: [string, string][]): void ***REMOVED***
-        this.userservice.setUserFacilityPassword(facility).subscribe(result => ***REMOVED***
-            for (const key of details) ***REMOVED***
-                if (key[0] === 'Support') ***REMOVED***
-                    this.passwordModalEmail = key[1];
-                ***REMOVED***
-            ***REMOVED***
-
-            this.passwordModalFacility = facility;
-            if (result['Error']) ***REMOVED***
-                this.passwordModalTitle = 'Set or update password';
-                this.passwordModalType = 'warning'
-            ***REMOVED*** else ***REMOVED***
-                this.passwordModalTitle = 'Success';
-                this.passwordModalType = 'success';
-                this.passwordModalPassword = result.toString()
-            ***REMOVED***
-        ***REMOVED***)
-    ***REMOVED***
-
     getProjectLifetime(project: Project): void ***REMOVED***
         this.details_loaded = false;
         if (!project.Lifetime) ***REMOVED***
-            this.groupservice.getLifetime(project.Id).subscribe(res => ***REMOVED***
-                const lifetime: number | string = res['lifetime'];
+            this.groupservice.getLifetime(project.Id).subscribe((time: IResponseTemplate) => ***REMOVED***
+                const lifetime: number | string = <number>time.value;
                 const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
                 if (lifetime !== -1) ***REMOVED***
                     const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
@@ -120,7 +102,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
 
-   copyLink(text:string) ***REMOVED***
+    copyLink(text: string) ***REMOVED***
         const event = e => ***REMOVED***
             e.clipboardData.setData('text/plain', text);
             e.preventDefault();
@@ -176,8 +158,8 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         this.UserModalFacility = null;
     ***REMOVED***
 
-    filterMembers(searchString: string, groupid: number): void ***REMOVED***
-        this.userservice.getFilteredMembersOfdeNBIVo(searchString, groupid.toString()).subscribe(result => ***REMOVED***
+    filterMembers(searchString: string): void ***REMOVED***
+        this.userservice.getFilteredMembersOfdeNBIVo(searchString).subscribe(result => ***REMOVED***
             this.filteredMembers = result;
         ***REMOVED***)
     ***REMOVED***

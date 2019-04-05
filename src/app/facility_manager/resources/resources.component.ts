@@ -24,10 +24,8 @@ export class ResourcesComponent implements OnInit ***REMOVED***
     public selectedFacility: [string, number];
 
     isLoaded: boolean = false;
-    simpleVmRessource: Resources;
-    openstackWFCResources: Resources;
-    openstackApprovedResources: Resources;
-    totalResource: Resources;
+    resources: Resources [];
+
     tableId: string = 'contentToConvert';
     today: number = Date.now();
     coreFactors: CoreFactor[] = [];
@@ -76,38 +74,10 @@ export class ResourcesComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
 
-
     public getSelectedFacilityResources(): void ***REMOVED***
-        this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe((res: object) => ***REMOVED***
-                this.simpleVmRessource = new Resources(
-                    'Simple VM',
-                    res['simpleVmApplications']['totalRam'],
-                    res['simpleVmApplications']['totalCores'],
-                    res['simpleVmApplications']['totalVms'], res['simpleVmApplications']['totalVolumeLimit'],
-                    res['simpleVmApplications']['totalVolumeCounter'], 0, res['simpleVmApplications']['totalGPU']);
-                this.openstackApprovedResources = new Resources(
-                    'Approved OpenStack',
-                    res['approvedOpenStackApplications']['totalRam'],
-                    res['approvedOpenStackApplications']['totalCores'],
-                    res['approvedOpenStackApplications']['totalVms'], res['approvedOpenStackApplications']['totalVolumeLimit'],
-                    res['approvedOpenStackApplications']['totalVolumeCounter'],
-                    res['approvedOpenStackApplications']['totalObjectStorage'],
-                    res['approvedOpenStackApplications']['totalGPU']);
-                this.openstackWFCResources = new Resources(
-                    'Wait for Confirmation OpenStack',
-                    res['wfcOpenStackApplications']['totalRam'],
-                    res['wfcOpenStackApplications']['totalCores'],
-                    res['wfcOpenStackApplications']['totalVms'], res['wfcOpenStackApplications']['totalVolumeLimit'],
-                    res['wfcOpenStackApplications']['totalVolumeCounter'],
-                    res['wfcOpenStackApplications']['totalObjectStorage'],
-                    res['wfcOpenStackApplications']['totalGPU']);
-                this.totalResource = new Resources(
-                    'Total',
-                    res['total']['totalRam'], res['total']['totalCores'],
-                    res['total']['totalVms'], res['total']['totalVolumeLimit'],
-                    res['total']['totalVolumeCounter'], res['total']['totalObjectStorage'],
-                    res['total']['totalGPU']);
+        this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe((res: Resources[]) => ***REMOVED***
 
+                this.resources = res;
                 this.isLoaded = true;
             ***REMOVED***
         )

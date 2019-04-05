@@ -7,6 +7,7 @@ import ***REMOVED***UserService***REMOVED*** from '../../api-connector/user.serv
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../../projectmanagement/computecenter.component';
 import ***REMOVED***FacilityService***REMOVED*** from '../../api-connector/facility.service';
 import ***REMOVED***VoService***REMOVED*** from '../../api-connector/vo.service';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../../api-connector/response-template";
 
 /**
  * Client component.
@@ -59,19 +60,21 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     /**
-     * Check if user is vo.
+     * Check vm status.
+     * @param ***REMOVED***UserService***REMOVED*** userservice
      */
     checkVOstatus(): void ***REMOVED***
-        this.voservice.isVo().subscribe(result => ***REMOVED***
-            this.is_vo_admin = result['Is_Vo_Manager'];
+        this.voservice.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
+            this.is_vo_admin = <boolean><Boolean>result.value;
         ***REMOVED***)
+
     ***REMOVED***
 
     /**
      * Get all clients status checked.
      */
     getClientsChecked(): void ***REMOVED***
-        this.clientservice.getClientsChecked().subscribe(clients => ***REMOVED***
+        this.clientservice.getClientsChecked().subscribe((clients: Client[]) => ***REMOVED***
             this.clients = clients;
             this.isLoaded = true;
         ***REMOVED***);
@@ -100,11 +103,11 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
      */
     checkClient(host: string, port: string): void ***REMOVED***
         if (host && port) ***REMOVED***
-            this.clientservice.checkClient(host, port).subscribe(data => ***REMOVED***
+            this.clientservice.checkClient(host, port).subscribe((data: IResponseTemplate) => ***REMOVED***
 
-                if (!data['status']) ***REMOVED***
+                if (!data.value) ***REMOVED***
                     this.checkStatus = 'No Connection';
-                ***REMOVED*** else if (data['status']) ***REMOVED***
+                ***REMOVED*** else if (data.value) ***REMOVED***
                     this.checkStatus = 'Connected';
                 ***REMOVED*** else ***REMOVED***
                     this.checkStatus = 'check failed';
@@ -124,23 +127,12 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
     postClient(host: string, port: string, location: string): void ***REMOVED***
 
         if (host && port && location) ***REMOVED***
-            this.clientservice.postClient(host, port, location).subscribe(() => ***REMOVED***
-
-                this.getClientsChecked();
+            this.clientservice.postClient(host, port, location).subscribe((newClient: Client) => ***REMOVED***
+                this.clients.push(newClient);
             ***REMOVED***);
         ***REMOVED***
     ***REMOVED***
 
-    /**
-     * Delete a client.
-     * @param ***REMOVED***number***REMOVED*** client_id
-     */
-    deleteClient(client_id: number): void ***REMOVED***
-        this.clientservice.deleteClient(client_id).subscribe(() => ***REMOVED***
-
-            this.getClientsChecked();
-        ***REMOVED***);
-    ***REMOVED***
 
     updateClient(host: string, port: string, location: string, id: string): void ***REMOVED***
         this.clientservice.updateClient(new Client(host, port, location, id)).subscribe((res: Client) => ***REMOVED***
