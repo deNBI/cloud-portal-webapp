@@ -5,6 +5,8 @@ import {ApiSettings} from './api-settings.service';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {IResponseTemplate} from "./response-template";
+import {ImageTag} from "../facility_manager/image-tag";
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -28,17 +30,10 @@ export class ImageService {
 
     }
 
-    getImagesSnapshotsNames(): Observable<any> {
 
-        return this.http.get<Image[]>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
-            withCredentials: true
-        })
+    checkSnapshotNameAvailable(snapshot_name: string): Observable<IResponseTemplate> {
 
-    }
-
-    checkSnapshotNameVaiable(snapshot_name: string): Observable<any> {
-
-        return this.http.get<Image[]>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
             withCredentials: true,
             params: {snapshot_name: snapshot_name}
 
@@ -61,39 +56,39 @@ export class ImageService {
 
     }
 
-    addImageTags(imageTag: string, description: string): Observable<any> {
+    addImageTags(imageTag: string, description: string): Observable<ImageTag> {
 
         const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('description', description);
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}imageTags/`, params, {
+        return this.http.post<ImageTag>(`${ApiSettings.getApiBaseURL()}imageTags/`, params, {
             withCredentials: true,
             headers: header
         })
 
     }
 
-    deleteImageTag(imageTag: string): Observable<any> {
+    deleteImageTag(imageTag: string): Observable<IResponseTemplate> {
 
-        return this.http.delete(`${ApiSettings.getApiBaseURL()}imageTags/${imageTag}/`, {
+        return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageTags/${imageTag}/`, {
             withCredentials: true,
             headers: header
         })
 
     }
 
-    createSnapshot(snaptshot_instance: string, snapshot_name: string): Observable<any> {
+    createSnapshot(snaptshot_instance: string, snapshot_name: string): Observable<SnapshotModel> {
 
         const params: HttpParams = new HttpParams().set('snapshot_name', snapshot_name).set('snapshot_instance', snaptshot_instance);
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}snapshots/`, params, {
+        return this.http.post<SnapshotModel>(`${ApiSettings.getApiBaseURL()}snapshots/`, params, {
             withCredentials: true,
             headers: header
         })
 
     }
 
-    deleteSnapshot(snapshot_id: string): Observable<any> {
-        return this.http.delete(`${ApiSettings.getApiBaseURL()}snapshots/${snapshot_id}/`, {
+    deleteSnapshot(snapshot_id: string): Observable<IResponseTemplate> {
+        return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/${snapshot_id}/`, {
             withCredentials: true,
             headers: header
         })

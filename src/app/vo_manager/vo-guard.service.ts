@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {VoService} from '../api-connector/vo.service';
 import {Observable} from 'rxjs';
+import {IResponseTemplate} from "../api-connector/response-template";
 
 @Injectable()
 export class VoGuardService implements CanActivate {
@@ -12,10 +13,8 @@ export class VoGuardService implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         return new Promise((resolve, reject) => {
             this.voservice.isVo().subscribe(
-                result => {
-
-                    const res = result;
-                    if (res['Is_Vo_Manager']) {
+                (result: IResponseTemplate) => {
+                    if (<boolean><Boolean>result.value) {
                         return resolve(true)
                     } else {
                         return resolve(false)
@@ -25,3 +24,4 @@ export class VoGuardService implements CanActivate {
 
     }
 }
+

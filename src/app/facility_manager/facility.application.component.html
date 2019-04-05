@@ -84,7 +84,7 @@
                             <tr>
                                 <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + application.Id)"
                                     colspan="6">
-                                    <div id="application_review-{{ application.Id }}"
+                                    <div id="application_review-{{ application.id }}"
                                          [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">
@@ -334,7 +334,7 @@
                             <tr>
                                 <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + app.Id)"
                                     colspan="6">
-                                    <div id="application_review-{{ app.Id }}"
+                                    <div id="application_review-{{ app.id }}"
                                          [class.collapse]="getCollapseStatus('application_review-' + app.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">
@@ -611,7 +611,7 @@
                                             style="margin-left: 5px">Hide</span>
                                         Information
                                     </button>
-                                    <!--button (click)="deleteModal.show();setDeleteId(application.Id)"
+                                    <!--button (click)="deleteModal.show();setDeleteId(application.application_status_id)"
                                             type="button"
                                             class="btn btn-secondary">
                                         Remove Application
@@ -621,7 +621,7 @@
                             <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning)}">
                                 <td [class.collapse_no_margin]="getCollapseStatus('application_history-' + application.Id)"
                                     colspan="6">
-                                    <div id="application_history-{{ application.Id }}"
+                                    <div id="application_history-{{ application.id }}"
                                          [class.collapse]="getCollapseStatus('application_history-' + application.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">

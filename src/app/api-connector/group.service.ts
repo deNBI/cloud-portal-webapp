@@ -4,6 +4,8 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {IResponseTemplate} from "./response-template";
+import {Client} from "../virtualmachines/clients/client.model";
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -22,16 +24,16 @@ export class GroupService {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/computecenter/`, {
             withCredentials: true
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
 
     }
 
-    getClient(groupid: string): Observable<any> {
+    getClient(groupid: string): Observable<Client> {
 
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/`, {
+        return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/`, {
             withCredentials: true,
             headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
 
     }
 
@@ -260,23 +262,13 @@ export class GroupService {
 
     }
 
-    getMemberGroupsStatus(): Observable<any> {
+    getSimpleVmByUser(): Observable<any> {
 
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/singlevm/`, {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/simpleVm/`, {
             withCredentials: true,
             headers: header
 
         })
-    }
-
-    setLifetime(groupid: string, lifetime: string): Observable<any> {
-        const params: HttpParams = new HttpParams().set('lifetime', lifetime);
-
-        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/lifetime/`, params, {
-            withCredentials: true,
-            headers: header
-        })
-
     }
 
     createGroup(group_name: string, group_description: string): Observable<any> {
@@ -289,20 +281,10 @@ export class GroupService {
             })
     }
 
-    getLifetime(groupid: string | number): Observable<any> {
+    getLifetime(groupid: string | number): Observable<IResponseTemplate> {
 
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/lifetime/`, {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/lifetime/`, {
             withCredentials: true
-        })
-
-    }
-
-    setPerunId(groupid: string, applicationId: string): Observable<any> {
-        const params: HttpParams = new HttpParams().set('applicationId', applicationId);
-
-        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/perunId/`, params, {
-            withCredentials: true,
-            headers: header
         })
 
     }
@@ -317,43 +299,43 @@ export class GroupService {
 
     }
 
-    getGroupMaxDiskspace(groupid: string): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/approvedDiskspace/`, {
+    getGroupMaxDiskspace(groupid: string): Observable<IResponseTemplate> {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/approvedDiskspace/`, {
             withCredentials: true
         })
 
     }
 
-    getGroupUsedDiskspace(groupid: string): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedDiskspace/`, {
+    getGroupUsedDiskspace(groupid: string): Observable<IResponseTemplate>{
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedDiskspace/`, {
             withCredentials: true
         })
 
     }
 
-    getVolumesUsed(groupid: string): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedVolumes/`, {
+    getVolumesUsed(groupid: string): Observable<IResponseTemplate> {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedVolumes/`, {
             withCredentials: true
         })
     }
 
-    getVolumeCounter(groupid: string): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/volumesCounter/`, {
+    getVolumeCounter(groupid: string): Observable<IResponseTemplate> {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/volumesCounter/`, {
             withCredentials: true
         })
     }
 
-    getGroupApprovedVms(groupid: string): Observable<any> {
+    getGroupApprovedVms(groupid: string): Observable<IResponseTemplate> {
 
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/approvedVms/`, {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/approvedVms/`, {
             withCredentials: true
         })
 
     }
 
-    getGroupUsedVms(groupid: string): Observable<any> {
+    getGroupUsedVms(groupid: string): Observable<IResponseTemplate> {
 
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedVms/`, {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedVms/`, {
             withCredentials: true
         })
 
@@ -366,13 +348,13 @@ export class GroupService {
         return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/`, params, {
             withCredentials: true,
             headers: header
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
     }
 
-    isFreemiumActive(): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}freemium/`, {
+    isFreemiumActive(): Observable<IResponseTemplate> {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}freemium/`, {
             withCredentials: true
-        }).pipe(catchError((error: any) => throwError(error.error)));
+        })
     }
 
     addMemberToFreemium(): Observable<any> {
