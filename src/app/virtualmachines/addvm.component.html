@@ -78,44 +78,44 @@
                                         Vms</strong>
                                 </div>
                             </div>
-                           <div class="alert alert-warning" role="alert" *ngIf="selectedProjectVmsUsed >= selectedProjectVmsMax">
+                            <div class="alert alert-warning" role="alert" *ngIf="selectedProjectVmsUsed >= selectedProjectVmsMax">
                                 The limit for virtual machines has been reached for this project.
 
                             </div>
 
-                          <div  *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax">
-                            <div *ngIf="selectedProject" class="form-group row">
-                                <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <input required id="id_instance_name" name="instance_name"
-                                               class="form-control"
-                                               type="text" placeholder="Instancename" ngModel
-                                               [ngClass]="***REMOVED***'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
+                            <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax">
+                                <div *ngIf="selectedProject" class="form-group row">
+                                    <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <input required id="id_instance_name" name="instance_name"
+                                                   class="form-control"
+                                                   type="text" placeholder="Instancename" ngModel
+                                                   [ngClass]="***REMOVED***'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)***REMOVED***">
-                                    </div>
-                                    <div style="color: dodgerblue">Info: The instance name will also
-                                        be the hostname of the vm.
-                                    </div>
+                                        </div>
+                                        <div style="color: dodgerblue">Info: The instance name will also
+                                            be the hostname of the vm.
+                                        </div>
                                     </div>
                                 </div>
 
-                            <div *ngIf="selectedProject" class="form-group row">
-                                <label class="col-md-3 form-control-label"><strong>Flavor*</strong></label>
-                                <div class="col-md-6">
+                                <div *ngIf="selectedProject" class="form-group row">
+                                    <label class="col-md-3 form-control-label"><strong>Flavor*</strong></label>
+                                    <div class="col-md-6">
 
 
-                                    <select required class="form-control col-md-6"
-                                            name="selectedFlavor"
-                                            [(ngModel)]="selectedFlavor"
-                                            [ngClass]="***REMOVED***'is-invalid':f.controls.selectedFlavor?.invalid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched),
+                                        <select required class="form-control col-md-6"
+                                                name="selectedFlavor"
+                                                [(ngModel)]="selectedFlavor"
+                                                [ngClass]="***REMOVED***'is-invalid':f.controls.selectedFlavor?.invalid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched),
                              'is-valid':f.controls.selectedFlavor?.valid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched)***REMOVED***">
-                                        <option value="undefined" disabled selected hidden> Please
-                                            Select
-                                        </option>
-                                        <option *ngFor="  let flavor of flavors" [ngValue]="flavor">
-                                            ***REMOVED******REMOVED***flavor.name***REMOVED******REMOVED***
-                                        </option>
+                                            <option value="undefined" disabled selected hidden> Please
+                                                Select
+                                            </option>
+                                            <option *ngFor="  let flavor of flavors" [ngValue]="flavor">
+                                                ***REMOVED******REMOVED***flavor.name***REMOVED******REMOVED***
+                                            </option>
 
 
                                         </select>
@@ -135,19 +135,19 @@
                                                        [flavor]="selectedFlavor"></app-flavor-detail>
                                 </div>
 
-                            <div *ngIf="selectedProject" class="form-group row">
-                                <label class="col-md-3 form-control-label"><strong>Image*</strong></label>
+                                <div *ngIf="selectedProject" class="form-group row">
+                                    <label class="col-md-3 form-control-label"><strong>Image*</strong></label>
 
 
                                     <div class="col-md-6">
 
-                                    <select required class="form-control" name="selectedImage"
-                                            [(ngModel)]="selectedImage"
-                                            [ngClass]="***REMOVED***'is-invalid':f.controls.selectedImage?.invalid && (f.controls.selectedImage?.dirty || f.controls.selectedImage.touched),
+                                        <select required class="form-control" name="selectedImage"
+                                                [(ngModel)]="selectedImage"
+                                                [ngClass]="***REMOVED***'is-invalid':f.controls.selectedImage?.invalid && (f.controls.selectedImage?.dirty || f.controls.selectedImage.touched),
                              'is-valid':f.controls.selectedImage?.valid && (f.controls.selectedImage?.dirty || f.controls.selectedImage?.touched)***REMOVED***">
-                                        <option value="undefined" disabled selected hidden> Please
-                                            Select
-                                        </option>
+                                            <option value="undefined" disabled selected hidden> Please
+                                                Select
+                                            </option>
 
                                             <option *ngFor="let image of images" [ngValue]="image">
                                                 ***REMOVED******REMOVED***image.name***REMOVED******REMOVED***
@@ -197,79 +197,71 @@
                                                [ngClass]="***REMOVED***'is-invalid':diskspace > 0 && volumeName == '',
                              'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')***REMOVED***">
 
-                                </div>
+                                    </div>
 
-                                <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params"
-                                     class="form-group row">
+                                    <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params"
+                                         class="form-group row">
 
-                                    <label class="col-md-3 form-control-label">Storage</label>
+                                        <label class="col-md-3 form-control-label">Storage</label>
 
-                                    <div class="col-md-9">
-                                        <div class="input-group">
-                                            <input min="0" step="1" [value]="diskspace"
-                                                   (input)="diskspace = $event.target.value"
-                                                   type="number"
-                                                   placeholder="e.g 8 ">
-                                            <div class="input-group-append"><span
-                                                    class="input-group-text"> GB
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <input min="0" step="1" [value]="diskspace"
+                                                       (input)="diskspace = $event.target.value"
+                                                       type="number"
+                                                       placeholder="e.g 8 ">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text"> GB
                                     </span></div>
 
-                                            <div class="col-md-6">
-                                                <strong>current: ***REMOVED******REMOVED***selectedProjectDiskspaceUsed***REMOVED******REMOVED*** | max
-                                                    ***REMOVED******REMOVED***selectedProjectDiskspaceMax***REMOVED******REMOVED***
-                                                    GB</strong>
+                                                <div class="col-md-6">
+                                                    <strong>current: ***REMOVED******REMOVED***selectedProjectDiskspaceUsed***REMOVED******REMOVED*** | max
+                                                        ***REMOVED******REMOVED***selectedProjectDiskspaceMax***REMOVED******REMOVED***
+                                                        GB</strong>
+                                                </div>
+
                                             </div>
-
                                         </div>
+
+
+                                    </div>
+                                    <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params"
+                                         class="form-group row">
+
+                                        <label class="col-md-3 form-control-label">Storage volumes</label>
+
+                                        <div class="col-md-9">
+                                            <div class="col-md-6">
+                                                <strong>current: ***REMOVED******REMOVED***selectedProjectVolumesUsed***REMOVED******REMOVED*** | max:
+                                                    ***REMOVED******REMOVED***selectedProjectVolumesMax***REMOVED******REMOVED***
+                                                    Volumes
+                                                </strong>
+                                            </div>
+                                        </div>
+
+
                                     </div>
 
 
-                                </div>
-                                <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params"
-                                     class="form-group row">
-
-                                    <label class="col-md-3 form-control-label">Storage volumes</label>
-
-                                    <div class="col-md-9">
-                                        <div class="col-md-6">
-                                            <strong>current: ***REMOVED******REMOVED***selectedProjectVolumesUsed***REMOVED******REMOVED*** | max:
-                                                ***REMOVED******REMOVED***selectedProjectVolumesMax***REMOVED******REMOVED***
-                                                Volumes
-                                            </strong>
-                                        </div>
-                                    </div>
-
-
+                                    <button type="button"
+                                            [disabled]="f.invalid || (disksfpace > 0 && volumeName == '')"
+                                            class="btn btn-primary offset-md-8"
+                                            data-toggle="modal"
+                                            (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1],diskspace);resetData();resetProgressBar;infoModal.show();">
+                                        Start VM
+                                    </button>
+                                    <br><br><br>
                                 </div>
 
-
-                                <button type="button"
-                                        [disabled]="f.invalid || (disksfpace > 0 && volumeName == '')"
-                                        class="btn btn-primary offset-md-8"
-                                        data-toggle="modal"
-                                        (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1],diskspace);resetData();resetProgressBar;infoModal.show();">
-                                    Start VM
-                                </button>
-                                <br><br><br>
                             </div>
-
                         </div>
-<<<<<<< HEAD
-                        <div class="alert alert-danger"
-                             *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
-                            corresponding client is currently offline.
-                            If you have any questions please contact cloud@denbi.de.
-=======
->>>>>>> dev
-                        </div>
-
 
                     </form>
-                  <div class="alert alert-danger"
-                       *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
-                    corresponding client is currently offline.
-                    If you have any questions please contact cloud@denbi.de.
-                  </div>
+                    <div class="alert alert-danger"
+                         *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
+                        corresponding client is currently offline.
+                        If you have any questions please contact cloud@denbi.de.
+                    </div>
 
 
                 </div>
@@ -284,7 +276,6 @@
 
     </div>
 </div>
-
 
 
 <div bsModal #infoModal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
