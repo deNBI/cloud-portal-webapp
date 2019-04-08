@@ -91,10 +91,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"
-                    *ngIf="volume_action_status == volumeActionStates.WAITING || volume_action_status == volumeActionStates.DETACHING_VOLUME || volume_action_status == volumeActionStates.ATTACHING">
+                    *ngIf="volume_action_status == volumeActionStates.WAITING || volume_action_status == volumeActionStates.DETACHING_VOLUME || volume_action_status == volumeActionStates.ATTACHING || volume_action_status == volumeActionStates.CHANGING_NAME">
                     Waiting </h4>
                 <h4 class="modal-title"
-                    *ngIf="volume_action_status == volumeActionStates.SUCCESS || volume_action_status == volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME || volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED">
+                    *ngIf="volume_action_status == volumeActionStates.SUCCESS || volume_action_status == volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME || volume_action_status ==  volumeActionStates.CHANGING_NAME_SUCESSFULL || volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED">
                     Success </h4>
                 <h4 class="modal-title" *ngIf="volume_action_status == volumeActionStates.ERROR"> Error </h4>
 
@@ -106,6 +106,11 @@
             </div>
 
             <div class="modal-body">
+
+                <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.CHANGING_NAME">
+                    Renaming Volume... <i class="fa fa-spinner fa-spin"
+                                          style="font-size:24px"></i>
+                </div>
                 <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.WAIT_CREATION">
                     Creating Volume... <i class="fa fa-spinner fa-spin"
                                           style="font-size:24px"></i>
@@ -272,7 +277,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
-                        (click)="renameVolume(selected_volume.volume_openstackid,newName.value);newName.value='';renameModal.hide();resultModal.show();">
+                        (click)="renameVolume(selected_volume,newName.value);newName.value='';renameModal.hide();resultModal.show();">
                     Rename Volume
                 </button>
 

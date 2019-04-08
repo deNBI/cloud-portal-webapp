@@ -7,6 +7,7 @@ import {UserService} from '../../api-connector/user.service';
 import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
 import {FacilityService} from '../../api-connector/facility.service';
 import {VoService} from '../../api-connector/vo.service';
+import {IResponseTemplate} from "../../api-connector/response-template";
 
 /**
  * Client component.
@@ -59,19 +60,21 @@ export class ClientOverviewComponent implements OnInit {
     }
 
     /**
-     * Check if user is vo.
+     * Check vm status.
+     * @param {UserService} userservice
      */
     checkVOstatus(): void {
-        this.voservice.isVo().subscribe(result => {
-            this.is_vo_admin = result['Is_Vo_Manager'];
+        this.voservice.isVo().subscribe((result: IResponseTemplate) => {
+            this.is_vo_admin = <boolean><Boolean>result.value;
         })
+
     }
 
     /**
      * Get all clients status checked.
      */
     getClientsChecked(): void {
-        this.clientservice.getClientsChecked().subscribe(clients => {
+        this.clientservice.getClientsChecked().subscribe((clients: Client[]) => {
             this.clients = clients;
             this.isLoaded = true;
         });
@@ -100,11 +103,11 @@ export class ClientOverviewComponent implements OnInit {
      */
     checkClient(host: string, port: string): void {
         if (host && port) {
-            this.clientservice.checkClient(host, port).subscribe(data => {
+            this.clientservice.checkClient(host, port).subscribe((data: IResponseTemplate) => {
 
-                if (!data['status']) {
+                if (!data.value) {
                     this.checkStatus = 'No Connection';
-                } else if (data['status']) {
+                } else if (data.value) {
                     this.checkStatus = 'Connected';
                 } else {
                     this.checkStatus = 'check failed';
@@ -124,23 +127,12 @@ export class ClientOverviewComponent implements OnInit {
     postClient(host: string, port: string, location: string): void {
 
         if (host && port && location) {
-            this.clientservice.postClient(host, port, location).subscribe(() => {
-
-                this.getClientsChecked();
+            this.clientservice.postClient(host, port, location).subscribe((newClient: Client) => {
+                this.clients.push(newClient);
             });
         }
     }
 
-    /**
-     * Delete a client.
-     * @param {number} client_id
-     */
-    deleteClient(client_id: number): void {
-        this.clientservice.deleteClient(client_id).subscribe(() => {
-
-            this.getClientsChecked();
-        });
-    }
 
     updateClient(host: string, port: string, location: string, id: string): void {
         this.clientservice.updateClient(new Client(host, port, location, id)).subscribe((res: Client) => {

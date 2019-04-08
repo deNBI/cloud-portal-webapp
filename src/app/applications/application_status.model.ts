@@ -4,33 +4,33 @@
 export class ApplicationStatus {
 
     /**
-     * Id of the status.
+     * id of the status.
      */
-    private _Id: number;
+    private _application_status_id: number;
 
     /**
-     * Name of the status.
+     * application_status_name of the status.
      */
-    private _Name: string;
+    private _application_status_name: string;
 
     constructor(Id: number, Name: string) {
-        this._Id = Id;
-        this._Name = Name;
+        this._application_status_id = Id;
+        this._application_status_name = Name;
     }
 
-    get Id(): number {
-        return this._Id;
+    get application_status_id(): number {
+        return this._application_status_id;
     }
 
-    set Id(value: number) {
-        this._Id = value;
+    set application_status_id(value: number) {
+        this._application_status_id = value;
     }
 
-    get Name(): string {
-        return this._Name;
+    get application_status_name(): string {
+        return this._application_status_name;
     }
 
-    set Name(value: string) {
-        this._Name = value;
+    set application_status_name(value: string) {
+        this._application_status_name = value;
     }
 }

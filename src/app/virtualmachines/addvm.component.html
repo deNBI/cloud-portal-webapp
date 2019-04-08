@@ -25,7 +25,12 @@
 </div>
 
 <div *ngIf=" isLoaded==false" class="loader"></div>
-<div *ngIf=" isLoaded && userinfo.PublicKey != 'None'">
+<div *ngIf=" isLoaded && userinfo.PublicKey != 'None' && projects.length == 0">
+    <div class="alert alert-warning" role="alert">
+        You are not member of any project.
+    </div>
+</div>
+<div *ngIf=" isLoaded && userinfo.PublicKey != 'None' && projects.length > 0">
 
     <div class="row">
         <div class="col-md-12">
@@ -77,6 +82,7 @@
                                 The limit for virtual machines has been reached for this project.
 
                             </div>
+
                           <div  *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax">
                             <div *ngIf="selectedProject" class="form-group row">
                                 <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
@@ -91,9 +97,6 @@
                                     <div style="color: dodgerblue">Info: The instance name will also
                                         be the hostname of the vm.
                                     </div>
-
-
-
                                     </div>
                                 </div>
 
@@ -251,6 +254,13 @@
                             </div>
 
                         </div>
+<<<<<<< HEAD
+                        <div class="alert alert-danger"
+                             *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
+                            corresponding client is currently offline.
+                            If you have any questions please contact cloud@denbi.de.
+=======
+>>>>>>> dev
                         </div>
 
 
@@ -280,7 +290,7 @@
 <div bsModal #infoModal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-info" role="document"
-         [ngClass]="data['Started'] ? 'modal-lg':''">
+         [ngClass]="newVm?.status =='ACTIVE' ? 'modal-lg':''">
 
         <div class="modal-content">
             <div class="modal-header">
@@ -291,7 +301,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" *ngIf="data=='' || data['Waiting']">
+            <div class="modal-body"
+                 *ngIf="(newVm?.status == 'BUILD' || newVm?.status == 'PORT_CLOSED' || newVm ==null) && !create_error?.error ">
                 <p>We are setting up a machine for you. This can take up to 5 minutes.</p>
 
                 <div class="progress">
@@ -321,19 +332,15 @@
                     machine on the
                     instance overview site</p>
             </div>
-            <div class="modal-body" *ngIf="data['Started']">
-                <pre><code>{{data['Started']}}</code></pre>
+            <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE'">
+                <pre><code>{{newVm?.ssh_command}}</code></pre>
             </div>
-            <div class="modal-body" *ngIf="data['Error']">
-                An Error occured<br><br>
-                <pre><code>{{data['Error']}}</code></pre>
-            </div>
-
-            <div class="modal-body" *ngIf="data=='INVALID'">
-                Parameters missing
+            <div class="modal-body" *ngIf="create_error?.error">
+                An Error occured.<br><br>
+                <pre><code>{{create_error.error}}</code></pre>
             </div>
             <div class="modal-footer">
-                <button *ngIf="data['Started']"
+                <button *ngIf="newVm?.status == 'ACTIVE'"
                         routerLinkActive="active"
                         [routerLink]="['/virtualmachines/vmOverview']"
                         type="button" class="btn btn-info nav-link"
