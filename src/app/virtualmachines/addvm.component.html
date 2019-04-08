@@ -243,7 +243,7 @@
                             </div>
 
 
-                            <button type="button"
+                            <button *ngIf="projectDataLoaded" type="button"
                                     [disabled]="f.invalid || (disksfpace > 0 && volumeName == '')"
                                     class="btn btn-primary offset-md-8"
                                     data-toggle="modal"
