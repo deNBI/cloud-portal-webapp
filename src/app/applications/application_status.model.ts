@@ -4,33 +4,33 @@
 export class ApplicationStatus ***REMOVED***
 
     /**
-     * Id of the status.
+     * id of the status.
      */
-    private _Id: number;
+    private _application_status_id: number;
 
     /**
-     * Name of the status.
+     * application_status_name of the status.
      */
-    private _Name: string;
+    private _application_status_name: string;
 
     constructor(Id: number, Name: string) ***REMOVED***
-        this._Id = Id;
-        this._Name = Name;
+        this._application_status_id = Id;
+        this._application_status_name = Name;
     ***REMOVED***
 
-    get Id(): number ***REMOVED***
-        return this._Id;
+    get application_status_id(): number ***REMOVED***
+        return this._application_status_id;
     ***REMOVED***
 
-    set Id(value: number) ***REMOVED***
-        this._Id = value;
+    set application_status_id(value: number) ***REMOVED***
+        this._application_status_id = value;
     ***REMOVED***
 
-    get Name(): string ***REMOVED***
-        return this._Name;
+    get application_status_name(): string ***REMOVED***
+        return this._application_status_name;
     ***REMOVED***
 
-    set Name(value: string) ***REMOVED***
-        this._Name = value;
+    set application_status_name(value: string) ***REMOVED***
+        this._application_status_name = value;
     ***REMOVED***
 ***REMOVED***

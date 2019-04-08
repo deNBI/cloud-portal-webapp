@@ -2,6 +2,7 @@ import ***REMOVED***Component, Input, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***KeyService***REMOVED*** from '../../../api-connector/key.service';
 import ***REMOVED***ApiSettings***REMOVED*** from '../../../api-connector/api-settings.service';
 import ***REMOVED***Userinfo***REMOVED*** from '../../../userinfo/userinfo.model';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../../../api-connector/response-template";
 
 @Component(***REMOVED***
     selector: '[app-public-key]',
@@ -25,11 +26,9 @@ export class PublicKeyComponent implements OnInit ***REMOVED***
 
     importKey(publicKey: string) ***REMOVED***
 
-        const re = /\+/gi;
+        const re: RegExp = /\+/gi;
 
-        const newstr = publicKey.replace(re, '%2B');
-
-        this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(result => ***REMOVED***
+        this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(() => ***REMOVED***
             this.getUserPublicKey();
         ***REMOVED***);
     ***REMOVED***
@@ -45,9 +44,9 @@ export class PublicKeyComponent implements OnInit ***REMOVED***
 
     ***REMOVED***
 
-    getUserPublicKey() ***REMOVED***
-        this.keyservice.getKey().subscribe(result => ***REMOVED***
-            this.userinfo.PublicKey = result['public_key'];
+    getUserPublicKey(): void ***REMOVED***
+        this.keyservice.getKey().subscribe((key: IResponseTemplate) => ***REMOVED***
+            this.userinfo.PublicKey = <string>key.value;
         ***REMOVED***)
     ***REMOVED***
 
