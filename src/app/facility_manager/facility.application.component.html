@@ -56,28 +56,34 @@
                                 <td>{{application.Institute}}</td>
 
                                 <td>
+                                  <div class="btn-group">
                                     <button type="button"
                                             (click)="resetNotificationModal();notificationModal.show();approveApplication(application.Id)"
-                                            class="btn btn-secondary"><i
-                                            class="fa fa-check"></i>&nbsp;
-                                        Approve
+                                            class="btn btn-success"
+                                            style="margin: auto 2.5px"><i
+                                      class="fa fa-check"></i>&nbsp;
+                                      Approve
                                     </button>
                                     <button
-                                            (click)='resetNotificationModal();notificationModal.show();declineApplication(application.Id)'
-                                            type="button"
-                                            class="btn btn-secondary"><i
-                                            class="fa fa-close"></i>&nbsp;
-                                        Decline
+                                      (click)='resetNotificationModal();notificationModal.show();declineApplication(application.Id)'
+                                      type="button"
+                                      class="btn btn-danger"
+                                      style="margin: auto 2.5px"><i
+                                      class="fa fa-close"></i>&nbsp;
+                                      Decline
                                     </button>
-
-                                    <button (click)="switchCollapseStatus('application_review-' + application.Id);  getMemberDetailsByElixirIdIfCollapsed(application.User,'application_review-' + application.Id);"
-                                            type="button"
-                                            class="btn btn-secondary">
-                                        <i class="fa fa-info-circle"></i>&nbsp;
-                                        <span [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
-                                            [hidden]="getCollapseStatus('application_review-' + application.Id)">Hide</span>
-                                        Information
+                                    <button
+                                      (click)="switchCollapseStatus('application_review-' + application.Id);  getMemberDetailsByElixirIdIfCollapsed(application.User,'application_review-' + application.Id);"
+                                      type="button"
+                                      class="btn btn-secondary"
+                                      style="margin: auto 2.5px">
+                                      <i class="fa fa-info-circle"></i>&nbsp;
+                                      <span
+                                        [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
+                                      [hidden]="getCollapseStatus('application_review-' + application.Id)">Hide</span>
+                                      Information
                                     </button>
+                                  </div>
                                 </td>
                             </tr>
 
@@ -306,28 +312,34 @@
                                 <td>{{app.Institute}}</td>
 
                                 <td>
+                                  <div class="btn-group">
                                     <button type="button"
                                             (click)="resetNotificationModal();notificationModal.show();approveExtension(app)"
-                                            class="btn btn-secondary"><i
-                                            class="fa fa-check"></i>&nbsp;
-                                        Approve
+                                            class="btn btn-success"
+                                            style="margin: auto 2.5px"><i
+                                      class="fa fa-check"></i>&nbsp;
+                                      Approve
                                     </button>
                                     <button
-                                            (click)='resetNotificationModal();notificationModal.show();declineExtension(app)'
-                                            type="button"
-                                            class="btn btn-secondary"><i
-                                            class="fa fa-close"></i>&nbsp;
-                                        Decline
+                                      (click)='resetNotificationModal();notificationModal.show();declineExtension(app)'
+                                      type="button"
+                                      class="btn btn-danger"
+                                      style="margin: auto 2.5px"><i
+                                      class="fa fa-close"></i>&nbsp;
+                                      Decline
                                     </button>
-
-                                    <button (click)="switchCollapseStatus('application_review-' + app.Id);  getMemberDetailsByElixirIdIfCollapsed(app.User,'application_review-' + app.Id);"
-                                            type="button"
-                                            class="btn btn-secondary">
-                                        <i class="fa fa-info-circle"></i>&nbsp;
-                                        <span [hidden]="!getCollapseStatus('application_review-' + app.Id)">Show</span><span
-                                            [hidden]="getCollapseStatus('application_review-' + app.Id)">Hide</span>
-                                        Information
+                                    <button
+                                      (click)="switchCollapseStatus('application_review-' + app.Id);  getMemberDetailsByElixirIdIfCollapsed(app.User,'application_review-' + app.Id);"
+                                      type="button"
+                                      class="btn btn-secondary"
+                                      style="margin: auto 2.5px">
+                                      <i class="fa fa-info-circle"></i>&nbsp;
+                                      <span
+                                        [hidden]="!getCollapseStatus('application_review-' + app.Id)">Show</span><span
+                                      [hidden]="getCollapseStatus('application_review-' + app.Id)">Hide</span>
+                                      Information
                                     </button>
+                                  </div>
                                 </td>
                             </tr>
 
