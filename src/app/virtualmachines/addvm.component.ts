@@ -149,6 +149,12 @@ export class VirtualMachineComponent implements OnInit {
     projects: string[] = new Array();
 
     /**
+     * If all project data is loaded.
+     * @type {boolean}
+     */
+    projectDataLoaded: boolean = false;
+
+    /**
      * id of the freemium project.
      * @type {number}
      */
@@ -336,11 +342,7 @@ export class VirtualMachineComponent implements OnInit {
             if (client.status && client.status === 'Connected') {
                 this.client_avaiable = true;
 
-                this.getSelectedProjectDiskspace();
-                this.getSelectedProjectVms();
-                this.getSelectedProjectVolumes();
-                this.getImages(this.selectedProject[1]);
-                this.getFlavors(this.selectedProject[1]);
+                this.loadProjectData();
                 this.client_checked = true;
             } else {
                 this.client_avaiable = false;
@@ -378,6 +380,32 @@ export class VirtualMachineComponent implements OnInit {
             this.isLoaded = true;
         })
     }
+
+    loadProjectData(): void {
+        this.projectDataLoaded = false;
+
+        forkJoin(
+            this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()),
+            this.groupService.getGroupUsedVms(this.selectedProject[1].toString()),
+            this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()),
+            this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()),
+            this.groupService.getVolumeCounter(this.selectedProject[1].toString()),
+            this.groupService.getVolumesUsed(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => {
+            this.selectedProjectVmsMax = <number>res[0].value;
+            this.selectedProjectVmsUsed = <number>res[1].value;
+            this.selectedProjectDiskspaceMax = <number>res[2].value;
+            this.selectedProjectDiskspaceUsed = <number>res[3].value;
+            this.selectedProjectVolumesMax = <number>res[0].value;
+            this.selectedProjectVolumesUsed = <number>res[1].value;
+            this.projectDataLoaded = true;
+
+        });
+        this.getImages(this.selectedProject[1]);
+        this.getFlavors(this.selectedProject[1]);
+
+    }
+
+
 
     /**
      * Get vms diskpace and used from the selected project.
