@@ -1,8 +1,7 @@
-import ***REMOVED***Component***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, ViewChild***REMOVED*** from '@angular/core';
 import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modules/baseClass/abstract-base-class';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
@@ -22,7 +21,7 @@ export class AddsinglevmComponent extends ApplicationBaseClass ***REMOVED***
     /**
      * List of flavor types.
      */
-    public typeList: FlavorType[]=[];
+    public typeList: FlavorType[] = [];
     /**
      * List of all collapse booleans.
      */
@@ -34,10 +33,18 @@ export class AddsinglevmComponent extends ApplicationBaseClass ***REMOVED***
      */
     public wronginput: boolean = false;
 
+    @ViewChild(NgForm) simpleVmForm: NgForm;
+
+    /**
+     * If at least 1 flavor is selected.
+     * @type ***REMOVED***boolean***REMOVED***
+     */
+    public min_vm: boolean = false;
+
     /**
      * List of flavors.
      */
-    public flavorList: Flavor[]=[];
+    public flavorList: Flavor[] = [];
 
     public production: boolean = environment.production;
     public error: string[];
@@ -47,7 +54,7 @@ export class AddsinglevmComponent extends ApplicationBaseClass ***REMOVED***
     public acknowledgeModalTitle: string = 'Acknowledge';
     public acknowledgeModalType: string = 'info';
 
-    constructor( applicationsservice: ApplicationsService, private flavorService: FlavorService) ***REMOVED***
+    constructor(applicationsservice: ApplicationsService, private flavorService: FlavorService) ***REMOVED***
         super(null, null, applicationsservice, null);
         this.getListOfFlavors();
         this.getListOfTypes();
@@ -86,10 +93,32 @@ export class AddsinglevmComponent extends ApplicationBaseClass ***REMOVED***
             ***REMOVED***
 
         ***REMOVED***
+
         return false
 
     ***REMOVED***
 
+    onChangeFlavor(value: number): void ***REMOVED***
+
+        this.checkIfMinVmIsSelected();
+    ***REMOVED***
+
+    checkIfMinVmIsSelected(): void ***REMOVED***
+        for (const fl of this.flavorList) ***REMOVED***
+            const control: string = `project_application_$***REMOVED***fl.name***REMOVED***`;
+            if (control in this.simpleVmForm.controls) ***REMOVED***
+                if (this.simpleVmForm.controls[control].value > 0) ***REMOVED***
+                    this.min_vm = true;
+
+                    return;
+                ***REMOVED***
+            ***REMOVED***
+        ***REMOVED***
+
+        this.min_vm = false;
+
+        return;
+    ***REMOVED***
 
     /**
      * Submit simple vm application.
