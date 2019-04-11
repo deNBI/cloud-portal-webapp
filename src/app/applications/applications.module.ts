@@ -1,6 +1,7 @@
 import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
 
 import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
+import ***REMOVED***AccordionModule***REMOVED*** from 'ngx-bootstrap';
 import ***REMOVED***ApplicationsComponent***REMOVED*** from './applications.component';
 import ***REMOVED***ApplicationsRoutingModule***REMOVED*** from './applications-routing.module';
 import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
@@ -18,6 +19,7 @@ import ***REMOVED***SharedModuleModule***REMOVED*** from "../shared/shared_modul
  */
 @NgModule(***REMOVED***
     imports: [
+        AccordionModule.forRoot(),
         ApplicationsRoutingModule,
         ClickOutsideModule,
         TabsModule,
