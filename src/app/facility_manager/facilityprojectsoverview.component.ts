@@ -65,9 +65,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
     ***REMOVED***
 
     applyFilter(): void ***REMOVED***
-
         this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
-
     ***REMOVED***
 
     checkFilter(project: Project): boolean ***REMOVED***
@@ -153,6 +151,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                 ***REMOVED***
                 newProject.RealName = group['name'];
                 newProject.Lifetime = lifetime;
+                newProject.OpenStackProject = group['openstack_project'];
 
                 this.projects.push(newProject);
             ***REMOVED***
