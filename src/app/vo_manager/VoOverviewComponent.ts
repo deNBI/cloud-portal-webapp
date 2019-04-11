@@ -233,6 +233,7 @@ export class VoOverviewComponent extends FilterBaseClass {
                     compute_center);
                 newProject.Lifetime = lifetime;
                 newProject.Status = group['status'];
+                newProject.OpenStackProject = group['openstack_project'];
                 let expirationDate: string = '';
                 if (lifetime !== -1) {
                     expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');

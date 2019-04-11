@@ -1,8 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {ApplicationsService} from '../api-connector/applications.service'
-import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
 import {environment} from '../../environments/environment';
@@ -22,7 +21,7 @@ export class AddsinglevmComponent extends ApplicationBaseClass {
     /**
      * List of flavor types.
      */
-    public typeList: FlavorType[]=[];
+    public typeList: FlavorType[] = [];
     /**
      * List of all collapse booleans.
      */
@@ -34,10 +33,18 @@ export class AddsinglevmComponent extends ApplicationBaseClass {
      */
     public wronginput: boolean = false;
 
+    @ViewChild(NgForm) simpleVmForm: NgForm;
+
+    /**
+     * If at least 1 flavor is selected.
+     * @type {boolean}
+     */
+    public min_vm: boolean = false;
+
     /**
      * List of flavors.
      */
-    public flavorList: Flavor[]=[];
+    public flavorList: Flavor[] = [];
 
     public production: boolean = environment.production;
     public error: string[];
@@ -47,7 +54,7 @@ export class AddsinglevmComponent extends ApplicationBaseClass {
     public acknowledgeModalTitle: string = 'Acknowledge';
     public acknowledgeModalType: string = 'info';
 
-    constructor( applicationsservice: ApplicationsService, private flavorService: FlavorService) {
+    constructor(applicationsservice: ApplicationsService, private flavorService: FlavorService) {
         super(null, null, applicationsservice, null);
         this.getListOfFlavors();
         this.getListOfTypes();
@@ -86,10 +93,32 @@ export class AddsinglevmComponent extends ApplicationBaseClass {
             }
 
         }
+
         return false
 
     }
 
+    onChangeFlavor(value: number): void {
+
+        this.checkIfMinVmIsSelected();
+    }
+
+    checkIfMinVmIsSelected(): void {
+        for (const fl of this.flavorList) {
+            const control: string = `project_application_${fl.name}`;
+            if (control in this.simpleVmForm.controls) {
+                if (this.simpleVmForm.controls[control].value > 0) {
+                    this.min_vm = true;
+
+                    return;
+                }
+            }
+        }
+
+        this.min_vm = false;
+
+        return;
+    }
 
     /**
      * Submit simple vm application.
