@@ -2,6 +2,7 @@ import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***ImageService***REMOVED*** from '../../api-connector/image.service';
 import ***REMOVED***SnapshotModel***REMOVED*** from './snapshot.model';
 import ***REMOVED***forkJoin***REMOVED*** from 'rxjs';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../../api-connector/response-template";
 
 enum Snapshot_Delete_Statuses ***REMOVED***
     WAITING = 0,
@@ -101,13 +102,13 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
      * @param ***REMOVED***string***REMOVED*** snapshot_id
      */
     deleteSnapshot(snapshot_id: string): void ***REMOVED***
-        this.imageService.deleteSnapshot(snapshot_id).subscribe(result => ***REMOVED***
+        this.imageService.deleteSnapshot(snapshot_id).subscribe((result: IResponseTemplate) => ***REMOVED***
 
             this.delete_status = 0;
 
-            if (result['Deleted'] && result['Deleted'] === true) ***REMOVED***
+            if (<boolean><Boolean>result.value) ***REMOVED***
                 this.delete_status = 1;
-            ***REMOVED*** else if (result['Info']) ***REMOVED***
+            ***REMOVED*** else if (result.value) ***REMOVED***
                 this.delete_status = 3;
 
             ***REMOVED*** else ***REMOVED***

@@ -56,35 +56,41 @@
                                 <td>***REMOVED******REMOVED***application.Institute***REMOVED******REMOVED***</td>
 
                                 <td>
+                                  <div class="btn-group">
                                     <button type="button"
                                             (click)="resetNotificationModal();notificationModal.show();approveApplication(application.Id)"
-                                            class="btn btn-secondary"><i
-                                            class="fa fa-check"></i>&nbsp;
-                                        Approve
+                                            class="btn btn-success"
+                                            style="margin: auto 2.5px"><i
+                                      class="fa fa-check"></i>&nbsp;
+                                      Approve
                                     </button>
                                     <button
-                                            (click)='resetNotificationModal();notificationModal.show();declineApplication(application.Id)'
-                                            type="button"
-                                            class="btn btn-secondary"><i
-                                            class="fa fa-close"></i>&nbsp;
-                                        Decline
+                                      (click)='resetNotificationModal();notificationModal.show();declineApplication(application.Id)'
+                                      type="button"
+                                      class="btn btn-danger"
+                                      style="margin: auto 2.5px"><i
+                                      class="fa fa-close"></i>&nbsp;
+                                      Decline
                                     </button>
-
-                                    <button (click)="switchCollapseStatus('application_review-' + application.Id);  getMemberDetailsByElixirIdIfCollapsed(application.User,'application_review-' + application.Id);"
-                                            type="button"
-                                            class="btn btn-secondary">
-                                        <i class="fa fa-info-circle"></i>&nbsp;
-                                        <span [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
-                                            [hidden]="getCollapseStatus('application_review-' + application.Id)">Hide</span>
-                                        Information
+                                    <button
+                                      (click)="switchCollapseStatus('application_review-' + application.Id);  getMemberDetailsByElixirIdIfCollapsed(application.User,'application_review-' + application.Id);"
+                                      type="button"
+                                      class="btn btn-secondary"
+                                      style="margin: auto 2.5px">
+                                      <i class="fa fa-info-circle"></i>&nbsp;
+                                      <span
+                                        [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
+                                      [hidden]="getCollapseStatus('application_review-' + application.Id)">Hide</span>
+                                      Information
                                     </button>
+                                  </div>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + application.Id)"
                                     colspan="6">
-                                    <div id="application_review-***REMOVED******REMOVED*** application.Id ***REMOVED******REMOVED***"
+                                    <div id="application_review-***REMOVED******REMOVED*** application.id ***REMOVED******REMOVED***"
                                          [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">
@@ -306,35 +312,41 @@
                                 <td>***REMOVED******REMOVED***app.Institute***REMOVED******REMOVED***</td>
 
                                 <td>
+                                  <div class="btn-group">
                                     <button type="button"
                                             (click)="resetNotificationModal();notificationModal.show();approveExtension(app)"
-                                            class="btn btn-secondary"><i
-                                            class="fa fa-check"></i>&nbsp;
-                                        Approve
+                                            class="btn btn-success"
+                                            style="margin: auto 2.5px"><i
+                                      class="fa fa-check"></i>&nbsp;
+                                      Approve
                                     </button>
                                     <button
-                                            (click)='resetNotificationModal();notificationModal.show();declineExtension(app)'
-                                            type="button"
-                                            class="btn btn-secondary"><i
-                                            class="fa fa-close"></i>&nbsp;
-                                        Decline
+                                      (click)='resetNotificationModal();notificationModal.show();declineExtension(app)'
+                                      type="button"
+                                      class="btn btn-danger"
+                                      style="margin: auto 2.5px"><i
+                                      class="fa fa-close"></i>&nbsp;
+                                      Decline
                                     </button>
-
-                                    <button (click)="switchCollapseStatus('application_review-' + app.Id);  getMemberDetailsByElixirIdIfCollapsed(app.User,'application_review-' + app.Id);"
-                                            type="button"
-                                            class="btn btn-secondary">
-                                        <i class="fa fa-info-circle"></i>&nbsp;
-                                        <span [hidden]="!getCollapseStatus('application_review-' + app.Id)">Show</span><span
-                                            [hidden]="getCollapseStatus('application_review-' + app.Id)">Hide</span>
-                                        Information
+                                    <button
+                                      (click)="switchCollapseStatus('application_review-' + app.Id);  getMemberDetailsByElixirIdIfCollapsed(app.User,'application_review-' + app.Id);"
+                                      type="button"
+                                      class="btn btn-secondary"
+                                      style="margin: auto 2.5px">
+                                      <i class="fa fa-info-circle"></i>&nbsp;
+                                      <span
+                                        [hidden]="!getCollapseStatus('application_review-' + app.Id)">Show</span><span
+                                      [hidden]="getCollapseStatus('application_review-' + app.Id)">Hide</span>
+                                      Information
                                     </button>
+                                  </div>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + app.Id)"
                                     colspan="6">
-                                    <div id="application_review-***REMOVED******REMOVED*** app.Id ***REMOVED******REMOVED***"
+                                    <div id="application_review-***REMOVED******REMOVED*** app.id ***REMOVED******REMOVED***"
                                          [class.collapse]="getCollapseStatus('application_review-' + app.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">
@@ -611,7 +623,7 @@
                                             style="margin-left: 5px">Hide</span>
                                         Information
                                     </button>
-                                    <!--button (click)="deleteModal.show();setDeleteId(application.Id)"
+                                    <!--button (click)="deleteModal.show();setDeleteId(application.application_status_id)"
                                             type="button"
                                             class="btn btn-secondary">
                                         Remove Application
@@ -621,7 +633,7 @@
                             <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning)***REMOVED***">
                                 <td [class.collapse_no_margin]="getCollapseStatus('application_history-' + application.Id)"
                                     colspan="6">
-                                    <div id="application_history-***REMOVED******REMOVED*** application.Id ***REMOVED******REMOVED***"
+                                    <div id="application_history-***REMOVED******REMOVED*** application.id ***REMOVED******REMOVED***"
                                          [class.collapse]="getCollapseStatus('application_history-' + application.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">

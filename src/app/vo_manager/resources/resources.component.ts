@@ -18,7 +18,6 @@ export class ResourcesComponent implements OnInit ***REMOVED***
 
     isLoaded: boolean = false;
     voResources: Resources[] = [];
-    totalResource: Resources;
     fileName: string = 'VoResources';
     tableId: string = 'resourcesTable';
     today: number = Date.now();
@@ -39,23 +38,8 @@ export class ResourcesComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     public getVoProjectResources(): void ***REMOVED***
-        this.voservice.getVoProjectResources().subscribe(res => ***REMOVED***
-            for (const resp in res) ***REMOVED***
-                if (resp !== 'Total') ***REMOVED***
-                    const resource: Resources = new Resources(
-                        resp, res[resp]['totalRam'], res[resp]['totalCores'],
-                        res[resp]['totalVms'], res[resp]['totalVolumeLimit'], res[resp]['totalVolumeCounter'],
-                        res[resp]['totalObjectStorage'], res[resp]['totalGPU']);
-                    this.voResources.push(resource);
-                ***REMOVED*** else ***REMOVED***
-                    this.totalResource = new Resources(
-                        'Total', res['Total']['totalRam'], res['Total']['totalCores'],
-                        res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
-                        res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'],
-                        res['Total']['totalGPU']);
-                ***REMOVED***
-            ***REMOVED***
-
+        this.voservice.getVoProjectResources().subscribe((res: Resources[]) => ***REMOVED***
+            this.voResources = res;
             this.isLoaded = true;
         ***REMOVED***)
 

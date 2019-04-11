@@ -10,6 +10,7 @@ import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility
 import * as moment from 'moment';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/filter-base-class';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
 
 /**
  * Facility Project overview component.
@@ -64,9 +65,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
     ***REMOVED***
 
     applyFilter(): void ***REMOVED***
-
         this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
-
     ***REMOVED***
 
     checkFilter(project: Project): boolean ***REMOVED***
@@ -81,8 +80,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
     getProjectLifetime(project: Project): void ***REMOVED***
         this.details_loaded = false;
         if (!project.Lifetime) ***REMOVED***
-            this.groupservice.getLifetime(project.Id).subscribe(res => ***REMOVED***
-                const lifetime: number = res['lifetime'];
+            this.groupservice.getLifetime(project.Id).subscribe((time: IResponseTemplate) => ***REMOVED***
+                const lifetime: number = <number>time.value;
                 const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
 
                 if (lifetime !== -1) ***REMOVED***
@@ -152,6 +151,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
                 ***REMOVED***
                 newProject.RealName = group['name'];
                 newProject.Lifetime = lifetime;
+                newProject.OpenStackProject = group['openstack_project'];
 
                 this.projects.push(newProject);
             ***REMOVED***

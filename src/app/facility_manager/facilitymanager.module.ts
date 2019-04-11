@@ -8,6 +8,7 @@ import ***REMOVED***ImageTagComponent***REMOVED*** from '../facility_manager/ima
 import ***REMOVED***FacilitymanagerRoutingModule***REMOVED*** from './facilitymanager-routing.module';
 import ***REMOVED***FacilityApplicationComponent***REMOVED*** from './facility.application.component';
 import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.component';
+import ***REMOVED***ExportAsModule***REMOVED*** from 'ngx-export-as';
 
 /**
  * Facilitymanager module.
@@ -18,7 +19,8 @@ import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.
         TabsModule,
         FormsModule,
         CommonModule,
-        ModalModule.forRoot()
+        ModalModule.forRoot(),
+        ExportAsModule
 
     ],
     declarations: [

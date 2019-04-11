@@ -18,13 +18,13 @@
                 class="btn btn-primary"
                 (click)="getAllVms();toggleTab('all')">All Machines
         </button>
-        <div style="margin-right: 5px;margin-left: 5px;">
-            <pagination
-                    [totalItems]="vms_filtered?.length" [itemsPerPage]="vmsPerPage"
-                    (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"></pagination>
-        </div>
 
 
+    </div>
+    <div style="margin-right: 5px;margin-left: 5px;">
+        <pagination
+                [totalItems]="vms_filtered?.length" [itemsPerPage]="vmsPerPage"
+                (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"></pagination>
     </div>
 
 
@@ -137,8 +137,8 @@
 
                     <td>
                         <div
-                             *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
-                             class="btn-group" dropdown>
+                                *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
+                                class="btn-group" dropdown>
 
                             <button class="btn btn-secondary" type="button"
                                     *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
@@ -154,34 +154,34 @@
                                 <li style="cursor: pointer;" role="menuitem"
                                     *ngIf="vm.status ==vm_statuses[vm_statuses.ACTIVE]">
                                     <a class="dropdown-item"
-                                       (click)="status_changed_vm=vm.name;stopVm(vm.openstackid,vm.name);stopModal.show();">Stop
+                                       (click)="status_changed_vm=vm.name;stopVm(vm);stopModal.show();">Stop
                                         Vm</a>
                                 </li>
 
                                 <li style="cursor: pointer;" *ngIf="vm.status ==vm_statuses[vm_statuses.SUSPENDED]"
                                     role="menuitem">
                                     <a class="dropdown-item"
-                                       (click)="status_changed_vm=vm.name;resumeVM(vm.openstackid);resumeModal.show();">Resume
+                                       (click)="status_changed_vm=vm.name;resumeVM(vm);resumeModal.show();">Resume
                                         Vm</a>
                                 </li>
                                 <li style="cursor: pointer;"
                                     *ngIf="vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != 'FREEMIUM'"
                                     role="menuitem">
                                     <a class="dropdown-item"
-                                       (click)="checkStatus(vm.openstackid);">Check Status
+                                       (click)="checkStatus(vm);">Check Status
                                     </a>
                                 </li>
                                 <li style="cursor: pointer;" *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
                                     role="menuitem">
                                     <a class="dropdown-item"
-                                       (click)="status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;verifyModal.show();">Delete
+                                       (click)="selectedVm=vm;verifyModal.show();">Delete
                                         Vm</a>
                                 </li>
                                 <li style="cursor: pointer;"
                                     *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.client.features['VM_REBOOT']"
                                     role="menuitem">
                                     <a class="dropdown-item"
-                                       (click)="status_check_error=false;reboot_done=false;status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;reboot_type='HARD';rebootModal.show();">Hard
+                                       (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='HARD';rebootModal.show();">Hard
                                         Reboot Vm
                                     </a>
                                 </li>
@@ -189,7 +189,7 @@
                                     *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.client.features['VM_REBOOT']"
                                     role="menuitem">
                                     <a class="dropdown-item"
-                                       (click)="status_check_error=false;reboot_done=false;status_changed_vm=vm.name;status_changed_vm_id=vm.openstackid;reboot_type='SOFT';rebootModal.show();">Soft
+                                       (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='SOFT';rebootModal.show();">Soft
                                         Reboot Vm
                                     </a>
                                 </li>
@@ -270,7 +270,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
-                        (click)="rebootVm(status_changed_vm_id,reboot_type);rebootModal.hide();rebootResultModal.show()">
+                        (click)="rebootVm(selectedVm,reboot_type);rebootModal.hide();rebootResultModal.show()">
                     Yes
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"
@@ -379,28 +379,28 @@
                 <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
                 <button type="button" class="close" style="cursor:pointer"
-                        (click)="deleteModal.hide()"
+                        (click)="selectedVm=null;deleteModal.hide()"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-                    Deleting ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
-                                                         style="font-size:24px"></i>
+                    Deleting ***REMOVED******REMOVED***selectedVm?.Name***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
+                                                        style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
-                    ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** was succesfully deleted.
+                    ***REMOVED******REMOVED***selectedVm?.Name***REMOVED******REMOVED*** was succesfully deleted.
                 </div>
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-                When deleting ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED*** an error occured.
+                When deleting ***REMOVED******REMOVED***selectedVm?.Name***REMOVED******REMOVED*** an error occured.
             </div>
 
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
-                        (click)="status_changed=0;deleteModal.hide()">Close
+                        (click)="selectedVm=null;status_changed=0;deleteModal.hide()">Close
                 </button>
             </div>
 
@@ -425,17 +425,17 @@
             <div class="modal-body">
 
                 <div class="alert alert-warning" role="alert">
-                    Are you sure you want to delete ***REMOVED******REMOVED***status_changed_vm***REMOVED******REMOVED***?
+                    Are you sure you want to delete ***REMOVED******REMOVED***selectedVm?.Name***REMOVED******REMOVED***?
                 </div>
 
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
-                        (click)="deleteVm(status_changed_vm_id);verifyModal.hide();deleteModal.show()">
+                        (click)="deleteVm(selectedVm);verifyModal.hide();deleteModal.show()">
                     Yes
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"
-                        (click)="status_changed_vm_id='';verifyModal.hide();">Cancel
+                        (click)="selectedVm=null;verifyModal.hide();">Cancel
                 </button>
             </div>
         </div><!-- /.modal-content -->

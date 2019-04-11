@@ -14,6 +14,7 @@ import ***REMOVED***Client***REMOVED*** from "../virtualmachines/clients/client.
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
+import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
 
 /**
  * Application Overview component.
@@ -39,12 +40,12 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
 
     /**
-     * Id of the extension status.
+     * id of the extension status.
      * @type ***REMOVED***number***REMOVED***
      */
     extension_status: number = 0;
     /**
-     * Id of Application set for deletion.
+     * id of Application set for deletion.
      */
     public deleteId: number;
 
@@ -81,8 +82,8 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                 private flavorService: FlavorService) ***REMOVED***
 
         super(userservice, applicationstatusservice, applicationsservice, facilityService);
-        this.voService.isVo().subscribe((result: ***REMOVED*** [key: string]: boolean ***REMOVED***) => ***REMOVED***
-            this.is_vo_admin = result['Is_Vo_Manager'];
+        this.voService.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
+            this.is_vo_admin = <boolean><Boolean>result.value;
             this.getUserApplications();
             this.getApplicationStatus();
             if (this.is_vo_admin) ***REMOVED***
