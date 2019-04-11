@@ -132,27 +132,33 @@
                 </div>
                 <div class="alert alert-success" role="alert"
                      *ngIf="volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED">
-                    Sucessfully created and attached Volume.
+                    Successfully created and attached Volume.
 
                 </div>
                 <div class="alert alert-success" role="alert"
                      *ngIf="volume_action_status == volumeActionStates.CHANGING_NAME_SUCESSFULL">
-                    Sucessfully renamed Volume.
+                    Successfully renamed Volume.
 
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="volume_action_status == volumeActionStates.SUCCESS">
-                    {{selected_volume?.volume_name}} was succesfully deleted.
+                    {{selected_volume?.volume_name}} was successfully deleted.
                 </div>
                 <div class="alert alert-success" role="alert"
                      *ngIf="volume_action_status == volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME">
-                    {{selected_volume?.volume_openstackid}} was succesfully detached.
+                    {{selected_volume?.volume_openstackid}} was successfully detached.
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL">
-                    {{selected_volume?.volume_name}} was succesfully attached.
+                    {{selected_volume?.volume_name}} was successfully attached.
+                </div>
+
+                <div *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED"
+                     class="alert alert-info" role="alert">
+                    In order to use the volume you have to <a
+                        href="https://cloud.denbi.de/wiki/portal/#mount-a-volume"> mount </a> it.
                 </div>
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="volume_action_status == volumeActionStates.ERROR">
-                An error occured.
+                An error occurred.
             </div>
 
 
@@ -306,7 +312,6 @@
             <div class="modal-body">
                 <div class="form-group row">
 
-
                     <label class="col-md-12"> <strong>For which Project the Volume should be
                         created?</strong></label>
 
@@ -404,8 +409,9 @@
                         <div class="input-group">
                             <input min="0" step="1" [value]="diskspace"
                                    (input)="diskspace = $event.target.value;calcDiskSpaceSum();"
-                                   type="number" placeholder="e.g 8 "><div class="input-group-append"><span
-                          class="input-group-text"> GB
+                                   type="number" placeholder="e.g 8 ">
+                            <div class="input-group-append"><span
+                                    class="input-group-text"> GB
                                     </span></div>
 
 
