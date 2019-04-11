@@ -154,14 +154,14 @@
                                 <li style="cursor: pointer;" role="menuitem"
                                     *ngIf="vm.status ==vm_statuses[vm_statuses.ACTIVE]">
                                     <a class="dropdown-item"
-                                       (click)="status_changed_vm=vm.name;stopVm(vm);stopModal.show();">Stop
+                                       (click)="selectedVm=vm;stopVm(vm);stopModal.show();">Stop
                                         Vm</a>
                                 </li>
 
                                 <li style="cursor: pointer;" *ngIf="vm.status ==vm_statuses[vm_statuses.SUSPENDED]"
                                     role="menuitem">
                                     <a class="dropdown-item"
-                                       (click)="status_changed_vm=vm.name;resumeVM(vm);resumeModal.show();">Resume
+                                       (click)="selectedVm=vm;resumeVM(vm);resumeModal.show();">Resume
                                         Vm</a>
                                 </li>
                                 <li style="cursor: pointer;"
@@ -223,21 +223,21 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-                    Stopping {{status_changed_vm}}... <i class="fa fa-spinner fa-spin"
+                    Stopping {{selectedVm.name}}... <i class="fa fa-spinner fa-spin"
                                                          style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
-                    {{status_changed_vm}} was succesfully stopped.
+                    {{selectedVm.name}} was succesfully stopped.
                 </div>
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-                When stopping {{status_changed_vm}} an error occured.
+                When stopping {{selectedVm.name}} an error occured.
             </div>
 
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
-                        (click)="status_changed=0;stopModal.hide()">Close
+                        (click)="status_changed=0;selectedVm=null;stopModal.hide()">Close
                 </button>
             </div>
 
@@ -253,7 +253,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"><strong>{{reboot_type}}</strong> reboot
-                    {{status_changed_vm}} </h4>
+                    {{selectedVm.name}} </h4>
 
                 <button type="button" class="close" style="cursor:pointer"
                         (click)="rebootModal.hide()"
@@ -265,7 +265,7 @@
                 <div class="alert alert-warning" role="alert">
 
                     Restarted instances will lose any data not saved in persistent storage.
-                    Are you sure to <strong>{{reboot_type}}</strong> reboot {{status_changed_vm}}?
+                    Are you sure to <strong>{{reboot_type}}</strong> reboot {{selectedVm.name}}?
                 </div>
             </div>
             <div class="modal-footer">
@@ -274,7 +274,7 @@
                     Yes
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"
-                        (click)="status_changed_vm_id='';rebootModal.hide();">Cancel
+                        (click)="selectedVm=null;rebootModal.hide();">Cancel
                 </button>
             </div>
 
@@ -290,7 +290,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"><strong>{{reboot_type}}</strong> reboot
-                    {{status_changed_vm}} </h4>
+                    {{selectedVm.name}} </h4>
 
                 <button type="button" class="close" style="cursor:pointer"
                         (click)="rebootResultModal.hide()"
@@ -308,19 +308,19 @@
                 <div *ngIf="reboot_done">
                     <div class="alert alert-success" role="alert">
 
-                        Sucessfully {{reboot_type}} rebooted {{status_changed_vm}}.
+                        Sucessfully {{reboot_type}} rebooted {{selectedVm.name}}.
                     </div>
                 </div>
                 <div *ngIf="status_check_error">
                     <div class="alert alert-warning" role="alert">
 
-                        An error occured when checking the status of {{status_changed_vm}}.
+                        An error occured when checking the status of {{selectedVm.name}}.
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
-                        (click)="status_changed_vm_id='';rebootResultModal.hide();">
+                        (click)="selectedVm=null;rebootResultModal.hide();">
                     Close
                 </button>
             </div>
@@ -347,15 +347,15 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-                    Resuming {{status_changed_vm}}... <i class="fa fa-spinner fa-spin"
+                    Resuming {{selectedVm.name}}... <i class="fa fa-spinner fa-spin"
                                                          style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
-                    {{status_changed_vm}} was succesfully resumed.
+                    {{selectedVm.name}} was succesfully resumed.
                 </div>
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-                When resuming {{status_changed_vm}} an error occured.
+                When resuming {{selectedVm.name}} an error occured.
             </div>
 
 
@@ -423,9 +423,8 @@
                 </button>
             </div>
             <div class="modal-body">
-
                 <div class="alert alert-warning" role="alert">
-                    Are you sure you want to delete {{selectedVm?.Name}}?
+                    Are you sure you want to delete {{selectedVm?.name}}?
                 </div>
 
             </div>

@@ -20,7 +20,7 @@ export class FullLayoutComponent implements OnInit {
     public year: number = new Date().getFullYear();
     public disabled: boolean = false;
     public status: { isopen: boolean } = {isopen: false};
-    private is_vo_admin: boolean = false;
+     is_vo_admin: boolean = false;
     public is_facility_manager: boolean = false;
     public vm_project_member: boolean = false;
     public login_name: string = '';
