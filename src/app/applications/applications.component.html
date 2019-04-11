@@ -1175,71 +1175,57 @@
                     </div>
 
 
-                    <div>
-                        <div *ngFor="let t of typeList">
-                            <div *ngIf="selectedApplication?.OpenStackProject || checkIfTypeGotSimpleVmFlavor(t)" class="card">
-
-                                <div (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"
-                                     style="cursor: pointer;" id="flavor-card" class="card-header">
-
-
-                                    {{t.long_name}}
-                                    <i *ngIf="collapseList[typeList.indexOf(t)]"
-                                       style="float: right;font-size: 25px"
-                                       class="icon-arrow-up"></i>
-                                    <i *ngIf="!collapseList[typeList.indexOf(t)]"
-                                       style="float: right;font-size: 25px"
-                                       class="icon-arrow-down"></i>
-
-
-                                </div>
-                                <div *ngIf="collapseList[typeList.indexOf(t)]" class="form-group card-body">
-                                    <div *ngFor="let fl of flavorList" class="form-group row">
-                                        <div
-                                                *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || selectedApplication?.OpenStackProject)"
-                                             class="form-group row">
-                                            <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
-                                                Number of cores: {{fl.vcpus}}<br>
-                                                RAM: {{fl.ram}} GB</label>
-                                            <div class="col">
-                                                <div class="input-group">
-                                                    <input class="form-control"
-                                                           name="project_application_{{fl.name}}_old"
-                                                           type="text"
-                                                           value="{{selectedApplication?.CurrentFlavors[fl.name]?.counter}}"
-                                                           placeholder="NDA" disabled>
-                                                  <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
-                                                </div>
-                                                <span class="help-block">Currently approved of this type </span>
-                                            </div>
-                                            <div class="col">
-                                                <div class="input-group">
-                                                    <input class="form-control"
-                                                           (change)="valuesChanged(f)"
-                                                           id="project_application_{{fl.name}}"
-                                                           name="project_application_{{fl.name}}"
-                                                           type="number" min="0" step="1"
-                                                           placeholder="e.g 1"
-                                                           [ngModel]="selectedApplication?.CurrentFlavors[fl.name]?.counter"
-                                                           #name = "ngModel"
-                                                           appMinAmount="0" appIntegerOrNull
-                                                           [ngClass]="{
+                  <accordion>
+                    <ng-container *ngFor="let t of typeList, first as isFirst">
+                      <accordion-group *ngIf="selectedApplication?.OpenStackProject || checkIfTypeGotSimpleVmFlavor(t)" [isOpen]="isFirst" #groupval>
+                        <div accordion-heading style="width: 100%; cursor: pointer">
+                          {{t.long_name}}
+                          <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
+                        </div>
+                        <div *ngFor="let fl of flavorList" class="form-group row">
+                          <div
+                            *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || selectedApplication?.OpenStackProject)"
+                            class="form-group row">
+                            <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
+                              Number of cores: {{fl.vcpus}}<br>
+                              RAM: {{fl.ram}} GB</label>
+                            <div class="col">
+                              <div class="input-group">
+                                <input class="form-control"
+                                       name="project_application_{{fl.name}}_old"
+                                       type="text"
+                                       value="{{selectedApplication?.CurrentFlavors[fl.name]?.counter}}"
+                                       placeholder="NDA" disabled>
+                                <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                              </div>
+                              <span class="help-block">Currently approved of this type </span>
+                            </div>
+                            <div class="col">
+                              <div class="input-group">
+                                <input class="form-control"
+                                       (change)="valuesChanged(f)"
+                                       id="project_application_{{fl.name}}"
+                                       name="project_application_{{fl.name}}"
+                                       type="number" min="0" step="1"
+                                       placeholder="e.g 1"
+                                       [ngModel]="selectedApplication?.CurrentFlavors[fl.name]?.counter"
+                                       #name = "ngModel"
+                                       appMinAmount="0" appIntegerOrNull
+                                       [ngClass]="{
                                 'is-invalid': name?.invalid,
                                 'is-valid': name?.valid
                                 }">
-                                                  <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
-                                                </div>
-                                                <span class="help-block">Number of VMs you would like to run in the future</span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
+                                <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                              </div>
+                              <span class="help-block">Number of VMs you would like to run in the future</span>
                             </div>
+                          </div>
 
                         </div>
-                    </div>
-
+                      </accordion-group>
+                    </ng-container>
+                  </accordion>
 
                     <div class="form-group row">
                         <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage

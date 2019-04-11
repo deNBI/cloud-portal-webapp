@@ -148,60 +148,46 @@
                           Click on the given flavor-categories to expand the form. You have to choose <strong>at least one VM</strong>.
                         </div>-->
 
-                      <div *ngFor="let t of typeList">
-                        <div class="card"
-                        >
-                          <!--(click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]"-->
-                          <div  (click)="collapseList[typeList.indexOf(t)] = !collapseList[typeList.indexOf(t)]" style="cursor: pointer;"  id="flavor-card" class="card-header">
-
-
+                      <accordion>
+                        <accordion-group *ngFor="let t of typeList, first as isFirst" [isOpen]="isFirst" #groupval>
+                          <div accordion-heading style="width: 100%; cursor: pointer">
                             {{t.long_name}}
-
-                            <i *ngIf="!collapseList[typeList.indexOf(t)]" style="float: right;font-size: 25px" class="icon-arrow-up"></i>
-                            <i *ngIf="collapseList[typeList.indexOf(t)]" style="float: right;font-size: 25px" class="icon-arrow-down"></i>
-
-
-
+                            <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
                           </div>
-                          <!--*ngIf="collapseList[typeList.indexOf(t)]"-->
-                          <div *ngIf="!collapseList[typeList.indexOf(t)]" class="form-group card-body">
-                            <div *ngFor="let f of flavorList">
-                              <div *ngIf="f.type.shortcut == t.shortcut"
-                                   class="form-group row">
-                                <label class="col-md-4 form-control-label"><strong>{{f.name}}</strong><br>
-                                  Number of cores: {{f.vcpus}}<br>
-                                  RAM: {{f.ram}} GB <br>
+                          <div *ngFor="let f of flavorList">
+                            <div *ngIf="f.type.shortcut == t.shortcut"
+                                 class="form-group row">
+                              <label class="col-md-4 form-control-label"><strong>{{f.name}}</strong><br>
+                                Number of cores: {{f.vcpus}}<br>
+                                RAM: {{f.ram}} GB <br>
 
-                                  <span *ngIf="f.type.shortcut == 'GPU'">
+                                <span *ngIf="f.type.shortcut == 'GPU'">
                                                 GPU: {{f.gpu}}
                                             </span></label>
-                                <div class="col-md-8">
+                              <div class="col-md-8">
 
-                                  <div class="input-group">
-                                    <input class="form-control"
-                                           id="project_application_{{f.name}}"
-                                           name="project_application_{{f.name}}"
-                                           type="number" min="0" step="1"
-                                           placeholder="0"
-                                           [ngModel]="0"
-                                           #name = "ngModel"
-                                           appMinAmount="0" appInteger
-                                           [ngClass]="{
+                                <div class="input-group">
+                                  <input class="form-control"
+                                         id="project_application_{{f.name}}"
+                                         name="project_application_{{f.name}}"
+                                         type="number" min="0" step="1"
+                                         placeholder="0"
+                                         [ngModel]="0"
+                                         #name = "ngModel"
+                                         appMinAmount="0" appInteger
+                                         [ngClass]="{
                                 'is-invalid': name?.invalid,
                                 'is-valid': name?.valid
                                 }">
-                                    <div class="input-group-append"><span class="input-group-text">VMs</span></div>
-                                  </div>
-                                  <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
+                                  <div class="input-group-append"><span class="input-group-text">VMs</span></div>
                                 </div>
+                                <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
                               </div>
                             </div>
                           </div>
-                        </div>
-
-
-                      </div>
-
+                        </accordion-group>
+                      </accordion>
 
                         <div class="form-group row">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage
