@@ -1,3 +1,23 @@
+##  (2019-04-11)
+
+
+#### Features
+
+* **Clients:** updated responses ([312b44e1](312b44e1))
+* **Linting:** added classes ([2a73e3ed](2a73e3ed))
+* **PR_TEMPLATE:** added description ([e376e8f1](e376e8f1))
+* **Resources:**
+  *  added info limits just for denbi ([97b43fa8](97b43fa8))
+  * updated ([a3307fe9](a3307fe9))
+* **SimpleVm:** submit disabled if not atleast 1 flavor ([6e8efed8](6e8efed8))
+* **User:** changed responses ([da9752c5](da9752c5))
+* **VirtualMachine:** if volumes full warning ([378d260a](378d260a))
+* **Volume:** added wiki link ([46a16de9](46a16de9))
+
+#### Bug Fixes
+
+* **InstanceOverview:**  paging also for non vos ([2662bed7](2662bed7))
+* **Resource:**  to pdf /csv ([3c1563ed](3c1563ed))
 
 
 
