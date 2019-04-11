@@ -254,8 +254,7 @@
                                 </div>
                             </div>
 
-
-                            <button type="button"
+                            <button *ngIf="projectDataLoaded" type="button"
                                     [disabled]="f.invalid || (diskspace > 0 && volumeName == '')"
                                     class="btn btn-primary offset-md-8"
                                     data-toggle="modal"
@@ -263,6 +262,7 @@
                                 Start VM
                             </button>
                             <br><br><br>
+
                         </div>
 
 
