@@ -25,7 +25,12 @@
 </div>
 
 <div *ngIf=" isLoaded==false" class="loader"></div>
-<div *ngIf=" isLoaded && userinfo.PublicKey != 'None'">
+<div *ngIf=" isLoaded && userinfo.PublicKey != 'None' && projects.length == 0">
+    <div class="alert alert-warning" role="alert">
+        You are not member of any project.
+    </div>
+</div>
+<div *ngIf=" isLoaded && userinfo.PublicKey != 'None' && projects.length > 0">
 
     <div class="row">
         <div class="col-md-12">
@@ -75,8 +80,11 @@
                             </div>
                             <div class="alert alert-warning" role="alert" *ngIf="selectedProjectVmsUsed >= selectedProjectVmsMax">
                                 The limit for virtual machines has been reached for this project.
+                                Your principal investigator can request more
+                                resources if necessary
 
                             </div>
+
                             <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax">
                                 <div *ngIf="selectedProject" class="form-group row">
                                     <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
@@ -91,8 +99,6 @@
                                         <div style="color: dodgerblue">Info: The instance name will also
                                             be the hostname of the vm.
                                         </div>
-
-
                                     </div>
                                 </div>
 
@@ -190,23 +196,33 @@
                                         Volumes
                                     </strong>
                                 </div>
+                                <div class="alert alert-warning col-md-9" role="alert"
+                                     *ngIf="selectedProjectVolumesUsed >= selectedProjectVolumesMax">
+                                    The limit for volumes has been reached for this project.
+                                    Your principal investigator can request more
+                                    resources if necessary
+
+                                </div>
 
 
                             </div>
-                            <div class="form-group row"
-                                 *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
-                                <label *ngIf="diskspace <= 0" class="col-md-3 form-control-label">Volumename</label>
-                                <label *ngIf="diskspace > 0"
-                                       class="col-md-3 form-control-label"><strong>Volumename*</strong></label>
 
-                                <div class="col-md-9">
-                                    <div class="input-group">
-                                        <input type="text" placeholder="Volumename"
-                                               [value]="volumeName"
-                                               (input)="volumeName = $event.target.value"
-                                               [ngClass]="{'is-invalid':diskspace > 0 && volumeName == '',
+                            <div *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax">
+                                <div class="form-group row"
+                                     *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
+                                    <label *ngIf="diskspace <= 0" class="col-md-3 form-control-label">Volumename</label>
+                                    <label *ngIf="diskspace > 0"
+                                           class="col-md-3 form-control-label"><strong>Volumename*</strong></label>
+
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <input type="text" placeholder="Volumename"
+                                                   [value]="volumeName"
+                                                   (input)="volumeName = $event.target.value"
+                                                   [ngClass]="{'is-invalid':diskspace > 0 && volumeName == '',
                              'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')}">
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -226,24 +242,28 @@
                                                 class="input-group-text"> GB
                                     </span></div>
 
-                                        <div class="col-md-6">
-                                            <strong>current: {{selectedProjectDiskspaceUsed}} | max
-                                                {{selectedProjectDiskspaceMax}}
-                                                GB</strong>
+                                            <div class="col-md-6">
+                                                <strong>current: {{selectedProjectDiskspaceUsed}} | max
+                                                    {{selectedProjectDiskspaceMax}}
+                                                    GB</strong>
+                                            </div>
+
                                         </div>
-
                                     </div>
+
+
                                 </div>
-
-
                             </div>
-                            <button *ngIf="selectedProjectVmsMax" type="button"
-                                    [disabled]="f.invalid || (disksfpace > 0 && volumeName == '')"
+
+                            <button *ngIf="projectDataLoaded" type="button"
+                                    [disabled]="f.invalid || (diskspace > 0 && volumeName == '')"
                                     class="btn btn-primary offset-md-8"
                                     data-toggle="modal"
                                     (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1],diskspace);resetData();resetProgressBar;infoModal.show();">
                                 Start VM
                             </button>
+                            <br><br><br>
+
                         </div>
 
 
@@ -272,7 +292,7 @@
 <div bsModal #infoModal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-info" role="document"
-         [ngClass]="data['Started'] ? 'modal-lg':''">
+         [ngClass]="newVm?.status =='ACTIVE' ? 'modal-lg':''">
 
         <div class="modal-content">
             <div class="modal-header">
@@ -283,7 +303,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" *ngIf="data=='' || data['Waiting']">
+            <div class="modal-body"
+                 *ngIf="(newVm?.status == 'BUILD' || newVm?.status == 'PORT_CLOSED' || newVm ==null) && !create_error?.error ">
                 <p>We are setting up a machine for you. This can take up to 5 minutes.</p>
 
                 <div class="progress">
@@ -313,19 +334,15 @@
                     machine on the
                     instance overview site</p>
             </div>
-            <div class="modal-body" *ngIf="data['Started']">
-                <pre><code>{{data['Started']}}</code></pre>
+            <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE'">
+                <pre><code>{{newVm?.ssh_command}}</code></pre>
             </div>
-            <div class="modal-body" *ngIf="data['Error']">
-                An Error occured<br><br>
-                <pre><code>{{data['Error']}}</code></pre>
-            </div>
-
-            <div class="modal-body" *ngIf="data=='INVALID'">
-                Parameters missing
+            <div class="modal-body" *ngIf="create_error?.error">
+                An Error occured.<br><br>
+                <pre><code>{{create_error.error}}</code></pre>
             </div>
             <div class="modal-footer">
-                <button *ngIf="data['Started']"
+                <button *ngIf="newVm?.status == 'ACTIVE'"
                         routerLinkActive="active"
                         [routerLink]="['/virtualmachines/vmOverview']"
                         type="button" class="btn btn-info nav-link"

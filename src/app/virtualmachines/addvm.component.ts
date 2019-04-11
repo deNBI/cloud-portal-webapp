@@ -13,7 +13,9 @@ import {Application} from '../applications/application.model';
 import {KeyService} from '../api-connector/key.service';
 import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
+import {IResponseTemplate} from '../api-connector/response-template';
 import {Client} from "./clients/client.model";
+import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 
 /**
  * Start virtualmachine component.
@@ -26,7 +28,7 @@ import {Client} from "./clients/client.model";
 })
 export class VirtualMachineComponent implements OnInit {
 
-    data: string = '';
+    newVm: VirtualMachine = null;
     creating_vm_status: string = 'Creating..';
     creating_vm_prograss_bar: string = 'progress-bar-animated';
     checking_vm_status: string = '';
@@ -43,6 +45,8 @@ export class VirtualMachineComponent implements OnInit {
      * All image of a project.
      */
     images: Image[];
+
+    create_error: IResponseTemplate;
 
     /**
      * All flavors of a project.
@@ -145,7 +149,13 @@ export class VirtualMachineComponent implements OnInit {
     projects: string[] = new Array();
 
     /**
-     * Id of the freemium project.
+     * If all project data is loaded.
+     * @type {boolean}
+     */
+    projectDataLoaded: boolean = false;
+
+    /**
+     * id of the freemium project.
      * @type {number}
      */
     FREEMIUM_ID: number = environment.freemium_project_id;
@@ -192,8 +202,8 @@ export class VirtualMachineComponent implements OnInit {
      * Get the public key of the user.
      */
     getUserPublicKey(): void {
-        this.keyservice.getKey().subscribe(result => {
-            this.userinfo.PublicKey = result['public_key'];
+        this.keyservice.getKey().subscribe((key: IResponseTemplate) => {
+            this.userinfo.PublicKey = <string>key.value;
         })
     }
 
@@ -242,16 +252,16 @@ export class VirtualMachineComponent implements OnInit {
 
         setTimeout(
             () => {
-                this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
-                    if (res['Started'] || res['Error']) {
+                this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => {
+                    if (newVm.status === 'ACTIVE') {
                         this.resetProgressBar();
-                        this.data = res;
+                        this.newVm = newVm;
                         this.getSelectedProjectDiskspace();
                         this.getSelectedProjectVms();
                         this.getSelectedProjectVolumes();
 
-                    } else {
-                        if (res['Waiting'] === 'PORT_CLOSED') {
+                    } else if (newVm.status) {
+                        if (newVm.status === 'PORT_CLOSED') {
                             this.checking_vm_status = 'Active';
                             this.checking_vm_status_progress_bar = '';
                             this.creating_vm_prograss_bar = '';
@@ -260,6 +270,12 @@ export class VirtualMachineComponent implements OnInit {
 
                         }
                         this.check_status_loop(id)
+                    } else {
+                        this.resetProgressBar();
+                        this.create_error = <IResponseTemplate> <any>newVm;
+                        this.getSelectedProjectDiskspace();
+                        this.getSelectedProjectVms();
+                        this.getSelectedProjectVolumes();
                     }
 
                 })
@@ -276,27 +292,33 @@ export class VirtualMachineComponent implements OnInit {
      * @param {string} projectid
      */
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string): void {
+        this.create_error = null;
+
         if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
+            this.create_error = null;
             const re: RegExp = /\+/gi;
 
             const flavor_fixed: string = flavor.replace(re, '%2B');
 
             this.virtualmachineservice.startVM(
                 flavor_fixed, image, servername, project, projectid,
-                this.volumeName, this.diskspace.toString()).subscribe(data => {
+                this.volumeName, this.diskspace.toString()).subscribe((newVm: VirtualMachine) => {
 
-                if (data['Created']) {
+                if (newVm.status === 'Build') {
                     this.creating_vm_status = 'Created';
                     this.creating_vm_prograss_bar = '';
                     this.checking_vm_status = 'Checking status..';
                     this.checking_vm_status_progress_bar = 'progress-bar-animated';
                     this.checking_vm_status_width = 33;
+                    this.check_status_loop(newVm.openstackid);
 
-                    this.check_status_loop(data['Created']);
+                } else if (newVm.status) {
+                    this.creating_vm_status = 'Creating';
+                    this.newVm = newVm;
+                    this.check_status_loop(newVm.openstackid);
                 } else {
                     this.creating_vm_status = 'Creating';
-
-                    this.data = data
+                    this.create_error = <IResponseTemplate> <any>newVm;
                 }
 
             });
@@ -304,7 +326,7 @@ export class VirtualMachineComponent implements OnInit {
         } else {
             this.creating_vm_status = 'Creating';
 
-            this.data = 'INVALID'
+            this.newVm = null;
 
         }
     }
@@ -316,23 +338,18 @@ export class VirtualMachineComponent implements OnInit {
      */
     getSelectedProjectClient(groupid: number): void {
         this.client_checked = false;
-        this.groupService.getClient(this.selectedProject[1].toString()).subscribe(res => {
-            this.selectedProjectClient = res;
-            if (res['status'] === 'Connected') {
+        this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client) => {
+            if (client.status && client.status === 'Connected') {
                 this.client_avaiable = true;
 
-                this.getSelectedProjectDiskspace();
-                this.getSelectedProjectVms();
-                this.getSelectedProjectVolumes();
-                this.getImages(this.selectedProject[1]);
-                this.getFlavors(this.selectedProject[1]);
+                this.loadProjectData();
                 this.client_checked = true;
             } else {
                 this.client_avaiable = false;
                 this.client_checked = true;
 
             }
-            this.selectedProjectClient = res;
+            this.selectedProjectClient = client;
 
         })
     }
@@ -341,10 +358,10 @@ export class VirtualMachineComponent implements OnInit {
      * Reset the data attribute.
      */
     resetData(): void {
-        if (this.data === 'INVALID') {
+        if (this.newVm === null) {
             return;
         }
-        this.data = '';
+        this.newVm = null;
     }
 
     /**
@@ -352,8 +369,8 @@ export class VirtualMachineComponent implements OnInit {
      * Gets all groups of the user and his key.
      */
     initializeData(): void {
-        forkJoin(this.groupService.getMemberGroupsStatus(), this.keyservice.getKey()).subscribe(result => {
-            this.userinfo.PublicKey = result[1]['public_key'];
+        forkJoin(this.groupService.getSimpleVmByUser(), this.keyservice.getKey()).subscribe(result => {
+            this.userinfo.PublicKey = <string> result[1]['value'];
             this.validatePublicKey();
             const membergroups = result[0];
             for (const project of membergroups) {
@@ -364,50 +381,53 @@ export class VirtualMachineComponent implements OnInit {
         })
     }
 
+    loadProjectData(): void {
+        this.projectDataLoaded = false;
+
+        forkJoin(
+            this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()),
+            this.groupService.getGroupUsedVms(this.selectedProject[1].toString()),
+            this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()),
+            this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()),
+            this.groupService.getVolumeCounter(this.selectedProject[1].toString()),
+            this.groupService.getVolumesUsed(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => {
+            this.selectedProjectVmsMax = <number>res[0].value;
+            this.selectedProjectVmsUsed = <number>res[1].value;
+            this.selectedProjectDiskspaceMax = <number>res[2].value;
+            this.selectedProjectDiskspaceUsed = <number>res[3].value;
+            this.selectedProjectVolumesMax = <number>res[0].value;
+            this.selectedProjectVolumesUsed = <number>res[1].value;
+            this.projectDataLoaded = true;
+
+        });
+        this.getImages(this.selectedProject[1]);
+        this.getFlavors(this.selectedProject[1]);
+
+    }
+
+
+
     /**
      * Get vms diskpace and used from the selected project.
      */
     getSelectedProjectDiskspace(): void {
-        this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe(result => {
-            if (result['Diskspace']) {
-
-                this.selectedProjectDiskspaceMax = result['Diskspace'];
-
-            } else if (result['Diskspace'] === null || result['Diskspace'] === 0) {
-                this.selectedProjectDiskspaceMax = 0;
-            }
-
-        });
-        this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe(result => {
-            if (result['Diskspace']) {
-
-                this.selectedProjectDiskspaceUsed = result['Diskspace'];
-            } else if (result['Diskspace'] === 0 || result['Diskspace'] == null) {
-                this.selectedProjectDiskspaceUsed = 0;
-            }
-
+        forkJoin(
+            this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()),
+            this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => {
+            this.selectedProjectDiskspaceMax = <number>res[0].value;
+            this.selectedProjectDiskspaceUsed = <number>res[1].value;
         })
-
     }
 
     /**
      * Get volumes max and used from the selected project.
      */
     getSelectedProjectVolumes(): void {
-        this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe(result => {
-            if (result['VolumeCounter']) {
-                this.selectedProjectVolumesMax = result['VolumeCounter'];
-            } else if (result['VolumeCounter'] === null || result['VolumeCounter'] === 0) {
-                this.selectedProjectVolumesMax = 0;
-            }
-        });
-        this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe(result => {
-            if (result['UsedVolumes']) {
-                this.selectedProjectVolumesUsed = result['UsedVolumes'];
-            } else if (result['UsedVolumes'] === null || result['UsedVolumes'] === 0) {
-
-                this.selectedProjectVolumesUsed = 0;
-            }
+        forkJoin(
+            this.groupService.getVolumeCounter(this.selectedProject[1].toString()),
+            this.groupService.getVolumesUsed(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => {
+            this.selectedProjectVolumesMax = <number>res[0].value;
+            this.selectedProjectVolumesUsed = <number>res[1].value;
 
         })
     }
@@ -416,23 +436,11 @@ export class VirtualMachineComponent implements OnInit {
      * Get vms max and used from the selected project.
      */
     getSelectedProjectVms(): void {
-        this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()).subscribe(result => {
-            if (result['NumberVms']) {
-
-                this.selectedProjectVmsMax = result['NumberVms'];
-
-            } else if (result['NumberVms'] === null || result['NumberVms'] === 0) {
-                this.selectedProjectVmsMax = 0;
-            }
-
-        });
-        this.groupService.getGroupUsedVms(this.selectedProject[1].toString()).subscribe(result => {
-            if (result['NumberVms']) {
-
-                this.selectedProjectVmsUsed = result['NumberVms'];
-            } else if (result['NumberVms'] === 0 || result['NumberVms'] == null) {
-                this.selectedProjectVmsUsed = 0;
-            }
+        forkJoin(
+            this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()),
+            this.groupService.getGroupUsedVms(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => {
+            this.selectedProjectVmsMax = <number>res[0].value;
+            this.selectedProjectVmsUsed = <number>res[1].value
 
         })
 

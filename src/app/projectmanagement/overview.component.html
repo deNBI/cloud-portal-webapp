@@ -28,7 +28,13 @@
                             <tr *ngFor="let project of projects">
                                 <!--[ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}"-->
                                 <td>{{ project.Id }}</td>
-                                <td>{{ project.Name }}</td>
+                                <td>{{ project.Name }}
+                                  <span *ngIf="project.OpenStackProject" style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge">
+                                    <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                  <span *ngIf="!project.OpenStackProject" style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge">
+                                    <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
+                                  </span></td>
                                 <td>
                                     <button class="btn btn-secondary"
                                             (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
@@ -44,18 +50,10 @@
                                             {{project.ComputeCenter.Login}}</a></li>
                                         <li>Support: {{project.ComputeCenter.Support}}</li>
 
-                                        <!--button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
-                                                class="btn btn-primary">Set your OpenStack API password
-                                        </button-->
-
                                     </ul>
 
                                 </td>
 
-                                <!--td>{{ project.DateCreated }}</td>-->
-                                <!--td>{{project.DateEnd}}</td-->
-                                <!--td>{{ project.DaysRunning }}</td-->
-                                <!--td>{{project.LifetimeDays}}</td-->
                                 <td>
                                     <div class="btn-group-vertical">
                                         <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
@@ -70,7 +68,7 @@
                                                 (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.RealName,project.ComputeCenter);setAddUserInvitationLink(); addUserModal.show();"
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
                                                 type="button" style="margin-bottom: 5px"
-                                                class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Add Member
+                                                class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
                                         </button>
                                         <button
                                                 *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
@@ -136,7 +134,7 @@
                                 </button>
                                 <button (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username);
                                                 notificationModal.show();
-                                               " class="btn btn-secondary" type="button" style="margin: 2px">
+                                               " class="btn btn-danger" type="button" style="margin: 2px">
 
                                     <i class="fa fa-trash"></i>&nbsp; Remove member
                                 </button>
@@ -192,7 +190,7 @@
                             a de.NBI Cloud account. In that case you can invite him by sending him the following link:
                             <br>
                             <br>
-                            <ul>
+                            <ul style="list-style-type:none;">
 
                                 <li>
                                     <pre [hidden]="showLink">{{addUserModalInvitationLink}}</pre>
@@ -216,15 +214,15 @@
                             <thead>
 
                             <th></th>
-                            <th>first name</th>
-                            <th>last name</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
                             <th>Email</th>
                             </thead>
                             <tbody *ngFor="  let member of filteredMembers">
                             <td>
                                 <button
                                         (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
-                                        class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
+                                        class="btn btn-success"><i class="fa fa-plus"></i> Add Member
                                 </button>
                                 <button style="padding-left: 10px;margin-left: 10px"
                                         (click)="addAdmin(addUserModalProjectID,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
@@ -279,38 +277,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Change Password</h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <div class="alert alert-warning" role="alert">
-                    Are you sure you want to change your password?
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn  btn-success mr-auto col-md-4"
-                        (click)="verifyModal.hide();setUserFacilityPassword(UserModalFacility[0],UserModalFacilityDetails);passwordModal.show(); resetFacilityDetailsModal();">
-                    Yes
-                </button>
-                <button class="btn  btn-danger col-md-4" type="reset"
-                        (click)="verifyModal.hide()">Cancel
-                </button>
-            </div>
-
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 
 <div bsModal #passwordModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">

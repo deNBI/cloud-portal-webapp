@@ -18,7 +18,6 @@ export class ResourcesComponent implements OnInit {
 
     isLoaded: boolean = false;
     voResources: Resources[] = [];
-    totalResource: Resources;
     fileName: string = 'VoResources';
     tableId: string = 'resourcesTable';
     today: number = Date.now();
@@ -39,23 +38,8 @@ export class ResourcesComponent implements OnInit {
     }
 
     public getVoProjectResources(): void {
-        this.voservice.getVoProjectResources().subscribe(res => {
-            for (const resp in res) {
-                if (resp !== 'Total') {
-                    const resource: Resources = new Resources(
-                        resp, res[resp]['totalRam'], res[resp]['totalCores'],
-                        res[resp]['totalVms'], res[resp]['totalVolumeLimit'], res[resp]['totalVolumeCounter'],
-                        res[resp]['totalObjectStorage'], res[resp]['totalGPU']);
-                    this.voResources.push(resource);
-                } else {
-                    this.totalResource = new Resources(
-                        'Total', res['Total']['totalRam'], res['Total']['totalCores'],
-                        res['Total']['totalVms'], res['Total']['totalVolumeLimit'],
-                        res['Total']['totalVolumeCounter'], res['Total']['totalObjectStorage'],
-                        res['Total']['totalGPU']);
-                }
-            }
-
+        this.voservice.getVoProjectResources().subscribe((res: Resources[]) => {
+            this.voResources = res;
             this.isLoaded = true;
         })
 

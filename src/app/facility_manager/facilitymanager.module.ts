@@ -8,6 +8,7 @@ import {ImageTagComponent} from '../facility_manager/imagetags.component';
 import {FacilitymanagerRoutingModule} from './facilitymanager-routing.module';
 import {FacilityApplicationComponent} from './facility.application.component';
 import {ResourcesComponent} from './resources/resources.component';
+import {ExportAsModule} from 'ngx-export-as';
 
 /**
  * Facilitymanager module.
@@ -18,7 +19,8 @@ import {ResourcesComponent} from './resources/resources.component';
         TabsModule,
         FormsModule,
         CommonModule,
-        ModalModule.forRoot()
+        ModalModule.forRoot(),
+        ExportAsModule
 
     ],
     declarations: [

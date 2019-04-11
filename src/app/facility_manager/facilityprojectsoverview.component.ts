@@ -10,6 +10,7 @@ import {FacilityService} from '../api-connector/facility.service';
 import * as moment from 'moment';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
+import {IResponseTemplate} from "../api-connector/response-template";
 
 /**
  * Facility Project overview component.
@@ -64,9 +65,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
     }
 
     applyFilter(): void {
-
         this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
-
     }
 
     checkFilter(project: Project): boolean {
@@ -81,8 +80,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
     getProjectLifetime(project: Project): void {
         this.details_loaded = false;
         if (!project.Lifetime) {
-            this.groupservice.getLifetime(project.Id).subscribe(res => {
-                const lifetime: number = res['lifetime'];
+            this.groupservice.getLifetime(project.Id).subscribe((time: IResponseTemplate) => {
+                const lifetime: number = <number>time.value;
                 const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
 
                 if (lifetime !== -1) {
@@ -152,6 +151,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                 }
                 newProject.RealName = group['name'];
                 newProject.Lifetime = lifetime;
+                newProject.OpenStackProject = group['openstack_project'];
 
                 this.projects.push(newProject);
             }

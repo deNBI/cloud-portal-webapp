@@ -5,6 +5,7 @@ import {ApiSettings} from '../api-connector/api-settings.service'
 import {KeyService} from '../api-connector/key.service';
 import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
+import {IResponseTemplate} from "../api-connector/response-template";
 
 @Component({
     selector: 'app-userinfo',
@@ -35,9 +36,10 @@ export class UserinfoComponent implements OnInit {
         })
     }
 
-    getPendingPreferredMailUser() {
-        this.userservice.getPendingPreferredMailUser().subscribe(res => {
-            this.userinfo.PendingEmails = res['pendingEmails'];
+    getPendingPreferredMailUser(): void {
+        this.userservice.getPendingPreferredMailUser().subscribe((res: IResponseTemplate) => {
+            this.userinfo.PendingEmails = <string[]>res.value;
+
         })
     }
 
@@ -48,25 +50,28 @@ export class UserinfoComponent implements OnInit {
 
     }
 
-    isFreemiumActive() {
-        this.groupService.isFreemiumActive().subscribe(result => {
-            this.freemium_active = result['Freemium'];
+    isFreemiumActive(): void {
+        this.groupService.isFreemiumActive().subscribe((result: IResponseTemplate) => {
+            this.freemium_active = <boolean><Boolean> result.value;
 
         });
     }
 
-    setNewsletterSubscription(e) {
-        this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => {
-        })
+    setNewsletterSubscription(e): void {
+        if (this.newsletter_subscribed) {
+            this.userservice.setNewsletterSubscriptionWhenSubscribed().subscribe();
+        }
+        else {
+            this.userservice.setNewsletterSubscriptionWhenNotSubscribed().subscribe();
+        }
+
     }
 
     importKey(publicKey: string, keyname: string) {
 
-        const re = /\+/gi;
+        const re: RegExp = /\+/gi;
 
-        const newstr = publicKey.replace(re, '%2B');
-
-        this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(result => {
+        this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(() => {
             this.getUserPublicKey();
         });
     }
@@ -82,15 +87,15 @@ export class UserinfoComponent implements OnInit {
 
     }
 
-    getUserPublicKey() {
-        this.keyservice.getKey().subscribe(result => {
-            this.userinfo.PublicKey = result['public_key'];
+    getUserPublicKey(): void {
+        this.keyservice.getKey().subscribe((key: IResponseTemplate) => {
+            this.userinfo.PublicKey = <string>key.value;
             this.isLoaded = true;
         })
     }
 
     // Returns the preffered Mail of the logged in User
-    getPreferredMail() {
+    getPreferredMail(): void {
         this.userservice.getPreferredMailUser().subscribe()
     }
 
@@ -122,13 +127,13 @@ export class UserinfoComponent implements OnInit {
 
             })
         });
-        this.userservice.getPreferredMailUser().subscribe(r => {
-            this.userinfo.Email = r['preferredEmail'];
-            this.userservice.getPendingPreferredMailUser().subscribe(res => {
-                this.userinfo.PendingEmails = res['pendingEmails'];
-                this.userservice.getNewsletterSubscription().subscribe(result => {
-                    result = result['subscribed'];
-                    if (result.toString() === 'true') {
+        this.userservice.getPreferredMailUser().subscribe((prefEmail: IResponseTemplate) => {
+            this.userinfo.Email = <string>prefEmail.value;
+            this.userservice.getPendingPreferredMailUser().subscribe((pendingEmails: IResponseTemplate) => {
+                this.userinfo.PendingEmails = <string[]>pendingEmails.value;
+                this.userservice.getNewsletterSubscription().subscribe((subscribed: IResponseTemplate) => {
+
+                    if (<boolean><Boolean>subscribed.value) {
                         this.newsletter_subscribed = true;
                     } else {
                         this.newsletter_subscribed = false;
@@ -162,7 +167,7 @@ export class UserinfoComponent implements OnInit {
     }
 
     is_vm_project_member() {
-        this.groupService.getMemberGroupsStatus().subscribe(result => {
+        this.groupService.getSimpleVmByUser().subscribe(result => {
             if (result.length > 0) {
                 this.is_project_member = true
             } else {

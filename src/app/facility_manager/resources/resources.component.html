@@ -11,7 +11,7 @@
             <div class="card-header">
                 <i class="fa fa-align-justify"></i> Resources
 
-                        <button style="float:right" class="btn btn-primary" (click)="getRamCoreFactors();factorModal.show()">Set
+                        <button style="float:right" class="btn btn-primary" (click)="getRamCoreFactors();factorModal.show()">Modify
                             Limits</button>
 
 
@@ -26,78 +26,53 @@
 
             </select></div>
 
-            <div class="card-body" style="width: 100%">
+            <div class="card-body" style="width: 100%" id="contentToConvert">
 
 
                 <div class="table-responsive">
-                    <table id="contentToConvert"
-                           class="table table-striped table-bordered"
+                    <table class="table table-striped table-bordered"
                            style="width: 100%">
                         <thead>
                         <tr>
-                            <th colspan="5"><h1>Facility: {{selectedFacility['Facility']}} {{today |
-                                date:'dd-MM-yyyy'}}</h1></th>
-                        </tr>
-                        </thead>
-                        <thead>
-                        <tr>
                             <th>{{today | date:'dd-MM-yyyy'}}</th>
-                            <th>{{openstackApprovedResources.resource_name}}</th>
-                            <th>{{openstackWFCResources.resource_name}}</th>
-                            <th>{{simpleVmRessource.resource_name}}</th>
-                            <th>{{totalResource.resource_name}}</th>
+
+                            <th *ngFor="let r of resources">{{r.resource_name}}</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         <tr>
                             <th>Ram [GB]</th>
-                            <td>{{openstackApprovedResources.totalRam}}</td>
-                            <td>{{openstackWFCResources.totalRam}}</td>
-                            <td>{{simpleVmRessource.totalRam}}</td>
-                            <td>{{totalResource.totalRam}}</td>
+                            <td *ngFor="let r of resources">{{r.totalRam}}</td>
                         </tr>
                         <tr>
                             <th>Cores</th>
-                            <td>{{openstackApprovedResources.totalCores}}</td>
-                            <td>{{openstackWFCResources.totalCores}}</td>
-                            <td>{{simpleVmRessource.totalCores}}</td>
-                            <td>{{totalResource.totalCores}}</td>
+                            <td *ngFor="let r of resources">{{r.totalCores}}</td>
+
                         </tr>
                         <tr>
                             <th>Vms</th>
-                            <td>{{openstackApprovedResources.totalVms}}</td>
-                            <td>{{openstackWFCResources.totalVms}}</td>
-                            <td>{{simpleVmRessource.totalVms}}</td>
-                            <td>{{totalResource.totalVms}}</td>
+                            <td *ngFor="let r of resources">{{r.totalVms}}</td>
                         </tr>
                         <tr>
                             <th>Volumes</th>
-                            <td>{{openstackApprovedResources.totalVolumeCounter}}</td>
-                            <td>{{openstackWFCResources.totalVolumeCounter}}</td>
-                            <td>{{simpleVmRessource.totalVolumeCounter}}</td>
-                            <td>{{totalResource.totalVolumeCounter}}</td>
+                            <td *ngFor="let r of resources">{{r.totalVolumeCounter}}</td>
+
                         </tr>
                         <tr>
                             <th>Volumes Storage [GB]</th>
-                            <td>{{openstackApprovedResources.totalVolumeLimit}}</td>
-                            <td>{{openstackWFCResources.totalVolumeLimit}}</td>
-                            <td>{{simpleVmRessource.totalVolumeLimit}}</td>
-                            <td>{{totalResource.totalVolumeLimit}}</td>
+                            <td *ngFor="let r of resources">{{r.totalVolumeLimit}}</td>
+
                         </tr>
                         <tr>
                             <th>Object Storage [GB]</th>
-                            <td>{{openstackApprovedResources.totalObjectStorage}}</td>
-                            <td>{{openstackWFCResources.totalObjectStorage}}</td>
-                            <td></td>
-                            <td>{{totalResource.totalObjectStorage}}</td>
+                            <td *ngFor="let r of resources">{{r.totalObjectStorage}}</td>
+
                         </tr>
                         <tr>
                             <th>GPU</th>
-                            <td>{{openstackApprovedResources.totalGPU}}</td>
-                            <td>{{openstackWFCResources.totalGPU}}</td>
-                            <td>{{simpleVmRessource.totalGPU}}</td>
-                            <td>{{totalResource.totalGPU}}</td>
+                            <td *ngFor="let r of resources">{{r.totalGPU}}</td>
+
                         </tr>
                         </tbody>
                     </table>
@@ -127,6 +102,9 @@
             </div>
 
             <div class="modal-body">
+                <div class="alert alert-info" role="alert">
+                   Please indicate only the resources intended for denbi projects.
+                </div>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered">
                         <thead>

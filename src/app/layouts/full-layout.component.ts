@@ -5,6 +5,7 @@ import {FacilityService} from '../api-connector/facility.service';
 import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {VoService} from '../api-connector/vo.service';
+import {IResponseTemplate} from "../api-connector/response-template";
 
 /**
  * FullLayout component.
@@ -56,7 +57,7 @@ export class FullLayoutComponent implements OnInit {
     }
 
     is_vm_project_member(): void {
-        this.groupService.getMemberGroupsStatus().subscribe(result => {
+        this.groupService.getSimpleVmByUser().subscribe(result => {
             if (result.length > 0) {
                 this.vm_project_member = true
             }
@@ -80,8 +81,8 @@ export class FullLayoutComponent implements OnInit {
     }
 
     checkVOstatus(): void {
-        this.voService.isVo().subscribe(result => {
-            this.is_vo_admin = result['Is_Vo_Manager'];
+        this.voService.isVo().subscribe((result: IResponseTemplate) => {
+            this.is_vo_admin = <boolean><Boolean>result.value;
         })
     }
 

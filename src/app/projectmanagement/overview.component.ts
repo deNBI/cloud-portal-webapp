@@ -10,6 +10,7 @@ import {VoService} from '../api-connector/vo.service';
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
+import {IResponseTemplate} from "../api-connector/response-template";
 
 /**
  * Projectoverview component.
@@ -52,6 +53,7 @@ export class OverviewComponent extends AbstractBaseClasse {
     public addUserModalProjectName: string;
     public addUserModalRealName: string;
     public addUserModalInvitationLink: string = '';
+
     public showLink: boolean = true;
 
     public UserModalFacilityDetails: [string, string][];
@@ -76,31 +78,11 @@ export class OverviewComponent extends AbstractBaseClasse {
 
     }
 
-    setUserFacilityPassword(facility: string, details: [string, string][]): void {
-        this.userservice.setUserFacilityPassword(facility).subscribe(result => {
-            for (const key of details) {
-                if (key[0] === 'Support') {
-                    this.passwordModalEmail = key[1];
-                }
-            }
-
-            this.passwordModalFacility = facility;
-            if (result['Error']) {
-                this.passwordModalTitle = 'Set or update password';
-                this.passwordModalType = 'warning'
-            } else {
-                this.passwordModalTitle = 'Success';
-                this.passwordModalType = 'success';
-                this.passwordModalPassword = result.toString()
-            }
-        })
-    }
-
     getProjectLifetime(project: Project): void {
         this.details_loaded = false;
         if (!project.Lifetime) {
-            this.groupservice.getLifetime(project.Id).subscribe(res => {
-                const lifetime: number | string = res['lifetime'];
+            this.groupservice.getLifetime(project.Id).subscribe((time: IResponseTemplate) => {
+                const lifetime: number | string = <number>time.value;
                 const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
                 if (lifetime !== -1) {
                     const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
@@ -120,7 +102,7 @@ export class OverviewComponent extends AbstractBaseClasse {
 
     }
 
-   copyLink(text:string) {
+    copyLink(text: string) {
         const event = e => {
             e.clipboardData.setData('text/plain', text);
             e.preventDefault();
@@ -176,8 +158,8 @@ export class OverviewComponent extends AbstractBaseClasse {
         this.UserModalFacility = null;
     }
 
-    filterMembers(searchString: string, groupid: number): void {
-        this.userservice.getFilteredMembersOfdeNBIVo(searchString, groupid.toString()).subscribe(result => {
+    filterMembers(searchString: string): void {
+        this.userservice.getFilteredMembersOfdeNBIVo(searchString).subscribe(result => {
             this.filteredMembers = result;
         })
     }
