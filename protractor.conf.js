@@ -6,14 +6,16 @@ const ***REMOVED***SpecReporter***REMOVED*** = require('jasmine-spec-reporter');
 exports.config = ***REMOVED***
   params: ***REMOVED***
     timeout: 10000,
+    portal: 'https://portal-dev.denbi.de/portal/',
     login: ***REMOVED***
       email: 'default',
-      password: 'default'
+      password: 'default',
+      auth: 'google'
     ***REMOVED***
   ***REMOVED***,
   allScriptsTimeout: 11000,
   specs: [
-    'spec.ts'
+    'cloud_application_test.ts'
   ],
   capabilities: ***REMOVED***
     'browserName': 'chrome'
