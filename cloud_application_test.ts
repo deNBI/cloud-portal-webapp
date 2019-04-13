@@ -4,11 +4,12 @@ import {browser, by, element, protractor} from 'protractor';
 describe('Application test', function () {
   const timeout: number = browser.params.timeout;
   const until = protractor.ExpectedConditions;
+  const auth = browser.params.login.auth;
 
 
   beforeEach(function () {
     browser.waitForAngularEnabled(false);
-    browser.get('https://portal-dev.denbi.de/portal/');
+    browser.get(browser.params.portal);
   });
 
   it('should be login page', function () {
@@ -19,24 +20,43 @@ describe('Application test', function () {
   });
 
   it('should login', function () {
-    var el = element(by.className('metalist list-group'));
-    el.click();
-    // Input Email
-    browser.wait(until.urlContains('accounts.google.com/signin/oauth/'), timeout).then(function () {
-      element(by.id('identifierId')).sendKeys(browser.params.login.email);
-      // Click next btn
-      element(by.id('identifierNext')).click();
-    });
+    if (auth === 'google') {
 
-    browser.wait(until.urlContains('accounts.google.com/signin/v2/challenge'), timeout).then(function () {
-      const password = element(by.name('password'));
-      browser.wait(until.elementToBeClickable(password), timeout).then(function () {
-        element(by.name('password')).sendKeys(browser.params.login.password);
-        element(by.id('passwordNext')).click();
-      })
+      var el = element(by.className('metalist list-group'));
+      el.click();
+      // Input Email
+      browser.wait(until.urlContains('accounts.google.com/signin/oauth/'), timeout).then(function () {
+        element(by.id('identifierId')).sendKeys(browser.params.login.email);
+        // Click next btn
+        element(by.id('identifierNext')).click();
+      });
 
-    });
+      browser.wait(until.urlContains('accounts.google.com/signin/v2/challenge'), timeout).then(function () {
+        const password = element(by.name('password'));
+        browser.wait(until.elementToBeClickable(password), timeout).then(function () {
+          element(by.name('password')).sendKeys(browser.params.login.password);
+          element(by.id('passwordNext')).click();
+        })
 
+      });
+
+    } else {
+      element(by.id('query')).sendKeys('Bielefeld').then(function () {
+        element(by.linkText('University of Bielefeld')).click()
+      });
+      const pass = element(by.id('password'));
+      browser.wait(until.elementToBeClickable(pass), timeout).then(function () {
+        element(by.id('username')).sendKeys(browser.params.login.email);
+        element(by.id('password')).sendKeys(browser.params.login.password);
+        element(by.name('_eventId_proceed')).click()
+
+      });
+      browser.wait(until.urlContains('execution=e1s2'), timeout).then(function () {
+        element(by.name('_eventId_proceed')).click()
+
+      });
+
+    }
     const authorize = element(by.name('authorize'));
     browser.wait(until.elementToBeClickable(authorize), timeout).then(function () {
       authorize.click();
@@ -45,9 +65,6 @@ describe('Application test', function () {
     browser.wait(until.urlContains('userinfo'), timeout).then(function (result) {
       expect(result).toEqual(true);
     });
-
-
-    // Input password
   });
 
 
@@ -63,7 +80,10 @@ describe('Application test', function () {
     element(by.name('project_application_institute')).sendKeys('Proctractor Institute');
     element(by.name('project_application_workgroup')).sendKeys('Proctractor Workgroup');
     // submit
-    element(by.className('btn btn-sm btn-success')).click();
+    const submitBtn = element(by.className('btn btn-sm btn-success'));
+    browser.wait(until.elementToBeClickable(submitBtn)).then(function () {
+      submitBtn.click()
+    });
     // Todo give verification Btn ID in Angular
     const verificationBtn = element(by.className('btn btn-success col-md4'));
     browser.wait(until.elementToBeClickable(verificationBtn), timeout).then(function () {
@@ -99,4 +119,5 @@ describe('Application test', function () {
     });
 
   });
-});
+})
+;
