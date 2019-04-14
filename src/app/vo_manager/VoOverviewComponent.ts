@@ -81,7 +81,6 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     ***REMOVED***
 
     sendEmail(subject: string, message: string, reply?: string): void ***REMOVED***
-        console.log(this.emailType);
         switch (this.emailType) ***REMOVED***
             case 0: ***REMOVED***
                 this.sendMailToVo(subject, message, this.selectedFacility.toString(), this.selectedProjectType, reply);
@@ -212,7 +211,6 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
                     shortname = group['name']
                 ***REMOVED***
                 let compute_center: ComputecenterComponent = null;
-                console.log(facility)
                 if (facility) ***REMOVED***
 
                     compute_center = new ComputecenterComponent(

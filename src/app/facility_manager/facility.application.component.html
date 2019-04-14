@@ -35,6 +35,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>Project Name</th>
                         <th>Short Name</th>
                         <th>Date submitted</th>
@@ -47,6 +48,16 @@
                     <ng-container *ngFor="let application of all_applications_wfc">
                         <ng-container>
                             <tr>
+                                <td>
+                                     <span *ngIf="application.OpenStackProject"
+                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge">
+                                    <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                    <span *ngIf="!application.OpenStackProject"
+                                          style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge">
+                                    <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                </td>
                                 <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***</td>
@@ -56,34 +67,34 @@
                                 <td>***REMOVED******REMOVED***application.Institute***REMOVED******REMOVED***</td>
 
                                 <td>
-                                  <div class="btn-group">
-                                    <button type="button"
-                                            (click)="resetNotificationModal();notificationModal.show();approveApplication(application.Id)"
-                                            class="btn btn-success"
-                                            style="margin: auto 2.5px"><i
-                                      class="fa fa-check"></i>&nbsp;
-                                      Approve
-                                    </button>
-                                    <button
-                                      (click)='resetNotificationModal();notificationModal.show();declineApplication(application.Id)'
-                                      type="button"
-                                      class="btn btn-danger"
-                                      style="margin: auto 2.5px"><i
-                                      class="fa fa-close"></i>&nbsp;
-                                      Decline
-                                    </button>
-                                    <button
-                                      (click)="switchCollapseStatus('application_review-' + application.Id);  getMemberDetailsByElixirIdIfCollapsed(application.User,'application_review-' + application.Id);"
-                                      type="button"
-                                      class="btn btn-secondary"
-                                      style="margin: auto 2.5px">
-                                      <i class="fa fa-info-circle"></i>&nbsp;
-                                      <span
-                                        [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
-                                      [hidden]="getCollapseStatus('application_review-' + application.Id)">Hide</span>
-                                      Information
-                                    </button>
-                                  </div>
+                                    <div class="btn-group">
+                                        <button type="button"
+                                                (click)="resetNotificationModal();notificationModal.show();approveApplication(application.Id)"
+                                                class="btn btn-success"
+                                                style="margin: auto 2.5px"><i
+                                                class="fa fa-check"></i>&nbsp;
+                                            Approve
+                                        </button>
+                                        <button
+                                                (click)='resetNotificationModal();notificationModal.show();declineApplication(application.Id)'
+                                                type="button"
+                                                class="btn btn-danger"
+                                                style="margin: auto 2.5px"><i
+                                                class="fa fa-close"></i>&nbsp;
+                                            Decline
+                                        </button>
+                                        <button
+                                                (click)="switchCollapseStatus('application_review-' + application.Id);  getMemberDetailsByElixirIdIfCollapsed(application.User,'application_review-' + application.Id);"
+                                                type="button"
+                                                class="btn btn-secondary"
+                                                style="margin: auto 2.5px">
+                                            <i class="fa fa-info-circle"></i>&nbsp;
+                                            <span
+                                                    [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
+                                                [hidden]="getCollapseStatus('application_review-' + application.Id)">Hide</span>
+                                            Information
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
 
@@ -291,6 +302,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>Project Name</th>
                         <th>Short Name</th>
                         <th>Date submitted</th>
@@ -303,6 +315,16 @@
                     <ng-container *ngFor="let app of all_application_modifications">
                         <ng-container>
                             <tr>
+                                <td>
+                                     <span *ngIf="project.OpenStackProject"
+                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge">
+                                    <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                    <span *ngIf="!project.OpenStackProject"
+                                          style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge">
+                                    <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                </td>
                                 <td>***REMOVED******REMOVED*** app.Name ***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED***app.Shortname***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** app.DateSubmitted ***REMOVED******REMOVED***</td>
@@ -312,34 +334,34 @@
                                 <td>***REMOVED******REMOVED***app.Institute***REMOVED******REMOVED***</td>
 
                                 <td>
-                                  <div class="btn-group">
-                                    <button type="button"
-                                            (click)="resetNotificationModal();notificationModal.show();approveExtension(app)"
-                                            class="btn btn-success"
-                                            style="margin: auto 2.5px"><i
-                                      class="fa fa-check"></i>&nbsp;
-                                      Approve
-                                    </button>
-                                    <button
-                                      (click)='resetNotificationModal();notificationModal.show();declineExtension(app)'
-                                      type="button"
-                                      class="btn btn-danger"
-                                      style="margin: auto 2.5px"><i
-                                      class="fa fa-close"></i>&nbsp;
-                                      Decline
-                                    </button>
-                                    <button
-                                      (click)="switchCollapseStatus('application_review-' + app.Id);  getMemberDetailsByElixirIdIfCollapsed(app.User,'application_review-' + app.Id);"
-                                      type="button"
-                                      class="btn btn-secondary"
-                                      style="margin: auto 2.5px">
-                                      <i class="fa fa-info-circle"></i>&nbsp;
-                                      <span
-                                        [hidden]="!getCollapseStatus('application_review-' + app.Id)">Show</span><span
-                                      [hidden]="getCollapseStatus('application_review-' + app.Id)">Hide</span>
-                                      Information
-                                    </button>
-                                  </div>
+                                    <div class="btn-group">
+                                        <button type="button"
+                                                (click)="resetNotificationModal();notificationModal.show();approveExtension(app)"
+                                                class="btn btn-success"
+                                                style="margin: auto 2.5px"><i
+                                                class="fa fa-check"></i>&nbsp;
+                                            Approve
+                                        </button>
+                                        <button
+                                                (click)='resetNotificationModal();notificationModal.show();declineExtension(app)'
+                                                type="button"
+                                                class="btn btn-danger"
+                                                style="margin: auto 2.5px"><i
+                                                class="fa fa-close"></i>&nbsp;
+                                            Decline
+                                        </button>
+                                        <button
+                                                (click)="switchCollapseStatus('application_review-' + app.Id);  getMemberDetailsByElixirIdIfCollapsed(app.User,'application_review-' + app.Id);"
+                                                type="button"
+                                                class="btn btn-secondary"
+                                                style="margin: auto 2.5px">
+                                            <i class="fa fa-info-circle"></i>&nbsp;
+                                            <span
+                                                    [hidden]="!getCollapseStatus('application_review-' + app.Id)">Show</span><span
+                                                [hidden]="getCollapseStatus('application_review-' + app.Id)">Hide</span>
+                                            Information
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
 
@@ -587,7 +609,7 @@
                 <table class="table table-striped table-hover">
                     <thead>
                     <tr>
-
+                        <th></th>
                         <th>Project Name</th>
                         <th>Short Name</th>
                         <th>Date submitted (d/m/y)</th>
@@ -602,6 +624,16 @@
                             *ngFor="let application of applications_history">
                         <ng-container *ngIf="application.Status != application_states.SUBMITTED">
                             <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)***REMOVED***">
+                                <td>
+                                     <span *ngIf="application.OpenStackProject"
+                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge">
+                                    <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                    <span *ngIf="!application.OpenStackProject"
+                                          style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge">
+                                    <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                </td>
                                 <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED***application.Shortname***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** application.DateSubmitted ***REMOVED******REMOVED***
