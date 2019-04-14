@@ -19,7 +19,8 @@
             "assets": [
               "src/static/webapp/assets",
               "src/static/webapp",
-              "src/static/webapp/assets/img"
+              "src/static/webapp/assets/img",
+              "src/manifest.json"
             ],
             "styles": [
               "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
@@ -52,7 +53,9 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "src/ngsw-config.json"
             },
             "stage": {
               "optimization": true,
@@ -119,7 +122,8 @@
             },
             "assets": [
               "src/static/webapp/assets",
-              "src/static/webapp"
+              "src/static/webapp",
+              "src/manifest.json"
             ]
           },
           "configurations": {

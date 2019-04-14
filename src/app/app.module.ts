@@ -14,29 +14,27 @@ import {ExportAsModule} from 'ngx-export-as';
 import {PopoverModule} from 'ngx-popover';
 import {ApiSettings} from './api-connector/api-settings.service';
 import {UserService} from './api-connector/user.service';
+import {UpdateService} from "./update.service";
 // Routing Module
 import {AppRoutingModule} from './app.routing';
 import {ConsentInfoComponent} from './consent-info.component';
 // Layouts
-import {
-  AppAsideModule,
-  AppBreadcrumbModule,
-  AppHeaderModule,
-  AppFooterModule,
-  AppSidebarModule,
-} from '@coreui/angular';
+import {AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule,} from '@coreui/angular';
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {RegistrationInfoComponent} from './registration-info.component';
 import {AsideToggleDirective} from './shared/aside.directive';
-import {ApplicationBaseClass} from "./shared/shared_modules/baseClass/application-base-class";
 import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {BreadcrumbsComponent} from "./shared/breadcrumb.component";
 import {
-    MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
+    MobileSidebarToggleDirective,
+    SidebarMinimizeDirective,
+    SidebarOffCanvasCloseDirective,
     SidebarToggleDirective
 } from "./shared/sidebar.directive";
-
+import {ServiceWorkerModule} from '@angular/service-worker';
+import {environment} from '../environments/environment';
+import { MatSnackBarModule } from "@angular/material";
 
 /**
  * App module.
@@ -59,7 +57,9 @@ import {
         PopoverModule,
         PaginationModule.forRoot(),
         ExportAsModule,
-        SharedModuleModule
+        SharedModuleModule,
+        MatSnackBarModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})
     ],
     declarations: [
         AppComponent,
@@ -81,7 +81,8 @@ import {
     },
 
         ApiSettings,
-        UserService
+        UserService,
+        UpdateService
     ],
     bootstrap: [AppComponent]
 })

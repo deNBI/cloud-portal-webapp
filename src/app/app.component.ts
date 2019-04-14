@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {Http, RequestOptions, XHRBackend} from '@angular/http';
 import {ModalDirective} from 'ngx-bootstrap';
+import {UpdateService} from './update.service';
 
 /**
  * App component.
@@ -16,6 +17,9 @@ import {ModalDirective} from 'ngx-bootstrap';
 export class AppComponent implements AfterViewInit {
 
     @ViewChild('timeoutModal') modal: ModalDirective;
+
+    constructor(private update: UpdateService) {
+    }
 
     ngAfterViewInit(): void {
     }
