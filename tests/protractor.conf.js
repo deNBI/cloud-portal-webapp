@@ -9,13 +9,13 @@ let credentials = JSON.parse(rawdata);
 exports.config = {
     seleniumAddress: 'http://localhost:4444/wd/hub',
     params: {
-    timeout: 10000,
+    timeout: credentials['timeout'],
     
-    portal: 'http://portal-dev.denbi.de:8000',
+    portal: credentials['portal'],
     login: {
       email: credentials['email'],
       password: credentials['password'],
-      auth: 'google'
+      auth: credentials['auth']
     }
   },
   allScriptsTimeout: 11000,
