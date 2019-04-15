@@ -69,21 +69,30 @@ describe('Application test', function () {
 
 
   it('should send a cloud application', function () {
-    browser.get('https://portal-dev.denbi.de/portal/webapp/#/applications/newCloudApplication');
-    browser.wait(until.urlContains('applications/newCloudApplication'), timeout);
+    browser.getCurrentUrl().then(function (url) {
+      url = url.substring(0, url.indexOf('#'));
+      browser.get(url + '#/applications/newCloudApplication');
 
-    // fill  Formular
-    element(by.name('project_application_name')).sendKeys('ProtractorTest');
-    element(by.name('project_application_shortname')).sendKeys('ProtractorTest');
-    element(by.name('project_application_description')).sendKeys('ProtractorTest Description');
-    element(by.name('project_application_lifetime')).sendKeys('4');
-    element(by.name('project_application_institute')).sendKeys('Proctractor Institute');
-    element(by.name('project_application_workgroup')).sendKeys('Proctractor Workgroup');
-    // submit
-    const submitBtn = element(by.className('btn btn-sm btn-success'));
-    browser.wait(until.elementToBeClickable(submitBtn)).then(function () {
-      submitBtn.click()
+    })
+    const form_name = element(by.name('project_application_name'));
+    browser.wait(until.presenceOf(form_name), timeout).then(function () {
+      // fill  Formular
+      element(by.name('project_application_name')).sendKeys('ProtractorTest');
+      element(by.name('project_application_shortname')).sendKeys('ProtractorTest');
+      element(by.name('project_application_description')).sendKeys('ProtractorTest Description');
+      element(by.name('project_application_lifetime')).sendKeys('4');
+      element(by.name('project_application_institute')).sendKeys('Proctractor Institute');
+      element(by.name('project_application_workgroup')).sendKeys('Proctractor Workgroup');
+      const submitBtn = element(by.className('btn btn-sm btn-success'));
+      browser.wait(until.elementToBeClickable(submitBtn)).then(function () {
+        submitBtn.click()
+      });
+
     });
+
+
+    // submit
+
     // Todo give verification Btn ID in Angular
     const verificationBtn = element(by.className('btn btn-success col-md4'));
     browser.wait(until.elementToBeClickable(verificationBtn), timeout).then(function () {
