@@ -4,9 +4,10 @@
 const {SpecReporter} = require('jasmine-spec-reporter');
 
 exports.config = {
-  params: {
+    seleniumAddress: 'http://localhost:4444/wd/hub',
+    params: {
     timeout: 10000,
-    portal: 'https://portal-dev.denbi.de/portal/',
+    portal: 'http://portal-dev.denbi.de:8000',
     login: {
       email: 'default',
       password: 'default',
@@ -21,7 +22,6 @@ exports.config = {
     'browserName': 'chrome'
   },
   directConnect: true,
-  baseUrl: 'http://localhost:4200/',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
