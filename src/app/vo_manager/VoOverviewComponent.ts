@@ -264,8 +264,8 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
 
   suspendProject(project: Project): void ***REMOVED***
     forkJoin(this.voserice.removeResourceFromGroup(project.Id), this.voserice.setProjectStatus(project.Id, 4)).subscribe((res: IResponseTemplate[]) => ***REMOVED***
-      const removedRes: number = res[0].value;
-      const newProjectSatus: number = res[1].value;
+      const removedRes: number = <number> res[0].value;
+      const newProjectSatus: number = <number> res[1].value;
 
       project.Status = newProjectSatus;
       if (removedRes === -1) ***REMOVED***
