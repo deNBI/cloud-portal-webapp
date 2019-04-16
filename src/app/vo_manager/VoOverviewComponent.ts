@@ -59,11 +59,24 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
       this.newsletterSubscriptionCounter = <number>result.value
 
     ***REMOVED***);
-
   ***REMOVED***
 
+ 
+    sendEmail(subject: string, message: string, reply?: string): void ***REMOVED***
+        switch (this.emailType) ***REMOVED***
+            case 0: ***REMOVED***
+                this.sendMailToVo(subject, message, this.selectedFacility.toString(), this.selectedProjectType, reply);
+                break;
+            ***REMOVED***
+            case 1: ***REMOVED***
+                this.sendNewsletterToVo(subject, message, reply);
+                break;
+            ***REMOVED***
+            default:
+                return
+        ***REMOVED***
+    ***REMOVED***
   applyFilter(): void ***REMOVED***
-
     this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
 
   ***REMOVED***
@@ -140,6 +153,63 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
       ***REMOVED***
       default:
         return
+
+    getVoProjects(): void ***REMOVED***
+        this.voserice.getAllGroupsWithDetails().subscribe(result => ***REMOVED***
+            const vo_projects = result;
+            for (const group of vo_projects) ***REMOVED***
+                const dateCreated: moment.Moment = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
+                const is_pi: boolean = group['is_pi'];
+                const lifetime: number = group['lifetime'];
+
+                const groupid: number = group['id'];
+                const facility = group['compute_center'];
+                let shortname: string = group['shortname'];
+                if (!shortname) ***REMOVED***
+                    shortname = group['name']
+                ***REMOVED***
+                let compute_center: ComputecenterComponent = null;
+                if (facility) ***REMOVED***
+
+                    compute_center = new ComputecenterComponent(
+                        facility['compute_center_facility_id'],
+                        facility['compute_center_name'],
+                        facility['compute_center_login'],
+                        facility['compute_center_support_mail']);
+                ***REMOVED***
+
+                const newProject: Project = new Project(
+                    Number(groupid),
+                    shortname,
+                    group['description'],
+                    `$***REMOVED***dateCreated.date()***REMOVED***.$***REMOVED***(dateCreated.month() + 1)***REMOVED***.$***REMOVED***dateCreated.year()***REMOVED***`,
+                    dateDayDifference,
+                    is_pi,
+                    true,
+                    compute_center);
+                newProject.Lifetime = lifetime;
+                newProject.Status = group['status'];
+                newProject.OpenStackProject = group['openstack_project'];
+                let expirationDate: string = '';
+                if (lifetime !== -1) ***REMOVED***
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+                    const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
+                        .diff(moment(dateCreated), 'days'));
+
+                    newProject.LifetimeDays = lifetimeDays;
+                    newProject.DateEnd = expirationDate;
+                    newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
+
+                ***REMOVED***
+
+                this.projects.push(newProject);
+            ***REMOVED***
+            this.applyFilter();
+
+            this.isLoaded = true;
+
+        ***REMOVED***)
 
     ***REMOVED***
 

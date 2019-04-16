@@ -13,15 +13,15 @@
                 Send email
             </button>
 
-          <div style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
-                       (ngModelChange)="onChangeSelectedFacility($event)"
-                       class="form-control" name="selectedFacility">
-            <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
-              ***REMOVED******REMOVED***facility['Facility']***REMOVED******REMOVED***
-            </option>
+            <div style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
+                                                     (ngModelChange)="onChangeSelectedFacility($event)"
+                                                     class="form-control" name="selectedFacility">
+                <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
+                    ***REMOVED******REMOVED***facility['Facility']***REMOVED******REMOVED***
+                </option>
 
-          </select></div>
-          <div class="card">
+            </select></div>
+            <div class="card">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Projects
 
@@ -32,6 +32,7 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
+                                <th></th>
                                 <th>Project ID</th>
                                 <th>Project Name</th>
                                 <th>Long Name</th>
@@ -97,15 +98,19 @@
 
                             </td>
                             <tr *ngFor="let project of projects_filtered">
-                                <!--[ngStyle]="***REMOVED***'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)***REMOVED***"-->
-                                <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
-                                <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***
-                                  <span *ngIf="project.OpenStackProject" style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge">
+                                <td>
+                                     <span *ngIf="project.OpenStackProject"
+                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge">
                                     <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
                                   </span>
-                                  <span *ngIf="!project.OpenStackProject" style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge">
+                                    <span *ngIf="!project.OpenStackProject"
+                                          style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge">
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
-                                  </span></td>
+                                  </span>
+                                </td>
+                                <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***
+                                </td>
                                 <td width="20%"><span style="word-break: break-all">***REMOVED******REMOVED*** project.RealName***REMOVED******REMOVED***</span>
                                 </td>
                                 <td>  <span *ngIf="project?.Status ==  project_states.ACTIVE"
