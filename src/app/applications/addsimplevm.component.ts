@@ -12,11 +12,11 @@ import {ApplicationBaseClass} from "../shared/shared_modules/baseClass/applicati
  * Component to create single vm applications.
  */
 @Component({
-    selector: 'app-addsinglevm',
-    templateUrl: 'addsinglevm.component.html',
+    selector: 'app-addsimplevm',
+    templateUrl: 'addsimplevm.component.html',
     providers: [FlavorService, ApiSettings, ApplicationsService]
 })
-export class AddsinglevmComponent extends ApplicationBaseClass {
+export class AddsimplevmComponent extends ApplicationBaseClass {
 
     /**
      * List of flavor types.
