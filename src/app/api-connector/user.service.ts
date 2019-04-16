@@ -17,9 +17,9 @@ export class UserService ***REMOVED***
     constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
-    getLogins(): Observable<any> ***REMOVED***
+    getLogins(): Observable<IResponseTemplate> ***REMOVED***
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/logins/`, ***REMOVED***
+        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/logins/`, ***REMOVED***
             withCredentials: true
         ***REMOVED***)
     ***REMOVED***
