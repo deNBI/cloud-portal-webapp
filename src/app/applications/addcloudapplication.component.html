@@ -375,7 +375,7 @@
                             cloud
                             usage policy.</p>
                     </div>
-                    <button (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
+                    <button id="submit_application_btn" (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
                             class="btn btn-sm btn-success" [disabled]="f.invalid">
                         <i class="fa fa-dot-circle-o"></i>
                         Submit Application
@@ -414,7 +414,7 @@
                         (click)="notificationModal.hide();resetNotificationModal()"
                         class="btn  btn-secondary"> Close
                 </button>
-                <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
+                <a id="notification_btn_redirect" *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
                    [routerLink]="['/applications']">
                     <button type="button"
                             (click)="notificationModal.hide();resetNotificationModal()" type="reset"
@@ -450,7 +450,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" (click)="acknowledgemodal.hide(); notificationModal.show();"
+                <button id="acknowledge_approve_btn" type="button" (click)="acknowledgemodal.hide(); notificationModal.show();"
                         class="btn  btn-success" type="submit" name="_save" form="application_form">
                     Accept
                 </button>
@@ -507,7 +507,7 @@
             <div class="modal-footer">
 
 
-                <button class="btn btn-success col-md4" type="button"
+                <button id="verification_btn" class="btn btn-success col-md4" type="button"
                         (click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
                 </button>
                 <button class="btn  btn-warning col-md-4" type="reset"
