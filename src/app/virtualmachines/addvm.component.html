@@ -27,7 +27,7 @@
 <div *ngIf=" isLoaded==false" class="loader"></div>
 <div *ngIf=" isLoaded && userinfo.PublicKey != 'None' && projects.length == 0">
     <div class="alert alert-warning" role="alert">
-        You are not member of any project.
+        You are not a member of any Simple VM project.
     </div>
 </div>
 <div *ngIf=" isLoaded && userinfo.PublicKey != 'None' && projects.length > 0">
