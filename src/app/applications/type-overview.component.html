@@ -1,0 +1,213 @@
+<div class="animated fadeIn">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <h1>Our Cloud Project Types</h1>
+        </div>
+        <!-- Row with new App Buttons -->
+        <div class="row">
+            <div class="col-6 text-center">
+                <button id="newSimpleVMBtn" class="btn btn-outline-simplevm" [routerLink]="['/applications/newSimpleVmApplication']">
+                    New SimpleVM Application
+                </button>
+            </div>
+            <div class="col-6 text-center">
+                <button id="newOpenstackBtn" class="btn btn-outline-openstack" [routerLink]="['/applications/newCloudApplication']">
+                    New Openstack Application
+                </button>
+            </div>
+        <!-- End row with new App Buttons -->
+        </div>
+        <br>
+        <!-- Start Row with Project Types -->
+        <div class="row">
+
+            <!-- SimpleVM -->
+            <div class="col-lg-6 col-12">
+                <!-- Logo -->
+                <div class="row justify-content-center">
+                    <div style="height: 100px; width: 100px" class="img_bigger">
+                        <figure>
+                            <img src="***REMOVED******REMOVED***simpleVM_logo_link***REMOVED******REMOVED***" alt="SimpleVM" style="max-height: 100%; width: 100%">
+                        </figure>
+                    </div>
+                </div>
+                <br>
+                <!-- Ease of Use -->
+                <div class="row">
+                    <div style="height: 40px; width: 40px" class="col-3">
+                        <img class="float-right" src="***REMOVED******REMOVED***simpleVM_ease_logo***REMOVED******REMOVED***" alt="Ease" style="height: 100%; width: auto">
+                    </div>
+                    <div class="col-9">
+                        <strong>Ease of Use</strong> – SimpleVM lets you start and stop VMs with a few clicks which
+                        means that there is no additional configuration necessary.
+                    </div>
+                </div>
+                <br>
+                <!-- Flat Learning Curve -->
+                <div class="row">
+                    <div style="height: 40px; width: 40px" class="col-3">
+                        <img class="float-right" src="***REMOVED******REMOVED***simpleVM_curve_logo***REMOVED******REMOVED***" alt="Curve" style="height: 100%; width: auto">
+                    </div>
+                    <div class="col-9">
+                        <strong>Flat Learning Curve</strong> – If you want to use SimpleVM you don’t have to learn about
+                        resource management, like network configurations or storage management. No background knowledge
+                        in Cloud Computing is necessary.
+                    </div>
+                </div>
+                <br>
+                <!-- Remote Desktop -->
+                <div class="row">
+                    <div style="height: 40px; width: 40px" class="col-3">
+                        <img class="float-right" src="***REMOVED******REMOVED***simpleVM_remote_logo***REMOVED******REMOVED***" alt="Remote" style="height: 100%; width: auto">
+                    </div>
+                    <div class="col-9">
+                        <strong>Remote Desktop</strong> – If you don’t want to use SimpleVM via terminal you can easily
+                        connect to your VM using a Remote Desktop.
+                    </div>
+                </div>
+                <br>
+                <!-- Want to learn more with Button -->
+                <div class="row d-block d-lg-none">
+                    <div class="col text-center">
+                        <div class="row justify-content-center">
+                            <strong>Want to learn more about SimpleVM?</strong>
+                        </div>
+                        <div class="row justify-content-center">
+                            <a href="https://cloud.denbi.de/simplevm/">
+                                <button class="btn btn-primary">
+                                    Click Here!
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <!-- End div SimpleVM-->
+            </div>
+
+            <!-- Force Newline between no and lg Breakpoint -->
+            <div class="w-100 d-block d-lg-none">
+                <br>
+                <div class="row justify-content-center">
+                    <strong>Want to learn the Difference between SimpleVM and Openstack?</strong>
+                </div>
+                <div class="row justify-content-center">
+                    <a href="https://cloud.denbi.de/project-types/">
+                        <button class="btn btn-success">
+                            Click Here!
+                        </button>
+                    </a>
+                </div>
+                <br>
+            </div>
+
+            <!-- Openstack -->
+            <div class="col-lg-6 col-12">
+                <!-- Logo -->
+                <div class="row justify-content-center">
+                    <div style="height: 100px; width: 100px" class="img_bigger">
+                        <figure>
+                            <img src="***REMOVED******REMOVED***openstack_logo_link***REMOVED******REMOVED***" alt="Openstack" style="max-height: 100%; width: 100%">
+                        </figure>
+                    </div>
+                </div>
+                <br>
+                <!-- Scalability -->
+                <div class="row">
+                    <div style="height: 40px; width: 40px" class="col-3">
+                        <img class="float-right" src="***REMOVED******REMOVED***openstack_scale_logo***REMOVED******REMOVED***" alt="Scale" style="height: 100%; width: auto">
+                    </div>
+                    <div class="col-9">
+                        <strong>Scalability</strong> – Easy scaling of virtual machines and distribution of data for
+                        efficient computations.
+                    </div>
+                </div>
+                <br>
+                <!-- Configurability -->
+                <div class="row">
+                    <div style="height: 40px; width: 40px" class="float-left col-3">
+                        <img class="float-right" src="***REMOVED******REMOVED***openstack_conf_logo***REMOVED******REMOVED***" alt="Configuration" style="height: 100%; width: auto">
+                    </div>
+                    <div class="col-9">
+                        <strong>Configurability</strong> – OpenStack allows the configuration of any resource type
+                        available, such as virtual machines, network, block and object storage.
+                    </div>
+                </div>
+                <br>
+                <!-- Api Access -->
+                <div class="row">
+                    <div style="height: 40px; width: 40px" class="float-left col-3">
+                        <img class="float-right" src="***REMOVED******REMOVED***openstack_api_logo***REMOVED******REMOVED***" alt="API" style="height: 100%; width: auto">
+                    </div>
+                    <div class="col-9">
+                        <strong>API Access</strong> – Any interaction with OpenStack can be automated via its API
+                        enabling users to script actions, e.g. starting and stopping of virtual machines.
+                    </div>
+                </div>
+                <br>
+                <!-- Want to learn more with Button -->
+                <div class="row d-block d-lg-none">
+                    <div class="col text-center">
+                        <div class="row justify-content-center">
+                            <strong>Want to learn more about Openstack?</strong>
+                        </div>
+                        <div class="row justify-content-center">
+                            <a href="https://cloud.denbi.de/openstack/">
+                                <button class="btn btn-primary">
+                                    Click Here!
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            <!-- End div Openstack -->
+            </div>
+        <!-- End Row with Project Types-->
+        </div>
+        <!-- Learn more Buttons for bigger Screens -->
+        <div class="w-100 d-none d-lg-block">
+            <div class="row">
+                <div class="col-4">
+                    <div class="row justify-content-center">
+                        <strong>Want to learn more about SimpleVM?</strong>
+                    </div>
+                    <div class="row justify-content-center">
+                        <a href="https://cloud.denbi.de/simplevm/">
+                            <button class="btn btn-primary">
+                                Click Here!
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="row justify-content-center">
+                        <strong>Want to learn the Difference?</strong>
+                    </div>
+                    <div class="row justify-content-center">
+                        <a href="https://cloud.denbi.de/project-types/">
+                            <button class="btn btn-success">
+                                Click Here!
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="row justify-content-center">
+                        <strong>Want to learn more about Openstack?</strong>
+                    </div>
+                    <div class="row justify-content-center">
+                        <a href="https://cloud.denbi.de/openstack/">
+                            <button class="btn btn-primary">
+                                Click Here!
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <br>
+        <!-- End learn more Buttons Bigger Screen -->
+        </div>
+    <!-- End Container -->
+    </div>
+<!-- End fadeIn Animation -->
+</div>
