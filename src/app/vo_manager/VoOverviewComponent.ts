@@ -59,11 +59,24 @@ export class VoOverviewComponent extends FilterBaseClass {
       this.newsletterSubscriptionCounter = <number>result.value
 
     });
-
   }
 
+ 
+    sendEmail(subject: string, message: string, reply?: string): void {
+        switch (this.emailType) {
+            case 0: {
+                this.sendMailToVo(subject, message, this.selectedFacility.toString(), this.selectedProjectType, reply);
+                break;
+            }
+            case 1: {
+                this.sendNewsletterToVo(subject, message, reply);
+                break;
+            }
+            default:
+                return
+        }
+    }
   applyFilter(): void {
-
     this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
 
   }
@@ -140,6 +153,63 @@ export class VoOverviewComponent extends FilterBaseClass {
       }
       default:
         return
+
+    getVoProjects(): void {
+        this.voserice.getAllGroupsWithDetails().subscribe(result => {
+            const vo_projects = result;
+            for (const group of vo_projects) {
+                const dateCreated: moment.Moment = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
+                const is_pi: boolean = group['is_pi'];
+                const lifetime: number = group['lifetime'];
+
+                const groupid: number = group['id'];
+                const facility = group['compute_center'];
+                let shortname: string = group['shortname'];
+                if (!shortname) {
+                    shortname = group['name']
+                }
+                let compute_center: ComputecenterComponent = null;
+                if (facility) {
+
+                    compute_center = new ComputecenterComponent(
+                        facility['compute_center_facility_id'],
+                        facility['compute_center_name'],
+                        facility['compute_center_login'],
+                        facility['compute_center_support_mail']);
+                }
+
+                const newProject: Project = new Project(
+                    Number(groupid),
+                    shortname,
+                    group['description'],
+                    `${dateCreated.date()}.${(dateCreated.month() + 1)}.${dateCreated.year()}`,
+                    dateDayDifference,
+                    is_pi,
+                    true,
+                    compute_center);
+                newProject.Lifetime = lifetime;
+                newProject.Status = group['status'];
+                newProject.OpenStackProject = group['openstack_project'];
+                let expirationDate: string = '';
+                if (lifetime !== -1) {
+                    expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+                    const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
+                        .diff(moment(dateCreated), 'days'));
+
+                    newProject.LifetimeDays = lifetimeDays;
+                    newProject.DateEnd = expirationDate;
+                    newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
+
+                }
+
+                this.projects.push(newProject);
+            }
+            this.applyFilter();
+
+            this.isLoaded = true;
+
+        })
 
     }
 
