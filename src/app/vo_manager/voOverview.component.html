@@ -389,7 +389,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
-                        (click)="removeResourceFromGroup(selectedProject.Id);setProjectStatus(selectedProject,4);suspendModal.hide()">
+                        (click)="suspendProject(selectedProject);suspendModal.hide()">
                     Yes
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"
