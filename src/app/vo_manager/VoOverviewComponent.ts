@@ -87,10 +87,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     if (project.ComputeCenter) ***REMOVED***
       facNameFilter = this.isFilterFacilityName(project.ComputeCenter.Name)
     ***REMOVED***
-    console.log(facNameFilter
-      && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
-      && this.isFilterProjectName(project.Name)
-      && this.isFilterProjectId(project.Id))
+   
     return facNameFilter
       && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
       && this.isFilterProjectName(project.Name)
