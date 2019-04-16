@@ -83,7 +83,7 @@ describe('Application test', function () ***REMOVED***
       element(by.name('project_application_lifetime')).sendKeys('4');
       element(by.name('project_application_institute')).sendKeys('Proctractor Institute');
       element(by.name('project_application_workgroup')).sendKeys('Proctractor Workgroup');
-      const submitBtn = element(by.className('btn btn-sm btn-success'));
+      const submitBtn = element(by.id('submit_application_btn'));
       browser.wait(until.elementToBeClickable(submitBtn)).then(function () ***REMOVED***
         submitBtn.click()
       ***REMOVED***);
@@ -94,20 +94,20 @@ describe('Application test', function () ***REMOVED***
     // submit
 
     // Todo give verification Btn ID in Angular
-    const verificationBtn = element(by.className('btn btn-success col-md4'));
+    const verificationBtn = element(by.id('verification_btn'));
     browser.wait(until.elementToBeClickable(verificationBtn), timeout).then(function () ***REMOVED***
-      element(by.className('btn btn-success col-md4')).click()
+     verificationBtn.click()
     ***REMOVED***);
     // Todo give acknowledege btn id
-    const acknowledgeBtn = element(by.name('_save'));
+    const acknowledgeBtn = element(by.id('acknowledge_approve_btn'));
     browser.wait(until.elementToBeClickable(acknowledgeBtn), timeout).then(function () ***REMOVED***
-      element(by.name('_save')).click()
+      acknowledgeBtn.click()
 
     ***REMOVED***);
 
-    const redirectBtn = element(by.className('btn btn-secondary'));
+    const redirectBtn = element(by.id('notification_btn_redirect'));
     browser.wait(until.elementToBeClickable(redirectBtn), timeout).then(function () ***REMOVED***
-      element(by.className('btn btn-secondary')).click()
+      redirectBtn.click()
 
     ***REMOVED***)
     browser.wait(until.urlContains('applications')).then(function () ***REMOVED***
