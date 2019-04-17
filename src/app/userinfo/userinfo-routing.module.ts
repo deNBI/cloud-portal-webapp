@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {UserinfoComponent} from './userinfo.component';
+import {UserInfoComponent} from './userinfo.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: UserinfoComponent,
+        component: UserInfoComponent,
         data: {
             title: 'User information'
         }
@@ -17,5 +17,5 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class UserinfoRoutingModule {
+export class UserInfoRoutingModule {
 }

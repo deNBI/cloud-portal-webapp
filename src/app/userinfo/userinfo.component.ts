@@ -1,84 +1,145 @@
 import {Component, OnInit} from '@angular/core';
-
 import {Userinfo} from './userinfo.model'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {KeyService} from '../api-connector/key.service';
 import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
-import {IResponseTemplate} from "../api-connector/response-template";
-import {forkJoin} from "rxjs/index";
+import {IResponseTemplate} from '../api-connector/response-template';
+import {forkJoin} from 'rxjs/index';
 
+/**
+ * UserInformation component.
+ */
 @Component({
   selector: 'app-userinfo',
   templateUrl: 'userinfo.component.html',
   providers: [GroupService, UserService, ApiSettings, KeyService]
 })
-export class UserinfoComponent implements OnInit {
-  userinfo: Userinfo;
-  key = 'Show Public Key';
-  key_visible = false;
-  newsletter_subscribed: boolean;
-  public_key = '';
-  isLoaded = false;
-  is_project_member = true;
-  freemium_active = false;
-  emailChange = '';
-  freemium: boolean;
+export class UserInfoComponent implements OnInit {
+  /**
+   * Information of the logged in User
+   */
+  userInfo: Userinfo;
 
-  constructor(private groupService: GroupService, private userservice: UserService, private keyservice: KeyService) {
-    this.getUserinfo();
+  /**
+   * If the user has subscribed to the newsletter.
+   */
+  newsletterSubscribed: boolean;
+
+  /**
+   * New requested public key.
+   */
+  newPublicKey: string;
+
+  /**
+   * If every data is loaded.
+   * @type {boolean}
+   */
+  isLoaded: boolean = false;
+
+  /**
+   * If the user is part of a project.
+   * @type {boolean}
+   */
+  isProjectMember: boolean = true;
+
+  /**
+   * If freemium is active.
+   * @type {boolean}
+   */
+  freemiumActive: boolean = false;
+
+  /**
+   * Email requested to change.
+   */
+  emailChange: string;
+
+  constructor(private groupService: GroupService, private userService: UserService, private keyService: KeyService) {
 
   }
 
   requestChangePreferredMailUser(email: string): void {
-    this.userservice.requestChangePreferredMailUser(email).subscribe(() => {
+    this.userService.requestChangePreferredMailUser(email).subscribe(() => {
       this.getPendingPreferredMailUser();
     })
   }
 
   getPendingPreferredMailUser(): void {
-    this.userservice.getPendingPreferredMailUser().subscribe((res: IResponseTemplate) => {
-      this.userinfo.PendingEmails = <string[]>res.value;
+    this.userService.getPendingPreferredMailUser().subscribe((res: IResponseTemplate) => {
+      this.userInfo.PendingEmails = <string[]>res.value;
 
     })
   }
 
   ngOnInit(): void {
+    this.getUserinfo();
     this.isFreemiumActive();
-    this.is_vm_project_member();
-    this.getPreferredMail();
+    this.isUserSimpleVmMember();
 
   }
 
   isFreemiumActive(): void {
     this.groupService.isFreemiumActive().subscribe((result: IResponseTemplate) => {
-      this.freemium_active = <boolean><Boolean> result.value;
+      this.freemiumActive = <boolean><Boolean> result.value;
 
     });
   }
 
-  setNewsletterSubscription(e): void {
-    if (this.newsletter_subscribed) {
-      this.userservice.setNewsletterSubscriptionWhenSubscribed().subscribe();
-    }
-    else {
-      this.userservice.setNewsletterSubscriptionWhenNotSubscribed().subscribe();
-    }
-
-  }
-
-  importKey(publicKey: string, keyname: string) {
+  importKey(publicKey: string): void {
 
     const re: RegExp = /\+/gi;
 
-    this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(() => {
+    this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(() => {
       this.getUserPublicKey();
     });
   }
 
-  validatePublicKey() {
+  getUserPublicKey(): void {
+    this.keyService.getKey().subscribe((key: IResponseTemplate) => {
+      this.userInfo.PublicKey = <string>key.value;
+      this.isLoaded = true;
+    })
+  }
 
-    if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key)) {
+  getUserinfo(): void {
+    this.userService.getUserInfo().subscribe((userinfo: any) => {
+      this.userInfo = new Userinfo(userinfo);
+      forkJoin(
+        this.userService.getNewsletterSubscription(),
+        this.userService.getPendingPreferredMailUser()).subscribe((res: IResponseTemplate[]) => {
+
+        this.newsletterSubscribed = <boolean>res[0].value;
+        this.userInfo.PendingEmails = <string[]>res[1].value;
+        this.isLoaded = true;
+
+      })
+    })
+
+  }
+
+  isUserSimpleVmMember(): void {
+    this.groupService.getSimpleVmByUser().subscribe(result => {
+      if (result.length > 0) {
+        this.isProjectMember = true
+      } else {
+        this.isProjectMember = false
+      }
+    })
+  }
+
+  setNewsletterSubscription(): void {
+    if (this.newsletterSubscribed) {
+      this.userService.setNewsletterSubscriptionWhenSubscribed().subscribe();
+    } else {
+      this.userService.setNewsletterSubscriptionWhenNotSubscribed().subscribe();
+    }
+
+  }
+
+
+  validatePublicKey(): boolean {
+
+    if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.newPublicKey)) {
       return true;
     } else {
 
@@ -87,61 +148,9 @@ export class UserinfoComponent implements OnInit {
 
   }
 
-  getUserPublicKey(): void {
-    this.keyservice.getKey().subscribe((key: IResponseTemplate) => {
-      this.userinfo.PublicKey = <string>key.value;
-      this.isLoaded = true;
-    })
-  }
-
-  // Returns the preffered Mail of the logged in User
-  getPreferredMail(): void {
-    this.userservice.getPreferredMailUser().subscribe()
-  }
-
-  getUserinfo(): void {
-    this.userservice.getUserInfo().subscribe((userinfo: any) => {
-      this.userinfo = new Userinfo(userinfo);
-      forkJoin(this.userservice.getNewsletterSubscription(), this.userservice.getPendingPreferredMailUser()).subscribe((res: IResponseTemplate[]) => {
-        this.newsletter_subscribed = <boolean>res[0].value;
-        this.userinfo.PendingEmails = <string[]>res[1].value;
-        this.isLoaded = true;
-
-
-      })
-
-
-    })
-
-  }
-
-  show_key() {
-    if (!this.key_visible) {
-      this.toggleKey();
-    }
-  }
-
-  toggleKey() {
-    if (this.key === 'Show Public Key') {
-      this.key = 'Hide Public Key';
-      this.key_visible = true;
-    } else {
-      this.key = 'Show Public Key';
-      this.key_visible = false;
-    }
-  }
-
-  joinFreemium() {
+  joinFreemium(): void {
     this.groupService.addMemberToFreemium().subscribe();
   }
 
-  is_vm_project_member() {
-    this.groupService.getSimpleVmByUser().subscribe(result => {
-      if (result.length > 0) {
-        this.is_project_member = true
-      } else {
-        this.is_project_member = false
-      }
-    })
-  }
+
 }
