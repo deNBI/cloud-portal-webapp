@@ -317,6 +317,9 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     onSubmit(form: NgForm): void {
         const values: { [key: string]: string | number | boolean } = {};
         for (const value in form.controls) {
+            if (form.controls[value].disabled) {
+              continue;
+            }
             if (form.controls[value].value) {
                 values[value] = form.controls[value].value;
             }
