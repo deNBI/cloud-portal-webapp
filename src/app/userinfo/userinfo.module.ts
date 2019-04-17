@@ -1,8 +1,8 @@
 import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
 
 import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
-import ***REMOVED***UserinfoComponent***REMOVED*** from './userinfo.component';
-import ***REMOVED***UserinfoRoutingModule***REMOVED*** from './userinfo-routing.module';
+import ***REMOVED***UserInfoComponent***REMOVED*** from './userinfo.component';
+import ***REMOVED***UserInfoRoutingModule***REMOVED*** from './userinfo-routing.module';
 import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap/modal';
@@ -12,7 +12,7 @@ import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared/shared_modules/
 @NgModule(***REMOVED***
     imports: [
         PublicKeyModule,
-        UserinfoRoutingModule,
+        UserInfoRoutingModule,
         TabsModule,
         CommonModule,
         FormsModule, ModalModule.forRoot(),
@@ -20,9 +20,9 @@ import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared/shared_modules/
     ],
 
     declarations: [
-        UserinfoComponent
+        UserInfoComponent
     ],
-    exports: [UserinfoComponent, UserinfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
+    exports: [UserInfoComponent, UserInfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
 ***REMOVED***)
 export class UserinfoModule ***REMOVED***
 ***REMOVED***

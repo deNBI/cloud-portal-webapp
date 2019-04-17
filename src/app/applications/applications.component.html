@@ -678,24 +678,24 @@
                                             ***REMOVED******REMOVED***
                                         </td>
                                         <td>
-                                            <div class="btn-group">
+                                            <div>
                                                 <button
                                                         (click)="switchCollapseStatus('application_history-' + application.Id);getFacilityProject(application);"
                                                         type="button"
                                                         class="btn btn-secondary"
-                                                        style="margin: auto 2.5px">
+                                                        style="margin: 2.5px">
                                                     <i class="fa fa-info-circle"></i>&nbsp;
                                                     <span
                                                             [hidden]="!getCollapseStatus('application_history-' + application.Id)"
                                                     >Show</span><span
                                                         [hidden]="getCollapseStatus('application_history-' + application.Id)"
-                                                        style="margin-left: 5px">Hide</span>
+                                                        style="margin: 2.5px">Hide</span>
                                                     Information
                                                 </button>
                                                 <button (click)="deleteModal.show();setDeleteId(application.Id)"
                                                         type="button"
                                                         class="btn btn-danger"
-                                                        style="margin: auto 2.5px">
+                                                        style="margin: 2.5px">
                                                     Remove Application
                                                 </button>
                                                 <button
@@ -703,7 +703,7 @@
                                                         (click)="setSelectedApplication(application);terminateModal.show();"
                                                         type="button"
                                                         class="btn btn-secondary"
-                                                        style="margin: auto 2.5px">
+                                                        style="margin: 2.5px">
                                                     Terminate Application
                                                 </button>
                                             </div>

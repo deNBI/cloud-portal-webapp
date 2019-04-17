@@ -4,9 +4,10 @@ import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 import ***REMOVED***IResponseTemplate***REMOVED*** from "./response-template";
+import ***REMOVED***Userinfo***REMOVED*** from "../userinfo/userinfo.model";
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
-    'X-CSRFToken': Cookie.get('csrftoken')
+  'X-CSRFToken': Cookie.get('csrftoken')
 ***REMOVED***);
 
 /**
@@ -14,120 +15,129 @@ const header: HttpHeaders = new HttpHeaders(***REMOVED***
  */
 @Injectable()
 export class UserService ***REMOVED***
-    constructor(private http: HttpClient) ***REMOVED***
-    ***REMOVED***
+  constructor(private http: HttpClient) ***REMOVED***
+  ***REMOVED***
 
-    getLogins(): Observable<any> ***REMOVED***
+  getLoginElixirName(): Observable<IResponseTemplate> ***REMOVED***
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/logins/`, ***REMOVED***
-            withCredentials: true
-        ***REMOVED***)
-    ***REMOVED***
+    return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/logins/`, ***REMOVED***
+      withCredentials: true
+    ***REMOVED***)
+  ***REMOVED***
 
-    getPreferredMailUser(): Observable<IResponseTemplate>  ***REMOVED***
+  getPreferredMailUser(): Observable<IResponseTemplate> ***REMOVED***
 
-        return this.http.get<IResponseTemplate> (`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/preferredEmail/`, ***REMOVED***
-            withCredentials: true
-        ***REMOVED***)
-    ***REMOVED***
+    return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/preferredEmail/`, ***REMOVED***
+      withCredentials: true
+    ***REMOVED***)
+  ***REMOVED***
 
-    requestChangePreferredMailUser(email: string): Observable<any> ***REMOVED***
-        const params: HttpParams = new HttpParams().set('newPreferredEmail', email);
+  requestChangePreferredMailUser(email: string): Observable<any> ***REMOVED***
+    const params: HttpParams = new HttpParams().set('newPreferredEmail', email);
 
-        return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/preferredEmail/`, params, ***REMOVED***
-            withCredentials: true,
-            headers: header
-        ***REMOVED***)
-    ***REMOVED***
+    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/preferredEmail/`, params, ***REMOVED***
+      withCredentials: true,
+      headers: header
+    ***REMOVED***)
+  ***REMOVED***
 
-    getPendingPreferredMailUser(): Observable<IResponseTemplate> ***REMOVED***
+  getPendingPreferredMailUser(): Observable<IResponseTemplate> ***REMOVED***
 
-        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/pendingPreferredEmails/`, ***REMOVED***
-            withCredentials: true
-        ***REMOVED***)
-    ***REMOVED***
+    return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/pendingPreferredEmails/`, ***REMOVED***
+      withCredentials: true
+    ***REMOVED***)
+  ***REMOVED***
 
-    getMemberDetailsByElixirId(elixir_id: string): Observable<any> ***REMOVED***
-        elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
+  getMemberDetailsByElixirId(elixir_id: string): Observable<any> ***REMOVED***
+    elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/$***REMOVED***elixir_id***REMOVED***/member/`, ***REMOVED***
-            withCredentials: true
+    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/$***REMOVED***elixir_id***REMOVED***/member/`, ***REMOVED***
+      withCredentials: true
 
-        ***REMOVED***)
+    ***REMOVED***)
 
-    ***REMOVED***
+  ***REMOVED***
 
-    getLoggedUser(): Observable<any> ***REMOVED***
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/`, ***REMOVED***
-            withCredentials: true
+  getUserInfo(): Observable<any> ***REMOVED***
 
-        ***REMOVED***)
-    ***REMOVED***
+    return this.http.get<any>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/userInfo/`, ***REMOVED***
+      withCredentials: true
 
-    getMemberByUser(): Observable<any> ***REMOVED***
+    ***REMOVED***)
+  ***REMOVED***
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/member/`, ***REMOVED***
-            withCredentials: true
-        ***REMOVED***)
-    ***REMOVED***
 
-    getMemberByExtSourceNameAndExtLogin(ext_login: string): Observable<any> ***REMOVED***
+  getLoggedUser(): Observable<any> ***REMOVED***
+    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/`, ***REMOVED***
+      withCredentials: true
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/extLogin/member/`, ***REMOVED***
-            withCredentials: true,
-            params: ***REMOVED***
-                extLogin: ext_login
-            ***REMOVED***
-        ***REMOVED***)
-    ***REMOVED***
+    ***REMOVED***)
+  ***REMOVED***
 
-    setNewsletterSubscriptionWhenSubscribed(): Observable<IResponseTemplate> ***REMOVED***
-        const params: HttpParams = new HttpParams().set('subscribed', true.toString());
+  getMemberByUser(): Observable<any> ***REMOVED***
 
-        return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/`, params, ***REMOVED***
-            withCredentials: true,
-            headers: header
-        ***REMOVED***)
+    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/member/`, ***REMOVED***
+      withCredentials: true
+    ***REMOVED***)
+  ***REMOVED***
 
-    ***REMOVED***
+  getMemberByExtSourceNameAndExtLogin(ext_login: string): Observable<any> ***REMOVED***
 
-    setNewsletterSubscriptionWhenNotSubscribed(): Observable<IResponseTemplate> ***REMOVED***
-        const params: HttpParams = new HttpParams().set('subscribed', false.toString());
+    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/extLogin/member/`, ***REMOVED***
+      withCredentials: true,
+      params: ***REMOVED***
+        extLogin: ext_login
+      ***REMOVED***
+    ***REMOVED***)
+  ***REMOVED***
 
-        return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/`, params, ***REMOVED***
-            withCredentials: true,
-            headers: header
-        ***REMOVED***)
+  setNewsletterSubscriptionWhenSubscribed(): Observable<IResponseTemplate> ***REMOVED***
+    const params: HttpParams = new HttpParams().set('subscribed', true.toString());
 
-    ***REMOVED***
+    return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/`, params, ***REMOVED***
+      withCredentials: true,
+      headers: header
+    ***REMOVED***)
 
-    getNewsletterSubscription(): Observable<IResponseTemplate> ***REMOVED***
+  ***REMOVED***
 
-        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/`, ***REMOVED***
-            withCredentials: true
-        ***REMOVED***)
+  setNewsletterSubscriptionWhenNotSubscribed(): Observable<IResponseTemplate> ***REMOVED***
+    const params: HttpParams = new HttpParams().set('subscribed', false.toString());
 
-    ***REMOVED***
+    return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/`, params, ***REMOVED***
+      withCredentials: true,
+      headers: header
+    ***REMOVED***)
 
-    sendHelpMail(subject: string, message: string, reply: string): Observable<IResponseTemplate> ***REMOVED***
+  ***REMOVED***
 
-        const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+  getNewsletterSubscription(): Observable<IResponseTemplate> ***REMOVED***
 
-        return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/helpMail/`, params, ***REMOVED***
-            withCredentials: true,
-            headers: header
-        ***REMOVED***)
-    ***REMOVED***
+    return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/`, ***REMOVED***
+      withCredentials: true
+    ***REMOVED***)
 
-    getFilteredMembersOfdeNBIVo(searchString: string): Observable<any> ***REMOVED***
+  ***REMOVED***
 
-        return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/filter/`, ***REMOVED***
-            withCredentials: true,
-            params: ***REMOVED***
-                searchString: searchString
-            ***REMOVED***
-        ***REMOVED***)
+  sendHelpMail(subject: string, message: string, reply: string): Observable<IResponseTemplate> ***REMOVED***
 
-    ***REMOVED***
+    const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+
+    return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/helpMail/`, params, ***REMOVED***
+      withCredentials: true,
+      headers: header
+    ***REMOVED***)
+  ***REMOVED***
+
+  getFilteredMembersOfdeNBIVo(searchString: string): Observable<any> ***REMOVED***
+
+    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/filter/`, ***REMOVED***
+      withCredentials: true,
+      params: ***REMOVED***
+        searchString: searchString
+      ***REMOVED***
+    ***REMOVED***)
+
+  ***REMOVED***
 
 ***REMOVED***
