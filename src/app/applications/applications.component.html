@@ -119,6 +119,20 @@
                                                     </td>
                                                     <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"></td>
                                                 </tr>
+                                              <tr>
+                                                <td>Elixir Project</td>
+                                                <td>
+                                                  {{application.ElixirProject}}
+                                                </td>
+                                                <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"></td>
+                                              </tr>
+                                              <tr>
+                                                <td>BMBF Project</td>
+                                                <td>
+                                                  {{application.BMBFProject}}
+                                                </td>
+                                                <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED"></td>
+                                              </tr>
                                                 <tr>
                                                     <td>Comment</td>
                                                     <td>{{application.Comment}}
@@ -448,6 +462,18 @@
                                                                 {{application.Horizon2020}}
                                                             </td>
                                                         </tr>
+                                                      <tr>
+                                                        <td>Elixir Project</td>
+                                                        <td>
+                                                          {{application.ElixirProject}}
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>BMBF Project</td>
+                                                        <td>
+                                                          {{application.BMBFProject}}
+                                                        </td>
+                                                      </tr>
                                                         <tr>
                                                             <td>Dissemination allowed</td>
                                                             <td>
@@ -734,6 +760,18 @@
                                                                     {{application.Horizon2020}}
                                                                 </td>
                                                             </tr>
+                                                          <tr>
+                                                            <td>Elixir Project</td>
+                                                            <td>
+                                                              {{application.ElixirProject}}
+                                                            </td>
+                                                          </tr>
+                                                          <tr>
+                                                            <td>BMBF Project</td>
+                                                            <td>
+                                                              {{application.BMBFProject}}
+                                                            </td>
+                                                          </tr>
                                                             <tr>
                                                                 <td>Dissemination allowed</td>
                                                                 <td>
