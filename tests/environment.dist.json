@@ -1,7 +1,0 @@
-{
-   "password":"password",
-   "email":"email",
-   "portal":"https://portal-dev.denbi.de/portal/webapp",
-   "auth":"google",
-   "timeout":10000
-}
