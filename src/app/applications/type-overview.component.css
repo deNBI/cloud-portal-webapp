@@ -1,0 +1,9 @@
+.img_bigger figure img {
+    transform: scale(1);
+    transition: .3s ease-in-out;
+    height: 100px;
+    width: 100px;
+}
+.img_bigger figure:hover img {
+    transform: scale(1.3);
+}
