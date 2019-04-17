@@ -136,6 +136,9 @@ export class AddsimplevmComponent extends ApplicationBaseClass ***REMOVED***
         ***REMOVED*** else ***REMOVED***
             const values: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED*** = ***REMOVED******REMOVED***;
             for (const value in form.controls) ***REMOVED***
+                if (form.controls[value].disabled) ***REMOVED***
+                  continue;
+                ***REMOVED***
                 if (form.controls[value].value) ***REMOVED***
                     values[value] = form.controls[value].value;
                 ***REMOVED***

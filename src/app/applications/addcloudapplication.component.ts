@@ -123,6 +123,9 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass ***REMOVE
             const values: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED*** = ***REMOVED******REMOVED***;
             values['project_application_openstack_project'] = this.project_application_openstack_project;
             for (const value in form.controls) ***REMOVED***
+                if (form.controls[value].disabled) ***REMOVED***
+                  continue;
+                ***REMOVED***
                 if (form.controls[value].value) ***REMOVED***
 
                     values[value] = form.controls[value].value;
