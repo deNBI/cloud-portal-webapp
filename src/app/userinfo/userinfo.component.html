@@ -20,19 +20,19 @@
 
                     <tr>
                         <th>Elixir Login</th>
-                        <td>***REMOVED******REMOVED*** userinfo.UserLogin ***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED*** userinfo?.UserLogin ***REMOVED******REMOVED***</td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Elixir ID</th>
-                        <td>***REMOVED******REMOVED***userinfo.ElxirId***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***userinfo?.ElxirId***REMOVED******REMOVED***</td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Preferred Email</th>
-                        <td>***REMOVED******REMOVED***userinfo.Email***REMOVED******REMOVED***
+                        <td>***REMOVED******REMOVED***userinfo?.Email***REMOVED******REMOVED***
 
-                            <div style="color: red" *ngFor="  let pendingEmail of userinfo.PendingEmails">You
+                            <div style="color: red" *ngFor="  let pendingEmail of userinfo?.PendingEmails">You
                                 have pending change
                                 request. Please check inbox of: ***REMOVED******REMOVED***pendingEmail***REMOVED******REMOVED*** for validation email.
                             </div>
@@ -114,7 +114,7 @@
 
                 <button [disabled]="!validatePublicKey()"
                         class="btn btn-success col-md4" type="button"
-                        (click)="importKey(publickey.value, userinfo.ElxirId);show_key();pubKeyModal.hide();">Set
+                        (click)="importKey(publickey.value, userinfo?.ElxirId);show_key();pubKeyModal.hide();">Set
                 </button>
                 <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide();">Cancel
                 </button>

@@ -92,7 +92,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
   getLoginName(): void ***REMOVED***
-    this.userservice.getLogins().subscribe((login: IResponseTemplate) => ***REMOVED***
+    this.userservice.getLoginElixirName().subscribe((login: IResponseTemplate) => ***REMOVED***
       this.login_name = <string>login.value
     ***REMOVED***);
 
