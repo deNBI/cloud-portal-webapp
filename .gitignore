@@ -67,3 +67,4 @@ npm-debug.log
 .vscode
 *.log
 *.stackdump
+**/env/
