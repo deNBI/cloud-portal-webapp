@@ -3,9 +3,9 @@
     <div class="row">
         <div class="col-md-8">
             <!--/.col-->
-            <h1>Welcome ***REMOVED******REMOVED*** userinfo.FirstName ***REMOVED******REMOVED*** ***REMOVED******REMOVED*** userinfo.LastName ***REMOVED******REMOVED***</h1></div>
+            <h1>Welcome ***REMOVED******REMOVED*** userInfo.FirstName ***REMOVED******REMOVED*** ***REMOVED******REMOVED*** userInfo.LastName ***REMOVED******REMOVED***</h1></div>
         <div class="col-md-4">
-            <button *ngIf="freemium_active && !is_project_member" class="btn btn-primary btn-lg"
+            <button *ngIf="freemiumActive && !isProjectMember" class="btn btn-primary btn-lg"
                     (click)="freemiummodal.show();">Join Freemium!
             </button>
         </div>
@@ -20,19 +20,19 @@
 
                     <tr>
                         <th>Elixir Login</th>
-                        <td>***REMOVED******REMOVED*** userinfo?.UserLogin ***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED*** userInfo?.UserLogin ***REMOVED******REMOVED***</td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Elixir ID</th>
-                        <td>***REMOVED******REMOVED***userinfo?.ElxirId***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***userInfo?.ElxirId***REMOVED******REMOVED***</td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Preferred Email</th>
-                        <td>***REMOVED******REMOVED***userinfo?.Email***REMOVED******REMOVED***
+                        <td>***REMOVED******REMOVED***userInfo?.Email***REMOVED******REMOVED***
 
-                            <div style="color: red" *ngFor="  let pendingEmail of userinfo?.PendingEmails">You
+                          <div style="color: red" *ngFor="  let pendingEmail of userInfo?.PendingEmails">You
                                 have pending change
                                 request. Please check inbox of: ***REMOVED******REMOVED***pendingEmail***REMOVED******REMOVED*** for validation email.
                             </div>
@@ -41,7 +41,7 @@
                             <button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
                         </td>
                     </tr>
-                    <tr app-public-key [userinfo]="userinfo"></tr>
+                    <tr app-public-key [userinfo]="userInfo"></tr>
 
                     <tr>
                         <th>Newsletter</th>
@@ -50,7 +50,7 @@
                                 <div class="col-md-2"><label
                                         class="switch switch-label switch-outline-primary-alt">
                                     <input type="checkbox" class="switch-input"
-                                           [(ngModel)]="newsletter_subscribed"
+                                           [(ngModel)]="newsletterSubscribed"
                                            (change)="setNewsletterSubscription($event)">
                                     <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
                                     <!--<span class="switch-handle"></span>-->
@@ -83,7 +83,7 @@
 
             </div>
             <div class="modal-body">
-                <alert type="info" *ngIf="public_key?.length ==0 ">
+                <alert type="info" *ngIf="newPublicKey?.length ==0 ">
                     <strong>Info: </strong> Please enter a valid public key!
 
                 </alert>
@@ -92,11 +92,11 @@
                 <alert type="success" *ngIf="validatePublicKey()">
                     <strong>Info: </strong> This is a valid public key!
                 </alert>
-                <alert type="danger" *ngIf="!validatePublicKey() && public_key?.length >0">
+                <alert type="danger" *ngIf="!validatePublicKey() && newPublicKey?.length >0">
                     <strong>Warning</strong> This is not a valid public key!
                 </alert>
                 <textarea rows="8" type="text" class="form-control input-lg"
-                          placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="public_key"
+                          placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="newPublicKey"
                           #publickey></textarea>
 
                 <br>
@@ -114,7 +114,7 @@
 
                 <button [disabled]="!validatePublicKey()"
                         class="btn btn-success col-md4" type="button"
-                        (click)="importKey(publickey.value, userinfo?.ElxirId);show_key();pubKeyModal.hide();">Set
+                        (click)="importKey(publickey.value);show_key();pubKeyModal.hide();">Set
                 </button>
                 <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide();">Cancel
                 </button>
