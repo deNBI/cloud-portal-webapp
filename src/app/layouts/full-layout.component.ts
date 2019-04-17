@@ -92,7 +92,7 @@ export class FullLayoutComponent implements OnInit {
   }
 
   getLoginName(): void {
-    this.userservice.getLogins().subscribe((login: IResponseTemplate) => {
+    this.userservice.getLoginElixirName().subscribe((login: IResponseTemplate) => {
       this.login_name = <string>login.value
     });
 
