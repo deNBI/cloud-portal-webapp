@@ -438,6 +438,10 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
                     ***REMOVED***
                 ***REMOVED***
                 if (key in this.constantStrings) ***REMOVED***
+                    if (form.controls[key].disabled) ***REMOVED***
+                      continue;
+                    ***REMOVED***
+
                     this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
 
                     const flavor: Flavor = this.isKeyFlavor(key.toString());
