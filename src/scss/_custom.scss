@@ -32,3 +32,22 @@ header {
 .collapse_no_margin{
   margin: 0;
 }
+
+$openstackcolour: #ED1944;
+$simplevmcolour: #00ADEF;
+
+.btn-openstack {
+    @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour,5%), lighten($openstackcolour, 10%), darken($openstackcolour,30%));
+}
+
+.btn-outline-openstack {
+    @include button-outline-variant($openstackcolour, #222222, lighten($openstackcolour,5%), $openstackcolour);
+}
+
+.btn-simplevm {
+    @include button-variant($simplevmcolour, darken($simplevmcolour, 7.5%), darken($simplevmcolour, 10%), lighten($simplevmcolour,5%), lighten($simplevmcolour, 10%), darken($simplevmcolour,30%));
+}
+
+.btn-outline-simplevm {
+    @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour,5%), $simplevmcolour);
+}
