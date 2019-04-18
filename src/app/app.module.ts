@@ -36,6 +36,7 @@ import {
     MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
     SidebarToggleDirective
 } from "./shared/sidebar.directive";
+import { ValidationApplicationComponent } from './validation-application/validation-application.component';
 
 
 /**
@@ -71,7 +72,8 @@ import {
         SidebarToggleDirective,
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
-        SidebarOffCanvasCloseDirective
+        SidebarOffCanvasCloseDirective,
+        ValidationApplicationComponent
 
 
     ],
