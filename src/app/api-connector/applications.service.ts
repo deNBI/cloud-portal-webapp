@@ -5,8 +5,8 @@ import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 
 const header: HttpHeaders = new HttpHeaders({
-    'X-CSRFToken': Cookie.get('csrftoken'),
-    'Content-Type': 'application/json'
+  'X-CSRFToken': Cookie.get('csrftoken'),
+  'Content-Type': 'application/json'
 
 });
 
@@ -15,118 +15,134 @@ const header: HttpHeaders = new HttpHeaders({
  */
 @Injectable()
 export class ApplicationsService {
-    constructor(private http: HttpClient) {
-    }
+  constructor(private http: HttpClient) {
+  }
 
-    getUserApplications(): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/`, {
-            headers: header,
-            withCredentials: true
-        })
-    }
+  getUserApplications(): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/`, {
+      headers: header,
+      withCredentials: true
+    })
+  }
 
-    getUserApplication(project_id: string | number): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/${project_id}/`, {
-            headers: header,
-            withCredentials: true
-        })
-    }
+  getApplicationValidationByHash(hash: string): Observable<any> {
 
-    getApplication(app_id: string): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
-            headers: header,
-            withCredentials: true
-        })
-    }
+    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, {
+      headers: header,
+      withCredentials: true
+    })
+  }
 
-    getApplicationClient(app_id: string): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/client/`, {
-            headers: header,
-            withCredentials: true
-        })
-    }
+  validateApplicationAsPIByHash(hash: string): Observable<any> {
 
-    /**
-     * Checks if some client has the ressource avaiable for an application.
-     * @param {string} app_id
-     * @returns {Observable<any>}
-     */
-    getApplicationClientAvaiable(app_id: string): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/clients/resource/`, {
-            headers: header,
-            withCredentials: true
-        })
-    }
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, null,{
+      headers: header,
+      withCredentials: true
+    })
+  }
 
-    getAllApplications(): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/`, {
-            withCredentials: true,
-            headers: header
+  getUserApplication(project_id: string | number): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/${project_id}/`, {
+      headers: header,
+      withCredentials: true
+    })
+  }
 
-        })
+  getApplication(app_id: string): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
+      headers: header,
+      withCredentials: true
+    })
+  }
 
-    }
+  getApplicationClient(app_id: string): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/client/`, {
+      headers: header,
+      withCredentials: true
+    })
+  }
 
-    addNewApplication(data: { [key: string]: string | number | boolean }): Observable<any> {
+  /**
+   * Checks if some client has the ressource avaiable for an application.
+   * @param {string} app_id
+   * @returns {Observable<any>}
+   */
+  getApplicationClientAvaiable(app_id: string): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/clients/resource/`, {
+      headers: header,
+      withCredentials: true
+    })
+  }
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/`, data, {
-            headers: header,
-            withCredentials: true
-        })
+  getAllApplications(): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/`, {
+      withCredentials: true,
+      headers: header
 
-    }
+    })
 
-    requestRenewal(data: { [key: string]: string | number | boolean }): Observable<any> {
+  }
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/`, data, {
-            headers: header,
-            withCredentials: true
-        })
+  addNewApplication(data: { [key: string]: string | number | boolean }): Observable<any> {
 
-    }
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/`, data, {
+      headers: header,
+      withCredentials: true
+    })
 
-    approveRenewal(application_id: number | string): Observable<any> {
+  }
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/${application_id}/status/`, null, {
-            headers: header,
-            withCredentials: true
-        })
+  requestRenewal(data: { [key: string]: string | number | boolean }): Observable<any> {
 
-    }
+    return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/`, data, {
+      headers: header,
+      withCredentials: true
+    })
 
-    declineRenewal(application_id: number | string): Observable<any> {
+  }
 
-        return this.http.delete(`${ApiSettings.getApiBaseURL()}applicationRenewals/${application_id}/status/`, {
-            headers: header,
-            withCredentials: true
-        })
+  approveRenewal(application_id: number | string): Observable<any> {
 
-    }
+    return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/${application_id}/status/`, null, {
+      headers: header,
+      withCredentials: true
+    })
 
-    getAllApplicationsRenewalRequests(): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/`, {
-            withCredentials: true,
-            headers: header
+  }
 
-        })
+  declineRenewal(application_id: number | string): Observable<any> {
 
-    }
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}applicationRenewals/${application_id}/status/`, {
+      headers: header,
+      withCredentials: true
+    })
 
-    getApplicationsRenewalRequest(application_id: number): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/${application_id}/`, {
-            withCredentials: true,
-            headers: header
-        })
+  }
 
-    }
+  getAllApplicationsRenewalRequests(): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/`, {
+      withCredentials: true,
+      headers: header
 
-    deleteApplication(application_id: string | number): Observable<any> {
+    })
 
-        return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, {
-            headers: header,
-            withCredentials: true
-        })
+  }
 
-    }
+  getApplicationsRenewalRequest(application_id: number): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/${application_id}/`, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
+  deleteApplication(application_id: string | number): Observable<any> {
+
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, {
+      headers: header,
+      withCredentials: true
+    })
+
+  }
 
 }
