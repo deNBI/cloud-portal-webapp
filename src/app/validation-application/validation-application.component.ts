@@ -18,13 +18,21 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
   ***REMOVED***
 
   application: Application;
+  isLoaded: boolean = false;
 
   ngOnInit() ***REMOVED***
     this.activatedRoute.params.subscribe(paramsId => ***REMOVED***
-      this.applicationsService.getApplicationValidationByHash(paramsId.hash).subscribe(app => ***REMOVED***
-        this.application = this.setNewApplication(app)
+      this.applicationsService.getApplicationValidationByHash(paramsId.hash).subscribe(
+        app => ***REMOVED***
+          this.application = this.setNewApplication(app);
 
-      ***REMOVED***)
+          this.isLoaded = true;
+
+        ***REMOVED***,
+        error => ***REMOVED***
+          this.isLoaded = true;
+
+        ***REMOVED***)
     ***REMOVED***)
   ***REMOVED***
 
