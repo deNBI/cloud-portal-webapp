@@ -56,10 +56,9 @@ export class AddsimplevmComponent extends ApplicationBaseClass ***REMOVED***
 
     constructor(applicationsservice: ApplicationsService, private flavorService: FlavorService) ***REMOVED***
         super(null, null, applicationsservice, null);
-        this.applicationsservice.getApplicationValidationByHash('7b6be61cdfdc48ca99048c4525c05612').subscribe(res =>***REMOVED***
+        this.applicationsservice.getApplicationValidationByHash('386286bd00ac428e84f0dff98f742393').subscribe(res =>***REMOVED***
           console.log(res)
         ***REMOVED***)
-        this.applicationsservice.validateApplicationAsPIByHash('7b6be61cdfdc48ca99048c4525c05612').subscribe()
         this.getListOfFlavors()
         this.getListOfTypes();
 
