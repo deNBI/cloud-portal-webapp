@@ -15,7 +15,7 @@
               <h5 class="col-md-6 form-control-label">General Information</h5>
             </div>
             <div class="form-group row">
-              <label class="col-md-4"><strong>Cloud Project <i
+              <label *ngIf="application?.OpenStackProject" class="col-md-4"><strong>Cloud Project <i
                 data-balloon="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."
                 data-balloon-pos="down" data-balloon-length="large"><i
                 class="icon-question menu_links"
@@ -27,6 +27,17 @@
                 you to manage your
                 virtual machines, storage and network configurations.
               </div>
+
+              <label *ngIf="!application?.OpenStackProject" class="col-md-4">
+                <strong>Simple Virtual Machines Project
+                  <i data-balloon="You will be able to start virtual machines through the portal with minimal
+                                    effort and access them via ssh. This project type does not demand knowlegde in cloud
+                                    computing." data-balloon-pos="down" data-balloon-length="large"><i
+                    class="icon-question" style="cursor: pointer;"></i></i>
+                </strong>
+
+              </label>
+              
               <div *ngIf="!application?.OpenStackProject" class="col-md-8">
                 This type of project allows you to start virtual machines with SSH
                 access.
