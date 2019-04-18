@@ -1,4 +1,7 @@
-<div class="animated fadeIn">
+<div *ngIf=" !isLoaded" class="loader"></div>
+<div *ngIf="isLoaded && !application"> No application found.</div>
+
+<div *ngIf="isLoaded && application" class="animated fadeIn">
 
   <div class="row">
     <div class="col-md-8">
@@ -37,7 +40,7 @@
                 </strong>
 
               </label>
-              
+
               <div *ngIf="!application?.OpenStackProject" class="col-md-8">
                 This type of project allows you to start virtual machines with SSH
                 access.
