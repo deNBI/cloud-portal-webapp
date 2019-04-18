@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 
@@ -26,16 +26,21 @@ export class ApplicationsService {
   }
 
   getApplicationValidationByHash(hash: string): Observable<any> {
+    const params: HttpParams = new HttpParams().set('hash', hash);
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, {
+
+    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/validation/`, {
       headers: header,
-      withCredentials: true
+      withCredentials: true,
+      params: params
     })
   }
 
   validateApplicationAsPIByHash(hash: string): Observable<any> {
+    const params: HttpParams = new HttpParams().set('hash', hash);
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, null,{
+
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, params, {
       headers: header,
       withCredentials: true
     })
