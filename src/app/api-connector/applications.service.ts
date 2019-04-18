@@ -1,6 +1,6 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
-import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
+import ***REMOVED***HttpClient, HttpHeaders***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
@@ -26,21 +26,16 @@ export class ApplicationsService ***REMOVED***
   ***REMOVED***
 
   getApplicationValidationByHash(hash: string): Observable<any> ***REMOVED***
-    const params: HttpParams = new HttpParams().set('hash', hash);
 
-
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/validation/`, ***REMOVED***
+    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/validation/$***REMOVED***hash***REMOVED***/`, ***REMOVED***
       headers: header,
-      withCredentials: true,
-      params: params
+      withCredentials: true
     ***REMOVED***)
   ***REMOVED***
 
   validateApplicationAsPIByHash(hash: string): Observable<any> ***REMOVED***
-    const params: HttpParams = new HttpParams().set('hash', hash);
 
-
-    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/validation/$***REMOVED***hash***REMOVED***/`, params, ***REMOVED***
+    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/validation/$***REMOVED***hash***REMOVED***/`, null,***REMOVED***
       headers: header,
       withCredentials: true
     ***REMOVED***)
