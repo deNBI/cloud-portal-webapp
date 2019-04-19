@@ -31,11 +31,12 @@ import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.direc
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from "./shared/shared_modules/baseClass/application-base-class";
 import ***REMOVED***SharedModuleModule***REMOVED*** from "./shared/shared_modules/shared-module.module";
 import ***REMOVED***PerfectScrollbarModule***REMOVED*** from 'ngx-perfect-scrollbar';
-import ***REMOVED***BreadcrumbsComponent***REMOVED*** from "./shared/breadcrumb.component";
+import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
 import ***REMOVED***
     MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
     SidebarToggleDirective
-***REMOVED*** from "./shared/sidebar.directive";
+***REMOVED*** from './shared/sidebar.directive';
+import ***REMOVED***Angulartics2Module***REMOVED*** from 'angulartics2';
 
 
 /**
@@ -59,7 +60,8 @@ import ***REMOVED***
         PopoverModule,
         PaginationModule.forRoot(),
         ExportAsModule,
-        SharedModuleModule
+        SharedModuleModule,
+        Angulartics2Module.forRoot()
     ],
     declarations: [
         AppComponent,
