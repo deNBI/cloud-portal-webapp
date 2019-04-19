@@ -37,6 +37,7 @@ export class Application {
     private _DateApproved: string;
     private _Horizon2020: string;
     private _ElixirProject: string;
+    private _BMBFProject: string;
     private _Dissemination: boolean;
     private _CurrentFlavors: {
         [id: string]: {
@@ -334,5 +335,13 @@ export class Application {
 
     set ElixirProject(value: string) {
         this._ElixirProject = value;
+    }
+
+    get BMBFProject(): string {
+      return this._BMBFProject;
+    }
+
+    set BMBFProject(value: string) {
+      this._BMBFProject = value;
     }
 }
