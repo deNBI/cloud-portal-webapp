@@ -49,7 +49,6 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass ***REMOVE
    */
   public typeList: FlavorType[];
 
-  public project_application_pi_approve: boolean = false;
 
 
   public acknowledgeModalTitle: string = 'Acknowledge';

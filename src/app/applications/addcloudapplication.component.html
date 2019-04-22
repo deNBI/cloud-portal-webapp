@@ -23,6 +23,22 @@
             <div class="form-group row">
               <h5 class="col-md-6 form-control-label">General Information</h5>
             </div>
+
+            <div class="form-group row">
+              <label class="col-md-4"><strong>Cloud Project <i
+                data-balloon="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."
+                data-balloon-pos="down" data-balloon-length="large"><i
+                class="icon-question menu_links"
+                style="cursor: pointer;"></i></i>
+              </strong>
+              </label>
+              <div class="col-md-8">
+                A cloud project is represented by an Openstack project which allows
+                you to manage your
+                virtual machines, storage and network configurations.
+              </div>
+            </div>
+
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator*
                 <i
@@ -49,7 +65,7 @@
 
             </div>
 
-            <div *ngIf="!project_application_pi_approved"class="form-group row">
+            <div *ngIf="!project_application_pi_approved" class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator Email*
               </strong></label>
               <div class="col-md-8">
@@ -68,20 +84,6 @@
                                 ***REMOVED***">
                 <p *ngIf="!project_application_pi_approved"> Please insert the email of your principal investigator.
                   He will get an email with further information how to verify the application.</p></div>
-            </div>
-            <div class="form-group row">
-              <label class="col-md-4"><strong>Cloud Project <i
-                data-balloon="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."
-                data-balloon-pos="down" data-balloon-length="large"><i
-                class="icon-question menu_links"
-                style="cursor: pointer;"></i></i>
-              </strong>
-              </label>
-              <div class="col-md-8">
-                A cloud project is represented by an Openstack project which allows
-                you to manage your
-                virtual machines, storage and network configurations.
-              </div>
             </div>
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Project
