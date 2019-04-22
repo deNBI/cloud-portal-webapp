@@ -12,17 +12,40 @@ import {ApplicationBaseClass} from "../shared/shared_modules/baseClass/applicati
 })
 export class ValidationApplicationComponent extends ApplicationBaseClass implements OnInit {
 
-  constructor(private applicationsService: ApplicationsService, private  activatedRoute: ActivatedRoute) {
+  constructor(private applicationsService: ApplicationsService, private activatedRoute: ActivatedRoute) {
     super(null, null, applicationsService, null)
 
   }
 
   application: Application;
   isLoaded: boolean = false;
+  hash: string;
+  validated: boolean = false;
+
+  approveApplication() {
+    this.applicationsService.validateApplicationAsPIByHash(this.hash).subscribe(res => {
+      if (res['project_application_pi_approved']) {
+        this.validated=true;
+        this.updateNotificationModal(
+          'Success',
+          'The application was successfully validated.',
+          true,
+          'success');
+      } else {
+        this.updateNotificationModal(
+          'Failed',
+          'The application was not successfully validated.',
+          true,
+          'danger');
+      }
+    })
+  }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(paramsId => {
-      this.applicationsService.getApplicationValidationByHash(paramsId.hash).subscribe(
+      this.hash = paramsId.hash;
+
+      this.applicationsService.getApplicationValidationByHash(this.hash).subscribe(
         app => {
           this.application = this.setNewApplication(app);
 

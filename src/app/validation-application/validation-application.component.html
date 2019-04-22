@@ -1,7 +1,7 @@
 <div *ngIf=" !isLoaded" class="loader"></div>
 <div *ngIf="isLoaded && !application"> No application found.</div>
 
-<div *ngIf="isLoaded && application" class="animated fadeIn">
+<div *ngIf="isLoaded && application && !validated" class="animated fadeIn">
 
   <div class="row">
     <div class="col-md-8">
@@ -303,7 +303,7 @@
         </div>
         <div class="card-footer">
 
-          <button
+          <button (click)="notificationModal.show();approveApplication();"
             class="btn btn-sm btn-success">
             <i class="fa fa-dot-circle-o"></i>
             Validate
@@ -313,3 +313,43 @@
     </div>
   </div>
 </div>
+
+
+
+
+<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="notificationModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-{{ notificationModalType }}" role="alert">
+          {{ notificationModalMessage }}
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
+                type="button"
+                (click)="notificationModal.hide();resetNotificationModal()"
+                class="btn  btn-secondary"> Close
+        </button>
+        <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
+           [routerLink]="['/applications']">
+          <button type="button"
+                  (click)="notificationModal.hide();resetNotificationModal()" type="reset"
+                  class="btn  btn-secondary"> Close
+          </button>
+        </a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
