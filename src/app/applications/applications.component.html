@@ -332,7 +332,7 @@
                                                         style="margin: auto 2.5px"
                                                         (click)="resetNotificationModal();createOpenStackProjectGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
 
-
+                                                        [disabled]="!application.PIApproved"
                                                         type="button"
                                                         class="btn btn-success">
                                                     <i class="fa fa-check"></i>&nbsp;
@@ -345,7 +345,7 @@
                                                         style="margin: auto 2.5px"
                                                         (click)="resetNotificationModal();createSimpleVmProjectGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
 
-
+                                                        [disabled]="!application.PIApproved"
                                                         type="button"
                                                         class="btn btn-success">
                                                     <i class="fa fa-check"></i>&nbsp;
@@ -406,6 +406,16 @@
                                                 <div class="table-responsive">
                                                     <table class="table table-striped">
 
+                                                        <tr>
+                                                            <td>
+                                                              PI Approved
+                                                            </td>
+                                                            <td>
+                                                              {{application?.PIApproved}}
+                                                            </td>
+                                                          <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                          </td>
+                                                        </tr>
                                                         <tr>
                                                             <td>User
                                                                 Affiliations

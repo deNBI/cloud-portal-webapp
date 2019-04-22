@@ -286,7 +286,7 @@
                   class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input"
                          name="project_application_report_allowed"
-                         disabled value="{{application?.Dissemination}}"
+                         disabled [checked]="application?.Dissemination"
                   >
                   <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                   <span class="switch-handle"></span></label>

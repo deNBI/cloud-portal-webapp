@@ -38,6 +38,7 @@ export class Application {
     private _Horizon2020: string;
     private _ElixirProject: string;
     private _Dissemination: boolean;
+    private _PIApproved: boolean;
     private _CurrentFlavors: {
         [id: string]: {
             counter: number, tag: string, ram: number, rootdisk: number,
@@ -68,6 +69,14 @@ export class Application {
 
     set Dissemination(value: boolean) {
         this._Dissemination = value;
+    }
+
+    get PIApproved(): boolean {
+      return this._PIApproved;
+    }
+
+    set PIApproved(value: boolean) {
+      this._PIApproved = value;
     }
 
     get CurrentFlavors(): {

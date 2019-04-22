@@ -123,7 +123,7 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass {
     } else {
       const values: { [key: string]: string | number | boolean } = {};
       values['project_application_openstack_project'] = this.project_application_openstack_project;
-      values['project_application_pi_approved'] = this.project_application_pi_approve;
+      values['project_application_pi_approved'] = this.project_application_pi_approved;
       for (const value in form.controls) {
         if (form.controls[value].disabled) {
           continue;

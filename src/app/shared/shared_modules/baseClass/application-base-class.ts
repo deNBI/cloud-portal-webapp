@@ -290,6 +290,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
         newApp.Dissemination = aj['project_application_report_allowed'];
         newApp.Horizon2020 = aj['project_application_horizon2020'];
         newApp.ElixirProject = aj['project_application_elixir_project'];
+        newApp.PIApproved = aj['project_application_pi_approved'];
 
         for (const flavor of aj['flavors']) {
           newApp.addFlavorToCurrent(
