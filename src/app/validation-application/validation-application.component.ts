@@ -12,17 +12,40 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from "../shared/shared_mod
 ***REMOVED***)
 export class ValidationApplicationComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
 
-  constructor(private applicationsService: ApplicationsService, private  activatedRoute: ActivatedRoute) ***REMOVED***
+  constructor(private applicationsService: ApplicationsService, private activatedRoute: ActivatedRoute) ***REMOVED***
     super(null, null, applicationsService, null)
 
   ***REMOVED***
 
   application: Application;
   isLoaded: boolean = false;
+  hash: string;
+  validated: boolean = false;
+
+  approveApplication() ***REMOVED***
+    this.applicationsService.validateApplicationAsPIByHash(this.hash).subscribe(res => ***REMOVED***
+      if (res['project_application_pi_approved']) ***REMOVED***
+        this.validated=true;
+        this.updateNotificationModal(
+          'Success',
+          'The application was successfully validated.',
+          true,
+          'success');
+      ***REMOVED*** else ***REMOVED***
+        this.updateNotificationModal(
+          'Failed',
+          'The application was not successfully validated.',
+          true,
+          'danger');
+      ***REMOVED***
+    ***REMOVED***)
+  ***REMOVED***
 
   ngOnInit() ***REMOVED***
     this.activatedRoute.params.subscribe(paramsId => ***REMOVED***
-      this.applicationsService.getApplicationValidationByHash(paramsId.hash).subscribe(
+      this.hash = paramsId.hash;
+
+      this.applicationsService.getApplicationValidationByHash(this.hash).subscribe(
         app => ***REMOVED***
           this.application = this.setNewApplication(app);
 
