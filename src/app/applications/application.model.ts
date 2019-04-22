@@ -38,6 +38,7 @@ export class Application ***REMOVED***
     private _Horizon2020: string;
     private _ElixirProject: string;
     private _Dissemination: boolean;
+    private _PIApproved: boolean;
     private _CurrentFlavors: ***REMOVED***
         [id: string]: ***REMOVED***
             counter: number, tag: string, ram: number, rootdisk: number,
@@ -68,6 +69,14 @@ export class Application ***REMOVED***
 
     set Dissemination(value: boolean) ***REMOVED***
         this._Dissemination = value;
+    ***REMOVED***
+
+    get PIApproved(): boolean ***REMOVED***
+      return this._PIApproved;
+    ***REMOVED***
+
+    set PIApproved(value: boolean) ***REMOVED***
+      this._PIApproved = value;
     ***REMOVED***
 
     get CurrentFlavors(): ***REMOVED***
