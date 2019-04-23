@@ -1,22 +1,30 @@
 <div class="animated fadeIn">
+  <!-- Begin Card -->
   <div class="card">
+    <!-- Begin Card Header -->
     <div class="card-header">
-      <i class="fa fa-align-justify"></i> Our Cloud Project Types
+      <i class="fa fa-align-justify"></i> Our de.NBI Cloud Project Types
+    <!-- End Card Header -->
     </div>
+    <!-- Begin Container-Fluid -->
     <div class="container-fluid">
-      <div class="card-body"><!-- Row with new App Buttons -->
+      <!-- Begin Card Body -->
+      <div class="card-body">
+        <!-- Row with new App Buttons -->
         <div class="row">
           <div class="col-6 text-center">
-            <button id="newSimpleVMBtn" class="btn btn-outline-simplevm"
-                    [routerLink]="['/applications/newSimpleVmApplication']">
-              New SimpleVM Application
-            </button>
+            <a [routerLink]="['/applications/newSimpleVmApplication']">
+              <button id="newSimpleVMBtn" class="btn btn-outline-simplevm">
+                New SimpleVM Application
+              </button>
+            </a>
           </div>
           <div class="col-6 text-center">
-            <button id="newOpenstackBtn" class="btn btn-outline-openstack"
-                    [routerLink]="['/applications/newCloudApplication']">
-              New Openstack Application
-            </button>
+            <a [routerLink]="['/applications/newCloudApplication']">
+              <button id="newOpenstackBtn" class="btn btn-outline-openstack">
+                New Openstack Application
+              </button>
+            </a>
           </div>
           <!-- End row with new App Buttons -->
         </div>
@@ -69,14 +77,14 @@
               </div>
             </div>
             <br>
-            <!-- Want to learn more with Button -->
+            <!-- Want to learn more with Button for smaller Screen-->
             <div class="row d-block d-lg-none">
               <div class="col text-center">
                 <div class="row justify-content-center">
                   <strong>Want to learn more about SimpleVM?</strong>
                 </div>
                 <div class="row justify-content-center">
-                  <a href="https://cloud.denbi.de/simplevm/">
+                  <a href="https://cloud.denbi.de/simplevm/" target="_blank">
                     <button class="btn btn-primary">
                       Click Here!
                     </button>
@@ -88,13 +96,14 @@
           </div>
 
           <!-- Force Newline between no and lg Breakpoint -->
+          <!-- Want to learn Difference with Button for smaller Screen -->
           <div class="w-100 d-block d-lg-none">
             <br>
             <div class="row justify-content-center">
               <strong>Want to learn the Difference between SimpleVM and Openstack?</strong>
             </div>
             <div class="row justify-content-center">
-              <a href="https://cloud.denbi.de/project-types/">
+              <a href="https://cloud.denbi.de/project-types/" target="_blank">
                 <button class="btn btn-success">
                   Click Here!
                 </button>
@@ -148,14 +157,14 @@
               </div>
             </div>
             <br>
-            <!-- Want to learn more with Button -->
+            <!-- Want to learn more with Button for smaller Screen-->
             <div class="row d-block d-lg-none">
               <div class="col text-center">
                 <div class="row justify-content-center">
                   <strong>Want to learn more about Openstack?</strong>
                 </div>
                 <div class="row justify-content-center">
-                  <a href="https://cloud.denbi.de/openstack/">
+                  <a href="https://cloud.denbi.de/openstack/" target="_blank">
                     <button class="btn btn-primary">
                       Click Here!
                     </button>
@@ -171,36 +180,39 @@
         <!-- Learn more Buttons for bigger Screens -->
         <div class="w-100 d-none d-lg-block">
           <div class="row">
+            <!-- Learn more about SimpleVM -->
             <div class="col-4 text-center">
               <div class="row justify-content-center">
                 <strong>Want to learn more about SimpleVM?</strong>
               </div>
               <div class="row justify-content-center">
-                <a href="https://cloud.denbi.de/simplevm/">
+                <a href="https://cloud.denbi.de/simplevm/" target="_blank">
                   <button class="btn btn-primary">
                     Click Here!
                   </button>
                 </a>
               </div>
             </div>
+            <!-- Learn Difference -->
             <div class="col-4">
               <div class="row justify-content-center">
                 <strong>Want to learn the Difference?</strong>
               </div>
               <div class="row justify-content-center">
-                <a href="https://cloud.denbi.de/project-types/">
+                <a href="https://cloud.denbi.de/project-types/" target="_blank">
                   <button class="btn btn-success">
                     Click Here!
                   </button>
                 </a>
               </div>
             </div>
+            <!-- Learn more about Openstack -->
             <div class="col-4 text-center">
               <div class="row justify-content-center">
                 <strong>Want to learn more about Openstack?</strong>
               </div>
               <div class="row justify-content-center">
-                <a href="https://cloud.denbi.de/openstack/">
+                <a href="https://cloud.denbi.de/openstack/" target="_blank">
                   <button class="btn btn-primary">
                     Click Here!
                   </button>
@@ -209,11 +221,13 @@
             </div>
           </div>
           <br>
-          <!-- End learn more Buttons Bigger Screen -->
+        <!-- End learn more Buttons Bigger Screen -->
         </div>
+      <!-- End Card Body -->
       </div>
-    </div>
     <!-- End Container -->
+    </div>
+  <!-- End Card -->
   </div>
 <!-- End fadeIn Animation -->
 </div>
