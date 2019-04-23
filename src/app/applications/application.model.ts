@@ -39,6 +39,8 @@ export class Application {
     private _ElixirProject: string;
     private _Dissemination: boolean;
     private _PIApproved: boolean;
+    private _PI: string;
+    private _PIEmail: string;
     private _CurrentFlavors: {
         [id: string]: {
             counter: number, tag: string, ram: number, rootdisk: number,
@@ -343,5 +345,21 @@ export class Application {
 
     set ElixirProject(value: string) {
         this._ElixirProject = value;
+    }
+
+    get PI(): string {
+      return this._PI;
+    }
+
+    set PI(value: string) {
+      this._PI = value;
+    }
+
+    get PIEmail(): string {
+      return this._PIEmail;
+    }
+
+    set PIEmail(value: string) {
+      this._PIEmail = value;
     }
 }

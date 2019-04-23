@@ -15,6 +15,7 @@ import {ApplicationBaseClass} from "../shared/shared_modules/baseClass/applicati
 import {SharedModuleModule} from "../shared/shared_modules/shared-module.module";
 import { TypeOverviewComponent } from './type-overview.component';
 import {AppSidebarModule} from '@coreui/angular';
+import {ValidationApplicationComponent} from '../validation-application/validation-application.component';
 
 /**
  * Applications Module.
@@ -28,7 +29,8 @@ import {AppSidebarModule} from '@coreui/angular';
         CommonModule,
         FormsModule,
         ModalModule.forRoot(),
-        AppSidebarModule
+        AppSidebarModule,
+        //SharedModuleModule
     ],
     declarations: [
         ApplicationsComponent,
@@ -38,7 +40,8 @@ import {AppSidebarModule} from '@coreui/angular';
         MaxAmoutValidatorDirective,
         IntegerValidatorDirective,
         IntegerOrNullValidatorDirective,
-        TypeOverviewComponent
+        TypeOverviewComponent,
+      ValidationApplicationComponent
     ]
 })
 export class ApplicationsModule {

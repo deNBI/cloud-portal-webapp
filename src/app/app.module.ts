@@ -73,7 +73,7 @@ import { ValidationApplicationComponent } from './validation-application/validat
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
         SidebarOffCanvasCloseDirective,
-        ValidationApplicationComponent
+        // ValidationApplicationComponent
 
 
     ],

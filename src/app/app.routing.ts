@@ -14,10 +14,6 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'applications/validation/:hash',
-    component: ValidationApplicationComponent
-  },
-  {
     path: 'registration-info',
     component: RegistrationInfoComponent,
     pathMatch: 'full'
