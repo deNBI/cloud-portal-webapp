@@ -1,6 +1,7 @@
-import ***REMOVED***AfterViewInit, Component, ViewChild***REMOVED*** from '@angular/core';
+import ***REMOVED***AfterViewInit, Component, ViewChild, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***Http, RequestOptions, XHRBackend***REMOVED*** from '@angular/http';
 import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap';
+import ***REMOVED***Angulartics2Piwik***REMOVED*** from 'angulartics2/piwik';
 
 /**
  * App component.
@@ -13,9 +14,17 @@ import ***REMOVED***ModalDirective***REMOVED*** from 'ngx-bootstrap';
         deps: [XHRBackend, RequestOptions, AppComponent]
     ***REMOVED***]
 ***REMOVED***)
-export class AppComponent implements AfterViewInit ***REMOVED***
+export class AppComponent implements AfterViewInit, OnInit ***REMOVED***
 
     @ViewChild('timeoutModal') modal: ModalDirective;
+
+    constructor(private angulartics2Piwik: Angulartics2Piwik) ***REMOVED***
+
+    ***REMOVED***
+
+    ngOnInit(): void ***REMOVED***
+      this.angulartics2Piwik.startTracking();
+    ***REMOVED***
 
     ngAfterViewInit(): void ***REMOVED***
     ***REMOVED***
