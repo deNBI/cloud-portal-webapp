@@ -12,31 +12,34 @@ import {ApplicationBaseClass} from "../shared/shared_modules/baseClass/applicati
 })
 export class ValidationApplicationComponent extends ApplicationBaseClass implements OnInit {
 
+  application: Application;
+
+  isLoaded: boolean = false;
+  hash: string;
+  validated: boolean = false;
+
   constructor(private applicationsService: ApplicationsService, private activatedRoute: ActivatedRoute) {
     super(null, null, applicationsService, null)
 
   }
 
-  application: Application;
-  isLoaded: boolean = false;
-  hash: string;
-  validated: boolean = false;
-
-  approveApplication() {
+  approveApplication(): any {
     this.applicationsService.validateApplicationAsPIByHash(this.hash).subscribe(res => {
       if (res['project_application_pi_approved']) {
-        this.validated=true;
+        this.validated = true;
         this.updateNotificationModal(
           'Success',
           'The application was successfully validated.',
           true,
           'success');
+        this.notificationModalStay = false;
       } else {
         this.updateNotificationModal(
           'Failed',
           'The application was not successfully validated.',
           true,
           'danger');
+        this.notificationModalStay = true;
       }
     })
   }
