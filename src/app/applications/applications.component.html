@@ -90,6 +90,36 @@
                                              [class.collapse]="getCollapseStatus('user_application-' + application.Id)"
                                              class="table-responsive">
                                             <table class="table table-striped" style="width: 80%">
+                                              <tr>
+                                                <td>
+                                                  PI Approved
+                                                </td>
+                                                <td>
+                                                  ***REMOVED******REMOVED***application?.PIApproved***REMOVED******REMOVED***
+                                                </td>
+                                                <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <td>
+                                                  PI Name
+                                                </td>
+                                                <td>
+                                                  ***REMOVED******REMOVED***application?.PI***REMOVED******REMOVED***
+                                                </td>
+                                                <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <td>
+                                                  PI Email
+                                                </td>
+                                                <td>
+                                                  ***REMOVED******REMOVED***application?.PIEmail***REMOVED******REMOVED***
+                                                </td>
+                                                <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                </td>
+                                              </tr>
                                                 <tr *ngIf="application.Status != application_states.SUBMITTED">
                                                     <td>Facility</td>
                                                     <td>
@@ -416,6 +446,26 @@
                                                           <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                           </td>
                                                         </tr>
+                                                      <tr>
+                                                        <td>
+                                                          PI Name
+                                                        </td>
+                                                        <td>
+                                                          ***REMOVED******REMOVED***application?.PI***REMOVED******REMOVED***
+                                                        </td>
+                                                        <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>
+                                                          PI Email
+                                                        </td>
+                                                        <td>
+                                                          ***REMOVED******REMOVED***application?.PIEmail***REMOVED******REMOVED***
+                                                        </td>
+                                                        <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        </td>
+                                                      </tr>
                                                         <tr>
                                                             <td>User
                                                                 Affiliations
@@ -727,6 +777,36 @@
                                                 <div>
                                                     <div class="table-responsive">
                                                         <table class="table table-striped">
+                                                          <tr>
+                                                            <td>
+                                                              PI Approved
+                                                            </td>
+                                                            <td>
+                                                              ***REMOVED******REMOVED***application?.PIApproved***REMOVED******REMOVED***
+                                                            </td>
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                            </td>
+                                                          </tr>
+                                                          <tr>
+                                                            <td>
+                                                              PI Name
+                                                            </td>
+                                                            <td>
+                                                              ***REMOVED******REMOVED***application?.PI***REMOVED******REMOVED***
+                                                            </td>
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                            </td>
+                                                          </tr>
+                                                          <tr>
+                                                            <td>
+                                                              PI Email
+                                                            </td>
+                                                            <td>
+                                                              ***REMOVED******REMOVED***application?.PIEmail***REMOVED******REMOVED***
+                                                            </td>
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                            </td>
+                                                          </tr>
                                                             <tr>
                                                                 <td>Description
                                                                 </td>

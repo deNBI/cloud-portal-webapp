@@ -291,6 +291,12 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
         newApp.Horizon2020 = aj['project_application_horizon2020'];
         newApp.ElixirProject = aj['project_application_elixir_project'];
         newApp.PIApproved = aj['project_application_pi_approved'];
+        if (aj['project_application_pi']) ***REMOVED***
+          const firstName: string = (aj['project_application_pi'])['firstName'];
+          const lastName: string = (aj['project_application_pi'])['lastName'];
+          newApp.PI = `$***REMOVED***firstName***REMOVED*** $***REMOVED***lastName***REMOVED***`;
+          newApp.PIEmail = (aj['project_application_pi'])['email'];
+        ***REMOVED***
 
         for (const flavor of aj['flavors']) ***REMOVED***
           newApp.addFlavorToCurrent(

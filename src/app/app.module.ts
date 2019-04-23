@@ -73,7 +73,7 @@ import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './valida
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
         SidebarOffCanvasCloseDirective,
-        ValidationApplicationComponent
+        // ValidationApplicationComponent
 
 
     ],

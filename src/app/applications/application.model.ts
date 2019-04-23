@@ -39,6 +39,8 @@ export class Application ***REMOVED***
     private _ElixirProject: string;
     private _Dissemination: boolean;
     private _PIApproved: boolean;
+    private _PI: string;
+    private _PIEmail: string;
     private _CurrentFlavors: ***REMOVED***
         [id: string]: ***REMOVED***
             counter: number, tag: string, ram: number, rootdisk: number,
@@ -343,5 +345,21 @@ export class Application ***REMOVED***
 
     set ElixirProject(value: string) ***REMOVED***
         this._ElixirProject = value;
+    ***REMOVED***
+
+    get PI(): string ***REMOVED***
+      return this._PI;
+    ***REMOVED***
+
+    set PI(value: string) ***REMOVED***
+      this._PI = value;
+    ***REMOVED***
+
+    get PIEmail(): string ***REMOVED***
+      return this._PIEmail;
+    ***REMOVED***
+
+    set PIEmail(value: string) ***REMOVED***
+      this._PIEmail = value;
     ***REMOVED***
 ***REMOVED***
