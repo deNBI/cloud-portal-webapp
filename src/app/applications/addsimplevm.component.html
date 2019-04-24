@@ -1,109 +1,112 @@
 <div class="animated fadeIn">
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <strong>New Simple Vm Application</strong>
-                    – Form
-                </div>
-                <div class="card-body">
-                    <div class="alert alert-info">
-                        <strong>Please be aware:</strong> Only applications submitted by a principal
-                        investigator of a
-                        german university or research facility will be accepted!
-                    </div>
-                    <div class="alert alert-info">
-                        This project mode is a beta version. Virtual machines might get lost or can
-                        not be
-                        started
-                        temporarily.
-                    </div>
-                    <div *ngIf="!production">
-                        <button (click)="sendTestApplication();notificationModal.show();">Test
-                            Application
-                        </button>
-                    </div>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <strong>New Simple Vm Application</strong>
+          – Form
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info">
+            <strong>Please be aware:</strong> Only applications submitted by a principal
+            investigator of a
+            german university or research facility will be accepted!
+          </div>
+          <div class="alert alert-info">
+            This project mode is a beta version. Virtual machines might get lost or can
+            not be
+            started
+            temporarily.
+          </div>
+          <div class="alert alert-info">
+            If you would like to learn more about Simple VM, <a href="https://cloud.denbi.de/simplevm/" target="_blank">Click Here!</a>
+          </div>
+          <div *ngIf="!production">
+            <button (click)="sendTestApplication();notificationModal.show();">Test
+              Application
+            </button>
+          </div>
 
-                    <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
-                          class="form-horizontal">
-                        <div class="form-group row">
-                            <h5 class="col-md-6 form-control-label">General Information</h5>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-4">
-                                <strong>Single Virtual Machines Project
-                                    <i data-balloon="You will be able to start virtual machines through the portal with minimal
+          <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+                class="form-horizontal">
+            <div class="form-group row">
+              <h5 class="col-md-6 form-control-label">General Information</h5>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4">
+                <strong>Single Virtual Machines Project
+                  <i data-balloon="You will be able to start virtual machines through the portal with minimal
                                     effort and access them via ssh. This project type does not demand knowlegde in cloud
                                     computing." data-balloon-pos="down" data-balloon-length="large"><i
-                                            class="icon-question" style="cursor: pointer;"></i></i>
-                                </strong>
+                    class="icon-question" style="cursor: pointer;"></i></i>
+                </strong>
 
-                            </label>
-                            <div class="col-md-8">
-                                This type of project allows you to start virtual machines with SSH
-                                access.
+              </label>
+              <div class="col-md-8">
+                This type of project allows you to start virtual machines with SSH
+                access.
 
 
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="text-input"><strong>Project
-                                Name* <i data-balloon="Full name of your project"
-                                         data-balloon-pos="down"><i
-                                        class="icon-question"
-                                        style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
-                                <input required type="text" id="id_project_application_name"
-                                       name="project_application_name"
-                                       class="form-control" maxlength="128"
-                                       placeholder="e.g. Assembler benchmarking based on A. thaliana genome"
-                                       ngModel
-                                       [ngClass]="***REMOVED***
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Project
+                Name* <i data-balloon="Full name of your project"
+                         data-balloon-pos="down"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <input required type="text" id="id_project_application_name"
+                       name="project_application_name"
+                       class="form-control" maxlength="128"
+                       placeholder="e.g. Assembler benchmarking based on A. thaliana genome"
+                       ngModel
+                       [ngClass]="***REMOVED***
                                 'is-invalid': f.controls.project_application_name?.invalid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched),
                                 'is-valid': f.controls.project_application_name?.valid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched)
                                 ***REMOVED***">
-                                <span class="help-block">Name your project.</span>
-                            </div>
-                        </div>
+                <span class="help-block">Name your project.</span>
+              </div>
+            </div>
 
-                        <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="text-input"><strong>Project
-                                Short Name* <i
-                                        data-balloon="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"
-                                        data-balloon-pos="down" data-balloon-length="large"><i
-                                        class="icon-question"
-                                        style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
-                                <div *ngIf='wronginput'>
-                                    <strong><font color="red">Umlauts and special characters are
-                                        prohibited in the
-                                        shortname.</font></strong>
-                                </div>
-                                <input required type="text" id="id_project_application_shortname"
-                                       name="project_application_shortname" #shortname
-                                       (keyup)="checkShortname(shortname.value)"
-                                       class="form-control" maxlength="15"
-                                       placeholder="e.g. ThalianaBench" ngModel minlength="5"
-                                       pattern="[a-zA-Z0-9]+"
-                                       [ngClass]="***REMOVED***
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Project
+                Short Name* <i
+                  data-balloon="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <div *ngIf='wronginput'>
+                  <strong><font color="red">Umlauts and special characters are
+                    prohibited in the
+                    shortname.</font></strong>
+                </div>
+                <input required type="text" id="id_project_application_shortname"
+                       name="project_application_shortname" #shortname
+                       (keyup)="checkShortname(shortname.value)"
+                       class="form-control" maxlength="15"
+                       placeholder="e.g. ThalianaBench" ngModel minlength="5"
+                       pattern="[a-zA-Z0-9]+"
+                       [ngClass]="***REMOVED***
                                 'is-invalid': f.controls.project_application_shortname?.invalid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched),
                                 'is-valid': f.controls.project_application_shortname?.valid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched)
                                 ***REMOVED***">
 
 
-                                <span class="help-block">Enter a short name (between 5 and 15 characters).</span>
-                            </div>
-                        </div>
+                <span class="help-block">Enter a short name (between 5 and 15 characters).</span>
+              </div>
+            </div>
 
-                        <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Project
-                                Description* <i
-                                        data-balloon="Full description of your project including tools you might are going to use."
-                                        data-balloon-pos="down" data-balloon-length="large"><i
-                                        class="icon-question"
-                                        style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Project
+                Description* <i
+                  data-balloon="Full description of your project including tools you might are going to use."
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
                                 <textarea required id="id_project_application_description"
                                           name="project_application_description" rows="9"
                                           class="form-control" maxlength="8192"
@@ -113,270 +116,280 @@
                                 'is-invalid': f.controls.project_application_description?.invalid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched),
                                 'is-valid': f.controls.project_application_description?.valid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched)
                                 ***REMOVED***"></textarea>
-                                <span class="help-block">Describe what would you want to do in your project.</span>
-                            </div>
-                        </div>
+                <span class="help-block">Describe what would you want to do in your project.</span>
+              </div>
+            </div>
 
-                        <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Desired
-                                lifetime* <i data-balloon="Lifetime in months of your project"
-                                             data-balloon-pos="down">
-                                    <i class="icon-question"
-                                       style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input class="form-control" id="id_project_application_lifetime"
-                                           name="project_application_lifetime" placeholder="e.g 3"
-                                           type="number" min="1" max="12" step="1" ngModel required
-                                           appMinAmount="1" appMaxAmount="12" appInteger
-                                           pattern="^([1-9]|1[012])$"
-                                           [ngClass]="***REMOVED***
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Desired
+                lifetime* <i data-balloon="Lifetime in months of your project"
+                             data-balloon-pos="down">
+                  <i class="icon-question"
+                     style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <div class="input-group">
+                  <input class="form-control" id="id_project_application_lifetime"
+                         name="project_application_lifetime" placeholder="e.g 3"
+                         type="number" min="1" max="12" step="1" ngModel required
+                         appMinAmount="1" appMaxAmount="12" appInteger
+                         pattern="^([1-9]|1[012])$"
+                         [ngClass]="***REMOVED***
                                 'is-invalid': f.controls.project_application_lifetime?.invalid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched),
                                 'is-valid': f.controls.project_application_lifetime?.valid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched)
                                 ***REMOVED***">
-                                    <div class="input-group-append"><span class="input-group-text"> months
+                  <div class="input-group-append"><span class="input-group-text"> months
                                     </span></div>
-                                </div>
-                                <span class="help-block">How long would you like to run this project (12 month is maximum)?</span>
-                            </div>
-                        </div>
+                </div>
+                <span class="help-block">How long would you like to run this project (12 month is maximum)?</span>
+              </div>
+            </div>
 
 
-                        <div class="form-group row">
-                            <h5 class="col-md-12 form-control-label">Resources</h5>
-                        </div>
-                      <accordion>
-                        <ng-container *ngFor="let t of typeList, first as isFirst">
-                          <accordion-group *ngIf="checkIfTypeGotSimpleVmFlavor(t)" [isOpen]="isFirst" #groupval>
-                            <div accordion-heading style="width: 100%; cursor: pointer">
-                              ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
-                              <i class="pull-right float-right" style="font-size: 25px" [ngClass]="***REMOVED***
+            <div class="form-group row">
+              <h5 class="col-md-12 form-control-label">Resources</h5>
+            </div>
+            <accordion>
+              <ng-container *ngFor="let t of typeList, first as isFirst">
+                <accordion-group *ngIf="checkIfTypeGotSimpleVmFlavor(t)" [isOpen]="isFirst" #groupval>
+                  <div accordion-heading style="width: 100%; cursor: pointer">
+                    ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="***REMOVED***
                             'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen***REMOVED***"></i>
-                            </div>
-                            <div *ngFor="let f of flavorList">
-                              <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
-                                   class="form-group row">
+                  </div>
+                  <div *ngFor="let f of flavorList">
+                    <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
+                         class="form-group row">
 
-                                <label class="col-md-4 form-control-label" for="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</strong><br>
-                                  Number of cores: ***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***<br>
-                                  RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED*** GB<br>
-                                  <span *ngIf="f.type.shortcut == 'GPU'">
+                      <label class="col-md-4 form-control-label" for="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</strong><br>
+                        Number of cores: ***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***<br>
+                        RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED*** GB<br>
+                        <span *ngIf="f.type.shortcut == 'GPU'">
                                                 GPU: ***REMOVED******REMOVED***f.gpu***REMOVED******REMOVED***
                                             </span></label>
-                                            <div class="col-md-8">
+                      <div class="col-md-8">
 
-                                                <div class="input-group">
-                                                    <input class="form-control"
-                                                           id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
-                                                           name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
-                                                           type="number" min="0" step="1"
-                                                           placeholder="0"
-                                                           [ngModel]="0"
-                                                           #name="ngModel"
-                                                           (ngModelChange)="onChangeFlavor($event)"
-                                                           appMinAmount="0" appInteger
-                                                           [ngClass]="***REMOVED***
+                        <div class="input-group">
+                          <input class="form-control"
+                                 id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
+                                 name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
+                                 type="number" min="0" step="1"
+                                 placeholder="0"
+                                 [ngModel]="0"
+                                 #name="ngModel"
+                                 (ngModelChange)="onChangeFlavor($event)"
+                                 appMinAmount="0" appInteger
+                                 [ngClass]="***REMOVED***
                                 'is-invalid': name?.invalid,
                                 'is-valid': name?.valid
                                 ***REMOVED***">
-                                                    <div class="input-group-append"><span class="input-group-text"> VMs
+                          <div class="input-group-append"><span class="input-group-text"> VMs
                                     </span></div>
-                                                </div>
-                                                <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                          </accordion-group>
-                        </ng-container>
-                      </accordion>
-                      <div class="form-group row">
-                        <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
-                          of storage
-                          volumes*
-                          <i
-                            data-balloon="The number of storage volumes allowed to create. Each vm is allowed to mount only one storage volume. The sum of the volumes size equals the value provided in the sotrage limit field"
-                            data-balloon-pos="down" data-balloon-length="large"><i
-                            class="icon-question"
-                            style="cursor: pointer;"></i></i></strong></label>
-                        <div class="col-md-8">
-                          <div class="input-group">
-                            <input required class="form-control"
-                                   id="id_project_application_volume_counter"
-                                   name="project_application_volume_counter"
-                                   placeholder="e.g. 20"
-                                   type="number" min="0" step="1"
-                                   appMinAmount="0" appInteger
-                                   [ngModel]="project_application_vms_requested"
-                                   [ngClass]="***REMOVED***
+                        </div>
+                        <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
+                      </div>
+                    </div>
+                  </div>
+                </accordion-group>
+              </ng-container>
+            </accordion>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
+                of storage
+                volumes*
+                <i
+                  data-balloon="The number of storage volumes allowed to create. Each vm is allowed to mount only one storage volume. The sum of the volumes size equals the value provided in the sotrage limit field"
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <div class="input-group">
+                  <input required class="form-control"
+                         id="id_project_application_volume_counter"
+                         name="project_application_volume_counter"
+                         placeholder="e.g. 20"
+                         type="number" min="0" step="1"
+                         appMinAmount="0" appInteger
+                         [ngModel]="project_application_vms_requested"
+                         [ngClass]="***REMOVED***
                                 'is-invalid': f.controls.project_application_volume_counter?.invalid,
                                 'is-valid': f.controls.project_application_volume_counter?.valid
                                 ***REMOVED***">
-                          </div>
-                          <span class="help-block">How many storage volumes do you want to use?</span>
-                        </div>
-                      </div>
-                        <div class="form-group row" [hidden]="f.controls.project_application_volume_counter?.value == 0">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage
-                                Limit*
-                                <i
-                                        data-balloon="Storage limit is the sum of extra storage provided by volumes."
-                                        data-balloon-pos="down"
-                                        data-balloon-length="large"><i class="icon-question"
-                                                                       style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input required class="form-control"
-                                           id="id_project_application_volume_limit"
-                                           name="project_application_volume_limit"
-                                           placeholder="e.g. 20"
-                                           type="number" min="1" step="1" [ngModel]="20"
-                                           appInteger appMinAmount="1"
-                                           [ngClass]="***REMOVED***
+                </div>
+                <span class="help-block">How many storage volumes do you want to use?</span>
+              </div>
+            </div>
+            <div class="form-group row" [hidden]="f.controls.project_application_volume_counter?.value == 0">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage
+                Limit*
+                <i
+                  data-balloon="Storage limit is the sum of extra storage provided by volumes."
+                  data-balloon-pos="down"
+                  data-balloon-length="large"><i class="icon-question"
+                                                 style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <div class="input-group">
+                  <input required class="form-control"
+                         id="id_project_application_volume_limit"
+                         name="project_application_volume_limit"
+                         placeholder="e.g. 20"
+                         type="number" min="1" step="1" [ngModel]="20"
+                         appInteger appMinAmount="1"
+                         [ngClass]="***REMOVED***
                                 'is-invalid': f.controls.project_application_volume_limit?.invalid,
                                 'is-valid': f.controls.project_application_volume_limit?.valid
                                 ***REMOVED***"
-                                    [disabled]="f.controls.project_application_volume_counter?.value == 0">
-                                    <div class="input-group-append"><span class="input-group-text"> GB
+                         [disabled]="f.controls.project_application_volume_counter?.value == 0">
+                  <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
-                                </div>
-                                <span class="help-block">How much extra storage do you need for your VMs?</span>
-                            </div>
-                        </div>
+                </div>
+                <span class="help-block">How much extra storage do you need for your VMs?</span>
+              </div>
+            </div>
 
 
 
 
-                        <br>
-                        <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="text-input"><strong>Comment</strong></label>
-                            <div class="col-md-8">
+            <br>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Comment</strong></label>
+              <div class="col-md-8">
                 <textarea type="text" id="id_project_application_comment"
                           name="project_application_comment" class="form-control" maxlength="8192"
                           placeholder='' [ngModel]="''"></textarea>
-                                <span class="help-block">Additional information you want to share?</span>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="form-group row">
-                            <h5 class="col-md-6 form-control-label">Institutional
-                                Information</h5>
-                        </div>
+                <span class="help-block">Additional information you want to share?</span>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+              <h5 class="col-md-6 form-control-label">Institutional
+                Information</h5>
+            </div>
 
-                        <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="text-input"><strong>Institute
-                                Name* <i
-                                        data-balloon="Your institute" data-balloon-pos="down"><i
-                                        class="icon-question"
-                                        style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
-                                <input required type="text"
-                                       id="id_project_application_institute"
-                                       name="project_application_institute" class="form-control"
-                                       placeholder="e.g. Center for Biotechnology, Bielefeld"
-                                       ngModel
-                                       [ngClass]="***REMOVED***
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Institute
+                Name* <i
+                  data-balloon="Your institute" data-balloon-pos="down"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <input required type="text"
+                       id="id_project_application_institute"
+                       name="project_application_institute" class="form-control"
+                       placeholder="e.g. Center for Biotechnology, Bielefeld"
+                       ngModel
+                       [ngClass]="***REMOVED***
                                 'is-invalid': f.controls.project_application_institute?.invalid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched),
                                 'is-valid': f.controls.project_application_institute?.valid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched)
                                 ***REMOVED***">
-                                <span class="help-block">To which institute do you belong?</span>
-                            </div>
-                        </div>
+                <span class="help-block">To which institute do you belong?</span>
+              </div>
+            </div>
 
-                        <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="text-input"><strong>Workgroup
-                                Name* <i
-                                        data-balloon="Your Workgroup"
-                                        data-balloon-pos="down"><i class="icon-question"
-                                                                   style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
-                                <input required type="text"
-                                       id="id_project_application_workgroup"
-                                       name="project_application_workgroup" class="form-control"
-                                       placeholder="e.g. Computational Metagenomics" ngModel
-                                       [ngClass]="***REMOVED***
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Workgroup
+                Name* <i
+                  data-balloon="Your Workgroup"
+                  data-balloon-pos="down"><i class="icon-question"
+                                             style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <input required type="text"
+                       id="id_project_application_workgroup"
+                       name="project_application_workgroup" class="form-control"
+                       placeholder="e.g. Computational Metagenomics" ngModel
+                       [ngClass]="***REMOVED***
                                 'is-invalid': f.controls.project_application_workgroup?.invalid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched),
                                 'is-valid': f.controls.project_application_workgroup?.valid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched)
                                 ***REMOVED***">
-                                <span class="help-block">To which workgroup do you belong?</span>
-                            </div>
+                <span class="help-block">To which workgroup do you belong?</span>
+              </div>
 
 
-                        </div>
-                        <br>
-                        <div class="form-group row">
-                            <h5 class="col-md-6 form-control-label">Additional Information</h5>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon
-                                2020</strong></label>
-                            <div class="col-md-8">
-                                <input type="text" id="id_project_application_horizon2020"
-                                       name="project_application_horizon2020" class="form-control"
-                                       maxlength="2048"
-                                       placeholder='Name of the project' [ngModel]="''">
-                                <span class="help-block">Is your project part of a Horizon 2020 project?</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="text-input"><strong>Elixir Project</strong></label>
-                            <div class="col-md-8">
-                                <input type="text" id="id_project_application_elixir_project"
-                                       name="project_application_elixir_project" class="form-control"
-                                       maxlength="2048"
-                                       placeholder='Name of the project' [ngModel]="''">
-                                <span class="help-block">Is your project part of an Elixir project?</span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>
-                            <div class="col-md-8">
-
-
-                                <label
-                                        class="switch switch-label switch-outline-primary-alt">
-                                    <input type="checkbox" class="switch-input"
-                                           name="project_application_report_allowed"
-                                           [(ngModel)]="project_application_report_allowed"
-                                    >
-                                    <span class="switch-slider" data-checked="Yes"
-                                          data-unchecked="No"></span>
-                                    <span class="switch-handle"></span></label>
-                                <p> Do you permit the de.NBI Cloud to publicly mention your
-                                    project's participation?</p>
-
-                            </div>
-
-
-                        </div>
-
-
-                    </form>
-                </div>
-                <div class="card-footer">
-                    <div *ngIf="!min_vm" class="form-group row alert alert-danger">
-                        Please select at least one flavor.
-                    </div>
-                    <div *ngIf="f.invalid || !min_vm" class="form-group row alert alert-warning">
-                        Some required fields are incorrect or not filled in yet.
-                        Please check if all required (*) fields are filled in correctly.
-                    </div>
-                    <div class="form-group row">
-                        <p class="col-md-12 form-control-label">By submitting this application you
-                            agree to the
-                            cloud
-                            usage policy.</p>
-                    </div>
-                    <button (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
-                            [disabled]="f.invalid || !min_vm"
-                            class="btn btn-sm btn-success"><i
-                            class="fa fa-dot-circle-o"></i> Submit
-                        Application
-                    </button>
-                </div>
             </div>
+            <br>
+            <div class="form-group row">
+              <h5 class="col-md-6 form-control-label">Additional Information</h5>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon
+                2020</strong></label>
+              <div class="col-md-8">
+                <input type="text" id="id_project_application_horizon2020"
+                       name="project_application_horizon2020" class="form-control"
+                       maxlength="2048"
+                       placeholder='Name of the project' [ngModel]="''">
+                <span class="help-block">Is your project part of a Horizon 2020 project?</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Elixir Project</strong></label>
+              <div class="col-md-8">
+                <input type="text" id="id_project_application_elixir_project"
+                       name="project_application_elixir_project" class="form-control"
+                       maxlength="2048"
+                       placeholder='Name of the project' [ngModel]="''">
+                <span class="help-block">Is your project part of an Elixir project?</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>BMBF</strong></label>
+              <div class="col-md-8">
+                <input type="text" id="id_project_application_bmbf_project"
+                       name="project_application_bmbf_project" class="form-control"
+                       maxlength="2048"
+                       placeholder='Name of the project' [ngModel]="''">
+                <span class="help-block">Is your project part of a BMBF project?</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>
+              <div class="col-md-8">
+
+
+                <label
+                  class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_report_allowed"
+                         [(ngModel)]="project_application_report_allowed"
+                  >
+                  <span class="switch-slider" data-checked="Yes"
+                        data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+                <p> Do you permit the de.NBI Cloud to publicly mention your
+                  project's participation?</p>
+
+              </div>
+
+
+            </div>
+
+
+          </form>
         </div>
-        <!--/.col-->
+        <div class="card-footer">
+          <div *ngIf="!min_vm" class="form-group row alert alert-danger">
+            Please select at least one flavor.
+          </div>
+          <div *ngIf="f.invalid || !min_vm" class="form-group row alert alert-warning">
+            Some required fields are incorrect or not filled in yet.
+            Please check if all required (*) fields are filled in correctly.
+          </div>
+          <div class="form-group row">
+            <p class="col-md-12 form-control-label">By submitting this application you
+              agree to the
+              cloud
+              usage policy.</p>
+          </div>
+          <button (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
+                  [disabled]="f.invalid || !min_vm"
+                  class="btn btn-sm btn-success"><i
+            class="fa fa-dot-circle-o"></i> Submit
+            Application
+          </button>
+        </div>
+      </div>
     </div>
+    <!--/.col-->
+  </div>
 
 </div>
 
@@ -384,132 +397,132 @@
 <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
-                <button type="button" class="close" style="cursor:pointer"
-                        (click)="notificationModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
-                    ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="notificationModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
+          ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
 
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
-                        type="button"
-                        (click)="notificationModal.hide();resetNotificationModal()"
-                        class="btn  btn-secondary"> Close
-                </button>
-                <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
-                   [routerLink]="['/applications']">
-                    <button type="button"
-                            (click)="notificationModal.hide();resetNotificationModal()" type="reset"
-                            class="btn  btn-secondary"> Close
-                    </button>
-                </a>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
+                type="button"
+                (click)="notificationModal.hide();resetNotificationModal()"
+                class="btn  btn-secondary"> Close
+        </button>
+        <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
+           [routerLink]="['/applications']">
+          <button type="button"
+                  (click)="notificationModal.hide();resetNotificationModal()" type="reset"
+                  class="btn  btn-secondary"> Close
+          </button>
+        </a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #acknowledgemodal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title"> ***REMOVED******REMOVED***acknowledgeModalTitle***REMOVED******REMOVED***</h4>
-                <button type="button" class="close" style="cursor:pointer"
-                        (click)="acknowledgemodal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-***REMOVED******REMOVED*** acknowledgeModalType ***REMOVED******REMOVED***" role="alert">
-                    The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the
-                    Federal Ministry of Education and Research (BMBF)!
-                    We would highly appreciate the following citation in your next publication(s):
-                    This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure
-                    (de.NBI)
-                    (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" (click)="acknowledgemodal.hide(); notificationModal.show();"
-                        class="btn  btn-success" type="submit" name="_save" form="application_form">
-                    Accept
-                </button>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"> ***REMOVED******REMOVED***acknowledgeModalTitle***REMOVED******REMOVED***</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="acknowledgemodal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-***REMOVED******REMOVED*** acknowledgeModalType ***REMOVED******REMOVED***" role="alert">
+          The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the
+          Federal Ministry of Education and Research (BMBF)!
+          We would highly appreciate the following citation in your next publication(s):
+          This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure
+          (de.NBI)
+          (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="acknowledgemodal.hide(); notificationModal.show();"
+                class="btn  btn-success" type="submit" name="_save" form="application_form">
+          Accept
+        </button>
 
 
-                <button type="button" (click)="acknowledgemodal.hide();" type="reset"
-                        class="btn  btn-danger"> Close
-                </button>
+        <button type="button" (click)="acknowledgemodal.hide();" type="reset"
+                class="btn  btn-danger"> Close
+        </button>
 
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
 <div bsModal #submitModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">***REMOVED******REMOVED***projectName***REMOVED******REMOVED***</h4>
-                <button type="button" class="close" style="cursor: pointer;"
-                        (click)="submitModal.hide()"
-                        data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">***REMOVED******REMOVED***projectName***REMOVED******REMOVED***</h4>
+        <button type="button" class="close" style="cursor: pointer;"
+                (click)="submitModal.hide()"
+                data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
 
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-info">
-                    <strong>Please check the data you have entered and confirm your application
-                        below.</strong><br>
-                    If the entered data mismatches with your requirements cancel this confirmation
-                    and take changes.
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <tr *ngFor="let str of valuesToConfirm">
-                            <td>***REMOVED******REMOVED***str***REMOVED******REMOVED***</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Number of cores in total:
-                                ***REMOVED******REMOVED***totalNumberOfCores.toString()***REMOVED******REMOVED***</strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Value of RAM in total: ***REMOVED******REMOVED***totalRAM.toString()***REMOVED******REMOVED*** GBs</strong>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-
-
-            <div class="modal-footer">
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info">
+          <strong>Please check the data you have entered and confirm your application
+            below.</strong><br>
+          If the entered data mismatches with your requirements cancel this confirmation
+          and take changes.
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <tr *ngFor="let str of valuesToConfirm">
+              <td>***REMOVED******REMOVED***str***REMOVED******REMOVED***</td>
+            </tr>
+            <tr>
+              <td><strong>Number of cores in total:
+                ***REMOVED******REMOVED***totalNumberOfCores.toString()***REMOVED******REMOVED***</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Value of RAM in total: ***REMOVED******REMOVED***totalRAM.toString()***REMOVED******REMOVED*** GBs</strong>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
 
 
-                <button class="btn btn-success col-md4" type="button"
-                        (click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
-                </button>
-                <button class="btn  btn-warning col-md-4" type="reset"
-                        (click)="submitModal.hide();">Cancel
-                </button>
+      <div class="modal-footer">
 
-            </div>
-        </div><!-- /.modal-content -->L
-    </div><!-- /.modal-dialog -->
+
+        <button class="btn btn-success col-md4" type="button"
+                (click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
+        </button>
+        <button class="btn  btn-warning col-md-4" type="reset"
+                (click)="submitModal.hide();">Cancel
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->L
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
