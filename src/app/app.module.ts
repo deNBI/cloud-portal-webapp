@@ -62,7 +62,6 @@ import { environment } from '../environments/environment';
     ExportAsModule,
     SharedModuleModule,
     MatSnackBarModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {enabled: true}),
     Angulartics2Module.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
