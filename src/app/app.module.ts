@@ -36,6 +36,7 @@ import ***REMOVED***ServiceWorkerModule***REMOVED*** from '@angular/service-work
 import ***REMOVED***MatSnackBarModule***REMOVED*** from "@angular/material";
 
 import ***REMOVED***Angulartics2Module***REMOVED*** from 'angulartics2';
+import ***REMOVED*** environment ***REMOVED*** from '../environments/environment';
 
 
 /**
@@ -62,7 +63,8 @@ import ***REMOVED***Angulartics2Module***REMOVED*** from 'angulartics2';
     SharedModuleModule,
     MatSnackBarModule,
     ServiceWorkerModule.register('ngsw-worker.js', ***REMOVED***enabled: true***REMOVED***),
-    Angulartics2Module.forRoot()
+    Angulartics2Module.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', ***REMOVED*** enabled: environment.production ***REMOVED***)
   ],
   declarations: [
     AppComponent,

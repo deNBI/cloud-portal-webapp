@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": ***REMOVED***
-    "coreui-angular": ***REMOVED***
+    "cloud-webapp": ***REMOVED***
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -20,6 +20,7 @@
               "src/static/webapp/assets",
               "src/static/webapp",
               "src/static/webapp/assets/img",
+              "src/manifest.json",
               "src/manifest.json"
             ],
             "styles": [
@@ -79,24 +80,24 @@
         "serve": ***REMOVED***
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": ***REMOVED***
-            "browserTarget": "coreui-angular:build",
+            "browserTarget": "cloud-webapp:build",
             "port": 8001,
             "host": "portal-dev.denbi.de",
             "ssl": false
           ***REMOVED***,
           "configurations": ***REMOVED***
             "production": ***REMOVED***
-              "browserTarget": "coreui-angular:build:production"
+              "browserTarget": "cloud-webapp:build:production"
             ***REMOVED***,
             "stage": ***REMOVED***
-              "browserTarget": "coreui-angular:build:stage"
+              "browserTarget": "cloud-webapp:build:stage"
             ***REMOVED***
           ***REMOVED***
         ***REMOVED***,
         "extract-i18n": ***REMOVED***
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": ***REMOVED***
-            "browserTarget": "coreui-angular:build"
+            "browserTarget": "cloud-webapp:build"
           ***REMOVED***
         ***REMOVED***,
         "test": ***REMOVED***
@@ -123,6 +124,7 @@
             "assets": [
               "src/static/webapp/assets",
               "src/static/webapp",
+              "src/manifest.json",
               "src/manifest.json"
             ]
           ***REMOVED***,
@@ -149,7 +151,7 @@
         ***REMOVED***
       ***REMOVED***
     ***REMOVED***,
-    "coreui-angular-e2e": ***REMOVED***
+    "cloud-webapp-e2e": ***REMOVED***
       "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -158,7 +160,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": ***REMOVED***
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "coreui-angular:serve"
+            "devServerTarget": "cloud-webapp:serve"
           ***REMOVED***
         ***REMOVED***,
         "lint": ***REMOVED***
@@ -173,7 +175,7 @@
       ***REMOVED***
     ***REMOVED***
   ***REMOVED***,
-  "defaultProject": "coreui-angular",
+  "defaultProject": "cloud-webapp",
   "schematics": ***REMOVED***
     "@schematics/angular:component": ***REMOVED***
       "prefix": "app",
