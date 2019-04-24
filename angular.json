@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "coreui-angular": {
+    "cloud-webapp": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -20,6 +20,7 @@
               "src/static/webapp/assets",
               "src/static/webapp",
               "src/static/webapp/assets/img",
+              "src/manifest.json",
               "src/manifest.json"
             ],
             "styles": [
@@ -79,24 +80,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "coreui-angular:build",
+            "browserTarget": "cloud-webapp:build",
             "port": 8001,
             "host": "portal-dev.denbi.de",
             "ssl": false
           },
           "configurations": {
             "production": {
-              "browserTarget": "coreui-angular:build:production"
+              "browserTarget": "cloud-webapp:build:production"
             },
             "stage": {
-              "browserTarget": "coreui-angular:build:stage"
+              "browserTarget": "cloud-webapp:build:stage"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "coreui-angular:build"
+            "browserTarget": "cloud-webapp:build"
           }
         },
         "test": {
@@ -123,6 +124,7 @@
             "assets": [
               "src/static/webapp/assets",
               "src/static/webapp",
+              "src/manifest.json",
               "src/manifest.json"
             ]
           },
@@ -149,7 +151,7 @@
         }
       }
     },
-    "coreui-angular-e2e": {
+    "cloud-webapp-e2e": {
       "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -158,7 +160,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "coreui-angular:serve"
+            "devServerTarget": "cloud-webapp:serve"
           }
         },
         "lint": {
@@ -173,7 +175,7 @@
       }
     }
   },
-  "defaultProject": "coreui-angular",
+  "defaultProject": "cloud-webapp",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

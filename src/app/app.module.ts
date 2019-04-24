@@ -36,6 +36,7 @@ import {ServiceWorkerModule} from '@angular/service-worker';
 import {MatSnackBarModule} from "@angular/material";
 
 import {Angulartics2Module} from 'angulartics2';
+import { environment } from '../environments/environment';
 
 
 /**
@@ -62,7 +63,8 @@ import {Angulartics2Module} from 'angulartics2';
     SharedModuleModule,
     MatSnackBarModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: true}),
-    Angulartics2Module.forRoot()
+    Angulartics2Module.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   declarations: [
     AppComponent,
