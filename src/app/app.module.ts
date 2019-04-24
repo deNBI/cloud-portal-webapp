@@ -62,7 +62,6 @@ import ***REMOVED*** environment ***REMOVED*** from '../environments/environment
     ExportAsModule,
     SharedModuleModule,
     MatSnackBarModule,
-    ServiceWorkerModule.register('ngsw-worker.js', ***REMOVED***enabled: true***REMOVED***),
     Angulartics2Module.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', ***REMOVED*** enabled: environment.production ***REMOVED***)
   ],

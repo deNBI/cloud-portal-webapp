@@ -21,7 +21,8 @@
               "src/static/webapp",
               "src/static/webapp/assets/img",
               "src/manifest.json",
-              "src/service-worker.js"
+              "src/service-worker.js",
+              "src/manifest.json"
             ],
             "styles": [
               "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
@@ -74,7 +75,8 @@
                   "with": "src/environments/environment.stage.ts"
                 ***REMOVED***
               ]
-            ***REMOVED***, "dev": ***REMOVED***
+            ***REMOVED***,
+            "dev": ***REMOVED***
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -83,9 +85,8 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
+              "buildOptimizer": true
             ***REMOVED***
-            
           ***REMOVED***
         ***REMOVED***,
         "serve": ***REMOVED***
@@ -135,6 +136,7 @@
             "assets": [
               "src/static/webapp/assets",
               "src/static/webapp",
+              "src/manifest.json",
               "src/manifest.json",
               "src/manifest.json"
             ]
