@@ -19,72 +19,75 @@ import {UpdateService} from "./update.service";
 import {AppRoutingModule} from './app.routing';
 import {ConsentInfoComponent} from './consent-info.component';
 // Layouts
-import {AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule,} from '@coreui/angular';
+import {AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule} from '@coreui/angular';
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {RegistrationInfoComponent} from './registration-info.component';
 import {AsideToggleDirective} from './shared/aside.directive';
 import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
-import {BreadcrumbsComponent} from "./shared/breadcrumb.component";
+import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {
-    MobileSidebarToggleDirective,
-    SidebarMinimizeDirective,
-    SidebarOffCanvasCloseDirective,
-    SidebarToggleDirective
+  MobileSidebarToggleDirective,
+  SidebarMinimizeDirective,
+  SidebarOffCanvasCloseDirective,
+  SidebarToggleDirective
 } from "./shared/sidebar.directive";
 import {ServiceWorkerModule} from '@angular/service-worker';
-import {environment} from '../environments/environment';
-import { MatSnackBarModule } from "@angular/material";
+import {MatSnackBarModule} from "@angular/material";
+
+import {Angulartics2Module} from 'angulartics2';
+
 
 /**
  * App module.
  */
 @NgModule({
-    imports: [
-        AppAsideModule,
-        AppBreadcrumbModule.forRoot(),
-        AppHeaderModule,
-        AppFooterModule,
-        AppSidebarModule,
-        PerfectScrollbarModule,
-        BrowserModule,
-        HttpClientModule,
-        AppRoutingModule,
-        BsDropdownModule.forRoot(),
-        TabsModule.forRoot(),
-        ChartsModule,
-        ModalModule.forRoot(),
-        PopoverModule,
-        PaginationModule.forRoot(),
-        ExportAsModule,
-        SharedModuleModule,
-        MatSnackBarModule,
-        ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})
-    ],
-    declarations: [
-        AppComponent,
-        FullLayoutComponent,
-        AsideToggleDirective,
-        RegistrationInfoComponent,
-        ConsentInfoComponent,
-        BreadcrumbsComponent,
-        SidebarToggleDirective,
-        SidebarMinimizeDirective,
-        MobileSidebarToggleDirective,
-        SidebarOffCanvasCloseDirective
+  imports: [
+    AppAsideModule,
+    AppBreadcrumbModule.forRoot(),
+    AppHeaderModule,
+    AppFooterModule,
+    AppSidebarModule,
+    PerfectScrollbarModule,
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
+    ChartsModule,
+    ModalModule.forRoot(),
+    PopoverModule,
+    PaginationModule.forRoot(),
+    ExportAsModule,
+    SharedModuleModule,
+    MatSnackBarModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: true}),
+    Angulartics2Module.forRoot()
+  ],
+  declarations: [
+    AppComponent,
+    FullLayoutComponent,
+    AsideToggleDirective,
+    RegistrationInfoComponent,
+    ConsentInfoComponent,
+    BreadcrumbsComponent,
+    SidebarToggleDirective,
+    SidebarMinimizeDirective,
+    MobileSidebarToggleDirective,
+    SidebarOffCanvasCloseDirective
 
 
-    ],
-    providers: [{
-        provide: LocationStrategy,
-        useClass: HashLocationStrategy
-    },
+  ],
+  providers: [{
+    provide: LocationStrategy,
+    useClass: HashLocationStrategy
+  },
 
-        ApiSettings,
-        UserService,
-        UpdateService
-    ],
-    bootstrap: [AppComponent]
+    ApiSettings,
+    UserService,
+    UpdateService
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

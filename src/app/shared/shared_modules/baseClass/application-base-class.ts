@@ -206,6 +206,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
         newApp.Dissemination = aj['project_application_report_allowed'];
         newApp.Horizon2020 = aj['project_application_horizon2020'];
         newApp.ElixirProject = aj['project_application_elixir_project'];
+        newApp.BMBFProject = aj['project_application_bmbf_project'];
          newApp.Comment = aj['project_application_comment'];
         newApp.PerunId = aj['project_application_perun_id'];
 
@@ -287,6 +288,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
                 newApp.Dissemination = aj['project_application_report_allowed'];
                 newApp.Horizon2020 = aj['project_application_horizon2020'];
                 newApp.ElixirProject = aj['project_application_elixir_project'];
+                newApp.BMBFProject = aj['project_application_bmbf_project'];
 
                 for (const flavor of aj['flavors']) {
                     newApp.addFlavorToCurrent(
@@ -495,6 +497,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
         this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
         this.constantStrings['project_application_horizon2020'] = 'Horizon2020: ';
         this.constantStrings['project_application_elixir_project'] = 'Elixir Project: ';
+        this.constantStrings['project_application_bmbf_project'] = 'BMBF Project: ';
 
         this.constantStrings['project_application_report_allowed'] = 'Dissemination allowed: ';
 
