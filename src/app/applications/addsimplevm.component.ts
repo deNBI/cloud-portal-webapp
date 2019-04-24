@@ -12,11 +12,11 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from "../shared/shared_mod
  * Component to create single vm applications.
  */
 @Component(***REMOVED***
-    selector: 'app-addsinglevm',
-    templateUrl: 'addsinglevm.component.html',
+    selector: 'app-addsimplevm',
+    templateUrl: 'addsimplevm.component.html',
     providers: [FlavorService, ApiSettings, ApplicationsService]
 ***REMOVED***)
-export class AddsinglevmComponent extends ApplicationBaseClass ***REMOVED***
+export class AddsimplevmComponent extends ApplicationBaseClass ***REMOVED***
 
     /**
      * List of flavor types.
@@ -136,6 +136,9 @@ export class AddsinglevmComponent extends ApplicationBaseClass ***REMOVED***
         ***REMOVED*** else ***REMOVED***
             const values: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED*** = ***REMOVED******REMOVED***;
             for (const value in form.controls) ***REMOVED***
+                if (form.controls[value].disabled) ***REMOVED***
+                  continue;
+                ***REMOVED***
                 if (form.controls[value].value) ***REMOVED***
                     values[value] = form.controls[value].value;
                 ***REMOVED***

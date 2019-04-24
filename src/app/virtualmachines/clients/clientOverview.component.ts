@@ -146,8 +146,6 @@ export class ClientOverviewComponent implements OnInit ***REMOVED***
         this.checkVOstatus();
         this.getClientsChecked();
         this.getComputeCenters();
-        this.clientservice.updateClient(new Client('test', '8432', 'da', '2')).subscribe()
-
     ***REMOVED***
 
 ***REMOVED***

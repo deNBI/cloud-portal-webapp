@@ -34,6 +34,7 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
+                                <th></th>
                                 <th>Facility</th>
                                 <th>Project ID</th>
                                 <th>Project Name</th>
@@ -48,6 +49,7 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <td></td>
                             <td><input style="width: 110px;" type="text" placeholder="Filter"
                                        name="filterFacilityName"
                                        [(ngModel)]="filterFacilityName"
@@ -112,16 +114,20 @@
 
 
                             <tr *ngFor="let project of projects_filtered">
-                                <!-- [ngStyle]="***REMOVED***'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)***REMOVED***"-->
+                                <td>
+                                     <span *ngIf="project.OpenStackProject"
+                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge">
+                                    <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                    <span *ngIf="!project.OpenStackProject"
+                                          style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge">
+                                    <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                </td>
                                 <td>***REMOVED******REMOVED***project?.ComputeCenter?.Name***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***
-                                  <span *ngIf="project.OpenStackProject" style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge">
-                                    <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
-                                  </span>
-                                  <span *ngIf="!project.OpenStackProject" style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge">
-                                    <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
-                                  </span></td>
+                                </td>
 
                                 <td>
                                     <button class="btn btn-secondary"
@@ -253,7 +259,7 @@
                         <div class="col-md-12">
                             <select class="form-control" [(ngModel)]="selectedFacility"
                                     name="selectedFacility" id="selectedFacility">
-                                <option value="ALL" > All
+                                <option value="ALL"> All
                                 <option *ngFor="let cc of computecenters" [ngValue]="cc.FacilityId">
                                     ***REMOVED******REMOVED***cc.Name***REMOVED******REMOVED***
                                 </option>
@@ -389,7 +395,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
-                        (click)="removeResourceFromGroup(selectedProject.Id);setProjectStatus(selectedProject,4);suspendModal.hide()">
+                        (click)="suspendProject(selectedProject);suspendModal.hide()">
                     Yes
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"

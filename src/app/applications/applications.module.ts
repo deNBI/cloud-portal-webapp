@@ -7,11 +7,14 @@ import ***REMOVED***ApplicationsRoutingModule***REMOVED*** from './applications-
 import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap/modal';
-import ***REMOVED***AddsinglevmComponent***REMOVED*** from './addsinglevm.component';
+import ***REMOVED***AddsimplevmComponent***REMOVED*** from './addsimplevm.component';
 import ***REMOVED***AddcloudapplicationComponent***REMOVED*** from './addcloudapplication.component';
 import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
 import ***REMOVED*** MinAmoutValidatorDirective, MaxAmoutValidatorDirective, IntegerValidatorDirective, IntegerOrNullValidatorDirective ***REMOVED*** from './numberValidations.directive';
-
+import ***REMOVED***ApplicationBaseClass***REMOVED*** from "../shared/shared_modules/baseClass/application-base-class";
+import ***REMOVED***SharedModuleModule***REMOVED*** from "../shared/shared_modules/shared-module.module";
+import ***REMOVED*** TypeOverviewComponent ***REMOVED*** from './type-overview.component';
+import ***REMOVED***AppSidebarModule***REMOVED*** from '@coreui/angular';
 
 /**
  * Applications Module.
@@ -24,16 +27,18 @@ import ***REMOVED*** MinAmoutValidatorDirective, MaxAmoutValidatorDirective, Int
         TabsModule,
         CommonModule,
         FormsModule,
-        ModalModule.forRoot()
+        ModalModule.forRoot(),
+        AppSidebarModule
     ],
     declarations: [
         ApplicationsComponent,
-        AddsinglevmComponent,
+        AddsimplevmComponent,
         AddcloudapplicationComponent,
         MinAmoutValidatorDirective,
         MaxAmoutValidatorDirective,
         IntegerValidatorDirective,
-        IntegerOrNullValidatorDirective
+        IntegerOrNullValidatorDirective,
+        TypeOverviewComponent
     ]
 ***REMOVED***)
 export class ApplicationsModule ***REMOVED***
