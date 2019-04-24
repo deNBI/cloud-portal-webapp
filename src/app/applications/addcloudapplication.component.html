@@ -189,7 +189,33 @@
                         </accordion-group>
                       </accordion>
 
-                        <div class="form-group row">
+
+                      <div class="form-group row">
+                        <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
+                          of storage
+                          volumes*
+                          <i data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+                             data-balloon-pos="down" data-balloon-length="large"><i
+                            class="icon-question"
+                            style="cursor: pointer;"></i></i></strong></label>
+                        <div class="col-md-8">
+                          <div class="input-group">
+                            <input required class="form-control"
+                                   id="id_project_application_volume_counter"
+                                   name="project_application_volume_counter"
+                                   placeholder="e.g. 20"
+                                   type="number" min="0" step="1"
+                                   appInteger appMinAmount="0"
+                                   [ngModel]="project_application_vms_requested"
+                                   [ngClass]="{
+                                'is-invalid': f.controls.project_application_volume_counter?.invalid,
+                                'is-valid': f.controls.project_application_volume_counter?.valid
+                                }">
+                          </div>
+                          <span class="help-block">How many storage volumes do you want to use?</span>
+                        </div>
+                      </div>
+                        <div class="form-group row" [hidden]="f.controls.project_application_volume_counter?.value == 0">
                             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage
                                 Limit*
                                 <i
@@ -207,38 +233,15 @@
                                            [ngClass]="{
                                 'is-invalid': f.controls.project_application_volume_limit?.invalid,
                                 'is-valid': f.controls.project_application_volume_limit?.valid
-                                }">
+                                }"
+                                    [disabled]="f.controls.project_application_volume_counter?.value == 0">
                                   <div class="input-group-append"><span class="input-group-text"> GB </span></div>
                                 </div>
-                                <span class="help-block">How many extra storage do you need for your VMs?</span>
+                                <span class="help-block">How much extra storage do you need for your VMs?</span>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
-                                of storage
-                                volumes*
-                                <i data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
-                                   data-balloon-pos="down" data-balloon-length="large"><i
-                                        class="icon-question"
-                                        style="cursor: pointer;"></i></i></strong></label>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input required class="form-control"
-                                           id="id_project_application_volume_counter"
-                                           name="project_application_volume_counter"
-                                           placeholder="e.g. 20"
-                                           type="number" min="0" step="1"
-                                           appInteger appMinAmount="0"
-                                           [ngModel]="project_application_vms_requested"
-                                           [ngClass]="{
-                                'is-invalid': f.controls.project_application_volume_counter?.invalid,
-                                'is-valid': f.controls.project_application_volume_counter?.valid
-                                }">
-                                </div>
-                                <span class="help-block">How many storage volumes do you want to use?</span>
-                            </div>
-                        </div>
+
 
                         <div class="form-group row">
                             <label class="col-md-4 form-control-label" for="textarea-input">Object

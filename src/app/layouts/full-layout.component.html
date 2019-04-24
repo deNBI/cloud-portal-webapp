@@ -4,6 +4,7 @@
         [mobileAsideMenuToggler]="false"
         [navbarBrand]="{src: 'static/webapp/assets/img/denbi_cloud_logo.svg', style: 'padding: 0.5rem 1rem',alt: 'test'}"
         [navbarBrandRouterLink]="'/'"
+
 >
     <ul class="nav navbar-nav ml-md-auto">
         <li><strong class="text-muted" style="cursor: pointer;padding-right: 2pc" routerLinkActive="active"
@@ -44,6 +45,15 @@
                        routerLinkActive="active" [routerLink]="['/applications']"><i
                             class="nav-icon icon-drawer"></i> Applications</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/applications/type-overview']">
+                        <i class="nav-icon icon-pencil">
+                        </i>
+                        New Application
+                    </a>
+
+                </li>
+                <!--
                 <li class="nav-item nav-dropdown " appNavDropdown>
                     <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;"
                        appNavDropdownToggle><i
@@ -58,7 +68,7 @@
                                 Cloud Project </a></li>
                         <li class="nav-item">
                             <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
-                               [routerLink]="['/applications/newSingleVmApplication']"><i
+                               [routerLink]="['/applications/newSimpleVmApplication']"><i
                                     class="nav-icon icon-question" onmouseover="" style="cursor: pointer;"
                                     data-toggle="tooltip" data-placement="auto"
                                     title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i>
@@ -67,6 +77,7 @@
                     </ul>
 
                 </li>
+                -->
                 <li *ngIf="vm_project_member || get_is_vo_admin()" class="nav-title">
                     Virtual Machines
                 </li>

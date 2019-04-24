@@ -12,11 +12,11 @@ import {ApplicationBaseClass} from "../shared/shared_modules/baseClass/applicati
  * Component to create single vm applications.
  */
 @Component({
-    selector: 'app-addsinglevm',
-    templateUrl: 'addsinglevm.component.html',
+    selector: 'app-addsimplevm',
+    templateUrl: 'addsimplevm.component.html',
     providers: [FlavorService, ApiSettings, ApplicationsService]
 })
-export class AddsinglevmComponent extends ApplicationBaseClass {
+export class AddsimplevmComponent extends ApplicationBaseClass {
 
     /**
      * List of flavor types.
@@ -136,6 +136,9 @@ export class AddsinglevmComponent extends ApplicationBaseClass {
         } else {
             const values: { [key: string]: string | number | boolean } = {};
             for (const value in form.controls) {
+                if (form.controls[value].disabled) {
+                  continue;
+                }
                 if (form.controls[value].value) {
                     values[value] = form.controls[value].value;
                 }
