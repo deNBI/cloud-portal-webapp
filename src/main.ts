@@ -5,7 +5,7 @@ import ***REMOVED***AppModule***REMOVED*** from './app/app.module';
 import ***REMOVED***environment***REMOVED*** from './environments/environment';
 
 if (environment.production) ***REMOVED***
-    enableProdMode();
+  enableProdMode();
 ***REMOVED***
 
 // Constructing tracking code
@@ -23,11 +23,12 @@ matomoScript.innerHTML =
   '  ***REMOVED***)();';
 
 document.getElementsByTagName('head')[0].appendChild(matomoScript);
+platformBrowserDynamic().bootstrapModule(AppModule).then(() => ***REMOVED***
+  if ('serviceWorker' in navigator && environment.production) ***REMOVED***
+    navigator.serviceWorker.register('./ngsw-worker.js');
+  ***REMOVED***
+***REMOVED***);
 
-platformBrowserDynamic().bootstrapModule(AppModule);
 
 
-if ('serviceWorker' in navigator && environment.production)***REMOVED***
-    navigator.serviceWorker.register('/ngsw-worker.js');
-***REMOVED***
 
