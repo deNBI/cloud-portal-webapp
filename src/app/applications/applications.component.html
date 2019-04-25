@@ -360,7 +360,7 @@
                                                 <button
                                                         *ngIf="application.Status == application_states.SUBMITTED && application.OpenStackProject"
                                                         style="margin: auto 2.5px"
-                                                        (click)="resetNotificationModal();createOpenStackProjectGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
+                                                        (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
                                                         [disabled]="!application.PIApproved"
                                                         type="button"
@@ -373,7 +373,7 @@
                                                 <button
                                                         *ngIf="application.Status == application_states.SUBMITTED && !application.OpenStackProject"
                                                         style="margin: auto 2.5px"
-                                                        (click)="resetNotificationModal();createSimpleVmProjectGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
+                                                        (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
                                                         [disabled]="!application.PIApproved"
                                                         type="button"

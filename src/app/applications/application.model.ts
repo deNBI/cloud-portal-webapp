@@ -6,360 +6,370 @@ import {ComputecenterComponent} from '../projectmanagement/computecenter.compone
  */
 export class Application {
 
-    private _Id: number | string;
-    private _Name: string;
-    private _Shortname: string;
-    private _Institute: string;
-    private _Workgroup: string;
-    private _Lifetime: number;
-    private _VMsRequested: number;
-    private _CoresPerVM: number;
-    private _RamPerVM: number;
-    private _VolumeLimit: number;
-    private _VolumeCounter: number;
-    private _ObjectStorage: number;
-    private _SpecialHardware: number;
-    private _Description: string;
-    private _Comment: string;
-    private _DateSubmitted: string;
-    private _DateStatusChanged: string;
-    private _User: string;
-    private _UserEmail: string;
-    private _UserAffiliations: string[];
-    private _Status: number;
-    private _ComputeCenter: ComputecenterComponent;
-    private _OpenStackProject: boolean;
-    private _DaysRunning: number;
-    private _ApplicationExtension: ApplicationExtension = null;
-    private _PerunId: number | string;
-    private _TotalCores: number;
-    private _TotalRam: number;
-    private _DateApproved: string;
-    private _Horizon2020: string;
-    private _ElixirProject: string;
-    private _Dissemination: boolean;
-    private _PIApproved: boolean;
-    private _PI: string;
-    private _PIEmail: string;
-    private _CurrentFlavors: {
-        [id: string]: {
-            counter: number, tag: string, ram: number, rootdisk: number,
-            vcpus: number, gpu: number, epheremal_disk: number
-        }
+  private _Id: number | string;
+  private _Name: string;
+  private _Shortname: string;
+  private _Institute: string;
+  private _Workgroup: string;
+  private _Lifetime: number;
+  private _VMsRequested: number;
+  private _CoresPerVM: number;
+  private _RamPerVM: number;
+  private _VolumeLimit: number;
+  private _VolumeCounter: number;
+  private _ObjectStorage: number;
+  private _SpecialHardware: number;
+  private _Description: string;
+  private _Comment: string;
+  private _DateSubmitted: string;
+  private _DateStatusChanged: string;
+  private _User: string;
+  private _UserEmail: string;
+  private _UserAffiliations: string[];
+  private _Status: number;
+  private _ComputeCenter: ComputecenterComponent;
+  private _OpenStackProject: boolean;
+  private _DaysRunning: number;
+  private _ApplicationExtension: ApplicationExtension = null;
+  private _PerunId: number | string;
+  private _TotalCores: number;
+  private _TotalRam: number;
+  private _DateApproved: string;
+  private _Horizon2020: string;
+  private _ElixirProject: string;
+  private _Dissemination: boolean;
+  private _PIApproved: boolean;
+  private _PI: string;
+  private _PIElixir: string;
+  private _PIEmail: string;
+  private _CurrentFlavors: {
+    [id: string]: {
+      counter: number, tag: string, ram: number, rootdisk: number,
+      vcpus: number, gpu: number, epheremal_disk: number
+    }
+  };
+
+  constructor() {
+    this._CurrentFlavors = {};
+  }
+
+  public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number,
+                            vcpus: number, gpu: number, epheremal_disk: number): void {
+    this._CurrentFlavors[name] = {
+      counter: counter,
+      tag: tag,
+      ram: ram,
+      rootdisk: rootdisk,
+      vcpus: vcpus,
+      gpu: gpu,
+      epheremal_disk: epheremal_disk
     };
+  }
 
-    constructor() {
-        this._CurrentFlavors = {};
-    }
 
-    public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number,
-                              vcpus: number, gpu: number, epheremal_disk: number): void {
-        this._CurrentFlavors[name] = {
-            counter: counter,
-            tag: tag,
-            ram: ram,
-            rootdisk: rootdisk,
-            vcpus: vcpus,
-            gpu: gpu,
-            epheremal_disk: epheremal_disk
-        };
-    }
+  get PIElixir(): string {
+    return this._PIElixir;
+  }
 
-    get Dissemination(): boolean {
-        return this._Dissemination;
-    }
+  set PIElixir(value: string) {
+    this._PIElixir = value;
+  }
 
-    set Dissemination(value: boolean) {
-        this._Dissemination = value;
-    }
+  get Dissemination(): boolean {
+    return this._Dissemination;
+  }
 
-    get PIApproved(): boolean {
-      return this._PIApproved;
-    }
+  set Dissemination(value: boolean) {
+    this._Dissemination = value;
+  }
 
-    set PIApproved(value: boolean) {
-      this._PIApproved = value;
-    }
+  get PIApproved(): boolean {
+    return this._PIApproved;
+  }
 
-    get CurrentFlavors(): {
-        [id: string]: {
-            counter: number, tag: string, ram: number, rootdisk: number,
-            vcpus: number, gpu: number, epheremal_disk: number
-        }
-    } {
-        return this._CurrentFlavors
-    }
+  set PIApproved(value: boolean) {
+    this._PIApproved = value;
+  }
 
-    set CurrentFlavors(value: {
-        [id: string]: {
-            counter: number, tag: string, ram: number, rootdisk: number,
-            vcpus: number, gpu: number, epheremal_disk: number
-        }
-    }) {
-        this._CurrentFlavors = value;
+  get CurrentFlavors(): {
+    [id: string]: {
+      counter: number, tag: string, ram: number, rootdisk: number,
+      vcpus: number, gpu: number, epheremal_disk: number
     }
+  } {
+    return this._CurrentFlavors
+  }
 
-    get DateApproved(): string {
-        return this._DateApproved;
+  set CurrentFlavors(value: {
+    [id: string]: {
+      counter: number, tag: string, ram: number, rootdisk: number,
+      vcpus: number, gpu: number, epheremal_disk: number
     }
+  }) {
+    this._CurrentFlavors = value;
+  }
 
-    set DateApproved(value: string) {
-        this._DateApproved = value;
-    }
+  get DateApproved(): string {
+    return this._DateApproved;
+  }
 
-    get TotalCores(): number {
-        return this._TotalCores;
-    }
+  set DateApproved(value: string) {
+    this._DateApproved = value;
+  }
 
-    set TotalCores(value: number) {
-        this._TotalCores = value;
-    }
+  get TotalCores(): number {
+    return this._TotalCores;
+  }
 
-    get TotalRam(): number {
-        return this._TotalRam;
-    }
+  set TotalCores(value: number) {
+    this._TotalCores = value;
+  }
 
-    set TotalRam(value: number) {
-        this._TotalRam = value;
-    }
+  get TotalRam(): number {
+    return this._TotalRam;
+  }
 
-    get UserAffiliations(): string[] {
-        return this._UserAffiliations
-    }
+  set TotalRam(value: number) {
+    this._TotalRam = value;
+  }
 
-    set UserAffiliations(value: string[]) {
-        this._UserAffiliations = value;
-    }
+  get UserAffiliations(): string[] {
+    return this._UserAffiliations
+  }
 
-    get ApplicationExtension(): ApplicationExtension {
-        return this._ApplicationExtension;
-    }
+  set UserAffiliations(value: string[]) {
+    this._UserAffiliations = value;
+  }
 
-    set ApplicationExtension(value: ApplicationExtension) {
-        this._ApplicationExtension = value;
-    }
+  get ApplicationExtension(): ApplicationExtension {
+    return this._ApplicationExtension;
+  }
 
-    get DaysRunning(): number {
-        return this._DaysRunning;
-    }
+  set ApplicationExtension(value: ApplicationExtension) {
+    this._ApplicationExtension = value;
+  }
 
-    set DaysRunning(value: number) {
-        this._DaysRunning = value;
-    }
+  get DaysRunning(): number {
+    return this._DaysRunning;
+  }
 
-    get OpenStackProject(): boolean {
-        return this._OpenStackProject
-    }
+  set DaysRunning(value: number) {
+    this._DaysRunning = value;
+  }
 
-    set OpenStackProject(value: boolean) {
-        this._OpenStackProject = value;
-    }
+  get OpenStackProject(): boolean {
+    return this._OpenStackProject
+  }
 
-    get ComputeCenter(): ComputecenterComponent {
-        return this._ComputeCenter
-    }
+  set OpenStackProject(value: boolean) {
+    this._OpenStackProject = value;
+  }
 
-    set ComputeCenter(value: ComputecenterComponent) {
-        this._ComputeCenter = value;
-    }
+  get ComputeCenter(): ComputecenterComponent {
+    return this._ComputeCenter
+  }
 
-    get Id(): number | string {
-        return this._Id;
-    }
+  set ComputeCenter(value: ComputecenterComponent) {
+    this._ComputeCenter = value;
+  }
 
-    set Id(value: number | string) {
-        this._Id = value;
-    }
+  get Id(): number | string {
+    return this._Id;
+  }
 
-    get Name(): string {
-        return this._Name;
-    }
+  set Id(value: number | string) {
+    this._Id = value;
+  }
 
-    set Name(value: string) {
-        this._Name = value;
-    }
+  get Name(): string {
+    return this._Name;
+  }
 
-    set Comment(value: string) {
-        this._Comment = value;
-    }
+  set Name(value: string) {
+    this._Name = value;
+  }
 
-    get Comment(): string {
-        return this._Comment;
-    }
+  set Comment(value: string) {
+    this._Comment = value;
+  }
 
-    get Shortname(): string {
-        return this._Shortname;
-    }
+  get Comment(): string {
+    return this._Comment;
+  }
 
-    set Shortname(value: string) {
-        this._Shortname = value;
-    }
+  get Shortname(): string {
+    return this._Shortname;
+  }
 
-    get Institute(): string {
-        return this._Institute;
-    }
+  set Shortname(value: string) {
+    this._Shortname = value;
+  }
 
-    set Institute(value: string) {
-        this._Institute = value;
-    }
+  get Institute(): string {
+    return this._Institute;
+  }
 
-    get Workgroup(): string {
-        return this._Workgroup;
-    }
+  set Institute(value: string) {
+    this._Institute = value;
+  }
 
-    set Workgroup(value: string) {
-        this._Workgroup = value;
-    }
+  get Workgroup(): string {
+    return this._Workgroup;
+  }
 
-    get Lifetime(): number {
-        return this._Lifetime;
-    }
+  set Workgroup(value: string) {
+    this._Workgroup = value;
+  }
 
-    set Lifetime(value: number) {
-        this._Lifetime = value;
-    }
+  get Lifetime(): number {
+    return this._Lifetime;
+  }
 
-    get VMsRequested(): number {
-        return this._VMsRequested;
-    }
+  set Lifetime(value: number) {
+    this._Lifetime = value;
+  }
 
-    set VMsRequested(value: number) {
-        this._VMsRequested = value;
-    }
+  get VMsRequested(): number {
+    return this._VMsRequested;
+  }
 
-    get CoresPerVM(): number {
-        return this._CoresPerVM;
-    }
+  set VMsRequested(value: number) {
+    this._VMsRequested = value;
+  }
 
-    set CoresPerVM(value: number) {
-        this._CoresPerVM = value;
-    }
+  get CoresPerVM(): number {
+    return this._CoresPerVM;
+  }
 
-    get RamPerVM(): number {
-        return this._RamPerVM;
-    }
+  set CoresPerVM(value: number) {
+    this._CoresPerVM = value;
+  }
 
-    set RamPerVM(value: number) {
-        this._RamPerVM = value;
-    }
+  get RamPerVM(): number {
+    return this._RamPerVM;
+  }
 
-    get VolumeLimit(): number {
-        return this._VolumeLimit;
-    }
+  set RamPerVM(value: number) {
+    this._RamPerVM = value;
+  }
 
-    set VolumeLimit(value: number) {
-        this._VolumeLimit = value;
-    }
+  get VolumeLimit(): number {
+    return this._VolumeLimit;
+  }
 
-    get VolumeCounter(): number {
-        return this._VolumeCounter;
-    }
+  set VolumeLimit(value: number) {
+    this._VolumeLimit = value;
+  }
 
-    set VolumeCounter(value: number) {
-        this._VolumeCounter = value;
-    }
+  get VolumeCounter(): number {
+    return this._VolumeCounter;
+  }
 
-    get ObjectStorage(): number {
-        return this._ObjectStorage;
-    }
+  set VolumeCounter(value: number) {
+    this._VolumeCounter = value;
+  }
 
-    set ObjectStorage(value: number) {
-        this._ObjectStorage = value;
-    }
+  get ObjectStorage(): number {
+    return this._ObjectStorage;
+  }
 
-    get SpecialHardware(): number {
-        return this._SpecialHardware;
-    }
+  set ObjectStorage(value: number) {
+    this._ObjectStorage = value;
+  }
 
-    set SpecialHardware(value: number) {
-        this._SpecialHardware = value;
-    }
+  get SpecialHardware(): number {
+    return this._SpecialHardware;
+  }
 
-    get Description(): string {
-        return this._Description;
-    }
+  set SpecialHardware(value: number) {
+    this._SpecialHardware = value;
+  }
 
-    set Description(value: string) {
-        this._Description = value;
-    }
+  get Description(): string {
+    return this._Description;
+  }
 
-    get DateSubmitted(): string {
-        return this._DateSubmitted;
-    }
+  set Description(value: string) {
+    this._Description = value;
+  }
 
-    set DateSubmitted(value: string) {
-        this._DateSubmitted = value;
-    }
+  get DateSubmitted(): string {
+    return this._DateSubmitted;
+  }
 
-    get DateStatusChanged(): string {
-        return this._DateStatusChanged;
-    }
+  set DateSubmitted(value: string) {
+    this._DateSubmitted = value;
+  }
 
-    set DateStatusChanged(value: string) {
-        this._DateStatusChanged = value;
-    }
+  get DateStatusChanged(): string {
+    return this._DateStatusChanged;
+  }
 
-    get User(): string {
-        return this._User;
-    }
+  set DateStatusChanged(value: string) {
+    this._DateStatusChanged = value;
+  }
 
-    set User(value: string) {
-        this._User = value;
-    }
+  get User(): string {
+    return this._User;
+  }
 
-    get Status(): number {
-        return this._Status;
-    }
+  set User(value: string) {
+    this._User = value;
+  }
 
-    set Status(value: number) {
-        this._Status = value;
-    }
+  get Status(): number {
+    return this._Status;
+  }
 
-    get UserEmail(): string {
-        return this._UserEmail;
-    }
+  set Status(value: number) {
+    this._Status = value;
+  }
 
-    set UserEmail(value: string) {
-        this._UserEmail = value;
-    }
+  get UserEmail(): string {
+    return this._UserEmail;
+  }
 
-    get PerunId(): number | string {
-        return this._PerunId;
-    }
+  set UserEmail(value: string) {
+    this._UserEmail = value;
+  }
 
-    set PerunId(value: number | string) {
-        this._PerunId = value;
-    }
+  get PerunId(): number | string {
+    return this._PerunId;
+  }
 
-    get Horizon2020(): string {
-        return this._Horizon2020;
-    }
+  set PerunId(value: number | string) {
+    this._PerunId = value;
+  }
 
-    set Horizon2020(value: string) {
-        this._Horizon2020 = value;
-    }
+  get Horizon2020(): string {
+    return this._Horizon2020;
+  }
 
-    get ElixirProject(): string {
-        return this._ElixirProject;
-    }
+  set Horizon2020(value: string) {
+    this._Horizon2020 = value;
+  }
 
-    set ElixirProject(value: string) {
-        this._ElixirProject = value;
-    }
+  get ElixirProject(): string {
+    return this._ElixirProject;
+  }
 
-    get PI(): string {
-      return this._PI;
-    }
+  set ElixirProject(value: string) {
+    this._ElixirProject = value;
+  }
 
-    set PI(value: string) {
-      this._PI = value;
-    }
+  get PI(): string {
+    return this._PI;
+  }
 
-    get PIEmail(): string {
-      return this._PIEmail;
-    }
+  set PI(value: string) {
+    this._PI = value;
+  }
 
-    set PIEmail(value: string) {
-      this._PIEmail = value;
-    }
+  get PIEmail(): string {
+    return this._PIEmail;
+  }
+
+  set PIEmail(value: string) {
+    this._PIEmail = value;
+  }
 }
