@@ -25,3 +25,9 @@ matomoScript.innerHTML =
 document.getElementsByTagName('head')[0].appendChild(matomoScript);
 
 platformBrowserDynamic().bootstrapModule(AppModule);
+
+
+if ('serviceWorker' in navigator && environment.production)***REMOVED***
+    navigator.serviceWorker.register('/ngsw-worker.js');
+***REMOVED***
+
