@@ -223,15 +223,15 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-                    Stopping {{selectedVm.name}}... <i class="fa fa-spinner fa-spin"
+                    Stopping {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                                          style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
-                    {{selectedVm.name}} was succesfully stopped.
+                    {{selectedVm?.name}} was succesfully stopped.
                 </div>
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-                When stopping {{selectedVm.name}} an error occured.
+                When stopping {{selectedVm?.name}} an error occured.
             </div>
 
 
@@ -253,7 +253,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"><strong>{{reboot_type}}</strong> reboot
-                    {{selectedVm.name}} </h4>
+                    {{selectedVm?.name}} </h4>
 
                 <button type="button" class="close" style="cursor:pointer"
                         (click)="rebootModal.hide()"
@@ -265,7 +265,7 @@
                 <div class="alert alert-warning" role="alert">
 
                     Restarted instances will lose any data not saved in persistent storage.
-                    Are you sure to <strong>{{reboot_type}}</strong> reboot {{selectedVm.name}}?
+                    Are you sure to <strong>{{reboot_type}}</strong> reboot {{selectedVm?.name}}?
                 </div>
             </div>
             <div class="modal-footer">
@@ -290,7 +290,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"><strong>{{reboot_type}}</strong> reboot
-                    {{selectedVm.name}} </h4>
+                    {{selectedVm?.name}} </h4>
 
                 <button type="button" class="close" style="cursor:pointer"
                         (click)="rebootResultModal.hide()"
@@ -308,13 +308,13 @@
                 <div *ngIf="reboot_done">
                     <div class="alert alert-success" role="alert">
 
-                        Sucessfully {{reboot_type}} rebooted {{selectedVm.name}}.
+                        Sucessfully {{reboot_type}} rebooted {{selectedVm?.name}}.
                     </div>
                 </div>
                 <div *ngIf="status_check_error">
                     <div class="alert alert-warning" role="alert">
 
-                        An error occured when checking the status of {{selectedVm.name}}.
+                        An error occured when checking the status of {{selectedVm?.name}}.
                     </div>
                 </div>
             </div>
@@ -347,15 +347,15 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-                    Resuming {{selectedVm.name}}... <i class="fa fa-spinner fa-spin"
+                    Resuming {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                                          style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
-                    {{selectedVm.name}} was succesfully resumed.
+                    {{selectedVm?.name}} was succesfully resumed.
                 </div>
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-                When resuming {{selectedVm.name}} an error occured.
+                When resuming {{selectedVm?.name}} an error occured.
             </div>
 
 
