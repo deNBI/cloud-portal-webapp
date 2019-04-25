@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
-import {IResponseTemplate} from "./response-template";
-import {Client} from "../virtualmachines/clients/client.model";
+import {IResponseTemplate} from './response-template';
+import {Client} from '../virtualmachines/clients/client.model';
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -56,26 +55,10 @@ export class GroupService {
 
     }
 
-    isUserAdminOfGroup(groupid: number | string, userid: number | string): Observable<any> {
-
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/members/${userid}/manager/`, {
-            withCredentials: true
-        })
-    }
-
     getGroupAdminIds(groupid: number | string): Observable<any> {
 
         return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/admins/ids/`, {
             withCredentials: true
-        })
-    }
-
-    getGroupRichMembers(groupid: number | string): Observable<any> {
-        const params: HttpParams = new HttpParams().set('groupid', groupid.toString());
-
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/richMembers/`, {
-            withCredentials: true,
-            params: params
         })
     }
 
@@ -145,17 +128,6 @@ export class GroupService {
         })
     }
 
-    setDescription(groupid: string, description: string): Observable<any> {
-
-        const params: HttpParams = new HttpParams().set('description', description).set('groupid', groupid);
-
-        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/description/`, params, {
-            withCredentials: true,
-            headers: header
-        })
-
-    }
-
     setPerunGroupStatus(group_id: string, status: string): Observable<any> {
 
         const params: HttpParams = new HttpParams().set('status', status);
@@ -164,71 +136,6 @@ export class GroupService {
             withCredentials: true,
             headers: header
         })
-    }
-
-    setGroupVolumeLimit(group_id: number, value: number): Observable<any> {
-
-        const params: HttpParams = new HttpParams().set('value', value.toString());
-
-        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}attributes/volumeLimit/`, params, {
-            withCredentials: true,
-            headers: header
-        })
-    }
-
-    setGroupVolumeCounter(group_id: number, value: number): Observable<any> {
-
-        const params: HttpParams = new HttpParams().set('value', value.toString());
-
-        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/attributes/volumesCounter/`, params, {
-            withCredentials: true,
-            headers: header
-        })
-    }
-
-    setdeNBIDirectAcces(group_id: number, value: boolean): Observable<any> {
-
-        const params: HttpParams = new HttpParams().set('value', value.toString());
-
-        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/attributes/directAccess/`, params, {
-            withCredentials: true,
-            headers: header
-        })
-    }
-
-    setName(groupid: string, name: string): Observable<any> {
-        const params: HttpParams = new HttpParams().set('name', name);
-
-        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/name/`, params, {
-            withCredentials: true,
-            headers: header
-        })
-    }
-
-    getName(groupid: string): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/name/`, {
-            withCredentials: true
-        })
-
-    }
-
-    setShortname(groupid: string, shortname: string): Observable<any> {
-        const params: HttpParams = new HttpParams().set('shortname', shortname)
-
-        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/shortname/`, params, {
-            withCredentials: true,
-            headers: header
-        })
-
-    }
-
-    getShortame(groupid: string): Observable<any> {
-
-        return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/shortname/`, {
-            withCredentials: true,
-            params: {groupid: groupid}
-        })
-
     }
 
     getGroupDetails(): Observable<any> {
@@ -274,8 +181,10 @@ export class GroupService {
     createGroup(group_name: string, group_description: string): Observable<any> {
         const params: HttpParams = new HttpParams().set('name', group_name).set('description', group_description.substring(0, 512));
 
-        return this.http.post(`${ApiSettings.getApiBaseURL()}projects/`, params,
-            {
+        return this.http.post(
+          `${ApiSettings.getApiBaseURL()}projects/`,
+          params,
+          {
                 withCredentials: true,
                 headers: header
             })
@@ -306,7 +215,7 @@ export class GroupService {
 
     }
 
-    getGroupUsedDiskspace(groupid: string): Observable<IResponseTemplate>{
+    getGroupUsedDiskspace(groupid: string): Observable<IResponseTemplate> {
         return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedDiskspace/`, {
             withCredentials: true
         })

@@ -16,7 +16,6 @@ export class Client {
     private _maxVolumeLimit: number;
     private _assignedVolumesStorage: number;
 
-
     constructor(host: string, port: string, location: string, id: string) {
         this._host = host;
         this._port = port;

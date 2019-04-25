@@ -103,23 +103,6 @@ export class ApplicationsService {
 
     }
 
-    getAllApplicationsRenewalRequests(): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/`, {
-            withCredentials: true,
-            headers: header
-
-        })
-
-    }
-
-    getApplicationsRenewalRequest(application_id: number): Observable<any> {
-        return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/${application_id}/`, {
-            withCredentials: true,
-            headers: header
-        })
-
-    }
-
     deleteApplication(application_id: string | number): Observable<any> {
 
         return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, {

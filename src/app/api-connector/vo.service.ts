@@ -4,8 +4,8 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 import {Cookie} from 'ng2-cookies/ng2-cookies';
-import {IResponseTemplate} from "./response-template";
-import {Resources} from "../vo_manager/resources/resources";
+import {IResponseTemplate} from './response-template';
+import {Resources} from '../vo_manager/resources/resources';
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -32,14 +32,6 @@ export class VoService {
             withCredentials: true
 
         })
-    }
-
-    getAllVoGroups(): Observable<any> {
-
-        return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/`, {
-            withCredentials: true
-        })
-
     }
 
     removeResourceFromGroup(groupid: number | string): Observable<object> {
@@ -81,9 +73,12 @@ export class VoService {
         })
     }
 
-    sendNewsletterToVo(subject: string, message: string, reply?: string): Observable<IResponseTemplate> {
+    sendNewsletterToVo(emailDict: {[key: string]: string}): Observable<IResponseTemplate> {
 
-        const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+        const params: HttpParams = new HttpParams()
+          .set('subject', emailDict['subject'])
+          .set('message', emailDict['message'])
+          .set('reply', emailDict['reply']);
 
         return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/newsletter/`, params, {
             withCredentials: true,
@@ -92,10 +87,13 @@ export class VoService {
 
     }
 
-    sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): Observable<any> {
+    sendMailToVo(facility: string, type: string, emailDict: {[key: string]: string}): Observable<any> {
         const params: HttpParams = new HttpParams()
-            .set('subject', subject).set('message', message)
-            .set('reply', reply).set('facility', facility).set('type', type);
+            .set('subject', emailDict['subject'])
+            .set('message', emailDict['message'])
+            .set('reply', emailDict['reply'])
+            .set('facility', facility)
+            .set('type', type);
 
         return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/`, params, {
             withCredentials: true,

@@ -21,13 +21,6 @@ export class ClientService {
     constructor(private http: HttpClient) {
     }
 
-    isClientAvaiable(): Observable<Client> {
-
-        return this.http.get<Client>(`${this.clientURL}active/`, {
-            withCredentials: true
-        })
-    }
-
     getClientsChecked(): Observable<Client[]> {
 
         return this.http.get<Client[]>(this.clientURL, {
@@ -55,16 +48,11 @@ export class ClientService {
         })
     }
 
-    deleteClient(client_id: number): Observable<any> {
-        return this.http.delete(`${this.clientURL}${client_id }/`, {
-            withCredentials: true,
-            headers: header
-        })
-
-    }
-
     updateClient(client: Client): Observable<Client> {
-        const params: HttpParams = new HttpParams().set('host', client.host).set('port', client.port).set('location', client.location);
+        const params: HttpParams = new HttpParams()
+                                   .set('host', client.host)
+                                   .set('port', client.port)
+                                   .set('location', client.location);
 
         return this.http.patch<Client>(`${this.clientURL}${client.id }/`, params, {
             withCredentials: true,

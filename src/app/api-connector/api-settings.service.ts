@@ -14,13 +14,6 @@ export class ApiSettings {
         return environment.apiBaseUrl;
     }
 
-    /**
-     *  Returns the format of the API call.
-     * @returns {string} 'json'
-     */
-    static getApiFormat(): string {
-        return 'json';
-    }
     constructor() {
     }
 }

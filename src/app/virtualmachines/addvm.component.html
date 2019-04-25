@@ -259,7 +259,15 @@
                                     [disabled]="f.invalid || (diskspace > 0 && volumeName == '')"
                                     class="btn btn-primary offset-md-8"
                                     data-toggle="modal"
-                                    (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1],diskspace);resetData();resetProgressBar;infoModal.show();">
+                                    (click)="startVM(
+                                    selectedFlavor.name,
+                                    selectedImage.name,
+                                    f.controls.instance_name.value,
+                                    selectedProject[0],
+                                    selectedProject[1]);
+                                    resetData();
+                                    resetProgressBar();
+                                    infoModal.show();">
                                 Start VM
                             </button>
                             <br><br><br>

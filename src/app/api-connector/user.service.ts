@@ -3,8 +3,7 @@ import {ApiSettings} from './api-settings.service';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
-import {IResponseTemplate} from "./response-template";
-import {Userinfo} from "../userinfo/userinfo.model";
+import {IResponseTemplate} from './response-template';
 
 const header: HttpHeaders = new HttpHeaders({
   'X-CSRFToken': Cookie.get('csrftoken')
@@ -21,13 +20,6 @@ export class UserService {
   getLoginElixirName(): Observable<IResponseTemplate> {
 
     return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/logins/`, {
-      withCredentials: true
-    })
-  }
-
-  getPreferredMailUser(): Observable<IResponseTemplate> {
-
-    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, {
       withCredentials: true
     })
   }
@@ -65,7 +57,6 @@ export class UserService {
 
     })
   }
-
 
   getLoggedUser(): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {

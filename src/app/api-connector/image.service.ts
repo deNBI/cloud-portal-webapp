@@ -5,8 +5,8 @@ import {ApiSettings} from './api-settings.service';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
-import {IResponseTemplate} from "./response-template";
-import {ImageTag} from "../facility_manager/image-tag";
+import {IResponseTemplate} from './response-template';
+import {ImageTag} from '../facility_manager/image-tag';
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -29,7 +29,6 @@ export class ImageService {
         })
 
     }
-
 
     checkSnapshotNameAvailable(snapshot_name: string): Observable<IResponseTemplate> {
 

@@ -162,10 +162,13 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
 
     }
 
-    sendMailToFacility(facility: string, subject: string, message: string, reply?: string): void {
+    sendMailToFacility(facility: string): void {
+        const emailDict: {[key: string]: string} = {
+          subject: encodeURIComponent(this.emailSubject),
+          message: encodeURIComponent(this.emailText),
+          reply: encodeURIComponent(this.emailReply)};
         this.facilityservice.sendMailToFacility(
-            facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
-            encodeURIComponent(reply)).subscribe(
+            facility, this.selectedProjectType, emailDict).subscribe(
             result => {
                 this.selectedProjectType = 'ALL';
 
