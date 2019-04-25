@@ -137,7 +137,52 @@
                     <i class="icon-question"></i></i>
                 </h5>
               </div>
+              <div class="row justify-content-center">
+                <div class="container">
+                  <accordion>
+                    <ng-container *ngFor="let t of typeList">
+                      <accordion-group *ngIf="application?.OpenStackProject || checkIfTypeGotSimpleVmFlavor(t)"
+                                       [isOpen]="true" #groupval>
+                        <div accordion-heading style="width: 100%; cursor: pointer">
+                          ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
+                          <i class="pull-right float-right" style="font-size: 25px" [ngClass]="***REMOVED***
+                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen***REMOVED***"></i>
+                        </div>
+                        <div *ngFor="let fl of flavorList" class="form-group row">
+                          <div
+                            *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || application?.OpenStackProject)"
+                            class="form-group row">
+                            <label class="col form-control-label"><strong>***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***</strong><br>
+                              Number of cores: ***REMOVED******REMOVED***fl.vcpus***REMOVED******REMOVED***<br>
+                              RAM: ***REMOVED******REMOVED***fl.ram***REMOVED******REMOVED*** GB</label>
+                            <div class="col">
+                              <div class="input-group">
+                                <input class="form-control"
+                                       name="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***_old"
+                                       type="text"
+                                       value="***REMOVED******REMOVED***application?.CurrentFlavors[fl.name]?.counter***REMOVED******REMOVED***"
+                                       placeholder="NDA" disabled>
+                                <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                              </div>
+                            </div>
+                          </div>
 
+                        </div>
+                      </accordion-group>
+                    </ng-container>
+                  </accordion>
+                  <strong>
+                    <div class="form-group row">
+                      <label #corenumbers id="corenumbers" class="col">Number of total
+                        cores: ***REMOVED******REMOVED***totalNumberOfCores***REMOVED******REMOVED***</label>
+                    </div>
+                    <div class="form-group row">
+                      <label #ramnumbers id="ramnumbers" class="col">Amount of total
+                        RAM: ***REMOVED******REMOVED***totalRAM***REMOVED******REMOVED*** </label>
+                    </div>
+                  </strong>
+                </div>
+              </div>
               <div class="form-group row">
                 <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
                   of storage
