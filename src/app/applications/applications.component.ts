@@ -509,7 +509,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     const application_id: string = <string>app.Id;
     const pi_elixir_id: string = app.PIElixir;
     const name: string = app.Shortname;
-
+    //todo refactor
     forkJoin(
       this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id),
       this.userservice.getMemberByExtSourceNameAndExtLogin(pi_elixir_id)).subscribe(
@@ -522,11 +522,14 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
         const pi_member_user_id: string = pi['userId'];
         this.groupservice.createGroup(name, description).subscribe((group: { [key: string]: string }) => {
           new_group_id = group['id'];
+          if (manager_elixir_id !== pi_elixir_id) {
+            forkJoin(
+              this.groupservice.addMember(new_group_id, pi_member_id, compute_center),
+              this.groupservice.addAdmin(new_group_id, pi_member_user_id, compute_center)).subscribe()
+          }
           forkJoin(
             this.groupservice.addMember(new_group_id, manager_member_id, compute_center),
-            this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center),
-            this.groupservice.addMember(new_group_id, pi_member_id, compute_center),
-            this.groupservice.addAdmin(new_group_id, pi_member_user_id, compute_center)
+            this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center)
           ).subscribe(() => {
             this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => {
               this.groupservice.assignGroupToResource(new_group_id, compute_center).subscribe(() => {
@@ -631,7 +634,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
    */
   public createSimpleVmProjectGroup(app: Application,
                                     compute_center: string): void {
-
+    //todo refactor this
     // get memeber id in order to add the user later as the new member and manager of the group
     let manager_member_id: string;
     let manager_member_user_id: string;
@@ -680,11 +683,14 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                   const pi_member_user_id: string = pi['userId'];
                   this.groupservice.createGroup(name, description).subscribe((group: { [key: string]: string }) => {
                     new_group_id = group['id'];
+                    if (manager_elixir_id !== pi_elixir_id) {
+                      forkJoin(
+                        this.groupservice.addMember(new_group_id, pi_member_id, compute_center),
+                        this.groupservice.addAdmin(new_group_id, pi_member_user_id, compute_center)).subscribe()
+                    }
                     forkJoin(
                       this.groupservice.addMember(new_group_id, manager_member_id, compute_center),
-                      this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center),
-                      this.groupservice.addMember(new_group_id, pi_member_id, compute_center),
-                      this.groupservice.addAdmin(new_group_id, pi_member_user_id, compute_center)
+                      this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center)
                     ).subscribe(() => {
                       this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => {
                           if (result['Info']) {
