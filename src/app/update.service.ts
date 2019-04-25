@@ -12,7 +12,7 @@ export class UpdateService {
 
     const intervalTime = interval(60 * 1000);
     const checkUpdatesInIntervall = concat(isStable, intervalTime);
-    checkUpdatesInIntervall.subscribe(() => this.swUpdate.checkForUpdate().subscribe(() => {
+    checkUpdatesInIntervall.subscribe(() => this.swUpdate.checkForUpdate().then(() => {
       this.swUpdate.available.subscribe(evt => {
         console.log('new action');
         const snack = this.snackbar.open('Update Available', 'Reload', {
