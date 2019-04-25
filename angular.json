@@ -73,8 +73,10 @@
                 ***REMOVED***
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.stage.ts"
-                ***REMOVED***
-              ]
+                ***REMOVED***,
+              ],
+               "serviceWorker": true,
+              "ngswConfigPath": "src/ngsw-config.json"
             ***REMOVED***,
             "dev": ***REMOVED***
               "optimization": true,
