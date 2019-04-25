@@ -211,6 +211,13 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
     newApp.ElixirProject = aj['project_application_elixir_project'];
     newApp.Comment = aj['project_application_comment'];
     newApp.PerunId = aj['project_application_perun_id'];
+    if (aj['project_application_pi']) ***REMOVED***
+      const firstName: string = (aj['project_application_pi'])['firstName'];
+      const lastName: string = (aj['project_application_pi'])['lastName'];
+      newApp.PI = `$***REMOVED***firstName***REMOVED*** $***REMOVED***lastName***REMOVED***`;
+      newApp.PIEmail = (aj['project_application_pi'])['email'];
+      newApp.PIElixir = aj['project_application_pi']['elixirId']
+    ***REMOVED***
 
     if (newApp.Status === this.application_states.APPROVED) ***REMOVED***
       newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
@@ -296,6 +303,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
           const lastName: string = (aj['project_application_pi'])['lastName'];
           newApp.PI = `$***REMOVED***firstName***REMOVED*** $***REMOVED***lastName***REMOVED***`;
           newApp.PIEmail = (aj['project_application_pi'])['email'];
+          newApp.PIElixir = aj['project_application_pi']['elixirId']
         ***REMOVED***
 
         for (const flavor of aj['flavors']) ***REMOVED***
