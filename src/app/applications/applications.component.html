@@ -90,6 +90,36 @@
                                              [class.collapse]="getCollapseStatus('user_application-' + application.Id)"
                                              class="table-responsive">
                                             <table class="table table-striped" style="width: 80%">
+                                              <tr>
+                                                <td>
+                                                  PI Approved
+                                                </td>
+                                                <td>
+                                                  ***REMOVED******REMOVED***application?.PIApproved***REMOVED******REMOVED***
+                                                </td>
+                                                <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <td>
+                                                  PI Name
+                                                </td>
+                                                <td>
+                                                  ***REMOVED******REMOVED***application?.PI***REMOVED******REMOVED***
+                                                </td>
+                                                <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <td>
+                                                  PI Email
+                                                </td>
+                                                <td>
+                                                  ***REMOVED******REMOVED***application?.PIEmail***REMOVED******REMOVED***
+                                                </td>
+                                                <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                </td>
+                                              </tr>
                                                 <tr *ngIf="application.Status != application_states.SUBMITTED">
                                                     <td>Facility</td>
                                                     <td>
@@ -344,9 +374,9 @@
                                                 <button
                                                         *ngIf="application.Status == application_states.SUBMITTED && application.OpenStackProject"
                                                         style="margin: auto 2.5px"
-                                                        (click)="resetNotificationModal();createOpenStackProjectGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
+                                                        (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
-
+                                                        [disabled]="!application.PIApproved"
                                                         type="button"
                                                         class="btn btn-success">
                                                     <i class="fa fa-check"></i>&nbsp;
@@ -357,9 +387,9 @@
                                                 <button
                                                         *ngIf="application.Status == application_states.SUBMITTED && !application.OpenStackProject"
                                                         style="margin: auto 2.5px"
-                                                        (click)="resetNotificationModal();createSimpleVmProjectGroup(application.Shortname, application.Description, application.UserEmail, application.Id,selectedComputeCenter.value); notificationModal.show();"
+                                                        (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
-
+                                                        [disabled]="!application.PIApproved"
                                                         type="button"
                                                         class="btn btn-success">
                                                     <i class="fa fa-check"></i>&nbsp;
@@ -420,6 +450,36 @@
                                                 <div class="table-responsive">
                                                     <table class="table table-striped">
 
+                                                        <tr>
+                                                            <td>
+                                                              PI Approved
+                                                            </td>
+                                                            <td>
+                                                              ***REMOVED******REMOVED***application?.PIApproved***REMOVED******REMOVED***
+                                                            </td>
+                                                          <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                          </td>
+                                                        </tr>
+                                                      <tr>
+                                                        <td>
+                                                          PI Name
+                                                        </td>
+                                                        <td>
+                                                          ***REMOVED******REMOVED***application?.PI***REMOVED******REMOVED***
+                                                        </td>
+                                                        <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        </td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>
+                                                          PI Email
+                                                        </td>
+                                                        <td>
+                                                          ***REMOVED******REMOVED***application?.PIEmail***REMOVED******REMOVED***
+                                                        </td>
+                                                        <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                        </td>
+                                                      </tr>
                                                         <tr>
                                                             <td>User
                                                                 Affiliations
@@ -743,6 +803,36 @@
                                                 <div>
                                                     <div class="table-responsive">
                                                         <table class="table table-striped">
+                                                          <tr>
+                                                            <td>
+                                                              PI Approved
+                                                            </td>
+                                                            <td>
+                                                              ***REMOVED******REMOVED***application?.PIApproved***REMOVED******REMOVED***
+                                                            </td>
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                            </td>
+                                                          </tr>
+                                                          <tr>
+                                                            <td>
+                                                              PI Name
+                                                            </td>
+                                                            <td>
+                                                              ***REMOVED******REMOVED***application?.PI***REMOVED******REMOVED***
+                                                            </td>
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                            </td>
+                                                          </tr>
+                                                          <tr>
+                                                            <td>
+                                                              PI Email
+                                                            </td>
+                                                            <td>
+                                                              ***REMOVED******REMOVED***application?.PIEmail***REMOVED******REMOVED***
+                                                            </td>
+                                                            <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                            </td>
+                                                          </tr>
                                                             <tr>
                                                                 <td>Description
                                                                 </td>

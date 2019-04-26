@@ -1,0 +1,401 @@
+<div *ngIf=" !isLoaded" class="loader"></div>
+<div *ngIf="isLoaded && !application"> No application found.</div>
+
+<div *ngIf="isLoaded && application && !validated" class="animated fadeIn">
+
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <strong *ngIf="application?.OpenStackProject">Cloud Project Application Validation</strong>
+            <strong *ngIf="!application?.OpenStackProject">Simple VM Project Application Validation</strong>
+
+          </div>
+          <div class="card-body">
+            <form
+              class="form-horizontal">
+              <div class="form-group row">
+                <h5 class="col-md-6 form-control-label">General Information</h5>
+              </div>
+              <div class="form-group row">
+                <label *ngIf="application?.OpenStackProject" class="col-md-4"><strong>Cloud Project <i
+                  data-balloon="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question menu_links"
+                  style="cursor: pointer;"></i></i>
+                </strong>
+                </label>
+                <div *ngIf="application?.OpenStackProject" class="col-md-8">
+                  A cloud project is represented by an Openstack project which allows
+                  you to manage your
+                  virtual machines, storage and network configurations.
+                </div>
+
+                <label *ngIf="!application?.OpenStackProject" class="col-md-4">
+                  <strong>Simple Virtual Machines Project
+                    <i data-balloon="You will be able to start virtual machines through the portal with minimal
+                                    effort and access them via ssh. This project type does not demand knowlegde in cloud
+                                    computing." data-balloon-pos="down" data-balloon-length="large"><i
+                      class="icon-question" style="cursor: pointer;"></i></i>
+                  </strong>
+
+                </label>
+
+                <div *ngIf="!application?.OpenStackProject" class="col-md-8">
+                  This type of project allows you to start virtual machines with SSH
+                  access.
+
+
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>Project
+                  Name* <i data-balloon="Full name of your project"
+                           data-balloon-pos="down"><i
+                    class="icon-question"
+                    style="cursor: pointer;"></i></i></strong></label>
+                <div class="col-md-8">
+                  <input disabled type="text" id="id_project_application_name"
+                         name="project_application_name"
+                         class="form-control" maxlength="128"
+                         value="***REMOVED******REMOVED***application?.Name***REMOVED******REMOVED***">
+                  <span class="help-block">Name of your project.</span>
+
+                </div>
+
+              </div>
+
+
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>Project
+                  Short Name* <i
+                    data-balloon="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"
+                    data-balloon-pos="down" data-balloon-length="large"><i
+                    class="icon-question"
+                    style="cursor: pointer;"></i></i></strong></label>
+                <div class="col-md-8">
+                  <input disabled required type="text" id="id_project_application_shortname"
+                         name="project_application_shortname" #shortname
+                         class="form-control" maxlength="15"
+                         value="***REMOVED******REMOVED***application?.Shortname***REMOVED******REMOVED***">
+                  <span class="help-block">Shortname of your project.</span>
+
+                </div>
+
+              </div>
+
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="textarea-input"><strong>Project
+                  Description* <i
+                    data-balloon="Full description of your project including tools you might are going to use."
+                    data-balloon-pos="down" data-balloon-length="large"><i
+                    class="icon-question"
+                    style="cursor: pointer;"></i></i></strong></label>
+                <div class="col-md-8">
+                                <textarea disabled id="id_project_application_description"
+                                          name="project_application_description" rows="9"
+                                          class="form-control" maxlength="8192"
+                                          value="***REMOVED******REMOVED***application?.Description***REMOVED******REMOVED***"
+                                ></textarea>
+                  <span class="help-block">Description of your project.</span>
+
+                </div>
+
+              </div>
+
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="textarea-input"><strong>Desired
+
+                  lifetime* <i
+                    data-balloon="Lifetime in months of your project. Currently the lifetime is limited to 12 months."
+                    data-balloon-length="large" data-balloon-pos="down">
+                    <i class="icon-question"
+                       style="cursor: pointer;"></i></i></strong></label>
+
+                <div class="col-md-8">
+                  <div class="input-group">
+                    <input class="form-control" id="id_project_application_lifetime"
+                           name="project_application_lifetime" disabled
+                           value="***REMOVED******REMOVED***application?.Lifetime***REMOVED******REMOVED***"
+
+                           type="number"
+                    >
+
+                    <div class="input-group-append"><span class="input-group-text"> months</span></div>
+                  </div>
+                  <span class="help-block">Lifetime of your project</span>
+
+                </div>
+              </div>
+
+
+              <div class="form-group row">
+                <h5 class="col-md-12 form-control-label">Resources*
+                  <i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour"
+                     data-balloon-pos="down">
+                    <i class="icon-question"></i></i>
+                </h5>
+              </div>
+              <div class="row justify-content-center">
+                <div class="container">
+                  <accordion>
+                    <ng-container *ngFor="let t of typeList">
+                      <accordion-group *ngIf="application?.OpenStackProject || checkIfTypeGotSimpleVmFlavor(t)"
+                                       [isOpen]="true" #groupval>
+                        <div accordion-heading style="width: 100%; cursor: pointer">
+                          ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
+                          <i class="pull-right float-right" style="font-size: 25px" [ngClass]="***REMOVED***
+                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen***REMOVED***"></i>
+                        </div>
+                        <div *ngFor="let fl of flavorList" class="form-group row">
+                          <div
+                            *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || application?.OpenStackProject)"
+                            class="form-group row">
+                            <label class="col form-control-label"><strong>***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***</strong><br>
+                              Number of cores: ***REMOVED******REMOVED***fl.vcpus***REMOVED******REMOVED***<br>
+                              RAM: ***REMOVED******REMOVED***fl.ram***REMOVED******REMOVED*** GB</label>
+                            <div class="col">
+                              <div class="input-group">
+                                <input class="form-control"
+                                       name="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***_old"
+                                       type="text"
+                                       value="***REMOVED******REMOVED***application?.CurrentFlavors[fl.name]?.counter***REMOVED******REMOVED***"
+                                       placeholder="NDA" disabled>
+                                <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </accordion-group>
+                    </ng-container>
+                  </accordion>
+                  <strong>
+                    <div class="form-group row">
+                      <label #corenumbers id="corenumbers" class="col">Number of total
+                        cores: ***REMOVED******REMOVED***totalNumberOfCores***REMOVED******REMOVED***</label>
+                    </div>
+                    <div class="form-group row">
+                      <label #ramnumbers id="ramnumbers" class="col">Amount of total
+                        RAM: ***REMOVED******REMOVED***totalRAM***REMOVED******REMOVED*** </label>
+                    </div>
+                  </strong>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
+                  of storage
+                  volumes*
+                  <i
+                    data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+                    data-balloon-pos="down" data-balloon-length="large"><i
+                    class="icon-question"
+                    style="cursor: pointer;"></i></i></strong></label>
+                <div class="col-md-8">
+                  <div class="input-group">
+                    <input disabled class="form-control"
+                           id="id_project_application_volume_counter"
+                           name="project_application_volume_counter"
+                           type="number"
+                           value="***REMOVED******REMOVED***application?.VolumeCounter***REMOVED******REMOVED***"
+
+                    >
+                  </div>
+                  <span class="help-block">How many storage volumes of you project</span>
+
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage
+                  Limit*
+                  <i
+                    data-balloon="Storage limit is the sum of extra storage provided by volumes."
+                    data-balloon-pos="down" data-balloon-length="medium"><i
+                    class="icon-question"
+                    style="cursor: pointer;"></i></i></strong></label>
+                <div class="col-md-8">
+                  <div class="input-group">
+                    <input disabled class="form-control"
+                           id="id_project_application_volume_limit"
+                           name="project_application_volume_limit"
+                           placeholder="e.g. 20"
+                           value="***REMOVED******REMOVED***application?.VolumeLimit***REMOVED******REMOVED***"
+
+                    >
+                    <div class="input-group-append"><span class="input-group-text"> GB </span></div>
+                  </div>
+                  <span class="help-block">Extra storage of your project</span>
+
+                </div>
+              </div>
+
+
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="textarea-input">Object
+                  Storage <i
+                    data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
+                    data-balloon-pos="down" data-balloon-length="large"><i
+                    class="icon-question"
+                    style="cursor: pointer;"></i></i></label>
+                <div class="col-md-8">
+                  <div class="input-group">
+                    <input disabled class="form-control"
+                           id="id_project_application_object_storage"
+                           name="project_application_object_storage"
+                           placeholder="e.g. 8"
+                           value="***REMOVED******REMOVED***application?.ObjectStorage***REMOVED******REMOVED***"
+
+                    >
+                    <div class="input-group-append"><span class="input-group-text"> GB </span></div>
+                  </div>
+                  <span class="help-block">Object Storage of you project</span>
+
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label"
+                       for="id_project_application_comment"><strong>Comment</strong></label>
+                <div class="col-md-8">
+                <textarea disabled type="text" id="id_project_application_comment"
+                          name="project_application_comment" class="form-control" maxlength="8192"
+                          value="***REMOVED******REMOVED***application?.Comment***REMOVED******REMOVED***"
+                ></textarea>
+                </div>
+              </div>
+              <br>
+              <div class="form-group row">
+                <h5 class="col-md-6 form-control-label">Institutional Information</h5>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>Institute
+                  Name* <i
+                    data-balloon="Your institute" data-balloon-pos="down"><i
+                    class="icon-question"
+                    style="cursor: pointer;"></i></i></strong></label>
+                <div class="col-md-8">
+                  <input disabled type="text" id="id_project_application_institute"
+                         name="project_application_institute" class="form-control"
+                         value="***REMOVED******REMOVED***application?.Institute***REMOVED******REMOVED***"
+
+                  >
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>Workgroup
+                  Name* <i
+                    data-balloon="Your Workgroup"
+                    data-balloon-pos="down"><i class="icon-question"
+                                               style="cursor: pointer;"></i></i></strong></label>
+                <div class="col-md-8">
+                  <input disabled="" type="text" id="id_project_application_workgroup"
+                         name="project_application_workgroup" class="form-control"
+                         value="***REMOVED******REMOVED***application?.Workgroup***REMOVED******REMOVED***"
+
+                  >
+                  <span class="help-block">To which workgroup do you belong?</span>
+                </div>
+
+              </div>
+              <div class="form-group row">
+                <h5 class="col-md-6 form-control-label">Additional Information</h5>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon
+                  2020</strong></label>
+                <div class="col-md-8">
+                  <input type="text" id="id_project_application_horizon2020"
+                         name="project_application_horizon2020" class="form-control"
+                         maxlength="2048"
+                         disabled
+                         value="***REMOVED******REMOVED***application?.Horizon2020***REMOVED******REMOVED***"
+                  >
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>Elixir Project</strong></label>
+                <div class="col-md-8">
+                  <input disabled type="text" id="id_project_application_elixir_project"
+                         name="project_application_elixir_project" class="form-control"
+                         maxlength="2048"
+                         value="***REMOVED******REMOVED***application?.ElixirProject***REMOVED******REMOVED***">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>
+                <div class="col-md-8">
+
+
+                  <label
+                    class="switch switch-label switch-outline-primary-alt">
+                    <input type="checkbox" class="switch-input"
+                           name="project_application_report_allowed"
+                           disabled [checked]="application?.Dissemination"
+                    >
+                    <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                    <span class="switch-handle"></span></label>
+                  <p> Do you permit the de.NBI Cloud to publicly mention your
+                    project's participation?</p>
+
+                </div>
+
+
+              </div>
+
+
+            </form>
+          </div>
+          <div class="card-footer">
+
+            <button (click)="notificationModal.show();approveApplication();"
+                    class="btn btn-sm btn-success">
+              <i class="fa fa-dot-circle-o"></i>
+              Validate
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="notificationModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
+          ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
+                type="button"
+                (click)="notificationModal.hide();resetNotificationModal()"
+                class="btn  btn-secondary"> Close
+        </button>
+        <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)">
+          <button type="button"
+                  (click)="notificationModal.hide();resetNotificationModal()" type="reset"
+                  class="btn  btn-secondary"> Close
+          </button>
+        </a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
