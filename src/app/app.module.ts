@@ -34,9 +34,9 @@ import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {
     MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
-    SidebarToggleDirective
-} from './shared/sidebar.directive';
+    SidebarToggleDirective} from './shared/sidebar.directive';
 import {Angulartics2Module} from 'angulartics2';
+import { ValidationApplicationComponent } from './validation-application/validation-application.component';
 
 
 /**
@@ -73,7 +73,8 @@ import {Angulartics2Module} from 'angulartics2';
         SidebarToggleDirective,
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
-        SidebarOffCanvasCloseDirective
+        SidebarOffCanvasCloseDirective,
+        // ValidationApplicationComponent
 
 
     ],
