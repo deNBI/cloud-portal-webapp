@@ -386,7 +386,13 @@
 
 
             </div>
-
+            <div *ngIf="!project_application_pi_approved" class="form-group row justify-content-center">
+              <div class="col-11 alert-info">Only applications approved by a principal investigator
+                of a german university or research facility will be accepted.
+                You are able to enter an email address of your principal investigator whom
+                we will send an email, containing your name and email address and a link informing him about the requested resources,
+                where he will be able to approve of this application.</div>
+            </div>
             <div *ngIf="!project_application_pi_approved" class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator Email*
               </strong></label>
@@ -410,7 +416,7 @@
             </div>
             <div *ngIf="project_application_pi_approved" class="form-group row">
               <label class="col-md-4 form-control-label" for="project_application_responsibility">
-                <strong>Acknowledgement of Responsibility*</strong>
+                <strong>Confirmation of Responsibility*</strong>
               </label>
               <div class="col-md-8"
                    [ngClass]="{
@@ -427,7 +433,7 @@
                          required
                   >
                   <label class="form-check-label" for="project_application_responsibility">
-                    Hereby i acknowledge that I am responsible for the project.
+                    I hereby confirm that I am responsible for the project and any action of the project members in the de.NBI Cloud.
                   </label>
                 </div>
               </div>
