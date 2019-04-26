@@ -43,52 +43,7 @@
                 virtual machines, storage and network configurations.
               </div>
             </div>
-            <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator*
-                <i
-                  data-balloon="Only applications which have been approved/submitted by an principal investigator will be accepted. If you are not a principal investigator please provide his email."
-                  data-balloon-pos="down" data-balloon-length="large"><i
-                  class="icon-question menu_links"
-                  style="cursor: pointer;"></i></i></strong></label>
-              <div class="col-md-8">
 
-
-                <label
-                  class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input"
-                         name="project_application_pi_approved"
-                         [(ngModel)]="project_application_pi_approved"
-                  >
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
-
-                <p> Are you a principal investigator?</p>
-
-              </div>
-
-
-            </div>
-
-            <div *ngIf="!project_application_pi_approved" class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator Email*
-              </strong></label>
-              <div class="col-md-8">
-
-
-                <input *ngIf="!project_application_pi_approved" required type="text"
-                       id="id_project_application_pi_email"
-                       name="project_application_pi_email"
-                       class="form-control" maxlength="256"
-                       placeholder="example@domain.com"
-                       ngModel
-                       pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
-                       [ngClass]="{
-                                'is-invalid': f.controls.project_application_pi_email?.invalid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched),
-                                'is-valid': f.controls.project_application_pi_email?.valid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched)
-                                }">
-                <p *ngIf="!project_application_pi_approved"> Please insert the email of your principal investigator.
-                  He will get an email with further information how to verify the application.</p></div>
-            </div>
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Project
                 Name* <i data-balloon="Full name of your project"
@@ -404,16 +359,6 @@
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Elixir Project</strong></label>
-              <div class="col-md-8">
-                <input type="text" id="id_project_application_elixir_project"
-                       name="project_application_elixir_project" class="form-control"
-                       maxlength="2048"
-                       placeholder='Name of the project' [ngModel]="''">
-                <span class="help-block">Is your project part of an Elixir project?</span>
-              </div>
-            </div>
-            <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>
               <div class="col-md-8">
 
@@ -432,6 +377,83 @@
               </div>
 
 
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator*
+                <i
+                  data-balloon="Only applications which have been approved/submitted by an principal investigator will be accepted. If you are not a principal investigator please provide his email."
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question menu_links"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+
+
+                <label
+                  class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_pi_approved"
+                         [(ngModel)]="project_application_pi_approved"
+                  >
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+
+                <p> Are you a principal investigator?</p>
+
+              </div>
+
+
+            </div>
+
+            <div *ngIf="!project_application_pi_approved" class="form-group row justify-content-center">
+              <div class="col-11 alert-info">Only applications approved by a principal investigator
+                of a german university or research facility will be accepted.
+                You are able to enter an email address of your principal investigator whom
+                we will send an email, containing your name and email address and a link informing him about the requested resources,
+                where he will be able to approve of this application.</div>
+            </div>
+            <div *ngIf="!project_application_pi_approved" class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator Email*
+              </strong></label>
+              <div class="col-md-8">
+
+
+                <input *ngIf="!project_application_pi_approved" required type="text"
+                       id="id_project_application_pi_email"
+                       name="project_application_pi_email"
+                       class="form-control" maxlength="256"
+                       placeholder="example@domain.com"
+                       ngModel
+                       pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_pi_email?.invalid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched),
+                                'is-valid': f.controls.project_application_pi_email?.valid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched)
+                                }">
+                <p *ngIf="!project_application_pi_approved"> Please insert the email of your principal investigator.
+                  He will get an email with further information how to verify the application.</p></div>
+            </div>
+            <div *ngIf="project_application_pi_approved" class="form-group row">
+              <label class="col-md-4 form-control-label" for="project_application_responsibility">
+                <strong>Acknowledgement of Responsibility*</strong>
+              </label>
+              <div class="col-md-8"
+                   [ngClass]="{
+                                'alert-danger': !respCheck.checked,
+                                'alert-success': respCheck.checked
+                                }">
+                <div class="form-check">
+                  <input class="form-check-input"
+                         name="project_application_responsibility"
+                         type="checkbox"
+                         id="project_application_responsibility"
+                         ngModel
+                         #respCheck
+                         required
+                         >
+                  <label class="form-check-label" for="project_application_responsibility">
+                    Hereby i acknowledge that I am responsible for the project.
+                  </label>
+                </div>
+              </div>
             </div>
           </form>
         </div>
