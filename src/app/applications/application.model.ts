@@ -343,7 +343,7 @@ export class Application {
     this._PerunId = value;
   }
 
-  
+
 
   get BMBFProject(): string {
     return this._BMBFProject;
