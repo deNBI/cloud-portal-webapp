@@ -47,14 +47,14 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
         this.validated = true;
         this.updateNotificationModal(
           'Success',
-          'The application was successfully validated.',
+          'The application was successfully approved.',
           true,
           'success');
         this.notificationModalStay = false;
       ***REMOVED*** else ***REMOVED***
         this.updateNotificationModal(
           'Failed',
-          'The application was not successfully validated.',
+          'The application was not successfully approved.',
           true,
           'danger');
         this.notificationModalStay = true;
