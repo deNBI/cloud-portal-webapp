@@ -50,7 +50,7 @@
                         <div class="col-md-12">
                             <input required id="Reply to" name="emailReply" placeholder="" class="form-control"
                                    type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
-                                   pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                                   pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
                                    [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
                     'is-valid':emailRep.valid && (emailRep.dirty || emailRep.touched)
                     }">
