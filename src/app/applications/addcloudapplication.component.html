@@ -423,7 +423,7 @@
                        class="form-control" maxlength="256"
                        placeholder="example@domain.com"
                        ngModel
-                       pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`***REMOVED***|***REMOVED***~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                       pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.***REMOVED***2,***REMOVED***.*)|^.***REMOVED***254***REMOVED***.)([a-zA-Z0-9!#$%&'*+\/=?^_`***REMOVED***|***REMOVED***~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]***REMOVED***1,63***REMOVED***\.)+[a-zA-Z]***REMOVED***2,15***REMOVED***"
                        [ngClass]="***REMOVED***
                                 'is-invalid': f.controls.project_application_pi_email?.invalid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched),
                                 'is-valid': f.controls.project_application_pi_email?.valid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched)
