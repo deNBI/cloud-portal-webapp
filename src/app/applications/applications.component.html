@@ -376,7 +376,6 @@
                                                         style="margin: auto 2.5px"
                                                         (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
-                                                        [disabled]="!application.PIApproved"
                                                         type="button"
                                                         class="btn btn-success">
                                                     <i class="fa fa-check"></i>&nbsp;
@@ -389,7 +388,6 @@
                                                         style="margin: auto 2.5px"
                                                         (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
-                                                        [disabled]="!application.PIApproved"
                                                         type="button"
                                                         class="btn btn-success">
                                                     <i class="fa fa-check"></i>&nbsp;
