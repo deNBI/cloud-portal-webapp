@@ -13,7 +13,7 @@
 
           </div>
           <div class="card-body">
-            <form
+            <form #f="ngForm"
               class="form-horizontal">
               <div class="form-group row">
                 <h5 class="col-md-6 form-control-label">General Information</h5>
@@ -137,8 +137,9 @@
                     <i class="icon-question"></i></i>
                 </h5>
               </div>
-              <div class="row justify-content-center">
-                <div class="container">
+              <div class="form-group row">
+                <div class="col-md-4"></div>
+                <div class="col-md-8">
                   <accordion>
                     <ng-container *ngFor="let t of typeList">
                       <accordion-group *ngIf="application?.OpenStackProject || checkIfTypeGotSimpleVmFlavor(t)"
@@ -148,14 +149,14 @@
                           <i class="pull-right float-right" style="font-size: 25px" [ngClass]="***REMOVED***
                             'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen***REMOVED***"></i>
                         </div>
-                        <div *ngFor="let fl of flavorList" class="form-group row">
+                        <div *ngFor="let fl of flavorList">
                           <div
                             *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || application?.OpenStackProject)"
                             class="form-group row">
-                            <label class="col form-control-label"><strong>***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***</strong><br>
+                            <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***</strong><br>
                               Number of cores: ***REMOVED******REMOVED***fl.vcpus***REMOVED******REMOVED***<br>
                               RAM: ***REMOVED******REMOVED***fl.ram***REMOVED******REMOVED*** GB</label>
-                            <div class="col">
+                            <div class="col-md-8">
                               <div class="input-group">
                                 <input class="form-control"
                                        name="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***_old"
@@ -324,6 +325,15 @@
                 </div>
               </div>
               <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>BMBF Project</strong></label>
+                <div class="col-md-8">
+                  <input disabled type="text" id="id_project_application_bmbf_project"
+                         name="project_application_bmbf_project" class="form-control"
+                         maxlength="2048"
+                         value="***REMOVED******REMOVED***application?.BMBFProject***REMOVED******REMOVED***">
+                </div>
+              </div>
+              <div class="form-group row">
                 <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>
                 <div class="col-md-8">
 
@@ -344,15 +354,42 @@
 
               </div>
 
+              <div class="row">
+                <div class="col-4"></div>
+                <div class="col-8 alert-warning">
+                  If you do not approve of this application, please contact cloud@denbi.de
+                </div>
+              </div>
+
 
             </form>
           </div>
           <div class="card-footer">
-
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="">
+                <strong>Confirmation of Responsibility*</strong>
+              </label>
+              <div class="col-md-8"
+                   >
+                <div class="form-check">
+                  <input class="form-check-input"
+                         name="project_application_responsibility"
+                         type="checkbox"
+                         id="project_application_responsibility"
+                         ngModel
+                         #respCheck
+                         required>
+                  <label class="form-check-label" for="project_application_responsibility">
+                    I hereby confirm that I am responsible for the project and any action of the project members in the de.NBI Cloud.
+                  </label>
+                </div>
+              </div>
+            </div>
             <button (click)="notificationModal.show();approveApplication();"
-                    class="btn btn-sm btn-success">
+                    class="btn btn-sm btn-success"
+                    [disabled]="!respCheck.checked">
               <i class="fa fa-dot-circle-o"></i>
-              Validate
+              Approve
             </button>
           </div>
         </div>
