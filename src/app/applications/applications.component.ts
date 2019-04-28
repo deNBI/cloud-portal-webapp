@@ -509,7 +509,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     const application_id: string = <string>app.Id;
     const pi_elixir_id: string = app.PIElixir;
     const name: string = app.Shortname;
-    //todo refactor
+    //todo refactor -> one request to django -> django does the rest
     forkJoin(
       this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id),
       this.userservice.getMemberByExtSourceNameAndExtLogin(pi_elixir_id)).subscribe(
@@ -522,7 +522,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
         const pi_member_user_id: string = pi['userId'];
         this.groupservice.createGroup(name, description).subscribe((group: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
           new_group_id = group['id'];
-          if (manager_elixir_id !== pi_elixir_id) ***REMOVED***
+          if (manager_elixir_id !== pi_elixir_id && pi_elixir_id) ***REMOVED***
             forkJoin(
               this.groupservice.addMember(new_group_id, pi_member_id, compute_center),
               this.groupservice.addAdmin(new_group_id, pi_member_user_id, compute_center)).subscribe()
