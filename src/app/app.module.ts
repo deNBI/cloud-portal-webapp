@@ -6,7 +6,7 @@ import ***REMOVED***BsDropdownModule***REMOVED*** from 'ngx-bootstrap/dropdown';
 import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
 import ***REMOVED***AppComponent***REMOVED*** from './app.component';
 
-import ***REMOVED***HttpClientModule***REMOVED*** from '@angular/common/http';
+import ***REMOVED***HttpClientModule, HttpHeaders***REMOVED*** from '@angular/common/http';
 import ***REMOVED***ChartsModule***REMOVED*** from 'ng2-charts/ng2-charts';
 import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap';
 import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination';
@@ -36,8 +36,33 @@ import ***REMOVED***
     MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
     SidebarToggleDirective***REMOVED*** from './shared/sidebar.directive';
 import ***REMOVED***Angulartics2Module***REMOVED*** from 'angulartics2';
-import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './validation-application/validation-application.component';
+import ***REMOVED*** JL ***REMOVED*** from 'jsnlog';
+import ***REMOVED*** ErrorHandler ***REMOVED*** from '@angular/core';
+import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 
+const header: HttpHeaders = new HttpHeaders(***REMOVED***
+                                              'X-CSRFToken': Cookie.get('csrftoken')
+                                            ***REMOVED***);
+
+export class UncaughtExceptionHandler implements ErrorHandler ***REMOVED***
+  handleError(error: any) ***REMOVED***
+    JL().fatalException('Uncaught Exception', error);
+  ***REMOVED***
+***REMOVED***
+
+const beforeSendHeader = function (xhr) ***REMOVED***
+  xhr.setRequestHeader('access-control-allow-headers', 'header');
+***REMOVED***;
+
+const appender = JL.createAjaxAppender('default appender');
+appender.setOptions(***REMOVED***
+  beforeSend: beforeSendHeader,
+  url: `$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***jsnlog.logger`
+***REMOVED***);
+
+JL().setOptions(***REMOVED***
+  appenders: [appender]
+              ***REMOVED***);
 
 /**
  * App module.
@@ -73,15 +98,14 @@ import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './valida
         SidebarToggleDirective,
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
-        SidebarOffCanvasCloseDirective,
+        SidebarOffCanvasCloseDirective
         // ValidationApplicationComponent
-
-
     ],
     providers: [***REMOVED***
         provide: LocationStrategy,
         useClass: HashLocationStrategy
     ***REMOVED***,
+      ***REMOVED*** provide: ErrorHandler, useClass: UncaughtExceptionHandler ***REMOVED***,
 
         ApiSettings,
         UserService
