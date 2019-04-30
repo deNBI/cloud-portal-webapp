@@ -6,7 +6,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {AppComponent} from './app.component';
 
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HttpHeaders} from '@angular/common/http';
 import {ChartsModule} from 'ng2-charts/ng2-charts';
 import {ModalModule} from 'ngx-bootstrap';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
@@ -36,8 +36,33 @@ import {
     MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
     SidebarToggleDirective} from './shared/sidebar.directive';
 import {Angulartics2Module} from 'angulartics2';
-import { ValidationApplicationComponent } from './validation-application/validation-application.component';
+import { JL } from 'jsnlog';
+import { ErrorHandler } from '@angular/core';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
 
+const header: HttpHeaders = new HttpHeaders({
+                                              'X-CSRFToken': Cookie.get('csrftoken')
+                                            });
+
+export class UncaughtExceptionHandler implements ErrorHandler {
+  handleError(error: any) {
+    JL().fatalException('Uncaught Exception', error);
+  }
+}
+
+const beforeSendHeader = function (xhr) {
+  xhr.setRequestHeader('access-control-allow-headers', 'header');
+};
+
+const appender = JL.createAjaxAppender('default appender');
+appender.setOptions({
+  beforeSend: beforeSendHeader,
+  url: `${ApiSettings.getApiBaseURL()}jsnlog.logger`
+});
+
+JL().setOptions({
+  appenders: [appender]
+              });
 
 /**
  * App module.
@@ -73,15 +98,14 @@ import { ValidationApplicationComponent } from './validation-application/validat
         SidebarToggleDirective,
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
-        SidebarOffCanvasCloseDirective,
+        SidebarOffCanvasCloseDirective
         // ValidationApplicationComponent
-
-
     ],
     providers: [{
         provide: LocationStrategy,
         useClass: HashLocationStrategy
     },
+      { provide: ErrorHandler, useClass: UncaughtExceptionHandler },
 
         ApiSettings,
         UserService
