@@ -153,4 +153,7 @@ export class UserInfoComponent implements OnInit {
   }
 
 
+  throwError() {
+    throw "message";
+  }
 }

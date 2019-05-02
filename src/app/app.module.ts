@@ -40,9 +40,6 @@ import { JL } from 'jsnlog';
 import { ErrorHandler } from '@angular/core';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 
-const header: HttpHeaders = new HttpHeaders({
-                                              'X-CSRFToken': Cookie.get('csrftoken')
-                                            });
 
 export class UncaughtExceptionHandler implements ErrorHandler {
   handleError(error: any) {
@@ -51,13 +48,14 @@ export class UncaughtExceptionHandler implements ErrorHandler {
 }
 
 const beforeSendHeader = function (xhr) {
-  xhr.setRequestHeader('access-control-allow-headers', 'header');
+  xhr.setRequestHeader('X-CSRFToken', Cookie.get('csrftoken'));
+  xhr.withCredentials = true;
 };
 
-const appender = JL.createAjaxAppender('default appender');
+const appender = JL.createAjaxAppender('default appender2');
 appender.setOptions({
   beforeSend: beforeSendHeader,
-  url: `${ApiSettings.getApiBaseURL()}jsnlog.logger`
+  url: `${ApiSettings.getApiBaseURL()}project_applications/jsnlog/`
 });
 
 JL().setOptions({
