@@ -153,4 +153,7 @@ export class UserInfoComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
 
+  throwError() ***REMOVED***
+    throw "message";
+  ***REMOVED***
 ***REMOVED***
