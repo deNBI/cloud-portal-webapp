@@ -36,7 +36,7 @@ import {ServiceWorkerModule} from '@angular/service-worker';
 import {MatSnackBarModule} from "@angular/material";
 import {Angulartics2Module} from 'angulartics2';
 import { ValidationApplicationComponent } from './validation-application/validation-application.component';
-
+import {environment} from "../environments/environment";
 
 /**
  * App module.
