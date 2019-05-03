@@ -1,3 +1,47 @@
+##  (2019-05-02)
+
+
+#### Bug Fixes
+
+* **Applications:** reload single applcation perun_approved now set ([6abdd875](6abdd875))
+* **application:**  small typo ([2f28eabb](2f28eabb))
+
+
+
+##  (2019-04-29)
+
+
+#### Bug Fixes
+
+* **Applications:**
+  *  single-> simple ([8571bf39](8571bf39))
+  * project => application renamed ([9b5ba7f6](9b5ba7f6))
+
+#### Features
+
+* **Applicaitons:**
+  * added pi field ([ebebef3f](ebebef3f))
+  * added pi field ([5203dbc0](5203dbc0))
+* **Application:**
+  * pi can now see also the application,removed double elixir and random request ([a120cc32](a120cc32))
+  * pi will also be added ([4168b181](4168b181))
+  * pi will also be added ([4d4b20af](4d4b20af))
+* **Applications:** approve & create reenabled ([8b562d08](8b562d08))
+* **Approval:** added pi approval endpoints ([626a57c4](626a57c4))
+* **ProjectHash:** useing url params ([889d3e9d](889d3e9d))
+* **Validation:**
+  *  flavor and total cores/ram shown ([fccf932d](fccf932d))
+  *  closing validation modal redirects to /applications ([dfec7a02](dfec7a02))
+  *  header, sidebar shown in val. page, pi name and email shown in application information ([5ca44c8d](5ca44c8d))
+  * added method to validate btn, added modal ([0fd577d7](0fd577d7))
+  * added 404 ([bfb94222](bfb94222))
+  * first prototype of valdiation site ([c9f429a7](c9f429a7))
+  * added validation component ([c1e81e9b](c1e81e9b))
+* **validation:**  dissemination showing correctly, approve&create disabled and info if pi not approved ([a86408b3](a86408b3))
+
+
+
+
 ##  (2019-04-17)
 
 

@@ -86,7 +86,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClass implement
      */
     getAllApplicationsModifications(facility: number): void {
         this.isLoaded = false;
-        // todo check if user is VO Admin
         this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility).subscribe(res => {
             if (Object.keys(res).length === 0) {
                 this.isLoaded = true;

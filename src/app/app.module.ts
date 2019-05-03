@@ -34,48 +34,49 @@ import {
 } from "./shared/sidebar.directive";
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {MatSnackBarModule} from "@angular/material";
-
 import {Angulartics2Module} from 'angulartics2';
-import { environment } from '../environments/environment';
+import { ValidationApplicationComponent } from './validation-application/validation-application.component';
 
 
 /**
  * App module.
  */
 @NgModule({
-  imports: [
-    AppAsideModule,
-    AppBreadcrumbModule.forRoot(),
-    AppHeaderModule,
-    AppFooterModule,
-    AppSidebarModule,
-    PerfectScrollbarModule,
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule,
-    BsDropdownModule.forRoot(),
-    TabsModule.forRoot(),
-    ChartsModule,
-    ModalModule.forRoot(),
-    PopoverModule,
-    PaginationModule.forRoot(),
-    ExportAsModule,
-    SharedModuleModule,
-    MatSnackBarModule,
-    Angulartics2Module.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
-  ],
-  declarations: [
-    AppComponent,
-    FullLayoutComponent,
-    AsideToggleDirective,
-    RegistrationInfoComponent,
-    ConsentInfoComponent,
-    BreadcrumbsComponent,
-    SidebarToggleDirective,
-    SidebarMinimizeDirective,
-    MobileSidebarToggleDirective,
-    SidebarOffCanvasCloseDirective
+
+    imports: [
+        AppAsideModule,
+        AppBreadcrumbModule.forRoot(),
+        AppHeaderModule,
+        AppFooterModule,
+        AppSidebarModule,
+        PerfectScrollbarModule,
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BsDropdownModule.forRoot(),
+        TabsModule.forRoot(),
+        ChartsModule,
+        ModalModule.forRoot(),
+        PopoverModule,
+        PaginationModule.forRoot(),
+        ExportAsModule,
+        SharedModuleModule,
+        Angulartics2Module.forRoot(),
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+
+    ],
+    declarations: [
+        AppComponent,
+        FullLayoutComponent,
+        AsideToggleDirective,
+        RegistrationInfoComponent,
+        ConsentInfoComponent,
+        BreadcrumbsComponent,
+        SidebarToggleDirective,
+        SidebarMinimizeDirective,
+        MobileSidebarToggleDirective,
+        SidebarOffCanvasCloseDirective,
+        // ValidationApplicationComponent
 
 
   ],
