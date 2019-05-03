@@ -14,27 +14,26 @@ import ***REMOVED***ExportAsModule***REMOVED*** from 'ngx-export-as';
 import ***REMOVED***PopoverModule***REMOVED*** from 'ngx-popover';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-connector/api-settings.service';
 import ***REMOVED***UserService***REMOVED*** from './api-connector/user.service';
+import ***REMOVED***UpdateService***REMOVED*** from "./update.service";
 // Routing Module
 import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
 import ***REMOVED***ConsentInfoComponent***REMOVED*** from './consent-info.component';
 // Layouts
-import ***REMOVED***
-  AppAsideModule,
-  AppBreadcrumbModule,
-  AppHeaderModule,
-  AppFooterModule,
-  AppSidebarModule,
-***REMOVED*** from '@coreui/angular';
+import ***REMOVED***AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule***REMOVED*** from '@coreui/angular';
 import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout.component';
 import ***REMOVED***RegistrationInfoComponent***REMOVED*** from './registration-info.component';
 import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.directive';
-import ***REMOVED***ApplicationBaseClass***REMOVED*** from "./shared/shared_modules/baseClass/application-base-class";
 import ***REMOVED***SharedModuleModule***REMOVED*** from "./shared/shared_modules/shared-module.module";
 import ***REMOVED***PerfectScrollbarModule***REMOVED*** from 'ngx-perfect-scrollbar';
 import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
 import ***REMOVED***
-    MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
-    SidebarToggleDirective***REMOVED*** from './shared/sidebar.directive';
+  MobileSidebarToggleDirective,
+  SidebarMinimizeDirective,
+  SidebarOffCanvasCloseDirective,
+  SidebarToggleDirective
+***REMOVED*** from "./shared/sidebar.directive";
+import ***REMOVED***ServiceWorkerModule***REMOVED*** from '@angular/service-worker';
+import ***REMOVED***MatSnackBarModule***REMOVED*** from "@angular/material";
 import ***REMOVED***Angulartics2Module***REMOVED*** from 'angulartics2';
 import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './validation-application/validation-application.component';
 
@@ -43,6 +42,7 @@ import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './valida
  * App module.
  */
 @NgModule(***REMOVED***
+
     imports: [
         AppAsideModule,
         AppBreadcrumbModule.forRoot(),
@@ -61,7 +61,9 @@ import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './valida
         PaginationModule.forRoot(),
         ExportAsModule,
         SharedModuleModule,
-        Angulartics2Module.forRoot()
+        Angulartics2Module.forRoot(),
+        ServiceWorkerModule.register('ngsw-worker.js', ***REMOVED*** enabled: environment.production ***REMOVED***)
+
     ],
     declarations: [
         AppComponent,
@@ -77,16 +79,17 @@ import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './valida
         // ValidationApplicationComponent
 
 
-    ],
-    providers: [***REMOVED***
-        provide: LocationStrategy,
-        useClass: HashLocationStrategy
-    ***REMOVED***,
+  ],
+  providers: [***REMOVED***
+    provide: LocationStrategy,
+    useClass: HashLocationStrategy
+  ***REMOVED***,
 
-        ApiSettings,
-        UserService
-    ],
-    bootstrap: [AppComponent]
+    ApiSettings,
+    UserService,
+    UpdateService
+  ],
+  bootstrap: [AppComponent]
 ***REMOVED***)
 export class AppModule ***REMOVED***
 ***REMOVED***
