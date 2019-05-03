@@ -34,48 +34,49 @@ import ***REMOVED***
 ***REMOVED*** from "./shared/sidebar.directive";
 import ***REMOVED***ServiceWorkerModule***REMOVED*** from '@angular/service-worker';
 import ***REMOVED***MatSnackBarModule***REMOVED*** from "@angular/material";
-
 import ***REMOVED***Angulartics2Module***REMOVED*** from 'angulartics2';
-import ***REMOVED*** environment ***REMOVED*** from '../environments/environment';
+import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './validation-application/validation-application.component';
 
 
 /**
  * App module.
  */
 @NgModule(***REMOVED***
-  imports: [
-    AppAsideModule,
-    AppBreadcrumbModule.forRoot(),
-    AppHeaderModule,
-    AppFooterModule,
-    AppSidebarModule,
-    PerfectScrollbarModule,
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule,
-    BsDropdownModule.forRoot(),
-    TabsModule.forRoot(),
-    ChartsModule,
-    ModalModule.forRoot(),
-    PopoverModule,
-    PaginationModule.forRoot(),
-    ExportAsModule,
-    SharedModuleModule,
-    MatSnackBarModule,
-    Angulartics2Module.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', ***REMOVED*** enabled: environment.production ***REMOVED***)
-  ],
-  declarations: [
-    AppComponent,
-    FullLayoutComponent,
-    AsideToggleDirective,
-    RegistrationInfoComponent,
-    ConsentInfoComponent,
-    BreadcrumbsComponent,
-    SidebarToggleDirective,
-    SidebarMinimizeDirective,
-    MobileSidebarToggleDirective,
-    SidebarOffCanvasCloseDirective
+
+    imports: [
+        AppAsideModule,
+        AppBreadcrumbModule.forRoot(),
+        AppHeaderModule,
+        AppFooterModule,
+        AppSidebarModule,
+        PerfectScrollbarModule,
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BsDropdownModule.forRoot(),
+        TabsModule.forRoot(),
+        ChartsModule,
+        ModalModule.forRoot(),
+        PopoverModule,
+        PaginationModule.forRoot(),
+        ExportAsModule,
+        SharedModuleModule,
+        Angulartics2Module.forRoot(),
+        ServiceWorkerModule.register('ngsw-worker.js', ***REMOVED*** enabled: environment.production ***REMOVED***)
+
+    ],
+    declarations: [
+        AppComponent,
+        FullLayoutComponent,
+        AsideToggleDirective,
+        RegistrationInfoComponent,
+        ConsentInfoComponent,
+        BreadcrumbsComponent,
+        SidebarToggleDirective,
+        SidebarMinimizeDirective,
+        MobileSidebarToggleDirective,
+        SidebarOffCanvasCloseDirective,
+        // ValidationApplicationComponent
 
 
   ],
