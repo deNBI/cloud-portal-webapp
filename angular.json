@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "coreui-angular": {
+    "cloud-webapp": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -19,7 +19,10 @@
             "assets": [
               "src/static/webapp/assets",
               "src/static/webapp",
-              "src/static/webapp/assets/img"
+              "src/static/webapp/assets/img",
+              "src/manifest.json",
+              "src/service-worker.js",
+              "src/manifest.json"
             ],
             "styles": [
               "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
@@ -52,7 +55,9 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "src/ngsw-config.json"
             },
             "stage": {
               "optimization": true,
@@ -68,32 +73,45 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.stage.ts"
-                }
-              ]
+                },
+              ],
+               "serviceWorker": true,
+              "ngswConfigPath": "src/ngsw-config.json"
+            },
+            "dev": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "coreui-angular:build",
+            "browserTarget": "cloud-webapp:build",
             "port": 8001,
             "host": "portal-dev.denbi.de",
             "ssl": false
           },
           "configurations": {
             "production": {
-              "browserTarget": "coreui-angular:build:production"
+              "browserTarget": "cloud-webapp:build:production"
             },
             "stage": {
-              "browserTarget": "coreui-angular:build:stage"
+              "browserTarget": "cloud-webapp:build:stage"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "coreui-angular:build"
+            "browserTarget": "cloud-webapp:build"
           }
         },
         "test": {
@@ -119,7 +137,10 @@
             },
             "assets": [
               "src/static/webapp/assets",
-              "src/static/webapp"
+              "src/static/webapp",
+              "src/manifest.json",
+              "src/manifest.json",
+              "src/manifest.json"
             ]
           },
           "configurations": {
@@ -145,7 +166,7 @@
         }
       }
     },
-    "coreui-angular-e2e": {
+    "cloud-webapp-e2e": {
       "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -154,7 +175,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "coreui-angular:serve"
+            "devServerTarget": "cloud-webapp:serve"
           }
         },
         "lint": {
@@ -169,7 +190,7 @@
       }
     }
   },
-  "defaultProject": "coreui-angular",
+  "defaultProject": "cloud-webapp",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

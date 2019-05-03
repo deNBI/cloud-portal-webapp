@@ -1,31 +1,33 @@
-import {AfterViewInit, Component, ViewChild, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Http, RequestOptions, XHRBackend} from '@angular/http';
 import {ModalDirective} from 'ngx-bootstrap';
+import {UpdateService} from './update.service';
 import {Angulartics2Piwik} from 'angulartics2/piwik';
 
 /**
  * App component.
  */
 @Component({
-    selector: 'body',
-    templateUrl: 'app.component.html',
-    providers: [{
-        provide: Http,
-        deps: [XHRBackend, RequestOptions, AppComponent]
-    }]
+  selector: 'body',
+  templateUrl: 'app.component.html',
+  providers: [{
+    provide: Http,
+    deps: [XHRBackend, RequestOptions, AppComponent]
+  }]
 })
 export class AppComponent implements AfterViewInit, OnInit {
 
-    @ViewChild('timeoutModal') modal: ModalDirective;
+  @ViewChild('timeoutModal') modal: ModalDirective;
 
-    constructor(private angulartics2Piwik: Angulartics2Piwik) {
 
-    }
+  constructor(private update: UpdateService, private angulartics2Piwik: Angulartics2Piwik) {
 
-    ngOnInit(): void {
-      this.angulartics2Piwik.startTracking();
-    }
+  }
 
-    ngAfterViewInit(): void {
-    }
+  ngOnInit(): void {
+    this.angulartics2Piwik.startTracking();
+  }
+
+  ngAfterViewInit(): void {
+  }
 }

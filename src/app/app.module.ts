@@ -14,27 +14,26 @@ import {ExportAsModule} from 'ngx-export-as';
 import {PopoverModule} from 'ngx-popover';
 import {ApiSettings} from './api-connector/api-settings.service';
 import {UserService} from './api-connector/user.service';
+import {UpdateService} from "./update.service";
 // Routing Module
 import {AppRoutingModule} from './app.routing';
 import {ConsentInfoComponent} from './consent-info.component';
 // Layouts
-import {
-  AppAsideModule,
-  AppBreadcrumbModule,
-  AppHeaderModule,
-  AppFooterModule,
-  AppSidebarModule,
-} from '@coreui/angular';
+import {AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule} from '@coreui/angular';
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {RegistrationInfoComponent} from './registration-info.component';
 import {AsideToggleDirective} from './shared/aside.directive';
-import {ApplicationBaseClass} from "./shared/shared_modules/baseClass/application-base-class";
 import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {
-    MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
-    SidebarToggleDirective} from './shared/sidebar.directive';
+  MobileSidebarToggleDirective,
+  SidebarMinimizeDirective,
+  SidebarOffCanvasCloseDirective,
+  SidebarToggleDirective
+} from "./shared/sidebar.directive";
+import {ServiceWorkerModule} from '@angular/service-worker';
+import {MatSnackBarModule} from "@angular/material";
 import {Angulartics2Module} from 'angulartics2';
 import { ValidationApplicationComponent } from './validation-application/validation-application.component';
 
@@ -43,6 +42,7 @@ import { ValidationApplicationComponent } from './validation-application/validat
  * App module.
  */
 @NgModule({
+
     imports: [
         AppAsideModule,
         AppBreadcrumbModule.forRoot(),
@@ -61,7 +61,9 @@ import { ValidationApplicationComponent } from './validation-application/validat
         PaginationModule.forRoot(),
         ExportAsModule,
         SharedModuleModule,
-        Angulartics2Module.forRoot()
+        Angulartics2Module.forRoot(),
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+
     ],
     declarations: [
         AppComponent,
@@ -77,16 +79,17 @@ import { ValidationApplicationComponent } from './validation-application/validat
         // ValidationApplicationComponent
 
 
-    ],
-    providers: [{
-        provide: LocationStrategy,
-        useClass: HashLocationStrategy
-    },
+  ],
+  providers: [{
+    provide: LocationStrategy,
+    useClass: HashLocationStrategy
+  },
 
-        ApiSettings,
-        UserService
-    ],
-    bootstrap: [AppComponent]
+    ApiSettings,
+    UserService,
+    UpdateService
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }
