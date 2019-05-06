@@ -7,27 +7,27 @@ import {first} from 'rxjs/operators';
 @Injectable()
 export class UpdateService {
 
-  constructor(private appRef: ApplicationRef, private swUpdate: SwUpdate, private snackbar: MatSnackBar) {
-    const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
+    constructor(private appRef: ApplicationRef, private swUpdate: SwUpdate, private snackbar: MatSnackBar) {
+        const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
 
-    const intervalTime = interval(60 * 1000);
-    const checkUpdatesInIntervall = concat(isStable, intervalTime);
-    checkUpdatesInIntervall.subscribe(() => this.swUpdate.checkForUpdate().then(() => {
-      this.swUpdate.available.subscribe(evt => {
-        console.log('new action');
-        const snack = this.snackbar.open('Update Available', 'Reload', {
-          duration: 10000
-        });
+        const intervalTime = interval(60 * 1000);
+        const checkUpdatesInIntervall = concat(isStable, intervalTime);
+        checkUpdatesInIntervall.subscribe(() => this.swUpdate.checkForUpdate().then(() => {
+            this.swUpdate.available.subscribe(evt => {
+                console.log('new action');
+                const snack = this.snackbar.open('Update Available', 'Reload', {
+                    duration: 10000
+                });
 
-        snack
-          .onAction()
-          .subscribe(() => {
-            window.location.reload();
-          });
-      });
+                snack
+                    .onAction()
+                    .subscribe(() => {
+                        window.location.reload();
+                    });
+            });
 
-    }))
+        }))
 
 
-  }
+    }
 }

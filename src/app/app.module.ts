@@ -87,7 +87,6 @@ import {environment} from "../environments/environment";
 
     ApiSettings,
     UserService,
-    UpdateService
   ],
   bootstrap: [AppComponent]
 })
