@@ -87,7 +87,6 @@ import ***REMOVED***environment***REMOVED*** from "../environments/environment";
 
     ApiSettings,
     UserService,
-    UpdateService
   ],
   bootstrap: [AppComponent]
 ***REMOVED***)
