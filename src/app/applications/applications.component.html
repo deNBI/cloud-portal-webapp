@@ -100,7 +100,7 @@
                                                 <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                 </td>
                                               </tr>
-                                              <tr>
+                                              <tr *ngIf="application.PIApproved">
                                                 <td>
                                                   PI Name
                                                 </td>
@@ -110,7 +110,7 @@
                                                 <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                 </td>
                                               </tr>
-                                              <tr>
+                                              <tr *ngIf="application.PIApproved">
                                                 <td>
                                                   PI Email
                                                 </td>
@@ -460,18 +460,7 @@
                                                  [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
                                                 <div class="table-responsive">
                                                     <table class="table table-striped">
-
-                                                        <tr>
-                                                            <td>
-                                                              PI Approved
-                                                            </td>
-                                                            <td>
-                                                              ***REMOVED******REMOVED***application?.PIApproved***REMOVED******REMOVED***
-                                                            </td>
-                                                          <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                                          </td>
-                                                        </tr>
-                                                      <tr>
+                                                      <tr *ngIf="application.PIApproved">
                                                         <td>
                                                           PI Name
                                                         </td>
@@ -481,7 +470,7 @@
                                                         <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                         </td>
                                                       </tr>
-                                                      <tr>
+                                                      <tr *ngIf="application.PIApproved">
                                                         <td>
                                                           PI Email
                                                         </td>
@@ -824,7 +813,7 @@
                                                             <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                             </td>
                                                           </tr>
-                                                          <tr>
+                                                          <tr *ngIf="application.PIApproved">
                                                             <td>
                                                               PI Name
                                                             </td>
@@ -834,7 +823,7 @@
                                                             <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
                                                             </td>
                                                           </tr>
-                                                          <tr>
+                                                          <tr *ngIf="application.PIApproved">
                                                             <td>
                                                               PI Email
                                                             </td>
