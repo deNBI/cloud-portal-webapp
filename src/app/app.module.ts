@@ -14,7 +14,6 @@ import ***REMOVED***ExportAsModule***REMOVED*** from 'ngx-export-as';
 import ***REMOVED***PopoverModule***REMOVED*** from 'ngx-popover';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-connector/api-settings.service';
 import ***REMOVED***UserService***REMOVED*** from './api-connector/user.service';
-import ***REMOVED***UpdateService***REMOVED*** from "./update.service";
 // Routing Module
 import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
 import ***REMOVED***ConsentInfoComponent***REMOVED*** from './consent-info.component';
@@ -53,6 +52,7 @@ import ***REMOVED***environment***REMOVED*** from "../environments/environment";
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
+        MatSnackBarModule,
         BsDropdownModule.forRoot(),
         TabsModule.forRoot(),
         ChartsModule,
