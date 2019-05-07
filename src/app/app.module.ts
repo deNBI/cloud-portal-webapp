@@ -26,15 +26,16 @@ import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {
-  MobileSidebarToggleDirective,
-  SidebarMinimizeDirective,
-  SidebarOffCanvasCloseDirective,
-  SidebarToggleDirective
+    MobileSidebarToggleDirective,
+    SidebarMinimizeDirective,
+    SidebarOffCanvasCloseDirective,
+    SidebarToggleDirective
 } from "./shared/sidebar.directive";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {MatSnackBarModule} from "@angular/material";
 import {Angulartics2Module} from 'angulartics2';
-import { ValidationApplicationComponent } from './validation-application/validation-application.component';
+import {ValidationApplicationComponent} from './validation-application/validation-application.component';
 import {environment} from "../environments/environment";
 
 /**
@@ -62,7 +63,8 @@ import {environment} from "../environments/environment";
         ExportAsModule,
         SharedModuleModule,
         Angulartics2Module.forRoot(),
-        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+        BrowserAnimationsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})
 
     ],
     declarations: [
@@ -79,16 +81,16 @@ import {environment} from "../environments/environment";
         // ValidationApplicationComponent
 
 
-  ],
-  providers: [{
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  },
+    ],
+    providers: [{
+        provide: LocationStrategy,
+        useClass: HashLocationStrategy
+    },
 
-    ApiSettings,
-    UserService,
-  ],
-  bootstrap: [AppComponent]
+        ApiSettings,
+        UserService,
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
