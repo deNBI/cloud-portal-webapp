@@ -14,7 +14,6 @@ import {ExportAsModule} from 'ngx-export-as';
 import {PopoverModule} from 'ngx-popover';
 import {ApiSettings} from './api-connector/api-settings.service';
 import {UserService} from './api-connector/user.service';
-import {UpdateService} from "./update.service";
 // Routing Module
 import {AppRoutingModule} from './app.routing';
 import {ConsentInfoComponent} from './consent-info.component';
@@ -53,6 +52,7 @@ import {environment} from "../environments/environment";
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
+        MatSnackBarModule,
         BsDropdownModule.forRoot(),
         TabsModule.forRoot(),
         ChartsModule,
