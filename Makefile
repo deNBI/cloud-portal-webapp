@@ -38,13 +38,12 @@ env: is_line_in_hosts check_nodeenv .nodeenvrc # Creates an env folder if not al
 	then echo Env folder does not exist. Creating env folder.; \
 	nodeenv -C .nodeenvrc env; \
 	elif [ $$(find env/src/ -maxdepth 1 -name "*$(NODEENVRC_VERSION)*" | wc -l) -eq 0 ]; \
-	#[ $$(find env/src/ -maxdepth 1 -name "*$(NODEENVRC_VERSION)*" | wc -l) -eq 0 ]; \
 	then echo Env folder found, but node version is not the same as in the .nodeenvrc.; \
 	echo Removing env folder and creating anew.; \
 	$(MAKE) clean_env; \
 	nodeenv -C .nodeenvrc env; \
 	else echo Env folder found and node version same as in the .nodeenvrc.; \
-	fi; fi
+	fi
 	
 clean_env: ## Removes the env folder
 	@echo ---Removing env folder:; \
