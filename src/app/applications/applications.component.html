@@ -38,11 +38,15 @@
                                 <tr>
                                     <td>  <span *ngIf="application.OpenStackProject"
                                                 style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944"
-                                                class="badge">
+                                                class="badge"
+                                                data-toggle="tooltip" data-placement="auto"
+                                                title="This is an Openstack project">
                                     <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                                         <span *ngIf="!application.OpenStackProject"
-                                              style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge">
+                                              style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
+                                              data-toggle="tooltip" data-placement="auto"
+                                              title="This is a Simple VM project">
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span></td>
                                     <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***
@@ -311,22 +315,30 @@
                                         <td>
                                               <span *ngIf="application.OpenStackProject"
                                                     style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944"
-                                                    class="badge">
+                                                    class="badge"
+                                              data-toggle="tooltip" data-placement="auto"
+                                              title="This is an Openstack project">
                                     <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                                             <span *ngIf="!application.OpenStackProject"
-                                                  style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge">
+                                                  style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
+                                                  data-toggle="tooltip" data-placement="auto"
+                                                  title="This is a Simple VM project">
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                                           <span *ngIf="application.PIApproved"
                                                 style="margin: 2px"
-                                                class="badge">
+                                                class="badge"
+                                                data-toggle="tooltip" data-placement="auto"
+                                                title="This application was approved by a PI">
                                     <span class="icon icon-yes_pi" style="font-size: 2em">
                                       <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span>
                                     </span>
                                   </span>
                                           <span *ngIf="!application.PIApproved"
-                                                style="margin: 2px" class="badge">
+                                                style="margin: 2px" class="badge"
+                                                data-toggle="tooltip" data-placement="auto"
+                                                title="This application is yet not approved by a PI">
                                     <span class="icon icon-no_pi" style="font-size: 2em">
                                       <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span>
                                     </span>
@@ -756,11 +768,15 @@
                                     <tr [ngStyle]="***REMOVED***'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)***REMOVED***">
                                         <td>  <span *ngIf="application.OpenStackProject"
                                                     style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944"
-                                                    class="badge">
+                                                    class="badge"
+                                                    data-toggle="tooltip" data-placement="auto"
+                                                    title="This is an Openstack project">
                                     <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                                             <span *ngIf="!application.OpenStackProject"
-                                                  style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge">
+                                                  style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
+                                                  data-toggle="tooltip" data-placement="auto"
+                                                  title="This is a Simple VM project">
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span></td>
                                         <td>***REMOVED******REMOVED*** application.Name ***REMOVED******REMOVED***
