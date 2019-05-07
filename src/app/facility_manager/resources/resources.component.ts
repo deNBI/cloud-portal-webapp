@@ -85,15 +85,23 @@ export class ResourcesComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
     addCoreFactor(cores: string | number, factor: string | number): void ***REMOVED***
-        this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor).subscribe(res => ***REMOVED***
-            this.coreFactors = res;
-        ***REMOVED***)
+        if (cores && factor) ***REMOVED***
+            let re = /\,/gi;
+            factor = factor.toString().replace(re, '.');
+            this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor).subscribe(res => ***REMOVED***
+                this.coreFactors = res;
+            ***REMOVED***)
+        ***REMOVED***
     ***REMOVED***
 
     addRamFactor(ram: string | number, factor: string | number): void ***REMOVED***
-        this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor).subscribe(res => ***REMOVED***
-            this.ramFactors = res;
-        ***REMOVED***)
+        if (ram && factor) ***REMOVED***
+            let re = /\,/gi;
+            factor = factor.toString().replace(re, '.');
+            this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor).subscribe(res => ***REMOVED***
+                this.ramFactors = res;
+            ***REMOVED***)
+        ***REMOVED***
     ***REMOVED***
 
     public tableToPDF(): void ***REMOVED***
