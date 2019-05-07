@@ -85,15 +85,23 @@ export class ResourcesComponent implements OnInit {
     }
 
     addCoreFactor(cores: string | number, factor: string | number): void {
-        this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor).subscribe(res => {
-            this.coreFactors = res;
-        })
+        if (cores && factor) {
+            let re = /\,/gi;
+            factor = factor.toString().replace(re, '.');
+            this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor).subscribe(res => {
+                this.coreFactors = res;
+            })
+        }
     }
 
     addRamFactor(ram: string | number, factor: string | number): void {
-        this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor).subscribe(res => {
-            this.ramFactors = res;
-        })
+        if (ram && factor) {
+            let re = /\,/gi;
+            factor = factor.toString().replace(re, '.');
+            this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor).subscribe(res => {
+                this.ramFactors = res;
+            })
+        }
     }
 
     public tableToPDF(): void {
