@@ -6,6 +6,7 @@ import {Angulartics2Piwik} from 'angulartics2/piwik';
 import {ApplicationRef} from '@angular/core';
 import {concat, interval} from "rxjs";
 import {first} from 'rxjs/operators';
+import {environment} from "../environments/environment";
 
 /**
  * App component.
@@ -28,15 +29,17 @@ export class AppComponent implements AfterViewInit, OnInit {
 
 
     constructor(private appRef: ApplicationRef, private swUpdate: SwUpdate, private angulartics2Piwik: Angulartics2Piwik) {
-        const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
-        const intervalTime = interval(60 * 1000);
-        const checkUpdatesInIntervall = concat(isStable, intervalTime);
-        checkUpdatesInIntervall.subscribe(() => this.swUpdate.checkForUpdate().then(() => {
-            this.swUpdate.available.subscribe(evt => {
-                this.openNotificationModal()
+        if (environment.production) {
+            const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
+            const intervalTime = interval(60 * 1000);
+            const checkUpdatesInIntervall = concat(isStable, intervalTime);
+            checkUpdatesInIntervall.subscribe(() => this.swUpdate.checkForUpdate().then(() => {
+                this.swUpdate.available.subscribe(evt => {
+                    this.openNotificationModal()
 
-            })
-        }))
+                })
+            }))
+        }
 
 
     }

@@ -37,6 +37,7 @@ import {MatSnackBarModule} from "@angular/material";
 import {Angulartics2Module} from 'angulartics2';
 import {ValidationApplicationComponent} from './validation-application/validation-application.component';
 import {environment} from "../environments/environment";
+import {CookieService} from 'ngx-cookie-service';
 
 /**
  * App module.
@@ -89,6 +90,7 @@ import {environment} from "../environments/environment";
 
         ApiSettings,
         UserService,
+        CookieService,
     ],
     bootstrap: [AppComponent]
 })
