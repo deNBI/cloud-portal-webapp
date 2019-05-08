@@ -6,6 +6,7 @@ import ***REMOVED***Angulartics2Piwik***REMOVED*** from 'angulartics2/piwik';
 import ***REMOVED***ApplicationRef***REMOVED*** from '@angular/core';
 import ***REMOVED***concat, interval***REMOVED*** from "rxjs";
 import ***REMOVED***first***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***environment***REMOVED*** from "../environments/environment";
 
 /**
  * App component.
@@ -28,15 +29,17 @@ export class AppComponent implements AfterViewInit, OnInit ***REMOVED***
 
 
     constructor(private appRef: ApplicationRef, private swUpdate: SwUpdate, private angulartics2Piwik: Angulartics2Piwik) ***REMOVED***
-        const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
-        const intervalTime = interval(60 * 1000);
-        const checkUpdatesInIntervall = concat(isStable, intervalTime);
-        checkUpdatesInIntervall.subscribe(() => this.swUpdate.checkForUpdate().then(() => ***REMOVED***
-            this.swUpdate.available.subscribe(evt => ***REMOVED***
-                this.openNotificationModal()
+        if (environment.production) ***REMOVED***
+            const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
+            const intervalTime = interval(60 * 1000);
+            const checkUpdatesInIntervall = concat(isStable, intervalTime);
+            checkUpdatesInIntervall.subscribe(() => this.swUpdate.checkForUpdate().then(() => ***REMOVED***
+                this.swUpdate.available.subscribe(evt => ***REMOVED***
+                    this.openNotificationModal()
 
-            ***REMOVED***)
-        ***REMOVED***))
+                ***REMOVED***)
+            ***REMOVED***))
+        ***REMOVED***
 
 
     ***REMOVED***

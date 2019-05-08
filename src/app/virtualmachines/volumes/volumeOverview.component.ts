@@ -192,7 +192,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         if (instance_id) ***REMOVED***
             this.volume_action_status = this.volumeActionStates.DETACHING_VOLUME;
             this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe((res: IResponseTemplate) => ***REMOVED***
-                console.log(res.value)
                 if (res.value === 'deleted') ***REMOVED***
                     this.volume_action_status = this.volumeActionStates.WAITING;
                 ***REMOVED***
@@ -209,8 +208,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
         ***REMOVED*** else ***REMOVED***
             this.vmService.deleteVolume(volume_id).subscribe((result: IResponseTemplate) => ***REMOVED***
-                console.log(result)
-                console.log(result.value === 'deleted')
                 if (result.value === 'deleted') ***REMOVED***
                     this.volume_action_status = this.volumeActionStates.SUCCESS;
                 ***REMOVED*** else ***REMOVED***

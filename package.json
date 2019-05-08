@@ -57,6 +57,7 @@
     "ng2-cookies": "^1.0.12",
     "ng4-click-outside": "^1.0.1",
     "ngx-bootstrap": "^3.2.0",
+    "ngx-cookie-service": "^2.1.0",
     "ngx-export-as": "^1.2.2",
     "ngx-modialog": "^5.0.1",
     "ngx-perfect-scrollbar": "^7.2.1",

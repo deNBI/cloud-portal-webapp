@@ -37,6 +37,7 @@ import ***REMOVED***MatSnackBarModule***REMOVED*** from "@angular/material";
 import ***REMOVED***Angulartics2Module***REMOVED*** from 'angulartics2';
 import ***REMOVED***ValidationApplicationComponent***REMOVED*** from './validation-application/validation-application.component';
 import ***REMOVED***environment***REMOVED*** from "../environments/environment";
+import ***REMOVED***CookieService***REMOVED*** from 'ngx-cookie-service';
 
 /**
  * App module.
@@ -89,6 +90,7 @@ import ***REMOVED***environment***REMOVED*** from "../environments/environment";
 
         ApiSettings,
         UserService,
+        CookieService,
     ],
     bootstrap: [AppComponent]
 ***REMOVED***)
