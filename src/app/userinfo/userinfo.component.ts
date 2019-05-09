@@ -151,9 +151,4 @@ export class UserInfoComponent implements OnInit {
   joinFreemium(): void {
     this.groupService.addMemberToFreemium().subscribe();
   }
-
-
-  throwError() {
-    throw "message";
-  }
 }
