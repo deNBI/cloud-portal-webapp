@@ -343,7 +343,7 @@ export class Application ***REMOVED***
     this._PerunId = value;
   ***REMOVED***
 
-  
+
 
   get BMBFProject(): string ***REMOVED***
     return this._BMBFProject;

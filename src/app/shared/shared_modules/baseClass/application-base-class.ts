@@ -211,6 +211,8 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
     newApp.ElixirProject = aj['project_application_elixir_project'];
     newApp.Comment = aj['project_application_comment'];
     newApp.PerunId = aj['project_application_perun_id'];
+    newApp.PIApproved = aj['project_application_pi_approved'];
+
     if (aj['project_application_pi']) ***REMOVED***
       const firstName: string = (aj['project_application_pi'])['firstName'];
       const lastName: string = (aj['project_application_pi'])['lastName'];

@@ -498,110 +498,17 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
    * @param application_id
    * @param compute_center
    */
-  public createOpenStackProjectGroup(app: Application,
+  public createOpenStackProjectGroup(application: Application,
                                      compute_center: string): void ***REMOVED***
-    // get memeber id in order to add the user later as the new member and manager of the group
-    let manager_member_id: string;
-    let manager_member_user_id: string;
-    let new_group_id: string;
-    const manager_elixir_id: string = app.UserEmail;
-    const description: string = app.Description;
-    const application_id: string = <string>app.Id;
-    const pi_elixir_id: string = app.PIElixir;
-    const name: string = app.Shortname;
-    //todo refactor
-    forkJoin(
-      this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id),
-      this.userservice.getMemberByExtSourceNameAndExtLogin(pi_elixir_id)).subscribe(
-      res => ***REMOVED***
-        const manager_member = res[0];
-        manager_member_id = manager_member['id'];
-        manager_member_user_id = manager_member['userId'];
-        const pi = res[1];
-        const pi_member_id: string = pi['id'];
-        const pi_member_user_id: string = pi['userId'];
-        this.groupservice.createGroup(name, description).subscribe((group: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
-          new_group_id = group['id'];
-          if (manager_elixir_id !== pi_elixir_id) ***REMOVED***
-            forkJoin(
-              this.groupservice.addMember(new_group_id, pi_member_id, compute_center),
-              this.groupservice.addAdmin(new_group_id, pi_member_user_id, compute_center)).subscribe()
-          ***REMOVED***
-          forkJoin(
-            this.groupservice.addMember(new_group_id, manager_member_id, compute_center),
-            this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center)
-          ).subscribe(() => ***REMOVED***
-            this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => ***REMOVED***
-              this.groupservice.assignGroupToResource(new_group_id, compute_center).subscribe(() => ***REMOVED***
-                if (compute_center !== 'undefined') ***REMOVED***
-                  this.applicationstatusservice.setApplicationStatus(
-                    application_id,
-                    this.application_states.WAIT_FOR_CONFIRMATION)
-                    .subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
-                        if (result['Error']) ***REMOVED***
-                          this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+    this.groupservice.createGroupOpenStack(application.Id, compute_center).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
+        if (result['Error']) ***REMOVED***
+          this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
-                        ***REMOVED*** else ***REMOVED***
-                          this.updateNotificationModal('Success', 'The new project was created', true, 'success');
-                        ***REMOVED***
-                        for (const app of this.user_applications) ***REMOVED***
-
-                          if (app.Id.toString() === application_id.toString()) ***REMOVED***
-                            this.getUserApplication(app);
-                            break;
-
-                          ***REMOVED***
-
-                        ***REMOVED***
-                        for (const app of this.all_applications) ***REMOVED***
-                          if (app.Id.toString() === application_id.toString()) ***REMOVED***
-                            this.getApplication(app);
-                            break;
-
-                          ***REMOVED***
-                        ***REMOVED***
-                      ***REMOVED***
-                    )
-                ***REMOVED*** else ***REMOVED***
-                  this.groupservice.setPerunGroupStatus(
-                    new_group_id,
-                    this.application_states.APPROVED.toString()).subscribe(() => ***REMOVED***
-                    this.applicationstatusservice.setApplicationStatus(
-                      application_id,
-                      this.application_states.APPROVED.toString())
-                      .subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
-                        if (result['Error']) ***REMOVED***
-                          this.updateNotificationModal('Failed', result['Error'], true, 'danger');
-
-                        ***REMOVED*** else ***REMOVED***
-                          this.updateNotificationModal('Success', 'The new project was created', true, 'success');
-                        ***REMOVED***
-                        for (const appl of this.user_applications) ***REMOVED***
-                          if (appl.Id.toString() === application_id.toString()) ***REMOVED***
-                            this.getUserApplication(appl);
-                            break;
-
-                          ***REMOVED***
-                        ***REMOVED***
-                        for (const app of this.all_applications) ***REMOVED***
-                          if (app.Id.toString() === application_id.toString()) ***REMOVED***
-                            this.getApplication(app);
-                            break;
-
-                          ***REMOVED***
-
-                        ***REMOVED***
-                      ***REMOVED***)
-
-                  ***REMOVED***)
-
-                ***REMOVED***
-              ***REMOVED***);
-            ***REMOVED***)
-
-          ***REMOVED***)
-
-        ***REMOVED***)
+        ***REMOVED*** else ***REMOVED***
+          this.updateNotificationModal('Success', 'The new project was created', true, 'success');
+        ***REMOVED***
+        this.getUserApplication(application);
+        this.getApplication(application);
       ***REMOVED***,
       () => ***REMOVED***
         this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
