@@ -3,9 +3,31 @@
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
 @import "node_modules/bootstrap/scss/modal";
+@import url('https://fonts.googleapis.com/css?family=Raleway'); //Raleway-Font as used on landing-page
+
+//de.NBI-Colors:
+
+$deNBI_cyan: #00ADEF;
+$deNBI_blue: #005AA9;
+$deNBI_magenta: #EB008B;
+$deNBI_darkgrey: #58595B;
+$deNBI_lightgrey: #939496;
+$deNBI_white: #FFFFFF;
+$deNBI_black: #000000;
+
+//project-type-colors
+
+$openstackcolour: #ED1944;
+$simplevmcolour: #00ADEF;
+
+
 
 .btn{
   cursor: pointer;
+}
+
+.btn-primary {
+    background-color: $deNBI_cyan;
 }
 
 header {
@@ -33,8 +55,15 @@ header {
   margin: 0;
 }
 
-$openstackcolour: #ED1944;
-$simplevmcolour: #00ADEF;
+
+.app{
+  background-color: $deNBI_white;
+
+}
+.app-body {
+  color: $deNBI_darkgrey !important;
+  font-family: 'Raleway', sans-serif;
+}
 
 .btn-openstack {
     @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour,5%), lighten($openstackcolour, 10%), darken($openstackcolour,30%));
