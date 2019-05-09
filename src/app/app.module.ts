@@ -35,7 +35,8 @@ import ***REMOVED***BrowserAnimationsModule***REMOVED*** from '@angular/platform
 import ***REMOVED***ServiceWorkerModule***REMOVED*** from '@angular/service-worker';
 import ***REMOVED***MatSnackBarModule***REMOVED*** from "@angular/material";
 import ***REMOVED***Angulartics2Module***REMOVED*** from 'angulartics2';
-import ***REMOVED***ValidationApplicationComponent***REMOVED*** from './validation-application/validation-application.component';
+import ***REMOVED*** ErrorHandler ***REMOVED*** from '@angular/core';
+import ***REMOVED***UncaughtExceptionHandler***REMOVED*** from './error-handler/UncaughtExceptionHandler.service';
 import ***REMOVED***environment***REMOVED*** from "../environments/environment";
 import ***REMOVED***CookieService***REMOVED*** from 'ngx-cookie-service';
 
@@ -78,16 +79,17 @@ import ***REMOVED***CookieService***REMOVED*** from 'ngx-cookie-service';
         SidebarToggleDirective,
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
-        SidebarOffCanvasCloseDirective,
-        // ValidationApplicationComponent
-
-
+        SidebarOffCanvasCloseDirective
     ],
-    providers: [***REMOVED***
+    providers: [
+      ***REMOVED***
         provide: LocationStrategy,
         useClass: HashLocationStrategy
-    ***REMOVED***,
-
+      ***REMOVED***,
+      ***REMOVED***
+        provide: ErrorHandler,
+        useClass: UncaughtExceptionHandler
+      ***REMOVED***,
         ApiSettings,
         UserService,
         CookieService,
