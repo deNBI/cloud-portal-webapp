@@ -5,7 +5,7 @@ import {AppModule} from './app/app.module';
 import {environment} from './environments/environment';
 
 if (environment.production) {
-    enableProdMode();
+  enableProdMode();
 }
 
 // Constructing tracking code
@@ -23,5 +23,12 @@ matomoScript.innerHTML =
   '  })();';
 
 document.getElementsByTagName('head')[0].appendChild(matomoScript);
+platformBrowserDynamic().bootstrapModule(AppModule).then(() => {
+  if ('serviceWorker' in navigator && environment.production) {
+    navigator.serviceWorker.register('./ngsw-worker.js');
+  }
+});
 
-platformBrowserDynamic().bootstrapModule(AppModule);
+
+
+

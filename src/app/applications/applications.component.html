@@ -318,6 +318,19 @@
                                                   style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge">
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span>
+                                          <span *ngIf="application.PIApproved"
+                                                style="margin: 2px"
+                                                class="badge">
+                                    <span class="icon icon-yes_pi" style="font-size: 2em">
+                                      <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span>
+                                    </span>
+                                  </span>
+                                          <span *ngIf="!application.PIApproved"
+                                                style="margin: 2px" class="badge">
+                                    <span class="icon icon-no_pi" style="font-size: 2em">
+                                      <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span>
+                                    </span>
+                                  </span>
                                         </td>
                                         <td>{{ application.Name }}
                                         </td>
@@ -376,7 +389,6 @@
                                                         style="margin: auto 2.5px"
                                                         (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
-                                                        [disabled]="!application.PIApproved"
                                                         type="button"
                                                         class="btn btn-success">
                                                     <i class="fa fa-check"></i>&nbsp;
@@ -389,7 +401,6 @@
                                                         style="margin: auto 2.5px"
                                                         (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
-                                                        [disabled]="!application.PIApproved"
                                                         type="button"
                                                         class="btn btn-success">
                                                     <i class="fa fa-check"></i>&nbsp;

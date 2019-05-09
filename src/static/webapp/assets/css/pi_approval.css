@@ -1,0 +1,145 @@
+@font-face {
+  font-family: 'pi_approval';
+  src:  url('../fonts/pi_approval.eot?1zk6r2');
+  src:  url('../fonts/pi_approval.eot?1zk6r2#iefix') format('embedded-opentype'),
+  url('../fonts/pi_approval.ttf?1zk6r2') format('truetype'),
+  url('../fonts/pi_approval.woff?1zk6r2') format('woff'),
+  url('../fonts/pi_approval.svg?1zk6r2#pi_approval') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.icon-yes_pi .path1:before {
+  content: "\e900";
+  color: rgb(0, 150, 64);
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'pi_approval' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-yes_pi .path2:before {
+  content: "\e901";
+  margin-left: -1.623046875em;
+  color: rgb(0, 150, 64);
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'pi_approval' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-yes_pi .path3:before {
+  content: "\e902";
+  margin-left: -1.623046875em;
+  color: rgb(0, 150, 64);
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'pi_approval' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-yes_pi .path4:before {
+  content: "\e903";
+  margin-left: -1.623046875em;
+  color: rgb(255, 255, 255);
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'pi_approval' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-no_pi .path1:before {
+  content: "\e904";
+  color: rgb(227, 6, 19);
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'pi_approval' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-no_pi .path2:before {
+  content: "\e905";
+  margin-left: -1.623046875em;
+  color: rgb(227, 6, 19);
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'pi_approval' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-no_pi .path3:before {
+  content: "\e906";
+  margin-left: -1.623046875em;
+  color: rgb(227, 6, 19);
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'pi_approval' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-no_pi .path4:before {
+  content: "\e907";
+  margin-left: -1.623046875em;
+  color: rgb(255, 255, 255);
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'pi_approval' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
