@@ -3,6 +3,7 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '
 import {Observable} from 'rxjs';
 import {environment} from '../environments/environment';
 import {UserService} from './api-connector/user.service';
+import {CookieService} from 'ngx-cookie-service';
 
 /**
  * Guard which checks if the user is member of the vo.
@@ -10,12 +11,18 @@ import {UserService} from './api-connector/user.service';
 @Injectable()
 export class MemberGuardService implements CanActivate {
 
-    constructor(private router: Router, private userservice: UserService) {
+    constructor(private cookieService: CookieService, private router: Router, private userservice: UserService) {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        const cookieValue = this.cookieService.get('redirect_after_login')
+
         return new Promise((resolve, reject) => {
-            this.userservice.getLoggedUser().toPromise()
+            let redirect_url = state.url
+            if (cookieValue) {
+                redirect_url = null;
+            }
+            this.userservice.getLoggedUserWithRedirect(redirect_url).toPromise()
                 .then((result) => {
 
                     const res = result;
@@ -29,6 +36,15 @@ export class MemberGuardService implements CanActivate {
                         this.router.navigate(['/registration-info']);
                         resolve(false);
 
+                    }
+
+                    if (cookieValue) {
+                        this.cookieService.delete('redirect_after_login')
+                        let val = cookieValue;
+                        val = val.substring(2);
+                        val = val.substring(0, val.length - 1);
+                        this.router.navigate([val]);
+                        resolve(true);
                     }
 
                     return resolve(true);
