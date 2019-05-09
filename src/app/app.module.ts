@@ -6,7 +6,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {AppComponent} from './app.component';
 
-import {HttpClientModule, HttpHeaders} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {ChartsModule} from 'ng2-charts/ng2-charts';
 import {ModalModule} from 'ngx-bootstrap';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
@@ -23,44 +23,20 @@ import {
   AppBreadcrumbModule,
   AppHeaderModule,
   AppFooterModule,
-  AppSidebarModule,
+  AppSidebarModule
 } from '@coreui/angular';
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {RegistrationInfoComponent} from './registration-info.component';
 import {AsideToggleDirective} from './shared/aside.directive';
-import {ApplicationBaseClass} from "./shared/shared_modules/baseClass/application-base-class";
-import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
+import {SharedModuleModule} from './shared/shared_modules/shared-module.module';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {
     MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
     SidebarToggleDirective} from './shared/sidebar.directive';
 import {Angulartics2Module} from 'angulartics2';
-import { JL } from 'jsnlog';
 import { ErrorHandler } from '@angular/core';
-import {Cookie} from 'ng2-cookies/ng2-cookies';
-
-
-export class UncaughtExceptionHandler implements ErrorHandler {
-  handleError(error: any) {
-    JL().fatalException('Uncaught Exception', error);
-  }
-}
-
-const beforeSendHeader = function (xhr) {
-  xhr.setRequestHeader('X-CSRFToken', Cookie.get('csrftoken'));
-  xhr.withCredentials = true;
-};
-
-const appender = JL.createAjaxAppender('default appender2');
-appender.setOptions({
-  beforeSend: beforeSendHeader,
-  url: `${ApiSettings.getApiBaseURL()}project_applications/jsnlog/`
-});
-
-JL().setOptions({
-  appenders: [appender]
-              });
+import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler.service';
 
 /**
  * App module.
@@ -97,14 +73,16 @@ JL().setOptions({
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
         SidebarOffCanvasCloseDirective
-        // ValidationApplicationComponent
     ],
-    providers: [{
+    providers: [
+      {
         provide: LocationStrategy,
         useClass: HashLocationStrategy
-    },
-      { provide: ErrorHandler, useClass: UncaughtExceptionHandler },
-
+      },
+      {
+        provide: ErrorHandler,
+        useClass: UncaughtExceptionHandler
+      },
         ApiSettings,
         UserService
     ],
