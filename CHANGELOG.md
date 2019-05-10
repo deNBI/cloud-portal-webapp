@@ -1,5 +1,16 @@
-##  (2019-05-02)
+##  (2019-05-10)
 
+
+#### Bug Fixes
+* **makefile:**  remove unnecessary fi ([cee3c715](cee3c715))
+
+#### Features
+
+* **Login:** if user wasn't logged in and requests a site ,he will be redirectet to the site after login ([1ff7a05a](1ff7a05a))
+
+
+
+##  (2019-05-02)
 
 #### Bug Fixes
 
