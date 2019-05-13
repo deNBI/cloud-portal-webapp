@@ -3,15 +3,15 @@ NODEENV_VERSION = $(shell nodeenv --version | egrep ^[0-9]*)
 NODEENVRC_VERSION = $(shell egrep -o [0-9].* .nodeenvrc)
 
 
-default: env node_modules ## Default set-up of the cloud-portal-webapp
+default: env node_modules ## Default set-up of the cloud-portal-webapp.
 
-new_environment: clean_env default ## Same as default, but removes env folder beforehand
+new_environment: clean_env default ## Same as default, but removes env folder beforehand!
 
-new_node_modules: clean_node_modules default ## Same es default, but removes node_modules folder beforehand
+new_node_modules: clean_node_modules default ## Same es default, but removes node_modules folder beforehand!
 
-new_env_and_node: clean_env clean_node_modules default ## Same as default, but removes env and node_modules folders beforehand
+new_env_and_node: clean_env clean_node_modules default ## Same as default, but removes env and node_modules folders beforehand!
 
-serve: default ng_serve ## Same as default, but serves the webapp in the end
+serve: default ng_serve ## Same as default, but serves the webapp in the end.
 
 is_line_in_hosts: # Checks if the 127.0.0.1 portal-dev.denbi.de is in /etc/hosts
 	@echo ---Checking your /etc/hosts file:
@@ -29,7 +29,10 @@ ifeq ($(NODEENV_VERSION),)
 	$(warning Nodeenv was not found.)
 	$(error Please install Nodeenv.)
 else
-	@echo Your Nodeenv version is $(NODEENV_VERSION)
+	@echo Your Nodeenv version is $(NODEENV_VERSION); \
+	if [ ! -n $$(nodeenv --version | egrep ^[1]*) ]; \
+	then echo Please update your Nodeenv to the newest update!; \
+	fi
 endif
 
 env: is_line_in_hosts check_nodeenv .nodeenvrc # Creates an env folder if not already existing. Also removes and creates a new env folder if 
@@ -39,9 +42,17 @@ env: is_line_in_hosts check_nodeenv .nodeenvrc # Creates an env folder if not al
 	nodeenv -C .nodeenvrc env; \
 	elif [ $$(find env/src/ -maxdepth 1 -name "*$(NODEENVRC_VERSION)*" | wc -l) -eq 0 ]; \
 	then echo Env folder found, but node version is not the same as in the .nodeenvrc.; \
-	echo Removing env folder and creating anew.; \
-	$(MAKE) clean_env; \
-	nodeenv -C .nodeenvrc env; \
+	while [ -z "$$CONTINUE" ]; do \
+        read -r -p "Do you want to remove the env Folder (rm -R env) and recreate with the node version set in .nodeenvrc? [y/n]" CONTINUE; \
+    done ; \
+	    if [ $$CONTINUE = "y" ] || [ $$CONTINUE = "Y" ]; \
+	    then make clean_env; \
+      nodeenv -C .nodeenvrc env; \
+      . env/bin/activate; \
+      echo Rebuilding node-sass; \
+      npm rebuild node-sass; \
+		else echo Not deleting. It is recommended to use the version set in the .nodeenvrc.; \
+		fi; \
 	else echo Env folder found and node version same as in the .nodeenvrc.; \
 	fi
 	
@@ -59,6 +70,7 @@ node_modules: package.json # Activates the virtual environment and creates node_
 	@echo ---Installing dependencies from package.json:; \
 	. env/bin/activate; \
 	npm install; \
+	npm install -g @angular/cli
 
 ng_serve: # Activates the env environment and serves the angular webapp
 	@ echo ---Starting Webapp; \
