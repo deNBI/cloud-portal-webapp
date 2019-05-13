@@ -322,7 +322,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => {
       if (result.value) {
 
-        this.selectedProjectDiskspaceMax = result['Diskspace'];
+        this.selectedProjectDiskspaceMax = <number>result.value;
 
       } else {
         this.selectedProjectDiskspaceMax = 0;
@@ -332,7 +332,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => {
       if (result.value) {
 
-        this.selectedProjectDiskspaceUsed = result['Diskspace'];
+        this.selectedProjectDiskspaceUsed = <number>result.value;
       } else {
         this.selectedProjectDiskspaceUsed = 0;
       }
@@ -348,14 +348,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   getSelectedProjectVolumes(): void {
     this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => {
       if (result.value) {
-        this.selectedProjectVolumesMax = result['VolumeCounter'];
+        this.selectedProjectVolumesMax = <number>result.value;
       } else {
         this.selectedProjectVolumesMax = 0;
       }
     });
     this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => {
       if (result.value) {
-        this.selectedProjectVolumesUsed = result['UsedVolumes'];
+        this.selectedProjectVolumesUsed = <number>result.value;
       } else {
 
         this.selectedProjectVolumesUsed = 0;
