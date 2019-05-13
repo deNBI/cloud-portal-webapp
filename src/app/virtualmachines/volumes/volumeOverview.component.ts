@@ -322,7 +322,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => ***REMOVED***
       if (result.value) ***REMOVED***
 
-        this.selectedProjectDiskspaceMax = result['Diskspace'];
+        this.selectedProjectDiskspaceMax = <number>result.value;
 
       ***REMOVED*** else ***REMOVED***
         this.selectedProjectDiskspaceMax = 0;
@@ -332,7 +332,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => ***REMOVED***
       if (result.value) ***REMOVED***
 
-        this.selectedProjectDiskspaceUsed = result['Diskspace'];
+        this.selectedProjectDiskspaceUsed = <number>result.value;
       ***REMOVED*** else ***REMOVED***
         this.selectedProjectDiskspaceUsed = 0;
       ***REMOVED***
@@ -348,14 +348,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   getSelectedProjectVolumes(): void ***REMOVED***
     this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => ***REMOVED***
       if (result.value) ***REMOVED***
-        this.selectedProjectVolumesMax = result['VolumeCounter'];
+        this.selectedProjectVolumesMax = <number>result.value;
       ***REMOVED*** else ***REMOVED***
         this.selectedProjectVolumesMax = 0;
       ***REMOVED***
     ***REMOVED***);
     this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => ***REMOVED***
       if (result.value) ***REMOVED***
-        this.selectedProjectVolumesUsed = result['UsedVolumes'];
+        this.selectedProjectVolumesUsed = <number>result.value;
       ***REMOVED*** else ***REMOVED***
 
         this.selectedProjectVolumesUsed = 0;
