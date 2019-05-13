@@ -33,7 +33,7 @@ appender.setOptions({
   beforeSend: beforeSendFunction,
   url: `${ApiSettings.getApiBaseURL()}jsnlog/log/`,
   batchSize: 30,
-  batchTimeout: 600000,
+  batchTimeout: 180000,
   maxBatchSize: 50,
   sendTimeout: 10000
                     });
