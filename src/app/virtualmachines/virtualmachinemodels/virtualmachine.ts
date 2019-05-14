@@ -6,131 +6,139 @@ import {Client} from '../clients/client.model';
  * Virtualmachine class.
  */
 export class VirtualMachine {
-    private _flavor: Flavor;
-    private _image: Image;
-    private _project: string;
-    private _status: string;
-    private _keyname: string;
-    private _name: string;
-    private _client: Client;
-    private _openstackid: string;
-    private _created_at: string;
-    private _stopped_at: string;
-    private _elixir_id: string;
-    private _username: string;
-    private _floating_ip: string;
-    private _ssh_command: string;
+  private _flavor: Flavor;
+  private _image: Image;
+  private _project: string;
+  private _status: string;
+  private _keyname: string;
+  private _name: string;
+  private _client: Client;
+  private _openstackid: string;
+  private _created_at: string;
+  private _stopped_at: string;
+  private _elixir_id: string;
+  private _username: string;
+  private _floating_ip: string;
+  private _ssh_command: string;
+  private _udp_command: string;
 
+  get udp_command(): string {
+    return this._udp_command;
+  }
 
-    get flavor(): Flavor {
-        return this._flavor;
-    }
+  set udp_command(value: string) {
+    this._udp_command = value;
+  }
 
-    set flavor(value: Flavor) {
-        this._flavor = value;
-    }
+  get flavor(): Flavor {
+    return this._flavor;
+  }
 
-    get image(): Image {
-        return this._image;
-    }
+  set flavor(value: Flavor) {
+    this._flavor = value;
+  }
 
-    set image(value: Image) {
-        this._image = value;
-    }
+  get image(): Image {
+    return this._image;
+  }
 
-    get project(): string {
-        return this._project;
-    }
+  set image(value: Image) {
+    this._image = value;
+  }
 
-    set project(value: string) {
-        this._project = value;
-    }
+  get project(): string {
+    return this._project;
+  }
 
-    get status(): string {
-        return this._status;
-    }
+  set project(value: string) {
+    this._project = value;
+  }
 
-    set status(value: string) {
-        this._status = value;
-    }
+  get status(): string {
+    return this._status;
+  }
 
-    get keyname(): string {
-        return this._keyname;
-    }
+  set status(value: string) {
+    this._status = value;
+  }
 
-    set keyname(value: string) {
-        this._keyname = value;
-    }
+  get keyname(): string {
+    return this._keyname;
+  }
 
-    get name(): string {
-        return this._name;
-    }
+  set keyname(value: string) {
+    this._keyname = value;
+  }
 
-    set name(value: string) {
-        this._name = value;
-    }
+  get name(): string {
+    return this._name;
+  }
 
-    get client(): Client {
-        return this._client;
-    }
+  set name(value: string) {
+    this._name = value;
+  }
 
-    set client(value: Client) {
-        this._client = value;
-    }
+  get client(): Client {
+    return this._client;
+  }
 
-    get openstackid(): string {
-        return this._openstackid;
-    }
+  set client(value: Client) {
+    this._client = value;
+  }
 
-    set openstackid(value: string) {
-        this._openstackid = value;
-    }
+  get openstackid(): string {
+    return this._openstackid;
+  }
 
-    get created_at(): string {
-        return this._created_at;
-    }
+  set openstackid(value: string) {
+    this._openstackid = value;
+  }
 
-    set created_at(value: string) {
-        this._created_at = value;
-    }
+  get created_at(): string {
+    return this._created_at;
+  }
 
-    get stopped_at(): string {
-        return this._stopped_at;
-    }
+  set created_at(value: string) {
+    this._created_at = value;
+  }
 
-    set stopped_at(value: string) {
-        this._stopped_at = value;
-    }
+  get stopped_at(): string {
+    return this._stopped_at;
+  }
 
-    get elixir_id(): string {
-        return this._elixir_id;
-    }
+  set stopped_at(value: string) {
+    this._stopped_at = value;
+  }
 
-    set elixir_id(value: string) {
-        this._elixir_id = value;
-    }
+  get elixir_id(): string {
+    return this._elixir_id;
+  }
 
-    get username(): string {
-        return this._username;
-    }
+  set elixir_id(value: string) {
+    this._elixir_id = value;
+  }
 
-    set username(value: string) {
-        this._username = value;
-    }
+  get username(): string {
+    return this._username;
+  }
 
-    get floating_ip(): string {
-        return this._floating_ip;
-    }
+  set username(value: string) {
+    this._username = value;
+  }
 
-    set floating_ip(value: string) {
-        this._floating_ip = value;
-    }
+  get floating_ip(): string {
+    return this._floating_ip;
+  }
 
-    get ssh_command(): string {
-        return this._ssh_command;
-    }
+  set floating_ip(value: string) {
+    this._floating_ip = value;
+  }
 
-    set ssh_command(value: string) {
-        this._ssh_command = value;
-    }
+  get ssh_command(): string {
+    return this._ssh_command;
+  }
+
+  set ssh_command(value: string) {
+    this._ssh_command = value;
+  }
 }
