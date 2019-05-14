@@ -123,7 +123,7 @@
                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
                         <button type="button" class="btn btn-secondary btn-block"
                                 style="white-space: normal; word-wrap: break-word;"
-                                (click)="how_to_connect=vm.ssh_command;infoModal.show()"> Show
+                                (click)="selectedVm=vm;infoModal.show()"> Show
                             Information
                         </button>
                     </td>
@@ -552,7 +552,24 @@
 
 
             <div class="modal-body">
-                <pre><code>***REMOVED******REMOVED***how_to_connect***REMOVED******REMOVED***</code></pre>
+                 <div class="btn-group-vertical">
+          <button class="btn btn-primary" style="margin-bottom: 5px;"
+                  (click)="showSshCommando = !showSshCommando">
+            <span [hidden]="!showSshCommando">Show</span>
+            <span [hidden]="showSshCommando">Hide</span>
+            SSH Connection Info
+          </button>
+          <pre [hidden]="showSshCommando">***REMOVED******REMOVED***selectedVm?.ssh_command***REMOVED******REMOVED***</pre>
+
+          <button *ngIf="selectedVm?.udp_command" class="btn btn-primary" style="margin-bottom: 5px;"
+                  (click)="showUdpCommando = !showUdpCommando">
+            <span [hidden]="!showUdpCommando">Show</span>
+            <span [hidden]="showUdpCommando">Hide</span>
+            Mosh Connection Info
+          </button>
+          <pre *ngIf="selectedVm?.udp_command" [hidden]="showUdpCommando">***REMOVED******REMOVED***selectedVm?.udp_command***REMOVED******REMOVED***</pre>
+
+        </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="infoModal.hide();">Close
