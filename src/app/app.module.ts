@@ -18,31 +18,33 @@ import ***REMOVED***UserService***REMOVED*** from './api-connector/user.service'
 import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
 import ***REMOVED***ConsentInfoComponent***REMOVED*** from './consent-info.component';
 // Layouts
-import ***REMOVED***
-  AppAsideModule,
-  AppBreadcrumbModule,
-  AppHeaderModule,
-  AppFooterModule,
-  AppSidebarModule,
-***REMOVED*** from '@coreui/angular';
+import ***REMOVED***AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule***REMOVED*** from '@coreui/angular';
 import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout.component';
 import ***REMOVED***RegistrationInfoComponent***REMOVED*** from './registration-info.component';
 import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.directive';
-import ***REMOVED***ApplicationBaseClass***REMOVED*** from "./shared/shared_modules/baseClass/application-base-class";
 import ***REMOVED***SharedModuleModule***REMOVED*** from "./shared/shared_modules/shared-module.module";
 import ***REMOVED***PerfectScrollbarModule***REMOVED*** from 'ngx-perfect-scrollbar';
 import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
 import ***REMOVED***
-    MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
-    SidebarToggleDirective***REMOVED*** from './shared/sidebar.directive';
+    MobileSidebarToggleDirective,
+    SidebarMinimizeDirective,
+    SidebarOffCanvasCloseDirective,
+    SidebarToggleDirective
+***REMOVED*** from "./shared/sidebar.directive";
+import ***REMOVED***BrowserAnimationsModule***REMOVED*** from '@angular/platform-browser/animations';
+import ***REMOVED***ServiceWorkerModule***REMOVED*** from '@angular/service-worker';
+import ***REMOVED***MatSnackBarModule***REMOVED*** from "@angular/material";
 import ***REMOVED***Angulartics2Module***REMOVED*** from 'angulartics2';
-import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './validation-application/validation-application.component';
-
+import ***REMOVED*** ErrorHandler ***REMOVED*** from '@angular/core';
+import ***REMOVED***UncaughtExceptionHandler***REMOVED*** from './error-handler/UncaughtExceptionHandler.service';
+import ***REMOVED***environment***REMOVED*** from "../environments/environment";
+import ***REMOVED***CookieService***REMOVED*** from 'ngx-cookie-service';
 
 /**
  * App module.
  */
 @NgModule(***REMOVED***
+
     imports: [
         AppAsideModule,
         AppBreadcrumbModule.forRoot(),
@@ -53,6 +55,7 @@ import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './valida
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
+        MatSnackBarModule,
         BsDropdownModule.forRoot(),
         TabsModule.forRoot(),
         ChartsModule,
@@ -61,7 +64,10 @@ import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './valida
         PaginationModule.forRoot(),
         ExportAsModule,
         SharedModuleModule,
-        Angulartics2Module.forRoot()
+        Angulartics2Module.forRoot(),
+        BrowserAnimationsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', ***REMOVED***enabled: environment.production***REMOVED***)
+
     ],
     declarations: [
         AppComponent,
@@ -73,18 +79,20 @@ import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './valida
         SidebarToggleDirective,
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
-        SidebarOffCanvasCloseDirective,
-        // ValidationApplicationComponent
-
-
+        SidebarOffCanvasCloseDirective
     ],
-    providers: [***REMOVED***
+    providers: [
+      ***REMOVED***
         provide: LocationStrategy,
         useClass: HashLocationStrategy
-    ***REMOVED***,
-
+      ***REMOVED***,
+      ***REMOVED***
+        provide: ErrorHandler,
+        useClass: UncaughtExceptionHandler
+      ***REMOVED***,
         ApiSettings,
-        UserService
+        UserService,
+        CookieService,
     ],
     bootstrap: [AppComponent]
 ***REMOVED***)
