@@ -7,9 +7,13 @@
 
 >
     <ul class="nav navbar-nav ml-md-auto">
-        <li><strong class="text-muted" style="cursor: pointer;padding-right: 2pc" routerLinkActive="active"
+
+      <!--<cui-breadcrumb>
+
+      </cui-breadcrumb> -->
+      <!--<li><strong class="text-muted" style="cursor: pointer;padding-right: 2pc" routerLinkActive="active"
                     [routerLink]="['/userinfo']"
-        >{{login_name}}</strong></li>
+        >{{login_name}}</strong></li>-->
 
     </ul>
 </app-header>
@@ -176,9 +180,7 @@
           </ol>
           -->
 
-        <cui-breadcrumb>
 
-        </cui-breadcrumb>
 
         <div class="container-fluid">
             <router-outlet></router-outlet>
@@ -187,5 +189,5 @@
 </div>
 
 <app-footer>
-    <a href="https://cloud.denbi.de">de.NBI </a> &copy; {{ year }}
+    <a href="https://cloud.denbi.de">de.NBI&nbsp;</a> &copy; {{ year }}
 </app-footer>

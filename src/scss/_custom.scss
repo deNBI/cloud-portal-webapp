@@ -20,6 +20,48 @@ $deNBI_black: #000000;
 $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
 
+.app-footer
+{
+  background-color: $deNBI_white;
+  margin: 15px !important;
+  width: 200px;
+  left: 0px;
+  border-radius: 10px;
+  border-top: none !important;
+}
+
+.sidebar-fixed .app-header + .app-body .sidebar{
+  height: calc(100vh - 175px);
+  border: 20px;
+  border-radius: 10px;
+  top: 75px;
+  margin: 15px;
+}
+
+.app-header .navbar-brand
+{
+  width: 100%;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.app-header.navbar
+{
+  float: left;
+  position: fixed;
+  width: 200px;
+  left: 0px;
+}
+app-dashboard
+{
+  position: relative;
+}
+
+.header-fixed .app-header
+{
+  margin: 15px;
+  border-radius: 10px;
+}
 
 
 .btn{
@@ -30,8 +72,9 @@ $simplevmcolour: #00ADEF;
     background-color: $deNBI_cyan;
 }
 
-header {
-  color:red;
+h1 {
+  color: $deNBI_darkgrey;
+  text-align: center;
 }
 
 #header-help {
@@ -57,12 +100,8 @@ header {
 
 
 .app{
-  background-color: $deNBI_white;
+  background-color: #E3E3E3;
 
-}
-.app-body {
-  color: $deNBI_darkgrey !important;
-  font-family: 'Raleway', sans-serif;
 }
 
 .btn-openstack {
@@ -80,3 +119,82 @@ header {
 .btn-outline-simplevm {
     @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour,5%), $simplevmcolour);
 }
+// Google Font as on landing page.
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+.app-body
+{
+  color: $deNBI_darkgrey;
+  font-family: 'Raleway', sans-serif;
+}
+
+.app-footer
+{
+  font-family: 'Raleway', sans-serif;
+}
+
+.sidebar {
+  background-color: $deNBI_white;
+}
+
+.sidebar .nav-link:hover
+{
+  background-color: $deNBI_lightgrey;
+}
+
+.sidebar .nav-dropdown.open .nav-link:hover
+{
+  background-color: $deNBI_lightgrey;
+  color: $deNBI_white;
+}
+
+.sidebar .nav-dropdown.open .nav-link.active {
+  background-color: $deNBI_cyan;
+  color: $deNBI_white;
+}
+
+.sidebar .nav-item.nav-dropdown:hover
+{
+  background-color: $deNBI_lightgrey;
+  color: $deNBI_white;
+}
+
+.sidebar .nav-link.active {
+  background-color: $deNBI_cyan;
+  color: $deNBI_white;
+}
+
+.sidebar .nav-link.active .nav-icon
+{
+  color: $deNBI_white;
+}
+
+
+.sidebar .nav-link {
+  color: $deNBI_blue;
+}
+
+.sidebar .nav-title {
+  color: $deNBI_darkgrey;
+}
+
+.sidebar .nav-item .nav-dropdown-toggle{
+  color: $deNBI_blue;
+  background-color: $deNBI_white;
+}
+
+.sidebar .nav-item .nav-dropdown-toggle:hover{
+  color: $deNBI_white;
+  background-color: $deNBI_lightgrey;
+}
+
+.sidebar .nav-dropdown.open .nav-link{
+  color: $deNBI_blue;
+  background-color: $deNBI_white;
+}
+
+.sidebar .nav-dropdown-items .nav-item{
+  color: $deNBI_blue;
+  background-color: $deNBI_white;
+}
+
