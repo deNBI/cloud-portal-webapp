@@ -1,10 +1,10 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="col-lg-12">
-    <div><h4 *ngIf="selectedFacility">
+    <div class="col-md-12"><h1 *ngIf="selectedFacility">
 
         Applications Overview:
-        {{selectedFacility['Facility']}}</h4></div>
+        {{selectedFacility['Facility']}}</h1></div>
     <div style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
                                              (ngModelChange)="onChangeSelectedFacility($event)"
                                              class="form-control " name="selectedFacility">
