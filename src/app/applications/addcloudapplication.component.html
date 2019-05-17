@@ -13,7 +13,7 @@
             investigator of a
             german university or research facility will be accepted!
           </div>
-           <div class="alert alert-info">
+          <div class="alert alert-info">
             If you would like to learn more about Openstack,
             <a href="https://cloud.denbi.de/openstack/"
                target="_blank">Click Here!
@@ -112,6 +112,10 @@
                                 'is-valid': f.controls.project_application_description?.valid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched)
                                 ***REMOVED***"></textarea>
                 <span class="help-block">Describe what would you want to do in your project.</span>
+                <div class="alert alert-info">
+                  As more resources are requested we require a more detailed description!
+
+                </div>
               </div>
             </div>
 
@@ -181,7 +185,7 @@
                                type="number" min="0" step="1"
                                placeholder="0"
                                [ngModel]="0"
-                               #name = "ngModel"
+                               #name="ngModel"
                                appMinAmount="0" appInteger
                                [ngClass]="***REMOVED***
                                 'is-invalid': name?.invalid,
@@ -408,8 +412,10 @@
               <div class="col-11 alert-info">Only applications approved by a principal investigator
                 of a german university or research facility will be accepted.
                 You are able to enter an email address of your principal investigator whom
-                we will send an email, containing your name and email address and a link informing him about the requested resources,
-                where he will be able to approve this application.</div>
+                we will send an email, containing your name and email address and a link informing him about the
+                requested resources,
+                where he will be able to approve this application.
+              </div>
             </div>
             <div *ngIf="!project_application_pi_approved" class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator Email*
@@ -448,9 +454,10 @@
                          ngModel
                          #respCheck
                          required
-                         >
+                  >
                   <label class="form-check-label" for="project_application_responsibility">
-                    I hereby confirm that I am responsible for the project and any action of the project members in the de.NBI Cloud.
+                    I hereby confirm that I am responsible for the project and any action of the project members in the
+                    de.NBI Cloud.
                   </label>
                 </div>
               </div>
@@ -534,10 +541,12 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-***REMOVED******REMOVED*** acknowledgeModalType ***REMOVED******REMOVED***" role="alert">
-          The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the
+          The development and support of the cloud is possible above all through the funding of the cloud infrastructure
+          by the
           Federal Ministry of Education and Research (BMBF)!
           We would highly appreciate the following citation in your next publication(s):
-          This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure
+          This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics
+          Infrastructure
           (de.NBI)
           (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).
         </div>
