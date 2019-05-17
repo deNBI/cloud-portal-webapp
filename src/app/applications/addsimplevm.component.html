@@ -20,7 +20,8 @@
             temporarily.
           </div>
           <div class="alert alert-info">
-            If you would like to learn more about Simple VM, <a href="https://cloud.denbi.de/simplevm/" target="_blank">Click Here!</a>
+            If you would like to learn more about Simple VM, <a href="https://cloud.denbi.de/simplevm/" target="_blank">Click
+            Here!</a>
           </div>
 
           <div *ngIf="!production">
@@ -120,6 +121,10 @@
                                 'is-valid': f.controls.project_application_description?.valid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched)
                                 }"></textarea>
                 <span class="help-block">Describe what would you want to do in your project.</span>
+                <div class="alert alert-info">
+                  As more resources are requested we require a more detailed description!
+
+                </div>
               </div>
             </div>
 
@@ -163,7 +168,8 @@
                     <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
                          class="form-group row">
 
-                      <label class="col-md-4 form-control-label" for="project_application_{{f.name}}"><strong>{{f.name}}</strong><br>
+                      <label class="col-md-4 form-control-label"
+                             for="project_application_{{f.name}}"><strong>{{f.name}}</strong><br>
                         Number of cores: {{f.vcpus}}<br>
                         RAM: {{f.ram}} GB<br>
                         <span *ngIf="f.type.shortcut == 'GPU'">
@@ -390,8 +396,10 @@
               <div class="col-11 alert-info">Only applications approved by a principal investigator
                 of a german university or research facility will be accepted.
                 You are able to enter an email address of your principal investigator whom
-                we will send an email, containing your name and email address and a link informing him about the requested resources,
-                where he will be able to approve this application.</div>
+                we will send an email, containing your name and email address and a link informing him about the
+                requested resources,
+                where he will be able to approve this application.
+              </div>
             </div>
             <div *ngIf="!project_application_pi_approved" class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator Email*
@@ -433,7 +441,8 @@
                          required
                   >
                   <label class="form-check-label" for="project_application_responsibility">
-                    I hereby confirm that I am responsible for the project and any action of the project members in the de.NBI Cloud.
+                    I hereby confirm that I am responsible for the project and any action of the project members in the
+                    de.NBI Cloud.
                   </label>
                 </div>
               </div>
@@ -521,10 +530,12 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-{{ acknowledgeModalType }}" role="alert">
-          The development and support of the cloud is possible above all through the funding of the cloud infrastructure by the
+          The development and support of the cloud is possible above all through the funding of the cloud infrastructure
+          by the
           Federal Ministry of Education and Research (BMBF)!
           We would highly appreciate the following citation in your next publication(s):
-          This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics Infrastructure
+          This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics
+          Infrastructure
           (de.NBI)
           (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).
         </div>
