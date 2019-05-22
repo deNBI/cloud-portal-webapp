@@ -40,6 +40,9 @@ env: is_line_in_hosts check_nodeenv .nodeenvrc # Creates an env folder if not al
 	if ! test -d env; \
 	then echo Env folder does not exist. Creating env folder.; \
 	nodeenv -C .nodeenvrc env; \
+	. env/bin/activate; \
+    echo Rebuilding node-sass; \
+    npm rebuild node-sass; \
 	elif [ $$(find env/src/ -maxdepth 1 -name "*$(NODEENVRC_VERSION)*" | wc -l) -eq 0 ]; \
 	then echo Env folder found, but node version is not the same as in the .nodeenvrc.; \
 	while [ -z "$$CONTINUE" ]; do \
