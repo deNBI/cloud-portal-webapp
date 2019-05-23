@@ -180,10 +180,11 @@
                         <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
                           <td>Flavor: {{item.key}}</td>
                           <td>{{item.value.counter}}</td>
-                          <td *ngIf="application.Status =='modification requested' ">
-                                                            <span
-                                                              *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
-                                                                {{application.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}</span>
+                          <td  *ngIf="application.Status == 4">
+                                                            <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
+
+
+                                                                {{application.ApplicationExtension.RequestedFlavors[item.key].counter}}</span>
                             <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
                         </tr>
