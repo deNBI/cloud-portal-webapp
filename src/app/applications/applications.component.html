@@ -180,10 +180,11 @@
                         <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
                           <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
                           <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
-                          <td *ngIf="application.Status =='modification requested' ">
-                                                            <span
-                                                              *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
-                                                                ***REMOVED******REMOVED***application.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
+                          <td  *ngIf="application.Status == 4">
+                                                            <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
+
+
+                                                                ***REMOVED******REMOVED***application.ApplicationExtension.RequestedFlavors[item.key].counter***REMOVED******REMOVED***</span>
                             <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
                         </tr>
