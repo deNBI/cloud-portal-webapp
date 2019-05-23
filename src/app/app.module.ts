@@ -65,8 +65,8 @@ import ***REMOVED***CookieService***REMOVED*** from 'ngx-cookie-service';
         ExportAsModule,
         SharedModuleModule,
         Angulartics2Module.forRoot(),
-        BrowserAnimationsModule,
-        ServiceWorkerModule.register('ngsw-worker.js', ***REMOVED***enabled: environment.production***REMOVED***)
+        BrowserAnimationsModule
+      //ServiceWorkerModule.register('ngsw-worker.js', ***REMOVED***enabled: environment.production***REMOVED***)
 
     ],
     declarations: [
