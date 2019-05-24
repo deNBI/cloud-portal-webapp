@@ -327,7 +327,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
             result => ***REMOVED***
                 if (result.status === 200) ***REMOVED***
-                    this.updateNotificationModal('Success', `Member ' + $***REMOVED***firstName***REMOVED*** $***REMOVED***lastName***REMOVED*** added.`, true, 'success');
+                    this.updateNotificationModal('Success', `Member $***REMOVED***firstName***REMOVED*** $***REMOVED***lastName***REMOVED*** added.`, true, 'success');
 
                 ***REMOVED*** else ***REMOVED***
 

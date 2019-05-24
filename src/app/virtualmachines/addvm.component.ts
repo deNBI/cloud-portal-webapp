@@ -8,25 +8,25 @@ import ***REMOVED***VirtualmachineService***REMOVED*** from '../api-connector/vi
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
-import ***REMOVED***ClientService***REMOVED*** from "../api-connector/client.service";
+import ***REMOVED***ClientService***REMOVED*** from '../api-connector/client.service';
 import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
 import ***REMOVED***KeyService***REMOVED*** from '../api-connector/key.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
-import ***REMOVED***Client***REMOVED*** from "./clients/client.model";
-import ***REMOVED***VirtualMachine***REMOVED*** from "./virtualmachinemodels/virtualmachine";
-import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
+import ***REMOVED***Client***REMOVED*** from './clients/client.model';
+import ***REMOVED***VirtualMachine***REMOVED*** from './virtualmachinemodels/virtualmachine';
+import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
 
 /**
  * Start virtualmachine component.
  */
 @Component(***REMOVED***
-  selector: 'app-new-vm',
-  templateUrl: 'addvm.component.html',
-  providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
-    Application, ApiSettings, KeyService, ClientService,UserService]
-***REMOVED***)
+             selector: 'app-new-vm',
+             templateUrl: 'addvm.component.html',
+             providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
+               Application, ApiSettings, KeyService, ClientService, UserService]
+           ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
 
   newVm: VirtualMachine = null;
@@ -37,6 +37,11 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   checking_vm_status_progress_bar: string = 'progress-bar-animated';
   checking_vm_ssh_port: string = '';
   checking_vm_ssh_port_width: number = 0;
+  http_allowed: boolean = false;
+  https_allowed: boolean = false;
+  udp_allowed: boolean = false;
+  showSshCommando: boolean = true;
+  showUdpCommando: boolean = true;
 
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
@@ -169,7 +174,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-              private keyservice: KeyService,private userservice: UserService) ***REMOVED***
+              private keyservice: KeyService, private userservice: UserService) ***REMOVED***
   ***REMOVED***
 
   /**
@@ -273,7 +278,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
             this.check_status_loop(id)
           ***REMOVED*** else ***REMOVED***
             this.resetProgressBar();
-            this.create_error = <IResponseTemplate> <any>newVm;
+            this.create_error = <IResponseTemplate><any>newVm;
             this.getSelectedProjectDiskspace();
             this.getSelectedProjectVms();
             this.getSelectedProjectVolumes();
@@ -292,7 +297,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    * @param ***REMOVED***string***REMOVED*** project
    * @param ***REMOVED***string***REMOVED*** projectid
    */
-  startVM(flavor: string, image: string, servername: string, project: string, projectid: string): void ***REMOVED***
+  startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void ***REMOVED***
     this.create_error = null;
 
     if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) ***REMOVED***
@@ -302,7 +307,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       const flavor_fixed: string = flavor.replace(re, '%2B');
 
       this.virtualmachineservice.startVM(
-        flavor_fixed, image, servername, project, projectid,
+        flavor_fixed, image, servername, project, projectid.toString(), this.http_allowed, this.https_allowed, this.udp_allowed,
         this.volumeName, this.diskspace.toString()).subscribe((newVm: VirtualMachine) => ***REMOVED***
 
         if (newVm.status === 'Build') ***REMOVED***
@@ -319,7 +324,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
           this.check_status_loop(newVm.openstackid);
         ***REMOVED*** else ***REMOVED***
           this.creating_vm_status = 'Creating';
-          this.create_error = <IResponseTemplate> <any>newVm;
+          this.create_error = <IResponseTemplate><any>newVm;
         ***REMOVED***
 
       ***REMOVED***);
@@ -370,7 +375,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    * Gets all groups of the user and his key.
    */
   initializeData(): void ***REMOVED***
-    forkJoin(this.groupService.getSimpleVmByUser(),   this.userservice.getUserInfo()).subscribe(result => ***REMOVED***
+    forkJoin(this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()).subscribe(result => ***REMOVED***
       this.userinfo = new Userinfo(result[1]);
       this.validatePublicKey();
       const membergroups = result[0];
@@ -405,7 +410,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     this.getFlavors(this.selectedProject[1]);
 
   ***REMOVED***
-
 
   /**
    * Get vms diskpace and used from the selected project.
@@ -445,8 +449,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     ***REMOVED***)
 
   ***REMOVED***
-
-
 
   ngOnInit(): void ***REMOVED***
     this.initializeData();

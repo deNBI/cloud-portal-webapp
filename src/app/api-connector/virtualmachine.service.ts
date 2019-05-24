@@ -22,7 +22,7 @@ export class VirtualmachineService ***REMOVED***
     constructor(private http: HttpClient) ***REMOVED***
     ***REMOVED***
 
-    startVM(flavor: string, image: string, servername: string, project: string, projectid: string,
+    startVM(flavor: string, image: string, servername: string, project: string, projectid: string, http: boolean, https: boolean, udp: boolean,
             volumename?: string, diskspace?: string): Observable<any> ***REMOVED***
 
         const params: HttpParams = new HttpParams()
@@ -32,7 +32,10 @@ export class VirtualmachineService ***REMOVED***
             .set('project', project)
             .set('projectid', projectid)
             .set('diskspace', diskspace)
-            .set('volumename', volumename);
+            .set('volumename', volumename)
+            .set('http_allowed', http.toString())
+            .set('https_allowed', https.toString())
+            .set('udp_allowed', udp.toString());
 
         return this.http.post(this.baseVmUrl, params, ***REMOVED***
             withCredentials: true,
@@ -89,7 +92,7 @@ export class VirtualmachineService ***REMOVED***
     stopVM(openstack_id: string): Observable<VirtualMachine> ***REMOVED***
         const params: HttpParams = new HttpParams().set('os_action', 'stop');
 
-        return this.http.post<VirtualMachine> (`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/action/`, params, ***REMOVED***
+        return this.http.post<VirtualMachine>(`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/action/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
@@ -98,7 +101,7 @@ export class VirtualmachineService ***REMOVED***
     rebootVM(openstack_id: string, reboot_type: string): Observable<IResponseTemplate> ***REMOVED***
         const params: HttpParams = new HttpParams().set('os_action', 'reboot').set('reboot_type', reboot_type);
 
-        return this.http.post<IResponseTemplate> (`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/action/`, params, ***REMOVED***
+        return this.http.post<IResponseTemplate>(`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/action/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)
@@ -127,7 +130,7 @@ export class VirtualmachineService ***REMOVED***
             .set('volume_diskspace', volume_diskspace)
             .set('vm_openstackid', vm_openstackid);
 
-        return this.http.post<Volume> (`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***volumes/`, params, ***REMOVED***
+        return this.http.post<Volume>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***volumes/`, params, ***REMOVED***
             withCredentials: true,
             headers: header
         ***REMOVED***)

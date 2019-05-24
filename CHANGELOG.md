@@ -1,6 +1,27 @@
+
+
+##  (2019-05-24)
+
+
+#### Features
+
+* **Application:**
+  * detailed desc text ([2b8c7de9](2b8c7de9))
+  * detailed desc text ([f7caeaed](f7caeaed))
+* **SecurityGroups:** added udp conneciton info ([20b9d3d2](20b9d3d2))
+* **SecurtyGroup:** added checkbox for udp,http,https ([8f06062b](8f06062b))
+
+#### Bug Fixes
+
+* **Projects:** fixed typo ([25ca93e8](25ca93e8))
+* **ServiceWorker:** deactivated ([c1cc87d5](c1cc87d5))
+* **Volumes:**
+  * fixed another parsing bug ([81d2fa89](81d2fa89))
+  * fixed response parsing ([837e1eac](837e1eac))
+* **readme:**  small change how to serve webapp ([e4ba7675](e4ba7675))
+
+
 ##  (2019-05-10)
-
-
 #### Bug Fixes
 * **makefile:**  remove unnecessary fi ([cee3c715](cee3c715))
 

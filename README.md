@@ -33,28 +33,23 @@ cd cloud-portal-webapp
 
 3. Install nodejs virtual environment as decribed [here](https://github.com/ekalinin/nodeenv#install).
 
-4. The environment can then be created with
-
+4. Run the Makefile
 ~~~BASH
-nodeenv -C .nodeenvrc env
+make
+~~~
+The default target checks if steps 1 - 3 were executed and then creates a node-environment, followed by installing all needed npm packages and angular cli (by running npm install and npm install -g @angular/cli).
+For more makefile targets run help.
+~~~BASH
+make help
 ~~~
 
-Note that the actual used node version is defined in .nodeenvrc.
-
-5. The environment can be activated with
-
+5. Start the angular server with make or by yourself
+~~~BASH
+make serve
+~~~
+or
 ~~~BASH
 . env/bin/activate
-~~~
-
-6. Install all needed npm packages and angular cli
-~~~BASH
-npm install 
-npm install -g @angular/cli
-~~~
-
-7. start the angular server with
-~~~BASH
 ng serve
 ~~~
 
