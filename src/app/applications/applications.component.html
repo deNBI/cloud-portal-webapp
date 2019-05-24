@@ -568,10 +568,8 @@
                                 }} months
                               </td>
                               <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                {{application.ApplicationExtension?.Lifetime
-                              +
-                              application.Lifetime}}
-                                months
+                                {{
+                                application.ApplicationExtension?.Lifetime + ' months from now'}}
                               </td>
                             </tr>
                             <tr>
@@ -733,7 +731,7 @@
                 *ngFor="let application of all_applications">
                 <ng-container *ngIf="application.Status != application_states.SUBMITTED">
                   <tr
-                    [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)}">
+                    [ngStyle]="{'color':lifeTimeReached(application.Lifetime, application.DaysRunning)}">
                     <td>  <span *ngIf="application.OpenStackProject"
                                 style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944"
                                 class="badge"
@@ -1256,7 +1254,7 @@
             <div class="col">
               <div class="input-group">
                 <input class="form-control"
-                       name="project_application_lifetime" placeholder="NDA"
+                       name="project_application_lifetime" placeholder="NA"
                        type="text" value="{{showLifetime(selectedApplication)}}"
                        disabled>
 
@@ -1315,7 +1313,7 @@
                                name="project_application_{{fl.name}}_old"
                                type="text"
                                value="{{selectedApplication?.CurrentFlavors[fl.name]?.counter}}"
-                               placeholder="NDA" disabled>
+                               placeholder="NA" disabled>
                         <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
                       </div>
                       <span class="help-block">Currently approved of this type </span>
@@ -1358,7 +1356,7 @@
               <div class="input-group">
                 <input required class="form-control"
                        name="project_application_volume_counter"
-                       placeholder="NDA"
+                       placeholder="NA"
                        value="{{selectedApplication?.VolumeCounter}}"
                        type="text" disabled>
               </div>
@@ -1395,7 +1393,7 @@
                 <input class="form-control"
                        name="project_application_renewal_volume_limit"
                        value="{{selectedApplication?.VolumeLimit}}"
-                       placeholder="NDA"
+                       placeholder="NA"
                        type="text" disabled>
                 <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
@@ -1436,7 +1434,7 @@
               <div class="input-group">
                 <input class="form-control"
                        name="project_application_object_storage"
-                       placeholder="NDA"
+                       placeholder="NA"
                        value="{{selectedApplication?.ObjectStorage}}"
                        type="text" disabled>
                 <div class="input-group-append"><span class="input-group-text"> GB
