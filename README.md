@@ -46,7 +46,10 @@ make help
 5. Start the angular server with make or by yourself
 ~~~BASH
 make serve
+~~~
 or
+~~~BASH
+. env/bin/activate
 ng serve
 ~~~
 
