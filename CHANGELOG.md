@@ -1,3 +1,12 @@
+##  (2019-05-28)
+
+
+#### Bug Fixes
+
+* **application:**
+  *  lifetime and numbers get loaded ([263b168c](263b168c))
+  *  Modification Request - Number of requested Flavors now showing ([d825fc22](d825fc22))
+* **readme:**  add intellij debug screenshot ([edccae7d](edccae7d))
 
 
 ##  (2019-05-24)
