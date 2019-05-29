@@ -1,3 +1,10 @@
+##  (2019-05-29)
+
+
+#### Bug Fixes
+
+* **serviceWorker:**  delete all serviceWorker mentions (#498) ([06a15db6](06a15db6))
+
 ##  (2019-05-28)
 
 
