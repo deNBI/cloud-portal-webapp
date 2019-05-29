@@ -109,7 +109,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
             const is_pi: boolean = false;
             const is_admin: boolean = false;
             for (const group of facility_projects) {
-                const dateCreated: moment.Moment = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const dateCreated: moment.Moment = moment.unix(group['createdAt']);
                 const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
                 const groupid: string = group['id'];
                 const tmp_facility = group['compute_center'];
