@@ -66,8 +66,6 @@ import {CookieService} from 'ngx-cookie-service';
         SharedModuleModule,
         Angulartics2Module.forRoot(),
         BrowserAnimationsModule
-      //ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})
-
     ],
     declarations: [
         AppComponent,
