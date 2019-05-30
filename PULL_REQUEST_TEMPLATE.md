@@ -8,9 +8,6 @@ Try to fulfill the following points before the Pull Request is merged:
 - [ ] The PR is responsive on smaller screens.
 - [ ] If the requirements.txt have changed, check if the patches still work
 - [ ] If the new code is well commented
-
-For releases only:
-
-- [ ] If the review of this PR is approved and the PR is followed by a release then the .env file 
-  in the cloud-portal repo should also be updated. 
-- [ ] If you are making a release then please sum up the changes since the last release on the release page using the [clog](https://github.com/clog-tool/clog-cli) tool with `clog -F`
+- [ ] If a squash of commits is required, it has been performed or will be performed at final merge
+- [ ] It was examined whether migrations are necessary and if necessary these were correctly prepared.
+- [ ] Finally a second team member checks if all requirements met
