@@ -136,6 +136,8 @@ export class VirtualMachineComponent implements OnInit {
    */
   optional_params: boolean = false;
 
+  bioconda_show: boolean = false;
+
   /**
    * Default diskspace.
    * @type {number}
@@ -452,6 +454,5 @@ export class VirtualMachineComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeData();
-
   }
 }

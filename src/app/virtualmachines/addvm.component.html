@@ -185,98 +185,114 @@
                     </button>
                   </div>
                 </div>
-              </div>
-              <div
-                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
-                class="form-group row">
 
-                <label class="col-md-3 form-control-label">Storage volumes</label>
+                <div
+                  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
+                  class="form-group row">
 
-                <div class="col-md-9">
-                  <strong>current: {{selectedProjectVolumesUsed}} | max:
-                    {{selectedProjectVolumesMax}}
-                    Volumes
-                  </strong>
+                  <label class="col-md-3 form-control-label">Storage volumes</label>
+
+                  <div class="col-md-9">
+                    <strong>current: {{selectedProjectVolumesUsed}} | max:
+                      {{selectedProjectVolumesMax}}
+                      Volumes
+                    </strong>
+                  </div>
+                  <div class="alert alert-warning col-md-9" role="alert"
+                       *ngIf="selectedProjectVolumesUsed >= selectedProjectVolumesMax">
+                    The limit for volumes has been reached for this project.
+                    Your principal investigator can request more
+                    resources if necessary
+
+                  </div>
+
+
                 </div>
-                <div class="alert alert-warning col-md-9" role="alert"
-                     *ngIf="selectedProjectVolumesUsed >= selectedProjectVolumesMax">
-                  The limit for volumes has been reached for this project.
-                  Your principal investigator can request more
-                  resources if necessary
 
+                <div
+                  *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax">
+                  <div class="form-group row"
+                       *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
+                    <label *ngIf="diskspace <= 0" class="col-md-3 form-control-label">Volumename</label>
+                    <label *ngIf="diskspace > 0"
+                           class="col-md-3 form-control-label"><strong>Volumename*</strong></label>
+
+                    <div class="col-md-9">
+                      <div class="input-group">
+                        <input type="text" placeholder="Volumename"
+                               [value]="volumeName"
+                               (input)="volumeName = $event.target.value"
+                               [ngClass]="{'is-invalid':diskspace > 0 && volumeName == '',
+                             'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')}">
+
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
+                <div
+                  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
+                  class="form-group row">
 
-              </div>
-
-              <div
-                *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax">
-                <div class="form-group row"
-                     *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
-                  <label *ngIf="diskspace <= 0" class="col-md-3 form-control-label">Volumename</label>
-                  <label *ngIf="diskspace > 0"
-                         class="col-md-3 form-control-label"><strong>Volumename*</strong></label>
+                  <label class="col-md-3 form-control-label">Storage</label>
 
                   <div class="col-md-9">
                     <div class="input-group">
-                      <input type="text" placeholder="Volumename"
-                             [value]="volumeName"
-                             (input)="volumeName = $event.target.value"
-                             [ngClass]="{'is-invalid':diskspace > 0 && volumeName == '',
-                             'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')}">
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
-                class="form-group row">
-
-                <label class="col-md-3 form-control-label">Storage</label>
-
-                <div class="col-md-9">
-                  <div class="input-group">
-                    <input min="0" step="1" [value]="diskspace"
-                           (input)="diskspace = $event.target.value"
-                           type="number"
-                           placeholder="e.g 8 ">
-                    <div class="input-group-append"><span
-                      class="input-group-text"> GB
+                      <input min="0" step="1" [value]="diskspace"
+                             (input)="diskspace = $event.target.value"
+                             type="number"
+                             placeholder="e.g 8 ">
+                      <div class="input-group-append"><span
+                        class="input-group-text"> GB
                                     </span></div>
 
-                    <div class="col-md-6">
-                      <strong>current: {{selectedProjectDiskspaceUsed}} | max
-                        {{selectedProjectDiskspaceMax}}
-                        GB</strong>
-                    </div>
+                      <div class="col-md-6">
+                        <strong>current: {{selectedProjectDiskspaceUsed}} | max
+                          {{selectedProjectDiskspaceMax}}
+                          GB</strong>
+                      </div>
 
+                    </div>
+                  </div>
+
+
+                </div>
+                <div
+                  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
+                  class="form-group row">
+
+                  <label class="col-md-3 form-control-label">Open Ports</label>
+                  <div class="col-md-3">
+                    <label
+                      class="switch switch-label switch-pill switch-success">Udp
+                      <input type="checkbox" class="switch-input"
+                             name="udp_allowed"
+                             [(ngModel)]="udp_allowed"
+                      >
+                      <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                      <!--<span class="switch-handle"></span>-->
+                    </label></div>
+
+
+                </div>
+                <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID"
+                class="form-group row">
+
+                  <label class="col-md-3 form-control-label"><strong>Bioconda</strong></label>
+                  <div class="col-md-6">
+                    <button type="button" class="btn btn-info .btn-pill"
+                    (click)="bioconda_show = !bioconda_show">
+                      <strong *ngIf="!bioconda_show">Show</strong><strong
+                      *ngIf="bioconda_show">Hide</strong>
+                    </button>
                   </div>
                 </div>
-
-
+                <div [hidden]="!bioconda_show" class="col-12">
+                  <app-bioconda></app-bioconda>
+                </div>
               </div>
             </div>
 
-            <div
-              *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
-              class="form-group row">
-
-              <label class="col-md-3 form-control-label">Open Ports</label>
-              <div class="col-md-3">
-                <label
-                  class="switch switch-label switch-pill switch-success">Udp
-                  <input type="checkbox" class="switch-input"
-                         name="udp_allowed"
-                         [(ngModel)]="udp_allowed"
-                  >
-                  <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
-                  <!--<span class="switch-handle"></span>-->
-                </label></div>
-
-
-            </div>
             <div class="form-group row"
                  *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax">
 

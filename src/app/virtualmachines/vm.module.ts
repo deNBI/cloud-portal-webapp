@@ -16,6 +16,7 @@ import {PaginationModule} from 'ngx-bootstrap/pagination'
 import {PublicKeyModule} from '../shared/shared_modules/public-key/public-key.module';
 import {ClickOutsideModule} from 'ng4-click-outside';
 import { BsDropdownModule } from 'ngx-bootstrap';
+import {BiocondaComponent} from './conda/bioconda.component';
 
 /**
  * VM module.
@@ -33,15 +34,16 @@ import { BsDropdownModule } from 'ngx-bootstrap';
         BsDropdownModule.forRoot()
 
     ],
-    declarations: [
-        ImageDetailComponent,
-        VirtualMachineComponent,
-        FlavorDetailComponent,
-        ClientOverviewComponent,
-        VmOverviewComponent,
-        VolumeOverviewComponent,
-        SnapshotOverviewComponent
-    ]
-})
+            declarations: [
+              ImageDetailComponent,
+              VirtualMachineComponent,
+              FlavorDetailComponent,
+              ClientOverviewComponent,
+              VmOverviewComponent,
+              VolumeOverviewComponent,
+              SnapshotOverviewComponent,
+              BiocondaComponent
+            ]
+          })
 export class VmModule {
 }
