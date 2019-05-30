@@ -9,5 +9,4 @@ Try to fulfill the following points before the Pull Request is merged:
 - [ ] If the requirements.txt have changed, check if the patches still work
 - [ ] If the new code is well commented
 - [ ] If a squash of commits is required, it has been performed or will be performed at final merge
-- [ ] It was examined whether migrations are necessary and if necessary these were correctly prepared.
 - [ ] Finally a second team member checks if all requirements met
