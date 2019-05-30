@@ -1,20 +1,21 @@
-import ***REMOVED*** NgModule ***REMOVED*** from '@angular/core';
-import ***REMOVED*** Routes, RouterModule ***REMOVED*** from '@angular/router';
-import ***REMOVED*** UserinfoComponent ***REMOVED*** from './userinfo.component';
+import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
+import ***REMOVED***RouterModule, Routes***REMOVED*** from '@angular/router';
+import ***REMOVED***UserInfoComponent***REMOVED*** from './userinfo.component';
 
 const routes: Routes = [
-  ***REMOVED***
-    path: '',
-    component: UserinfoComponent,
-    data: ***REMOVED***
-      title: 'User information'
     ***REMOVED***
+        path: '',
+        component: UserInfoComponent,
+        data: ***REMOVED***
+            title: 'User information'
+        ***REMOVED***
 
-  ***REMOVED***
+    ***REMOVED***
 ];
 
 @NgModule(***REMOVED***
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 ***REMOVED***)
-export class UserinfoRoutingModule ***REMOVED******REMOVED***
+export class UserInfoRoutingModule ***REMOVED***
+***REMOVED***

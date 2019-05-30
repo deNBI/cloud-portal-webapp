@@ -1,8 +1,9 @@
 import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***Routes, RouterModule***REMOVED*** from '@angular/router';
-import ***REMOVED***FacilityProjectsOverviewComponent***REMOVED*** from "../facility_manager/facilityprojectsoverview.component";
-import ***REMOVED***ImageTagComponent***REMOVED*** from "../facility_manager/imagetags.component";
-import ***REMOVED***FacilityApplicationComponent***REMOVED*** from "./facility.application.component";
+import ***REMOVED***RouterModule, Routes***REMOVED*** from '@angular/router';
+import ***REMOVED***FacilityProjectsOverviewComponent***REMOVED*** from '../facility_manager/facilityprojectsoverview.component';
+import ***REMOVED***ImageTagComponent***REMOVED*** from '../facility_manager/imagetags.component';
+import ***REMOVED***FacilityApplicationComponent***REMOVED*** from './facility.application.component';
+import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.component';
 
 const routes: Routes = [
 
@@ -19,16 +20,26 @@ const routes: Routes = [
         data: ***REMOVED***
             title: 'Image Tags'
         ***REMOVED***
-    ***REMOVED***,***REMOVED***
+    ***REMOVED***, ***REMOVED***
         path: 'facilityApplications',
         component: FacilityApplicationComponent,
         data: ***REMOVED***
             title: 'Facility Applications'
         ***REMOVED***
+    ***REMOVED***,
+    ***REMOVED***
+        path: 'facilityResources',
+        component: ResourcesComponent,
+        data: ***REMOVED***
+            title: 'Facility Resources'
+        ***REMOVED***
     ***REMOVED***
 
 ];
 
+/**
+ * Facilitymanager routing module.
+ */
 @NgModule(***REMOVED***
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]

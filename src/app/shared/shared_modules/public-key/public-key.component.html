@@ -1,0 +1,82 @@
+<th>Public Key</th>
+<td>
+    <span *ngIf="userinfo.PublicKey == 'None'"> No public key is set</span>
+    <span *ngIf="userinfo.PublicKey != 'None'"
+          style="word-wrap: break-word; max-width: 80px; white-space: normal">
+        <button (click)="toggleKey()"
+                class="btn btn-primary">
+            ***REMOVED******REMOVED***show_key_text***REMOVED******REMOVED***
+        </button>
+            <div *ngIf="key_visible" style="word-break: break-all"><br>***REMOVED******REMOVED***userinfo.PublicKey***REMOVED******REMOVED***</div></span>
+</td>
+<td>
+
+    <alert type="info">
+        <strong>Tutorial:</strong><a target="_blank"
+                                     href="https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys">
+        How
+        to generate a ssh keypair?</a>
+    </alert>
+
+    <button class="btn btn-primary" type="button" (click)="public_key='';pubKeyModal.show()">Set pub
+        key
+    </button>
+
+
+</td>
+
+
+<div bsModal #pubKeyModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Change public key</h4>
+                <button type="button" class="close" style="cursor: pointer;" (click)="pubKeyModal.hide()"
+                        data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <alert type="info" *ngIf="public_key?.length ==0 ">
+                    <strong>Info: </strong> Please enter a valid public key!
+
+                </alert>
+
+
+                <alert type="success" *ngIf="validatePublicKey()">
+                    <strong>Info: </strong> This is a valid public key!
+                </alert>
+                <alert type="danger" *ngIf="!validatePublicKey() && public_key?.length >0">
+                    <strong>Warning</strong> This is not a valid public key!
+                </alert>
+                <textarea rows="8" type="text" class="form-control input-lg"
+                          placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="public_key"
+                          #publickey></textarea>
+
+                <br>
+
+
+                <alert *ngIf="validatePublicKey()" type="danger">
+                    <strong>Warning!</strong> Replacing your current public key with a different one will probably
+                    render all your currently running machines inaccessible.
+                </alert>
+            </div>
+
+
+            <div class="modal-footer">
+
+
+                <button [disabled]="!validatePublicKey()"
+                        class="btn btn-success col-md4" type="button"
+                        (click)="importKey(publickey.value);show_key();pubKeyModal.hide();">Set
+                </button>
+                <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide();">Cancel
+                </button>
+
+            </div>
+        </div><!-- /.modal-content -->L
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -3,7 +3,6 @@ import ***REMOVED*** Router, ActivatedRoute, NavigationEnd ***REMOVED*** from '@
 
 import ***REMOVED*** filter ***REMOVED*** from 'rxjs/operators';
 
-
 @Component(***REMOVED***
     selector: 'app-breadcrumbs',
     template: `
@@ -17,12 +16,10 @@ import ***REMOVED*** filter ***REMOVED*** from 'rxjs/operators';
   </ng-template>`
 ***REMOVED***)
 export class BreadcrumbsComponent implements OnInit ***REMOVED***
-    breadcrumbs: Array<Object>;
+    breadcrumbs: Object[];
 
     constructor(private router: Router, private route: ActivatedRoute) ***REMOVED***
     ***REMOVED***
-
-
 
     ngOnInit(): void ***REMOVED***
         this.router.events.pipe(filter(event => event instanceof NavigationEnd))

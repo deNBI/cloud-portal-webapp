@@ -1,529 +1,504 @@
-import ***REMOVED***Component, OnInit, TemplateRef***REMOVED*** from '@angular/core';
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
+import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 
-import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
-import ***REMOVED***VirtualmachineService***REMOVED*** from "../api-connector/virtualmachine.service";
-import ***REMOVED***VirtualMachine***REMOVED*** from "./virtualmachinemodels/virtualmachine";
-import ***REMOVED***FullLayoutComponent***REMOVED*** from "../layouts/full-layout.component";
-import ***REMOVED***UserService***REMOVED*** from "../api-connector/user.service";
-import ***REMOVED***ImageService***REMOVED*** from "../api-connector/image.service";
-import ***REMOVED***Vmclient***REMOVED*** from "./virtualmachinemodels/vmclient";
-import ***REMOVED***FilterBaseClass***REMOVED*** from "../shared_modules/baseClass/filter-base-class";
+import ***REMOVED***VirtualmachineService***REMOVED*** from '../api-connector/virtualmachine.service';
+import ***REMOVED***VirtualMachine***REMOVED*** from './virtualmachinemodels/virtualmachine';
+import ***REMOVED***FullLayoutComponent***REMOVED*** from '../layouts/full-layout.component';
+import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
+import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
+import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/filter-base-class';
+import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
+import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
+import ***REMOVED***SnapshotModel***REMOVED*** from './snapshots/snapshot.model';
 
+/**
+ * Vm overview componentn.
+ */
 @Component(***REMOVED***
-    selector: 'vm-overview',
-    templateUrl: 'vmOverview.component.html',
-    providers: [ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
-***REMOVED***)
-
+             selector: 'app-vm-overview',
+             templateUrl: 'vmOverview.component.html',
+             providers: [VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
+           ***REMOVED***)
 
 export class VmOverviewComponent extends FilterBaseClass implements OnInit ***REMOVED***
-    /**
-     * All unfiltered vms.
-     */
-    vms_content: VirtualMachine[];
-    /**
-     * All vms filtered.
-     */
-    vms_filtered: VirtualMachine[];
-    /**
-     * All vms returned with paging.
-     */
-    vms_returned: VirtualMachine[];
-    /**
-     * How many vms are shown per page.
-     * @type ***REMOVED***number***REMOVED***
-     */
-    vmsPerPage = 5;
-    /**
-     * Current page.
-     * @type ***REMOVED***number***REMOVED***
-     */
-    currentPage = 1;
-    /**
-     * Index where the vm list starts.
-     * @type ***REMOVED***number***REMOVED***
-     */
-    vmStart = 0;
-    /**
-     * How to connect for specific vm.
-     */
-    how_to_connect: string;
-    /**
-     * End of the vms.
-     * @type ***REMOVED***number***REMOVED***
-     */
-    vmEnd = this.vmsPerPage;
-    /**
-     * Name of vm which changed status.
-     */
-    status_changed_vm: string;
-    /**
-     * Id of vm which changed status.
-     */
-    status_changed_vm_id: string;
-    /**
-     * Elixir-Id of the user.
-     */
-    elixir_id: string;
-    /**
-     * If user is vo admin.
-     */
-    is_vo_admin: boolean;
-    /**
-     * Vm which is used to create a snapshot.
-     */
-    snapshot_vm: VirtualMachine;
-    /**
-     * If the snapshot name is valid.
-     */
-    validSnapshotNameBool: boolean;
-    /**
-     * String if the snapshot is done.
-     * @type ***REMOVED***string***REMOVED***
-     */
-    snapshotDone: string = 'Waiting';
-    /**
-     * Name of the snapshot.
-     */
-    snapshotName: string;
-    /**
-     * Tab which is shown own|all.
-     * @type ***REMOVED***string***REMOVED***
-     */
-    tab = 'own';
-    /**
-     * The changed status.
-     * @type ***REMOVED***number***REMOVED***
-     */
-    status_changed: number = 0;
+  /**
+   * All unfiltered vms.
+   */
+  vms_content: VirtualMachine[];
+  /**
+   * All vms filtered.
+   */
+  vms_filtered: VirtualMachine[];
+  /**
+   * All vms returned with paging.
+   */
+  vms_returned: VirtualMachine[];
+  /**
+   * How many vms are shown per page.
+   * @type ***REMOVED***number***REMOVED***
+   */
+  vmsPerPage: number = 5;
+  /**
+   * Current page.
+   * @type ***REMOVED***number***REMOVED***
+   */
+  currentPage: number = 1;
+  /**
+   * Index where the vm list starts.
+   * @type ***REMOVED***number***REMOVED***
+   */
+  vmStart: number = 0;
+  /**
+   * How to connect for specific vm.
+   */
+  how_to_connect: string;
+  /**
+   * End of the vms.
+   * @type ***REMOVED***number***REMOVED***
+   */
+  vmEnd: number = this.vmsPerPage;
 
-    /**
-     * Timeout for checking vm status.
-     * @type ***REMOVED***number***REMOVED***
-     */
-    private checkStatusTimeout: number = 1500;
-    /**
-     * Type of reboot HARD|SOFT.
-     */
-    reboot_type: string;
-    /**
-     * If an error appeared when checking vm status.
-     */
-    status_check_error: boolean;
-    /**
-     * IF reboot is done.
-     */
-    reboot_done: boolean;
+  selectedVm: VirtualMachine = null;
 
+  /**
+   * If user is vo admin.
+   */
+  is_vo_admin: boolean;
+  /**
+   * Vm which is used to create a snapshot.
+   */
+  snapshot_vm: VirtualMachine;
+  /**
+   * If the snapshot name is valid.
+   */
+  validSnapshotNameBool: boolean;
+  /**
+   * String if the snapshot is done.
+   * @type ***REMOVED***string***REMOVED***
+   */
+  snapshotNameCheckDone: boolean = false;
+  snapshotDone: string = 'Waiting';
+  /**
+   * name of the snapshot.
+   */
+  snapshotName: string = '';
+  /**
+   * Tab which is shown own|all.
+   * @type ***REMOVED***string***REMOVED***
+   */
+  tab: string = 'own';
+  /**
+   * The changed status.
+   * @type ***REMOVED***number***REMOVED***
+   */
+  status_changed: number = 0;
 
-    constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) ***REMOVED***
-        super()
-    ***REMOVED***
+  /**
+   * Timeout for checking vm status.
+   * @type ***REMOVED***number***REMOVED***
+   */
+  private checkStatusTimeout: number = 1500;
+  /**
+   * Type of reboot HARD|SOFT.
+   */
+  reboot_type: string;
+  /**
+   * If an error appeared when checking vm status.
+   */
+  status_check_error: boolean;
+  /**
+   * IF reboot is done.
+   */
+  reboot_done: boolean;
 
-    /**
-     * Load vms depending on page.
-     * @param event
-     */
-    pageChanged(event): void ***REMOVED***
+  showSshCommando: boolean = true;
+  showUdpCommando: boolean = true;
 
-        const startItem = (event.page - 1) * event.itemsPerPage;
-        const endItem = event.page * event.itemsPerPage;
-        this.vmStart = startItem;
-        this.vmEnd = endItem;
-        this.vms_returned = this.vms_filtered.slice(startItem, endItem)
+  constructor(private voService: VoService, private imageService: ImageService, private userservice: UserService,
+              private virtualmachineservice: VirtualmachineService) ***REMOVED***
+    super()
+  ***REMOVED***
 
-    ***REMOVED***
+  /**
+   * Load vms depending on page.
+   * @param event
+   */
+  pageChanged(event): void ***REMOVED***
 
-    /**
-     * Check if vm corresponds the filter.
-     * @param ***REMOVED***VirtualMachine***REMOVED*** vm vm which is checked
-     * @returns ***REMOVED***boolean***REMOVED*** True if it matches the filter
-     */
-    checkFilter(vm: VirtualMachine) ***REMOVED***
-        if (this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at) && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at) && this.isFilterUsername(vm.username)) ***REMOVED***
-            return true
+    const startItem: number = (event.page - 1) * event.itemsPerPage;
+    const endItem: number = event.page * event.itemsPerPage;
+    this.vmStart = startItem;
+    this.vmEnd = endItem;
+    this.vms_returned = this.vms_filtered.slice(startItem, endItem)
+
+  ***REMOVED***
+
+  /**
+   * Check if vm corresponds the filter.
+   * @param ***REMOVED***VirtualMachine***REMOVED*** vm vm which is checked
+   * @returns ***REMOVED***boolean***REMOVED*** True if it matches the filter
+   */
+  checkFilter(vm: VirtualMachine): boolean ***REMOVED***
+    return this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at)
+      && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at)
+      && this.isFilterUsername(vm.username)
+
+  ***REMOVED***
+
+  /**
+   * Apply filter to all vms.
+   */
+  applyFilter(): void ***REMOVED***
+
+    this.vms_filtered = this.vms_content.filter(vm => this.checkFilter(vm));
+
+    this.vmStart = 0;
+    this.vmEnd = this.vmsPerPage;
+
+    this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
+    this.currentPage = 1
+
+  ***REMOVED***
+
+  /**
+   * Toggle tab own|all.
+   * @param ***REMOVED***string***REMOVED*** tabString
+   */
+  toggleTab(tabString: string): void ***REMOVED***
+    this.tab = tabString;
+  ***REMOVED***
+
+  /**
+   * Check status of all inactive vms.
+   */
+  checkInactiveVms(): void ***REMOVED***
+    this.virtualmachineservice.checkStatusInactiveVms().subscribe(vms => ***REMOVED***
+      this.vms_content = vms;
+      for (const vm of this.vms_content) ***REMOVED***
+        if (vm.created_at !== '') ***REMOVED***
+          vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
         ***REMOVED***
-        else ***REMOVED***
-            return false
+        if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+          vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+        ***REMOVED*** else ***REMOVED***
+          vm.stopped_at = ''
         ***REMOVED***
+      ***REMOVED***
+      this.applyFilter();
 
+    ***REMOVED***)
+  ***REMOVED***
 
-    ***REMOVED***
+  /**
+   * Check if the snapshot name is valid.
+   * @param e
+   */
+  validSnapshotName(e) ***REMOVED***
+    this.snapshotNameCheckDone = false;
+    this.imageService.checkSnapshotNameAvailable(this.snapshotName).subscribe((res: IResponseTemplate) => ***REMOVED***
 
-    /**
-     * Apply filter to all vms.
-     */
-    applyFilter() ***REMOVED***
+      this.validSnapshotNameBool = this.snapshotName.length > 0 && <boolean><Boolean>res.value;
+      this.snapshotNameCheckDone = true;
+    ***REMOVED***)
 
+  ***REMOVED***
 
-        this.vms_filtered = this.vms_content.filter(vm => this.checkFilter(vm));
+  /**
+   * Reset the snapshotDone to waiting.
+   */
+  resetSnapshotResult(): void ***REMOVED***
+    this.snapshotDone = 'Waiting';
+  ***REMOVED***
 
-        this.vmStart = 0;
-        this.vmEnd = this.vmsPerPage;
+  /**
+   * Check status of vm.
+   * @param ***REMOVED***string***REMOVED*** openstackid  of the instance
+   */
+  checkStatus(vm: VirtualMachine): void ***REMOVED***
+    this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => ***REMOVED***
 
-        this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
-        this.currentPage = 1
+                                                                         this.setCollapseStatus(updated_vm.openstackid, false);
 
+                                                                         if (updated_vm.created_at !== '') ***REMOVED***
+                                                                           updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+                                                                         ***REMOVED***
+                                                                         if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                                                                           updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+                                                                         ***REMOVED*** else ***REMOVED***
+                                                                           updated_vm.stopped_at = ''
+                                                                         ***REMOVED***
 
-    ***REMOVED***
+                                                                         this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+                                                                         this.applyFilter();
+                                                                       ***REMOVED***
+    )
+  ***REMOVED***
 
-    /**
-     * Toggle tab own|all.
-     * @param ***REMOVED***string***REMOVED*** tabString
-     */
-    toggleTab(tabString: string) ***REMOVED***
-        this.tab = tabString;
-    ***REMOVED***
+  /**
+   * Delete Vm.
+   * @param ***REMOVED***string***REMOVED*** openstack_id of instance
+   */
+  deleteVm(vm: VirtualMachine): void ***REMOVED***
+    this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => ***REMOVED***
 
-    /**
-     * Check status of all inactive vms.
-     */
-    checkInactiveVms() ***REMOVED***
-        this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => ***REMOVED***
-            this.vms_content = vms;
-            for (let vm of this.vms_content) ***REMOVED***
-                if (vm.created_at != '') ***REMOVED***
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                ***REMOVED***
-                if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
-                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                ***REMOVED***
-                else ***REMOVED***
-                    vm.stopped_at = ''
-                ***REMOVED***
+      this.setCollapseStatus(updated_vm.openstackid, false);
+
+      if (updated_vm.created_at !== '') ***REMOVED***
+        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+      ***REMOVED***
+      if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') ***REMOVED***
+        updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+      ***REMOVED*** else ***REMOVED***
+        updated_vm.stopped_at = ''
+      ***REMOVED***
+
+      this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+      this.applyFilter();
+      if (updated_vm.status === 'DELETED') ***REMOVED***
+        this.status_changed = 1;
+      ***REMOVED*** else ***REMOVED***
+        this.status_changed = 2;
+      ***REMOVED***
+
+    ***REMOVED***)
+  ***REMOVED***
+
+  /**
+   * Reboot a vm.
+   * @param ***REMOVED***string***REMOVED*** openstack_id of the instance
+   * @param ***REMOVED***string***REMOVED*** reboot_type HARD|SOFT
+   */
+  public
+
+  rebootVm(vm: VirtualMachine, reboot_type: string): void ***REMOVED***
+    this.virtualmachineservice.rebootVM(vm.openstackid, reboot_type).subscribe((result: IResponseTemplate) => ***REMOVED***
+      this.status_changed = 0;
+
+      if (<boolean><Boolean>result.value) ***REMOVED***
+        this.status_changed = 1;
+        this.check_status_loop(vm)
+      ***REMOVED*** else ***REMOVED***
+        this.status_changed = 2;
+      ***REMOVED***
+
+    ***REMOVED***)
+  ***REMOVED***
+
+  /**
+   * Check Status of vm in loop till active.
+   * @param ***REMOVED***string***REMOVED*** id of instance.
+   */
+  check_status_loop(vm: VirtualMachine): void ***REMOVED***
+
+    setTimeout(
+      () => ***REMOVED***
+        this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => ***REMOVED***
+
+          if (updated_vm.status === 'ACTIVE') ***REMOVED***
+            this.reboot_done = true;
+            this.setCollapseStatus(updated_vm.openstackid, false);
+
+            if (updated_vm.created_at !== '') ***REMOVED***
+              updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
             ***REMOVED***
+            if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') ***REMOVED***
+              updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+            ***REMOVED*** else ***REMOVED***
+              updated_vm.stopped_at = ''
+            ***REMOVED***
+
+            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
             this.applyFilter();
 
-        ***REMOVED***)
-    ***REMOVED***
-
-    /**
-     * Check if the snapshot name is valid.
-     * @param e
-     */
-    validSnapshotName(e) ***REMOVED***
-        this.validSnapshotNameBool = this.snapshotName.length > 0 ? true : false;
-
-
-    ***REMOVED***
-
-    /**
-     * Reset the snapshotDone to waiting.
-     */
-    resetSnapshotResult() ***REMOVED***
-        this.snapshotDone = 'Waiting';
-    ***REMOVED***
-
-    /**
-     * Check status of vm.
-     * @param ***REMOVED***string***REMOVED*** openstackid  of the instance
-     */
-    checkStatus(openstackid: string) ***REMOVED***
-        this.virtualmachineservice.checkVmStatus(openstackid).subscribe(res => ***REMOVED***
-
-
-                this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
-                        this.vms_content = vms;
-                        for (let vm of this.vms_content) ***REMOVED***
-                            if (vm.created_at != '') ***REMOVED***
-                                vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                            ***REMOVED***
-                            if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
-                                vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                            ***REMOVED***
-                            else ***REMOVED***
-                                vm.stopped_at = ''
-                            ***REMOVED***
-                        ***REMOVED***
-                        this.applyFilter()
-
-
-                    ***REMOVED***
-                );
+          ***REMOVED*** else ***REMOVED***
+            if (vm['error']) ***REMOVED***
+              this.status_check_error = true
 
             ***REMOVED***
-        )
-    ***REMOVED***
-
-    /**
-     * Delete Vm.
-     * @param ***REMOVED***string***REMOVED*** openstack_id of instance
-     */
-    deleteVm(openstack_id: string): void ***REMOVED***
-        this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => ***REMOVED***
-
-            this.status_changed = 0;
-
-
-            if (this.tab === 'own') ***REMOVED***
-                this.getVms(this.elixir_id);
-            ***REMOVED***
-            else if (this.tab === 'all') ***REMOVED***
-                this.getAllVms();
-
-            ***REMOVED***
-
-            if (result['deleted'] === true) ***REMOVED***
-                this.status_changed = 1;
-            ***REMOVED***
-            else ***REMOVED***
-                this.status_changed = 2;
-            ***REMOVED***
-
+            this.check_status_loop(vm)
+          ***REMOVED***
 
         ***REMOVED***)
-    ***REMOVED***
+      ***REMOVED***
+      ,
+      this.checkStatusTimeout
+    )
+    ;
+  ***REMOVED***
 
-    /**
-     * Reboot a vm.
-     * @param ***REMOVED***string***REMOVED*** openstack_id of the instance
-     * @param ***REMOVED***string***REMOVED*** reboot_type HARD|SOFT
-     */
-    public rebootVm(openstack_id: string, reboot_type: string) ***REMOVED***
-        this.virtualmachineservice.rebootVM(openstack_id, reboot_type).subscribe(result => ***REMOVED***
-            this.status_changed = 0;
+  /**
+   * Stop a vm.
+   * @param ***REMOVED***string***REMOVED*** openstack_id of instance.
+   */
+  stopVm(vm: VirtualMachine): void ***REMOVED***
+    this.virtualmachineservice.stopVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => ***REMOVED***
 
+      this.status_changed = 0;
 
-            if (result['reboot']) ***REMOVED***
-                this.status_changed = 1;
-                this.check_status_loop(openstack_id)
-            ***REMOVED***
-            else ***REMOVED***
-                this.status_changed = 2;
-            ***REMOVED***
+      this.setCollapseStatus(updated_vm.openstackid, false);
 
+      if (updated_vm.created_at !== '') ***REMOVED***
+        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+      ***REMOVED***
+      if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') ***REMOVED***
+        updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+      ***REMOVED*** else ***REMOVED***
+        updated_vm.stopped_at = ''
+      ***REMOVED***
 
-        ***REMOVED***)
-    ***REMOVED***
+      this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+      this.applyFilter();
 
-    /**
-     * Check Status of vm in loop till active.
-     * @param ***REMOVED***string***REMOVED*** id of instance.
-     */
-    check_status_loop(id: string) ***REMOVED***
+      if (updated_vm.status === 'SUSPENDED') ***REMOVED***
+        this.status_changed = 1;
+      ***REMOVED*** else ***REMOVED***
+        this.status_changed = 2;
+      ***REMOVED***
 
-        setTimeout(() => ***REMOVED***
-            this.virtualmachineservice.checkVmStatus(id).subscribe(res => ***REMOVED***
-                res = res;
+    ***REMOVED***)
+  ***REMOVED***
 
-                if (res['Started']) ***REMOVED***
-                    this.reboot_done = true;
-                    if (this.tab === 'own') ***REMOVED***
-                        this.getVms(this.elixir_id);
-                    ***REMOVED***
-                    else if (this.tab === 'all') ***REMOVED***
-                        this.getAllVms();
+  /**
+   * Get all vms of user.
+   * @param ***REMOVED***string***REMOVED*** elixir_id of user
+   */
+  getVms(): void ***REMOVED***
+    this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
+                                                                    this.vms_content = vms;
 
-                    ***REMOVED***
+                                                                    for (const vm of this.vms_content) ***REMOVED***
+                                                                      this.setCollapseStatus(vm.openstackid, false);
 
+                                                                      if (vm.created_at !== '') ***REMOVED***
+                                                                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                                                                      ***REMOVED***
 
-                ***REMOVED***
-                else ***REMOVED***
-                    if (res['Error']) ***REMOVED***
-                        this.status_check_error = true
+                                                                      if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                                                                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                                                                      ***REMOVED*** else ***REMOVED***
+                                                                        vm.stopped_at = ''
+                                                                      ***REMOVED***
+                                                                    ***REMOVED***
+                                                                    this.isLoaded = true;
+                                                                    this.applyFilter();
 
+                                                                  ***REMOVED***
+    );
+  ***REMOVED***
 
-                    ***REMOVED***
-                    this.check_status_loop(id)
-                ***REMOVED***
+  refreshVms(): void ***REMOVED***
+    this.vms_returned = [];
+    this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
+                                                                    this.vms_content = vms;
 
-            ***REMOVED***)
-        ***REMOVED***, this.checkStatusTimeout);
-    ***REMOVED***
+                                                                    for (const vm of this.vms_content) ***REMOVED***
+                                                                      this.setCollapseStatus(vm.openstackid, false);
 
-    /**
-     * Stop a vm.
-     * @param ***REMOVED***string***REMOVED*** openstack_id of instance.
-     */
-    stopVm(openstack_id: string): void ***REMOVED***
-        this.virtualmachineservice.stopVM(openstack_id).subscribe(result => ***REMOVED***
+                                                                      if (vm.created_at !== '') ***REMOVED***
+                                                                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                                                                      ***REMOVED***
 
-            this.status_changed = 0;
+                                                                      if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                                                                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                                                                      ***REMOVED*** else ***REMOVED***
+                                                                        vm.stopped_at = ''
+                                                                      ***REMOVED***
+                                                                    ***REMOVED***
+                                                                    this.isLoaded = true;
+                                                                    this.applyFilter();
 
+                                                                  ***REMOVED***
+    );
 
-            if (this.tab === 'own') ***REMOVED***
-                this.getVms(this.elixir_id);
-            ***REMOVED***
-            else if (this.tab === 'all') ***REMOVED***
-                this.getAllVms();
+  ***REMOVED***
 
-            ***REMOVED***
+  /**
+   * Resume a vm.
+   * @param ***REMOVED***string***REMOVED*** openstack_id of instance.
+   */
+  resumeVM(vm: VirtualMachine): void ***REMOVED***
 
-            if (result['stopped']) ***REMOVED***
-                this.status_changed = 1;
-            ***REMOVED***
-            else ***REMOVED***
-                this.status_changed = 2;
-            ***REMOVED***
+    this.virtualmachineservice.resumeVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => ***REMOVED***
 
+      this.status_changed = 0;
+      this.setCollapseStatus(updated_vm.openstackid, false);
 
-        ***REMOVED***)
-    ***REMOVED***
+      if (updated_vm.created_at !== '') ***REMOVED***
+        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+      ***REMOVED***
+      if (updated_vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+        updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+      ***REMOVED*** else ***REMOVED***
+        updated_vm.stopped_at = ''
+      ***REMOVED***
 
-    /**
-     * Get all vms of user.
-     * @param ***REMOVED***string***REMOVED*** elixir_id of user
-     */
-    getVms(elixir_id: string): void ***REMOVED***
-        this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => ***REMOVED***
-                this.vms_content = vms;
+      this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+      this.applyFilter();
+      if (updated_vm.status === 'ACTIVE') ***REMOVED***
+        this.status_changed = 1;
+      ***REMOVED*** else ***REMOVED***
+        this.status_changed = 2;
+      ***REMOVED***
 
-                for (let vm of this.vms_content) ***REMOVED***
-                    this.setCollapseStatus(vm.openstackid, false)
+    ***REMOVED***)
+  ***REMOVED***
 
-                    if (vm.created_at != '') ***REMOVED***
-                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                    ***REMOVED***
+  /**
+   * Get all vms.
+   */
+  getAllVms(): void ***REMOVED***
+    this.virtualmachineservice.getAllVM().subscribe(vms => ***REMOVED***
+                                                      this.vms_content = vms;
+                                                      for (const vm of this.vms_content) ***REMOVED***
+                                                        this.setCollapseStatus(vm.openstackid, false);
 
-                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    ***REMOVED***
-                    else ***REMOVED***
-                        vm.stopped_at = ''
-                    ***REMOVED***
-                ***REMOVED***
-                this.isLoaded = true;
-                this.applyFilter();
+                                                        if (vm.created_at !== '') ***REMOVED***
+                                                          vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                                                        ***REMOVED***
+                                                        if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                                                          vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                                                        ***REMOVED*** else ***REMOVED***
+                                                          vm.stopped_at = ''
+                                                        ***REMOVED***
 
-                this.checkInactiveVms();
-            ***REMOVED***
-        );
-    ***REMOVED***
+                                                      ***REMOVED***
+                                                      this.applyFilter();
 
-    /**
-     * Resume a vm.
-     * @param ***REMOVED***string***REMOVED*** openstack_id of instance.
-     */
-    resumeVM(openstack_id: string): void ***REMOVED***
+                                                    ***REMOVED***
+    );
+  ***REMOVED***
 
-        this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => ***REMOVED***
+  ngOnInit(): void ***REMOVED***
+    this.getVms();
+    this.checkVOstatus()
 
+  ***REMOVED***
 
-            this.status_changed = 0;
+  /**
+   * Check vm status.
+   * @param ***REMOVED***UserService***REMOVED*** userservice
+   */
+  checkVOstatus(): void ***REMOVED***
+    this.voService.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
+      this.is_vo_admin = <boolean><Boolean>result.value;
+    ***REMOVED***)
+  ***REMOVED***
 
+  /**
+   * Create snapshot.
+   * @param ***REMOVED***string***REMOVED*** snapshot_instance which is used for creating the snapshot
+   * @param ***REMOVED***string***REMOVED*** snapshot_name name of the snapshot
+   */
+  createSnapshot(snapshot_instance: string, snapshot_name: string): void ***REMOVED***
+    this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe((newSnapshot: SnapshotModel) => ***REMOVED***
+      if (newSnapshot.snapshot_openstackid) ***REMOVED***
+        this.snapshotDone = 'true';
 
-            if (this.tab === 'own') ***REMOVED***
-                this.getVms(this.elixir_id);
-            ***REMOVED***
-            else if (this.tab === 'all') ***REMOVED***
-                this.getAllVms();
+      ***REMOVED*** else ***REMOVED***
+        this.snapshotDone = 'error';
 
-            ***REMOVED***
+      ***REMOVED***
 
-            if (result['resumed']) ***REMOVED***
-                this.status_changed = 1;
-            ***REMOVED***
-            else ***REMOVED***
-                this.status_changed = 2;
-            ***REMOVED***
+    ***REMOVED***)
+  ***REMOVED***
 
-        ***REMOVED***)
-    ***REMOVED***
-
-    /**
-     * Get all vms.
-     */
-    getAllVms(): void ***REMOVED***
-        this.virtualmachineservice.getAllVM().subscribe(vms => ***REMOVED***
-                this.vms_content = vms;
-                for (let vm of this.vms_content) ***REMOVED***
-                    this.setCollapseStatus(vm.openstackid, false)
-
-
-                    if (vm.created_at != '') ***REMOVED***
-                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                    ***REMOVED***
-                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') ***REMOVED***
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    ***REMOVED***
-                    else ***REMOVED***
-                        vm.stopped_at = ''
-                    ***REMOVED***
-
-                ***REMOVED***
-                this.applyFilter();
-
-
-            ***REMOVED***
-        );
-    ***REMOVED***
-
-    ngOnInit(): void ***REMOVED***
-        this.getElixirId();
-        this.checkVOstatus(this.userservice)
-
-    ***REMOVED***
-
-    /**
-     * Check vm status.
-     * @param ***REMOVED***UserService***REMOVED*** userservice
-     */
-    checkVOstatus(userservice: UserService) ***REMOVED***
-        let user_id: number;
-        let admin_vos: ***REMOVED******REMOVED***;
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) ***REMOVED***
-                //TODO catch errors
-                user_id = userdata["id"];
-                return userservice.getVosWhereUserIsAdmin().toPromise();
-            ***REMOVED***).then(function (adminvos) ***REMOVED***
-            admin_vos = adminvos;
-        ***REMOVED***).then(result => ***REMOVED***
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in admin_vos) ***REMOVED***
-                if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) ***REMOVED***
-                    this.is_vo_admin = true;
-                ***REMOVED***
-            ***REMOVED***
-        ***REMOVED***);
-    ***REMOVED***
-
-    /**
-     * Create snapshot.
-     * @param ***REMOVED***string***REMOVED*** snapshot_instance which is used for creating the snapshot
-     * @param ***REMOVED***string***REMOVED*** snapshot_name name of the snapshot
-     */
-    createSnapshot(snapshot_instance: string, snapshot_name: string) ***REMOVED***
-        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => ***REMOVED***
-            if (result['Error']) ***REMOVED***
-                this.snapshotDone = result['Error'].toString();
-            ***REMOVED***
-            else if (result['Created'])
-                this.snapshotDone = 'true';
-
-
-        ***REMOVED***)
-    ***REMOVED***
-
-    /**
-     * Get elixir id of logged in user.
-     */
-    getElixirId() ***REMOVED***
-        this.userservice.getLoggedUser().toPromise()
-            .then(result => ***REMOVED***
-                let res = result;
-
-                let userid = res["id"];
-                this.userservice.getLogins().toPromise().then(result => ***REMOVED***
-                    let logins = result;
-                    for (let login of logins) ***REMOVED***
-                        if (login['friendlyName'] === 'login-namespace:elixir-persistent') ***REMOVED***
-
-                            this.elixir_id = login['value'];
-
-                            break
-
-                        ***REMOVED***
-
-
-                    ***REMOVED***
-                ***REMOVED***).then(result => ***REMOVED***
-                    this.getVms(this.elixir_id)
-
-                ***REMOVED***);
-            ***REMOVED***)
-
-    ***REMOVED***
 ***REMOVED***

@@ -3,24 +3,21 @@
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
     <div class="row">
         <!--/.col-->
-        <h1>Vo Overview
-
-
-        </h1>
+        <div class="col-md-8"><h1>Vo Overview</h1></div>
 
         <div class="col-lg-12">
 
 
             <button (click)="setEmailType(1);emailModal.show();" type="button "
-                    class="btn btn-secondary"
+                    class="btn btn-outline-primary"
                     style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i
                     class="icon-envelope-letter"></i>
                 Send newsletter (***REMOVED******REMOVED***newsletterSubscriptionCounter***REMOVED******REMOVED***)
             </button>
 
             <button (click)="setEmailType(0);emailModal.show();" type="button "
-                    class="btn btn-secondary"
-                    style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i
+                    class="btn btn-outline-primary"
+                    style="margin-bottom: auto;margin-left: 5px; margin-top: auto"><i
                     class="icon-envelope-letter"></i>
                 Send email
             </button>
@@ -32,11 +29,13 @@
 
                 </div>
 
-                <div class="card-block">
-                    <div >
-                        <table class="table table-responsive table-striped">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
                             <thead>
                             <tr>
+                                <th></th>
+                                <th>Facility</th>
                                 <th>Project ID</th>
                                 <th>Project Name</th>
                                 <th>Details</th>
@@ -50,6 +49,12 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <td></td>
+                            <td><input style="width: 110px;" type="text" placeholder="Filter"
+                                       name="filterFacilityName"
+                                       [(ngModel)]="filterFacilityName"
+                                       (ngModelChange)="applyFilter();">
+                            </td>
                             <td><input style="width: 110px;" type="text" placeholder="Filter"
                                        name="filterProjectId"
                                        [(ngModel)]="filterProjectId"
@@ -66,20 +71,20 @@
                                     <div class="checkbox col-sm">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(project_statuses[project_statuses.ACTIVE]);applyFilter();"
+                                                   (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
                                                    checked/>
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-success">***REMOVED******REMOVED***project_statuses[project_statuses.ACTIVE]***REMOVED******REMOVED*** </span>
+                                                  class="badge badge-success">***REMOVED******REMOVED***project_states[project_states.ACTIVE]***REMOVED******REMOVED*** </span>
 
                                         </label>
                                     </div>
                                     <div class="checkbox col-sm">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(project_statuses[project_statuses.SUSPENDED]);applyFilter();"
+                                                   (change)="changeFilterStatus(project_states[project_states.SUSPENDED]);applyFilter();"
                                                    checked/>
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-warning">***REMOVED******REMOVED***project_statuses[project_statuses.SUSPENDED]***REMOVED******REMOVED*** </span>
+                                                  class="badge badge-warning">***REMOVED******REMOVED***project_states[project_states.SUSPENDED]***REMOVED******REMOVED*** </span>
                                         </label>
                                     </div>
                                 </div>
@@ -87,20 +92,20 @@
                                     <div class="checkbox col-sm">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(lifetime_statuses[lifetime_statuses.EXPIRED]);applyFilter();"
+                                                   (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
                                             />
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-danger">***REMOVED******REMOVED***lifetime_statuses[lifetime_statuses.EXPIRED]***REMOVED******REMOVED***</span>
+                                                  class="badge badge-danger">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRED]***REMOVED******REMOVED***</span>
 
                                         </label>
                                     </div>
                                     <div class="checkbox col-sm">
                                         <label>
                                             <input type="checkbox"
-                                                   (change)="changeFilterStatus(lifetime_statuses[lifetime_statuses.EXPIRES_SOON]);applyFilter();"
+                                                   (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
                                             />
                                             <span style="margin-left: 5px"
-                                                  class="badge badge-warning">***REMOVED******REMOVED***lifetime_statuses[lifetime_statuses.EXPIRES_SOON]***REMOVED******REMOVED***</span>
+                                                  class="badge badge-warning">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRES_SOON]***REMOVED******REMOVED***</span>
                                         </label>
                                     </div>
                                 </div>
@@ -109,9 +114,24 @@
 
 
                             <tr *ngFor="let project of projects_filtered">
-                                <!-- [ngStyle]="***REMOVED***'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)***REMOVED***"-->
+                                <td>
+                                     <span *ngIf="project.OpenStackProject"
+                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge"
+                                           data-toggle="tooltip" data-placement="auto"
+                                           title="This is an Openstack project">
+                                    <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                    <span *ngIf="!project.OpenStackProject"
+                                          style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
+                                          data-toggle="tooltip" data-placement="auto"
+                                          title="This is a Simple VM project">
+                                    <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                </td>
+                                <td>***REMOVED******REMOVED***project?.ComputeCenter?.Name***REMOVED******REMOVED***</td>
                                 <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
-                                <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***
+                                </td>
 
                                 <td>
                                     <button class="btn btn-secondary"
@@ -119,19 +139,19 @@
                                         Show Details
                                     </button>
                                 </td>
-                                <td>  <span *ngIf="project?.Status ==  project_statuses.ACTIVE"
+                                <td>  <span *ngIf="project?.Status ==  project_states.ACTIVE"
                                             style="margin-left: 5px"
-                                            class="badge badge-success">***REMOVED******REMOVED***project_statuses[project_statuses.ACTIVE]***REMOVED******REMOVED*** </span>
-                                    <span *ngIf="project?.LifetimeReached==lifetime_statuses.EXPIRED"
+                                            class="badge badge-success">***REMOVED******REMOVED***project_states[project_states.ACTIVE]***REMOVED******REMOVED*** </span>
+                                    <span *ngIf="project?.LifetimeReached==lifetime_states.EXPIRED"
                                           style="margin-left: 5px"
-                                          class="badge badge-danger">***REMOVED******REMOVED***lifetime_statuses[lifetime_statuses.EXPIRED]***REMOVED******REMOVED*** </span>
-                                    <span *ngIf="project?.LifetimeReached == lifetime_statuses.EXPIRES_SOON"
+                                          class="badge badge-danger">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRED]***REMOVED******REMOVED*** </span>
+                                    <span *ngIf="project?.LifetimeReached == lifetime_states.EXPIRES_SOON"
                                           style="margin-left: 5px"
-                                          class="badge badge-warning">***REMOVED******REMOVED***lifetime_statuses[lifetime_statuses.EXPIRES_SOON]***REMOVED******REMOVED***</span>
-                                    <span *ngIf="project?.Status == project_statuses.SUSPENDED"
+                                          class="badge badge-warning">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRES_SOON]***REMOVED******REMOVED***</span>
+                                    <span *ngIf="project?.Status == project_states.SUSPENDED"
                                           style="margin-left: 5px"
-                                          class="badge badge-warning">***REMOVED******REMOVED***project_statuses[project_statuses.SUSPENDED]***REMOVED******REMOVED*** </span>
-                                    <span *ngIf="project?.Status !=  project_statuses.SUSPENDED && project?.Status !=  project_statuses.ACTIVE"
+                                          class="badge badge-warning">***REMOVED******REMOVED***project_states[project_states.SUSPENDED]***REMOVED******REMOVED*** </span>
+                                    <span *ngIf="project?.Status !=  project_states.SUSPENDED && project?.Status !=  project_states.ACTIVE"
                                           style="margin-left: 5px"
                                           class="badge badge-danger">NOT SET </span>
                                 </td>
@@ -186,28 +206,30 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped table-responsive" style="word-wrap: break-word;table-layout: fixed">
-                    <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Member ID</th>
-                        <th>Elixir ID</th>
-                        <th>Email</th>
-                        <th>Full Name</th>
+                <div class="table-responsive">
+                    <table class="table table-striped" style="word-wrap: break-word;table-layout: fixed">
+                        <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Member ID</th>
+                            <th>Elixir ID</th>
+                            <th>Email</th>
+                            <th>Full Name</th>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let member of usersModalProjectMembers">
-                        <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
-                        <td >***REMOVED******REMOVED*** member.ElixirId***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED***member.Email***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
-                    </tr>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let member of usersModalProjectMembers">
+                            <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
+                            <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
+                            <td>***REMOVED******REMOVED*** member.ElixirId***REMOVED******REMOVED***</td>
+                            <td>***REMOVED******REMOVED***member.Email***REMOVED******REMOVED***</td>
+                            <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
+                        </tr>
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close
@@ -233,6 +255,39 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="email_form" #f="ngForm">
+
+
+                    <div class="form-group row" *ngIf="emailType == 0">
+                        <label
+                                class="col-md-12 control-label"><strong>Which facility should receive the email?</strong></label>
+                        <div class="col-md-12">
+                            <select class="form-control" [(ngModel)]="selectedFacility"
+                                    name="selectedFacility" id="selectedFacility">
+                                <option value="ALL"> All
+                                <option *ngFor="let cc of computecenters" [ngValue]="cc.FacilityId">
+                                    ***REMOVED******REMOVED***cc.Name***REMOVED******REMOVED***
+                                </option>
+
+                            </select></div>
+                    </div>
+
+                    <div class="form-group row" *ngIf="emailType == 0 && selectedFacility != 'ALL'">
+                        <label
+                                class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
+                        <div class="col-md-12">
+                            <select class="form-control" [(ngModel)]="selectedProjectType"
+                                    name="selectedProjectType" id="selectedProjectType">
+                                <option value="ALL" selected> All
+                                </option>
+                                <option value="SVP">
+                                    Simple VM
+                                </option>
+                                <option value="OVP">
+                                    OpenStack
+                                </option>
+
+                            </select></div>
+                    </div>
                     <div class="form-group row"
                          [ngClass]="***REMOVED***'has-danger':emailSub.invalid && (emailSub.dirty || emailSub.touched),
                     'has-success':emailSub.valid && (emailSub.dirty || emailSub.touched)
@@ -243,33 +298,38 @@
                             <input required id="emailSubject" name="emailSub" placeholder="Subject"
                                    class="form-control"
                                    type="text" [(ngModel)]="emailSubject" minlength="1"
-                                   #emailSub="ngModel">
+                                   #emailSub="ngModel"
+                                   [ngClass]="***REMOVED***'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
+                    'is-valid':emailSub.valid && (emailSub.dirty || emailSub.touched)
+                    ***REMOVED***">
 
                         </div>
                     </div>
 
-                    <div class="form-group row" [ngClass]="***REMOVED***'has-danger':emailRep.invalid && (emailRep.dirty || emailRep.touched),
-                    'has-success':emailRep.valid && (emailRep.dirty || emailRep.touched)
-                    ***REMOVED***">
+                    <div class="form-group row">
                         <label class="col-md-12 control-label"><strong>Reply to (optional)</strong></label>
                         <div class="col-md-12">
                             <input id="Reply to" name="emailReply" placeholder=""
                                    class="form-control"
                                    type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
-                                   pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`***REMOVED***|***REMOVED***~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+                                   pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.***REMOVED***2,***REMOVED***.*)|^.***REMOVED***254***REMOVED***.)([a-zA-Z0-9!#$%&'*+\/=?^_`***REMOVED***|***REMOVED***~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]***REMOVED***1,63***REMOVED***\.)+[a-zA-Z]***REMOVED***2,15***REMOVED***"
+                                   [ngClass]="***REMOVED***'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
+                    'is-valid':emailRep.valid && (emailRep.dirty || emailRep.touched)
+                    ***REMOVED***">
 
                         </div>
                     </div>
                     <!-- Textarea -->
-                    <div class="form-group row" [ngClass]="***REMOVED***'has-danger':emailT.invalid && (emailT.dirty || emailT.touched),
-                    'has-success':emailT.valid && (emailT.dirty || emailT.touched)
-                    ***REMOVED***">
+                    <div class="form-group row">
                         <label class="col-md-12 control-label"><strong>Email text*</strong></label>
                         <div class="col-md-12">
                             <textarea minlength="1" required class="form-control" id="emailText"
                                       name="emailText"
                                       [(ngModel)]="emailText"
-                                      type="text" #emailT="ngModel"></textarea>
+                                      type="text" #emailT="ngModel"
+                                      [ngClass]="***REMOVED***'is-invalid':emailT.invalid && (emailT.dirty || emailT.touched),
+                    'is-valid':emailT.valid && (emailT.dirty || emailT.touched)
+                    ***REMOVED***"></textarea>
                         </div>
                     </div>
                 </form>
@@ -339,7 +399,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn  btn-success col-md-4"
-                        (click)="removeResourceFromGroup(selectedProject.Id);setProjectStatus(selectedProject,4);suspendModal.hide()">
+                        (click)="suspendProject(selectedProject);suspendModal.hide()">
                     Yes
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"
@@ -434,8 +494,8 @@
                         class="fa fa-spinner fa-spin"
                         style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
                 </div>
-                <div >
-                    <table *ngIf="details_loaded" class="table  table-responsivetable-striped">
+                <div class="table-responsive">
+                    <table *ngIf="details_loaded" class="table table-striped">
                         <thead>
                         <th>Description</th>
                         <th>Date created (d/m/y)</th>

@@ -1,10 +1,12 @@
-import ***REMOVED***ApplicationExtension***REMOVED*** from "./application_extension.model";
-import ***REMOVED***ComputecenterComponent***REMOVED*** from "../projectmanagement/computecenter.component";
-import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
+import ***REMOVED***ApplicationExtension***REMOVED*** from './application_extension.model';
+import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 
-
+/**
+ * Application class.
+ */
 export class Application ***REMOVED***
-  private _Id: number;
+
+  private _Id: number | string;
   private _Name: string;
   private _Shortname: string;
   private _Institute: string;
@@ -21,36 +23,92 @@ export class Application ***REMOVED***
   private _Comment: string;
   private _DateSubmitted: string;
   private _DateStatusChanged: string;
-  private _User: number;
-  private _UserEmail: number;
-  private _UserAffiliations:string[];
+  private _User: string;
+  private _UserEmail: string;
+  private _UserAffiliations: string[];
   private _Status: number;
   private _ComputeCenter: ComputecenterComponent;
   private _OpenStackProject: boolean;
   private _DaysRunning: number;
-  private _ApplicationExtension:ApplicationExtension;
-  private _PerunId:number;
+  private _ApplicationExtension: ApplicationExtension = null;
+  private _PerunId: number | string;
   private _TotalCores: number;
   private _TotalRam: number;
   private _DateApproved: string;
-  private _CurrentFlavors: ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number***REMOVED*** ***REMOVED***;
+  private _Horizon2020: string;
+  private _BMBFProject: string;
 
-
+  private _ElixirProject: string;
+  private _Dissemination: boolean;
+  private _PIApproved: boolean;
+  private _PI: string;
+  private _PIElixir: string;
+  private _PIEmail: string;
+  private _CurrentFlavors: ***REMOVED***
+    [id: string]: ***REMOVED***
+      counter: number, tag: string, ram: number, rootdisk: number,
+      vcpus: number, gpu: number, epheremal_disk: number
+    ***REMOVED***
+  ***REMOVED***;
 
   constructor() ***REMOVED***
-    this._CurrentFlavors=***REMOVED******REMOVED***;
+    this._CurrentFlavors = ***REMOVED******REMOVED***;
   ***REMOVED***
 
- public  addFlavorToCurrent(name: string, counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number ):void ***REMOVED***
-    this._CurrentFlavors[name]=***REMOVED***counter:counter,tag: tag,ram: ram,rootdisk:rootdisk,vcpus:vcpus,gpu:gpu,epheremal_disk:epheremal_disk***REMOVED***;
- ***REMOVED***
+  public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number,
+                            vcpus: number, gpu: number, epheremal_disk: number): void ***REMOVED***
+    this._CurrentFlavors[name] = ***REMOVED***
+      counter: counter,
+      tag: tag,
+      ram: ram,
+      rootdisk: rootdisk,
+      vcpus: vcpus,
+      gpu: gpu,
+      epheremal_disk: epheremal_disk
+    ***REMOVED***;
+  ***REMOVED***
 
-  get CurrentFlavors(): ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number***REMOVED*** ***REMOVED*** ***REMOVED***
+
+  get PIElixir(): string ***REMOVED***
+    return this._PIElixir;
+  ***REMOVED***
+
+  set PIElixir(value: string) ***REMOVED***
+    this._PIElixir = value;
+  ***REMOVED***
+
+  get Dissemination(): boolean ***REMOVED***
+    return this._Dissemination;
+  ***REMOVED***
+
+  set Dissemination(value: boolean) ***REMOVED***
+    this._Dissemination = value;
+  ***REMOVED***
+
+  get PIApproved(): boolean ***REMOVED***
+    return this._PIApproved;
+  ***REMOVED***
+
+  set PIApproved(value: boolean) ***REMOVED***
+    this._PIApproved = value;
+  ***REMOVED***
+
+  get CurrentFlavors(): ***REMOVED***
+    [id: string]: ***REMOVED***
+      counter: number, tag: string, ram: number, rootdisk: number,
+      vcpus: number, gpu: number, epheremal_disk: number
+    ***REMOVED***
+  ***REMOVED*** ***REMOVED***
     return this._CurrentFlavors
   ***REMOVED***
 
-  set CurrentFlavors(value: ***REMOVED*** [id: string]: ***REMOVED***counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number***REMOVED*** ***REMOVED*** )***REMOVED***
-    this._CurrentFlavors  = value;
+  set CurrentFlavors(value: ***REMOVED***
+    [id: string]: ***REMOVED***
+      counter: number, tag: string, ram: number, rootdisk: number,
+      vcpus: number, gpu: number, epheremal_disk: number
+    ***REMOVED***
+  ***REMOVED***) ***REMOVED***
+    this._CurrentFlavors = value;
   ***REMOVED***
 
   get DateApproved(): string ***REMOVED***
@@ -61,42 +119,46 @@ export class Application ***REMOVED***
     this._DateApproved = value;
   ***REMOVED***
 
-  get TotalCores():number***REMOVED***
+  get TotalCores(): number ***REMOVED***
     return this._TotalCores;
   ***REMOVED***
 
-  set TotalCores(value:number)***REMOVED***
-    this._TotalCores=value;
+  set TotalCores(value: number) ***REMOVED***
+    this._TotalCores = value;
   ***REMOVED***
 
-  get TotalRam():number***REMOVED***
+  get TotalRam(): number ***REMOVED***
     return this._TotalRam;
   ***REMOVED***
 
-  set TotalRam(value:number)***REMOVED***
-    this._TotalRam=value;
+  set TotalRam(value: number) ***REMOVED***
+    this._TotalRam = value;
   ***REMOVED***
-  get UserAffiliations():string[]***REMOVED***
+
+  get UserAffiliations(): string[] ***REMOVED***
     return this._UserAffiliations
   ***REMOVED***
 
-  set UserAffiliations(value:string[])***REMOVED***
-    this._UserAffiliations=value;
+  set UserAffiliations(value: string[]) ***REMOVED***
+    this._UserAffiliations = value;
   ***REMOVED***
-  get ApplicationExtension():ApplicationExtension***REMOVED***
+
+  get ApplicationExtension(): ApplicationExtension ***REMOVED***
     return this._ApplicationExtension;
   ***REMOVED***
 
-  set ApplicationExtension(value:ApplicationExtension)***REMOVED***
-    this._ApplicationExtension=value;
+  set ApplicationExtension(value: ApplicationExtension) ***REMOVED***
+    this._ApplicationExtension = value;
   ***REMOVED***
-  get DaysRunning():number***REMOVED***
+
+  get DaysRunning(): number ***REMOVED***
     return this._DaysRunning;
   ***REMOVED***
 
-  set DaysRunning(value:number)***REMOVED***
-    this._DaysRunning=value;
+  set DaysRunning(value: number) ***REMOVED***
+    this._DaysRunning = value;
   ***REMOVED***
+
   get OpenStackProject(): boolean ***REMOVED***
     return this._OpenStackProject
   ***REMOVED***
@@ -104,9 +166,6 @@ export class Application ***REMOVED***
   set OpenStackProject(value: boolean) ***REMOVED***
     this._OpenStackProject = value;
   ***REMOVED***
-
-
-
 
   get ComputeCenter(): ComputecenterComponent ***REMOVED***
     return this._ComputeCenter
@@ -116,11 +175,11 @@ export class Application ***REMOVED***
     this._ComputeCenter = value;
   ***REMOVED***
 
-  get Id(): number ***REMOVED***
+  get Id(): number | string ***REMOVED***
     return this._Id;
   ***REMOVED***
 
-  set Id(value: number) ***REMOVED***
+  set Id(value: number | string) ***REMOVED***
     this._Id = value;
   ***REMOVED***
 
@@ -132,13 +191,14 @@ export class Application ***REMOVED***
     this._Name = value;
   ***REMOVED***
 
-  set Comment(value: string)***REMOVED***
+  set Comment(value: string) ***REMOVED***
     this._Comment = value;
   ***REMOVED***
 
-  get Comment():string ***REMOVED***
+  get Comment(): string ***REMOVED***
     return this._Comment;
   ***REMOVED***
+
   get Shortname(): string ***REMOVED***
     return this._Shortname;
   ***REMOVED***
@@ -203,8 +263,7 @@ export class Application ***REMOVED***
     this._VolumeLimit = value;
   ***REMOVED***
 
-
-    get VolumeCounter(): number ***REMOVED***
+  get VolumeCounter(): number ***REMOVED***
     return this._VolumeCounter;
   ***REMOVED***
 
@@ -252,11 +311,11 @@ export class Application ***REMOVED***
     this._DateStatusChanged = value;
   ***REMOVED***
 
-  get User(): number ***REMOVED***
+  get User(): string ***REMOVED***
     return this._User;
   ***REMOVED***
 
-  set User(value: number) ***REMOVED***
+  set User(value: string) ***REMOVED***
     this._User = value;
   ***REMOVED***
 
@@ -268,19 +327,62 @@ export class Application ***REMOVED***
     this._Status = value;
   ***REMOVED***
 
-
-  get UserEmail(): number ***REMOVED***
+  get UserEmail(): string ***REMOVED***
     return this._UserEmail;
   ***REMOVED***
 
-  set UserEmail(value: number) ***REMOVED***
+  set UserEmail(value: string) ***REMOVED***
     this._UserEmail = value;
   ***REMOVED***
-    get PerunId():number***REMOVED***
-     return this._PerunId;
+
+  get PerunId(): number | string ***REMOVED***
+    return this._PerunId;
   ***REMOVED***
 
-  set PerunId(value:number)***REMOVED***
-     this._PerunId=value;
+  set PerunId(value: number | string) ***REMOVED***
+    this._PerunId = value;
+  ***REMOVED***
+
+
+
+  get BMBFProject(): string ***REMOVED***
+    return this._BMBFProject;
+  ***REMOVED***
+
+  set BMBFProject(value: string) ***REMOVED***
+    this._BMBFProject = value;
+  ***REMOVED***
+
+
+  get Horizon2020(): string ***REMOVED***
+    return this._Horizon2020;
+  ***REMOVED***
+
+  set Horizon2020(value: string) ***REMOVED***
+    this._Horizon2020 = value;
+  ***REMOVED***
+
+  get ElixirProject(): string ***REMOVED***
+    return this._ElixirProject;
+  ***REMOVED***
+
+  set ElixirProject(value: string) ***REMOVED***
+    this._ElixirProject = value;
+  ***REMOVED***
+
+  get PI(): string ***REMOVED***
+    return this._PI;
+  ***REMOVED***
+
+  set PI(value: string) ***REMOVED***
+    this._PI = value;
+  ***REMOVED***
+
+  get PIEmail(): string ***REMOVED***
+    return this._PIEmail;
+  ***REMOVED***
+
+  set PIEmail(value: string) ***REMOVED***
+    this._PIEmail = value;
   ***REMOVED***
 ***REMOVED***

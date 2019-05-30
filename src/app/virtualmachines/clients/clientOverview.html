@@ -1,0 +1,142 @@
+<div *ngIf="isLoaded==false" class="loader"></div>
+
+<div class="card" *ngIf="is_vo_admin && isLoaded">
+    <div class="card-header">
+        <strong>Clients</strong>
+        –Overview
+    </div>
+    <div>
+        <div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Facility</th>
+                        <th>Host</th>
+                        <th>Port</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let client of clients">
+                        <td>***REMOVED******REMOVED***client.location***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***client.host***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***client.port***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***client.status***REMOVED******REMOVED***</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" (click)="selectedClient=client;updateModal.show();">
+                                Update
+                                Client
+                            </button>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <select class="form-control col-md-6" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
+                                <option value="undefined" disabled selected hidden> Please Select</option>
+                                <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter">
+                                    ***REMOVED******REMOVED***computecenter.Name***REMOVED******REMOVED***
+                                </option>
+
+                            </select></td>
+                        <td><input type="text" placeholder="Host" #hos></td>
+                        <td><input type="text" placeholder="Port" #port></td>
+                        <td>***REMOVED******REMOVED***checkStatus***REMOVED******REMOVED***</td>
+
+                        <td>
+                            <button type="button" style="padding-right: 5px;margin-right: 5px" class="btn btn-primary navbar-inverse"
+                                    (click)="checkClient(hos.value,port.value)">Check Status
+                            </button>
+                            <button type="button" class="btn btn-primary navbar-inverse"
+                                    (click)="postClient(hos.value,port.value,selectedComputeCenter.Name);">Add Client
+                            </button>
+                        </td>
+
+
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button type="button" class="btn btn-primary navbar-inverse" (click)="getClientsChecked();">Check all Clients
+                            </button>
+                        </td>
+
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<div bsModal #updateModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Client</h4>
+                <button type="button" class="close" style="cursor:pointer"
+                        (click)="updateModal.hide()"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Facility</th>
+                            <th>Host</th>
+                            <th>Port</th>
+
+
+                        </tr>
+
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <select class="form-control col-md-6" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
+                                    <option value="undefined" disabled selected hidden> Please Select</option>
+                                    <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter"> ***REMOVED******REMOVED***computecenter.Name***REMOVED******REMOVED***
+                                    </option>
+
+                                </select></td>
+                            <td><input type="text" placeholder="Host" #hostUpdate></td>
+                            <td><input type="text" placeholder="Port" #portUpdate></td>
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary navbar-inverse"
+                        (click)="updateClient(hostUpdate.value,portUpdate.value,selectedComputeCenter.Name,selectedClient.id);updateModal.hide();">Update
+                </button>
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="updateModal.hide()">Cancel
+                </button>
+
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

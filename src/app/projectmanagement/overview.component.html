@@ -2,17 +2,18 @@
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
     <div class="row">
         <!--/.col-->
-        <h1>Projects Overview</h1>
+        <h1 class="col-md-8 ">Projects Overview</h1>
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Projects
                 </div>
-                <div class="card-block">
-                    <div>
-                        <table class="table  table-responsive table-striped">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
                             <thead>
                             <tr>
+                                <th></th>
                                 <th>Project ID</th>
                                 <th>Project Name</th>
                                 <th>Details</th>
@@ -26,9 +27,24 @@
                             </thead>
                             <tbody>
                             <tr *ngFor="let project of projects">
+                                <td>
+                                     <span *ngIf="project.OpenStackProject"
+                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge"
+                                           data-toggle="tooltip" data-placement="auto"
+                                           title="This is an Openstack project">
+                                    <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                    <span *ngIf="!project.OpenStackProject"
+                                          style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
+                                          data-toggle="tooltip" data-placement="auto"
+                                          title="This is a Simple VM project">
+                                    <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                                </td>
                                 <!--[ngStyle]="***REMOVED***'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)***REMOVED***"-->
                                 <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
-                                <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***</td>
+                                <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***
+                                </td>
                                 <td>
                                     <button class="btn btn-secondary"
                                             (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
@@ -44,18 +60,10 @@
                                             ***REMOVED******REMOVED***project.ComputeCenter.Login***REMOVED******REMOVED***</a></li>
                                         <li>Support: ***REMOVED******REMOVED***project.ComputeCenter.Support***REMOVED******REMOVED***</li>
 
-                                        <!--button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"
-                                                class="btn btn-primary">Set your OpenStack API password
-                                        </button-->
-
                                     </ul>
 
                                 </td>
 
-                                <!--td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>-->
-                                <!--td>***REMOVED******REMOVED***project.DateEnd***REMOVED******REMOVED***</td-->
-                                <!--td>***REMOVED******REMOVED*** project.DaysRunning ***REMOVED******REMOVED***</td-->
-                                <!--td>***REMOVED******REMOVED***project.LifetimeDays***REMOVED******REMOVED***</td-->
                                 <td>
                                     <div class="btn-group-vertical">
                                         <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
@@ -80,7 +88,7 @@
                                             Applications
                                         </button>
                                         <h4 *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)"><span
-                                                class="badge badge-default">Project Member </span></h4>
+                                                class="badge badge-dark">Project Member </span></h4>
                                     </div>
                                 </td>
                             </tr>
@@ -108,8 +116,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div >
-                    <table class="table  table-responsive table-striped" style="margin: 5px">
+                <div class="table-responsive">
+                    <table class="table table-striped" style="margin: 5px">
                         <thead>
                         <tr>
                             <th>User ID</th>
@@ -136,7 +144,7 @@
                                 </button>
                                 <button (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username);
                                                 notificationModal.show();
-                                               " class="btn btn-secondary" type="button" style="margin: 2px">
+                                               " class="btn btn-danger" type="button" style="margin: 2px">
 
                                     <i class="fa fa-trash"></i>&nbsp; Remove member
                                 </button>
@@ -169,54 +177,63 @@
             </div>
             <div class="modal-body">
 
-              <div class="container-fluid">
+                <div class="container-fluid">
                     <div class="row">
                         <p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
                             four characters of his name:</p>
                     </div>
                     <div class="row">
                         <div class="col-md-8">
-                          <input style="width: 100%" placeholder="" #searchString>
+                            <input style="width: 100%" placeholder="" #searchString>
                         </div>
                         <div class="col-md-4">
-                          <button type="button" class="btn btn-primary"
-                                (click)="filterMembers(searchString.value,addUserModalProjectID )"><i
-                                class="fa fa-search"></i> Search Member
-                          </button>
+                            <button type="button" class="btn btn-primary"
+                                    (click)="filterMembers(searchString.value )"><i
+                                    class="fa fa-search"></i> Search Member
+                            </button>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-md-12">
-                        <strong>Please note</strong> that if you can not find the user, he is not registered for a
-                          a de.NBI Cloud account. In that case you can invite him by sending him the following link:
-                        <br>
-                        <br>
-                        <ul>
+                            <strong>Please note</strong> that if you can not find the user, he is not registered for a
+                            a de.NBI Cloud account. In that case you can invite him by sending him the following link:
+                            <br>
+                            <br>
+                            <ul style="list-style-type:none;">
 
-                            <li><pre>***REMOVED******REMOVED***addUserModalInvitationLink***REMOVED******REMOVED***</pre>
-                            </li>
-                        </ul>
-                        <br>
-                        After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
-                      Read more about the process <a target="_blank" href="***REMOVED******REMOVED***wiki_group_invitation***REMOVED******REMOVED***">here</a>.
+                                <li>
+                                    <pre [hidden]="showLink">***REMOVED******REMOVED***addUserModalInvitationLink***REMOVED******REMOVED***</pre>
+                                    <div class="btn-group-vertical">
+                                        <button class="btn btn-primary" style="margin-bottom: 5px" (click)="showLink = !showLink">
+                                            <span [hidden]="!showLink">Show</span>
+                                            <span [hidden]="showLink">Hide</span>
+                                            link
+                                        </button>
+                                        <button class="btn btn-success" (click)="copyLink(addUserModalInvitationLink)">Copy link</button>
+                                    </div>
+                                </li>
+                            </ul>
+                            <br>
+                            After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
+                            Read more about the process <a target="_blank" href="***REMOVED******REMOVED***wiki_group_invitation***REMOVED******REMOVED***">here</a>.
                         </div>
                     </div>
 
-                    <div>
-                        <table *ngIf="filteredMembers!==null" class="table  table-responsive table-bordered table-striped table-sm">
+                    <div class="table-responsive">
+                        <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
                             <thead>
 
                             <th></th>
-                            <th>first name</th>
-                            <th>last name</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
                             <th>Email</th>
                             </thead>
                             <tbody *ngFor="  let member of filteredMembers">
                             <td>
                                 <button
                                         (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
-                                        class="btn btn-primary"><i class="fa fa-plus"></i> Add Member
+                                        class="btn btn-success"><i class="fa fa-plus"></i> Add Member
                                 </button>
                                 <button style="padding-left: 10px;margin-left: 10px"
                                         (click)="addAdmin(addUserModalProjectID,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
@@ -271,38 +288,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Change Password</h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <div class="alert alert-warning" role="alert">
-                    Are you sure you want to change your password?
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn  btn-success mr-auto col-md-4"
-                        (click)="verifyModal.hide();setUserFacilityPassword(UserModalFacility[0],UserModalFacilityDetails);passwordModal.show(); resetFacilityDetailsModal();">
-                    Yes
-                </button>
-                <button class="btn  btn-danger col-md-4" type="reset"
-                        (click)="verifyModal.hide()">Cancel
-                </button>
-            </div>
-
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 
 <div bsModal #passwordModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
@@ -385,8 +370,8 @@
                 <div *ngIf="!details_loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
                                                                            style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
                 </div>
-                <div>
-                    <table *ngIf="details_loaded" class="table table-responsive table-striped">
+                <div class="table-responsive">
+                    <table *ngIf="details_loaded" class="table table-striped">
                         <thead>
                         <th>Description</th>
                         <th>Date created (d/m/y)</th>
@@ -438,8 +423,8 @@
                                                                    style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
                 </div>
 
-                <div *ngIf="loaded">
-                    <table class="table table-bordered table-responsive table-striped table-sm">
+                <div *ngIf="loaded" class="table-responsive">
+                    <table class="table table-bordered table-striped table-sm">
                         <thead>
 
                         <th>Name</th>
