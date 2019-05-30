@@ -1,183 +1,164 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {URLSearchParams} from '@angular/http';
 import {ApiSettings} from './api-settings.service';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {IResponseTemplate} from "./response-template";
+import {Userinfo} from "../userinfo/userinfo.model";
 
-const header = new HttpHeaders({
-    'X-CSRFToken': Cookie.get("csrftoken")
+const header: HttpHeaders = new HttpHeaders({
+    'X-CSRFToken': Cookie.get('csrftoken')
 });
 
-
+/**
+ * Service which provides user methods.
+ */
 @Injectable()
 export class UserService {
-    constructor(private http: HttpClient, private settings: ApiSettings) {
+    constructor(private http: HttpClient) {
     }
 
-    setUserFacilityPassword(facility: string): Observable<any> {
-        let params = new HttpParams().set('facility', facility)
+    getLoginElixirName(): Observable<IResponseTemplate> {
 
-        ;
-        return this.http.post(this.settings.getConnectorBaseUrl() + 'users/setUserPassword/', params, {
-            withCredentials: true,
-            headers: header,
-        }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/logins/`, {
+            withCredentials: true
+        })
     }
 
-    getLogins(): Observable<any> {
+    getPreferredMailUser(): Observable<IResponseTemplate> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/logins/',
-            {
-                withCredentials: true,
-            }).pipe(catchError((error: any) => throwError(error)));
-    }
-
-
-    getPreferredMailUser(): Observable<any> {
-
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/preferredEmail/',
-            {
-                withCredentials: true,
-            }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, {
+            withCredentials: true
+        })
     }
 
     requestChangePreferredMailUser(email: string): Observable<any> {
-        let params = new HttpParams().set('newPreferredEmail', email);
+        const params: HttpParams = new HttpParams().set('newPreferredEmail', email);
 
-
-        return this.http.post(this.settings.getApiBaseURL() + 'users/current/preferredEmail/', params,
-            {
-                withCredentials: true,
-                headers: header,
-            }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, params, {
+            withCredentials: true,
+            headers: header
+        })
     }
 
+    getPendingPreferredMailUser(): Observable<IResponseTemplate> {
 
-    getPendingPreferredMailUser(): Observable<any> {
-
-
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/pendingPreferredEmails/',
-            {
-                withCredentials: true,
-            }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/pendingPreferredEmails/`, {
+            withCredentials: true
+        })
     }
 
-
-    getMemberDetailsByElixirId(elixir_id: string) {
+    getMemberDetailsByElixirId(elixir_id: string): Observable<any> {
         elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
-        return this.http.get(this.settings.getApiBaseURL() + 'users/' + elixir_id + '/member/',
-            {
-                withCredentials: true,
 
-            }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/${elixir_id}/member/`, {
+            withCredentials: true
 
-    }
-
-    isMember(userid: string) {
-        return this.http.get(this.settings.getApiBaseURL() + 'users/' + userid + '/member/status/',
-            {
-                withCredentials: true,
-            }).pipe(catchError((error: any) => throwError(error)));
+        })
 
     }
 
-    getuserAffiliations(user_id: number) {
-        return this.http.get(this.settings.getApiBaseURL() + 'users/' + user_id.toString() + '/affiliations/',
-            {
-                withCredentials: true,
+    getUserInfo(): Observable<any> {
 
-            }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get<any>(`${ApiSettings.getApiBaseURL()}users/current/userInfo/`, {
+            withCredentials: true
 
+        })
     }
+
 
     getLoggedUser(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/',
-            {
+        const params: HttpParams = new HttpParams().set('redirect_after_login', 'redirect');
+
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {
+            withCredentials: true,
+            params: params
+
+        })
+    }
+
+    getLoggedUserWithRedirect(redirect?: string): Observable<any> {
+        if (redirect && redirect != '/userinfo' && redirect != 'redirect') {
+            const params: HttpParams = new HttpParams().set('redirect_after_login', redirect);
+            return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {
+                withCredentials: true,
+                params: params
+
+            })
+        } else {
+            return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {
                 withCredentials: true,
 
-            }).pipe(catchError((error: any) => throwError(error)));
+            })
+        }
+
+
     }
 
     getMemberByUser(): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + `users/current/member/`, {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/member/`, {
+            withCredentials: true
+        })
     }
-
 
     getMemberByExtSourceNameAndExtLogin(ext_login: string): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + `users/current/extLogin/member/`, {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/extLogin/member/`, {
             withCredentials: true,
             params: {
-
-                extLogin: ext_login,
-
+                extLogin: ext_login
             }
-        }).pipe(catchError((error: any) => throwError(error)));
+        })
     }
 
+    setNewsletterSubscriptionWhenSubscribed(): Observable<IResponseTemplate> {
+        const params: HttpParams = new HttpParams().set('subscribed', true.toString());
 
-    getVosWhereUserIsAdmin(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/adminVos/', {
+        return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
             withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));
-        ;
+            headers: header
+        })
+
     }
 
-    getGroupsWhereUserIsAdmin(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/adminGroups/', {
+    setNewsletterSubscriptionWhenNotSubscribed(): Observable<IResponseTemplate> {
+        const params: HttpParams = new HttpParams().set('subscribed', false.toString());
+
+        return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
             withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));
-        ;
+            headers: header
+        })
+
     }
 
-    setNewsletterSubscription(subscribed: boolean): Observable<any> {
-        let params = new HttpParams().set('subscribed', subscribed.toString());
+    getNewsletterSubscription(): Observable<IResponseTemplate> {
 
-        return this.http.post(this.settings.getApiBaseURL() + 'newsletter/subscription/', params, {
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, {
+            withCredentials: true
+        })
+
+    }
+
+    sendHelpMail(subject: string, message: string, reply: string): Observable<IResponseTemplate> {
+
+        const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+
+        return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/helpMail/`, params, {
             withCredentials: true,
-            headers: header,
-        }).pipe(catchError((error: any) => throwError(error)));
-
+            headers: header
+        })
     }
 
-    getNewsletterSubscription(): Observable<any> {
+    getFilteredMembersOfdeNBIVo(searchString: string): Observable<any> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'newsletter/subscription/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));
-
-
-    }
-
-    sendHelpMail(subject, message, reply): Observable<any> {
-
-        let params = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
-
-
-        return this.http.post(this.settings.getApiBaseURL() + 'users/current/helpMail/', params, {
-            withCredentials: true,
-            headers: header,
-        }).pipe(catchError((error: any) => throwError(error)));
-
-    }
-
-    getFilteredMembersOfdeNBIVo(searchString: string, groupid: string): Observable<any> {
-
-        return this.http.get(this.settings.getApiBaseURL() + 'users/filter/', {
+        return this.http.get(`${ApiSettings.getApiBaseURL()}users/filter/`, {
             withCredentials: true,
             params: {
-                searchString: searchString,
+                searchString: searchString
             }
-        }).pipe(catchError((error: any) => throwError(error)));
-
+        })
 
     }
-
 
 }

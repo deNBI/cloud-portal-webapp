@@ -1,5 +1,5 @@
-import {ProjectMemberApplication} from "./project_member_application";
-import {ComputecenterComponent} from "./computecenter.component";
+import {ProjectMemberApplication} from './project_member_application';
+import {ComputecenterComponent} from './computecenter.component';
 
 export class Project {
     get UserIsAdmin(): boolean {
@@ -10,14 +10,14 @@ export class Project {
         this._UserIsAdmin = value;
     }
 
-    private _Id: number;
+    private _Id: number | string;
     private _Name: string;
     private _Description: string;
     private _DateCreated: string;
     private _DateEnd: string;
     private _DaysRunning: number;
     private _LifetimeDays: number;
-    private _Lifetime: number;
+    private _Lifetime: number | string;
     private _UserIsAdmin: boolean;
     private _UserIsPi: boolean;
     private _Status: number;
@@ -28,8 +28,8 @@ export class Project {
     private _OpenStackProject: boolean;
     private _LifetimeReached: number;
 
-
-    constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) {
+    constructor(Id: number | string, Name: string, Description: string, DateCreated: string, DaysRunning: number,
+                UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) {
         this._Id = Id;
         this._Name = Name;
         this._Description = Description;
@@ -41,7 +41,7 @@ export class Project {
 
     }
 
-//todo exdend with additional information
+// todo exdend with additional information
 
     get LifetimeReached(): number {
         return this._LifetimeReached
@@ -55,7 +55,6 @@ export class Project {
 
         return this._RealName
     }
-
 
     set RealName(value: string) {
         this._RealName = value;
@@ -94,12 +93,12 @@ export class Project {
         this._OpenStackProject = value;
     }
 
-    get Lifetime(): number {
-        return this._Lifetime;
+    set Lifetime(value: number | string) {
+        this._Lifetime = value;
     }
 
-    set Lifetime(value: number) {
-        this._Lifetime = value;
+    get Lifetime(): number | string {
+        return this._Lifetime;
     }
 
     get ComputeCenter(): ComputecenterComponent {
@@ -110,12 +109,20 @@ export class Project {
         this._ComputeCenter = value;
     }
 
-    get Id(): number {
-        return this._Id;
+    get PerunId(): number {
+        return this._PerunId;
     }
 
-    set Id(value: number) {
+    set PerunId(value: number) {
+        this._PerunId = value;
+    }
+
+    set Id(value: number | string) {
         this._Id = value;
+    }
+
+    get Id(): number | string {
+        return this._Id;
     }
 
     get Name(): string {
@@ -158,7 +165,6 @@ export class Project {
         this._DaysRunning = value;
     }
 
-
     get UserIsPi(): boolean {
         return this._UserIsPi;
     }
@@ -166,6 +172,5 @@ export class Project {
     set UserIsPi(value: boolean) {
         this._UserIsPi = value;
     }
-
 
 }

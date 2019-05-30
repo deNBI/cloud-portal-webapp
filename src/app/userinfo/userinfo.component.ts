@@ -1,187 +1,154 @@
 import {Component, OnInit} from '@angular/core';
-
 import {Userinfo} from './userinfo.model'
-import {PerunSettings} from "../perun-connector/connector-settings.service";
 import {ApiSettings} from '../api-connector/api-settings.service'
-import {keyService} from "../api-connector/key.service";
-import {UserService} from "../api-connector/user.service";
-import {GroupService} from "../api-connector/group.service";
+import {KeyService} from '../api-connector/key.service';
+import {UserService} from '../api-connector/user.service';
+import {GroupService} from '../api-connector/group.service';
+import {IResponseTemplate} from '../api-connector/response-template';
+import {forkJoin} from 'rxjs/index';
 
-
+/**
+ * UserInformation component.
+ */
 @Component({
-    selector: 'app-userinfo',
-    templateUrl: 'userinfo.component.html',
-    providers: [GroupService, UserService, PerunSettings, ApiSettings, keyService]
+  selector: 'app-userinfo',
+  templateUrl: 'userinfo.component.html',
+  providers: [GroupService, UserService, ApiSettings, KeyService]
 })
-export class UserinfoComponent implements OnInit {
-    userinfo: Userinfo;
-    key: string = 'Show Public Key';
-    key_visible = false;
-    newsletter_subscribed: boolean;
-    public_key: string = '';
-    isLoaded = false;
-    is_project_member = true;
-    freemium_active = false;
-    emailChange = '';
-    freemium: boolean;
+export class UserInfoComponent implements OnInit {
+  /**
+   * Information of the logged in User
+   */
+  userInfo: Userinfo;
 
-    constructor(private groupService: GroupService, private userservice: UserService, private keyService: keyService) {
-        this.userinfo = new Userinfo();
-        this.getUserinfo();
+  /**
+   * If the user has subscribed to the newsletter.
+   */
+  newsletterSubscribed: boolean;
 
+  /**
+   * New requested public key.
+   */
+  newPublicKey: string;
+
+  /**
+   * If every data is loaded.
+   * @type {boolean}
+   */
+  isLoaded: boolean = false;
+
+  /**
+   * If the user is part of a project.
+   * @type {boolean}
+   */
+  isProjectMember: boolean = true;
+
+  /**
+   * If freemium is active.
+   * @type {boolean}
+   */
+  freemiumActive: boolean = false;
+
+  /**
+   * Email requested to change.
+   */
+  emailChange: string;
+
+  constructor(private groupService: GroupService, private userService: UserService, private keyService: KeyService) {
+
+  }
+
+  requestChangePreferredMailUser(email: string): void {
+    this.userService.requestChangePreferredMailUser(email).subscribe(() => {
+      this.getPendingPreferredMailUser();
+    })
+  }
+
+  getPendingPreferredMailUser(): void {
+    this.userService.getPendingPreferredMailUser().subscribe((res: IResponseTemplate) => {
+      this.userInfo.PendingEmails = <string[]>res.value;
+
+    })
+  }
+
+  ngOnInit(): void {
+    this.getUserinfo();
+    this.isFreemiumActive();
+    this.isUserSimpleVmMember();
+
+  }
+
+  isFreemiumActive(): void {
+    this.groupService.isFreemiumActive().subscribe((result: IResponseTemplate) => {
+      this.freemiumActive = <boolean><Boolean> result.value;
+
+    });
+  }
+
+  importKey(publicKey: string): void {
+
+    const re: RegExp = /\+/gi;
+
+    this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(() => {
+      this.getUserPublicKey();
+    });
+  }
+
+  getUserPublicKey(): void {
+    this.keyService.getKey().subscribe((key: IResponseTemplate) => {
+      this.userInfo.PublicKey = <string>key.value;
+      this.isLoaded = true;
+    })
+  }
+
+  getUserinfo(): void {
+    this.userService.getUserInfo().subscribe((userinfo: any) => {
+      this.userInfo = new Userinfo(userinfo);
+      forkJoin(
+        this.userService.getNewsletterSubscription(),
+        this.userService.getPendingPreferredMailUser()).subscribe((res: IResponseTemplate[]) => {
+
+        this.newsletterSubscribed = <boolean>res[0].value;
+        this.userInfo.PendingEmails = <string[]>res[1].value;
+        this.isLoaded = true;
+
+      })
+    })
+
+  }
+
+  isUserSimpleVmMember(): void {
+    this.groupService.getSimpleVmByUser().subscribe(result => {
+      if (result.length > 0) {
+        this.isProjectMember = true
+      } else {
+        this.isProjectMember = false
+      }
+    })
+  }
+
+  setNewsletterSubscription(): void {
+    if (this.newsletterSubscribed) {
+      this.userService.setNewsletterSubscriptionWhenSubscribed().subscribe();
+    } else {
+      this.userService.setNewsletterSubscriptionWhenNotSubscribed().subscribe();
     }
 
+  }
 
-    requestChangePreferredMailUser(email: string) {
-        this.userservice.requestChangePreferredMailUser(email).subscribe(res => {
-            this.getPendingPreferredMailUser();
-        })
+
+  validatePublicKey(): boolean {
+
+    if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.newPublicKey)) {
+      return true;
+    } else {
+
+      return false;
     }
 
-    getPendingPreferredMailUser() {
-        this.userservice.getPendingPreferredMailUser().subscribe(res => {
-            this.userinfo.PendingEmails = res['pendingEmails'];
-        })
-    }
+  }
 
-    ngOnInit(): void {
-        this.isFreemiumActive();
-        this.is_vm_project_member();
-        this.getPreferredMail();
-
-
-    }
-
-    isFreemiumActive() {
-        this.groupService.isFreemiumActive().subscribe(result => {
-            this.freemium_active = result['Freemium'];
-
-        });
-    }
-
-
-    setNewsletterSubscription(e) {
-        this.userservice.setNewsletterSubscription(this.newsletter_subscribed).subscribe(result => {
-        })
-    }
-
-    importKey(publicKey: string, keyname: string) {
-
-        let re = /\+/gi;
-
-        let newstr = publicKey.replace(re, "%2B");
-
-        this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(result => {
-            this.getUserPublicKey();
-        });
-    }
-
-    validatePublicKey() {
-
-        if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key)) {
-            return true;
-        }
-        else {
-
-            return false;
-        }
-
-    }
-
-
-    getUserPublicKey() {
-        this.keyService.getKey().subscribe(result => {
-            this.userinfo.PublicKey = result['public_key'];
-            this.isLoaded = true;
-        })
-    }
-
-
-    // Returns the preffered Mail of the logged in User
-    getPreferredMail() {
-        this.userservice.getPreferredMailUser().subscribe()
-    }
-
-    // TODO: Refactor this Method
-    getUserinfo() {
-        this.userservice.getLoggedUser().toPromise()
-            .then(result => {
-                let res = result;
-
-                this.userinfo.FirstName = res["firstName"];
-                this.userinfo.LastName = res["lastName"];
-                this.userinfo.Id = res["id"];
-
-                return this.userservice.getMemberByUser().toPromise();
-
-            }).then(memberinfo => {
-            this.userinfo.MemberId = memberinfo["id"];
-            this.userservice.getLogins().toPromise().then(result => {
-                let logins = result;
-                for (let login of logins) {
-                    if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
-                        this.userinfo.ElxirId = login['value']
-                    }
-                    else if (login['friendlyName'] === 'login-namespace:elixir') {
-                        this.userinfo.UserLogin = login['value'];
-
-                    }
-
-                }
-
-            })
-        });
-        this.userservice.getPreferredMailUser().subscribe(res => {
-            this.userinfo.Email = res['preferredEmail'];
-            this.userservice.getPendingPreferredMailUser().subscribe(res => {
-                this.userinfo.PendingEmails = res['pendingEmails']
-                this.userservice.getNewsletterSubscription().subscribe(result => {
-                    result = result['subscribed'];
-                    if (result.toString() == 'true') {
-                        this.newsletter_subscribed = true;
-                    }
-                    else {
-                        this.newsletter_subscribed = false;
-                    }
-                    this.getUserPublicKey()
-
-
-                })
-            })
-        })
-
-
-    }
-
-    show_key() {
-        if (this.key_visible == false) {
-            this.toggleKey();
-        }
-    }
-
-    toggleKey() {
-        if (this.key == 'Show Public Key') {
-            this.key = 'Hide Public Key';
-            this.key_visible = true;
-        } else {
-            this.key = 'Show Public Key';
-            this.key_visible = false;
-        }
-    }
-
-    joinFreemium() {
-        this.groupService.addMemberToFreemium().subscribe();
-    }
-
-    is_vm_project_member() {
-        this.groupService.getMemberGroupsStatus().subscribe(result => {
-            if (result.length > 0) {
-                this.is_project_member = true
-            }
-            else {
-                this.is_project_member = false
-            }
-        })
-    }
+  joinFreemium(): void {
+    this.groupService.addMemberToFreemium().subscribe();
+  }
 }
-

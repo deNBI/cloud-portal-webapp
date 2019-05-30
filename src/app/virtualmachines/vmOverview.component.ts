@@ -1,529 +1,504 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
 
-import {PerunSettings} from "../perun-connector/connector-settings.service";
-import {VirtualmachineService} from "../api-connector/virtualmachine.service";
-import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
-import {FullLayoutComponent} from "../layouts/full-layout.component";
-import {UserService} from "../api-connector/user.service";
-import {ImageService} from "../api-connector/image.service";
-import {Vmclient} from "./virtualmachinemodels/vmclient";
-import {FilterBaseClass} from "../shared_modules/baseClass/filter-base-class";
+import {VirtualmachineService} from '../api-connector/virtualmachine.service';
+import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
+import {FullLayoutComponent} from '../layouts/full-layout.component';
+import {UserService} from '../api-connector/user.service';
+import {ImageService} from '../api-connector/image.service';
+import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
+import {VoService} from '../api-connector/vo.service';
+import {IResponseTemplate} from '../api-connector/response-template';
+import {SnapshotModel} from './snapshots/snapshot.model';
 
+/**
+ * Vm overview componentn.
+ */
 @Component({
-    selector: 'vm-overview',
-    templateUrl: 'vmOverview.component.html',
-    providers: [ImageService, UserService, VirtualmachineService, FullLayoutComponent, PerunSettings]
-})
-
+             selector: 'app-vm-overview',
+             templateUrl: 'vmOverview.component.html',
+             providers: [VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
+           })
 
 export class VmOverviewComponent extends FilterBaseClass implements OnInit {
-    /**
-     * All unfiltered vms.
-     */
-    vms_content: VirtualMachine[];
-    /**
-     * All vms filtered.
-     */
-    vms_filtered: VirtualMachine[];
-    /**
-     * All vms returned with paging.
-     */
-    vms_returned: VirtualMachine[];
-    /**
-     * How many vms are shown per page.
-     * @type {number}
-     */
-    vmsPerPage = 5;
-    /**
-     * Current page.
-     * @type {number}
-     */
-    currentPage = 1;
-    /**
-     * Index where the vm list starts.
-     * @type {number}
-     */
-    vmStart = 0;
-    /**
-     * How to connect for specific vm.
-     */
-    how_to_connect: string;
-    /**
-     * End of the vms.
-     * @type {number}
-     */
-    vmEnd = this.vmsPerPage;
-    /**
-     * Name of vm which changed status.
-     */
-    status_changed_vm: string;
-    /**
-     * Id of vm which changed status.
-     */
-    status_changed_vm_id: string;
-    /**
-     * Elixir-Id of the user.
-     */
-    elixir_id: string;
-    /**
-     * If user is vo admin.
-     */
-    is_vo_admin: boolean;
-    /**
-     * Vm which is used to create a snapshot.
-     */
-    snapshot_vm: VirtualMachine;
-    /**
-     * If the snapshot name is valid.
-     */
-    validSnapshotNameBool: boolean;
-    /**
-     * String if the snapshot is done.
-     * @type {string}
-     */
-    snapshotDone: string = 'Waiting';
-    /**
-     * Name of the snapshot.
-     */
-    snapshotName: string;
-    /**
-     * Tab which is shown own|all.
-     * @type {string}
-     */
-    tab = 'own';
-    /**
-     * The changed status.
-     * @type {number}
-     */
-    status_changed: number = 0;
+  /**
+   * All unfiltered vms.
+   */
+  vms_content: VirtualMachine[];
+  /**
+   * All vms filtered.
+   */
+  vms_filtered: VirtualMachine[];
+  /**
+   * All vms returned with paging.
+   */
+  vms_returned: VirtualMachine[];
+  /**
+   * How many vms are shown per page.
+   * @type {number}
+   */
+  vmsPerPage: number = 5;
+  /**
+   * Current page.
+   * @type {number}
+   */
+  currentPage: number = 1;
+  /**
+   * Index where the vm list starts.
+   * @type {number}
+   */
+  vmStart: number = 0;
+  /**
+   * How to connect for specific vm.
+   */
+  how_to_connect: string;
+  /**
+   * End of the vms.
+   * @type {number}
+   */
+  vmEnd: number = this.vmsPerPage;
 
-    /**
-     * Timeout for checking vm status.
-     * @type {number}
-     */
-    private checkStatusTimeout: number = 1500;
-    /**
-     * Type of reboot HARD|SOFT.
-     */
-    reboot_type: string;
-    /**
-     * If an error appeared when checking vm status.
-     */
-    status_check_error: boolean;
-    /**
-     * IF reboot is done.
-     */
-    reboot_done: boolean;
+  selectedVm: VirtualMachine = null;
 
+  /**
+   * If user is vo admin.
+   */
+  is_vo_admin: boolean;
+  /**
+   * Vm which is used to create a snapshot.
+   */
+  snapshot_vm: VirtualMachine;
+  /**
+   * If the snapshot name is valid.
+   */
+  validSnapshotNameBool: boolean;
+  /**
+   * String if the snapshot is done.
+   * @type {string}
+   */
+  snapshotNameCheckDone: boolean = false;
+  snapshotDone: string = 'Waiting';
+  /**
+   * name of the snapshot.
+   */
+  snapshotName: string = '';
+  /**
+   * Tab which is shown own|all.
+   * @type {string}
+   */
+  tab: string = 'own';
+  /**
+   * The changed status.
+   * @type {number}
+   */
+  status_changed: number = 0;
 
-    constructor(private imageService: ImageService, private userservice: UserService, private virtualmachineservice: VirtualmachineService, private perunsettings: PerunSettings) {
-        super()
-    }
+  /**
+   * Timeout for checking vm status.
+   * @type {number}
+   */
+  private checkStatusTimeout: number = 1500;
+  /**
+   * Type of reboot HARD|SOFT.
+   */
+  reboot_type: string;
+  /**
+   * If an error appeared when checking vm status.
+   */
+  status_check_error: boolean;
+  /**
+   * IF reboot is done.
+   */
+  reboot_done: boolean;
 
-    /**
-     * Load vms depending on page.
-     * @param event
-     */
-    pageChanged(event): void {
+  showSshCommando: boolean = true;
+  showUdpCommando: boolean = true;
 
-        const startItem = (event.page - 1) * event.itemsPerPage;
-        const endItem = event.page * event.itemsPerPage;
-        this.vmStart = startItem;
-        this.vmEnd = endItem;
-        this.vms_returned = this.vms_filtered.slice(startItem, endItem)
+  constructor(private voService: VoService, private imageService: ImageService, private userservice: UserService,
+              private virtualmachineservice: VirtualmachineService) {
+    super()
+  }
 
-    }
+  /**
+   * Load vms depending on page.
+   * @param event
+   */
+  pageChanged(event): void {
 
-    /**
-     * Check if vm corresponds the filter.
-     * @param {VirtualMachine} vm vm which is checked
-     * @returns {boolean} True if it matches the filter
-     */
-    checkFilter(vm: VirtualMachine) {
-        if (this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at) && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at) && this.isFilterUsername(vm.username)) {
-            return true
+    const startItem: number = (event.page - 1) * event.itemsPerPage;
+    const endItem: number = event.page * event.itemsPerPage;
+    this.vmStart = startItem;
+    this.vmEnd = endItem;
+    this.vms_returned = this.vms_filtered.slice(startItem, endItem)
+
+  }
+
+  /**
+   * Check if vm corresponds the filter.
+   * @param {VirtualMachine} vm vm which is checked
+   * @returns {boolean} True if it matches the filter
+   */
+  checkFilter(vm: VirtualMachine): boolean {
+    return this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at)
+      && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at)
+      && this.isFilterUsername(vm.username)
+
+  }
+
+  /**
+   * Apply filter to all vms.
+   */
+  applyFilter(): void {
+
+    this.vms_filtered = this.vms_content.filter(vm => this.checkFilter(vm));
+
+    this.vmStart = 0;
+    this.vmEnd = this.vmsPerPage;
+
+    this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
+    this.currentPage = 1
+
+  }
+
+  /**
+   * Toggle tab own|all.
+   * @param {string} tabString
+   */
+  toggleTab(tabString: string): void {
+    this.tab = tabString;
+  }
+
+  /**
+   * Check status of all inactive vms.
+   */
+  checkInactiveVms(): void {
+    this.virtualmachineservice.checkStatusInactiveVms().subscribe(vms => {
+      this.vms_content = vms;
+      for (const vm of this.vms_content) {
+        if (vm.created_at !== '') {
+          vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
         }
-        else {
-            return false
+        if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+          vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+        } else {
+          vm.stopped_at = ''
         }
+      }
+      this.applyFilter();
 
+    })
+  }
 
-    }
+  /**
+   * Check if the snapshot name is valid.
+   * @param e
+   */
+  validSnapshotName(e) {
+    this.snapshotNameCheckDone = false;
+    this.imageService.checkSnapshotNameAvailable(this.snapshotName).subscribe((res: IResponseTemplate) => {
 
-    /**
-     * Apply filter to all vms.
-     */
-    applyFilter() {
+      this.validSnapshotNameBool = this.snapshotName.length > 0 && <boolean><Boolean>res.value;
+      this.snapshotNameCheckDone = true;
+    })
 
+  }
 
-        this.vms_filtered = this.vms_content.filter(vm => this.checkFilter(vm));
+  /**
+   * Reset the snapshotDone to waiting.
+   */
+  resetSnapshotResult(): void {
+    this.snapshotDone = 'Waiting';
+  }
 
-        this.vmStart = 0;
-        this.vmEnd = this.vmsPerPage;
+  /**
+   * Check status of vm.
+   * @param {string} openstackid  of the instance
+   */
+  checkStatus(vm: VirtualMachine): void {
+    this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
-        this.vms_returned = this.vms_filtered.slice(this.vmStart, this.vmEnd);
-        this.currentPage = 1
+                                                                         this.setCollapseStatus(updated_vm.openstackid, false);
 
+                                                                         if (updated_vm.created_at !== '') {
+                                                                           updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+                                                                         }
+                                                                         if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+                                                                           updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+                                                                         } else {
+                                                                           updated_vm.stopped_at = ''
+                                                                         }
 
-    }
+                                                                         this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+                                                                         this.applyFilter();
+                                                                       }
+    )
+  }
 
-    /**
-     * Toggle tab own|all.
-     * @param {string} tabString
-     */
-    toggleTab(tabString: string) {
-        this.tab = tabString;
-    }
+  /**
+   * Delete Vm.
+   * @param {string} openstack_id of instance
+   */
+  deleteVm(vm: VirtualMachine): void {
+    this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
-    /**
-     * Check status of all inactive vms.
-     */
-    checkInactiveVms() {
-        this.virtualmachineservice.checkStatusInactiveVms(this.elixir_id).subscribe(vms => {
-            this.vms_content = vms;
-            for (let vm of this.vms_content) {
-                if (vm.created_at != '') {
-                    vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                }
-                if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
-                    vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                }
-                else {
-                    vm.stopped_at = ''
-                }
+      this.setCollapseStatus(updated_vm.openstackid, false);
+
+      if (updated_vm.created_at !== '') {
+        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+      }
+      if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+        updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+      } else {
+        updated_vm.stopped_at = ''
+      }
+
+      this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+      this.applyFilter();
+      if (updated_vm.status === 'DELETED') {
+        this.status_changed = 1;
+      } else {
+        this.status_changed = 2;
+      }
+
+    })
+  }
+
+  /**
+   * Reboot a vm.
+   * @param {string} openstack_id of the instance
+   * @param {string} reboot_type HARD|SOFT
+   */
+  public
+
+  rebootVm(vm: VirtualMachine, reboot_type: string): void {
+    this.virtualmachineservice.rebootVM(vm.openstackid, reboot_type).subscribe((result: IResponseTemplate) => {
+      this.status_changed = 0;
+
+      if (<boolean><Boolean>result.value) {
+        this.status_changed = 1;
+        this.check_status_loop(vm)
+      } else {
+        this.status_changed = 2;
+      }
+
+    })
+  }
+
+  /**
+   * Check Status of vm in loop till active.
+   * @param {string} id of instance.
+   */
+  check_status_loop(vm: VirtualMachine): void {
+
+    setTimeout(
+      () => {
+        this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+
+          if (updated_vm.status === 'ACTIVE') {
+            this.reboot_done = true;
+            this.setCollapseStatus(updated_vm.openstackid, false);
+
+            if (updated_vm.created_at !== '') {
+              updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
             }
+            if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+              updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+            } else {
+              updated_vm.stopped_at = ''
+            }
+
+            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
             this.applyFilter();
 
-        })
-    }
-
-    /**
-     * Check if the snapshot name is valid.
-     * @param e
-     */
-    validSnapshotName(e) {
-        this.validSnapshotNameBool = this.snapshotName.length > 0 ? true : false;
-
-
-    }
-
-    /**
-     * Reset the snapshotDone to waiting.
-     */
-    resetSnapshotResult() {
-        this.snapshotDone = 'Waiting';
-    }
-
-    /**
-     * Check status of vm.
-     * @param {string} openstackid  of the instance
-     */
-    checkStatus(openstackid: string) {
-        this.virtualmachineservice.checkVmStatus(openstackid).subscribe(res => {
-
-
-                this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
-                        this.vms_content = vms;
-                        for (let vm of this.vms_content) {
-                            if (vm.created_at != '') {
-                                vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                            }
-                            if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
-                                vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                            }
-                            else {
-                                vm.stopped_at = ''
-                            }
-                        }
-                        this.applyFilter()
-
-
-                    }
-                );
+          } else {
+            if (vm['error']) {
+              this.status_check_error = true
 
             }
-        )
-    }
-
-    /**
-     * Delete Vm.
-     * @param {string} openstack_id of instance
-     */
-    deleteVm(openstack_id: string): void {
-        this.virtualmachineservice.deleteVM(openstack_id).subscribe(result => {
-
-            this.status_changed = 0;
-
-
-            if (this.tab === 'own') {
-                this.getVms(this.elixir_id);
-            }
-            else if (this.tab === 'all') {
-                this.getAllVms();
-
-            }
-
-            if (result['deleted'] === true) {
-                this.status_changed = 1;
-            }
-            else {
-                this.status_changed = 2;
-            }
-
+            this.check_status_loop(vm)
+          }
 
         })
-    }
+      }
+      ,
+      this.checkStatusTimeout
+    )
+    ;
+  }
 
-    /**
-     * Reboot a vm.
-     * @param {string} openstack_id of the instance
-     * @param {string} reboot_type HARD|SOFT
-     */
-    public rebootVm(openstack_id: string, reboot_type: string) {
-        this.virtualmachineservice.rebootVM(openstack_id, reboot_type).subscribe(result => {
-            this.status_changed = 0;
+  /**
+   * Stop a vm.
+   * @param {string} openstack_id of instance.
+   */
+  stopVm(vm: VirtualMachine): void {
+    this.virtualmachineservice.stopVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
+      this.status_changed = 0;
 
-            if (result['reboot']) {
-                this.status_changed = 1;
-                this.check_status_loop(openstack_id)
-            }
-            else {
-                this.status_changed = 2;
-            }
+      this.setCollapseStatus(updated_vm.openstackid, false);
 
+      if (updated_vm.created_at !== '') {
+        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+      }
+      if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+        updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+      } else {
+        updated_vm.stopped_at = ''
+      }
 
-        })
-    }
+      this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+      this.applyFilter();
 
-    /**
-     * Check Status of vm in loop till active.
-     * @param {string} id of instance.
-     */
-    check_status_loop(id: string) {
+      if (updated_vm.status === 'SUSPENDED') {
+        this.status_changed = 1;
+      } else {
+        this.status_changed = 2;
+      }
 
-        setTimeout(() => {
-            this.virtualmachineservice.checkVmStatus(id).subscribe(res => {
-                res = res;
+    })
+  }
 
-                if (res['Started']) {
-                    this.reboot_done = true;
-                    if (this.tab === 'own') {
-                        this.getVms(this.elixir_id);
-                    }
-                    else if (this.tab === 'all') {
-                        this.getAllVms();
+  /**
+   * Get all vms of user.
+   * @param {string} elixir_id of user
+   */
+  getVms(): void {
+    this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
+                                                                    this.vms_content = vms;
 
-                    }
+                                                                    for (const vm of this.vms_content) {
+                                                                      this.setCollapseStatus(vm.openstackid, false);
 
+                                                                      if (vm.created_at !== '') {
+                                                                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                                                                      }
 
-                }
-                else {
-                    if (res['Error']) {
-                        this.status_check_error = true
+                                                                      if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                                                                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                                                                      } else {
+                                                                        vm.stopped_at = ''
+                                                                      }
+                                                                    }
+                                                                    this.isLoaded = true;
+                                                                    this.applyFilter();
 
+                                                                  }
+    );
+  }
 
-                    }
-                    this.check_status_loop(id)
-                }
+  refreshVms(): void {
+    this.vms_returned = [];
+    this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
+                                                                    this.vms_content = vms;
 
-            })
-        }, this.checkStatusTimeout);
-    }
+                                                                    for (const vm of this.vms_content) {
+                                                                      this.setCollapseStatus(vm.openstackid, false);
 
-    /**
-     * Stop a vm.
-     * @param {string} openstack_id of instance.
-     */
-    stopVm(openstack_id: string): void {
-        this.virtualmachineservice.stopVM(openstack_id).subscribe(result => {
+                                                                      if (vm.created_at !== '') {
+                                                                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                                                                      }
 
-            this.status_changed = 0;
+                                                                      if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                                                                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                                                                      } else {
+                                                                        vm.stopped_at = ''
+                                                                      }
+                                                                    }
+                                                                    this.isLoaded = true;
+                                                                    this.applyFilter();
 
+                                                                  }
+    );
 
-            if (this.tab === 'own') {
-                this.getVms(this.elixir_id);
-            }
-            else if (this.tab === 'all') {
-                this.getAllVms();
+  }
 
-            }
+  /**
+   * Resume a vm.
+   * @param {string} openstack_id of instance.
+   */
+  resumeVM(vm: VirtualMachine): void {
 
-            if (result['stopped']) {
-                this.status_changed = 1;
-            }
-            else {
-                this.status_changed = 2;
-            }
+    this.virtualmachineservice.resumeVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
+      this.status_changed = 0;
+      this.setCollapseStatus(updated_vm.openstackid, false);
 
-        })
-    }
+      if (updated_vm.created_at !== '') {
+        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+      }
+      if (updated_vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+        updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+      } else {
+        updated_vm.stopped_at = ''
+      }
 
-    /**
-     * Get all vms of user.
-     * @param {string} elixir_id of user
-     */
-    getVms(elixir_id: string): void {
-        this.virtualmachineservice.getVmsFromLoggedInUser().subscribe(vms => {
-                this.vms_content = vms;
+      this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+      this.applyFilter();
+      if (updated_vm.status === 'ACTIVE') {
+        this.status_changed = 1;
+      } else {
+        this.status_changed = 2;
+      }
 
-                for (let vm of this.vms_content) {
-                    this.setCollapseStatus(vm.openstackid, false)
+    })
+  }
 
-                    if (vm.created_at != '') {
-                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                    }
+  /**
+   * Get all vms.
+   */
+  getAllVms(): void {
+    this.virtualmachineservice.getAllVM().subscribe(vms => {
+                                                      this.vms_content = vms;
+                                                      for (const vm of this.vms_content) {
+                                                        this.setCollapseStatus(vm.openstackid, false);
 
-                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    }
-                    else {
-                        vm.stopped_at = ''
-                    }
-                }
-                this.isLoaded = true;
-                this.applyFilter();
+                                                        if (vm.created_at !== '') {
+                                                          vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                                                        }
+                                                        if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                                                          vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                                                        } else {
+                                                          vm.stopped_at = ''
+                                                        }
 
-                this.checkInactiveVms();
-            }
-        );
-    }
+                                                      }
+                                                      this.applyFilter();
 
-    /**
-     * Resume a vm.
-     * @param {string} openstack_id of instance.
-     */
-    resumeVM(openstack_id: string): void {
+                                                    }
+    );
+  }
 
-        this.virtualmachineservice.resumeVM(openstack_id).subscribe(result => {
+  ngOnInit(): void {
+    this.getVms();
+    this.checkVOstatus()
 
+  }
 
-            this.status_changed = 0;
+  /**
+   * Check vm status.
+   * @param {UserService} userservice
+   */
+  checkVOstatus(): void {
+    this.voService.isVo().subscribe((result: IResponseTemplate) => {
+      this.is_vo_admin = <boolean><Boolean>result.value;
+    })
+  }
 
+  /**
+   * Create snapshot.
+   * @param {string} snapshot_instance which is used for creating the snapshot
+   * @param {string} snapshot_name name of the snapshot
+   */
+  createSnapshot(snapshot_instance: string, snapshot_name: string): void {
+    this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe((newSnapshot: SnapshotModel) => {
+      if (newSnapshot.snapshot_openstackid) {
+        this.snapshotDone = 'true';
 
-            if (this.tab === 'own') {
-                this.getVms(this.elixir_id);
-            }
-            else if (this.tab === 'all') {
-                this.getAllVms();
+      } else {
+        this.snapshotDone = 'error';
 
-            }
+      }
 
-            if (result['resumed']) {
-                this.status_changed = 1;
-            }
-            else {
-                this.status_changed = 2;
-            }
+    })
+  }
 
-        })
-    }
-
-    /**
-     * Get all vms.
-     */
-    getAllVms(): void {
-        this.virtualmachineservice.getAllVM().subscribe(vms => {
-                this.vms_content = vms;
-                for (let vm of this.vms_content) {
-                    this.setCollapseStatus(vm.openstackid, false)
-
-
-                    if (vm.created_at != '') {
-                        vm.created_at = new Date(parseInt(vm.created_at) * 1000).toLocaleDateString();
-                    }
-                    if (vm.stopped_at != '' && vm.stopped_at != 'ACTIVE') {
-                        vm.stopped_at = new Date(parseInt(vm.stopped_at) * 1000).toLocaleDateString();
-                    }
-                    else {
-                        vm.stopped_at = ''
-                    }
-
-                }
-                this.applyFilter();
-
-
-            }
-        );
-    }
-
-    ngOnInit(): void {
-        this.getElixirId();
-        this.checkVOstatus(this.userservice)
-
-    }
-
-    /**
-     * Check vm status.
-     * @param {UserService} userservice
-     */
-    checkVOstatus(userservice: UserService) {
-        let user_id: number;
-        let admin_vos: {};
-        this.userservice
-            .getLoggedUser().toPromise()
-            .then(function (userdata) {
-                //TODO catch errors
-                user_id = userdata["id"];
-                return userservice.getVosWhereUserIsAdmin().toPromise();
-            }).then(function (adminvos) {
-            admin_vos = adminvos;
-        }).then(result => {
-            //check if user is a Vo admin so we can serv according buttons
-            for (let vkey in admin_vos) {
-                if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) {
-                    this.is_vo_admin = true;
-                }
-            }
-        });
-    }
-
-    /**
-     * Create snapshot.
-     * @param {string} snapshot_instance which is used for creating the snapshot
-     * @param {string} snapshot_name name of the snapshot
-     */
-    createSnapshot(snapshot_instance: string, snapshot_name: string) {
-        this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe(result => {
-            if (result['Error']) {
-                this.snapshotDone = result['Error'].toString();
-            }
-            else if (result['Created'])
-                this.snapshotDone = 'true';
-
-
-        })
-    }
-
-    /**
-     * Get elixir id of logged in user.
-     */
-    getElixirId() {
-        this.userservice.getLoggedUser().toPromise()
-            .then(result => {
-                let res = result;
-
-                let userid = res["id"];
-                this.userservice.getLogins().toPromise().then(result => {
-                    let logins = result;
-                    for (let login of logins) {
-                        if (login['friendlyName'] === 'login-namespace:elixir-persistent') {
-
-                            this.elixir_id = login['value'];
-
-                            break
-
-                        }
-
-
-                    }
-                }).then(result => {
-                    this.getVms(this.elixir_id)
-
-                });
-            })
-
-    }
 }

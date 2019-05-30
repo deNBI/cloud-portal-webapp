@@ -3,7 +3,6 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 import { filter } from 'rxjs/operators';
 
-
 @Component({
     selector: 'app-breadcrumbs',
     template: `
@@ -17,12 +16,10 @@ import { filter } from 'rxjs/operators';
   </ng-template>`
 })
 export class BreadcrumbsComponent implements OnInit {
-    breadcrumbs: Array<Object>;
+    breadcrumbs: Object[];
 
     constructor(private router: Router, private route: ActivatedRoute) {
     }
-
-
 
     ngOnInit(): void {
         this.router.events.pipe(filter(event => event instanceof NavigationEnd))

@@ -4,14 +4,14 @@
             <div class="alert alert-info">
 
                 <h5>If you experience any problems, please contact cloud@denbi.de
-                    <button type="button" (click)="emailModal.show();" class="btn btn-secondary"><i
+                    <button type="button" (click)="emailModal.show();" class="btn btn-outline-primary"><i
                             class="icon-envelope-letter"></i> Send email
                     </button>
                 </h5>
 
             </div>
             <div class="alert alert-info">
-         <h5> For help visit our wiki at <a href="https://cloud.denbi.de/wiki/">https://cloud.denbi.de/wiki/</a></h5>
+                <h5> For help visit our wiki at <a href="https://cloud.denbi.de/wiki/">https://cloud.denbi.de/wiki/</a></h5>
             </div>
         </div>
     </div>
@@ -31,40 +31,43 @@
             <div class="modal-body">
                 <form class="form-horizontal" id="email_form" #f="ngForm">
 
-                    <div class="form-group row"
-                         [ngClass]="{'has-danger':emailSub.invalid && (emailSub.dirty || emailSub.touched),
-                    'has-success':emailSub.valid && (emailSub.dirty || emailSub.touched)
-                    }">
+                    <div class="form-group row">
                         <label class="col-md-12 control-label"><strong>Email
                             subject*</strong></label>
                         <div class="col-md-12">
                             <input required id="emailSubject" name="emailSub" placeholder="Subject"
                                    class="form-control"
-                                   type="text" [(ngModel)]="emailSubject" minlength="1" #emailSub="ngModel">
+                                   type="text" [(ngModel)]="emailSubject" minlength="1" #emailSub="ngModel"
+                                   [ngClass]="{'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
+                    'is-valid':emailSub.valid && (emailSub.dirty || emailSub.touched)
+                    }">
 
                         </div>
                     </div>
 
-                                      <div class="form-group row" [ngClass]="{'has-danger':emailRep.invalid && (emailRep.dirty || emailRep.touched),
-                    'has-success':emailRep.valid && (emailRep.dirty || emailRep.touched)
-                    }">
-                        <label class="col-md-12 control-label" ><strong>Reply to*</strong></label>
+                    <div class="form-group row">
+                        <label class="col-md-12 control-label"><strong>Reply to*</strong></label>
                         <div class="col-md-12">
                             <input required id="Reply to" name="emailReply" placeholder="" class="form-control"
-                                   type="text"  [(ngModel)]="emailReply" #emailRep="ngModel" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+                                   type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
+                                   pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                                   [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
+                    'is-valid':emailRep.valid && (emailRep.dirty || emailRep.touched)
+                    }">
 
                         </div>
                     </div>
 
                     <!-- Textarea -->
-                    <div class="form-group row" [ngClass]="{'has-danger':emailT.invalid && (emailT.dirty || emailT.touched),
-                    'has-success':emailT.valid && (emailT.dirty || emailT.touched)
-                    }">
+                    <div class="form-group row">
                         <label class="col-md-12 control-label"><strong>Email text*</strong></label>
                         <div class="col-md-12">
                             <textarea minlength="1" required class="form-control" id="emailText" name="emailText"
                                       [(ngModel)]="emailText"
-                                      type="text" #emailT="ngModel"></textarea>
+                                      type="text" #emailT="ngModel"
+                                      [ngClass]="{'is-invalid':emailT.invalid && (emailT.dirty || emailT.touched),
+                    'is-valid':emailT.valid && (emailT.dirty || emailT.touched)
+                    }"></textarea>
                         </div>
                     </div>
                 </form>
@@ -87,7 +90,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Send email</h4>
-              <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor:pointer" (click)="verifyModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -119,7 +122,7 @@
                 <h4 class="modal-title" *ngIf="emailStatus == 0"> Waiting </h4>
                 <h4 class="modal-title" *ngIf="emailStatus == 1"> Success </h4>
                 <h4 class="modal-title" *ngIf="emailStatus == 2"> Error </h4>
-              <button type="button" class="close" style="cursor: pointer" (click)="successModal.hide()" aria-label="Close">
+                <button type="button" class="close" style="cursor: pointer" (click)="successModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -132,7 +135,7 @@
                 </div>
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="emailStatus == 2">
-                when sending the email an error has occurred.
+                When sending the email an error has occurred.
             </div>
 
 

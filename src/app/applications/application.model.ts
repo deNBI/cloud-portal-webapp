@@ -1,10 +1,12 @@
-import {ApplicationExtension} from "./application_extension.model";
-import {ComputecenterComponent} from "../projectmanagement/computecenter.component";
-import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {ApplicationExtension} from './application_extension.model';
+import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 
-
+/**
+ * Application class.
+ */
 export class Application {
-  private _Id: number;
+
+  private _Id: number | string;
   private _Name: string;
   private _Shortname: string;
   private _Institute: string;
@@ -21,36 +23,92 @@ export class Application {
   private _Comment: string;
   private _DateSubmitted: string;
   private _DateStatusChanged: string;
-  private _User: number;
-  private _UserEmail: number;
-  private _UserAffiliations:string[];
+  private _User: string;
+  private _UserEmail: string;
+  private _UserAffiliations: string[];
   private _Status: number;
   private _ComputeCenter: ComputecenterComponent;
   private _OpenStackProject: boolean;
   private _DaysRunning: number;
-  private _ApplicationExtension:ApplicationExtension;
-  private _PerunId:number;
+  private _ApplicationExtension: ApplicationExtension = null;
+  private _PerunId: number | string;
   private _TotalCores: number;
   private _TotalRam: number;
   private _DateApproved: string;
-  private _CurrentFlavors: { [id: string]: {counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number} };
+  private _Horizon2020: string;
+  private _BMBFProject: string;
 
-
+  private _ElixirProject: string;
+  private _Dissemination: boolean;
+  private _PIApproved: boolean;
+  private _PI: string;
+  private _PIElixir: string;
+  private _PIEmail: string;
+  private _CurrentFlavors: {
+    [id: string]: {
+      counter: number, tag: string, ram: number, rootdisk: number,
+      vcpus: number, gpu: number, epheremal_disk: number
+    }
+  };
 
   constructor() {
-    this._CurrentFlavors={};
+    this._CurrentFlavors = {};
   }
 
- public  addFlavorToCurrent(name: string, counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number ):void {
-    this._CurrentFlavors[name]={counter:counter,tag: tag,ram: ram,rootdisk:rootdisk,vcpus:vcpus,gpu:gpu,epheremal_disk:epheremal_disk};
- }
+  public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number,
+                            vcpus: number, gpu: number, epheremal_disk: number): void {
+    this._CurrentFlavors[name] = {
+      counter: counter,
+      tag: tag,
+      ram: ram,
+      rootdisk: rootdisk,
+      vcpus: vcpus,
+      gpu: gpu,
+      epheremal_disk: epheremal_disk
+    };
+  }
 
-  get CurrentFlavors(): { [id: string]: {counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number} } {
+
+  get PIElixir(): string {
+    return this._PIElixir;
+  }
+
+  set PIElixir(value: string) {
+    this._PIElixir = value;
+  }
+
+  get Dissemination(): boolean {
+    return this._Dissemination;
+  }
+
+  set Dissemination(value: boolean) {
+    this._Dissemination = value;
+  }
+
+  get PIApproved(): boolean {
+    return this._PIApproved;
+  }
+
+  set PIApproved(value: boolean) {
+    this._PIApproved = value;
+  }
+
+  get CurrentFlavors(): {
+    [id: string]: {
+      counter: number, tag: string, ram: number, rootdisk: number,
+      vcpus: number, gpu: number, epheremal_disk: number
+    }
+  } {
     return this._CurrentFlavors
   }
 
-  set CurrentFlavors(value: { [id: string]: {counter: number, tag: string,ram: number,rootdisk:number,vcpus:number,gpu:number,epheremal_disk:number} } ){
-    this._CurrentFlavors  = value;
+  set CurrentFlavors(value: {
+    [id: string]: {
+      counter: number, tag: string, ram: number, rootdisk: number,
+      vcpus: number, gpu: number, epheremal_disk: number
+    }
+  }) {
+    this._CurrentFlavors = value;
   }
 
   get DateApproved(): string {
@@ -61,42 +119,46 @@ export class Application {
     this._DateApproved = value;
   }
 
-  get TotalCores():number{
+  get TotalCores(): number {
     return this._TotalCores;
   }
 
-  set TotalCores(value:number){
-    this._TotalCores=value;
+  set TotalCores(value: number) {
+    this._TotalCores = value;
   }
 
-  get TotalRam():number{
+  get TotalRam(): number {
     return this._TotalRam;
   }
 
-  set TotalRam(value:number){
-    this._TotalRam=value;
+  set TotalRam(value: number) {
+    this._TotalRam = value;
   }
-  get UserAffiliations():string[]{
+
+  get UserAffiliations(): string[] {
     return this._UserAffiliations
   }
 
-  set UserAffiliations(value:string[]){
-    this._UserAffiliations=value;
+  set UserAffiliations(value: string[]) {
+    this._UserAffiliations = value;
   }
-  get ApplicationExtension():ApplicationExtension{
+
+  get ApplicationExtension(): ApplicationExtension {
     return this._ApplicationExtension;
   }
 
-  set ApplicationExtension(value:ApplicationExtension){
-    this._ApplicationExtension=value;
+  set ApplicationExtension(value: ApplicationExtension) {
+    this._ApplicationExtension = value;
   }
-  get DaysRunning():number{
+
+  get DaysRunning(): number {
     return this._DaysRunning;
   }
 
-  set DaysRunning(value:number){
-    this._DaysRunning=value;
+  set DaysRunning(value: number) {
+    this._DaysRunning = value;
   }
+
   get OpenStackProject(): boolean {
     return this._OpenStackProject
   }
@@ -104,9 +166,6 @@ export class Application {
   set OpenStackProject(value: boolean) {
     this._OpenStackProject = value;
   }
-
-
-
 
   get ComputeCenter(): ComputecenterComponent {
     return this._ComputeCenter
@@ -116,11 +175,11 @@ export class Application {
     this._ComputeCenter = value;
   }
 
-  get Id(): number {
+  get Id(): number | string {
     return this._Id;
   }
 
-  set Id(value: number) {
+  set Id(value: number | string) {
     this._Id = value;
   }
 
@@ -132,13 +191,14 @@ export class Application {
     this._Name = value;
   }
 
-  set Comment(value: string){
+  set Comment(value: string) {
     this._Comment = value;
   }
 
-  get Comment():string {
+  get Comment(): string {
     return this._Comment;
   }
+
   get Shortname(): string {
     return this._Shortname;
   }
@@ -203,8 +263,7 @@ export class Application {
     this._VolumeLimit = value;
   }
 
-
-    get VolumeCounter(): number {
+  get VolumeCounter(): number {
     return this._VolumeCounter;
   }
 
@@ -252,11 +311,11 @@ export class Application {
     this._DateStatusChanged = value;
   }
 
-  get User(): number {
+  get User(): string {
     return this._User;
   }
 
-  set User(value: number) {
+  set User(value: string) {
     this._User = value;
   }
 
@@ -268,19 +327,62 @@ export class Application {
     this._Status = value;
   }
 
-
-  get UserEmail(): number {
+  get UserEmail(): string {
     return this._UserEmail;
   }
 
-  set UserEmail(value: number) {
+  set UserEmail(value: string) {
     this._UserEmail = value;
   }
-    get PerunId():number{
-     return this._PerunId;
+
+  get PerunId(): number | string {
+    return this._PerunId;
   }
 
-  set PerunId(value:number){
-     this._PerunId=value;
+  set PerunId(value: number | string) {
+    this._PerunId = value;
+  }
+
+
+
+  get BMBFProject(): string {
+    return this._BMBFProject;
+  }
+
+  set BMBFProject(value: string) {
+    this._BMBFProject = value;
+  }
+
+
+  get Horizon2020(): string {
+    return this._Horizon2020;
+  }
+
+  set Horizon2020(value: string) {
+    this._Horizon2020 = value;
+  }
+
+  get ElixirProject(): string {
+    return this._ElixirProject;
+  }
+
+  set ElixirProject(value: string) {
+    this._ElixirProject = value;
+  }
+
+  get PI(): string {
+    return this._PI;
+  }
+
+  set PI(value: string) {
+    this._PI = value;
+  }
+
+  get PIEmail(): string {
+    return this._PIEmail;
+  }
+
+  set PIEmail(value: string) {
+    this._PIEmail = value;
   }
 }

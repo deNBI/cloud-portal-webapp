@@ -1,39 +1,39 @@
-import {ImageService} from "../api-connector/image.service";
-import {Component, Input, ViewChild} from '@angular/core';
+import {ImageService} from '../api-connector/image.service';
+import {Component} from '@angular/core';
+import {ImageTag} from "./image-tag";
 
+/**
+ * ImageTag component.
+ */
 @Component({
     templateUrl: 'imageTag.component.html',
     providers: [ImageService]
 })
 export class ImageTagComponent {
-    isLoaded=false;
+    isLoaded: boolean = false;
 
-    imageTags: [string, string][]
+    imageTags: ImageTag[];
 
-
-    constructor(private imageService: ImageService,) {
-        this.imageService.getImageTags().subscribe(result => {
-            this.imageTags = result;
-            this.isLoaded=true;
+    constructor(private imageService: ImageService) {
+        this.imageService.getImageTags().subscribe((tags: ImageTag[]) => {
+            this.imageTags = tags;
+            this.isLoaded = true;
         })
     }
 
-    addTag(tag: string, description: string){
-        this.imageService.addImageTags(tag,description).subscribe(result =>{
-            this.imageService.getImageTags().subscribe(result=>{
-                this.imageTags=result
+    addTag(tag: string, description: string): void {
+        this.imageService.addImageTags(tag, description).subscribe((newTag: ImageTag) => {
+            this.imageTags.push(newTag)
+
+        })
+    }
+
+    deleteTag(tag: string): void {
+        this.imageService.deleteImageTag(tag).subscribe(() => {
+            this.imageService.getImageTags().subscribe((tags: ImageTag[]) => {
+                this.imageTags = tags;
             })
         })
     }
-
-        deleteTag(tag: string){
-        this.imageService.deleteImageTag(tag).subscribe(result =>{
-            this.imageService.getImageTags().subscribe(result=>{
-                this.imageTags=result
-            })
-        })
-    }
-
-
 
 }

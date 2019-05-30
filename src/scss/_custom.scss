@@ -1,4 +1,9 @@
 // Here you can add other styles
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/modal";
+
 .btn{
   cursor: pointer;
 }
@@ -9,4 +14,40 @@ header {
 
 #header-help {
   padding-right: 19px;
+}
+
+.modal {
+  background-color: rgba(0,0,0,0.3);
+}
+
+.modal-backdrop {
+  position: relative;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
+.collapse_no_margin{
+  margin: 0;
+}
+
+$openstackcolour: #ED1944;
+$simplevmcolour: #00ADEF;
+
+.btn-openstack {
+    @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour,5%), lighten($openstackcolour, 10%), darken($openstackcolour,30%));
+}
+
+.btn-outline-openstack {
+    @include button-outline-variant($openstackcolour, #222222, lighten($openstackcolour,5%), $openstackcolour);
+}
+
+.btn-simplevm {
+    @include button-variant($simplevmcolour, darken($simplevmcolour, 7.5%), darken($simplevmcolour, 10%), lighten($simplevmcolour,5%), lighten($simplevmcolour, 10%), darken($simplevmcolour,30%));
+}
+
+.btn-outline-simplevm {
+    @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour,5%), $simplevmcolour);
 }

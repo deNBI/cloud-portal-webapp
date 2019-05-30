@@ -1,39 +1,39 @@
 import {Injectable} from '@angular/core';
-import {ApiSettings} from "./api-settings.service";
-import {catchError} from 'rxjs/operators';
+import {ApiSettings} from './api-settings.service';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {IResponseTemplate} from "./response-template";
 
-const header = new HttpHeaders({
-    'X-CSRFToken': Cookie.get("csrftoken")
+const header: HttpHeaders = new HttpHeaders({
+    'X-CSRFToken': Cookie.get('csrftoken')
 });
 
-
+/**
+ * Service which provides public key methods.
+ */
 @Injectable()
-export class keyService {
+export class KeyService {
 
-
-    constructor(private http: HttpClient, private settings: ApiSettings) {
+    constructor(private http: HttpClient) {
     }
 
-    getKey(): Observable<any> {
+    getKey(): Observable<IResponseTemplate> {
 
-        return this.http.get(this.settings.getApiBaseURL() + 'users/current/public_key/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/`, {
+            withCredentials: true
+        })
 
     }
 
-    postKey(public_key: string): Observable<any> {
+    postKey(public_key: string): Observable<IResponseTemplate> {
         public_key = public_key.replace(/\r?\n|\r/gi, '');
-        let params = new HttpParams().set('public_key', public_key);
+        const params: HttpParams = new HttpParams().set('public_key', public_key);
 
-        return this.http.put(this.settings.getApiBaseURL() + 'users/current/public_key/', params, {
+        return this.http.put<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/`, params, {
             withCredentials: true,
-            headers: header,
-        }).pipe(catchError((error: any) => throwError(error)));
+            headers: header
+        })
     }
-
 
 }

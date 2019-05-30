@@ -1,38 +1,47 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {ApiSettings} from './api-settings.service'
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {ApplicationStatus} from '../applications/application_status.model';
 
-
-const header = new HttpHeaders({
-    'X-CSRFToken': Cookie.get("csrftoken")
+const header: HttpHeaders = new HttpHeaders({
+    'X-CSRFToken': Cookie.get('csrftoken')
 });
 
-
+/**
+ * Service which delivers functions for getting and setting Application status.
+ */
 @Injectable()
 export class ApplicationStatusService {
-    constructor(private http: HttpClient, private settings: ApiSettings) {
+    constructor(private http: HttpClient) {
     }
 
-    getAllApplicationStatus(): Observable<any> {
-        return this.http.get(this.settings.getApiBaseURL() + 'application_status/', {
-            withCredentials: true,
-        }).pipe(catchError((error: any) => throwError(error)));
+    /**
+     * Get all application stati.
+     * @returns {Observable<any>} List of all application stati
+     */
+    getAllApplicationStatus(): Observable<ApplicationStatus[]> {
+        return this.http.get<ApplicationStatus[]>(`${ApiSettings.getApiBaseURL()}application_status/`, {
+            withCredentials: true
+        })
     }
 
-    setApplicationStatus(application_id: number, status_id: number, compute_center: string): Observable<any> {
-        let params = new HttpParams().set("project_application_status", status_id.toString()).set('compute_center',compute_center)
+    /**
+     * Set status for an application.
+     * @param {number} application_id id of the application
+     * @param {number} status_id id of the status to set
+     * @returns {Observable<any>} 200 if successfull
+     */
+    setApplicationStatus(application_id: number | string, status_id: number | string): Observable<any> {
 
+        const params: HttpParams = new HttpParams().set('project_application_status', status_id.toString());
 
-        return this.http.patch(this.settings.getApiBaseURL() + 'project_applications/' + application_id + "/", params,
-            {
-                headers: header,
-                withCredentials: true
-            }).pipe(catchError((error: any) => throwError(error)));
+        return this.http.patch(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, params, {
+            headers: header,
+            withCredentials: true
+        })
     }
 
 }
