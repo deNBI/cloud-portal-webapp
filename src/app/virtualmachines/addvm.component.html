@@ -380,7 +380,16 @@
             <span [hidden]="showUdpCommando">Hide</span>
             Mosh Connection Info
           </button>
-          <pre *ngIf="newVm?.udp_command" [hidden]="showUdpCommando">{{newVm?.udp_command}}</pre>
+          <pre *ngIf="newVm?.udp_command" [hidden]="showUdpCommando">
+            1. You need to install mosh on your virtual Machine.
+            Connect with the ssh command above and run: <br>
+            sudo apt-get install mosh <br>
+            2. You need to install mosh on your Computer:
+            <a href="https://mosh.org/#getting" target="_blank">Click Here for different OS</a>
+            or on Ubuntu run: <br>
+            sudo apt-get install mosh <br>
+            3. Connect with mosh to your virtual Machine:
+            {{newVm?.udp_command}}</pre>
 
         </div>
 
