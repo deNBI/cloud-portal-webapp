@@ -148,6 +148,91 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
             tmp_facility['compute_center_support_mail']);
         ***REMOVED***
 
+    ***REMOVED***
+
+    getFacilityProjects(facility: string): void ***REMOVED***
+        this.projects = [];
+
+        this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe(result => ***REMOVED***
+            const facility_projects = result;
+            const is_pi: boolean = false;
+            const is_admin: boolean = false;
+            for (const group of facility_projects) ***REMOVED***
+                const dateCreated: moment.Moment = moment.unix(group['createdAt']);
+                const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
+                const groupid: string = group['id'];
+                const tmp_facility = group['compute_center'];
+                let shortname: string = group['shortname'];
+                let compute_center: ComputecenterComponent = null;
+                const lifetime: number = group['lifetime'];
+
+                if (!shortname) ***REMOVED***
+                    shortname = group['name']
+                ***REMOVED***
+                if (tmp_facility) ***REMOVED***
+                    compute_center = new ComputecenterComponent(
+                        tmp_facility['compute_center_facility_id'],
+                        tmp_facility['compute_center_name'],
+                        tmp_facility['compute_center_login'],
+                        tmp_facility['compute_center_support_mail']);
+                ***REMOVED***
+
+                const newProject: Project = new Project(
+                    Number(groupid),
+                    shortname,
+                    group['description'],
+                    `$***REMOVED***dateCreated.date()***REMOVED***.$***REMOVED***(dateCreated.month() + 1)***REMOVED***.$***REMOVED***dateCreated.year()***REMOVED***`,
+                    dateDayDifference,
+                    is_pi,
+                    is_admin,
+                    compute_center);
+                newProject.Status = group['status'];
+
+                if (lifetime !== -1) ***REMOVED***
+                    const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+                    const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY')
+                        .toDate()).diff(moment(dateCreated), 'days'));
+
+                    newProject.LifetimeDays = lifetimeDays;
+                    newProject.DateEnd = expirationDate;
+                    newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
+
+                ***REMOVED***
+                newProject.RealName = group['name'];
+                newProject.Lifetime = lifetime;
+                newProject.OpenStackProject = group['openstack_project'];
+
+                this.projects.push(newProject);
+            ***REMOVED***
+            this.applyFilter();
+            this.isLoaded = true;
+
+        ***REMOVED***)
+
+    ***REMOVED***
+
+    sendMailToFacility(facility: string, subject: string, message: string, reply?: string): void ***REMOVED***
+        this.facilityservice.sendMailToFacility(
+            facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
+            encodeURIComponent(reply)).subscribe(
+            result => ***REMOVED***
+                this.selectedProjectType = 'ALL';
+
+                if (result.status === 201) ***REMOVED***
+                    this.emailStatus = 1;
+                ***REMOVED*** else ***REMOVED***
+                    this.emailStatus = 2;
+                ***REMOVED***
+            ***REMOVED***,
+            error => ***REMOVED***
+                this.selectedProjectType = 'ALL';
+
+                console.log(error);
+                this.emailStatus = 2;
+            ***REMOVED***)
+
+    ***REMOVED***
+
         const newProject: Project = new Project(
           Number(groupid),
           shortname,
