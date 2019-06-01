@@ -129,7 +129,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
       const is_pi: boolean = false;
       const is_admin: boolean = false;
       for (const group of facility_projects) {
-        const dateCreated: moment.Moment = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+        const dateCreated: moment.Moment = moment.unix(group['createdAt']);
         const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
         const groupid: string = group['id'];
         const tmp_facility = group['compute_center'];
@@ -147,91 +147,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
             tmp_facility['compute_center_login'],
             tmp_facility['compute_center_support_mail']);
         }
-
-    }
-
-    getFacilityProjects(facility: string): void {
-        this.projects = [];
-
-        this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe(result => {
-            const facility_projects = result;
-            const is_pi: boolean = false;
-            const is_admin: boolean = false;
-            for (const group of facility_projects) {
-                const dateCreated: moment.Moment = moment.unix(group['createdAt']);
-                const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
-                const groupid: string = group['id'];
-                const tmp_facility = group['compute_center'];
-                let shortname: string = group['shortname'];
-                let compute_center: ComputecenterComponent = null;
-                const lifetime: number = group['lifetime'];
-
-                if (!shortname) {
-                    shortname = group['name']
-                }
-                if (tmp_facility) {
-                    compute_center = new ComputecenterComponent(
-                        tmp_facility['compute_center_facility_id'],
-                        tmp_facility['compute_center_name'],
-                        tmp_facility['compute_center_login'],
-                        tmp_facility['compute_center_support_mail']);
-                }
-
-                const newProject: Project = new Project(
-                    Number(groupid),
-                    shortname,
-                    group['description'],
-                    `${dateCreated.date()}.${(dateCreated.month() + 1)}.${dateCreated.year()}`,
-                    dateDayDifference,
-                    is_pi,
-                    is_admin,
-                    compute_center);
-                newProject.Status = group['status'];
-
-                if (lifetime !== -1) {
-                    const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-                    const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY')
-                        .toDate()).diff(moment(dateCreated), 'days'));
-
-                    newProject.LifetimeDays = lifetimeDays;
-                    newProject.DateEnd = expirationDate;
-                    newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
-
-                }
-                newProject.RealName = group['name'];
-                newProject.Lifetime = lifetime;
-                newProject.OpenStackProject = group['openstack_project'];
-
-                this.projects.push(newProject);
-            }
-            this.applyFilter();
-            this.isLoaded = true;
-
-        })
-
-    }
-
-    sendMailToFacility(facility: string, subject: string, message: string, reply?: string): void {
-        this.facilityservice.sendMailToFacility(
-            facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
-            encodeURIComponent(reply)).subscribe(
-            result => {
-                this.selectedProjectType = 'ALL';
-
-                if (result.status === 201) {
-                    this.emailStatus = 1;
-                } else {
-                    this.emailStatus = 2;
-                }
-            },
-            error => {
-                this.selectedProjectType = 'ALL';
-
-                console.log(error);
-                this.emailStatus = 2;
-            })
-
-    }
 
         const newProject: Project = new Project(
           Number(groupid),
@@ -299,7 +214,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
                      const user_id: string = member['userId'];
                      const fullName: string = `${member['firstName']} ${member['lastName']}`;
                      const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
-                     newMember.ElixirId = member['elixirId'];
+                     newMember.ElixirId = member  ['elixirId'];
                      newMember.Email = member['email'];
                      this.usersModalProjectMembers.push(newMember);
                    }
