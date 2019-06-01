@@ -159,14 +159,14 @@
 
               </div>
               <div class="alert alert-warning" role="alert"
-                   *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && images.length == 0">
+                   *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length == 0">
                 There are too few cores and not enough ram available for this project to start a new machine.
                 Your principal investigator can request more
                 resources if necessary.
 
               </div>
 
-              <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax">
+              <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length > 0">
                 <div *ngIf="selectedProject" class="form-group row">
                   <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
                   <div class="col-md-6">
@@ -319,9 +319,8 @@
                                     </span></div>
 
                     <div class="col-md-6">
-                      <strong>current: ***REMOVED******REMOVED***selectedProjectDiskspaceUsed***REMOVED******REMOVED*** | max
-                        ***REMOVED******REMOVED***selectedProjectDiskspaceMax***REMOVED******REMOVED***
-                        GB</strong>
+                      <strong> ***REMOVED******REMOVED***selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed***REMOVED******REMOVED*** GB available
+                      </strong>
                     </div>
 
                   </div>
@@ -350,7 +349,7 @@
 
             </div>
             <div class="form-group row"
-                 *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax">
+                 *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length > 0">
 
 
               <button style=" margin-left: auto;margin-top: 25px;
