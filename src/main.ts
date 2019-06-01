@@ -24,11 +24,4 @@ matomoScript.innerHTML =
 
 document.getElementsByTagName('head')[0].appendChild(matomoScript);
 platformBrowserDynamic().bootstrapModule(AppModule).then(() => {
-  if ('serviceWorker' in navigator && environment.production) {
-    navigator.serviceWorker.register('./ngsw-worker.js');
-  }
 });
-
-
-
-
