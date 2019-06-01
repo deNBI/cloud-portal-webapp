@@ -39,10 +39,6 @@
                                 <th>Status</th>
                                 <th>Description</th>
 
-                                <!--th>Date created (d/m/y)</th>
-                                <!--th>Expiration Date (d/m/y)</th-->
-                                <!--th>Days running</th>
-                                <!--th>Lifetime in Days</th-->
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -135,14 +131,10 @@
                                 </td>
 
 
-                                <!--td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>
-                                <!--td>***REMOVED******REMOVED***project.DateEnd***REMOVED******REMOVED***</td-->
-                                <!--td>***REMOVED******REMOVED*** project.DaysRunning ***REMOVED******REMOVED***</td>
-                                <!--td>***REMOVED******REMOVED***project.LifetimeDays***REMOVED******REMOVED***</td-->
                                 <td>
                                     <button type="button" class="btn btn-secondary"
                                             data-toggle="modal"
-                                            (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
+                                            (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
 
                                     >
                                         <i class="fa fa-users"></i>&nbsp;Show Members
