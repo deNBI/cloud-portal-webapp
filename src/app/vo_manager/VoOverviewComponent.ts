@@ -145,7 +145,7 @@ export class VoOverviewComponent extends FilterBaseClass ***REMOVED***
     this.voserice.getAllGroupsWithDetails().subscribe(result => ***REMOVED***
       const vo_projects = result;
       for (const group of vo_projects) ***REMOVED***
-        const dateCreated: moment.Moment = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+        const dateCreated: moment.Moment = moment.unix(group['createdAt']);
         const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
         const is_pi: boolean = group['is_pi'];
         const lifetime: number = group['lifetime'];

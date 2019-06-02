@@ -258,7 +258,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
       r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
       r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
       r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-      console.log(r.Lifetime);
       newApp.ApplicationExtension = r;
     ***REMOVED***
 
