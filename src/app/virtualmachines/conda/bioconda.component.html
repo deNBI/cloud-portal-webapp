@@ -1,8 +1,8 @@
 <div class="table-responsive" style="width: 100%">
   <pagination
-    [totalItems]="tools_filtered?.length" [itemsPerPage]="toolsPerPage"
+    [totalItems]="total_pages" [itemsPerPage]="toolsPerPage"
     (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
-    [boundaryLinks]="true" [maxSize]="max_pages" [rotate]="false">
+    [boundaryLinks]="true" [maxSize]="max_pages" [rotate]="false" #pagination>
   </pagination>
   <table class="table table-striped">
     <thead>
@@ -13,23 +13,23 @@
     <tbody>
     <td>
       <input type="text" placeholder="Filter"
-      name="filterToolName"
-      [(ngModel)]="filterToolName"
-      (ngModelChange)="applyFilter()">
+             name="filterToolNameRef" (ngModelChange)='changedNameFilter($event)'
+             [ngModel]="filterToolName"
+      >
     </td>
     <td>
       <input type="text" placeholder="Filter"
              name="filterVersionName"
-             [(ngModel)]="filterToolVersion"
-             (ngModelChange)="applyFilter()">
+             [ngModel]="filterToolVersion"
+             (ngModelChange)="changedVersionFilter($event)">
     </td>
     <td>
       <input type="text" placeholder="Filter"
              name="filterToolBuild"
-             [(ngModel)]="filterToolBuild"
-             (ngModelChange)="applyFilter()">
+             [ngModel]="filterToolBuild"
+             (ngModelChange)="changedBuildFilter($event)">
     </td>
-    <tr *ngFor="let tool of tools_returned">
+    <tr *ngFor="let tool of bioconda_tools">
       <td>{{tool.name}}</td>
       <td>{{tool.version}}</td>
       <td>{{tool.build}}</td>
