@@ -118,7 +118,7 @@ export class OverviewComponent extends AbstractBaseClasse ***REMOVED***
         this.groupservice.getGroupDetails().subscribe(result => ***REMOVED***
             this.userprojects = result;
             for (const group of this.userprojects) ***REMOVED***
-                const dateCreated: moment.Moment = moment(group['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+                const dateCreated: moment.Moment = moment.unix(group['createdAt']);
                 const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
                 const is_pi: boolean = group['is_pi'];
                 const groupid: string = group['id'];
