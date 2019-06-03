@@ -1,3 +1,19 @@
+##  (2019-06-03)
+
+
+#### Features
+
+* **Email:**
+  * facility manager now can send emails to specific projects (#493) ([43990b4b](43990b4b))
+
+#### Bug Fixes
+
+* **Lifetime:** fixed dateCreated etc in projects overviews (#500) ([8c5df4f2](8c5df4f2))
+* **html2canvas:**  pin version ([ab3fd928](ab3fd928))
+
+
+
+
 ##  (2019-05-29)
 
 
