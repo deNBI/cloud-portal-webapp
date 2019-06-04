@@ -30,9 +30,8 @@ export class MemberGuardService implements CanActivate ***REMOVED***
     if (cookieValue) ***REMOVED***
       redirect_url = null;
     ***REMOVED***
-    
+
     return this.userservice.getOnlyLoggedUserWithRedirect(redirect_url).pipe(switchMap(res => ***REMOVED***
-      console.log(res);
       if (res['error']) ***REMOVED***
         window.location.href = environment.login;
       ***REMOVED***
