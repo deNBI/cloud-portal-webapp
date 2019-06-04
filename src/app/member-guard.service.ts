@@ -30,10 +30,10 @@ export class MemberGuardService implements CanActivate {
     if (cookieValue) {
       redirect_url = null;
     }
+    
     return this.userservice.getOnlyLoggedUserWithRedirect(redirect_url).pipe(switchMap(res => {
       console.log(res);
       if (res['error']) {
-        console.log('drin');
         window.location.href = environment.login;
       }
 
@@ -45,7 +45,6 @@ export class MemberGuardService implements CanActivate {
         if (cookieValue) {
           this.cookieService.delete('redirect_after_login');
           let val: string = cookieValue;
-          console.log(val);
           val = val.substring(2);
           val = val.substring(0, val.length - 1);
 
@@ -57,6 +56,24 @@ export class MemberGuardService implements CanActivate {
       }))
     }))
 
+  }
+
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean {
+    this.cookieService.delete('redirect_after_login');
+
+    return this.userservice.getOnlyLoggedUserWithRedirect(null).pipe(switchMap(res => {
+      if (res['error']) {
+        window.location.href = environment.login;
+      }
+
+      return this.userservice.getMemberByUser().pipe(map(memberinfo => {
+        if (memberinfo['name'] === 'MemberNotExistsException') {
+          return this.router.parseUrl('/registration-info');
+
+        }
+        return true;
+      }))
+    }))
   }
 
 }
