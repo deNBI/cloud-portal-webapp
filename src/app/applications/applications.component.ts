@@ -10,21 +10,21 @@ import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
-import ***REMOVED***Client***REMOVED*** from "../virtualmachines/clients/client.model";
+import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/client.model';
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
-import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
-import ***REMOVED***forkJoin***REMOVED*** from "rxjs/index";
+import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
+import ***REMOVED***forkJoin***REMOVED*** from 'rxjs/index';
 
 /**
  * Application Overview component.
  */
 @Component(***REMOVED***
-  templateUrl: 'applications.component.html',
-  providers: [FacilityService, VoService, UserService, GroupService, ApplicationStatusService,
-    ApplicationsService, ApiSettings, FlavorService]
-***REMOVED***)
+             templateUrl: 'applications.component.html',
+             providers: [FacilityService, VoService, UserService, GroupService, ApplicationStatusService,
+               ApplicationsService, ApiSettings, FlavorService]
+           ***REMOVED***)
 export class ApplicationsComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
 
   /**
@@ -33,12 +33,10 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
    */
   all_applications: Application[] = [];
 
-
   /**
    * Limits information for Client tested/used for Simple Vm Project creation.
    */
   notificationClientInfo: Client[] = [];
-
 
   /**
    * id of the extension status.
@@ -103,7 +101,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
   ngOnInit(): void ***REMOVED***
 
-
   ***REMOVED***
 
   /**
@@ -142,12 +139,14 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
     if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED && app.Status !== this.application_states.TERMINATED) ***REMOVED***
       this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => ***REMOVED***
+
         const login: string = res['Login'];
         const suport: string = res['Support'];
         const facilityname: string = res['Facility'];
         const facilityId: number = res['FacilityId'];
-
-        app.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
+        if (facilityId) ***REMOVED***
+          app.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
+        ***REMOVED***
 
       ***REMOVED***)
     ***REMOVED***
@@ -196,7 +195,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
   ***REMOVED***
 
-
   /**
    * Gets all Application of the user viewing the application overview.
    * Saves them in the userApplication array.
@@ -213,7 +211,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
     ***REMOVED***)
 
-
   ***REMOVED***
 
   /**
@@ -228,9 +225,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
       this.user_applications[index] = newApp;
 
-
     ***REMOVED***)
-
 
   ***REMOVED***
 
@@ -246,7 +241,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     ***REMOVED***
   ***REMOVED***
 
-
   /**
    * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
    */
@@ -260,7 +254,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
   getListOfTypes(): void ***REMOVED***
     this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
   ***REMOVED***
-
 
   /**
    * Resets the values of totalRAM und totalNumberOfCores to 0 and changes the text at the end of the extension form.
@@ -311,7 +304,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
   ***REMOVED***
 
-
   /**
    * Submits an renewal request for an application.
    * @param ***REMOVED***NgForm***REMOVED*** form
@@ -332,7 +324,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     this.requestExtension(values);
 
   ***REMOVED***
-
 
   /**
    * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
@@ -413,28 +404,42 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     ***REMOVED***)
   ***REMOVED***
 
-  /**
-   * Approve an extension request.
-   * @param ***REMOVED***Application***REMOVED*** app
-   */
   public approveExtension(app: Application): void ***REMOVED***
 
     if (app.OpenStackProject) ***REMOVED***
-      this.applicationstatusservice.setApplicationStatus(
-        app.Id.toString(),
-        this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe(() => ***REMOVED***
-        this.extension_status = 5;
-        this.getApplication(app);
-        this.getUserApplication(app);
+      if (!app.ComputeCenter) ***REMOVED***
+        this.applicationsservice.approveRenewal(app.Id.toString()).subscribe(result => ***REMOVED***
+          if (result['Error']) ***REMOVED***
+            this.extension_status = 2
+            this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
+          ***REMOVED*** else ***REMOVED***
+            this.extension_status = 3;
 
-        for (const appl of this.user_applications) ***REMOVED***
-          if (this.selectedApplication.Id.toString() === appl.Id.toString()) ***REMOVED***
-            this.getUserApplication(appl);
-            break;
+            this.updateNotificationModal('Success', 'Successfully approved the application modification.', true, 'success');
+            this.all_applications = [];
+            this.user_applications = [];
+            this.getUserApplications();
+            this.getAllApplications();
+
           ***REMOVED***
+        ***REMOVED***);
+      ***REMOVED*** else ***REMOVED***
+        this.applicationstatusservice.setApplicationStatus(
+          app.Id.toString(),
+          this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe(() => ***REMOVED***
+          this.extension_status = 5;
+          this.getApplication(app);
+          this.getUserApplication(app);
 
-        ***REMOVED***
-      ***REMOVED***)
+          for (const appl of this.user_applications) ***REMOVED***
+            if (this.selectedApplication.Id.toString() === appl.Id.toString()) ***REMOVED***
+              this.getUserApplication(appl);
+              break;
+            ***REMOVED***
+
+          ***REMOVED***
+        ***REMOVED***)
+      ***REMOVED***
     ***REMOVED*** else ***REMOVED***
       this.applicationsservice.approveRenewal(app.Id).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
         if (result['Error']) ***REMOVED***
@@ -478,7 +483,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     ***REMOVED***)
   ***REMOVED***
 
-
   /**
    * Remove Application from facility , where it is for confirmation
    * @param ***REMOVED***Application***REMOVED*** application the application
@@ -501,18 +505,18 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
   public createOpenStackProjectGroup(application: Application,
                                      compute_center: string): void ***REMOVED***
     this.groupservice.createGroupOpenStack(application.Id, compute_center).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
-        if (result['Error']) ***REMOVED***
-          this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+                                                                                       if (result['Error']) ***REMOVED***
+                                                                                         this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
-        ***REMOVED*** else ***REMOVED***
-          this.updateNotificationModal('Success', 'The new project was created', true, 'success');
-        ***REMOVED***
-        this.getUserApplication(application);
-        this.getApplication(application);
-      ***REMOVED***,
-      () => ***REMOVED***
-        this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-      ***REMOVED***)
+                                                                                       ***REMOVED*** else ***REMOVED***
+                                                                                         this.updateNotificationModal('Success', 'The new project was created', true, 'success');
+                                                                                       ***REMOVED***
+                                                                                       this.getUserApplication(application);
+                                                                                       this.getApplication(application);
+                                                                                     ***REMOVED***,
+                                                                                     () => ***REMOVED***
+                                                                                       this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+                                                                                     ***REMOVED***)
 
   ***REMOVED***
 
@@ -541,7 +545,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
    */
   public createSimpleVmProjectGroup(app: Application,
                                     compute_center: string): void ***REMOVED***
-    //todo refactor this
     // get memeber id in order to add the user later as the new member and manager of the group
     let manager_member_id: string;
     let manager_member_user_id: string;
@@ -600,45 +603,45 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                       this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center)
                     ).subscribe(() => ***REMOVED***
                       this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => ***REMOVED***
-                          if (result['Info']) ***REMOVED***
-                            this.updateNotificationModal('Failed', result['Info'], true, 'danger');
+                                                                                                          if (result['Info']) ***REMOVED***
+                                                                                                            this.updateNotificationModal('Failed', result['Info'], true, 'danger');
 
-                          ***REMOVED*** else ***REMOVED***
-                            this.applicationsservice.getApplicationClient(
-                              application_id).subscribe((client: object) => ***REMOVED***
-                              const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
-                              newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
-                              newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
-                              newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
-                              newClient.assignedVMs = client['assigned_ressources']['vms'];
-                              newClient.assignedVolumes = client['assigned_ressources']['volumes'];
-                              newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
-                              this.notificationClientInfo.push(newClient);
-                              this.updateNotificationModal(
-                                'Success', `The new project was created and assigned to $***REMOVED***newClient.location***REMOVED***.`,
-                                true,
-                                'success');
+                                                                                                          ***REMOVED*** else ***REMOVED***
+                                                                                                            this.applicationsservice.getApplicationClient(
+                                                                                                              application_id).subscribe((client: object) => ***REMOVED***
+                                                                                                              const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
+                                                                                                              newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
+                                                                                                              newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
+                                                                                                              newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
+                                                                                                              newClient.assignedVMs = client['assigned_ressources']['vms'];
+                                                                                                              newClient.assignedVolumes = client['assigned_ressources']['volumes'];
+                                                                                                              newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
+                                                                                                              this.notificationClientInfo.push(newClient);
+                                                                                                              this.updateNotificationModal(
+                                                                                                                'Success', `The new project was created and assigned to $***REMOVED***newClient.location***REMOVED***.`,
+                                                                                                                true,
+                                                                                                                'success');
 
-                            ***REMOVED***);
-                          ***REMOVED***
+                                                                                                            ***REMOVED***);
+                                                                                                          ***REMOVED***
 
-                          for (const app of this.user_applications) ***REMOVED***
-                            if (app.Id.toString() === application_id.toString()) ***REMOVED***
-                              this.getUserApplication(app);
-                              break;
+                                                                                                          for (const app of this.user_applications) ***REMOVED***
+                                                                                                            if (app.Id.toString() === application_id.toString()) ***REMOVED***
+                                                                                                              this.getUserApplication(app);
+                                                                                                              break;
 
-                            ***REMOVED***
+                                                                                                            ***REMOVED***
 
-                          ***REMOVED***
-                          for (const app of this.all_applications) ***REMOVED***
-                            if (app.Id.toString() === application_id.toString()) ***REMOVED***
-                              this.getApplication(app);
-                              break;
+                                                                                                          ***REMOVED***
+                                                                                                          for (const app of this.all_applications) ***REMOVED***
+                                                                                                            if (app.Id.toString() === application_id.toString()) ***REMOVED***
+                                                                                                              this.getApplication(app);
+                                                                                                              break;
 
-                            ***REMOVED***
-                          ***REMOVED***
+                                                                                                            ***REMOVED***
+                                                                                                          ***REMOVED***
 
-                        ***REMOVED***
+                                                                                                        ***REMOVED***
                       )
 
                     ***REMOVED***);
@@ -727,7 +730,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
       ***REMOVED***);
   ***REMOVED***
 
-
   /**
    * Set the id of the application which should be deleted.
    * @param applicationId
@@ -735,6 +737,5 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
   public setDeleteId(applicationId: number): void ***REMOVED***
     this.deleteId = applicationId;
   ***REMOVED***
-
 
 ***REMOVED***
