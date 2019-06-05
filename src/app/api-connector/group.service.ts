@@ -325,6 +325,13 @@ export class GroupService ***REMOVED***
 
   ***REMOVED***
 
+  getGroupResources(groupid: string): Observable<IResponseTemplate> ***REMOVED***
+    return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/all/`, ***REMOVED***
+      withCredentials: true
+    ***REMOVED***)
+
+  ***REMOVED***
+
   getVolumesUsed(groupid: string): Observable<IResponseTemplate> ***REMOVED***
     return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/attributes/usedVolumes/`, ***REMOVED***
       withCredentials: true
