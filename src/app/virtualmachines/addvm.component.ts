@@ -132,7 +132,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    */
   validPublickey: boolean;
 
-
   /**
    * Default volume name.
    * @type ***REMOVED***string***REMOVED***
@@ -271,9 +270,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
           if (newVm.status === 'ACTIVE') ***REMOVED***
             this.resetProgressBar();
             this.newVm = newVm;
-            this.getSelectedProjectDiskspace();
-            this.getSelectedProjectVms();
-            this.getSelectedProjectVolumes();
+            this.loadProjectData();
 
           ***REMOVED*** else if (newVm.status) ***REMOVED***
             if (newVm.status === 'PORT_CLOSED') ***REMOVED***
@@ -409,8 +406,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       this.selectedProjectCoresUsed = res['cores_used'];
       this.selectedProjectRamMax = res['ram_total'];
       this.selectedProjectRamUsed = res['ram_used'];
-          this.projectDataLoaded = true;
-
+      this.projectDataLoaded = true;
 
     ***REMOVED***);
 
