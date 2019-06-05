@@ -1,0 +1,37 @@
+<div>
+  <div class="row justify-content-center">
+    <button class="btn btn-primary" style="margin-bottom: 5px; width: 100%"
+            (click)="showSshCommando = !showSshCommando">
+      <span [hidden]="!showSshCommando">Show</span>
+      <span [hidden]="showSshCommando">Hide</span>
+      Connect to your VM
+    </button>
+  </div>
+  <div class="row justify-content-center">
+    <pre [hidden]="showSshCommando">{{selectedVm?.ssh_command}}</pre>
+  </div>
+</div>
+
+<div>
+  <div class="row justify-content-center">
+    <button *ngIf="selectedVm?.udp_command" class="btn btn-primary" style="margin-bottom: 5px; width: 100%"
+            (click)="showUdpCommando = !showUdpCommando">
+      <span [hidden]="!showUdpCommando">Show</span>
+      <span [hidden]="showUdpCommando">Hide</span>
+      Mosh Connection Info
+    </button>
+  </div>
+  <div class="row justify-content-center">
+                <pre *ngIf="selectedVm?.udp_command" [hidden]="showUdpCommando">
+            1. You need to install mosh on your virtual Machine.
+               Connect with the ssh command above and run: <br>
+               (On Ubuntu) sudo apt-get install mosh
+               or <a href="https://mosh.org/#getting" target="_blank">Click Here for different OS</a> <br>
+            2. You need to install mosh on your Computer:
+               <a href="https://mosh.org/#getting" target="_blank">Click Here for different OS</a>
+               or on Ubuntu run: <br>
+               sudo apt-get install mosh <br>
+            3. Connect with mosh to your virtual Machine:
+               {{selectedVm?.udp_command}}</pre>
+  </div>
+</div>
