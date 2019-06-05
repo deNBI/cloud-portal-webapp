@@ -2,9 +2,9 @@
   <div class="row justify-content-center">
     <button class="btn btn-primary" style="margin-bottom: 5px; width: 100%"
             (click)="showSshCommando = !showSshCommando">
-      <span [hidden]="!showSshCommando">Show</span>
-      <span [hidden]="showSshCommando">Hide</span>
-      Connect to your VM
+      <span [hidden]="!showSshCommando">Show: </span>
+      <span [hidden]="showSshCommando">Hide: </span>
+      How to connect to your vm?
     </button>
   </div>
   <div class="row justify-content-center">
@@ -32,6 +32,6 @@
                or on Ubuntu run: <br>
                sudo apt-get install mosh <br>
             3. Connect with mosh to your virtual Machine:
-               {{selectedVm?.udp_command}}</pre>
+                  {{selectedVm?.udp_command}}</pre>
   </div>
 </div>

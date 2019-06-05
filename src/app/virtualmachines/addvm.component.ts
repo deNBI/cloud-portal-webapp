@@ -132,7 +132,6 @@ export class VirtualMachineComponent implements OnInit {
    */
   validPublickey: boolean;
 
-
   /**
    * Default volume name.
    * @type {string}
@@ -271,9 +270,7 @@ export class VirtualMachineComponent implements OnInit {
           if (newVm.status === 'ACTIVE') {
             this.resetProgressBar();
             this.newVm = newVm;
-            this.getSelectedProjectDiskspace();
-            this.getSelectedProjectVms();
-            this.getSelectedProjectVolumes();
+            this.loadProjectData();
 
           } else if (newVm.status) {
             if (newVm.status === 'PORT_CLOSED') {
@@ -409,8 +406,7 @@ export class VirtualMachineComponent implements OnInit {
       this.selectedProjectCoresUsed = res['cores_used'];
       this.selectedProjectRamMax = res['ram_total'];
       this.selectedProjectRamUsed = res['ram_used'];
-          this.projectDataLoaded = true;
-
+      this.projectDataLoaded = true;
 
     });
 
