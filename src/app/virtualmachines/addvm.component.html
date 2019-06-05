@@ -365,25 +365,7 @@
           instance overview site</p>
       </div>
       <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE'">
-        <div class="btn-group-vertical">
-          <button class="btn btn-primary" style="margin-bottom: 5px;"
-                  (click)="showSshCommando = !showSshCommando">
-            <span [hidden]="!showSshCommando">Show</span>
-            <span [hidden]="showSshCommando">Hide</span>
-            SSH Connection Info
-          </button>
-          <pre [hidden]="showSshCommando">***REMOVED******REMOVED***newVm?.ssh_command***REMOVED******REMOVED***</pre>
-
-          <button *ngIf="newVm?.udp_command" class="btn btn-primary" style="margin-bottom: 5px;"
-                  (click)="showUdpCommando = !showUdpCommando">
-            <span [hidden]="!showUdpCommando">Show</span>
-            <span [hidden]="showUdpCommando">Hide</span>
-            Mosh Connection Info
-          </button>
-          <pre *ngIf="newVm?.udp_command" [hidden]="showUdpCommando">***REMOVED******REMOVED***newVm?.udp_command***REMOVED******REMOVED***</pre>
-
-        </div>
-
+        <app-how-to-connect [selectedVm]="newVm"></app-how-to-connect>
       </div>
       <div class="modal-body" *ngIf="create_error?.error">
         An Error occured.<br><br>

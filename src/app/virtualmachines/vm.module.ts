@@ -16,6 +16,7 @@ import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination
 import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared/shared_modules/public-key/public-key.module';
 import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
 import ***REMOVED*** BsDropdownModule ***REMOVED*** from 'ngx-bootstrap';
+import ***REMOVED***HowToConnectComponent***REMOVED*** from './shared-modal/how-to-connect.component';
 
 /**
  * VM module.
@@ -40,7 +41,8 @@ import ***REMOVED*** BsDropdownModule ***REMOVED*** from 'ngx-bootstrap';
         ClientOverviewComponent,
         VmOverviewComponent,
         VolumeOverviewComponent,
-        SnapshotOverviewComponent
+        SnapshotOverviewComponent,
+        HowToConnectComponent
     ]
 ***REMOVED***)
 export class VmModule ***REMOVED***

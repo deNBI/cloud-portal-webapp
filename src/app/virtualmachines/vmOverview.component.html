@@ -551,27 +551,10 @@
             </div>
 
 
-            <div class="modal-body">
-                 <div class="btn-group-vertical">
-          <button class="btn btn-primary" style="margin-bottom: 5px;"
-                  (click)="showSshCommando = !showSshCommando">
-            <span [hidden]="!showSshCommando">Show</span>
-            <span [hidden]="showSshCommando">Hide</span>
-            SSH Connection Info
-          </button>
-          <pre [hidden]="showSshCommando">***REMOVED******REMOVED***selectedVm?.ssh_command***REMOVED******REMOVED***</pre>
-
-          <button *ngIf="selectedVm?.udp_command" class="btn btn-primary" style="margin-bottom: 5px;"
-                  (click)="showUdpCommando = !showUdpCommando">
-            <span [hidden]="!showUdpCommando">Show</span>
-            <span [hidden]="showUdpCommando">Hide</span>
-            Mosh Connection Info
-          </button>
-          <pre *ngIf="selectedVm?.udp_command" [hidden]="showUdpCommando">***REMOVED******REMOVED***selectedVm?.udp_command***REMOVED******REMOVED***</pre>
-
-        </div>
-            </div>
-            <div class="modal-footer">
+          <div class="modal-body">
+            <app-how-to-connect [selectedVm]="selectedVm"></app-how-to-connect>
+          </div>
+          <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="infoModal.hide();">Close
                 </button>
             </div>
