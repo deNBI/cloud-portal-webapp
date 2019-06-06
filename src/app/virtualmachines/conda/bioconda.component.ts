@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {BiocondaService} from '../../api-connector/bioconda.service';
-import {fromEvent, Subject,} from 'rxjs';
-import {debounceTime, map, distinctUntilChanged} from 'rxjs/operators';
-import {ModalDirective, PaginationComponent} from 'ngx-bootstrap';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {PaginationComponent} from 'ngx-bootstrap';
 
 export interface IBiocondaTool {
   name: string,
@@ -20,6 +20,8 @@ export class BiocondaComponent implements OnInit {
   DEBOUNCE_TIME: number = 300;
 
   bioconda_tools: IBiocondaTool[] = [];
+
+  chosen_tools: IBiocondaTool[] = [];
 
   toolsPerPage: number = 10;
 
@@ -46,6 +48,10 @@ export class BiocondaComponent implements OnInit {
   @ViewChild('pagination') pagination: PaginationComponent;
 
   constructor(private condaService: BiocondaService) {
+  }
+
+  pageChanged(event): void {
+    this.getBiocondaTools(event.page);
   }
 
   ngOnInit(): void {
@@ -83,21 +89,6 @@ export class BiocondaComponent implements OnInit {
 
   }
 
-  changedNameFilter(text: string): void {
-    this.filternameChanged.next(text);
-
-  }
-
-  changedVersionFilter(text: string): void {
-    this.filterVersionChanged.next(text);
-
-  }
-
-  changedBuildFilter(text: string): void {
-    this.filterBuildChanged.next(text);
-
-  }
-
   getBiocondaTools(page: number): void {
     this.condaService.getBiocondaTools(page, this.filterToolName, this.filterToolVersion, this.filterToolBuild).subscribe(
       res => {
@@ -117,13 +108,45 @@ export class BiocondaComponent implements OnInit {
 
         this.currentPage = page;
         this.pagination.selectPage(this.currentPage);
-
       });
   }
 
-  pageChanged(event): void {
-    this.getBiocondaTools(event.page);
+  changedNameFilter(text: string): void {
+    this.filternameChanged.next(text);
 
   }
 
+  changedVersionFilter(text: string): void {
+    this.filterVersionChanged.next(text);
+
+  }
+
+  changedBuildFilter(text: string): void {
+    this.filterBuildChanged.next(text);
+
+  }
+
+  add_or_remove(tool: IBiocondaTool): void {
+    let deleted: boolean = false;
+    this.chosen_tools.forEach((item: IBiocondaTool, index: number) => {
+      if (tool.name === item.name && tool.version === item.version && tool.build === item.build) {
+        this.chosen_tools.splice(index, 1);
+        deleted = true;
+      }
+    });
+    if (!deleted) {
+      this.chosen_tools.push(tool);
+    }
+  }
+
+  is_added(tool: IBiocondaTool): boolean {
+    let found: boolean = false;
+    this.chosen_tools.forEach((item: IBiocondaTool) => {
+      if (tool.name === item.name && tool.version === item.version && tool.build === item.build) {
+        found = true;
+      }
+    });
+
+    return found;
+}
 }

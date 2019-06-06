@@ -17,6 +17,7 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {Client} from './clients/client.model';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {UserService} from '../api-connector/user.service';
+import {VoService} from '../api-connector/vo.service';
 
 /**
  * Start virtualmachine component.
@@ -25,7 +26,7 @@ import {UserService} from '../api-connector/user.service';
              selector: 'app-new-vm',
              templateUrl: 'addvm.component.html',
              providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
-               Application, ApiSettings, KeyService, ClientService, UserService]
+               Application, ApiSettings, KeyService, ClientService, UserService, VoService]
            })
 export class VirtualMachineComponent implements OnInit {
 
@@ -42,6 +43,7 @@ export class VirtualMachineComponent implements OnInit {
   udp_allowed: boolean = false;
   showSshCommando: boolean = true;
   showUdpCommando: boolean = true;
+  is_vo: boolean = false;
 
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
@@ -176,7 +178,8 @@ export class VirtualMachineComponent implements OnInit {
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-              private keyservice: KeyService, private userservice: UserService) {
+              private keyservice: KeyService, private userservice: UserService,
+              private voService: VoService) {
   }
 
   /**
@@ -454,5 +457,8 @@ export class VirtualMachineComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeData();
+    this.voService.isVo().subscribe((result: IResponseTemplate) => {
+      this.is_vo = <boolean><Boolean>result.value;
+    })
   }
 }
