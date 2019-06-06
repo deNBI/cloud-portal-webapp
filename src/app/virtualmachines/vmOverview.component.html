@@ -123,7 +123,7 @@
                     <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
                         <button type="button" class="btn btn-secondary btn-block"
                                 style="white-space: normal; word-wrap: break-word;"
-                                (click)="how_to_connect=vm.ssh_command;infoModal.show()"> Show
+                                (click)="selectedVm=vm;infoModal.show()"> Show
                             Information
                         </button>
                     </td>
@@ -386,15 +386,15 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-                    Deleting {{selectedVm?.Name}}... <i class="fa fa-spinner fa-spin"
+                    Deleting {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                                         style="font-size:24px"></i>
                 </div>
                 <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
-                    {{selectedVm?.Name}} was succesfully deleted.
+                    {{selectedVm?.name}} was succesfully deleted.
                 </div>
             </div>
             <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-                When deleting {{selectedVm?.Name}} an error occured.
+                When deleting {{selectedVm?.name}} an error occured.
             </div>
 
 
@@ -551,10 +551,10 @@
             </div>
 
 
-            <div class="modal-body">
-                <pre><code>{{how_to_connect}}</code></pre>
-            </div>
-            <div class="modal-footer">
+          <div class="modal-body">
+            <app-how-to-connect [selectedVm]="selectedVm"></app-how-to-connect>
+          </div>
+          <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="infoModal.hide();">Close
                 </button>
             </div>

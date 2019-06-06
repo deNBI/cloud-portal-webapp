@@ -1,5 +1,79 @@
-##  (2019-05-02)
+##  (2019-06-05)
 
+
+#### Features
+
+* **VirtualMachines:**
+  * added info when no flavor is available ([58e7af3e](58e7af3e))
+  * added overview ([094ba18c](094ba18c))
+
+
+##  (2019-06-03)
+
+
+#### Features
+
+* **Email:**
+  * facility manager now can send emails to specific projects (#493) ([43990b4b](43990b4b))
+
+#### Bug Fixes
+
+* **Lifetime:** fixed dateCreated etc in projects overviews (#500) ([8c5df4f2](8c5df4f2))
+* **html2canvas:**  pin version ([ab3fd928](ab3fd928))
+
+
+
+
+##  (2019-05-29)
+
+
+#### Bug Fixes
+
+* **serviceWorker:**  delete all serviceWorker mentions (#498) ([06a15db6](06a15db6))
+
+##  (2019-05-28)
+
+
+#### Bug Fixes
+
+* **application:**
+  *  lifetime and numbers get loaded ([263b168c](263b168c))
+  *  Modification Request - Number of requested Flavors now showing ([d825fc22](d825fc22))
+* **readme:**  add intellij debug screenshot ([edccae7d](edccae7d))
+
+
+##  (2019-05-24)
+
+
+#### Features
+
+* **Application:**
+  * detailed desc text ([2b8c7de9](2b8c7de9))
+  * detailed desc text ([f7caeaed](f7caeaed))
+* **SecurityGroups:** added udp conneciton info ([20b9d3d2](20b9d3d2))
+* **SecurtyGroup:** added checkbox for udp,http,https ([8f06062b](8f06062b))
+
+#### Bug Fixes
+
+* **Projects:** fixed typo ([25ca93e8](25ca93e8))
+* **ServiceWorker:** deactivated ([c1cc87d5](c1cc87d5))
+* **Volumes:**
+  * fixed another parsing bug ([81d2fa89](81d2fa89))
+  * fixed response parsing ([837e1eac](837e1eac))
+* **readme:**  small change how to serve webapp ([e4ba7675](e4ba7675))
+
+
+##  (2019-05-10)
+#### Bug Fixes
+* **makefile:**  remove unnecessary fi ([cee3c715](cee3c715))
+
+#### Features
+
+* **Login:** if user wasn't logged in and requests a site ,he will be redirectet to the site after login ([1ff7a05a](1ff7a05a))
+
+
+
+##  (2019-05-02)
 
 #### Bug Fixes
 

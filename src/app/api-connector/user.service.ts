@@ -3,12 +3,12 @@ import {ApiSettings} from './api-settings.service';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
-import {IResponseTemplate} from "./response-template";
-import {Userinfo} from "../userinfo/userinfo.model";
+import {IResponseTemplate} from './response-template';
+import {Userinfo} from '../userinfo/userinfo.model';
 
 const header: HttpHeaders = new HttpHeaders({
-  'X-CSRFToken': Cookie.get('csrftoken')
-});
+                                              'X-CSRFToken': Cookie.get('csrftoken')
+                                            });
 
 /**
  * Service which provides user methods.
@@ -66,12 +66,48 @@ export class UserService {
     })
   }
 
-
   getLoggedUser(): Observable<any> {
+    const params: HttpParams = new HttpParams().set('redirect_after_login', 'redirect');
+
     return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {
-      withCredentials: true
+      withCredentials: true,
+      params: params
 
     })
+  }
+
+  getLoggedUserWithRedirect(redirect?: string): Observable<any> {
+    if (redirect && redirect != '/userinfo' && redirect != 'redirect') {
+      const params: HttpParams = new HttpParams().set('redirect_after_login', redirect);
+      return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {
+        withCredentials: true,
+        params: params
+
+      })
+    } else {
+      return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {
+        withCredentials: true,
+
+      })
+    }
+
+  }
+
+  getOnlyLoggedUserWithRedirect(redirect?: string): Observable<any> {
+    if (redirect && redirect !== '/userinfo' && redirect !== 'redirect') {
+      const params: HttpParams = new HttpParams().set('redirect_after_login', redirect);
+      return this.http.get(`${ApiSettings.getApiBaseURL()}loggedUser/`, {
+        withCredentials: true,
+        params: params
+
+      })
+    } else {
+      return this.http.get(`${ApiSettings.getApiBaseURL()}loggedUser/`, {
+        withCredentials: true,
+
+      })
+    }
+
   }
 
   getMemberByUser(): Observable<any> {

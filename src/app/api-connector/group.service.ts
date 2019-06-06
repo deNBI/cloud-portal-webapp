@@ -325,6 +325,13 @@ export class GroupService {
 
   }
 
+  getGroupResources(groupid: string): Observable<IResponseTemplate> {
+    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/all/`, {
+      withCredentials: true
+    })
+
+  }
+
   getVolumesUsed(groupid: string): Observable<IResponseTemplate> {
     return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedVolumes/`, {
       withCredentials: true

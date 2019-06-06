@@ -26,16 +26,19 @@ import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {
-  MobileSidebarToggleDirective,
-  SidebarMinimizeDirective,
-  SidebarOffCanvasCloseDirective,
-  SidebarToggleDirective
+    MobileSidebarToggleDirective,
+    SidebarMinimizeDirective,
+    SidebarOffCanvasCloseDirective,
+    SidebarToggleDirective
 } from "./shared/sidebar.directive";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {MatSnackBarModule} from "@angular/material";
 import {Angulartics2Module} from 'angulartics2';
-import { ValidationApplicationComponent } from './validation-application/validation-application.component';
+import { ErrorHandler } from '@angular/core';
+import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler.service';
 import {environment} from "../environments/environment";
+import {CookieService} from 'ngx-cookie-service';
 
 /**
  * App module.
@@ -62,8 +65,7 @@ import {environment} from "../environments/environment";
         ExportAsModule,
         SharedModuleModule,
         Angulartics2Module.forRoot(),
-        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
-
+        BrowserAnimationsModule
     ],
     declarations: [
         AppComponent,
@@ -75,20 +77,22 @@ import {environment} from "../environments/environment";
         SidebarToggleDirective,
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
-        SidebarOffCanvasCloseDirective,
-        // ValidationApplicationComponent
-
-
-  ],
-  providers: [{
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  },
-
-    ApiSettings,
-    UserService,
-  ],
-  bootstrap: [AppComponent]
+        SidebarOffCanvasCloseDirective
+    ],
+    providers: [
+      {
+        provide: LocationStrategy,
+        useClass: HashLocationStrategy
+      },
+      {
+        provide: ErrorHandler,
+        useClass: UncaughtExceptionHandler
+      },
+        ApiSettings,
+        UserService,
+        CookieService,
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
