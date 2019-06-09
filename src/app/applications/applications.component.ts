@@ -81,6 +81,10 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
               private flavorService: FlavorService) {
 
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
+
+  }
+
+  ngOnInit(): void {
     this.voService.isVo().subscribe((result: IResponseTemplate) => {
       this.is_vo_admin = <boolean><Boolean>result.value;
       this.getUserApplications();
@@ -97,9 +101,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     });
     this.getListOfFlavors();
     this.getListOfTypes();
-  }
-
-  ngOnInit(): void {
 
   }
 

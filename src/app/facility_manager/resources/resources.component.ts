@@ -36,12 +36,6 @@ export class ResourcesComponent implements OnInit {
   };
 
   constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
-    this.facilityService.getManagerFacilities().subscribe((result: [string, number][]) => {
-      this.managerFacilities = result;
-      this.selectedFacility = this.managerFacilities[0];
-      this.getSelectedFacilityResources();
-
-    })
   }
 
   public tableToCSV(): void {
@@ -128,6 +122,12 @@ export class ResourcesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.facilityService.getManagerFacilities().subscribe((result: [string, number][]) => {
+      this.managerFacilities = result;
+      this.selectedFacility = this.managerFacilities[0];
+      this.getSelectedFacilityResources();
+
+    })
   }
 
 }

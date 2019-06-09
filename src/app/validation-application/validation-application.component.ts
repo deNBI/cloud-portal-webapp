@@ -1,19 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {ApplicationsService} from "../api-connector/applications.service";
-import {Application} from "../applications/application.model";
-import {ActivatedRoute} from "@angular/router";
-import {ApplicationBaseClass} from "../shared/shared_modules/baseClass/application-base-class";
+import {ApplicationsService} from '../api-connector/applications.service';
+import {Application} from '../applications/application.model';
+import {ActivatedRoute} from '@angular/router';
+import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
 import {FlavorService} from '../api-connector/flavor.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 
-
 @Component({
-  selector: 'app-validation-application',
-  templateUrl: './validation-application.component.html',
-  styleUrls: ['./validation-application.component.scss'],
-  providers: [ApplicationsService, FlavorService]
-})
+             selector: 'app-validation-application',
+             templateUrl: './validation-application.component.html',
+             styleUrls: ['./validation-application.component.scss'],
+             providers: [ApplicationsService, FlavorService]
+           })
 export class ValidationApplicationComponent extends ApplicationBaseClass implements OnInit {
 
   application: Application;
@@ -36,8 +35,6 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
               private activatedRoute: ActivatedRoute,
               private flavorService: FlavorService) {
     super(null, null, applicationsService, null);
-    this.getListOfFlavors();
-    this.getListOfTypes();
 
   }
 
@@ -63,6 +60,8 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
   }
 
   ngOnInit() {
+    this.getListOfFlavors();
+    this.getListOfTypes();
     this.activatedRoute.params.subscribe(paramsId => {
       this.hash = paramsId.hash;
 
