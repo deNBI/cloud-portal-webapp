@@ -1,4 +1,4 @@
-import ***REMOVED***Component, Input***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, Input, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
 import ***REMOVED***ProjectMember***REMOVED*** from '../projectmanagement/project_member.model'
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
@@ -19,7 +19,7 @@ import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/respon
              templateUrl: 'facilityprojectsoverview.component.html',
              providers: [FacilityService, UserService, GroupService, ApiSettings]
            ***REMOVED***)
-export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVED***
+export class FacilityProjectsOverviewComponent extends FilterBaseClass implements OnInit ***REMOVED***
 
   debug_module: boolean = false;
 
@@ -55,7 +55,9 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass ***REMOVE
   constructor(private groupservice: GroupService,
               private facilityservice: FacilityService) ***REMOVED***
     super();
+  ***REMOVED***
 
+  ngOnInit(): void ***REMOVED***
     this.facilityservice.getManagerFacilities().subscribe(result => ***REMOVED***
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];

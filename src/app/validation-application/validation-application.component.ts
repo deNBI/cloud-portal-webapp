@@ -1,19 +1,18 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***ApplicationsService***REMOVED*** from "../api-connector/applications.service";
-import ***REMOVED***Application***REMOVED*** from "../applications/application.model";
-import ***REMOVED***ActivatedRoute***REMOVED*** from "@angular/router";
-import ***REMOVED***ApplicationBaseClass***REMOVED*** from "../shared/shared_modules/baseClass/application-base-class";
+import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service';
+import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
+import ***REMOVED***ActivatedRoute***REMOVED*** from '@angular/router';
+import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 
-
 @Component(***REMOVED***
-  selector: 'app-validation-application',
-  templateUrl: './validation-application.component.html',
-  styleUrls: ['./validation-application.component.scss'],
-  providers: [ApplicationsService, FlavorService]
-***REMOVED***)
+             selector: 'app-validation-application',
+             templateUrl: './validation-application.component.html',
+             styleUrls: ['./validation-application.component.scss'],
+             providers: [ApplicationsService, FlavorService]
+           ***REMOVED***)
 export class ValidationApplicationComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
 
   application: Application;
@@ -36,8 +35,6 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
               private activatedRoute: ActivatedRoute,
               private flavorService: FlavorService) ***REMOVED***
     super(null, null, applicationsService, null);
-    this.getListOfFlavors();
-    this.getListOfTypes();
 
   ***REMOVED***
 
@@ -63,6 +60,8 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
   ***REMOVED***
 
   ngOnInit() ***REMOVED***
+    this.getListOfFlavors();
+    this.getListOfTypes();
     this.activatedRoute.params.subscribe(paramsId => ***REMOVED***
       this.hash = paramsId.hash;
 
