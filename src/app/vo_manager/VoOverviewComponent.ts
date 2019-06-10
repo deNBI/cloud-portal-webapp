@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {VoService} from '../api-connector/vo.service';
 import {Project} from '../projectmanagement/project.model';
 import {ProjectMember} from '../projectmanagement/project_member.model';
@@ -6,21 +6,21 @@ import {GroupService} from '../api-connector/group.service';
 import * as moment from 'moment';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
-import {IResponseTemplate} from "../api-connector/response-template";
-import {FacilityService} from "../api-connector/facility.service";
-import {forkJoin} from "rxjs/index";
+import {IResponseTemplate} from '../api-connector/response-template';
+import {FacilityService} from '../api-connector/facility.service';
+import {forkJoin} from 'rxjs/index';
 
 /**
  * Vo Overview component.
  */
 @Component({
-  selector: 'app-vo-overview',
-  templateUrl: 'voOverview.component.html',
-  providers: [VoService, GroupService, FacilityService]
+             selector: 'app-vo-overview',
+             templateUrl: 'voOverview.component.html',
+             providers: [VoService, GroupService, FacilityService]
 
-})
+           })
 
-export class VoOverviewComponent extends FilterBaseClass {
+export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   public emailSubject: string;
   public emailReply: string = '';
@@ -54,13 +54,16 @@ export class VoOverviewComponent extends FilterBaseClass {
 
   constructor(private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) {
     super();
+
+  }
+
+  ngOnInit(): void {
     this.getVoProjects();
     this.voserice.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate) => {
       this.newsletterSubscriptionCounter = <number>result.value
 
     });
   }
-
 
   sendEmail(subject: string, message: string, reply?: string): void {
     switch (this.emailType) {
@@ -94,7 +97,6 @@ export class VoOverviewComponent extends FilterBaseClass {
       && this.isFilterProjectId(project.Id)
 
   }
-
 
   sendNewsletterToVo(subject: string, message: string, reply?: string): void {
     this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
@@ -182,7 +184,7 @@ export class VoOverviewComponent extends FilterBaseClass {
         if (lifetime !== -1) {
           expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
           const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
-            .diff(moment(dateCreated), 'days'));
+                                                  .diff(moment(dateCreated), 'days'));
 
           newProject.LifetimeDays = lifetimeDays;
           newProject.DateEnd = expirationDate;
@@ -199,7 +201,6 @@ export class VoOverviewComponent extends FilterBaseClass {
     })
 
   }
-
 
   resetEmailModal(): void {
 
@@ -240,7 +241,7 @@ export class VoOverviewComponent extends FilterBaseClass {
         if (lifetime !== -1) {
           expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
           project.LifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
-            .diff(moment(dateCreated), 'days'));
+                                            .diff(moment(dateCreated), 'days'));
 
           project.DateEnd = expirationDate;
         }
@@ -253,7 +254,6 @@ export class VoOverviewComponent extends FilterBaseClass {
     }
   }
 
-
   getProjectStatus(project: Project): void {
     this.voserice.getProjectStatus(project.Id).subscribe((res: IResponseTemplate) => {
       project.Status = <number>res.value;
@@ -263,8 +263,8 @@ export class VoOverviewComponent extends FilterBaseClass {
   suspendProject(project: Project): void {
     forkJoin(this.voserice.removeResourceFromGroup(project.Id), this.voserice.setProjectStatus(project.Id, 4)
     ).subscribe((res: IResponseTemplate[]) => {
-      const removedRes: number = <number> res[0].value;
-      const newProjectSatus: number = <number> res[1].value;
+      const removedRes: number = <number>res[0].value;
+      const newProjectSatus: number = <number>res[1].value;
 
       project.Status = newProjectSatus;
       if (removedRes === -1) {
@@ -286,23 +286,22 @@ export class VoOverviewComponent extends FilterBaseClass {
 
   getMembesOfTheProject(projectid: number, projectname: string): void {
     this.voserice.getVoGroupRichMembers(projectid).subscribe(members => {
-        this.usersModalProjectID = projectid;
-        this.usersModalProjectName = projectname;
-        this.usersModalProjectMembers = new Array();
-        for (const member of members) {
-          const member_id: number = member['id'];
-          const user_id: number = member['userId'];
-          const fullName: string = `${member['firstName']}  ${member['lastName']}`;
-          const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
-          newMember.ElixirId = member['elixirId'];
-          newMember.Email = member['email'];
-          this.usersModalProjectMembers.push(newMember);
-        }
+                                                               this.usersModalProjectID = projectid;
+                                                               this.usersModalProjectName = projectname;
+                                                               this.usersModalProjectMembers = new Array();
+                                                               for (const member of members) {
+                                                                 const member_id: number = member['id'];
+                                                                 const user_id: number = member['userId'];
+                                                                 const fullName: string = `${member['firstName']}  ${member['lastName']}`;
+                                                                 const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
+                                                                 newMember.ElixirId = member['elixirId'];
+                                                                 newMember.Email = member['email'];
+                                                                 this.usersModalProjectMembers.push(newMember);
+                                                               }
 
-      }
+                                                             }
     )
   }
-
 
   showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]): void {
     this.getMembesOfTheProject(projectid, projectname);

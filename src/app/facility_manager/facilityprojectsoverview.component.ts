@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../projectmanagement/project.model';
 import {ProjectMember} from '../projectmanagement/project_member.model'
 import {environment} from '../../environments/environment'
@@ -19,7 +19,7 @@ import {IResponseTemplate} from '../api-connector/response-template';
              templateUrl: 'facilityprojectsoverview.component.html',
              providers: [FacilityService, UserService, GroupService, ApiSettings]
            })
-export class FacilityProjectsOverviewComponent extends FilterBaseClass {
+export class FacilityProjectsOverviewComponent extends FilterBaseClass implements OnInit {
 
   debug_module: boolean = false;
 
@@ -55,7 +55,9 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass {
   constructor(private groupservice: GroupService,
               private facilityservice: FacilityService) {
     super();
+  }
 
+  ngOnInit(): void {
     this.facilityservice.getManagerFacilities().subscribe(result => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
