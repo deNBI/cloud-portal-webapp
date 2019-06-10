@@ -1,20 +1,20 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
-import ***REMOVED***ClientService***REMOVED*** from "../api-connector/client.service";
+import ***REMOVED***ClientService***REMOVED*** from '../api-connector/client.service';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
-import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
+import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
 
 /**
  * FullLayout component.
  */
 @Component(***REMOVED***
-  selector: 'app-dashboard',
-  templateUrl: './full-layout.component.html',
-  providers: [VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings]
-***REMOVED***)
+             selector: 'app-dashboard',
+             templateUrl: './full-layout.component.html',
+             providers: [VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings]
+           ***REMOVED***)
 export class FullLayoutComponent implements OnInit ***REMOVED***
 
   public year: number = new Date().getFullYear();
@@ -29,9 +29,6 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
 
   constructor(private voService: VoService, private groupService: GroupService, private userservice: UserService,
               private facilityservice: FacilityService) ***REMOVED***
-    this.is_vm_project_member();
-    this.get_is_facility_manager();
-    this.getLoginName();
   ***REMOVED***
 
   public get_is_vo_admin(): boolean ***REMOVED***
@@ -87,6 +84,9 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
+    this.is_vm_project_member();
+    this.get_is_facility_manager();
+    this.getLoginName();
 
     this.checkVOstatus();
   ***REMOVED***

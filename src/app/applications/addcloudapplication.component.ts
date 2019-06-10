@@ -1,4 +1,4 @@
-import ***REMOVED***Component***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
@@ -12,13 +12,13 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from 'app/shared/shared_mo
  * This components provides the functions to create a new Cloud Application.
  */
 @Component(***REMOVED***
-  selector: 'app-addcloudapplication',
-  templateUrl: 'addcloudapplication.component.html',
-  providers: [ApiSettings, ApplicationsService, FlavorService],
-  styleUrls: ['addcloudapplication.component.css']
-***REMOVED***)
+             selector: 'app-addcloudapplication',
+             templateUrl: 'addcloudapplication.component.html',
+             providers: [ApiSettings, ApplicationsService, FlavorService],
+             styleUrls: ['addcloudapplication.component.css']
+           ***REMOVED***)
 
-export class AddcloudapplicationComponent extends ApplicationBaseClass ***REMOVED***
+export class AddcloudapplicationComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
 
   /**
    * If it is in production or dev mode.
@@ -49,8 +49,6 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass ***REMOVE
    */
   public typeList: FlavorType[];
 
-
-
   public acknowledgeModalTitle: string = 'Acknowledge';
   public acknowledgeModalType: string = 'info';
 
@@ -68,9 +66,12 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass ***REMOVE
    */
   constructor(applicationsservice: ApplicationsService, private flavorservice: FlavorService) ***REMOVED***
     super(null, null, applicationsservice, null);
+
+  ***REMOVED***
+
+  ngOnInit(): void ***REMOVED***
     this.getListOfFlavors();
     this.getListOfTypes();
-
   ***REMOVED***
 
   /**
