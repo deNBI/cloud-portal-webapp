@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Image} from './virtualmachinemodels/image';
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
@@ -18,6 +18,7 @@ import {Client} from './clients/client.model';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {UserService} from '../api-connector/user.service';
 import {VoService} from '../api-connector/vo.service';
+import {BiocondaComponent} from './conda/bioconda.component';
 
 /**
  * Start virtualmachine component.
@@ -176,6 +177,8 @@ export class VirtualMachineComponent implements OnInit {
    */
   private checkStatusTimeout: number = 5000;
 
+  @ViewChild('bioconda') biocondaComponent: BiocondaComponent;
+
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
               private keyservice: KeyService, private userservice: UserService,
@@ -304,7 +307,6 @@ export class VirtualMachineComponent implements OnInit {
    */
   startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
-
     if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       const re: RegExp = /\+/gi;
@@ -313,7 +315,7 @@ export class VirtualMachineComponent implements OnInit {
 
       this.virtualmachineservice.startVM(
         flavor_fixed, image, servername, project, projectid.toString(), this.http_allowed, this.https_allowed, this.udp_allowed,
-        this.volumeName, this.diskspace.toString()).subscribe((newVm: VirtualMachine) => {
+        this.volumeName, this.diskspace.toString(), this.biocondaComponent.getChosenTools()).subscribe((newVm: VirtualMachine) => {
 
         if (newVm.status === 'Build') {
           this.creating_vm_status = 'Created';

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
@@ -46,6 +46,7 @@ export class BiocondaComponent implements OnInit {
   filterBuildChanged: Subject<string> = new Subject<string>();
 
   @ViewChild('pagination') pagination: PaginationComponent;
+  @ViewChild('chosenTable') chosenTable: ElementRef;
 
   constructor(private condaService: BiocondaService) {
   }
@@ -148,5 +149,9 @@ export class BiocondaComponent implements OnInit {
     });
 
     return found;
-}
+  }
+
+  getChosenTools(): string {
+    return JSON.stringify(this.chosen_tools);
+  }
 }
