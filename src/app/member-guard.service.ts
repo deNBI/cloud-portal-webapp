@@ -26,6 +26,8 @@ export class MemberGuardService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean {
     const cookieValue: string = this.cookieService.get('redirect_after_login');
+    this.cookieService.delete('redirect_after_login');
+
     let redirect_url: string = state.url;
     if (cookieValue) {
       redirect_url = null;
