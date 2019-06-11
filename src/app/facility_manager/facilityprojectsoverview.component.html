@@ -1,285 +1,285 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
-    <div class="row">
-        <!--/.col-->
+  <div class="row">
+    <!--/.col-->
 
-        <div class="col-md-8"><h1 *ngIf="selectedFacility">Projects Overview: {{selectedFacility['Facility']}}</h1></div>
+    <div class="col-md-8"><h1 *ngIf="selectedFacility">Projects Overview: {{selectedFacility['Facility']}}</h1></div>
 
-        <div class="col-lg-12">
-            <button (click)="emailModal.show()" type="button " class="btn btn-outline-primary"
-                    style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i
-                    class="icon-envelope-letter"></i>
-                Send email
-            </button>
+    <div class="col-lg-12">
+      <button (click)="emailModal.show()" type="button " class="btn btn-outline-primary"
+              style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i
+        class="icon-envelope-letter"></i>
+        Send email
+      </button>
 
-            <div style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
-                                                     (ngModelChange)="onChangeSelectedFacility($event)"
-                                                     class="form-control" name="selectedFacility">
-                <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
-                    {{facility['Facility']}}
-                </option>
+      <div style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
+                                               (ngModelChange)="onChangeSelectedFacility($event)"
+                                               class="form-control" name="selectedFacility">
+        <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
+          {{facility['Facility']}}
+        </option>
 
-            </select></div>
-            <div class="card">
-                <div class="card-header">
-                    <i class="fa fa-align-justify"></i> Projects
+      </select></div>
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Projects
 
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Project ID</th>
+                <th>Project Name</th>
+                <th>Long Name</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              <td></td>
+              <td><input style="width: 110px;" type="text" placeholder="Filter"
+                         name="filterProjectId"
+                         [(ngModel)]="filterProjectId"
+                         (ngModelChange)="applyFilter();">
+              </td>
+              <td><input style="width: 110px;" type="text" placeholder="Filter"
+                         name="filterProjectName"
+                         [(ngModel)]="filterProjectName"
+                         (ngModelChange)="applyFilter();">
+              </td>
+              <td><input style="width: 110px;" type="text" placeholder="Filter"
+                         name="filterProjectLongName"
+                         [(ngModel)]="filterProjectLongName"
+                         (ngModelChange)="applyFilter();">
+              </td>
+              <td>
+                <div class="col">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"
+                             (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
+                             checked/>
+                      <span style="margin-left: 5px"
+                            class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
+
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"
+                             (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
+                      />
+                      <span style="margin-left: 5px"
+                            class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
+
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"
+                             (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
+                      />
+                      <span style="margin-left: 5px"
+                            class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+                    </label>
+                  </div>
                 </div>
 
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>Project ID</th>
-                                <th>Project Name</th>
-                                <th>Long Name</th>
-                                <th>Status</th>
-                                <th>Description</th>
 
-                                <!--th>Date created (d/m/y)</th>
-                                <!--th>Expiration Date (d/m/y)</th-->
-                                <!--th>Days running</th>
-                                <!--th>Lifetime in Days</th-->
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <td></td>
-                            <td><input style="width: 110px;" type="text" placeholder="Filter"
-                                       name="filterProjectId"
-                                       [(ngModel)]="filterProjectId"
-                                       (ngModelChange)="applyFilter();">
-                            </td>
-                            <td><input style="width: 110px;" type="text" placeholder="Filter"
-                                       name="filterProjectName"
-                                       [(ngModel)]="filterProjectName"
-                                       (ngModelChange)="applyFilter();">
-                            </td>
-                            <td><input style="width: 110px;" type="text" placeholder="Filter"
-                                       name="filterProjectLongName"
-                                       [(ngModel)]="filterProjectLongName"
-                                       (ngModelChange)="applyFilter();">
-                            </td>
-                            <td>
-                                <div class="col">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"
-                                                   (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
-                                                   checked/>
-                                            <span style="margin-left: 5px"
-                                                  class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
-
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"
-                                                   (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
-                                            />
-                                            <span style="margin-left: 5px"
-                                                  class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
-
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"
-                                                   (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
-                                            />
-                                            <span style="margin-left: 5px"
-                                                  class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
-                                        </label>
-                                    </div>
-                                </div>
-
-
-                            </td>
-                            <tr *ngFor="let project of projects_filtered">
-                                <td>
+              </td>
+              <tr *ngFor="let project of projects_filtered">
+                <td>
                                      <span *ngIf="project.OpenStackProject"
-                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge"
+                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944"
+                                           class="badge"
                                            data-toggle="tooltip" data-placement="auto"
                                            title="This is an Openstack project">
                                     <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
                                   </span>
-                                    <span *ngIf="!project.OpenStackProject"
-                                          style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
-                                          data-toggle="tooltip" data-placement="auto"
-                                          title="This is a Simple VM project">
+                  <span *ngIf="!project.OpenStackProject"
+                        style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
+                        data-toggle="tooltip" data-placement="auto"
+                        title="This is a Simple VM project">
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span>
-                                </td>
-                                <td>{{ project.Id }}</td>
-                                <td>{{ project.Name }}
-                                </td>
-                                <td width="20%"><span style="word-break: break-all">{{ project.RealName}}</span>
-                                </td>
-                                <td>  <span *ngIf="project?.Status ==  project_states.ACTIVE"
-                                            style="margin-left: 5px"
-                                            class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
-                                    <span *ngIf="project?.LifetimeReached==lifetime_states.EXPIRED"
-                                          style="margin-left: 5px"
-                                          class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
-                                    <span *ngIf="project?.LifetimeReached == lifetime_states.EXPIRES_SOON"
-                                          style="margin-left: 5px"
-                                          class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
-                                <td>
-                                    <button class="btn btn-secondary"
-                                            (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
-                                        Show Details
-                                    </button>
-                                </td>
+                </td>
+                <td>{{ project.Id }}</td>
+                <td>{{ project.Name }}
+                </td>
+                <td width="20%"><span style="word-break: break-all">{{ project.RealName}}</span>
+                </td>
+                <td>  <span *ngIf="project?.Status ==  project_states.ACTIVE"
+                            style="margin-left: 5px"
+                            class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
+                  <span *ngIf="project?.LifetimeReached==lifetime_states.EXPIRED"
+                        style="margin-left: 5px"
+                        class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
+                  <span *ngIf="project?.LifetimeReached == lifetime_states.EXPIRES_SOON"
+                        style="margin-left: 5px"
+                        class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+                <td>
+                  <button class="btn btn-secondary"
+                          (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
+                    Show Details
+                  </button>
+                </td>
 
 
-                                <!--td>{{ project.DateCreated }}</td>
-                                <!--td>{{project.DateEnd}}</td-->
-                                <!--td>{{ project.DaysRunning }}</td>
-                                <!--td>{{project.LifetimeDays}}</td-->
-                                <td>
-                                    <button type="button" class="btn btn-secondary"
-                                            data-toggle="modal"
-                                            (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
+                <!--td>{{ project.DateCreated }}</td>
+                <!--td>{{project.DateEnd}}</td-->
+                <!--td>{{ project.DaysRunning }}</td>
+                <!--td>{{project.LifetimeDays}}</td-->
+                <td>
+                  <button type="button" class="btn btn-secondary"
+                          data-toggle="modal"
+                          (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
 
-                                    >
-                                        <i class="fa fa-users"></i>&nbsp;Show Members
-                                    </button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                  >
+                    <i class="fa fa-users"></i>&nbsp;Show Members
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <!--/.col-->
+      </div>
     </div>
+    <!--/.col-->
+  </div>
 </div>
 
 
 <div bsModal #usersModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
-                    ({{ usersModalProjectName }})</h4>
-                <button type="button" class="close" style="cursor: pointer"
-                        (click)="usersModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="table-responsive">
-                    <table class="table table-striped"
-                           style="word-wrap: break-word;table-layout: fixed">
-                        <thead>
-                        <tr>
-                            <th>User ID</th>
-                            <th>Member ID</th>
-                            <th>Elixir ID</th>
-                            <th>Email</th>
-                            <th>Full Name</th>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
+          ({{ usersModalProjectName }})</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="usersModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-striped"
+                 style="word-wrap: break-word;table-layout: fixed">
+            <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Member ID</th>
+              <th>Elixir ID</th>
+              <th>Email</th>
+              <th>Full Name</th>
 
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let member of usersModalProjectMembers">
-                            <td>{{ member.Id }}</td>
-                            <td>{{ member.MemberId }}</td>
-                            <td>{{ member.ElixirId}}</td>
-                            <td>{{member.Email}}</td>
-                            <td>{{ member.Username }}</td>
-                        </tr>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let member of usersModalProjectMembers">
+              <td>{{ member.Id }}</td>
+              <td>{{ member.MemberId }}</td>
+              <td>{{ member.ElixirId}}</td>
+              <td>{{member.Email}}</td>
+              <td>{{ member.Username }}</td>
+            </tr>
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
 <div bsModal #emailModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" *ngIf="selectedFacility"> Send email to members of
-                    {{selectedFacility['Facility']}}</h4>
-                <button type="button" class="close" style="cursor: pointer"
-                        (click)="emailModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" *ngIf="selectedFacility"> Send email to members of
+          {{selectedFacility['Facility']}}</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="emailModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body">
+          <form class="form-horizontal" id="email_form" #f="ngForm">
+            <div class="form-group row">
+
+              <label
+                class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
+              <div class="col-md-12">
+                <select class="form-control" [(ngModel)]="selectedProjectType"
+                        name="selectedProjectType" id="selectedProjectType">
+                  <option value="ALL" selected> All
+                  </option>
+                  <option value="SVP">
+                    Simple VM
+                  </option>
+                  <option value="OVP">
+                    OpenStack
+                  </option>
+                  <option *ngFor="let project of projects " value="{{project?.Id}}">
+                    {{project?.Name}}
+                  </option>
+
+
+                </select></div>
             </div>
-            <div class="modal-body">
-                <div class="modal-body">
-                    <form class="form-horizontal" id="email_form" #f="ngForm">
-                        <div class="form-group row">
-
-                            <label
-                                    class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
-                            <div class="col-md-12">
-                                <select class="form-control" [(ngModel)]="selectedProjectType"
-                                        name="selectedProjectType" id="selectedProjectType">
-                                    <option value="ALL" selected> All
-                                    </option>
-                                    <option value="SVP">
-                                        Simple VM
-                                    </option>
-                                    <option value="OVP">
-                                        OpenStack
-                                    </option>
-
-                                </select></div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-12 control-label"><strong>Email
-                                subject*</strong></label>
-                            <div class="col-md-12">
-                                <input required id="emailSubject" name="emailSub"
-                                       placeholder="Subject"
-                                       class="form-control"
-                                       type="text" [(ngModel)]="emailSubject" minlength="1"
-                                       #emailSub="ngModel"
-                                       [ngClass]="{'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
+            <div class="form-group row">
+              <label class="col-md-12 control-label"><strong>Email
+                subject*</strong></label>
+              <div class="col-md-12">
+                <input required id="emailSubject" name="emailSub"
+                       placeholder="Subject"
+                       class="form-control"
+                       type="text" [(ngModel)]="emailSubject" minlength="1"
+                       #emailSub="ngModel"
+                       [ngClass]="{'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
                     'is-valid':emailSub.valid && (emailSub.dirty || emailSub.touched)
                     }">
 
-                            </div>
-                        </div>
+              </div>
+            </div>
 
-                        <div class="form-group row">
-                            <label class="col-md-12 control-label"><strong>Reply to
-                                (optional)</strong></label>
-                            <div class="col-md-12">
-                                <input id="Reply to" name="emailReply" placeholder=""
-                                       class="form-control"
-                                       type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
-                                       pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
-                                       [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
+            <div class="form-group row">
+              <label class="col-md-12 control-label"><strong>Reply to
+                (optional)</strong></label>
+              <div class="col-md-12">
+                <input id="Reply to" name="emailReply" placeholder=""
+                       class="form-control"
+                       type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
+                       pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                       [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
                     'is-valid':emailRep.valid && (emailRep.dirty || emailRep.touched)
                     }">
 
-                            </div>
-                        </div>
-                        <!-- Textarea -->
-                        <div class="form-group row">
-                            <label class="col-md-12 control-label"><strong>Email
-                                text*</strong></label>
-                            <div class="col-md-12">
+              </div>
+            </div>
+            <!-- Textarea -->
+            <div class="form-group row">
+              <label class="col-md-12 control-label"><strong>Email
+                text*</strong></label>
+              <div class="col-md-12">
                             <textarea minlength="1" required class="form-control" id="emailText"
                                       name="emailText"
                                       [(ngModel)]="emailText"
@@ -287,179 +287,185 @@
                                       [ngClass]="{'is-invalid':emailT.invalid && (emailT.dirty || emailT.touched),
                     'is-valid':emailT.valid && (emailT.dirty || emailT.touched)
                     }"></textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" [disabled]="f.invalid" class="btn btn-primary"
-                            (click)="emailModal.hide(); verifyModal.show()">Send email
-                    </button>
-                    <button type="button" class="btn btn-secondary"
-                            (click)="emailModal.hide();resetEmailModal()">Close
-                    </button>
-                </div>
+              </div>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" [disabled]="f.invalid" class="btn btn-primary"
+                  (click)="emailModal.hide(); verifyModal.show()">Send email
+          </button>
+          <button type="button" class="btn btn-secondary"
+                  (click)="emailModal.hide();resetEmailModal()">Close
+          </button>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Send email</h4>
-                <button type="button" class="close" style="cursor:pointer"
-                        (click)="verifyModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Send email</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="verifyModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
 
-                <div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
-                    Are you sure you want to send this email to <span *ngIf="selectedProjectType == 'ALL'">all</span> <span
-                        *ngIf="selectedProjectType == 'SVP'">Simple Vm</span> <span *ngIf="selectedProjectType == 'OVP'">OpenStack
-                    Project</span>
-                    members of
-                    the
-                    {{selectedFacility['Facility']}}?
-                </div>
+        <div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
+          Are you sure you want to send this email to <span *ngIf="selectedProjectType == 'ALL'">all</span> <span
+          *ngIf="selectedProjectType == 'SVP'">the Simple Vm  members of
+          the
+          {{selectedFacility['Facility']}}?</span> <span *ngIf="selectedProjectType == 'OVP'"> the OpenStack Project  members of
+          the
+          {{selectedFacility['Facility']}}?</span><span
+          *ngIf="selectedProjectType != 'ALL' && selectedProjectType != 'SVP' && selectedProjectType != 'OVP'">
+          the members of the
+          {{getProjectNameBySelectedProjectTypeAsId()
+          }} project?
+        </span>
 
-            </div>
-            <div class="modal-footer">
-                <button class="btn  btn-success col-md-4"
-                        (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText,emailReply);verifyModal.hide();f.reset();resetEmailModal();successModal.show()">
-                    Yes
-                </button>
-                <button class="btn  btn-danger col-md-4" type="reset"
-                        (click)="verifyModal.hide();emailModal.show()">Cancel
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText,emailReply);verifyModal.hide();f.reset();resetEmailModal();successModal.show()">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="verifyModal.hide();emailModal.show()">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" *ngIf="emailStatus == 0"> Waiting </h4>
-                <h4 class="modal-title" *ngIf="emailStatus == 1"> Success </h4>
-                <h4 class="modal-title" *ngIf="emailStatus == 2"> Error </h4>
-                <button type="button" class="close" style="cursor:pointer"
-                        (click)="successModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-info" role="alert" *ngIf="emailStatus == 0">
-                    Sending the email. <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-                </div>
-                <div class="alert alert-success" role="alert" *ngIf="emailStatus == 1">
-                    The email has been send successfully.
-                </div>
-            </div>
-            <div class="alert alert-warning" role="alert" *ngIf="emailStatus == 2">
-                when sending the email an error has occurred.
-            </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" *ngIf="emailStatus == 0"> Waiting </h4>
+        <h4 class="modal-title" *ngIf="emailStatus == 1"> Success </h4>
+        <h4 class="modal-title" *ngIf="emailStatus == 2"> Error </h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="successModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info" role="alert" *ngIf="emailStatus == 0">
+          Sending the email. <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+        </div>
+        <div class="alert alert-success" role="alert" *ngIf="emailStatus == 1">
+          The email has been send successfully.
+        </div>
+      </div>
+      <div class="alert alert-warning" role="alert" *ngIf="emailStatus == 2">
+        When sending the email an error has occurred.
+      </div>
 
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="successModal.hide()">
-                    Close
-                </button>
-            </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="successModal.hide()">
+          Close
+        </button>
+      </div>
 
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
 <div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-info" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Description</h4>
-                <button type="button" class="close" style="cursor: pointer"
-                        (click)="descriptionModal.hide()"
-                        aria-label="Close">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Description</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="descriptionModal.hide()"
+                aria-label="Close">
 
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
-            <div class="modal-body">
-                <p>{{ selectedProject?.Description }}</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary"
-                        (click)="selectedProject=undefined;descriptionModal.hide();">
-                    Close
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+      <div class="modal-body">
+        <p>{{ selectedProject?.Description }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary"
+                (click)="selectedProject=undefined;descriptionModal.hide();">
+          Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
 
 <div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-info modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Details</h4>
-                <button type="button" class="close" style="cursor: pointer"
-                        (click)="infoModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+  <div class="modal-dialog modal-info modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Details</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="infoModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
-            <div class="modal-body">
-                <div *ngIf="!details_loaded" style="text-align: center"><i
-                        class="fa fa-spinner fa-spin"
-                        style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
-                </div>
-                <div class="table-responsive">
-                    <table *ngIf="details_loaded" class="table table-striped">
-                        <thead>
-                        <th>Description</th>
-                        <th>Date created (d/m/y)</th>
-                        <th>Expiration Date (d/m/y)</th>
-                        <th>Days running</th>
-                        <th>Lifetime in Days</th>
-                        </thead>
-                        <tbody>
-                        <td>
-                            <button class="btn btn-secondary"
-                                    (click)="infoModal.hide();descriptionModal.show();">Show
-                                Description
-                            </button>
-                        </td>
+      <div class="modal-body">
+        <div *ngIf="!details_loaded" style="text-align: center"><i
+          class="fa fa-spinner fa-spin"
+          style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+        </div>
+        <div class="table-responsive">
+          <table *ngIf="details_loaded" class="table table-striped">
+            <thead>
+            <th>Description</th>
+            <th>Date created (d/m/y)</th>
+            <th>Expiration Date (d/m/y)</th>
+            <th>Days running</th>
+            <th>Lifetime in Days</th>
+            </thead>
+            <tbody>
+            <td>
+              <button class="btn btn-secondary"
+                      (click)="infoModal.hide();descriptionModal.show();">Show
+                Description
+              </button>
+            </td>
 
-                        <td>{{ selectedProject?.DateCreated }}</td>
-                        <td>{{selectedProject?.DateEnd}}</td>
-                        <td>{{ selectedProject?.DaysRunning }}</td>
-                        <td>{{selectedProject?.LifetimeDays}}</td>
-                        <td>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary"
-                        (click)="selectedProject=undefined;infoModal.hide();">
-                    Close
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+            <td>{{ selectedProject?.DateCreated }}</td>
+            <td>{{selectedProject?.DateEnd}}</td>
+            <td>{{ selectedProject?.DaysRunning }}</td>
+            <td>{{selectedProject?.LifetimeDays}}</td>
+            <td>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary"
+                (click)="selectedProject=undefined;infoModal.hide();">
+          Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
 
 

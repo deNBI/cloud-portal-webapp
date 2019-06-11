@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {ApplicationsService} from '../api-connector/applications.service'
@@ -12,13 +12,13 @@ import {ApplicationBaseClass} from 'app/shared/shared_modules/baseClass/applicat
  * This components provides the functions to create a new Cloud Application.
  */
 @Component({
-  selector: 'app-addcloudapplication',
-  templateUrl: 'addcloudapplication.component.html',
-  providers: [ApiSettings, ApplicationsService, FlavorService],
-  styleUrls: ['addcloudapplication.component.css']
-})
+             selector: 'app-addcloudapplication',
+             templateUrl: 'addcloudapplication.component.html',
+             providers: [ApiSettings, ApplicationsService, FlavorService],
+             styleUrls: ['addcloudapplication.component.css']
+           })
 
-export class AddcloudapplicationComponent extends ApplicationBaseClass {
+export class AddcloudapplicationComponent extends ApplicationBaseClass implements OnInit {
 
   /**
    * If it is in production or dev mode.
@@ -49,8 +49,6 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass {
    */
   public typeList: FlavorType[];
 
-
-
   public acknowledgeModalTitle: string = 'Acknowledge';
   public acknowledgeModalType: string = 'info';
 
@@ -68,9 +66,12 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass {
    */
   constructor(applicationsservice: ApplicationsService, private flavorservice: FlavorService) {
     super(null, null, applicationsservice, null);
+
+  }
+
+  ngOnInit(): void {
     this.getListOfFlavors();
     this.getListOfTypes();
-
   }
 
   /**

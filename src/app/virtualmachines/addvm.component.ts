@@ -102,6 +102,14 @@ export class VirtualMachineComponent implements OnInit {
    */
   selectedProjectVolumesUsed: number;
 
+  selectedProjectCoresUsed: number;
+
+  selectedProjectCoresMax: number;
+
+  selectedProjectRamMax: number;
+
+  selectedProjectRamUsed: number;
+
   /**
    * Selected Project vms max.
    */
@@ -270,9 +278,7 @@ export class VirtualMachineComponent implements OnInit {
           if (newVm.status === 'ACTIVE') {
             this.resetProgressBar();
             this.newVm = newVm;
-            this.getSelectedProjectDiskspace();
-            this.getSelectedProjectVms();
-            this.getSelectedProjectVolumes();
+            this.loadProjectData();
 
           } else if (newVm.status) {
             if (newVm.status === 'PORT_CLOSED') {
@@ -287,9 +293,7 @@ export class VirtualMachineComponent implements OnInit {
           } else {
             this.resetProgressBar();
             this.create_error = <IResponseTemplate><any>newVm;
-            this.getSelectedProjectDiskspace();
-            this.getSelectedProjectVms();
-            this.getSelectedProjectVolumes();
+            this.loadProjectData();
           }
 
         })
@@ -349,8 +353,10 @@ export class VirtualMachineComponent implements OnInit {
    * If connected geht vm,volumes etc.
    * @param {number} groupid
    */
-  getSelectedProjectClient(groupid: number): void {
+  getSelectedProjectClient(): void {
     this.client_checked = false;
+    this.projectDataLoaded = false;
+
     this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client) => {
       if (client.status && client.status === 'Connected') {
         this.client_avaiable = true;
@@ -396,23 +402,21 @@ export class VirtualMachineComponent implements OnInit {
 
   loadProjectData(): void {
     this.projectDataLoaded = false;
-
-    forkJoin(
-      this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()),
-      this.groupService.getGroupUsedVms(this.selectedProject[1].toString()),
-      this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()),
-      this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()),
-      this.groupService.getVolumeCounter(this.selectedProject[1].toString()),
-      this.groupService.getVolumesUsed(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => {
-      this.selectedProjectVmsMax = <number>res[0].value;
-      this.selectedProjectVmsUsed = <number>res[1].value;
-      this.selectedProjectDiskspaceMax = <number>res[2].value;
-      this.selectedProjectDiskspaceUsed = <number>res[3].value;
-      this.selectedProjectVolumesMax = <number>res[0].value;
-      this.selectedProjectVolumesUsed = <number>res[1].value;
+    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe(res => {
+      this.selectedProjectVmsMax = res['number_vms'];
+      this.selectedProjectVmsUsed = res['used_vms'];
+      this.selectedProjectDiskspaceMax = res['max_volume_storage'];
+      this.selectedProjectDiskspaceUsed = res['used_volume_storage'];
+      this.selectedProjectVolumesMax = res['volume_counter'];
+      this.selectedProjectVolumesUsed = res['used_volumes'];
+      this.selectedProjectCoresMax = res['cores_total'];
+      this.selectedProjectCoresUsed = res['cores_used'];
+      this.selectedProjectRamMax = res['ram_total'];
+      this.selectedProjectRamUsed = res['ram_used'];
       this.projectDataLoaded = true;
 
     });
+
     this.getImages(this.selectedProject[1]);
     this.getFlavors(this.selectedProject[1]);
 

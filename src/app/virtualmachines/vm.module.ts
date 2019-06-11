@@ -17,6 +17,7 @@ import {PublicKeyModule} from '../shared/shared_modules/public-key/public-key.mo
 import {ClickOutsideModule} from 'ng4-click-outside';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import {BiocondaComponent} from './conda/bioconda.component';
+import {HowToConnectComponent} from './shared-modal/how-to-connect.component';
 
 /**
  * VM module.
@@ -34,16 +35,17 @@ import {BiocondaComponent} from './conda/bioconda.component';
         BsDropdownModule.forRoot()
 
     ],
-            declarations: [
-              ImageDetailComponent,
-              VirtualMachineComponent,
-              FlavorDetailComponent,
-              ClientOverviewComponent,
-              VmOverviewComponent,
-              VolumeOverviewComponent,
-              SnapshotOverviewComponent,
-              BiocondaComponent
-            ]
-          })
+    declarations: [
+        ImageDetailComponent,
+        VirtualMachineComponent,
+        FlavorDetailComponent,
+        ClientOverviewComponent,
+        VmOverviewComponent,
+        VolumeOverviewComponent,
+        SnapshotOverviewComponent,
+        HowToConnectComponent,
+        BiocondaComponent
+    ]
+})
 export class VmModule {
 }

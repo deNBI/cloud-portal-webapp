@@ -1,20 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiSettings} from '../api-connector/api-settings.service';
-import {ClientService} from "../api-connector/client.service";
+import {ClientService} from '../api-connector/client.service';
 import {FacilityService} from '../api-connector/facility.service';
 import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {VoService} from '../api-connector/vo.service';
-import {IResponseTemplate} from "../api-connector/response-template";
+import {IResponseTemplate} from '../api-connector/response-template';
 
 /**
  * FullLayout component.
  */
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './full-layout.component.html',
-  providers: [VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings]
-})
+             selector: 'app-dashboard',
+             templateUrl: './full-layout.component.html',
+             providers: [VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings]
+           })
 export class FullLayoutComponent implements OnInit {
 
   public year: number = new Date().getFullYear();
@@ -29,9 +29,6 @@ export class FullLayoutComponent implements OnInit {
 
   constructor(private voService: VoService, private groupService: GroupService, private userservice: UserService,
               private facilityservice: FacilityService) {
-    this.is_vm_project_member();
-    this.get_is_facility_manager();
-    this.getLoginName();
   }
 
   public get_is_vo_admin(): boolean {
@@ -87,6 +84,9 @@ export class FullLayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.is_vm_project_member();
+    this.get_is_facility_manager();
+    this.getLoginName();
 
     this.checkVOstatus();
   }

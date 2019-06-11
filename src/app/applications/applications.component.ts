@@ -10,21 +10,21 @@ import {VoService} from '../api-connector/vo.service';
 import {FacilityService} from '../api-connector/facility.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
-import {Client} from "../virtualmachines/clients/client.model";
+import {Client} from '../virtualmachines/clients/client.model';
 import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
-import {IResponseTemplate} from "../api-connector/response-template";
-import {forkJoin} from "rxjs/index";
+import {IResponseTemplate} from '../api-connector/response-template';
+import {forkJoin} from 'rxjs/index';
 
 /**
  * Application Overview component.
  */
 @Component({
-  templateUrl: 'applications.component.html',
-  providers: [FacilityService, VoService, UserService, GroupService, ApplicationStatusService,
-    ApplicationsService, ApiSettings, FlavorService]
-})
+             templateUrl: 'applications.component.html',
+             providers: [FacilityService, VoService, UserService, GroupService, ApplicationStatusService,
+               ApplicationsService, ApiSettings, FlavorService]
+           })
 export class ApplicationsComponent extends ApplicationBaseClass implements OnInit {
 
   /**
@@ -33,12 +33,10 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
    */
   all_applications: Application[] = [];
 
-
   /**
    * Limits information for Client tested/used for Simple Vm Project creation.
    */
   notificationClientInfo: Client[] = [];
-
 
   /**
    * id of the extension status.
@@ -83,6 +81,10 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
               private flavorService: FlavorService) {
 
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
+
+  }
+
+  ngOnInit(): void {
     this.voService.isVo().subscribe((result: IResponseTemplate) => {
       this.is_vo_admin = <boolean><Boolean>result.value;
       this.getUserApplications();
@@ -99,10 +101,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     });
     this.getListOfFlavors();
     this.getListOfTypes();
-  }
-
-  ngOnInit(): void {
-
 
   }
 
@@ -142,12 +140,14 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
     if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED && app.Status !== this.application_states.TERMINATED) {
       this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => {
+
         const login: string = res['Login'];
         const suport: string = res['Support'];
         const facilityname: string = res['Facility'];
         const facilityId: number = res['FacilityId'];
-
-        app.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
+        if (facilityId) {
+          app.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
+        }
 
       })
     }
@@ -196,7 +196,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
   }
 
-
   /**
    * Gets all Application of the user viewing the application overview.
    * Saves them in the userApplication array.
@@ -213,7 +212,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
     })
 
-
   }
 
   /**
@@ -228,9 +226,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
       this.user_applications[index] = newApp;
 
-
     })
-
 
   }
 
@@ -246,7 +242,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     }
   }
 
-
   /**
    * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
    */
@@ -260,7 +255,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
   getListOfTypes(): void {
     this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
   }
-
 
   /**
    * Resets the values of totalRAM und totalNumberOfCores to 0 and changes the text at the end of the extension form.
@@ -311,7 +305,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
   }
 
-
   /**
    * Submits an renewal request for an application.
    * @param {NgForm} form
@@ -332,7 +325,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     this.requestExtension(values);
 
   }
-
 
   /**
    * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
@@ -413,28 +405,42 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     })
   }
 
-  /**
-   * Approve an extension request.
-   * @param {Application} app
-   */
   public approveExtension(app: Application): void {
 
     if (app.OpenStackProject) {
-      this.applicationstatusservice.setApplicationStatus(
-        app.Id.toString(),
-        this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe(() => {
-        this.extension_status = 5;
-        this.getApplication(app);
-        this.getUserApplication(app);
+      if (!app.ComputeCenter) {
+        this.applicationsservice.approveRenewal(app.Id.toString()).subscribe(result => {
+          if (result['Error']) {
+            this.extension_status = 2
+            this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
+          } else {
+            this.extension_status = 3;
 
-        for (const appl of this.user_applications) {
-          if (this.selectedApplication.Id.toString() === appl.Id.toString()) {
-            this.getUserApplication(appl);
-            break;
+            this.updateNotificationModal('Success', 'Successfully approved the application modification.', true, 'success');
+            this.all_applications = [];
+            this.user_applications = [];
+            this.getUserApplications();
+            this.getAllApplications();
+
           }
+        });
+      } else {
+        this.applicationstatusservice.setApplicationStatus(
+          app.Id.toString(),
+          this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe(() => {
+          this.extension_status = 5;
+          this.getApplication(app);
+          this.getUserApplication(app);
 
-        }
-      })
+          for (const appl of this.user_applications) {
+            if (this.selectedApplication.Id.toString() === appl.Id.toString()) {
+              this.getUserApplication(appl);
+              break;
+            }
+
+          }
+        })
+      }
     } else {
       this.applicationsservice.approveRenewal(app.Id).subscribe((result: { [key: string]: string }) => {
         if (result['Error']) {
@@ -478,7 +484,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     })
   }
 
-
   /**
    * Remove Application from facility , where it is for confirmation
    * @param {Application} application the application
@@ -501,18 +506,18 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
   public createOpenStackProjectGroup(application: Application,
                                      compute_center: string): void {
     this.groupservice.createGroupOpenStack(application.Id, compute_center).subscribe((result: { [key: string]: string }) => {
-        if (result['Error']) {
-          this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+                                                                                       if (result['Error']) {
+                                                                                         this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
-        } else {
-          this.updateNotificationModal('Success', 'The new project was created', true, 'success');
-        }
-        this.getUserApplication(application);
-        this.getApplication(application);
-      },
-      () => {
-        this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-      })
+                                                                                       } else {
+                                                                                         this.updateNotificationModal('Success', 'The new project was created', true, 'success');
+                                                                                       }
+                                                                                       this.getUserApplication(application);
+                                                                                       this.getApplication(application);
+                                                                                     },
+                                                                                     () => {
+                                                                                       this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+                                                                                     })
 
   }
 
@@ -541,7 +546,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
    */
   public createSimpleVmProjectGroup(app: Application,
                                     compute_center: string): void {
-    //todo refactor this
     // get memeber id in order to add the user later as the new member and manager of the group
     let manager_member_id: string;
     let manager_member_user_id: string;
@@ -600,45 +604,45 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                       this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center)
                     ).subscribe(() => {
                       this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => {
-                          if (result['Info']) {
-                            this.updateNotificationModal('Failed', result['Info'], true, 'danger');
+                                                                                                          if (result['Info']) {
+                                                                                                            this.updateNotificationModal('Failed', result['Info'], true, 'danger');
 
-                          } else {
-                            this.applicationsservice.getApplicationClient(
-                              application_id).subscribe((client: object) => {
-                              const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
-                              newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
-                              newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
-                              newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
-                              newClient.assignedVMs = client['assigned_ressources']['vms'];
-                              newClient.assignedVolumes = client['assigned_ressources']['volumes'];
-                              newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
-                              this.notificationClientInfo.push(newClient);
-                              this.updateNotificationModal(
-                                'Success', `The new project was created and assigned to ${newClient.location}.`,
-                                true,
-                                'success');
+                                                                                                          } else {
+                                                                                                            this.applicationsservice.getApplicationClient(
+                                                                                                              application_id).subscribe((client: object) => {
+                                                                                                              const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
+                                                                                                              newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
+                                                                                                              newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
+                                                                                                              newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
+                                                                                                              newClient.assignedVMs = client['assigned_ressources']['vms'];
+                                                                                                              newClient.assignedVolumes = client['assigned_ressources']['volumes'];
+                                                                                                              newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
+                                                                                                              this.notificationClientInfo.push(newClient);
+                                                                                                              this.updateNotificationModal(
+                                                                                                                'Success', `The new project was created and assigned to ${newClient.location}.`,
+                                                                                                                true,
+                                                                                                                'success');
 
-                            });
-                          }
+                                                                                                            });
+                                                                                                          }
 
-                          for (const app of this.user_applications) {
-                            if (app.Id.toString() === application_id.toString()) {
-                              this.getUserApplication(app);
-                              break;
+                                                                                                          for (const app of this.user_applications) {
+                                                                                                            if (app.Id.toString() === application_id.toString()) {
+                                                                                                              this.getUserApplication(app);
+                                                                                                              break;
 
-                            }
+                                                                                                            }
 
-                          }
-                          for (const app of this.all_applications) {
-                            if (app.Id.toString() === application_id.toString()) {
-                              this.getApplication(app);
-                              break;
+                                                                                                          }
+                                                                                                          for (const app of this.all_applications) {
+                                                                                                            if (app.Id.toString() === application_id.toString()) {
+                                                                                                              this.getApplication(app);
+                                                                                                              break;
 
-                            }
-                          }
+                                                                                                            }
+                                                                                                          }
 
-                        }
+                                                                                                        }
                       )
 
                     });
@@ -727,7 +731,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
       });
   }
 
-
   /**
    * Set the id of the application which should be deleted.
    * @param applicationId
@@ -735,6 +738,5 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
   public setDeleteId(applicationId: number): void {
     this.deleteId = applicationId;
   }
-
 
 }
