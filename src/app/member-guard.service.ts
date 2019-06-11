@@ -26,10 +26,17 @@ export class MemberGuardService implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean {
-    const cookieValue: string = this.cookieService.get('redirect_after_login');
+    let cookieValue: string = this.cookieService.get('redirect_after_login');
     this.cookieService.delete('redirect_after_login');
-    this.cookieService.set('redirect_after_login', null, now());
+    if (this.cookieService.check('redirect_after_login')) {
+
+      this.cookieService.set('redirect_after_login', null, now());
+    }
+    console.log('###');
+
     console.log(this.cookieService.get('redirect_after_login'));
+    console.log(cookieValue);
+    console.log('###');
 
     let redirect_url: string = state.url;
     if (cookieValue) {
@@ -48,9 +55,19 @@ export class MemberGuardService implements CanActivate {
         }
         if (cookieValue) {
           this.cookieService.delete('redirect_after_login');
+          if (this.cookieService.check('redirect_after_login')) {
+
+            this.cookieService.set('redirect_after_login', null, now());
+          }
           let val: string = cookieValue;
           val = val.substring(2);
           val = val.substring(0, val.length - 1);
+          cookieValue = null;
+          console.log('---');
+
+          console.log(this.cookieService.get('redirect_after_login'));
+          console.log(cookieValue);
+          console.log('--');
 
           return this.router.parseUrl(val);
 
