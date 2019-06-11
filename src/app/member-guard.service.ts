@@ -9,6 +9,7 @@ import {ApiSettings} from './api-connector/api-settings.service';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {error} from '@angular/compiler/src/util';
+import {now} from 'moment';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -27,6 +28,8 @@ export class MemberGuardService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean {
     const cookieValue: string = this.cookieService.get('redirect_after_login');
     this.cookieService.delete('redirect_after_login');
+    this.cookieService.set('redirect_after_login', null, now());
+    console.log(this.cookieService.get('redirect_after_login'));
 
     let redirect_url: string = state.url;
     if (cookieValue) {
