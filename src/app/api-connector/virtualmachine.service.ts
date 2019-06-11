@@ -6,6 +6,7 @@ import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from '../virtualmachines/volumes/volume';
 import {IResponseTemplate} from "./response-template";
+import {IBiocondaTool} from '../virtualmachines/conda/bioconda.component';
 
 const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
@@ -23,7 +24,7 @@ export class VirtualmachineService {
     }
 
     startVM(flavor: string, image: string, servername: string, project: string, projectid: string, http: boolean, https: boolean, udp: boolean,
-            volumename?: string, diskspace?: string): Observable<any> {
+            volumename?: string, diskspace?: string, bioconda_tools?: string): Observable<any> {
 
         const params: HttpParams = new HttpParams()
             .set('flavor', flavor)
@@ -35,7 +36,8 @@ export class VirtualmachineService {
             .set('volumename', volumename)
             .set('http_allowed', http.toString())
             .set('https_allowed', https.toString())
-            .set('udp_allowed', udp.toString());
+            .set('udp_allowed', udp.toString())
+            .set('bioconda_tools', bioconda_tools);
 
         return this.http.post(this.baseVmUrl, params, {
             withCredentials: true,
