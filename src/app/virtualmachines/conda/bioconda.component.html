@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-8">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th style="width: 10%">Add/Remove</th>
+          <th>Name</th>
+          <th>Version</th>
+          <th>Build</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td></td>
+          <td>
+            <input type="text" placeholder="Filter"
+                   name="filterToolNameRef" (ngModelChange)='changedNameFilter($event)'
+                   [ngModel]="filterToolName">
+          </td>
+          <td>
+            <input type="text" placeholder="Filter"
+                   name="filterVersionName"
+                   [ngModel]="filterToolVersion"
+                   (ngModelChange)="changedVersionFilter($event)">
+          </td>
+          <td>
+            <input type="text" placeholder="Filter"
+                   name="filterToolBuild"
+                   [ngModel]="filterToolBuild"
+                   (ngModelChange)="changedBuildFilter($event)">
+          </td>
+        </tr>
+        <tr *ngFor="let tool of bioconda_tools">
+          <td class="text-center" style="width: 10%">
+            <button class="btn btn-lg" (click)="add_or_remove(tool)">
+              <i *ngIf="!is_added(tool)" class="icon-plus" style="color: green"></i>
+              <i *ngIf="is_added(tool)" class="icon-minus" style="color: red"></i>
+            </button></td>
+          <td>***REMOVED******REMOVED***tool.name***REMOVED******REMOVED***</td>
+          <td>***REMOVED******REMOVED***tool.version***REMOVED******REMOVED***</td>
+          <td>***REMOVED******REMOVED***tool.build***REMOVED******REMOVED***</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-center">
+        <pagination [totalItems]="total_pages" [itemsPerPage]="toolsPerPage"
+                    (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
+                    [boundaryLinks]="true" [maxSize]="max_pages" [rotate]="false" #pagination>
+        </pagination>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="table-responsive">
+      <table class="table table-striped" #chosenTable>
+        <thead>
+          <tr>
+            <th style="width: 25%">Remove</th>
+            <th>Chosen Package</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tool of chosen_tools">
+            <td class="text-center" style="width: 25%">
+              <button class="btn btn-lg" (click)="add_or_remove(tool)">
+                <i class="icon-minus" style="color: red"></i>
+              </button></td>
+            <td>Name: ***REMOVED******REMOVED***tool.name***REMOVED******REMOVED***<br>
+                Version: ***REMOVED******REMOVED***tool.version***REMOVED******REMOVED***<br>
+                Build: ***REMOVED******REMOVED***tool.build***REMOVED******REMOVED***</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
