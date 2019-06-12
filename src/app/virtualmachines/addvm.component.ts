@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Image} from './virtualmachinemodels/image';
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
@@ -17,6 +17,8 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {Client} from './clients/client.model';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {UserService} from '../api-connector/user.service';
+import {VoService} from '../api-connector/vo.service';
+import {BiocondaComponent} from './conda/bioconda.component';
 
 /**
  * Start virtualmachine component.
@@ -25,7 +27,7 @@ import {UserService} from '../api-connector/user.service';
              selector: 'app-new-vm',
              templateUrl: 'addvm.component.html',
              providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
-               Application, ApiSettings, KeyService, ClientService, UserService]
+               Application, ApiSettings, KeyService, ClientService, UserService, VoService]
            })
 export class VirtualMachineComponent implements OnInit {
 
@@ -42,6 +44,7 @@ export class VirtualMachineComponent implements OnInit {
   udp_allowed: boolean = false;
   showSshCommando: boolean = true;
   showUdpCommando: boolean = true;
+  is_vo: boolean = false;
 
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
@@ -144,6 +147,8 @@ export class VirtualMachineComponent implements OnInit {
    */
   optional_params: boolean = false;
 
+  bioconda_show: boolean = false;
+
   /**
    * Default diskspace.
    * @type {number}
@@ -180,9 +185,12 @@ export class VirtualMachineComponent implements OnInit {
    */
   private checkStatusTimeout: number = 5000;
 
+  @ViewChild('bioconda') biocondaComponent: BiocondaComponent;
+
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-              private keyservice: KeyService, private userservice: UserService) {
+              private keyservice: KeyService, private userservice: UserService,
+              private voService: VoService) {
   }
 
   /**
@@ -303,7 +311,6 @@ export class VirtualMachineComponent implements OnInit {
    */
   startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
-
     if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       const re: RegExp = /\+/gi;
@@ -312,7 +319,7 @@ export class VirtualMachineComponent implements OnInit {
 
       this.virtualmachineservice.startVM(
         flavor_fixed, image, servername, project, projectid.toString(), this.http_allowed, this.https_allowed, this.udp_allowed,
-        this.volumeName, this.diskspace.toString()).subscribe((newVm: VirtualMachine) => {
+        this.volumeName, this.diskspace.toString(), this.biocondaComponent.getChosenTools()).subscribe((newVm: VirtualMachine) => {
 
         if (newVm.status === 'Build') {
           this.creating_vm_status = 'Created';
@@ -456,6 +463,8 @@ export class VirtualMachineComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeData();
-
+    this.voService.isVo().subscribe((result: IResponseTemplate) => {
+      this.is_vo = <boolean><Boolean>result.value;
+    })
   }
 }
