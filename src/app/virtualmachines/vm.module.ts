@@ -16,6 +16,7 @@ import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination
 import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared/shared_modules/public-key/public-key.module';
 import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
 import ***REMOVED*** BsDropdownModule ***REMOVED*** from 'ngx-bootstrap';
+import ***REMOVED***BiocondaComponent***REMOVED*** from './conda/bioconda.component';
 import ***REMOVED***HowToConnectComponent***REMOVED*** from './shared-modal/how-to-connect.component';
 
 /**
@@ -42,7 +43,8 @@ import ***REMOVED***HowToConnectComponent***REMOVED*** from './shared-modal/how-
         VmOverviewComponent,
         VolumeOverviewComponent,
         SnapshotOverviewComponent,
-        HowToConnectComponent
+        HowToConnectComponent,
+        BiocondaComponent
     ]
 ***REMOVED***)
 export class VmModule ***REMOVED***
