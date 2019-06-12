@@ -35,6 +35,7 @@ export class MemberGuardService implements CanActivate ***REMOVED***
     if (this.cookieService.check('redirect_after_login')) ***REMOVED***
       this.cookieService.delete('redirect_after_login', '/', environment.domain);
       this.cookieService.set('redirect_after_login', null, now(), '/', environment.domain);
+      this.cookieService.set('redirect_after_login', null, now(), '/portal', environment.domain)
     ***REMOVED***
     console.log('###');
 
@@ -63,6 +64,8 @@ export class MemberGuardService implements CanActivate ***REMOVED***
           if (this.cookieService.check('redirect_after_login')) ***REMOVED***
 
             this.cookieService.set('redirect_after_login', null, now(), '/', environment.domain);
+            this.cookieService.set('redirect_after_login', null, now(), '/portal', environment.domain)
+
           ***REMOVED***
           let val: string = cookieValue;
           val = val.substring(2);
