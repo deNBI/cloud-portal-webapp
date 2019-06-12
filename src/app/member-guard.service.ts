@@ -27,10 +27,11 @@ export class MemberGuardService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean {
     let cookieValue: string;
-    this.cookieService.delete('redirect_after_login');
+    cookieValue = this.cookieService.get('redirect_after_login');
+
+    this.cookieService.delete('redirect_after_login', '/');
     if (this.cookieService.check('redirect_after_login')) {
-      cookieValue = this.cookieService.get('redirect_after_login');
-      this.cookieService.delete('redirect_after_login');
+      this.cookieService.delete('redirect_after_login', '/');
       this.cookieService.set('redirect_after_login', null, now());
     }
     console.log('###');
