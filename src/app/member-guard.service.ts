@@ -29,10 +29,12 @@ export class MemberGuardService implements CanActivate {
     let cookieValue: string;
     cookieValue = this.cookieService.get('redirect_after_login');
 
-    this.cookieService.delete('redirect_after_login', '/');
+    this.cookieService.delete('redirect_after_login', '/', environment.domain);
+    this.cookieService.delete('redirect_after_login', '/portal', environment.domain);
+
     if (this.cookieService.check('redirect_after_login')) {
-      this.cookieService.delete('redirect_after_login', '/');
-      this.cookieService.set('redirect_after_login', null, now());
+      this.cookieService.delete('redirect_after_login', '/', environment.domain);
+      this.cookieService.set('redirect_after_login', null, now(), '/', environment.domain);
     }
     console.log('###');
 
@@ -57,10 +59,10 @@ export class MemberGuardService implements CanActivate {
         }
         console.log(cookieValue && cookieValue != null && cookieValue !== 'null');
         if (cookieValue && cookieValue != null && cookieValue !== 'null') {
-          this.cookieService.delete('redirect_after_login');
+          this.cookieService.delete('redirect_after_login', '/', environment.domain);
           if (this.cookieService.check('redirect_after_login')) {
 
-            this.cookieService.set('redirect_after_login', null, now());
+            this.cookieService.set('redirect_after_login', null, now(), '/', environment.domain);
           }
           let val: string = cookieValue;
           val = val.substring(2);
