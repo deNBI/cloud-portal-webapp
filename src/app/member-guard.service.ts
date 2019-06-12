@@ -29,7 +29,8 @@ export class MemberGuardService implements CanActivate ***REMOVED***
     let cookieValue: string = null;
 
     cookieValue = this.cookieService.get('redirect_after_login');
-
+    this.cookieService.delete('redirect_after_login');
+    this.cookieService.delete('redirect_after_login', '/');
     this.cookieService.delete('redirect_after_login', '/', environment.domain);
     this.cookieService.delete('redirect_after_login', '/portal', environment.domain);
 
