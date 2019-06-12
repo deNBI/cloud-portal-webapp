@@ -54,6 +54,7 @@ export class MemberGuardService implements CanActivate ***REMOVED***
           return this.router.parseUrl('/registration-info');
 
         ***REMOVED***
+        console.log(cookieValue && cookieValue != null && cookieValue !== 'null');
         if (cookieValue && cookieValue != null && cookieValue !== 'null') ***REMOVED***
           this.cookieService.delete('redirect_after_login');
           if (this.cookieService.check('redirect_after_login')) ***REMOVED***
