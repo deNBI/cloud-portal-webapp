@@ -29,11 +29,6 @@ export class MemberGuardService implements CanActivate {
     let cookieValue: string = null;
 
     cookieValue = this.cookieService.get('redirect_after_login');
-    console.log('***');
-    console.log('Before set: ' + cookieValue)
-    console.log('Cookie: ' + this.cookieService.get('redirect_after_login'));
-    console.log('CookieValue: ' + cookieValue);
-    console.log('***');
 
     this.cookieService.delete('redirect_after_login', '/', environment.domain);
     this.cookieService.delete('redirect_after_login', '/portal', environment.domain);
@@ -43,11 +38,6 @@ export class MemberGuardService implements CanActivate {
       this.cookieService.set('redirect_after_login', null, now(), '/', environment.domain);
       this.cookieService.set('redirect_after_login', null, now(), '/portal', environment.domain)
     }
-    console.log('###');
-
-    console.log('Cookie: ' + this.cookieService.get('redirect_after_login'));
-    console.log('CookieValue: ' + cookieValue);
-    console.log('###');
 
     let redirect_url: string = state.url;
     if (cookieValue) {
@@ -64,8 +54,7 @@ export class MemberGuardService implements CanActivate {
           return this.router.parseUrl('/registration-info');
 
         }
-        console.log(cookieValue && cookieValue != null && cookieValue !== 'null');
-        if (cookieValue && cookieValue != null && cookieValue !== 'null') {
+        if (cookieValue && cookieValue !== 'null') {
           this.cookieService.delete('redirect_after_login', '/', environment.domain);
           if (this.cookieService.check('redirect_after_login')) {
 
@@ -76,12 +65,7 @@ export class MemberGuardService implements CanActivate {
           let val: string = cookieValue;
           val = val.substring(2);
           val = val.substring(0, val.length - 1);
-          console.log('---');
-          console.log('Cookie: ' + this.cookieService.get('redirect_after_login'));
-          console.log('CookieValue: ' + cookieValue);
           cookieValue = null;
-
-          console.log('--');
 
           return this.router.parseUrl(val);
 
