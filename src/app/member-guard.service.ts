@@ -26,8 +26,14 @@ export class MemberGuardService implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean {
-    let cookieValue: string;
+    let cookieValue: string = null;
+
     cookieValue = this.cookieService.get('redirect_after_login');
+    console.log('***');
+    console.log('Before set: ' + cookieValue)
+    console.log('Cookie: ' + this.cookieService.get('redirect_after_login'));
+    console.log('CookieValue: ' + cookieValue);
+    console.log('***');
 
     this.cookieService.delete('redirect_after_login', '/', environment.domain);
     this.cookieService.delete('redirect_after_login', '/portal', environment.domain);
