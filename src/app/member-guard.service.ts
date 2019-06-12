@@ -26,16 +26,17 @@ export class MemberGuardService implements CanActivate ***REMOVED***
   ***REMOVED***
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean ***REMOVED***
-    let cookieValue: string = this.cookieService.get('redirect_after_login');
+    let cookieValue: string;
     this.cookieService.delete('redirect_after_login');
     if (this.cookieService.check('redirect_after_login')) ***REMOVED***
-
+      cookieValue = this.cookieService.get('redirect_after_login');
+      this.cookieService.delete('redirect_after_login');
       this.cookieService.set('redirect_after_login', null, now());
     ***REMOVED***
     console.log('###');
 
-    console.log(this.cookieService.get('redirect_after_login'));
-    console.log(cookieValue);
+    console.log('Cookie: ' + this.cookieService.get('redirect_after_login'));
+    console.log('CookieValue: ' + cookieValue);
     console.log('###');
 
     let redirect_url: string = state.url;
@@ -53,7 +54,7 @@ export class MemberGuardService implements CanActivate ***REMOVED***
           return this.router.parseUrl('/registration-info');
 
         ***REMOVED***
-        if (cookieValue) ***REMOVED***
+        if (cookieValue && cookieValue != null && cookieValue !== 'null') ***REMOVED***
           this.cookieService.delete('redirect_after_login');
           if (this.cookieService.check('redirect_after_login')) ***REMOVED***
 
@@ -62,11 +63,11 @@ export class MemberGuardService implements CanActivate ***REMOVED***
           let val: string = cookieValue;
           val = val.substring(2);
           val = val.substring(0, val.length - 1);
-          cookieValue = null;
           console.log('---');
+          console.log('Cookie: ' + this.cookieService.get('redirect_after_login'));
+          console.log('CookieValue: ' + cookieValue);
+          cookieValue = null;
 
-          console.log(this.cookieService.get('redirect_after_login'));
-          console.log(cookieValue);
           console.log('--');
 
           return this.router.parseUrl(val);
@@ -78,23 +79,4 @@ export class MemberGuardService implements CanActivate ***REMOVED***
     ***REMOVED***))
 
   ***REMOVED***
-
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean ***REMOVED***
-    this.cookieService.delete('redirect_after_login');
-
-    return this.userservice.getOnlyLoggedUserWithRedirect(null).pipe(switchMap(res => ***REMOVED***
-      if (res['error']) ***REMOVED***
-        window.location.href = environment.login;
-      ***REMOVED***
-
-      return this.userservice.getMemberByUser().pipe(map(memberinfo => ***REMOVED***
-        if (memberinfo['name'] === 'MemberNotExistsException') ***REMOVED***
-          return this.router.parseUrl('/registration-info');
-
-        ***REMOVED***
-        return true;
-      ***REMOVED***))
-    ***REMOVED***))
-  ***REMOVED***
-
 ***REMOVED***
