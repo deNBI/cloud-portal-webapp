@@ -172,7 +172,8 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
     values['project_application_institute'] = 'TestApplication';
     values['project_application_lifetime'] = 3;
     values['project_application_name'] = name;
-    values['project_application_openstack_project'] = false;
+    values['project_application_object_storage'] = 3;
+    values['project_application_openstack_project'] = true;
     values['project_application_report_allowed'] = true;
     values['project_application_shortname'] = name.substr(0, 15);
     values['project_application_volume_counter'] = 5;
