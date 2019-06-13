@@ -184,21 +184,22 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
     this.wronginput = !/^[a-zA-Z0-9\s]*$/.test(shortname);
   }
 
-  sendTestApplication(): void {
+  sendTestApplication(name: string): void {
     const values: { [key: string]: string | number | boolean } = {};
 
+    values['project_application_bmbf_project'] = 'BMBF';
+    values['project_application_horizon2020'] = 'horizon';
+    values['project_application_de.NBI.default'] = 1;
+    values['project_application_pi_approved'] = true;
+    values['project_application_responsibility'] = true;
     values['project_application_comment'] = 'TestApplication';
     values['project_application_description'] = 'TestApplication';
     values['project_application_institute'] = 'TestApplication';
     values['project_application_lifetime'] = 3;
-    values['project_application_name'] = 'TestApplication';
+    values['project_application_name'] = name;
     values['project_application_openstack_project'] = false;
-    for (const flavor of this.flavorList) {
-      const fname: string = `project_application_${flavor.name}`;
-      values[fname] = 1;
-    }
     values['project_application_report_allowed'] = true;
-    values['project_application_shortname'] = 'TestApplication';
+    values['project_application_shortname'] =  name.substr(0, 5); 
     values['project_application_volume_counter'] = 5;
     values['project_application_volume_limit'] = 20;
     values['project_application_workgroup'] = 'TestApplication';
