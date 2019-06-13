@@ -46,8 +46,11 @@
                 class="form-horizontal">
             <div class="form-group row">
               <label class="col-md-3 form-control-label"><strong>Project*</strong></label>
+              <span *ngIf="client_avaiable && !projectDataLoaded" class="spinner-border text-info"></span>
+
 
               <div class="col-md-6">
+
 
                 <select required class="form-control" name="selectedProject"
                         [(ngModel)]="selectedProject"
@@ -79,7 +82,7 @@
                     <div class="text-muted">Vms</div>
                     <strong>{{selectedProjectVmsUsed}} |
                       {{selectedProjectVmsMax}}</strong>
-                    <div class="progress progress-xs mt-2"
+                    <div style="background-color: darkgray;" class="progress progress-xs mt-2"
 
                     >
                       <div class="progress-bar " role="progressbar"
@@ -96,7 +99,7 @@
                   <div class="col-sm-12 col-md">
                     <div class="text-muted">Ram [GB]</div>
                     <strong> {{selectedProjectRamUsed}} | {{selectedProjectRamMax}}</strong>
-                    <div class="progress progress-xs mt-2">
+                    <div style="background-color: darkgray;" class="progress progress-xs mt-2">
                       <div class="progress-bar " role="progressbar"
                            [ngStyle]="{'width.%': selectedProjectRamUsed/selectedProjectRamMax *100 }" aria-valuenow="0"
                            [ngClass]=" {'bg-success':(selectedProjectRamUsed / selectedProjectRamMax) < 0.5 ,
@@ -109,7 +112,7 @@
                   <div class="col-sm-12 col-md ">
                     <div class="text-muted">Cores</div>
                     <strong> {{selectedProjectCoresUsed}} | {{selectedProjectCoresMax}}</strong>
-                    <div class="progress progress-xs mt-2">
+                    <div style="background-color: darkgray;" class="progress progress-xs mt-2">
                       <div class="progress-bar " role="progressbar"
                            [ngStyle]="{'width.%': selectedProjectCoresUsed/selectedProjectCoresMax *100 }"
                            [ngClass]=" {'bg-success':(selectedProjectCoresUsed / selectedProjectCoresMax) < 0.5 ,
@@ -122,286 +125,286 @@
                   <div class="col-sm-12 col-md ">
                     <div class="text-muted">Storage Volumes</div>
                     <strong> {{selectedProjectVolumesUsed}} | {{selectedProjectVolumesMax}}</strong>
-                    <div class="progress progress-xs mt-2">
-                      <div class="progress-bar" role="progressbar"
-                           [ngStyle]="{'width.%': selectedProjectVolumesUsed/selectedProjectVolumesMax *100 }"
-                           [ngClass]=" {'bg-success':(selectedProjectVolumesUsed / selectedProjectVolumesMax) < 0.5 ,
+                    <div style="background-color: darkgray;" class="progress progress-xs mt-2">
+                    <div class="progress-bar" role="progressbar"
+                         [ngStyle]="{'width.%': selectedProjectVolumesUsed/selectedProjectVolumesMax *100 }"
+                         [ngClass]=" {'bg-success':(selectedProjectVolumesUsed / selectedProjectVolumesMax) < 0.5 ,
                          'bg-warning':(selectedProjectVolumesUsed / selectedProjectVolumesMax) > 0.5 &&   selectedProjectVolumesUsed < selectedProjectVolumesMax,
                          'bg-danger': selectedProjectVolumesUsed === selectedProjectVolumesMax}"
-                           aria-valuenow="0"
-                           aria-valuenow="60"
-                           aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                         aria-valuenow="0"
+                         aria-valuenow="60"
+                         aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
+                </div>
 
-                  <div class="col-sm-12 col-md ">
-                    <div class="text-muted">Volumes Storage [GB]</div>
-                    <strong> {{selectedProjectDiskspaceUsed}} | {{selectedProjectDiskspaceMax}}</strong>
-                    <div class="progress progress-xs mt-2">
-                      <div class="progress-bar" role="progressbar"
-                           [ngStyle]="{'width.%': selectedProjectDiskspaceUsed/selectedProjectDiskspaceMax *100 }"
-                           [ngClass]=" {'bg-success':(selectedProjectDiskspaceUsed / selectedProjectDiskspaceMax) < 0.5 ,
+                <div class="col-sm-12 col-md ">
+                  <div class="text-muted">Volumes Storage [GB]</div>
+                  <strong> {{selectedProjectDiskspaceUsed}} | {{selectedProjectDiskspaceMax}}</strong>
+                  <div style="background-color: darkgray;" class="progress progress-xs mt-2">
+                    <div class="progress-bar" role="progressbar"
+                         [ngStyle]="{'width.%': selectedProjectDiskspaceUsed/selectedProjectDiskspaceMax *100 }"
+                         [ngClass]=" {'bg-success':(selectedProjectDiskspaceUsed / selectedProjectDiskspaceMax) < 0.5 ,
                          'bg-warning':(selectedProjectDiskspaceUsed / selectedProjectDiskspaceMax) > 0.5 &&   selectedProjectDiskspaceUsed < selectedProjectDiskspaceMax,
                          'bg-danger': selectedProjectDiskspaceUsed === selectedProjectDiskspaceMax}"
 
-                           aria-valuemin="0" aria-valuemax="[selectedProjectDiskspaceMax]"></div>
-                    </div>
+                         aria-valuemin="0" aria-valuemax="[selectedProjectDiskspaceMax]"></div>
                   </div>
-
-
                 </div>
-              </div>
-              <div class="alert alert-warning" role="alert"
-                   *ngIf="selectedProjectVmsUsed >= selectedProjectVmsMax">
-                The limit for virtual machines has been reached for this project.
-                Your principal investigator can request more
-                resources if necessary.
+
 
               </div>
-              <div class="alert alert-warning" role="alert"
-                   *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length == 0">
-                There are too few cores and not enough ram available for this project to start a new machine.
-                Your principal investigator can request more
-                resources if necessary.
+            </div>
+            <div class="alert alert-warning" role="alert"
+                 *ngIf="selectedProjectVmsUsed >= selectedProjectVmsMax">
+              The limit for virtual machines has been reached for this project.
+              Your principal investigator can request more
+              resources if necessary.
 
-              </div>
+            </div>
+            <div class="alert alert-warning" role="alert"
+                 *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length == 0">
+              There are too few cores and not enough ram available for this project to start a new machine.
+              Your principal investigator can request more
+              resources if necessary.
 
-              <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length > 0">
-                <div *ngIf="selectedProject" class="form-group row">
-                  <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
-                  <div class="col-md-6">
-                    <div class="input-group">
-                      <input required id="id_instance_name" name="instance_name"
-                             class="form-control"
-                             type="text" placeholder="Instancename" ngModel
-                             [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
+            </div>
+
+            <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length > 0">
+              <div *ngIf="selectedProject" class="form-group row">
+                <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
+                <div class="col-md-6">
+                  <div class="input-group">
+                    <input required id="id_instance_name" name="instance_name"
+                           class="form-control"
+                           type="text" placeholder="Instancename" ngModel
+                           [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
-                    </div>
-                    <div style="color: dodgerblue">Info: The instance name will also
-                      be the hostname of the vm.
-                    </div>
+                  </div>
+                  <div style="color: dodgerblue">Info: The instance name will also
+                    be the hostname of the vm.
                   </div>
                 </div>
+              </div>
 
-                <div *ngIf="selectedProject" class="form-group row">
-                  <label class="col-md-3 form-control-label"><strong>Flavor*</strong></label>
-                  <div class="col-md-6">
+              <div *ngIf="selectedProject" class="form-group row">
+                <label class="col-md-3 form-control-label"><strong>Flavor*</strong></label>
+                <div class="col-md-6">
 
 
-                    <select required class="form-control col-md-6"
-                            name="selectedFlavor"
-                            [(ngModel)]="selectedFlavor"
-                            [ngClass]="{'is-invalid':f.controls.selectedFlavor?.invalid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched),
+                  <select required class="form-control col-md-6"
+                          name="selectedFlavor"
+                          [(ngModel)]="selectedFlavor"
+                          [ngClass]="{'is-invalid':f.controls.selectedFlavor?.invalid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched),
                              'is-valid':f.controls.selectedFlavor?.valid && (f.controls.selectedFlavor?.dirty || f.controls.selectedFlavor?.touched)}">
-                      <option value="undefined" disabled selected hidden> Please
-                        Select
-                      </option>
-                      <option *ngFor="  let flavor of flavors" [ngValue]="flavor">
-                        {{flavor.name}}
-                      </option>
+                    <option value="undefined" disabled selected hidden> Please
+                      Select
+                    </option>
+                    <option *ngFor="  let flavor of flavors" [ngValue]="flavor">
+                      {{flavor.name}}
+                    </option>
 
 
-                    </select>
-
-                  </div>
-
-                  <button *ngIf="selectedFlavor"
-                          (click)="collapsed2=!collapsed2; toggleInformationButton2()"
-                          class="btn btn-info .btn-pill">
-                    {{informationButton2}}
-                  </button>
+                  </select>
 
                 </div>
 
-                <div class="col-md-9">
-                  <app-flavor-detail [collapse2]="collapsed2"
-                                     [flavor]="selectedFlavor"></app-flavor-detail>
-                </div>
+                <button *ngIf="selectedFlavor"
+                        (click)="collapsed2=!collapsed2; toggleInformationButton2()"
+                        class="btn btn-info .btn-pill">
+                  {{informationButton2}}
+                </button>
 
-                <div *ngIf="selectedProject" class="form-group row">
-                  <label class="col-md-3 form-control-label"><strong>Image*</strong></label>
+              </div>
+
+              <div class="col-md-9">
+                <app-flavor-detail [collapse2]="collapsed2"
+                                   [flavor]="selectedFlavor"></app-flavor-detail>
+              </div>
+
+              <div *ngIf="selectedProject" class="form-group row">
+                <label class="col-md-3 form-control-label"><strong>Image*</strong></label>
 
 
-                  <div class="col-md-6">
+                <div class="col-md-6">
 
-                    <select required class="form-control" name="selectedImage"
-                            [(ngModel)]="selectedImage"
-                            [ngClass]="{'is-invalid':f.controls.selectedImage?.invalid && (f.controls.selectedImage?.dirty || f.controls.selectedImage.touched),
+                  <select required class="form-control" name="selectedImage"
+                          [(ngModel)]="selectedImage"
+                          [ngClass]="{'is-invalid':f.controls.selectedImage?.invalid && (f.controls.selectedImage?.dirty || f.controls.selectedImage.touched),
                              'is-valid':f.controls.selectedImage?.valid && (f.controls.selectedImage?.dirty || f.controls.selectedImage?.touched)}">
-                      <option value="undefined" disabled selected hidden> Please
-                        Select
-                      </option>
+                    <option value="undefined" disabled selected hidden> Please
+                      Select
+                    </option>
 
-                      <option *ngFor="let image of images" [ngValue]="image">
-                        {{image.name}}
-                      </option>
+                    <option *ngFor="let image of images" [ngValue]="image">
+                      {{image.name}}
+                    </option>
 
-                    </select>
+                  </select>
 
 
-                  </div>
-                  <button *ngIf="selectedImage"
-                          (click)="collapsed1=!collapsed1; toggleInformationButton()"
-                          class="btn btn-info .btn-pill">
-                    {{informationButton}}
+                </div>
+                <button *ngIf="selectedImage"
+                        (click)="collapsed1=!collapsed1; toggleInformationButton()"
+                        class="btn btn-info .btn-pill">
+                  {{informationButton}}
+                </button>
+              </div>
+              <div class="col-md-9">
+                <app-image-detail [collapse1]="collapsed1"
+                                  [image]="selectedImage"></app-image-detail>
+              </div>
+
+
+              <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID"
+                   class="form-group row">
+
+                <label class="col-md-3 form-control-label"><strong>Optional
+                  parameters</strong></label>
+                <div class="col-md-6">
+                  <button type="button" class="btn btn-info .btn-pill"
+                          (click)="optional_params= !optional_params">
+                    <strong *ngIf="!optional_params">Show</strong><strong
+                    *ngIf="optional_params">Hide</strong>
                   </button>
                 </div>
-                <div class="col-md-9">
-                  <app-image-detail [collapse1]="collapsed1"
-                                    [image]="selectedImage"></app-image-detail>
-                </div>
-
-
-                <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID"
-                     class="form-group row">
-
-                  <label class="col-md-3 form-control-label"><strong>Optional
-                    parameters</strong></label>
-                  <div class="col-md-6">
-                    <button type="button" class="btn btn-info .btn-pill"
-                            (click)="optional_params= !optional_params">
-                      <strong *ngIf="!optional_params">Show</strong><strong
-                      *ngIf="optional_params">Hide</strong>
-                    </button>
-                  </div>
-                </div>
               </div>
+            </div>
 
-              <div
-                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
-                class="form-group row">
+            <div
+              *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
+              class="form-group row">
 
-                <div class="alert alert-warning col-md-9" role="alert"
-                     *ngIf="selectedProjectVolumesUsed >= selectedProjectVolumesMax">
-                  The limit for volumes has been reached for this project.
-                  Your principal investigator can request more
-                  resources if necessary
-
-                </div>
-
+              <div class="alert alert-warning col-md-9" role="alert"
+                   *ngIf="selectedProjectVolumesUsed >= selectedProjectVolumesMax">
+                The limit for volumes has been reached for this project.
+                Your principal investigator can request more
+                resources if necessary
 
               </div>
 
-              <div
-                *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax">
-                <div class="form-group row"
-                     *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
-                  <label *ngIf="diskspace <= 0" class="col-md-3 form-control-label">Volumename</label>
-                  <label *ngIf="diskspace > 0"
-                         class="col-md-3 form-control-label"><strong>Volumename*</strong></label>
 
-                  <div class="col-md-9">
-                    <div class="input-group">
-                      <input type="text" placeholder="Volumename"
-                             [value]="volumeName"
-                             (input)="volumeName = $event.target.value"
-                             [ngClass]="{'is-invalid':diskspace > 0 && volumeName == '',
-                             'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')}">
+            </div>
 
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
-                class="form-group row">
-
-                <label class="col-md-3 form-control-label">Storage</label>
+            <div
+              *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax">
+              <div class="form-group row"
+                   *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
+                <label *ngIf="diskspace <= 0" class="col-md-3 form-control-label">Volumename</label>
+                <label *ngIf="diskspace > 0"
+                       class="col-md-3 form-control-label"><strong>Volumename*</strong></label>
 
                 <div class="col-md-9">
                   <div class="input-group">
-                    <input min="0" step="1" [value]="diskspace"
-                           (input)="diskspace = $event.target.value"
-                           type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
-                           placeholder="e.g 8 ">
-                    <div class="input-group-append"><span
-                      class="input-group-text"> GB
-                                    </span></div>
-
-                    <div class="col-md-6">
-                      <strong> {{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}} GB available
-                      </strong>
-                    </div>
+                    <input type="text" placeholder="Volumename"
+                           [value]="volumeName"
+                           (input)="volumeName = $event.target.value"
+                           [ngClass]="{'is-invalid':diskspace > 0 && volumeName == '',
+                             'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')}">
 
                   </div>
                 </div>
-
-
-              </div>
-              <div
-                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
-                class="form-group row">
-
-                <label class="col-md-3 form-control-label">Open Ports</label>
-                <div class="col-md-3">
-                  <label
-                    class="switch switch-label switch-pill switch-success">Udp
-                    <input type="checkbox" class="switch-input"
-                           name="udp_allowed"
-                           [(ngModel)]="udp_allowed"
-                    >
-                    <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
-                    <!--<span class="switch-handle"></span>-->
-                  </label></div>
-
-
-              </div>
-              <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && is_vo"
-                   class="form-group row">
-
-                <label class="col-md-3 form-control-label"><strong>Bioconda</strong></label>
-                <div class="col-md-6">
-                  <button type="button" class="btn btn-info .btn-pill"
-                          (click)="bioconda_show = !bioconda_show">
-                    <strong *ngIf="!bioconda_show">Show</strong><strong
-                    *ngIf="bioconda_show">Hide</strong>
-                  </button>
-                </div>
-              </div>
-              <div [hidden]="!bioconda_show" class="col-12">
-                <app-bioconda #bioconda></app-bioconda>
               </div>
             </div>
-          </form>
 
+            <div
+              *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
+              class="form-group row">
+
+              <label class="col-md-3 form-control-label">Storage</label>
+
+              <div class="col-md-9">
+                <div class="input-group">
+                  <input min="0" step="1" [value]="diskspace"
+                         (input)="diskspace = $event.target.value"
+                         type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
+                         placeholder="e.g 8 ">
+                  <div class="input-group-append"><span
+                    class="input-group-text"> GB
+                                    </span></div>
+
+                  <div class="col-md-6">
+                    <strong> {{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}} GB available
+                    </strong>
+                  </div>
+
+                </div>
+              </div>
+
+
+            </div>
+            <div
+              *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
+              class="form-group row">
+
+              <label class="col-md-3 form-control-label">Open Ports</label>
+              <div class="col-md-3">
+                <label
+                  class="switch switch-label switch-pill switch-success">Udp
+                  <input type="checkbox" class="switch-input"
+                         name="udp_allowed"
+                         [(ngModel)]="udp_allowed"
+                  >
+                  <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                  <!--<span class="switch-handle"></span>-->
+                </label></div>
+
+
+            </div>
+            <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && is_vo"
+                 class="form-group row">
+
+              <label class="col-md-3 form-control-label"><strong>Bioconda</strong></label>
+              <div class="col-md-6">
+                <button type="button" class="btn btn-info .btn-pill"
+                        (click)="bioconda_show = !bioconda_show">
+                  <strong *ngIf="!bioconda_show">Show</strong><strong
+                  *ngIf="bioconda_show">Hide</strong>
+                </button>
+              </div>
+            </div>
+            <div [hidden]="!bioconda_show" class="col-12">
+              <app-bioconda #bioconda></app-bioconda>
+            </div>
         </div>
-
-
-        <div class="form-group row"
-             *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length > 0">
-
-
-          <button style=" margin-left: auto;margin-top: 25px;
-    margin-right: auto;
-    width: 8em"
-
-                  type="button"
-                  [disabled]="f.invalid || (diskspace > 0 && volumeName == '')"
-                  class="btn btn-primary  .btn-lg offset-md-8"
-                  data-toggle="modal"
-                  (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
-            Start VM
-          </button>
-        </div>
-
-
-        <div class="alert alert-danger"
-             *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
-          corresponding client is currently offline.
-          If you have any questions please contact cloud@denbi.de.
-        </div>
-
+        </form>
 
       </div>
 
-      <!--/.col-->
+
+      <div class="form-group row"
+           *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length > 0">
+
+
+        <button style=" margin-left: auto;margin-top: 25px;
+    margin-right: auto;
+    width: 8em"
+
+                type="button"
+                [disabled]="f.invalid || (diskspace > 0 && volumeName == '')"
+                class="btn btn-primary  .btn-lg offset-md-8"
+                data-toggle="modal"
+                (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
+          Start VM
+        </button>
+      </div>
+
+
+      <div class="alert alert-danger"
+           *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
+        corresponding client is currently offline.
+        If you have any questions please contact cloud@denbi.de.
+      </div>
+
 
     </div>
-  </div>
-  <div class="col-md-6">
+
+    <!--/.col-->
 
   </div>
+</div>
+<div class="col-md-6">
+
+</div>
 
 </div>
 
