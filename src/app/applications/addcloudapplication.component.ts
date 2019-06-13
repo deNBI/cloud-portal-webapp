@@ -156,24 +156,32 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
     ***REMOVED***
   ***REMOVED***
 
-  sendTestApplication(): void ***REMOVED***
+  /**
+   * Creates a test application
+   * @param name of the new test application
+   */
+  sendTestApplication(name: string): void ***REMOVED***
     const values: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED*** = ***REMOVED******REMOVED***;
 
+    values['project_application_bmbf_project'] = 'BMBF';
+    values['project_application_horizon2020'] = 'horizon';
+    values['project_application_pi_approved'] = true;
+    values['project_application_responsibility'] = true;
     values['project_application_comment'] = 'TestApplication';
     values['project_application_description'] = 'TestApplication';
     values['project_application_institute'] = 'TestApplication';
     values['project_application_lifetime'] = 3;
-    values['project_application_name'] = 'TestApplication';
-    values['project_application_openstack_project'] = true;
+    values['project_application_name'] = name;
+    values['project_application_openstack_project'] = false;
+    values['project_application_report_allowed'] = true;
+    values['project_application_shortname'] = name.substr(0, 5);
+    values['project_application_volume_counter'] = 5;
+    values['project_application_volume_limit'] = 20;
+    values['project_application_workgroup'] = 'TestApplication';
     for (const flavor of this.flavorList) ***REMOVED***
       const fname: string = `project_application_$***REMOVED***flavor.name***REMOVED***`;
       values[fname] = 1;
     ***REMOVED***
-    values['project_application_report_allowed'] = true;
-    values['project_application_shortname'] = 'TestApplication';
-    values['project_application_volume_counter'] = 5;
-    values['project_application_volume_limit'] = 20;
-    values['project_application_workgroup'] = 'TestApplication';
 
     this.applicationsservice.addNewApplication(values).toPromise()
       .then(() => ***REMOVED***
