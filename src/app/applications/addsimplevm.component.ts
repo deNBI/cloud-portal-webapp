@@ -203,7 +203,7 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
     values['project_application_name'] = name;
     values['project_application_openstack_project'] = false;
     values['project_application_report_allowed'] = true;
-    values['project_application_shortname'] =  name.substr(0, 5);
+    values['project_application_shortname'] = name.substr(0, 15);
     values['project_application_volume_counter'] = 5;
     values['project_application_volume_limit'] = 20;
     values['project_application_workgroup'] = 'TestApplication';
