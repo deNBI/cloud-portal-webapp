@@ -28,6 +28,7 @@ $simplevmcolour: #00ADEF;
   left: 0px;
   border-radius: 10px;
   border-top: none !important;
+  font-family: 'Raleway', sans-serif;
 }
 
 .sidebar-fixed .app-header + .app-body .sidebar{
@@ -62,6 +63,7 @@ app-dashboard
   margin: 15px;
   border-radius: 10px;
 }
+
 
 
 .btn{
@@ -99,6 +101,30 @@ h1 {
   margin: 0;
 }
 
+.sidebar .sidebar-minimizer {
+  background-color: $deNBI_white !important;
+  color: $deNBI_cyan !important;
+  position: relative !important;
+}
+
+.sidebar .sidebar-minimizer:hover {
+  background-color: $deNBI_lightgrey !important;
+}
+
+.nav-item{
+  border-radius: 10px !important;
+}
+
+.sidebar-nav .nav-item:hover
+{
+  background-color: $deNBI_lightgrey !important;
+}
+
+.nav
+{
+  overflow-x: hidden !important;
+  overflow-y: visible;
+}
 
 .app{
   background-color: #E3E3E3;
@@ -129,9 +155,18 @@ h1 {
   font-family: 'Raleway', sans-serif;
 }
 
-.app-footer
+
+.w3-bar-block
 {
-  font-family: 'Raleway', sans-serif;
+  left:225px;
+  background-color: $deNBI_white;
+  height: 54px;
+  border-radius: 10px;
+  width: 100%;
+  position: fixed;
+  top: 15px;
+  left: 225px;
+  right: 15px;
 }
 
 .sidebar {

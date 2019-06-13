@@ -1,3 +1,5 @@
+<div class="w3-bar-block"><h1></h1></div>
+
 <app-header
   [asideMenuToggler]="false"
   [sidebarToggler]="false"
@@ -18,7 +20,9 @@
 
 
   </ul>
+
 </app-header>
+
 <div class="app-body">
   <div class="sidebar">
     <nav class="sidebar-nav" [perfectScrollbar]>
@@ -146,8 +150,9 @@
 
       </ul>
     </nav>
-  </div>
+    <app-sidebar-minimizer></app-sidebar-minimizer>
 
+  </div>
   <!-- Main content -->
   <main class="main">
 
@@ -158,9 +163,9 @@
       </ol>
       -->
 
-    <cui-breadcrumb>
+   <!-- <cui-breadcrumb>
 
-    </cui-breadcrumb>
+    </cui-breadcrumb> -->
 
     <div class="container-fluid">
       <router-outlet></router-outlet>
