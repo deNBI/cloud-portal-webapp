@@ -6,6 +6,7 @@ import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {VoService} from '../api-connector/vo.service';
 import {IResponseTemplate} from "../api-connector/response-template";
+import {TitleHeadbarComponent} from "../shared/title-headbar.component";
 
 /**
  * FullLayout component.
@@ -18,6 +19,7 @@ import {IResponseTemplate} from "../api-connector/response-template";
 export class FullLayoutComponent implements OnInit {
 
   public year: number = new Date().getFullYear();
+  public page_title: string = "test";
   public disabled: boolean = false;
   public status: { isopen: boolean } = {isopen: false};
   is_vo_admin: boolean = false;

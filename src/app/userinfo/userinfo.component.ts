@@ -6,6 +6,7 @@ import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {forkJoin} from 'rxjs/index';
+import {TitleHeadbarComponent} from '../shared/title-headbar.component';
 
 /**
  * UserInformation component.
@@ -13,7 +14,7 @@ import {forkJoin} from 'rxjs/index';
 @Component({
   selector: 'app-userinfo',
   templateUrl: 'userinfo.component.html',
-  providers: [GroupService, UserService, ApiSettings, KeyService]
+  providers: [GroupService, UserService, ApiSettings, KeyService, TitleHeadbarComponent]
 })
 export class UserInfoComponent implements OnInit {
   /**
@@ -54,8 +55,8 @@ export class UserInfoComponent implements OnInit {
    */
   emailChange: string;
 
-  constructor(private groupService: GroupService, private userService: UserService, private keyService: KeyService) {
-
+  constructor(private groupService: GroupService, private userService: UserService, private keyService: KeyService,
+              private titlecomponent: TitleHeadbarComponent) {
   }
 
   requestChangePreferredMailUser(email: string): void {
@@ -75,6 +76,7 @@ export class UserInfoComponent implements OnInit {
     this.getUserinfo();
     this.isFreemiumActive();
     this.isUserSimpleVmMember();
+    this.titlecomponent.setTitle('User Information for ' + this.userInfo.FirstName + ' ' + this.userInfo.LastName);
 
   }
 

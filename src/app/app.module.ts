@@ -14,6 +14,7 @@ import {ExportAsModule} from 'ngx-export-as';
 import {PopoverModule} from 'ngx-popover';
 import {ApiSettings} from './api-connector/api-settings.service';
 import {UserService} from './api-connector/user.service';
+
 // Routing Module
 import {AppRoutingModule} from './app.routing';
 import {ConsentInfoComponent} from './consent-info.component';
@@ -39,6 +40,7 @@ import { ErrorHandler } from '@angular/core';
 import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler.service';
 import {environment} from "../environments/environment";
 import {CookieService} from 'ngx-cookie-service';
+import {TitleHeadbarComponent} from "./shared/title-headbar.component";
 
 /**
  * App module.
@@ -77,7 +79,8 @@ import {CookieService} from 'ngx-cookie-service';
         SidebarToggleDirective,
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
-        SidebarOffCanvasCloseDirective
+        SidebarOffCanvasCloseDirective,
+        TitleHeadbarComponent
     ],
     providers: [
       {
