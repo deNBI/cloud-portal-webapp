@@ -16,21 +16,19 @@ import {IResponseTemplate} from '../api-connector/response-template';
  * Projectoverview component.
  */
 @Component({
+             selector: 'app-project-overview',
              templateUrl: 'overview.component.html',
              providers: [VoService, UserService, GroupService, ApiSettings]
            })
 export class OverviewComponent extends AbstractBaseClasse implements OnInit {
 
-  debug_module: boolean = false;
   @Input() invitation_group_post: string = environment.invitation_group_post;
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
   @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
-  is_admin: boolean = false;
-  userprojects: {}[];
-  member_id: number;
-  admingroups: {};
-  filteredMembers = null;
+  isAdmin: boolean = false;
+  userProjects: {}[];
+  filteredMembers: any = null;
   application_action: string = '';
   application_member_name: string = '';
   application_action_done: boolean = false;
@@ -59,21 +57,181 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   public UserModalFacilityDetails: [string, string][];
   public UserModalFacility: [string, number];
 
-  public passwordModalTitle: string = 'Changing Password';
-  public passwordModalType: string = 'info';
-  public passwordModalPassword: string = '';
-  public passwordModalFacility: string = '';
-  public passwordModalEmail: string = '';
-
-  constructor(private groupservice: GroupService,
-              private userservice: UserService) {
+  constructor(private groupService: GroupService,
+              private userService: UserService) {
     super();
 
+  }
+
+  approveMemberApplication(project: number, application: number, membername: string): void {
+    this.loaded = false;
+    this.application_action_done = false;
+    this.groupService.approveGroupApplication(project, application).subscribe((tmp_application: any) => {
+      this.selectedProject.ProjectMemberApplications = [];
+
+      if (tmp_application['state'] === 'APPROVED') {
+        this.application_action_success = true;
+      } else if (tmp_application['message']) {
+        this.application_action_success = false;
+
+        this.application_action_error_message = tmp_application['message'];
+
+      } else {
+        this.application_action_success = false;
+      }
+
+      this.application_action = 'approved';
+      this.application_member_name = membername;
+      this.application_action_done = true;
+      this.getUserProjectApplications(project);
+
+    });
   }
 
   ngOnInit(): void {
     this.getUserProjects();
 
+  }
+
+  rejectMemberApplication(project: number, application: number, membername: string): void {
+    this.loaded = false;
+    this.application_action_done = false;
+
+    this.groupService.rejectGroupApplication(project, application)
+      .subscribe((tmp_application: any) => {
+                   this.selectedProject.ProjectMemberApplications = [];
+
+                   if (tmp_application['state'] === 'REJECTED') {
+                     this.application_action_success = true;
+
+                   } else if (tmp_application['message']) {
+                     this.application_action_success = false;
+
+                     this.application_action_error_message = tmp_application['message'];
+                   } else {
+                     this.application_action_success = false;
+                   }
+                   this.application_action = 'rejected';
+                   this.application_member_name = membername;
+                   this.application_action_done = true;
+                   this.getUserProjectApplications(project);
+
+                 }
+      );
+  }
+
+  showMembersOfTheProject(projectid: number | string, projectname: string, facility?: [string, number]): void {
+    this.getMembersOfTheProject(projectid, projectname);
+
+    if (facility) {
+      this.UserModalFacility = facility;
+
+    } else {
+      this.UserModalFacility = null;
+
+    }
+
+  }
+
+  /**
+   * Get all user applications for a project.
+   * @param projectId id of the project
+   */
+  getUserProjectApplications(projectId: number): void {
+    this.loaded = false;
+    this.groupService.getGroupApplications(projectId).subscribe((applications: any) => {
+      this.selectedProject.ProjectMemberApplications = [];
+
+      const newProjectApplications: ProjectMemberApplication[] = [];
+      if (applications.length === 0) {
+        this.loaded = true;
+
+      }
+      for (const application of applications) {
+        const dateApplicationCreated: moment.Moment = moment(application['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+        const membername: string = application['displayName'];
+
+        const newMemberApplication: ProjectMemberApplication =
+          new ProjectMemberApplication(
+            application['id'], membername,
+            `${dateApplicationCreated.date()}.${(dateApplicationCreated.month() + 1)}.${dateApplicationCreated.year()}`
+          );
+        newProjectApplications.push(newMemberApplication);
+
+        this.selectedProject.ProjectMemberApplications = newProjectApplications;
+        this.loaded = true;
+
+      }
+
+    })
+
+  }
+
+  getUserProjects(): void {
+
+    this.groupService.getGroupDetails().subscribe((result: any) => {
+      this.userProjects = result;
+      for (const group of this.userProjects) {
+        const dateCreated: moment.Moment = moment.unix(group['createdAt']);
+        const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
+        const is_pi: boolean = group['is_pi'];
+        const groupid: string = group['id'];
+        const facility: any = group['compute_center'];
+        const shortname: string = group['shortname'];
+
+        const realname: string = group['name'];
+        let compute_center: ComputecenterComponent = null;
+
+        if (facility) {
+          compute_center = new ComputecenterComponent(
+            facility['compute_center_facility_id'], facility['compute_center_name'],
+            facility['compute_center_login'], facility['compute_center_support_mail']);
+        }
+
+        const newProject: Project = new Project(
+          groupid,
+          shortname,
+          group['description'],
+          moment(dateCreated).format('DD.MM.YYYY'),
+          dateDayDifference,
+          is_pi,
+          this.isAdmin,
+          compute_center);
+        newProject.OpenStackProject = group['openstack_project'];
+        newProject.RealName = realname;
+        this.projects.push(newProject);
+      }
+      this.isLoaded = true;
+    })
+
+  }
+
+  /**
+   * Get all members of a project.
+   * @param projectId id of the project
+   * @param projectName
+   */
+  getMembersOfTheProject(projectId: number | string, projectName: string): void {
+    this.groupService.getGroupMembers(projectId.toString()).subscribe((members: any) => {
+
+      this.usersModalProjectID = projectId;
+      this.usersModalProjectName = projectName;
+      this.usersModalProjectMembers = [];
+      this.groupService.getGroupAdminIds(projectId.toString()).subscribe((result: any) => {
+        const admindIds: any = result['adminIds'];
+        for (const member of members) {
+          const member_id: string = member['id'];
+          const user_id: string = member['userId'];
+          const fullName: string = `${member['firstName']} ${member['lastName']}`;
+          const projectMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
+          projectMember.ElixirId = member['elixirId'];
+          projectMember.IsPi = admindIds.indexOf(user_id) !== -1;
+          this.usersModalProjectMembers.push(projectMember);
+
+        }
+      })
+
+    });
   }
 
   setAddUserInvitationLink(): void {
@@ -85,7 +243,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   getProjectLifetime(project: Project): void {
     this.details_loaded = false;
     if (!project.Lifetime) {
-      this.groupservice.getLifetime(project.Id).subscribe((time: IResponseTemplate) => {
+      this.groupService.getLifetime(project.Id).subscribe((time: IResponseTemplate) => {
         const lifetime: number | string = <number>time.value;
         const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
         if (lifetime !== -1) {
@@ -106,54 +264,13 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
 
   }
 
-  copyLink(text: string) {
-    const event = e => {
-      e.clipboardData.setData('text/plain', text);
-      e.preventDefault();
-      // ...('copy', e), as event is outside scope
-      document.removeEventListener('copy', e);
-    }
-    document.addEventListener('copy', event);
+  copyToClipboard(text: string): void {
+    document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
+      clipEvent.clipboardData.setData('text/plain', (text));
+      clipEvent.preventDefault();
+      document.removeEventListener('copy', null);
+    });
     document.execCommand('copy');
-  }
-
-  getUserProjects(): void {
-
-    this.groupservice.getGroupDetails().subscribe(result => {
-      this.userprojects = result;
-      for (const group of this.userprojects) {
-        const dateCreated: moment.Moment = moment.unix(group['createdAt']);
-        const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
-        const is_pi: boolean = group['is_pi'];
-        const groupid: string = group['id'];
-        const facility = group['compute_center'];
-        const shortname: string = group['shortname'];
-
-        const realname: string = group['name'];
-        let compute_center: ComputecenterComponent = null;
-
-        if (facility) {
-          compute_center = new ComputecenterComponent(
-            facility['compute_center_facility_id'], facility['compute_center_name'],
-            facility['compute_center_login'], facility['compute_center_support_mail']);
-        }
-
-        const newProject: Project = new Project(
-          groupid,
-          shortname,
-          group['description'],
-          moment(dateCreated).format('DD.MM.YYYY'),
-          dateDayDifference,
-          is_pi,
-          this.is_admin,
-          compute_center);
-        newProject.OpenStackProject = group['openstack_project'];
-        newProject.RealName = realname;
-        this.projects.push(newProject);
-      }
-      this.isLoaded = true;
-    })
-
   }
 
   resetAddUserModal(): void {
@@ -163,117 +280,9 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   }
 
   filterMembers(searchString: string): void {
-    this.userservice.getFilteredMembersOfdeNBIVo(searchString).subscribe(result => {
+    this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object) => {
       this.filteredMembers = result;
     })
-  }
-
-  getMembersOfTheProject(projectid: number | string, projectname: string): void {
-    this.groupservice.getGroupMembers(projectid.toString()).subscribe(members => {
-
-      this.usersModalProjectID = projectid;
-      this.usersModalProjectName = projectname;
-      this.usersModalProjectMembers = new Array();
-      this.groupservice.getGroupAdminIds(projectid.toString()).subscribe(result => {
-        const admindIds = result['adminIds'];
-        for (const member of members) {
-          const member_id: string = member['id'];
-          const user_id: string = member['userId'];
-          const fullName: string = `${member['firstName']} ${member['lastName']}`;
-          const projectMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
-          projectMember.ElixirId = member['elixirId'];
-          if (admindIds.indexOf(user_id) !== -1) {
-            projectMember.IsPi = true;
-          } else {
-            projectMember.IsPi = false;
-          }
-
-          this.usersModalProjectMembers.push(projectMember);
-
-        }
-      })
-
-    });
-  }
-
-  loadProjectApplications(project: number): void {
-    this.loaded = false;
-    this.groupservice.getGroupApplications(project).subscribe(applications => {
-      this.selectedProject.ProjectMemberApplications = [];
-
-      const newProjectApplications: ProjectMemberApplication[] = [];
-      if (applications.length === 0) {
-        this.loaded = true;
-
-      }
-      for (const application of applications) {
-        const dateApplicationCreated: moment.Moment = moment(application['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
-        const membername: string = application['displayName'];
-
-        const newMemberApplication: ProjectMemberApplication = new ProjectMemberApplication(
-          application['id'], membername, `${dateApplicationCreated.date()}.${(dateApplicationCreated.month() + 1)}`
-          + '.' + dateApplicationCreated.year()
-        );
-        newProjectApplications.push(newMemberApplication);
-
-        this.selectedProject.ProjectMemberApplications = newProjectApplications;
-        this.loaded = true;
-
-      }
-
-    })
-
-  }
-
-  approveMemberApplication(project: number, application: number, membername: string): void {
-    this.loaded = false;
-    this.application_action_done = false;
-    this.groupservice.approveGroupApplication(project, application).subscribe(tmp_application => {
-      this.selectedProject.ProjectMemberApplications = [];
-
-      if (tmp_application['state'] === 'APPROVED') {
-        this.application_action_success = true;
-      } else if (tmp_application['message']) {
-        this.application_action_success = false;
-
-        this.application_action_error_message = tmp_application['message'];
-
-      } else {
-        this.application_action_success = false;
-      }
-
-      this.application_action = 'approved';
-      this.application_member_name = membername;
-      this.application_action_done = true;
-      this.loadProjectApplications(project);
-
-    });
-  }
-
-  rejectMemberApplication(project: number, application: number, membername: string): void {
-    this.loaded = false;
-    this.application_action_done = false;
-
-    this.groupservice.rejectGroupApplication(project, application).subscribe(tmp_application => {
-                                                                               this.selectedProject.ProjectMemberApplications = [];
-
-                                                                               if (tmp_application['state'] === 'REJECTED') {
-                                                                                 this.application_action_success = true;
-
-                                                                               } else if (tmp_application['message']) {
-                                                                                 this.application_action_success = false;
-
-                                                                                 this.application_action_error_message = tmp_application['message'];
-                                                                               } else {
-                                                                                 this.application_action_success = false;
-                                                                               }
-                                                                               this.application_action = 'rejected';
-                                                                               this.application_member_name = membername;
-                                                                               this.application_action_done = true;
-                                                                               this.loadProjectApplications(project);
-
-                                                                             }
-    );
   }
 
   isPi(member: ProjectMember): string {
@@ -283,28 +292,6 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
     } else {
       return 'black'
     }
-
-  }
-
-  public showMembersOfTheProject(projectid: number | string, projectname: string, facility?: [string, number]): void {
-    this.getMembersOfTheProject(projectid, projectname);
-
-    if (facility) {
-      this.UserModalFacility = facility;
-
-    } else {
-      this.UserModalFacility = null;
-
-    }
-
-  }
-
-  public resetPasswordModal(): void {
-    this.passwordModalTitle = 'Changing Password';
-    this.passwordModalType = 'info';
-    this.passwordModalPassword = '';
-    this.passwordModalFacility = '';
-    this.passwordModalEmail = '';
 
   }
 
@@ -328,8 +315,8 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
     if (this.UserModalFacility && this.UserModalFacility[1]) {
       facility_id = this.UserModalFacility[1]
     }
-    this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
-      result => {
+    this.groupService.addMember(groupid, memberid, facility_id).subscribe(
+      (result: any) => {
         if (result.status === 200) {
           this.updateNotificationModal('Success', `Member ${firstName} ${lastName} added.`, true, 'success');
 
@@ -338,7 +325,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
           this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
         }
       },
-      error => {
+      (error: any) => {
 
         if (error['name'] === 'AlreadyMemberException') {
           this.updateNotificationModal('Info', `${firstName} ${lastName} is already a member of the project.`, true, 'info');
@@ -349,15 +336,15 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
 
   }
 
-  public addAdmin(groupid: number, memberid: number, userid: number, firstName: string, lastName: string): void {
+  public addAdmin(groupId: number, memberId: number, userId: number, firstName: string, lastName: string): void {
     let facility_id: string | number = null;
     if (this.UserModalFacility && this.UserModalFacility[1]) {
       facility_id = this.UserModalFacility[1]
     }
-    this.groupservice.addMember(groupid, memberid, facility_id).subscribe(
+    this.groupService.addMember(groupId, memberId, facility_id).subscribe(
       () => {
-        this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
-          result => {
+        this.groupService.addAdmin(groupId, userId, facility_id).subscribe(
+          (result: any) => {
 
             if (result.status === 200) {
               this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
@@ -365,7 +352,8 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
             } else {
               this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
             }
-          }, error => {
+          },
+          (error: any) => {
             if (error['name'] === 'AlreadyAdminException') {
               this.updateNotificationModal(
                 'Info', `${firstName} ${lastName} is already a admin of the project.`,
@@ -376,8 +364,8 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
           })
       },
       () => {
-        this.groupservice.addAdmin(groupid, userid, facility_id).subscribe(
-          result => {
+        this.groupService.addAdmin(groupId, userId, facility_id).subscribe(
+          (result: any) => {
 
             if (result.status === 200) {
               this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
@@ -385,7 +373,8 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
             } else {
               this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
             }
-          }, error => {
+          },
+          (error: any) => {
             if (error['name'] === 'AlreadyAdminException') {
               this.updateNotificationModal(
                 'Info', `${firstName} ${lastName} is already a admin of the project.`,
@@ -402,8 +391,8 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
     if (this.UserModalFacility && this.UserModalFacility[1]) {
       facility_id = this.UserModalFacility[1]
     }
-    this.groupservice.addAdmin(groupid, userid, facility_id).toPromise()
-      .then(result => {
+    this.groupService.addAdmin(groupid, userid, facility_id).toPromise()
+      .then((result: any) => {
 
         if (result.status === 200) {
           this.updateNotificationModal('Success', `${username} promoted to Admin`, true, 'success');
@@ -421,8 +410,8 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
     if (this.UserModalFacility && this.UserModalFacility[1]) {
       facility_id = this.UserModalFacility[1]
     }
-    this.groupservice.removeAdmin(groupid, userid, facility_id).toPromise()
-      .then(result => {
+    this.groupService.removeAdmin(groupid, userid, facility_id).toPromise()
+      .then((result: any) => {
 
         if (result.status === 200) {
           this.updateNotificationModal('Success', `${name} was removed as Admin`, true, 'success');
@@ -436,13 +425,19 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
     });
   }
 
+  /**
+   * Remove an member from a group.
+   * @param groupid  of the group
+   * @param memberid of the member
+   * @param name  of the member
+   */
   public removeMember(groupid: number, memberid: number, name: string): void {
     let facility_id: string | number = null;
     if (this.UserModalFacility && this.UserModalFacility[1]) {
       facility_id = this.UserModalFacility[1]
     }
-    this.groupservice.removeMember(groupid, memberid, facility_id).subscribe(
-      result => {
+    this.groupService.removeMember(groupid, memberid, facility_id).subscribe(
+      (result: any) => {
 
         if (result.status === 200) {
           this.updateNotificationModal('Success', `Member ${name}  removed from the group`, true, 'success');
