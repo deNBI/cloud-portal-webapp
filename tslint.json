@@ -28,7 +28,7 @@
     "class-name": true,
     "indent":true,
     "arrow-parens":true,
-  
+
     "template-cyclomatic-complexity": [true, 10],
     "template-conditional-complexity": [true, 4],
      "banana-in-box": true,
@@ -60,22 +60,22 @@
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "pipe-impure": true,
-    
+
     "try-catch-first":true,
     "newspaper-order":true,
     "no-flag-args":true,
     "no-for-each-push":true,
-    "no-feature-envy":true,
+   // "no-feature-envy":true,
     "no-map-without-usage":true,
     "no-complex-conditionals":true,
     "prefer-dry-conditionals":true,
-    
+
     "await-promise": true,
     "forin": true,
     "id-length": true,
     "label-position": true,
     "match-default-export-name": true,
-    "max-func-args": [true, 3],
+    "max-func-args": [true, 5],
     "newspaper-order": true,
     "no-any": false,
     "no-arg": true,
@@ -113,7 +113,7 @@
         "switch-default": true,
         "triple-equals": [true, "allow-null-check"],
         "try-catch-first": true,
-        "use-isnan": true,  
+        "use-isnan": true,
      "adjacent-overload-signatures": true,
         "array-type": [true, "array"],
         "arrow-parens": false, // for simple functions the parens on arrow functions are not needed
@@ -123,7 +123,7 @@
         "completed-docs": [true, "classes"],
         "interface-name": true,
         "jsdoc-format": true,
-        "max-classes-per-file": [true, 3],  // we generally recommend making one public class per file 
+        "max-classes-per-file": [true, 3],  // we generally recommend making one public class per file
         "max-file-line-count": true,
         "max-line-length": [true, 140],
         "member-access": true,
@@ -134,7 +134,7 @@
         "no-construct": true,
         "no-default-export": true,
         "no-empty-interface": true,
-        "no-feature-envy": [true, 1, ["_"]],
+       // "no-feature-envy": [true, 1, ["_"]],
         "no-inferrable-types": false, // turn no-inferrable-types off in order to make the code consistent in its use of type decorations
         "no-null-keyword": false, // turn no-null-keyword off and use undefined to mean not initialized and null to mean without a value
         "no-require-imports": true,
@@ -174,8 +174,8 @@
                     // internal MS JavaScript coding standard does discourage it.
         "typedef-whitespace": false,
         "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-separator", "check-type"],
-    
-    
+
+
     "comment-format": [
       true,
       "check-space"
@@ -278,7 +278,7 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true
- 
-  
+
+
   ***REMOVED***
 ***REMOVED***
