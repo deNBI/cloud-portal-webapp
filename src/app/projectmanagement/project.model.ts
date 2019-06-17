@@ -43,6 +43,9 @@ export class Project ***REMOVED***
 
 // todo exdend with additional information
 
+
+
+
     get LifetimeReached(): number ***REMOVED***
         return this._LifetimeReached
     ***REMOVED***
@@ -68,6 +71,7 @@ export class Project ***REMOVED***
         this._Status = value;
 
     ***REMOVED***
+
 
     get ProjectMemberApplications(): ProjectMemberApplication[] ***REMOVED***
         return this._ProjectMemberApplications;

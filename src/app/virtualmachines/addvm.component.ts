@@ -1,4 +1,4 @@
-import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, OnInit, ViewChild***REMOVED*** from '@angular/core';
 import ***REMOVED***Image***REMOVED*** from './virtualmachinemodels/image';
 import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor';
 import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
@@ -17,6 +17,8 @@ import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/respon
 import ***REMOVED***Client***REMOVED*** from './clients/client.model';
 import ***REMOVED***VirtualMachine***REMOVED*** from './virtualmachinemodels/virtualmachine';
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
+import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
+import ***REMOVED***BiocondaComponent***REMOVED*** from './conda/bioconda.component';
 
 /**
  * Start virtualmachine component.
@@ -25,7 +27,7 @@ import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service
              selector: 'app-new-vm',
              templateUrl: 'addvm.component.html',
              providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
-               Application, ApiSettings, KeyService, ClientService, UserService]
+               Application, ApiSettings, KeyService, ClientService, UserService, VoService]
            ***REMOVED***)
 export class VirtualMachineComponent implements OnInit ***REMOVED***
 
@@ -42,6 +44,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   udp_allowed: boolean = false;
   showSshCommando: boolean = true;
   showUdpCommando: boolean = true;
+  is_vo: boolean = false;
 
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
@@ -144,6 +147,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    */
   optional_params: boolean = false;
 
+  bioconda_show: boolean = false;
+
   /**
    * Default diskspace.
    * @type ***REMOVED***number***REMOVED***
@@ -180,9 +185,12 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    */
   private checkStatusTimeout: number = 5000;
 
+  @ViewChild('bioconda') biocondaComponent: BiocondaComponent;
+
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-              private keyservice: KeyService, private userservice: UserService) ***REMOVED***
+              private keyservice: KeyService, private userservice: UserService,
+              private voService: VoService) ***REMOVED***
   ***REMOVED***
 
   /**
@@ -303,7 +311,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    */
   startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void ***REMOVED***
     this.create_error = null;
-
     if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) ***REMOVED***
       this.create_error = null;
       const re: RegExp = /\+/gi;
@@ -312,7 +319,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
       this.virtualmachineservice.startVM(
         flavor_fixed, image, servername, project, projectid.toString(), this.http_allowed, this.https_allowed, this.udp_allowed,
-        this.volumeName, this.diskspace.toString()).subscribe((newVm: VirtualMachine) => ***REMOVED***
+        this.volumeName, this.diskspace.toString(), this.biocondaComponent.getChosenTools()).subscribe((newVm: VirtualMachine) => ***REMOVED***
 
         if (newVm.status === 'Build') ***REMOVED***
           this.creating_vm_status = 'Created';
@@ -456,6 +463,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
     this.initializeData();
-
+    this.voService.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
+      this.is_vo = <boolean><Boolean>result.value;
+    ***REMOVED***)
   ***REMOVED***
 ***REMOVED***
