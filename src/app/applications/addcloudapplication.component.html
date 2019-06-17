@@ -20,9 +20,10 @@
             </a>
           </div>
           <div *ngIf="!production">
-            <button (click)="sendTestApplication();notificationModal.show();">Test
+            <button (click)="sendTestApplication(test_name.value);notificationModal.show();">Test
               Application
             </button>
+            <input name="test_name" placeholder="TestAppName" #test_name>
           </div>
           <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
                 class="form-horizontal">
