@@ -51,3 +51,29 @@ $simplevmcolour: #00ADEF;
 .btn-outline-simplevm ***REMOVED***
     @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour,5%), $simplevmcolour);
 ***REMOVED***
+
+
+#newsbadge
+***REMOVED***
+  margin: 15px !important;
+  position: relative !important;
+  border-radius: 10px;
+  background-color: rgba(255,255,255, 1);
+  padding: 10px !important;
+  max-width: 200px;
+
+***REMOVED***
+
+#newsimage
+***REMOVED***
+  width: 100%;
+  position: relative;
+  transition: 0.5s;
+***REMOVED***
+
+#newsbadge:hover
+***REMOVED***
+  opacity: 0.8;
+  transition: 0.5s;
+
+***REMOVED***
