@@ -6,7 +6,7 @@ import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {VoService} from '../api-connector/vo.service';
 import {IResponseTemplate} from "../api-connector/response-template";
-import {TitleHeadbarComponent} from "../shared/title-headbar.component";
+
 
 /**
  * FullLayout component.
@@ -19,7 +19,7 @@ import {TitleHeadbarComponent} from "../shared/title-headbar.component";
 export class FullLayoutComponent implements OnInit {
 
   public year: number = new Date().getFullYear();
-  public page_title: string = "test";
+  public page_title: string = "what";
   public disabled: boolean = false;
   public status: { isopen: boolean } = {isopen: false};
   is_vo_admin: boolean = false;
@@ -28,12 +28,21 @@ export class FullLayoutComponent implements OnInit {
   public login_name: string = '';
   navbar_state: string = 'closed';
   overview_state: string = 'closed';
+  TITLE:string='dddd';
 
   constructor(private voService: VoService, private groupService: GroupService, private userservice: UserService,
               private facilityservice: FacilityService) {
     this.is_vm_project_member();
     this.get_is_facility_manager();
     this.getLoginName();
+  }
+
+
+  componentAdded(e){
+
+    console.log(e)
+    this.TITLE=e.title;
+
   }
 
   public get_is_vo_admin(): boolean {

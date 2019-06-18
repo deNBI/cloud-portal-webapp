@@ -1,4 +1,4 @@
-<app-title-headbar></app-title-headbar>
+<app-title-headbar  [page_title]="TITLE"></app-title-headbar>
 <app-header
   [asideMenuToggler]="false"
   [sidebarToggler]="false"
@@ -168,7 +168,7 @@
     </cui-breadcrumb> -->
 
     <div class="container-fluid">
-      <router-outlet></router-outlet>
+      <router-outlet (activate)="componentAdded($event)"></router-outlet>
     </div><!-- /.conainer-fluid -->
   </main>
 </div>

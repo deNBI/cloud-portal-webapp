@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Userinfo} from './userinfo.model'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {KeyService} from '../api-connector/key.service';
@@ -8,13 +8,14 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {forkJoin} from 'rxjs/index';
 import {TitleHeadbarComponent} from '../shared/title-headbar.component';
 
+
 /**
  * UserInformation component.
  */
 @Component({
   selector: 'app-userinfo',
   templateUrl: 'userinfo.component.html',
-  providers: [GroupService, UserService, ApiSettings, KeyService, TitleHeadbarComponent]
+  providers: [GroupService, UserService, ApiSettings, KeyService]
 })
 export class UserInfoComponent implements OnInit {
   /**
@@ -55,8 +56,12 @@ export class UserInfoComponent implements OnInit {
    */
   emailChange: string;
 
-  constructor(private groupService: GroupService, private userService: UserService, private keyService: KeyService,
-              private titlecomponent: TitleHeadbarComponent) {
+  title :string = 'User Information for ';
+
+
+
+
+  constructor(private groupService: GroupService, private userService: UserService, private keyService: KeyService) {
   }
 
   requestChangePreferredMailUser(email: string): void {
@@ -76,8 +81,6 @@ export class UserInfoComponent implements OnInit {
     this.getUserinfo();
     this.isFreemiumActive();
     this.isUserSimpleVmMember();
-    this.titlecomponent.setTitle('User Information for ' + this.userInfo.FirstName + ' ' + this.userInfo.LastName);
-
   }
 
   isFreemiumActive(): void {
@@ -106,12 +109,15 @@ export class UserInfoComponent implements OnInit {
   getUserinfo(): void {
     this.userService.getUserInfo().subscribe((userinfo: any) => {
       this.userInfo = new Userinfo(userinfo);
+      this.title = 'User Information for ' + this.userInfo.FirstName + ' ' + this.userInfo.LastName;
+
       forkJoin(
         this.userService.getNewsletterSubscription(),
         this.userService.getPendingPreferredMailUser()).subscribe((res: IResponseTemplate[]) => {
 
         this.newsletterSubscribed = <boolean>res[0].value;
         this.userInfo.PendingEmails = <string[]>res[1].value;
+
         this.isLoaded = true;
 
       })
