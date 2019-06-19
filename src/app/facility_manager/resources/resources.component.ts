@@ -78,22 +78,22 @@ export class ResourcesComponent implements OnInit ***REMOVED***
 
   ***REMOVED***
 
-  addCoreFactor(cores: string | number, factor: string | number): void ***REMOVED***
+  addCoreFactor(cores: string | number, factor: string | number,description:string): void ***REMOVED***
     if (cores && factor) ***REMOVED***
       let re = /\,/gi;
       factor = factor.toString().replace(re, '.');
-      this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor).subscribe(res => ***REMOVED***
+      this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor,description).subscribe(res => ***REMOVED***
         this.coreFactors = res;
         this.getSelectedFacilityResources()
       ***REMOVED***)
     ***REMOVED***
   ***REMOVED***
 
-  addRamFactor(ram: string | number, factor: string | number): void ***REMOVED***
+  addRamFactor(ram: string | number, factor: string | number,description:string): void ***REMOVED***
     if (ram && factor) ***REMOVED***
-      let re = /\,/gi;
+      const re = /\,/gi;
       factor = factor.toString().replace(re, '.');
-      this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor).subscribe(res => ***REMOVED***
+      this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor,description).subscribe(res => ***REMOVED***
         this.ramFactors = res;
         this.getSelectedFacilityResources()
       ***REMOVED***)
