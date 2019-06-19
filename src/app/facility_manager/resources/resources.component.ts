@@ -78,22 +78,22 @@ export class ResourcesComponent implements OnInit {
 
   }
 
-  addCoreFactor(cores: string | number, factor: string | number): void {
+  addCoreFactor(cores: string | number, factor: string | number,description:string): void {
     if (cores && factor) {
       let re = /\,/gi;
       factor = factor.toString().replace(re, '.');
-      this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor).subscribe(res => {
+      this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor,description).subscribe(res => {
         this.coreFactors = res;
         this.getSelectedFacilityResources()
       })
     }
   }
 
-  addRamFactor(ram: string | number, factor: string | number): void {
+  addRamFactor(ram: string | number, factor: string | number,description:string): void {
     if (ram && factor) {
-      let re = /\,/gi;
+      const re = /\,/gi;
       factor = factor.toString().replace(re, '.');
-      this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor).subscribe(res => {
+      this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor,description).subscribe(res => {
         this.ramFactors = res;
         this.getSelectedFacilityResources()
       })
