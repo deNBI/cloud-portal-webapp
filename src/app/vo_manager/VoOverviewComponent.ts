@@ -9,6 +9,7 @@ import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
 import ***REMOVED***forkJoin***REMOVED*** from 'rxjs/index';
+import ***REMOVED***DomSanitizer, SafeResourceUrl, SafeUrl***REMOVED*** from '@angular/platform-browser';
 
 /**
  * Vo Overview component.
@@ -47,22 +48,31 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
   public usersModalProjectMembers: ProjectMember[] = [];
   public usersModalProjectID: number;
   public usersModalProjectName: string;
+  public downloadJsonHref: string;
 
   public managerFacilities: [string, number][];
 
   // public selectedFacility: [string, number];
 
-  constructor(private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) ***REMOVED***
+  constructor(private sanitizer: DomSanitizer, private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) ***REMOVED***
     super();
 
   ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
+
     this.getVoProjects();
     this.voserice.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate) => ***REMOVED***
       this.newsletterSubscriptionCounter = <number>result.value
 
     ***REMOVED***);
+  ***REMOVED***
+
+  getApplicationInfos(): void ***REMOVED***
+    this.voserice.getVoProjectResourcesTimeframes().subscribe()
+
+    this.voserice.getVoProjectCounter().subscribe();
+    this.voserice.getVoProjectDates().subscribe();
   ***REMOVED***
 
   sendEmail(subject: string, message: string, reply?: string): void ***REMOVED***
