@@ -237,9 +237,9 @@ export class FacilityService {
 
   /**
    * Sends an email to all members of the facility.
-   * @param facility facility where to send the email
-   * @param subject subject of the email
-   * @param message message from the email
+   * @param facility facility that should be contacted
+   * @param subject email subject
+   * @param message email message
    * @param reply reply address
    * @returns {Observable<any>}
    */
