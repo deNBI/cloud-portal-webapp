@@ -5,47 +5,56 @@ import {ComputecenterComponent} from '../../projectmanagement/computecenter.comp
  */
 export class CoreFactor {
 
-    private _id:string;
-    private _factor: number;
-    private _cores: number;
-    private _compute_center: ComputecenterComponent;
+  private _id: string;
+  private _factor: number;
+  private _cores: number;
+  private _compute_center: ComputecenterComponent;
+  private _description: string;
 
-    constructor(factor: number, cores: number, compute_center: ComputecenterComponent) {
-        this._factor = factor;
-        this._cores = cores;
-        this._compute_center = compute_center;
-    }
+  constructor(factor: number, cores: number, compute_center: ComputecenterComponent, description: string) {
+    this._factor = factor;
+    this._cores = cores;
+    this._compute_center = compute_center;
+    this._description = description;
+  }
 
+  get description(): string {
+    return this._description;
+  }
 
-    get id(): string {
-        return this._id;
-    }
+  set description(value: string) {
+    this._description = value;
+  }
 
-    set id(value: string) {
-        this._id = value;
-    }
+  get id(): string {
+    return this._id;
+  }
 
-    get factor(): number {
-        return this._factor;
-    }
+  set id(value: string) {
+    this._id = value;
+  }
 
-    set factor(value: number) {
-        this._factor = value;
-    }
+  get factor(): number {
+    return this._factor;
+  }
 
-    get cores(): number {
-        return this._cores;
-    }
+  set factor(value: number) {
+    this._factor = value;
+  }
 
-    set cores(value: number) {
-        this._cores = value;
-    }
+  get cores(): number {
+    return this._cores;
+  }
 
-    get compute_center(): ComputecenterComponent {
-        return this._compute_center;
-    }
+  set cores(value: number) {
+    this._cores = value;
+  }
 
-    set compute_center(value: ComputecenterComponent) {
-        this._compute_center = value;
-    }
+  get compute_center(): ComputecenterComponent {
+    return this._compute_center;
+  }
+
+  set compute_center(value: ComputecenterComponent) {
+    this._compute_center = value;
+  }
 }
