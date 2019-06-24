@@ -19,14 +19,17 @@
   </div>
 
 </div>
-<div class="row">
+<div class="row ">
+  <div
+  ><strong>Currently selected: ***REMOVED******REMOVED***selectedFlavor.ram / 1024***REMOVED******REMOVED*** GB / ***REMOVED******REMOVED***selectedFlavor.vcpus***REMOVED******REMOVED*** CPUs</strong></div>
 
-  <a class="text-info" style="float: right" *ngIf="flavors.length > flavors_per_row"
-     (click)="flavors_visible=flavors.length"><strong>Show
+  <div class="ml-auto mr-3"
+       *ngIf="flavors.length > flavors_per_row && flavors.length != flavors_visible"
+       (click)="flavors_visible=flavors.length"><strong class="text-info">Show
     all
-    flavors</strong></a>
-  <a class="text-info" style="float: right"
-     *ngIf="flavors.length == flavors_visible && flavors.length > flavors_per_row"
-     (click)="flavors_visible=flavors_per_row"><strong>Hide
-    flavors</strong></a>
+    flavors</strong></div>
+  <div class="ml-auto mr-3"
+       *ngIf="flavors.length == flavors_visible && flavors.length > flavors_per_row"
+       (click)="flavors_visible=flavors_per_row"><strong class="text-info">Hide
+    flavors</strong></div>
 </div>
