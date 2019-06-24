@@ -1,5 +1,5 @@
 import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-
+import ***REMOVED***CarouselModule***REMOVED*** from 'ngx-owl-carousel-o';
 import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
 import ***REMOVED***VmRoutingModule***REMOVED*** from './vm_routing.module';
 import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
@@ -15,7 +15,7 @@ import ***REMOVED***SnapshotOverviewComponent***REMOVED*** from './snapshots/sna
 import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination'
 import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared/shared_modules/public-key/public-key.module';
 import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
-import ***REMOVED*** BsDropdownModule ***REMOVED*** from 'ngx-bootstrap';
+import ***REMOVED***BsDropdownModule***REMOVED*** from 'ngx-bootstrap';
 import ***REMOVED***BiocondaComponent***REMOVED*** from './conda/bioconda.component';
 import ***REMOVED***HowToConnectComponent***REMOVED*** from './shared-modal/how-to-connect.component';
 
@@ -23,29 +23,30 @@ import ***REMOVED***HowToConnectComponent***REMOVED*** from './shared-modal/how-
  * VM module.
  */
 @NgModule(***REMOVED***
-    imports: [
-        ClickOutsideModule,
-        PublicKeyModule,
-        VmRoutingModule,
-        TabsModule,
-        CommonModule,
-        FormsModule,
-        ModalModule.forRoot(),
-        PaginationModule.forRoot(),
-        BsDropdownModule.forRoot()
+            imports: [
+              ClickOutsideModule,
+              PublicKeyModule,
+              VmRoutingModule,
+              TabsModule,
+              CommonModule,
+              FormsModule,
+              ModalModule.forRoot(),
+              PaginationModule.forRoot(),
+              BsDropdownModule.forRoot(),
+              CarouselModule
 
-    ],
-    declarations: [
-        ImageDetailComponent,
-        VirtualMachineComponent,
-        FlavorDetailComponent,
-        ClientOverviewComponent,
-        VmOverviewComponent,
-        VolumeOverviewComponent,
-        SnapshotOverviewComponent,
-        HowToConnectComponent,
-        BiocondaComponent
-    ]
-***REMOVED***)
+            ],
+            declarations: [
+              ImageDetailComponent,
+              VirtualMachineComponent,
+              FlavorDetailComponent,
+              ClientOverviewComponent,
+              VmOverviewComponent,
+              VolumeOverviewComponent,
+              SnapshotOverviewComponent,
+              HowToConnectComponent,
+              BiocondaComponent
+            ]
+          ***REMOVED***)
 export class VmModule ***REMOVED***
 ***REMOVED***
