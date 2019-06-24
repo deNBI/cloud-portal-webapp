@@ -1,29 +1,32 @@
-<div class="table-responsive">
-  <table class="table table-striped">
-    <tr *ngIf="collapse2">
-      <td class="field-label col-md-6 active">
-        RAM
-      </td>
-      <td class="col-md-6">
-        {{flavor.ram}}MB
-      </td>
-    </tr>
-    <tr *ngIf="collapse2">
-      <td class="field-label col-md-6 active">
-        Root_Disk
-      </td>
-      <td class="col-md-6">
-        {{flavor.rootdisk}}
-      </td>
-    </tr>
-    <tr *ngIf="collapse2">
-      <td class="field-label col-md-6 active">
-        Vcpus
-      </td>
-      <td class="col-md-6">
-        {{flavor.vcpus}}
-      </td>
-    </tr>
+<div class="row">
+  <div *ngFor="  let flavor of flavors; let i=index">
+    <div (click)="setSelectedFlavor(flavor);" class="card" style="width: 18rem;margin-right: 5px"
+         *ngIf="i<flavors_visible">
+      <div [ngClass]="{'bg-success':flavor == selectedFlavor,'bg-info': flavor != selectedFlavor}" class="card-header ">
+        <strong>{{flavor.name}}</strong></div>
+      <div [ngClass]="{'bg-success':flavor == selectedFlavor}" class="card-body ">
+        <div class="col"
+        >{{flavor.ram / 1024}} GB Ram
+        </div>
+        <div class="col"
+        >{{flavor.vcpus}} CPUs
+        </div>
+        <div class="col"
+        >{{flavor.rootdisk}} GB Disk
+        </div>
+      </div>
+    </div>
+  </div>
 
-  </table>
+</div>
+<div class="row">
+
+  <a class="text-info" style="float: right" *ngIf="flavors.length > flavors_per_row"
+     (click)="flavors_visible=flavors.length"><strong>Show
+    all
+    flavors</strong></a>
+  <a class="text-info" style="float: right"
+     *ngIf="flavors.length == flavors_visible && flavors.length > flavors_per_row"
+     (click)="flavors_visible=flavors_per_row"><strong>Hide
+    flavors</strong></a>
 </div>
