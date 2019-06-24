@@ -44,4 +44,8 @@ export class FlavorDetailComponent ***REMOVED***
     this.selectedFlavor = flavor;
     this.selectedFlavorChange.emit(this.selectedFlavor);
   ***REMOVED***
+
+  ramMBtoGB(ram: number): number ***REMOVED***
+    return Math.floor(ram / 1024)
+  ***REMOVED***
 ***REMOVED***

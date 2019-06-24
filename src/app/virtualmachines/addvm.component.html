@@ -205,35 +205,15 @@
 
                 <div *ngIf="selectedProject" class="form-group row">
                   <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
+                  <div class="col-md-10">
 
 
-                  <div class="col-md-6">
-
-                    <select required class="form-control" name="selectedImage"
-                            [(ngModel)]="selectedImage"
-                            [ngClass]="***REMOVED***'is-invalid':f.controls.selectedImage?.invalid && (f.controls.selectedImage?.dirty || f.controls.selectedImage.touched),
-                             'is-valid':f.controls.selectedImage?.valid && (f.controls.selectedImage?.dirty || f.controls.selectedImage?.touched)***REMOVED***">
-                      <option value="undefined" disabled selected hidden> Please
-                        Select
-                      </option>
-
-                      <option *ngFor="let image of images" [ngValue]="image">
-                        ***REMOVED******REMOVED***image.name***REMOVED******REMOVED***
-                      </option>
-
-                    </select>
-
-
+                    <div class="col-md-12">
+                      <app-image-detail [selectedImage]="selectedImage"
+                                        [images]="images"
+                                        (selectedImageChange)="selectedImage=$event"></app-image-detail>
+                    </div>
                   </div>
-                  <button *ngIf="selectedImage"
-                          (click)="collapsed1=!collapsed1; toggleInformationButton()"
-                          class="btn btn-info .btn-pill">
-                    ***REMOVED******REMOVED***informationButton***REMOVED******REMOVED***
-                  </button>
-                </div>
-                <div class="col-md-9">
-                  <app-image-detail [collapse1]="collapsed1"
-                                    [image]="selectedImage"></app-image-detail>
                 </div>
 
 
