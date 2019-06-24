@@ -4,7 +4,7 @@ import ***REMOVED***OwlOptions***REMOVED*** from 'ngx-owl-carousel-o';
 
 @Component(***REMOVED***
              selector: 'app-flavor-detail',
-             templateUrl: 'flavordetail.component.html'
+             templateUrl: 'flavordetail.component.html',
 
            ***REMOVED***)
 export class FlavorDetailComponent ***REMOVED***
@@ -21,7 +21,8 @@ export class FlavorDetailComponent ***REMOVED***
     pullDrag: false,
     dots: true,
     navSpeed: 700,
-    navText: ['Prev', 'Next'],
+    navText: ['<i class=\'fa fa-chevron-left\'></i>',
+      '<i class=\'fa fa-chevron-right\'></i>'],
     responsive: ***REMOVED***
       0: ***REMOVED***
         items: 1
