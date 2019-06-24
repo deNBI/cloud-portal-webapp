@@ -60,7 +60,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   /**
    * All flavors of a project.
    */
-  flavors: Flavor[];
+  flavors: Flavor[] = [];
 
   /**
    * Selected Image.
@@ -179,6 +179,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    */
   FREEMIUM_ID: number = environment.freemium_project_id;
 
+
   /**
    * Time for the check status loop.
    * @type ***REMOVED***number***REMOVED***
@@ -199,7 +200,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    */
   getImages(project_id: number): void ***REMOVED***
 
-    this.imageService.getImages(project_id).subscribe(images => this.images = images);
+    this.imageService.getImages(project_id).subscribe((images: Image[]) => this.images = images);
   ***REMOVED***
 
   /**
@@ -207,7 +208,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    * @param ***REMOVED***number***REMOVED*** project_id
    */
   getFlavors(project_id: number): void ***REMOVED***
-    this.flavorService.getFlavors(project_id).subscribe(flavors => this.flavors = flavors);
+    this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => this.flavors = flavors);
 
   ***REMOVED***
 
