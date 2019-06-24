@@ -22,32 +22,27 @@
 </div>
 
 <owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
-  <div class="owl-nav">
-    <div class="owl-prev">prev</div>
-    <div class="owl-next">next</div>
-  </div>
-
-  <ng-container *ngFor="let flavor of flavors">
-    <ng-template carouselSlide>
-      <div (click)="setSelectedFlavor(flavor);" class="card" style="width: 18rem;margin-right: 5px"
-      >
-        <div [ngClass]="{'bg-success':flavor == selectedFlavor,'bg-info': flavor != selectedFlavor}"
-             class="card-header ">
-          <strong>{{flavor.name}}</strong></div>
-        <div [ngClass]="{'bg-success':flavor == selectedFlavor}" class="card-body ">
-          <div class="col"
-          >{{flavor.ram / 1024}} GB Ram
-          </div>
-          <div class="col"
-          >{{flavor.vcpus}} CPUs
-          </div>
-          <div class="col"
-          >{{flavor.rootdisk}} GB Disk
+    <ng-container *ngFor="let flavor of flavors">
+      <ng-template carouselSlide>
+        <div (click)="setSelectedFlavor(flavor);" class="card" style="width: 18rem;margin-right: 5px"
+        >
+          <div [ngClass]="{'bg-success':flavor == selectedFlavor,'bg-info': flavor != selectedFlavor}"
+               class="card-header ">
+            <strong>{{flavor.name}}</strong></div>
+          <div [ngClass]="{'bg-success':flavor == selectedFlavor}" class="card-body ">
+            <div class="col"
+            >{{flavor.ram / 1024}} GB Ram
+            </div>
+            <div class="col"
+            >{{flavor.vcpus}} CPUs
+            </div>
+            <div class="col"
+            >{{flavor.rootdisk}} GB Disk
+            </div>
           </div>
         </div>
-      </div>
-    </ng-template>
-  </ng-container>
+      </ng-template>
+    </ng-container>
 
 </owl-carousel-o>
 
