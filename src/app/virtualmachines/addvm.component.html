@@ -166,18 +166,18 @@
                 There are too few cores and not enough ram available for this project to start a new machine.
                 Your principal investigator can request more
                 resources if necessary.
-
               </div>
 
-              <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length > 0">
-                <div *ngIf="selectedProject" class="form-group row  ">
-                  <label class="col-md-2 form-control-label"><strong>Name*</strong></label>
-                  <div class="col-md-9">
-                    <div class="input-group">
-                      <input required id="id_instance_name" name="instance_name"
-                             class="form-control"
-                             type="text" placeholder="Instancename" ngModel
-                             [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
+
+            <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && flavors?.length > 0">
+              <div *ngIf="selectedProject" class="form-group row">
+                <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
+                <div class="col-md-6">
+                  <div class="input-group">
+                    <input required id="id_instance_name" name="instance_name"
+                           class="form-control"
+                           type="text" placeholder="Instancename" ngModel
+                           [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
                     </div>
                     <div style="color: dodgerblue">Info: The instance name will also
@@ -315,17 +315,14 @@
               <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && is_vo"
                    class="form-group row">
 
-                <label class="col-md-2 form-control-label"><strong>Bioconda</strong></label>
-                <div class="col-md-6">
-                  <button type="button" class="btn btn-info .btn-pill"
-                          (click)="bioconda_show = !bioconda_show">
-                    <strong *ngIf="!bioconda_show">Show</strong><strong
-                    *ngIf="bioconda_show">Hide</strong>
-                  </button>
-                </div>
-              </div>
-              <div [hidden]="!bioconda_show" class="col-12">
-                <app-bioconda #bioconda></app-bioconda>
+
+              <label class="col-md-3 form-control-label"><strong>Bioconda </strong><span class="badge badge-primary">BETA</span></label>
+              <div class="col-md-6">
+                <button type="button" class="btn btn-info .btn-pill"
+                        (click)="bioconda_show = !bioconda_show">
+                  <strong *ngIf="!bioconda_show">Show</strong><strong
+                  *ngIf="bioconda_show">Hide</strong>
+                </button>
               </div>
             </div>
           </form>
@@ -333,9 +330,9 @@
         </div>
 
 
-        <div class="form-group row"
-             *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length > 0">
 
+      <div class="form-group row"
+           *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && flavors?.length > 0">
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;

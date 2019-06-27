@@ -9,6 +9,7 @@ import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-cl
 import {IResponseTemplate} from '../api-connector/response-template';
 import {FacilityService} from '../api-connector/facility.service';
 import {forkJoin} from 'rxjs/index';
+import {Application} from '../applications/application.model';
 import {DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 
 /**
@@ -91,7 +92,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   applyFilter(): void {
-    this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
+    this.projects_filtered = this.projects.filter((project: Project) => this.checkFilter(project));
 
   }
 
@@ -224,6 +225,13 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   }
 
+  public resetNotificationModal(): void {
+    this.notificationModalTitle = 'Notification';
+    this.notificationModalMessage = 'Please wait...';
+    this.notificationModalIsClosable = false;
+    this.notificationModalType = 'info';
+  }
+
   /**
    * Get all computecenters.
    */
@@ -237,6 +245,24 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
       }
 
     })
+  }
+
+  public terminateProject(): void {
+    this.voserice.terminateProject(this.selectedProject.Id)
+      .subscribe(() => {
+                   const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
+
+                   this.projects.splice(indexAll, 1);
+                   this.applyFilter();
+
+                   this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
+
+                 },
+                 () => {
+                   this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
+
+                 }
+      )
   }
 
   getProjectLifetime(project: Project): void {
@@ -295,25 +321,26 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   getMembesOfTheProject(projectid: number, projectname: string): void {
-    this.voserice.getVoGroupRichMembers(projectid).subscribe(members => {
-                                                               this.usersModalProjectID = projectid;
-                                                               this.usersModalProjectName = projectname;
-                                                               this.usersModalProjectMembers = new Array();
-                                                               for (const member of members) {
-                                                                 const member_id: number = member['id'];
-                                                                 const user_id: number = member['userId'];
-                                                                 const fullName: string = `${member['firstName']}  ${member['lastName']}`;
-                                                                 const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
-                                                                 newMember.ElixirId = member['elixirId'];
-                                                                 newMember.Email = member['email'];
-                                                                 this.usersModalProjectMembers.push(newMember);
-                                                               }
+    this.voserice.getVoGroupRichMembers(projectid)
+      .subscribe(members => {
+                   this.usersModalProjectID = projectid;
+                   this.usersModalProjectName = projectname;
+                   this.usersModalProjectMembers = new Array();
+                   for (const member of members) {
+                     const member_id: number = member['id'];
+                     const user_id: number = member['userId'];
+                     const fullName: string = `${member['firstName']}  ${member['lastName']}`;
+                     const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
+                     newMember.ElixirId = member['elixirId'];
+                     newMember.Email = member['email'];
+                     this.usersModalProjectMembers.push(newMember);
+                   }
 
-                                                             }
-    )
+                 }
+      )
   }
 
-  showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]): void {
+  showMembersOfTheProject(projectid: number, projectname: string): void {
     this.getMembesOfTheProject(projectid, projectname);
 
   }

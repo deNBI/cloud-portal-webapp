@@ -16,7 +16,7 @@ export const environment = {
   apiBaseUrl: 'http://portal-dev.denbi.de:8000/api/v0/',
   voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev',
   connectorBaseUrl: 'http://portal-dev.denbi.de:8000/connector/',
-  login: 'https://portal-dev.denbi.de/portal/',
+  login: 'http://portal-dev.denbi.de:8000',
   matomoServer: ''
 
 };
