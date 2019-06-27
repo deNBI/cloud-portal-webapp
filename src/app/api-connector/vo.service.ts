@@ -42,6 +42,15 @@ export class VoService ***REMOVED***
 
   ***REMOVED***
 
+  terminateProject(groupId: number | string): Observable<object> ***REMOVED***
+    return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupId***REMOVED***/`, ***REMOVED***
+      withCredentials: true,
+      headers: header
+    ***REMOVED***)
+
+  ***REMOVED***
+
+
   removeResourceFromGroup(groupid: number | string): Observable<object> ***REMOVED***
     return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/resource/`, ***REMOVED***
       withCredentials: true,
@@ -71,6 +80,7 @@ export class VoService ***REMOVED***
       headers: header
     ***REMOVED***)
   ***REMOVED***
+
 
   getVoProjectResourcesTimeframes(): Observable<Resources[]> ***REMOVED***
     return this.http.get<Resources[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/resources/timeFrames/`, ***REMOVED***

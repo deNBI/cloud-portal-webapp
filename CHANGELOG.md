@@ -1,3 +1,15 @@
+##  (2019-06-27)
+
+
+#### Features
+
+* **bioconda:**  declared as beta ([1a600650](1a600650))
+* **github:**  new pr-template (#502) ([5b3ff3a0](5b3ff3a0))
+* **userinfo:**  added linked logo for user meeting ([486c409c](486c409c))
+* **flavors:** added cards and carousel
+* **images** added images and carousel
+
+
 ##  (2019-06-17)
 
 
