@@ -29,12 +29,9 @@
         Get JSON
       </button>
 
-
-
       <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Projects
-
         </div>
 
         <div class="card-body">
@@ -48,11 +45,6 @@
                 <th>Project Name</th>
                 <th>Details</th>
                 <th>Status</th>
-
-                <!--th>Date created (d/m/y)</th>
-                <!--th>Expiration Date (d/m/y)</th-->
-                <!--th>Days running</th>
-                <!---th>Lifetime in Days</th-->
                 <th>Actions</th>
               </tr>
               </thead>
@@ -119,8 +111,6 @@
                 </div>
 
               </td>
-
-
               <tr *ngFor="let project of projects_filtered">
                 <td>
                                      <span *ngIf="project.OpenStackProject"
@@ -167,13 +157,8 @@
                 </td>
 
 
-                <!--td>{{ project.DateCreated }}</td>
-                <!--td>{{project.DateEnd}}</td-->
-                <!--td>{{ project.DaysRunning }}</td>
-
-                <!--td>{{project.LifetimeDays}}</td-->
                 <td>
-                  <button type="button" class="btn btn-secondary"
+                  <button type="button" class="btn btn-info"
                           data-toggle="modal"
                           (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
 
@@ -182,11 +167,19 @@
                   </button>
                   <button *ngIf="project.Status == 2" style="margin-left: 5px"
                           type="button"
-                          class="btn btn-secondary"
+                          class="btn btn-warning"
                           (click)="selectedProject = project;suspendModal.show();"
 
                   >
-                    <i class="fa fa-users"></i>&nbsp;Suspend Project
+                    <i class="fa fa-pause"></i>&nbsp;Suspend Project
+                  </button>
+                  <button *ngIf="project.Status == 2" style="margin-left: 5px"
+                          type="button"
+                          class="btn btn-danger"
+                          (click)="selectedProject = project;terminateModal.show();"
+
+                  >
+                    <i class="fa fa-trash"></i>&nbsp;Terminate Project
                   </button>
                 </td>
               </tr>
@@ -541,8 +534,75 @@
 </div>
 
 
+<div bsModal #terminateModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Terminate Project</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="terminateModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="alert alert-warning" role="alert">
+          Are you sure you want to terminate this project?
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                (click)="terminateProject();terminateModal.hide();notificationModal.show()">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="terminateModal.hide()">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
+<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="notificationModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-{{ notificationModalType }}" role="alert">
+          {{ notificationModalMessage }}
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
+                type="button"
+                (click)="notificationModal.hide();resetNotificationModal()"
+                class="btn  btn-secondary"> Close
+        </button>
+        <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
+           [routerLink]="['/applications']">
+          <button type="button"
+                  (click)="notificationModal.hide();resetNotificationModal()" type="reset"
+                  class="btn  btn-secondary"> Close
+          </button>
+        </a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 
