@@ -1,29 +1,55 @@
-<div class="table-responsive">
-  <table class="table table-striped">
-    <tr *ngIf="collapse1">
-      <td class="field-label col-md-6 active">
-        Description
-      </td>
-      <td class="col-md-6">
-        ***REMOVED******REMOVED***image.description***REMOVED******REMOVED***
-      </td>
-    </tr>
-    <tr *ngIf="collapse1">
-      <td class="field-label col-md-6 active">
-        Min_Disk
-      </td>
-      <td class="col-md-6">
-        ***REMOVED******REMOVED***image.min_disk***REMOVED******REMOVED*** GB
-      </td>
-    </tr>
-    <tr *ngIf="collapse1">
-      <td class="field-label col-md-6 active">
-        Min_Ram
-      </td>
-      <td class="col-md-6">
-        ***REMOVED******REMOVED***image.min_ram***REMOVED******REMOVED*** MB
-      </td>
-    </tr>
+<div *ngIf="!carousel_activated" class="row">
+  <div *ngFor="  let image of images">
+    <div (click)="setSelectedImage(image);" class="card" style="width: 18rem;margin-right: 5px"
+    >
+      <div [ngClass]="***REMOVED***'bg-success':image == selectedImage,'bg-warning': image != selectedImage***REMOVED***"
+           class="card-header ">
+        <strong>***REMOVED******REMOVED***image.name***REMOVED******REMOVED***</strong></div>
+      <div [ngClass]="***REMOVED***'bg-success':image == selectedImage***REMOVED***" class="card-body ">
+        <div class="col">
+          ***REMOVED******REMOVED***image.description***REMOVED******REMOVED***
 
-  </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+<owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
+  <ng-container *ngFor="let image of images">
+    <ng-template carouselSlide>
+      <div (click)="setSelectedImage(image);" class="card" style="width: 18rem;margin-right: 5px"
+      >
+        <div [ngClass]="***REMOVED***'bg-success':image == selectedImage,'bg-warning': image != selectedImage***REMOVED***"
+             class="card-header ">
+          <strong>***REMOVED******REMOVED***image.name***REMOVED******REMOVED***</strong></div>
+        <div [ngClass]="***REMOVED***'bg-success':image == selectedImage***REMOVED***" class="card-body ">
+          <div class="col">
+            ***REMOVED******REMOVED***image.description***REMOVED******REMOVED***
+
+
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ng-container>
+
+</owl-carousel-o>
+
+
+<div class="row ">
+  <div
+  ><strong>Currently selected: ***REMOVED******REMOVED***selectedImage?.name***REMOVED******REMOVED***</strong></div>
+
+  <div class="ml-auto mr-3"
+       *ngIf="carousel_activated"
+       (click)="carousel_activated=false;"><strong class="text-info">Show
+    all
+    images</strong></div>
+  <div class="ml-auto mr-3"
+       *ngIf="!carousel_activated"
+       (click)="carousel_activated=true;"><strong class="text-info">Hide
+    images</strong></div>
+</div>
+
