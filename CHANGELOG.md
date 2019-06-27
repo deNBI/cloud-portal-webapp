@@ -1,3 +1,26 @@
+##  (2019-06-17)
+
+
+
+#### Features
+
+* **VirtualMachines:** tabs should load faster
+
+#### Bug Fixes
+
+* **TestButton:**
+  *  openstack  test applicaiton btn works again ([b0bb967c](b0bb967c))
+  *  simple vm test applicaiton btn works again ([d768120f](d768120f))
+
+* **Loop:**
+  * fixed the loop
+
+
+#### Features
+
+* **VirtualMachines:** added small loader when selecting a project, progressbar background darkgray ([ff3de0c2](ff3de0c2))
+
+
 ##  (2019-06-05)
 
 
