@@ -22,11 +22,16 @@
         Send email
       </button>
 
+      <button (click)="getApplicationInfos()" type="button "
+              class="btn btn-outline-primary"
+              style="margin-bottom: auto;margin-left: 5px; margin-top: auto"><i
+        class="icon-info"></i>
+        Get JSON
+      </button>
 
       <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Projects
-
         </div>
 
         <div class="card-body">
@@ -106,8 +111,6 @@
                 </div>
 
               </td>
-
-
               <tr *ngFor="let project of projects_filtered">
                 <td>
                                      <span *ngIf="project.OpenStackProject"
@@ -162,7 +165,6 @@
                   >
                     <i class="fa fa-users"></i>&nbsp;Show Members
                   </button>
-
                   <button *ngIf="project.Status == 2" style="margin-left: 5px"
                           type="button"
                           class="btn btn-warning"

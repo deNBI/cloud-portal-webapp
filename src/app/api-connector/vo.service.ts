@@ -50,6 +50,7 @@ export class VoService ***REMOVED***
 
   ***REMOVED***
 
+
   removeResourceFromGroup(groupid: number | string): Observable<object> ***REMOVED***
     return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/resource/`, ***REMOVED***
       withCredentials: true,
@@ -75,6 +76,28 @@ export class VoService ***REMOVED***
 
   getVoProjectResources(): Observable<Resources[]> ***REMOVED***
     return this.http.get<Resources[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/resources/`, ***REMOVED***
+      withCredentials: true,
+      headers: header
+    ***REMOVED***)
+  ***REMOVED***
+
+
+  getVoProjectResourcesTimeframes(): Observable<Resources[]> ***REMOVED***
+    return this.http.get<Resources[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/resources/timeFrames/`, ***REMOVED***
+      withCredentials: true,
+      headers: header
+    ***REMOVED***)
+  ***REMOVED***
+
+  getVoProjectDates(): Observable<Resources[]> ***REMOVED***
+    return this.http.get<Resources[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/dates/`, ***REMOVED***
+      withCredentials: true,
+      headers: header
+    ***REMOVED***)
+  ***REMOVED***
+
+  getVoProjectCounter(): Observable<Resources[]> ***REMOVED***
+    return this.http.get<Resources[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/counter/`, ***REMOVED***
       withCredentials: true,
       headers: header
     ***REMOVED***)
