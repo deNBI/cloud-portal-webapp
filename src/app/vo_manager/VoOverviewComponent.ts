@@ -9,6 +9,7 @@ import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
 import ***REMOVED***forkJoin***REMOVED*** from 'rxjs/index';
+import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
 import ***REMOVED***DomSanitizer, SafeResourceUrl, SafeUrl***REMOVED*** from '@angular/platform-browser';
 
 /**
@@ -91,7 +92,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
   ***REMOVED***
 
   applyFilter(): void ***REMOVED***
-    this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
+    this.projects_filtered = this.projects.filter((project: Project) => this.checkFilter(project));
 
   ***REMOVED***
 
@@ -224,6 +225,13 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
   ***REMOVED***
 
+  public resetNotificationModal(): void ***REMOVED***
+    this.notificationModalTitle = 'Notification';
+    this.notificationModalMessage = 'Please wait...';
+    this.notificationModalIsClosable = false;
+    this.notificationModalType = 'info';
+  ***REMOVED***
+
   /**
    * Get all computecenters.
    */
@@ -237,6 +245,24 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
       ***REMOVED***
 
     ***REMOVED***)
+  ***REMOVED***
+
+  public terminateProject(): void ***REMOVED***
+    this.voserice.terminateProject(this.selectedProject.Id)
+      .subscribe(() => ***REMOVED***
+                   const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
+
+                   this.projects.splice(indexAll, 1);
+                   this.applyFilter();
+
+                   this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
+
+                 ***REMOVED***,
+                 () => ***REMOVED***
+                   this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
+
+                 ***REMOVED***
+      )
   ***REMOVED***
 
   getProjectLifetime(project: Project): void ***REMOVED***
@@ -295,25 +321,26 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
   ***REMOVED***
 
   getMembesOfTheProject(projectid: number, projectname: string): void ***REMOVED***
-    this.voserice.getVoGroupRichMembers(projectid).subscribe(members => ***REMOVED***
-                                                               this.usersModalProjectID = projectid;
-                                                               this.usersModalProjectName = projectname;
-                                                               this.usersModalProjectMembers = new Array();
-                                                               for (const member of members) ***REMOVED***
-                                                                 const member_id: number = member['id'];
-                                                                 const user_id: number = member['userId'];
-                                                                 const fullName: string = `$***REMOVED***member['firstName']***REMOVED***  $***REMOVED***member['lastName']***REMOVED***`;
-                                                                 const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
-                                                                 newMember.ElixirId = member['elixirId'];
-                                                                 newMember.Email = member['email'];
-                                                                 this.usersModalProjectMembers.push(newMember);
-                                                               ***REMOVED***
+    this.voserice.getVoGroupRichMembers(projectid)
+      .subscribe(members => ***REMOVED***
+                   this.usersModalProjectID = projectid;
+                   this.usersModalProjectName = projectname;
+                   this.usersModalProjectMembers = new Array();
+                   for (const member of members) ***REMOVED***
+                     const member_id: number = member['id'];
+                     const user_id: number = member['userId'];
+                     const fullName: string = `$***REMOVED***member['firstName']***REMOVED***  $***REMOVED***member['lastName']***REMOVED***`;
+                     const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
+                     newMember.ElixirId = member['elixirId'];
+                     newMember.Email = member['email'];
+                     this.usersModalProjectMembers.push(newMember);
+                   ***REMOVED***
 
-                                                             ***REMOVED***
-    )
+                 ***REMOVED***
+      )
   ***REMOVED***
 
-  showMembersOfTheProject(projectid: number, projectname: string, facility: [string, number]): void ***REMOVED***
+  showMembersOfTheProject(projectid: number, projectname: string): void ***REMOVED***
     this.getMembesOfTheProject(projectid, projectname);
 
   ***REMOVED***
