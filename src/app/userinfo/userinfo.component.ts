@@ -135,8 +135,7 @@ export class UserInfoComponent implements OnInit ***REMOVED***
     ***REMOVED***
 
   ***REMOVED***
-
-
+  
   validatePublicKey(): boolean ***REMOVED***
 
     if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]***REMOVED***0,3***REMOVED***( [^@]+@[^@]+)?/.test(this.newPublicKey)) ***REMOVED***

@@ -17,9 +17,9 @@ import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
  * Application base component..
  */
 @Component(***REMOVED***
-  template: '',
-  providers: [FacilityService, ApplicationsService, FlavorService]
-***REMOVED***)
+             template: '',
+             providers: [FacilityService, ApplicationsService, FlavorService]
+           ***REMOVED***)
 export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
 
   /**
@@ -28,12 +28,10 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
    */
   isLoaded_AllApplication: boolean = false;
 
-
   /**
    * Selected Application.
    */
   selectedApplication: Application;
-
 
   /**
    * All available compute centers.
@@ -46,7 +44,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
    * @type ***REMOVED***Array***REMOVED***
    */
   application_status: ApplicationStatus[] = [];
-
 
   /**
    * User which requested the Application ***REMOVED***id: Elixir id of user : ***REMOVED***name and email***REMOVED******REMOVED***.
@@ -62,7 +59,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
    * List of all collapse booleans.
    */
   collapseList: boolean[];
-
 
   /**
    * Total number of cores.
@@ -104,14 +100,12 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
 
   public project_application_pi_approved: boolean = false;
 
-
   /**
    * Name of the project.
    */
   public projectName: string;
 
   public project_application_report_allowed: boolean = false;
-
 
   /**
    * Applications of the user viewing the Application overview.
@@ -323,7 +317,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***
 
         newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateStatusChanged).getTime()))
-          / (1000 * 3600 * 24));
+                                         / (1000 * 3600 * 24));
         newApp.Comment = aj['project_application_comment'];
         newApp.PerunId = aj['project_application_perun_id'];
 
@@ -349,8 +343,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
               flavor.epheremal_disk);
             requestExtensionTotalCores += flavor.vcpus * flavor.counter;
             requestExtensionTotalRam += flavor.ram * flavor.counter;
-
-
 
           ***REMOVED***
           newExtension.TotalRAM = requestExtensionTotalRam;
@@ -447,7 +439,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
 
   ***REMOVED***
 
-
   /**
    * Uses the data from the application form to fill the confirmation-modal with information.
    * @param form the application form with corresponding data
@@ -481,19 +472,16 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
         ***REMOVED***
       ***REMOVED***
 
-
     ***REMOVED***
     if (!this.project_application_report_allowed && !this.extension_request) ***REMOVED***
       this.valuesToConfirm.push('Dissemination allowed: No');
     ***REMOVED***
     if (this.project_application_pi_approved) ***REMOVED***
       this.valuesToConfirm.push('Principal Investigator : Yes');
-    ***REMOVED***
-    else ***REMOVED***
+    ***REMOVED*** else ***REMOVED***
       this.valuesToConfirm.push('Principal Investigator : No');
 
     ***REMOVED***
-
 
   ***REMOVED***
 
@@ -505,7 +493,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
     this.wronginput = !/^[a-zA-Z0-9\s]*$/.test(shortname);
   ***REMOVED***
 
-
   /**
    * Fills the array constantStrings with values dependent of keys which are used to indicate inputs from the application-form
    */
@@ -516,7 +503,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
     this.constantStrings['project_application_comment'] = 'Comment: ';
     this.constantStrings['project_application_pi_email'] = 'Principal Investigator Email: ';
     this.constantStrings['project_application_bmbf_project'] = 'BMBF Project: ';
-
 
     this.constantStrings['project_application_lifetime'] = 'Lifetime of your project: ';
     this.constantStrings['project_application_volume_counter'] = 'Number of volumes for additional storage: ';
