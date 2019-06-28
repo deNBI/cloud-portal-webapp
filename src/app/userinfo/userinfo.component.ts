@@ -135,8 +135,7 @@ export class UserInfoComponent implements OnInit {
     }
 
   }
-
-
+  
   validatePublicKey(): boolean {
 
     if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.newPublicKey)) {
