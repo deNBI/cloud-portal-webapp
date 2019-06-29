@@ -1,11 +1,26 @@
 <div *ngIf="!carousel_activated" class="row">
-  <div *ngFor="  let image of images">
-    <div (click)="setSelectedImage(image);" class="card" style="width: 18rem;margin-right: 5px"
+  <div *ngIf="selectedImage" class="col-3" style="cursor: pointer;">
+    <div class="card border-success" style="width: 18rem;margin-right: 5px"
     >
-      <div [ngClass]="{'bg-success':image == selectedImage,'bg-warning': image != selectedImage}"
-           class="card-header ">
+      <div
+        class="card-header bg-success ">
+        <strong>Selected: {{selectedImage?.name}}</strong></div>
+      <div class="card-body ">
+        <div class="col">
+          {{selectedImage?.description}}
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngFor="  let image of images" style="cursor: pointer;" class="col-3">
+    <div (click)="setSelectedImage(image);" class="card " style="width: 18rem;margin-right: 5px"
+    >
+      <div
+        class="card-header bg-warning ">
         <strong>{{image.name}}</strong></div>
-      <div [ngClass]="{'bg-success':image == selectedImage}" class="card-body ">
+      <div class="card-body ">
         <div class="col">
           {{image.description}}
 
@@ -15,41 +30,57 @@
   </div>
 </div>
 
-
-<owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
-  <ng-container *ngFor="let image of images">
-    <ng-template carouselSlide>
-      <div (click)="setSelectedImage(image);" class="card" style="width: 18rem;margin-right: 5px"
-      >
-        <div [ngClass]="{'bg-success':image == selectedImage,'bg-warning': image != selectedImage}"
-             class="card-header ">
-          <strong>{{image.name}}</strong></div>
-        <div [ngClass]="{'bg-success':image == selectedImage}" class="card-body ">
-          <div class="col">
-            {{image.description}}
+<div *ngIf="carousel_activated" class="row">
+  <div *ngIf="selectedImage" class="col-3" style="cursor: pointer;">
+    <div class="card border-success" style="width: 18rem;margin-right: 5px"
+    >
+      <div
+        class="card-header bg-success ">
+        <strong>Selected: {{selectedImage?.name}}</strong></div>
+      <div class="card-body ">
+        <div class="col">
+          {{selectedImage?.description}}
 
 
-          </div>
         </div>
       </div>
-    </ng-template>
-  </ng-container>
+    </div>
+  </div>
 
-</owl-carousel-o>
+  <div [ngClass]="{'col-9':selectedImage,'col-12':!selectedImage}">
+    <owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
+      <ng-container *ngFor="let image of images">
+        <ng-template carouselSlide>
+          <div (click)="setSelectedImage(image);" class="card" style="width: 18rem;margin-right: 5px; cursor: pointer;"
+          >
+            <div
+              class="card-header bg-warning">
+              <strong>{{image.name}}</strong></div>
+            <div class="card-body ">
+              <div class="col">
+                {{image.description}}
+
+
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+
+    </owl-carousel-o>
+  </div>
+</div>
 
 
 <div class="row ">
-  <div
-  ><strong>Currently selected: {{selectedImage?.name}}</strong></div>
-
-  <div class="ml-auto mr-3"
-       *ngIf="carousel_activated"
+  <div class="ml-auto mr-3" style="cursor: pointer;"
+       *ngIf="carousel_activated && images.length > images_per_row"
        (click)="carousel_activated=false;"><strong class="text-info">Show
     all
     images</strong></div>
-  <div class="ml-auto mr-3"
-       *ngIf="!carousel_activated"
-       (click)="carousel_activated=true;"><strong class="text-info">Hide
+  <div class="ml-auto mr-3" style="cursor: pointer;"
+       *ngIf="!carousel_activated && images.length > images_per_row"
+       (click)="changeResponsiveOwl();carousel_activated=true;"><strong class="text-info">Hide
     images</strong></div>
 </div>
 

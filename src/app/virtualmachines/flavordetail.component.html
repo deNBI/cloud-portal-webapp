@@ -24,10 +24,10 @@
   <div *ngFor="  let flavor of flavors" style="cursor: pointer;" class="col-3">
     <div (click)="setSelectedFlavor(flavor);" class="card" style="width: 18rem;margin-right: 5px"
     >
-      <div [ngClass]="{'bg-success':flavor == selectedFlavor,'bg-info': flavor != selectedFlavor}"
-           class="card-header ">
+      <div
+        class="card-header bg-info ">
         <strong>{{flavor.name}}</strong></div>
-      <div [ngClass]="{'bg-success':flavor == selectedFlavor}" class="card-body ">
+      <div class="card-body ">
         <div class="col"
         >{{ramMBtoGB(flavor.ram)}} GB Ram
         </div>
@@ -74,10 +74,10 @@
         <ng-template carouselSlide>
           <div (click)="setSelectedFlavor(flavor);" class="card" style="width: 18rem;margin-right: 5px;cursor: pointer;"
           >
-            <div [ngClass]="{'bg-success':flavor == selectedFlavor,'bg-info': flavor != selectedFlavor}"
-                 class="card-header ">
+            <div
+              class="card-header bg-info">
               <strong>{{flavor.name}}</strong></div>
-            <div [ngClass]="{'bg-success':flavor == selectedFlavor}" class="card-body ">
+            <div class="card-body ">
               <div class="col"
               >{{ramMBtoGB(flavor.ram)}} GB Ram
               </div>
@@ -108,7 +108,7 @@
     flavors</strong></div>
   <div class="ml-auto mr-3"
        *ngIf="!carousel_activated && flavors.length > flavors_per_row "
-       (click)="changeResponsiveowl();carousel_activated=true;" style="cursor: pointer;"><strong class="text-info">Hide
+       (click)="changeResponsiveOwl();carousel_activated=true;" style="cursor: pointer;"><strong class="text-info">Hide
     flavors</strong></div>
 </div>
 

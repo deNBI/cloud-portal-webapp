@@ -14,6 +14,7 @@ export class ImageDetailComponent {
   @Input() collapse1: boolean;
   @Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
   carousel_activated: boolean = true;
+  images_per_row: number = 4;
   customOptions: OwlOptions = {
     loop: true,
     mouseDrag: false,
@@ -40,7 +41,29 @@ export class ImageDetailComponent {
     nav: true
   };
 
+  changeResponsiveOwl(): void {
+    this.customOptions.responsive = {
+      0: {
+        items: 1
+      },
+      400: {
+        items: 2
+      },
+      740: {
+        items: 3
+      }
+    }
+  }
+
   setSelectedImage(image: Image): void {
+    const indexNewSelectedImage: number = this.images.indexOf(image, 0);
+
+    if (this.selectedImage) {
+      this.images[indexNewSelectedImage] = this.selectedImage;
+    } else {
+      this.images.splice(indexNewSelectedImage, 1);
+    }
+
     this.selectedImage = image;
     this.selectedImageChange.emit(this.selectedImage);
   }

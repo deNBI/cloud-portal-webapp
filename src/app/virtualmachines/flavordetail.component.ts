@@ -39,7 +39,7 @@ export class FlavorDetailComponent {
     nav: true
   };
 
-  changeResponsiveowl(): void {
+  changeResponsiveOwl(): void {
     this.customOptions.responsive = {
       0: {
         items: 1
