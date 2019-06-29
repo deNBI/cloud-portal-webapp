@@ -9,14 +9,14 @@
         <div class="col"
         >{{ramMBtoGB(selectedFlavor?.ram)}} GB Ram
         </div>
-        <div class="col"
+        <div *ngIf="selectedFlavor?.gpu <= 0" class="col"
         >{{selectedFlavor?.vcpus}} CPUs
+        </div>
+        <div *ngIf="selectedFlavor?.gpu > 0" class="col"
+        >{{selectedFlavor?.vcpus}} CPUs | {{selectedFlavor?.gpu}} GPUs
         </div>
         <div class="col"
         >{{selectedFlavor?.rootdisk}} GB Disk
-        </div>
-        <div *ngIf="selectedFlavor?.gpu > 0" class="col"
-        >{{selectedFlavor?.gpu}} GPUs
         </div>
       </div>
     </div>
@@ -31,14 +31,14 @@
         <div class="col"
         >{{ramMBtoGB(flavor.ram)}} GB Ram
         </div>
-        <div class="col"
+        <div *ngIf="flavor.gpu <= 0" class="col"
         >{{flavor.vcpus}} CPUs
+        </div>
+        <div *ngIf="flavor.gpu > 0" class="col"
+        >{{flavor.vcpus}} CPUs | {{flavor.gpu}} GPUs
         </div>
         <div class="col"
         >{{flavor.rootdisk}} GB Disk
-        </div>
-        <div *ngIf="flavor.gpu > 0" class="col"
-        >{{flavor.gpu}} GPUs
         </div>
       </div>
     </div>
@@ -56,14 +56,14 @@
         <div class="col"
         >{{ramMBtoGB(selectedFlavor?.ram)}} GB Ram
         </div>
-        <div class="col"
+        <div *ngIf="selectedFlavor?.gpu <= 0" class="col"
         >{{selectedFlavor?.vcpus}} CPUs
+        </div>
+        <div *ngIf="selectedFlavor?.gpu > 0" class="col"
+        >{{selectedFlavor?.vcpus}} CPUs | {{selectedFlavor?.gpu}} GPUs
         </div>
         <div class="col"
         >{{selectedFlavor?.rootdisk}} GB Disk
-        </div>
-        <div *ngIf="selectedFlavor?.gpu > 0" class="col"
-        >{{selectedFlavor?.gpu}} GPUs
         </div>
       </div>
     </div>
@@ -81,14 +81,14 @@
               <div class="col"
               >{{ramMBtoGB(flavor.ram)}} GB Ram
               </div>
-              <div class="col"
+              <div *ngIf="flavor.gpu <= 0" class="col"
               >{{flavor.vcpus}} CPUs
+              </div>
+              <div *ngIf="flavor.gpu > 0" class="col"
+              >{{flavor.vcpus}} CPUs | {{flavor.gpu}} GPUs
               </div>
               <div class="col"
               >{{flavor.rootdisk}} GB Disk
-              </div>
-              <div *ngIf="flavor.gpu > 0" class="col"
-              >{{flavor.gpu}} GPUs
               </div>
             </div>
           </div>
