@@ -12,10 +12,9 @@ export class FlavorDetailComponent {
   @Input() flavors: Flavor[];
   @Output() readonly selectedFlavorChange: EventEmitter<Flavor> = new EventEmitter();
   flavors_per_row: number = 4;
-  flavors_visible: number = this.flavors_per_row;
   carousel_activated: boolean = true;
   customOptions: OwlOptions = {
-    loop: true,
+    loop: false,
     mouseDrag: false,
     touchDrag: false,
     pullDrag: false,
@@ -40,8 +39,31 @@ export class FlavorDetailComponent {
     nav: true
   };
 
+  changeResponsiveowl(): void {
+    this.customOptions.responsive = {
+      0: {
+        items: 1
+      },
+      400: {
+        items: 2
+      },
+      740: {
+        items: 3
+      }
+    }
+  }
+
   setSelectedFlavor(flavor: Flavor): void {
+    const indexNewSelectedFlavor: number = this.flavors.indexOf(flavor, 0);
+
+    if (this.selectedFlavor) {
+      this.flavors[indexNewSelectedFlavor] = this.selectedFlavor;
+    } else {
+      this.flavors.splice(indexNewSelectedFlavor, 1);
+    }
+
     this.selectedFlavor = flavor;
+
     this.selectedFlavorChange.emit(this.selectedFlavor);
   }
 

@@ -1,5 +1,27 @@
 <div *ngIf="!carousel_activated" class="row">
-  <div *ngFor="  let flavor of flavors">
+  <div *ngIf="selectedFlavor" class="col-3" style="cursor: pointer;">
+    <div class="card border-success  " style="width: 18rem;margin-right: 5px"
+    >
+      <div
+        class="card-header bg-success ">
+        <strong>Selected: {{selectedFlavor.name}}</strong></div>
+      <div class="card-body ">
+        <div class="col"
+        >{{ramMBtoGB(selectedFlavor?.ram)}} GB Ram
+        </div>
+        <div class="col"
+        >{{selectedFlavor?.vcpus}} CPUs
+        </div>
+        <div class="col"
+        >{{selectedFlavor?.rootdisk}} GB Disk
+        </div>
+        <div *ngIf="selectedFlavor?.gpu > 0" class="col"
+        >{{selectedFlavor?.gpu}} GPUs
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngFor="  let flavor of flavors" style="cursor: pointer;" class="col-3">
     <div (click)="setSelectedFlavor(flavor);" class="card" style="width: 18rem;margin-right: 5px"
     >
       <div [ngClass]="{'bg-success':flavor == selectedFlavor,'bg-info': flavor != selectedFlavor}"
@@ -7,7 +29,7 @@
         <strong>{{flavor.name}}</strong></div>
       <div [ngClass]="{'bg-success':flavor == selectedFlavor}" class="card-body ">
         <div class="col"
-        >{{flavor.ram / 1024}} GB Ram
+        >{{ramMBtoGB(flavor.ram)}} GB Ram
         </div>
         <div class="col"
         >{{flavor.vcpus}} CPUs
@@ -15,50 +37,78 @@
         <div class="col"
         >{{flavor.rootdisk}} GB Disk
         </div>
+        <div *ngIf="flavor.gpu > 0" class="col"
+        >{{flavor.gpu}} GPUs
+        </div>
       </div>
     </div>
   </div>
 
 </div>
-
-<owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
-  <ng-container *ngFor="let flavor of flavors">
-    <ng-template carouselSlide>
-      <div (click)="setSelectedFlavor(flavor);" class="card" style="width: 18rem;margin-right: 5px"
-      >
-        <div [ngClass]="{'bg-success':flavor == selectedFlavor,'bg-info': flavor != selectedFlavor}"
-             class="card-header ">
-          <strong>{{flavor.name}}</strong></div>
-        <div [ngClass]="{'bg-success':flavor == selectedFlavor}" class="card-body ">
-          <div class="col"
-          >{{ramMBtoGB(flavor.ram)}} GB Ram
-          </div>
-          <div class="col"
-          >{{flavor.vcpus}} CPUs
-          </div>
-          <div class="col"
-          >{{flavor.rootdisk}} GB Disk
-          </div>
+<div *ngIf="carousel_activated" class="row">
+  <div *ngIf="selectedFlavor" class="col-3" style="cursor: pointer;">
+    <div class="card border-success" style="width: 18rem;margin-right: 5px"
+    >
+      <div
+        class="card-header bg-success ">
+        <strong>Selected: {{selectedFlavor.name}}</strong></div>
+      <div class="card-body ">
+        <div class="col"
+        >{{ramMBtoGB(selectedFlavor?.ram)}} GB Ram
+        </div>
+        <div class="col"
+        >{{selectedFlavor?.vcpus}} CPUs
+        </div>
+        <div class="col"
+        >{{selectedFlavor?.rootdisk}} GB Disk
+        </div>
+        <div *ngIf="selectedFlavor?.gpu > 0" class="col"
+        >{{selectedFlavor?.gpu}} GPUs
         </div>
       </div>
-    </ng-template>
-  </ng-container>
+    </div>
+  </div>
+  <div [ngClass]="{'col-9':selectedFlavor,'col-12':!selectedFlavor}">
+    <owl-carousel-o [options]="customOptions">
+      <ng-container *ngFor="let flavor of flavors">
+        <ng-template carouselSlide>
+          <div (click)="setSelectedFlavor(flavor);" class="card" style="width: 18rem;margin-right: 5px;cursor: pointer;"
+          >
+            <div [ngClass]="{'bg-success':flavor == selectedFlavor,'bg-info': flavor != selectedFlavor}"
+                 class="card-header ">
+              <strong>{{flavor.name}}</strong></div>
+            <div [ngClass]="{'bg-success':flavor == selectedFlavor}" class="card-body ">
+              <div class="col"
+              >{{ramMBtoGB(flavor.ram)}} GB Ram
+              </div>
+              <div class="col"
+              >{{flavor.vcpus}} CPUs
+              </div>
+              <div class="col"
+              >{{flavor.rootdisk}} GB Disk
+              </div>
+              <div *ngIf="flavor.gpu > 0" class="col"
+              >{{flavor.gpu}} GPUs
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
 
-</owl-carousel-o>
+    </owl-carousel-o>
+  </div>
+</div>
 
 
 <div class="row ">
-  <div
-  ><strong>Currently selected: {{selectedFlavor?.ram / 1024}} GB / {{selectedFlavor?.vcpus}} CPUs</strong></div>
-
   <div class="ml-auto mr-3"
-       *ngIf="carousel_activated"
-       (click)="carousel_activated=false;"><strong class="text-info">Show
+       *ngIf="carousel_activated && flavors.length > flavors_per_row"
+       (click)="carousel_activated=false;" style="cursor: pointer;"><strong class="text-info">Show
     all
     flavors</strong></div>
   <div class="ml-auto mr-3"
-       *ngIf="!carousel_activated"
-       (click)="carousel_activated=true;"><strong class="text-info">Hide
+       *ngIf="!carousel_activated && flavors.length > flavors_per_row "
+       (click)="changeResponsiveowl();carousel_activated=true;" style="cursor: pointer;"><strong class="text-info">Hide
     flavors</strong></div>
 </div>
 
