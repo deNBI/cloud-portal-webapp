@@ -14,6 +14,7 @@ export class ImageDetailComponent ***REMOVED***
   @Input() collapse1: boolean;
   @Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
   carousel_activated: boolean = true;
+  images_per_row: number = 4;
   customOptions: OwlOptions = ***REMOVED***
     loop: true,
     mouseDrag: false,
@@ -40,7 +41,29 @@ export class ImageDetailComponent ***REMOVED***
     nav: true
   ***REMOVED***;
 
+  changeResponsiveOwl(): void ***REMOVED***
+    this.customOptions.responsive = ***REMOVED***
+      0: ***REMOVED***
+        items: 1
+      ***REMOVED***,
+      400: ***REMOVED***
+        items: 2
+      ***REMOVED***,
+      740: ***REMOVED***
+        items: 3
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
   setSelectedImage(image: Image): void ***REMOVED***
+    const indexNewSelectedImage: number = this.images.indexOf(image, 0);
+
+    if (this.selectedImage) ***REMOVED***
+      this.images[indexNewSelectedImage] = this.selectedImage;
+    ***REMOVED*** else ***REMOVED***
+      this.images.splice(indexNewSelectedImage, 1);
+    ***REMOVED***
+
     this.selectedImage = image;
     this.selectedImageChange.emit(this.selectedImage);
   ***REMOVED***

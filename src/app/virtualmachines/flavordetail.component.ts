@@ -39,7 +39,7 @@ export class FlavorDetailComponent ***REMOVED***
     nav: true
   ***REMOVED***;
 
-  changeResponsiveowl(): void ***REMOVED***
+  changeResponsiveOwl(): void ***REMOVED***
     this.customOptions.responsive = ***REMOVED***
       0: ***REMOVED***
         items: 1
