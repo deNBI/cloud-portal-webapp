@@ -9,14 +9,14 @@
         <div class="col"
         >***REMOVED******REMOVED***ramMBtoGB(selectedFlavor?.ram)***REMOVED******REMOVED*** GB Ram
         </div>
-        <div class="col"
+        <div *ngIf="selectedFlavor?.gpu <= 0" class="col"
         >***REMOVED******REMOVED***selectedFlavor?.vcpus***REMOVED******REMOVED*** CPUs
+        </div>
+        <div *ngIf="selectedFlavor?.gpu > 0" class="col"
+        >***REMOVED******REMOVED***selectedFlavor?.vcpus***REMOVED******REMOVED*** CPUs | ***REMOVED******REMOVED***selectedFlavor?.gpu***REMOVED******REMOVED*** GPUs
         </div>
         <div class="col"
         >***REMOVED******REMOVED***selectedFlavor?.rootdisk***REMOVED******REMOVED*** GB Disk
-        </div>
-        <div *ngIf="selectedFlavor?.gpu > 0" class="col"
-        >***REMOVED******REMOVED***selectedFlavor?.gpu***REMOVED******REMOVED*** GPUs
         </div>
       </div>
     </div>
@@ -31,14 +31,14 @@
         <div class="col"
         >***REMOVED******REMOVED***ramMBtoGB(flavor.ram)***REMOVED******REMOVED*** GB Ram
         </div>
-        <div class="col"
+        <div *ngIf="flavor.gpu <= 0" class="col"
         >***REMOVED******REMOVED***flavor.vcpus***REMOVED******REMOVED*** CPUs
+        </div>
+        <div *ngIf="flavor.gpu > 0" class="col"
+        >***REMOVED******REMOVED***flavor.vcpus***REMOVED******REMOVED*** CPUs | ***REMOVED******REMOVED***flavor.gpu***REMOVED******REMOVED*** GPUs
         </div>
         <div class="col"
         >***REMOVED******REMOVED***flavor.rootdisk***REMOVED******REMOVED*** GB Disk
-        </div>
-        <div *ngIf="flavor.gpu > 0" class="col"
-        >***REMOVED******REMOVED***flavor.gpu***REMOVED******REMOVED*** GPUs
         </div>
       </div>
     </div>
@@ -56,14 +56,14 @@
         <div class="col"
         >***REMOVED******REMOVED***ramMBtoGB(selectedFlavor?.ram)***REMOVED******REMOVED*** GB Ram
         </div>
-        <div class="col"
+        <div *ngIf="selectedFlavor?.gpu <= 0" class="col"
         >***REMOVED******REMOVED***selectedFlavor?.vcpus***REMOVED******REMOVED*** CPUs
+        </div>
+        <div *ngIf="selectedFlavor?.gpu > 0" class="col"
+        >***REMOVED******REMOVED***selectedFlavor?.vcpus***REMOVED******REMOVED*** CPUs | ***REMOVED******REMOVED***selectedFlavor?.gpu***REMOVED******REMOVED*** GPUs
         </div>
         <div class="col"
         >***REMOVED******REMOVED***selectedFlavor?.rootdisk***REMOVED******REMOVED*** GB Disk
-        </div>
-        <div *ngIf="selectedFlavor?.gpu > 0" class="col"
-        >***REMOVED******REMOVED***selectedFlavor?.gpu***REMOVED******REMOVED*** GPUs
         </div>
       </div>
     </div>
@@ -81,14 +81,14 @@
               <div class="col"
               >***REMOVED******REMOVED***ramMBtoGB(flavor.ram)***REMOVED******REMOVED*** GB Ram
               </div>
-              <div class="col"
+              <div *ngIf="flavor.gpu <= 0" class="col"
               >***REMOVED******REMOVED***flavor.vcpus***REMOVED******REMOVED*** CPUs
+              </div>
+              <div *ngIf="flavor.gpu > 0" class="col"
+              >***REMOVED******REMOVED***flavor.vcpus***REMOVED******REMOVED*** CPUs | ***REMOVED******REMOVED***flavor.gpu***REMOVED******REMOVED*** GPUs
               </div>
               <div class="col"
               >***REMOVED******REMOVED***flavor.rootdisk***REMOVED******REMOVED*** GB Disk
-              </div>
-              <div *ngIf="flavor.gpu > 0" class="col"
-              >***REMOVED******REMOVED***flavor.gpu***REMOVED******REMOVED*** GPUs
               </div>
             </div>
           </div>
