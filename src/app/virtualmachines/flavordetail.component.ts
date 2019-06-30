@@ -53,22 +53,11 @@ export class FlavorDetailComponent ***REMOVED***
   ***REMOVED***;
 
   /**
-   * Changes the responsive of the Owl Carousel to 3 items max.
-   */
-  changeResponsiveOwl(): void ***REMOVED***
-    if (this.selectedFlavor) ***REMOVED***
-      this.customOptions.responsive = this.responsive_selected;
-
-    ***REMOVED***
-  ***REMOVED***
-
-  /**
    * Sets the selected Flavor.
    * If a selectedFlavor exist it will be added to the flavor list and the new selectedFlavor will be removed.
    * @param flavor Flavor which will become the selected Flavor.
    */
   setSelectedFlavor(flavor: Flavor): void ***REMOVED***
-    this.changeResponsiveOwl();
 
     const indexNewSelectedFlavor: number = this.flavors.indexOf(flavor, 0);
 
@@ -79,9 +68,20 @@ export class FlavorDetailComponent ***REMOVED***
     ***REMOVED***
 
     this.selectedFlavor = flavor;
+    this.changeResponsiveOwl();
 
     this.selectedFlavorChange.emit(this.selectedFlavor);
 
+  ***REMOVED***
+
+  /**
+   * Changes the responsive of the Owl Carousel to 3 items max.
+   */
+  changeResponsiveOwl(): void ***REMOVED***
+    if (this.selectedFlavor) ***REMOVED***
+      this.customOptions.responsive = this.responsive_selected;
+
+    ***REMOVED***
   ***REMOVED***
 
   /**
