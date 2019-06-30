@@ -151,18 +151,32 @@
                     </div>
                   </div>
 
+                  <div class="col-sm-12 col-md ">
+                    <div class="text-muted">GPUs</div>
+                    <strong> {{selectedProjectGPUsUsed}} | {{selectedProjectGPUsMax}}</strong>
+                    <div style="background-color: darkgray;" class="progress progress-xs mt-2">
+                      <div class="progress-bar" role="progressbar"
+                           [ngStyle]="{'width.%': selectedProjectGPUsUsed/selectedProjectGPUsMax *100 }"
+                           [ngClass]=" {'bg-success':(selectedProjectGPUsUsed / selectedProjectGPUsMax) < 0.5 ,
+                         'bg-warning':(selectedProjectGPUsUsed / selectedProjectGPUsMax) > 0.5 &&   selectedProjectGPUsUsed < selectedProjectGPUsMax,
+                         'bg-danger': selectedProjectGPUsUsed === selectedProjectGPUsMax}"
+
+                           aria-valuemin="0" aria-valuemax="[selectedProjectGPUsMax]"></div>
+                    </div>
+                  </div>
+
 
                 </div>
               </div>
               <div class="alert alert-warning" role="alert"
-                   *ngIf="selectedProjectVmsUsed >= selectedProjectVmsMax">
+                   *ngIf="selectedProject && selectedProjectVmsUsed >= selectedProjectVmsMax">
                 The limit for virtual machines has been reached for this project.
                 Your principal investigator can request more
                 resources if necessary.
 
               </div>
               <div class="alert alert-warning" role="alert"
-                   *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length == 0">
+                   *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0">
                 There are too few cores and not enough ram available for this project to start a new machine.
                 Your principal investigator can request more
                 resources if necessary.
@@ -312,7 +326,7 @@
 
 
               </div>
-              <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && is_vo"
+              <div *ngIf="selectedProject && is_vo && selectedProjectVmsUsed < selectedProjectVmsMax"
                    class="form-group row">
 
 
@@ -324,6 +338,9 @@
                     *ngIf="bioconda_show">Hide</strong>
                   </button>
                 </div>
+              </div>
+              <div *ngIf="bioconda_show" class="col-12">
+                <app-bioconda #bioconda></app-bioconda>
               </div>
             </div>
           </form>
