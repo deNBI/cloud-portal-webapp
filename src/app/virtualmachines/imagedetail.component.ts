@@ -41,6 +41,9 @@ export class ImageDetailComponent ***REMOVED***
     nav: true
   ***REMOVED***;
 
+  /**
+   * Changes the responsive of the Owl Carousel to 3 items max.
+   */
   changeResponsiveOwl(): void ***REMOVED***
     this.customOptions.responsive = ***REMOVED***
       0: ***REMOVED***
@@ -55,6 +58,11 @@ export class ImageDetailComponent ***REMOVED***
     ***REMOVED***
   ***REMOVED***
 
+  /**
+   * Sets the selected Image.
+   * If a selectedImage exist it will be added to the flavor list and the new selectedImage will be removed.
+   * @param image Image which will become the selected Flavor.
+   */
   setSelectedImage(image: Image): void ***REMOVED***
     const indexNewSelectedImage: number = this.images.indexOf(image, 0);
 
