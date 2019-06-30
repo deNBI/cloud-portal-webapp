@@ -55,6 +55,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    */
   images: Image[];
 
+  flavors_loaded: boolean = false;
+
   create_error: IResponseTemplate;
 
   /**
@@ -120,6 +122,9 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    */
   selectedProjectVmsUsed: number;
 
+  selectedProjectGPUsUsed: number;
+  selectedProjectGPUsMax: number;
+
   /**
    * The selected project ['name',id].
    */
@@ -179,7 +184,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    */
   FREEMIUM_ID: number = environment.freemium_project_id;
 
-
   /**
    * Time for the check status loop.
    * @type ***REMOVED***number***REMOVED***
@@ -208,7 +212,10 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    * @param ***REMOVED***number***REMOVED*** project_id
    */
   getFlavors(project_id: number): void ***REMOVED***
-    this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => this.flavors = flavors);
+    this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => ***REMOVED***
+      this.flavors = flavors;
+      this.flavors_loaded = true;
+    ***REMOVED***);
 
   ***REMOVED***
 
@@ -414,6 +421,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       this.selectedProjectCoresUsed = res['cores_used'];
       this.selectedProjectRamMax = res['ram_total'];
       this.selectedProjectRamUsed = res['ram_used'];
+      this.selectedProjectGPUsMax = res['gpus_max'];
+      this.selectedProjectGPUsUsed = res['gpus_used'];
       this.projectDataLoaded = true;
 
     ***REMOVED***);
