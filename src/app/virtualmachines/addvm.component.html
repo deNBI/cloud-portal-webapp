@@ -175,14 +175,14 @@
 
               </div>
               <div class="alert alert-warning" role="alert"
-                   *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0">
+                   *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
                 There are too few cores and not enough ram available for this project to start a new machine.
                 Your principal investigator can request more
                 resources if necessary.
               </div>
 
 
-              <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && flavors?.length > 0">
+              <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor)">
                 <div *ngIf="selectedProject" class="form-group row">
                   <label class="col-md-2 form-control-label"><strong>Name*</strong></label>
                   <div class="col-md-6">
@@ -321,8 +321,9 @@
 
 
               </div>
-              <div *ngIf="selectedProject && is_vo && selectedProjectVmsUsed < selectedProjectVmsMax"
-                   class="form-group row">
+              <div
+                *ngIf="selectedProject && projectDataLoaded && is_vo && selectedProjectVmsUsed < selectedProjectVmsMax"
+                class="form-group row">
 
 
                 <label class="col-md-3 form-control-label"><strong>Bioconda </strong><span class="badge badge-primary">BETA</span></label>
@@ -344,7 +345,7 @@
 
 
         <div class="form-group row"
-             *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && flavors?.length > 0">
+             *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && flavors?.length > 0 ">
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;

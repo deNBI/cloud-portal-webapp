@@ -410,6 +410,11 @@ export class VirtualMachineComponent implements OnInit {
 
   loadProjectData(): void {
     this.projectDataLoaded = false;
+    this.flavors = [];
+    this.flavors_loaded = false;
+    this.images = [];
+    this.selectedImage = undefined;
+    this.selectedFlavor = undefined;
     this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe(res => {
       this.selectedProjectVmsMax = res['number_vms'];
       this.selectedProjectVmsUsed = res['used_vms'];
