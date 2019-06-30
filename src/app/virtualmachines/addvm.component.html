@@ -55,8 +55,7 @@
                 <select required class="form-control" name="selectedProject"
                         [(ngModel)]="selectedProject"
                         (ngModelChange)="getSelectedProjectClient();"
-                        [ngClass]="{'is-invalid':f.controls.selectedProject?.invalid && (f.controls.selectedProject?.dirty || f.controls.selectedProject.touched),
-                             'is-valid':f.controls.selectedProject?.valid && (f.controls.selectedProject?.dirty || f.controls.selectedProject?.touched)}">
+                >
                   <option value="undefined" disabled selected hidden> Please
                     Select
                   </option>
@@ -205,11 +204,9 @@
                   <div class="col-md-10">
 
 
-                    <div class="col-md-12">
-                      <app-flavor-detail [selectedFlavor]="selectedFlavor"
-                                         [flavors]="flavors"
-                                         (selectedFlavorChange)="selectedFlavor=$event"></app-flavor-detail>
-                    </div>
+                    <app-flavor-detail [selectedFlavor]="selectedFlavor"
+                                       [flavors]="flavors"
+                                       (selectedFlavorChange)="selectedFlavor=$event"></app-flavor-detail>
 
                   </div>
 
@@ -222,11 +219,9 @@
                   <div class="col-md-10">
 
 
-                    <div class="col-md-12">
-                      <app-image-detail [selectedImage]="selectedImage"
-                                        [images]="images"
-                                        (selectedImageChange)="selectedImage=$event"></app-image-detail>
-                    </div>
+                    <app-image-detail [selectedImage]="selectedImage"
+                                      [images]="images"
+                                      (selectedImageChange)="selectedImage=$event"></app-image-detail>
                   </div>
                 </div>
 

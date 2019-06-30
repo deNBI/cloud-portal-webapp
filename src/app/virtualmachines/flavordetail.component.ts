@@ -39,6 +39,9 @@ export class FlavorDetailComponent {
     nav: true
   };
 
+  /**
+   * Changes the responsive of the Owl Carousel to 3 items max.
+   */
   changeResponsiveOwl(): void {
     this.customOptions.responsive = {
       0: {
@@ -53,6 +56,11 @@ export class FlavorDetailComponent {
     }
   }
 
+  /**
+   * Sets the selected Flavor.
+   * If a selectedFlavor exist it will be added to the flavor list and the new selectedFlavor will be removed.
+   * @param flavor Flavor which will become the selected Flavor.
+   */
   setSelectedFlavor(flavor: Flavor): void {
     const indexNewSelectedFlavor: number = this.flavors.indexOf(flavor, 0);
 
@@ -67,7 +75,11 @@ export class FlavorDetailComponent {
     this.selectedFlavorChange.emit(this.selectedFlavor);
   }
 
-  ramMBtoGB(ram: number): number {
-    return Math.floor(ram / 1024)
+  /**
+   * Converts MB to GB
+   * @param input MB number
+   */
+  convertMbToGb(input: number): number {
+    return Math.floor(input / 1024)
   }
 }

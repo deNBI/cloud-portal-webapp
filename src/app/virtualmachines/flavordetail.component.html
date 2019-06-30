@@ -7,7 +7,7 @@
         <strong>Selected: {{selectedFlavor.name}}</strong></div>
       <div class="card-body ">
         <div class="col"
-        >{{ramMBtoGB(selectedFlavor?.ram)}} GB Ram
+        >{{convertMbToGb(selectedFlavor?.ram)}} GB Ram
         </div>
         <div *ngIf="selectedFlavor?.gpu <= 0" class="col"
         >{{selectedFlavor?.vcpus}} CPUs
@@ -29,7 +29,7 @@
         <strong>{{flavor.name}}</strong></div>
       <div class="card-body ">
         <div class="col"
-        >{{ramMBtoGB(flavor.ram)}} GB Ram
+        >{{convertMbToGb(flavor.ram)}} GB Ram
         </div>
         <div *ngIf="flavor.gpu <= 0" class="col"
         >{{flavor.vcpus}} CPUs
@@ -54,7 +54,7 @@
         <strong>Selected: {{selectedFlavor.name}}</strong></div>
       <div class="card-body ">
         <div class="col"
-        >{{ramMBtoGB(selectedFlavor?.ram)}} GB Ram
+        >{{convertMbToGb(selectedFlavor?.ram)}} GB Ram
         </div>
         <div *ngIf="selectedFlavor?.gpu <= 0" class="col"
         >{{selectedFlavor?.vcpus}} CPUs
@@ -79,7 +79,7 @@
               <strong>{{flavor.name}}</strong></div>
             <div class="card-body ">
               <div class="col"
-              >{{ramMBtoGB(flavor.ram)}} GB Ram
+              >{{convertMbToGb(flavor.ram)}} GB Ram
               </div>
               <div *ngIf="flavor.gpu <= 0" class="col"
               >{{flavor.vcpus}} CPUs
