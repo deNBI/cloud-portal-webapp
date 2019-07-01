@@ -4,6 +4,21 @@
 @import "node_modules/bootstrap/scss/mixins";
 @import "node_modules/bootstrap/scss/modal";
 
+//de.NBI-Colors:
+
+$deNBI_cyan: #00ADEF;
+$deNBI_blue: #005AA9;
+$deNBI_magenta: #EB008B;
+$deNBI_darkgrey: #58595B;
+$deNBI_lightgrey: #939496;
+$deNBI_white: #FFFFFF;
+$deNBI_black: #000000;
+
+//project-type-colors
+
+$openstackcolour: #ED1944;
+$simplevmcolour: #00ADEF;
+
 .btn{
   cursor: pointer;
 }
@@ -29,12 +44,54 @@ header {
   padding: 1.25rem;
 }
 
+.flavor-image-card
+{
+  margin:10px !important;
+}
+
+
+
+.scroll-flavor
+{
+  max-height:90px;
+  min-height: 90px;
+  overflow-y: auto;
+}
+
+.scroll-image
+{
+  max-height: 120px;
+  min-height: 120px;
+  overflow-y: auto;
+}
+
 .collapse_no_margin{
   margin: 0;
 }
 
-$openstackcolour: #ED1944;
-$simplevmcolour: #00ADEF;
+.card.border-success
+{
+  border-width: 3px;
+}
+.bg-info-flavor
+{
+    background-color: $deNBI_blue;
+}
+
+.bg-info-image
+{
+  background-color: $deNBI_cyan;
+}
+
+.card-header.bg-info-flavor {
+  color: $deNBI_white;
+}
+
+.card-header.bg-info-image
+{
+  color: $deNBI_white;
+}
+
 
 .btn-openstack {
     @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour,5%), lighten($openstackcolour, 10%), darken($openstackcolour,30%));
@@ -51,6 +108,7 @@ $simplevmcolour: #00ADEF;
 .btn-outline-simplevm {
     @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour,5%), $simplevmcolour);
 }
+
 
 
 #newsbadge
@@ -77,3 +135,5 @@ $simplevmcolour: #00ADEF;
   transition: 0.5s;
 
 }
+
+
