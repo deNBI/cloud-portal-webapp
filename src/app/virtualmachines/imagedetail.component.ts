@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {Image} from './virtualmachinemodels/image'
-import {Flavor} from './virtualmachinemodels/flavor';
 import {OwlOptions, ResponsiveSettings} from 'ngx-owl-carousel-o';
 
 @Component({
@@ -8,39 +7,17 @@ import {OwlOptions, ResponsiveSettings} from 'ngx-owl-carousel-o';
              templateUrl: 'imagedetail.component.html'
 
            })
-export class ImageDetailComponent {
+export class ImageDetailComponent implements OnInit {
   @Input() selectedImage: Image;
   @Input() images: Image[];
-  @Input() collapse1: boolean;
   @Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
   carousel_activated: boolean = true;
   images_per_row: number = 4;
-  responsive_selected: ResponsiveSettings = {
-    0: {
-      items: 1
-    },
-    400: {
-      items: 2
-    },
-    740: {
-      items: 3
-    }
-  };
+  window_size: number;
+  carousel_window_min_xl_9: number = 1500;
+  carousel_window_min_xl_8: number = 1380;
+  carousel_window_min_xl6: number = 1200;
 
-  responsive_unselected: ResponsiveSettings = {
-    0: {
-      items: 1
-    },
-    400: {
-      items: 2
-    },
-    740: {
-      items: 3
-    },
-    900: {
-      items: 4
-    }
-  };
   customOptions: OwlOptions = {
     loop: true,
     mouseDrag: false,
@@ -50,9 +27,33 @@ export class ImageDetailComponent {
     navSpeed: 700,
     navText: ['<i class=\'fa fa-chevron-left\'></i>',
       '<i class=\'fa fa-chevron-right\'></i>'],
-    responsive: this.responsive_unselected,
+    responsive: {
+      0: {
+        items: 1
+      },
+      550: {
+        items: 2
+
+      },
+      800: {
+        items: 3
+      },
+      1200: {
+        items: 4
+      }
+    },
     nav: true
   };
+
+  ngOnInit(): void {
+    this.window_size = window.innerWidth;
+
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event): void {
+    this.window_size = window.innerWidth;
+  }
 
   /**
    * Sets the selected Image.
@@ -70,18 +71,8 @@ export class ImageDetailComponent {
     }
 
     this.selectedImage = image;
-    this.changeResponsiveOwl();
 
     this.selectedImageChange.emit(this.selectedImage);
   }
 
-  /**
-   * Changes the responsive of the Owl Carousel to 3 items max.
-   */
-  changeResponsiveOwl(): void {
-    if (this.selectedImage) {
-      this.customOptions.responsive = this.responsive_selected;
-
-    }
-  }
 }

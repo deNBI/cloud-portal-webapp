@@ -505,19 +505,21 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
    */
   public createOpenStackProjectGroup(application: Application,
                                      compute_center: string): void {
-    this.groupservice.createGroupOpenStack(application.Id, compute_center).subscribe((result: { [key: string]: string }) => {
-                                                                                       if (result['Error']) {
-                                                                                         this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+    this.groupservice.createGroupOpenStack(
+      application.Id, compute_center)
+      .subscribe((result: { [key: string]: string }) => {
+                   if (result['Error']) {
+                     this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
-                                                                                       } else {
-                                                                                         this.updateNotificationModal('Success', 'The new project was created', true, 'success');
-                                                                                       }
-                                                                                       this.getUserApplication(application);
-                                                                                       this.getApplication(application);
-                                                                                     },
-                                                                                     () => {
-                                                                                       this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-                                                                                     })
+                   } else {
+                     this.updateNotificationModal('Success', 'The new project was created', true, 'success');
+                   }
+                   this.getUserApplication(application);
+                   this.getApplication(application);
+                 },
+                 () => {
+                   this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+                 })
 
   }
 
