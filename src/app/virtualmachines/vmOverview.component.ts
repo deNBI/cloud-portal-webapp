@@ -488,8 +488,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
    * @param ***REMOVED***string***REMOVED*** snapshot_instance which is used for creating the snapshot
    * @param ***REMOVED***string***REMOVED*** snapshot_name name of the snapshot
    */
-  createSnapshot(snapshot_instance: string, snapshot_name: string): void ***REMOVED***
-    this.imageService.createSnapshot(snapshot_instance, snapshot_name).subscribe((newSnapshot: SnapshotModel) => ***REMOVED***
+  createSnapshot(snapshot_instance: string, snapshot_name: string,description?:string): void ***REMOVED***
+    this.imageService.createSnapshot(snapshot_instance, snapshot_name,description).subscribe((newSnapshot: SnapshotModel) => ***REMOVED***
       if (newSnapshot.snapshot_openstackid) ***REMOVED***
         this.snapshotDone = 'true';
 
