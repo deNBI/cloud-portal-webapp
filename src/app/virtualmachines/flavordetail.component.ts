@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {Flavor} from './virtualmachinemodels/flavor'
 import {OwlOptions, ResponsiveSettings} from 'ngx-owl-carousel-o';
 
@@ -7,38 +7,18 @@ import {OwlOptions, ResponsiveSettings} from 'ngx-owl-carousel-o';
              templateUrl: 'flavordetail.component.html'
 
            })
-export class FlavorDetailComponent {
+export class FlavorDetailComponent implements OnInit {
   @Input() selectedFlavor: Flavor;
   @Input() flavors: Flavor[];
   @Output() readonly selectedFlavorChange: EventEmitter<Flavor> = new EventEmitter();
-  responsive_selected: ResponsiveSettings = {
-    0: {
-      items: 1
-    },
-    400: {
-      items: 2
-    },
-    740: {
-      items: 3
-    }
-  };
 
-  responsive_unselected: ResponsiveSettings = {
-    0: {
-      items: 1
-    },
-    400: {
-      items: 2
-    },
-    740: {
-      items: 3
-    },
-    900: {
-      items: 4
-    }
-  };
   flavors_per_row: number = 4;
   carousel_activated: boolean = true;
+  window_size: number;
+  carousel_window_min_xl_9: number = 1500;
+  carousel_window_min_xl_8: number = 1380;
+  carousel_window_min_xl6: number = 1200;
+
   customOptions: OwlOptions = {
     loop: false,
     mouseDrag: false,
@@ -48,9 +28,33 @@ export class FlavorDetailComponent {
     navSpeed: 700,
     navText: ['<i class=\'fa fa-chevron-left\'></i>',
       '<i class=\'fa fa-chevron-right\'></i>'],
-    responsive: this.responsive_unselected,
+    responsive: {
+      0: {
+        items: 1
+      },
+      550: {
+        items: 2
+
+      },
+      800: {
+        items: 3
+      },
+      1200: {
+        items: 4
+      }
+    },
     nav: true
   };
+
+  ngOnInit(): void {
+    this.window_size = window.innerWidth;
+
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event): void {
+    this.window_size = window.innerWidth;
+  }
 
   /**
    * Sets the selected Flavor.
@@ -68,20 +72,9 @@ export class FlavorDetailComponent {
     }
 
     this.selectedFlavor = flavor;
-    this.changeResponsiveOwl();
 
     this.selectedFlavorChange.emit(this.selectedFlavor);
 
-  }
-
-  /**
-   * Changes the responsive of the Owl Carousel to 3 items max.
-   */
-  changeResponsiveOwl(): void {
-    if (this.selectedFlavor) {
-      this.customOptions.responsive = this.responsive_selected;
-
-    }
   }
 
   /**

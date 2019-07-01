@@ -1,5 +1,8 @@
 <div *ngIf="!carousel_activated || images.length <=images_per_row-1" class="row">
-  <div *ngIf="selectedImage" class="col-3" style="cursor: pointer;">
+  <div *ngIf="selectedImage" class="col-xl-3 col-12" style="cursor: pointer;"
+       [ngClass]="{'col-xl-3':window_size > carousel_window_min_xl_9,
+       'col-xl-6':window_size > carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
+       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>carousel_window_min_xl_8}">
     <div class="card border-success flavor-image-card"
     >
       <div
@@ -14,7 +17,9 @@
       </div>
     </div>
   </div>
-  <div *ngFor="  let image of images" style="cursor: pointer;" class="col-3">
+  <div *ngFor="  let image of images" style="cursor: pointer;" class="col-12" [ngClass]="{'col-xl-3':window_size > carousel_window_min_xl_9,
+       'col-xl-6':window_size > carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
+       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>carousel_window_min_xl_8}">
     <div (click)="setSelectedImage(image);" class="card flavor-image-card"
     >
       <div
@@ -33,7 +38,7 @@
 
 <div *ngIf="carousel_activated && images.length >=images_per_row" class="row"
 >
-  <div [hidden]="!selectedImage" class="col-lg-12 " style="cursor: pointer;"
+  <div [hidden]="!selectedImage" class="col-lg-12" style="cursor: pointer;"
        [ngClass]="{'col-xl-3':window_size > carousel_window_min_xl_9,
        'col-xl-6':window_size > carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
        'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>carousel_window_min_xl_8}">
