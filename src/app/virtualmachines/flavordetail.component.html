@@ -19,9 +19,6 @@
       </div>
     </div>
   </div>
-
-  <div *ngIf="selectedFlavor" style="border-left:1px solid #555555;height:200px">
-  </div>
   <div *ngFor="  let flavor of flavors" style="cursor: pointer;" class="col-3 flavor-image-card">
     <div (click)="changeResponsiveOwl();setSelectedFlavor(flavor);" class="card" style="width: 18rem;margin-right: 5px"
     >
