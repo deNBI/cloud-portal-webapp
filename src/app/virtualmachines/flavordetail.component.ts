@@ -1,4 +1,4 @@
-import ***REMOVED***Component, EventEmitter, Input, OnInit, Output***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, EventEmitter, HostListener, Input, OnInit, Output***REMOVED*** from '@angular/core';
 import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor'
 import ***REMOVED***OwlOptions, ResponsiveSettings***REMOVED*** from 'ngx-owl-carousel-o';
 
@@ -7,38 +7,18 @@ import ***REMOVED***OwlOptions, ResponsiveSettings***REMOVED*** from 'ngx-owl-ca
              templateUrl: 'flavordetail.component.html'
 
            ***REMOVED***)
-export class FlavorDetailComponent ***REMOVED***
+export class FlavorDetailComponent implements OnInit ***REMOVED***
   @Input() selectedFlavor: Flavor;
   @Input() flavors: Flavor[];
   @Output() readonly selectedFlavorChange: EventEmitter<Flavor> = new EventEmitter();
-  responsive_selected: ResponsiveSettings = ***REMOVED***
-    0: ***REMOVED***
-      items: 1
-    ***REMOVED***,
-    400: ***REMOVED***
-      items: 2
-    ***REMOVED***,
-    740: ***REMOVED***
-      items: 3
-    ***REMOVED***
-  ***REMOVED***;
 
-  responsive_unselected: ResponsiveSettings = ***REMOVED***
-    0: ***REMOVED***
-      items: 1
-    ***REMOVED***,
-    400: ***REMOVED***
-      items: 2
-    ***REMOVED***,
-    740: ***REMOVED***
-      items: 3
-    ***REMOVED***,
-    900: ***REMOVED***
-      items: 4
-    ***REMOVED***
-  ***REMOVED***;
   flavors_per_row: number = 4;
   carousel_activated: boolean = true;
+  window_size: number;
+  carousel_window_min_xl_9: number = 1500;
+  carousel_window_min_xl_8: number = 1380;
+  carousel_window_min_xl6: number = 1200;
+
   customOptions: OwlOptions = ***REMOVED***
     loop: false,
     mouseDrag: false,
@@ -48,9 +28,33 @@ export class FlavorDetailComponent ***REMOVED***
     navSpeed: 700,
     navText: ['<i class=\'fa fa-chevron-left\'></i>',
       '<i class=\'fa fa-chevron-right\'></i>'],
-    responsive: this.responsive_unselected,
+    responsive: ***REMOVED***
+      0: ***REMOVED***
+        items: 1
+      ***REMOVED***,
+      550: ***REMOVED***
+        items: 2
+
+      ***REMOVED***,
+      800: ***REMOVED***
+        items: 3
+      ***REMOVED***,
+      1200: ***REMOVED***
+        items: 4
+      ***REMOVED***
+    ***REMOVED***,
     nav: true
   ***REMOVED***;
+
+  ngOnInit(): void ***REMOVED***
+    this.window_size = window.innerWidth;
+
+  ***REMOVED***
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event): void ***REMOVED***
+    this.window_size = window.innerWidth;
+  ***REMOVED***
 
   /**
    * Sets the selected Flavor.
@@ -68,20 +72,9 @@ export class FlavorDetailComponent ***REMOVED***
     ***REMOVED***
 
     this.selectedFlavor = flavor;
-    this.changeResponsiveOwl();
 
     this.selectedFlavorChange.emit(this.selectedFlavor);
 
-  ***REMOVED***
-
-  /**
-   * Changes the responsive of the Owl Carousel to 3 items max.
-   */
-  changeResponsiveOwl(): void ***REMOVED***
-    if (this.selectedFlavor) ***REMOVED***
-      this.customOptions.responsive = this.responsive_selected;
-
-    ***REMOVED***
   ***REMOVED***
 
   /**
