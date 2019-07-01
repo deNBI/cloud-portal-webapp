@@ -1,6 +1,5 @@
-import ***REMOVED***Component, EventEmitter, Input, Output***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, EventEmitter, HostListener, Input, OnInit, Output***REMOVED*** from '@angular/core';
 import ***REMOVED***Image***REMOVED*** from './virtualmachinemodels/image'
-import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor';
 import ***REMOVED***OwlOptions, ResponsiveSettings***REMOVED*** from 'ngx-owl-carousel-o';
 
 @Component(***REMOVED***
@@ -8,39 +7,17 @@ import ***REMOVED***OwlOptions, ResponsiveSettings***REMOVED*** from 'ngx-owl-ca
              templateUrl: 'imagedetail.component.html'
 
            ***REMOVED***)
-export class ImageDetailComponent ***REMOVED***
+export class ImageDetailComponent implements OnInit ***REMOVED***
   @Input() selectedImage: Image;
   @Input() images: Image[];
-  @Input() collapse1: boolean;
   @Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
   carousel_activated: boolean = true;
   images_per_row: number = 4;
-  responsive_selected: ResponsiveSettings = ***REMOVED***
-    0: ***REMOVED***
-      items: 1
-    ***REMOVED***,
-    400: ***REMOVED***
-      items: 2
-    ***REMOVED***,
-    740: ***REMOVED***
-      items: 3
-    ***REMOVED***
-  ***REMOVED***;
+  window_size: number;
+  carousel_window_min_xl_9: number = 1500;
+  carousel_window_min_xl_8: number = 1380;
+  carousel_window_min_xl6: number = 1200;
 
-  responsive_unselected: ResponsiveSettings = ***REMOVED***
-    0: ***REMOVED***
-      items: 1
-    ***REMOVED***,
-    400: ***REMOVED***
-      items: 2
-    ***REMOVED***,
-    740: ***REMOVED***
-      items: 3
-    ***REMOVED***,
-    900: ***REMOVED***
-      items: 4
-    ***REMOVED***
-  ***REMOVED***;
   customOptions: OwlOptions = ***REMOVED***
     loop: true,
     mouseDrag: false,
@@ -50,9 +27,33 @@ export class ImageDetailComponent ***REMOVED***
     navSpeed: 700,
     navText: ['<i class=\'fa fa-chevron-left\'></i>',
       '<i class=\'fa fa-chevron-right\'></i>'],
-    responsive: this.responsive_unselected,
+    responsive: ***REMOVED***
+      0: ***REMOVED***
+        items: 1
+      ***REMOVED***,
+      550: ***REMOVED***
+        items: 2
+
+      ***REMOVED***,
+      800: ***REMOVED***
+        items: 3
+      ***REMOVED***,
+      1200: ***REMOVED***
+        items: 4
+      ***REMOVED***
+    ***REMOVED***,
     nav: true
   ***REMOVED***;
+
+  ngOnInit(): void ***REMOVED***
+    this.window_size = window.innerWidth;
+
+  ***REMOVED***
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event): void ***REMOVED***
+    this.window_size = window.innerWidth;
+  ***REMOVED***
 
   /**
    * Sets the selected Image.
@@ -70,18 +71,8 @@ export class ImageDetailComponent ***REMOVED***
     ***REMOVED***
 
     this.selectedImage = image;
-    this.changeResponsiveOwl();
 
     this.selectedImageChange.emit(this.selectedImage);
   ***REMOVED***
 
-  /**
-   * Changes the responsive of the Owl Carousel to 3 items max.
-   */
-  changeResponsiveOwl(): void ***REMOVED***
-    if (this.selectedImage) ***REMOVED***
-      this.customOptions.responsive = this.responsive_selected;
-
-    ***REMOVED***
-  ***REMOVED***
 ***REMOVED***

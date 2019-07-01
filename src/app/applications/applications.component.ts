@@ -505,19 +505,21 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
    */
   public createOpenStackProjectGroup(application: Application,
                                      compute_center: string): void ***REMOVED***
-    this.groupservice.createGroupOpenStack(application.Id, compute_center).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
-                                                                                       if (result['Error']) ***REMOVED***
-                                                                                         this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+    this.groupservice.createGroupOpenStack(
+      application.Id, compute_center)
+      .subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
+                   if (result['Error']) ***REMOVED***
+                     this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
-                                                                                       ***REMOVED*** else ***REMOVED***
-                                                                                         this.updateNotificationModal('Success', 'The new project was created', true, 'success');
-                                                                                       ***REMOVED***
-                                                                                       this.getUserApplication(application);
-                                                                                       this.getApplication(application);
-                                                                                     ***REMOVED***,
-                                                                                     () => ***REMOVED***
-                                                                                       this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-                                                                                     ***REMOVED***)
+                   ***REMOVED*** else ***REMOVED***
+                     this.updateNotificationModal('Success', 'The new project was created', true, 'success');
+                   ***REMOVED***
+                   this.getUserApplication(application);
+                   this.getApplication(application);
+                 ***REMOVED***,
+                 () => ***REMOVED***
+                   this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+                 ***REMOVED***)
 
   ***REMOVED***
 
