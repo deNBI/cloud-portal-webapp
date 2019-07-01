@@ -335,7 +335,7 @@
                   </button>
                 </div>
               </div>
-              <div *ngIf="bioconda_show" class="col-12">
+              <div [hidden]="!bioconda_show" class="col-12">
                 <app-bioconda #bioconda></app-bioconda>
               </div>
             </div>
