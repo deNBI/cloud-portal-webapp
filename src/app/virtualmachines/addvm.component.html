@@ -231,13 +231,7 @@
 
                   <label class="col-md-2 form-control-label"><strong>Optional
                     parameters</strong></label>
-                  <div class="col-md-6">
-                    <button type="button" class="btn btn-info .btn-pill"
-                            (click)="optional_params= !optional_params">
-                      <strong *ngIf="!optional_params">Show</strong><strong
-                      *ngIf="optional_params">Hide</strong>
-                    </button>
-                  </div>
+
                 </div>
               </div>
 
@@ -257,45 +251,40 @@
               </div>
 
               <div
-                *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax">
-                <div class="form-group row"
-                     *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
-                  <label *ngIf="diskspace <= 0" class="col-md-2 form-control-label">Volumename</label>
-                  <label *ngIf="diskspace > 0"
-                         class="col-md-2 form-control-label"><strong>Volumename*</strong></label>
+                *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax">
+                <div class="form-group row" *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
+                  <label *ngIf="diskspace <= 0" class="col-md-2 form-control-label">Volume name</label>
+                  <label *ngIf="diskspace > 0 "class="col-md-2 form-control-label"><strong>Volume name*</strong></label>
 
-                  <div class="col-md-9">
-                    <div class="input-group">
-                      <input type="text" placeholder="Volumename"
+                    <div class="col-md-6">
+                      <input type="text" placeholder="Volume name"
                              [value]="volumeName"
                              (input)="volumeName = $event.target.value"
                              [ngClass]="***REMOVED***'is-invalid':diskspace > 0 && volumeName == '',
-                             'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')***REMOVED***">
-
+                             'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')***REMOVED***" style="width: 100%;">
                     </div>
-                  </div>
                 </div>
               </div>
 
               <div
-                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
+                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
                 class="form-group row">
 
                 <label class="col-md-2 form-control-label">Storage</label>
 
-                <div class="col-md-9">
-                  <div class="input-group">
+                <div class="col-6">
+                  <div class="input-group mb-3" style="width:100%;">
                     <input min="0" step="1" [value]="diskspace"
                            (input)="diskspace = $event.target.value"
                            type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
-                           placeholder="e.g 8 ">
+                           placeholder="e.g 8">
                     <div class="input-group-append"><span
                       class="input-group-text"> GB
                                     </span></div>
 
-                    <div class="col-md-6">
-                      <strong> ***REMOVED******REMOVED***selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed***REMOVED******REMOVED*** GB available
-                      </strong>
+                    <div>
+                      <p><strong style="position: relative;top: 8px; left:5px;"> ***REMOVED******REMOVED***selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed***REMOVED******REMOVED*** GB available
+                      </strong></p>
                     </div>
 
                   </div>
@@ -304,18 +293,18 @@
 
               </div>
               <div
-                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
+                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
                 class="form-group row">
 
                 <label class="col-md-2 form-control-label">Open Ports</label>
+                <p><strong>UDP</strong></p>
                 <div class="col-md-2">
                   <label
-                    class="switch switch-label switch-pill switch-success">Udp
+                    class="switch switch-label switch-pill switch-success">
                     <input type="checkbox" class="switch-input"
                            name="udp_allowed"
-                           [(ngModel)]="udp_allowed"
-                    >
-                    <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                           [(ngModel)]="udp_allowed">
+                    <div class="switch-slider" data-checked="✓" data-unchecked="✕"></div>
                     <!--<span class="switch-handle"></span>-->
                   </label></div>
 
