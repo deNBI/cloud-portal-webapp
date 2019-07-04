@@ -297,8 +297,12 @@
                 class="form-group row">
 
                 <label class="col-md-2 form-control-label">Open Ports</label>
-                <p><strong>UDP</strong></p>
-                <div class="col-md-2">
+                <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP <i
+                  data-balloon="This selection is necessary for using mosh"
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question menu_links"
+                  style="cursor: pointer;"></i></i></strong></label>
+
                   <label
                     class="switch switch-label switch-pill switch-success">
                     <input type="checkbox" class="switch-input"
@@ -310,6 +314,9 @@
 
 
               </div>
+
+
+
               <div
                 *ngIf="selectedProject && projectDataLoaded && is_vo && selectedProjectVmsUsed < selectedProjectVmsMax"
                 class="form-group row">
