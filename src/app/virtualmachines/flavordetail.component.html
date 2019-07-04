@@ -36,7 +36,7 @@
           <div class="col" *ngIf="selectedFlavor?.gpu > 0">
             <div class="row">
             <figure class="flavor-card-icons">
-              <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="SimpleVM" style="max-height: 10px; width:10px;">
+              <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
             </figure>
             ***REMOVED******REMOVED***selectedFlavor?.gpu***REMOVED******REMOVED*** Graphic Processing Units
           </div>
@@ -61,7 +61,7 @@
               <figure class="flavor-card-icons">
                 <img src="***REMOVED******REMOVED***ramIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
               </figure>
-              ***REMOVED******REMOVED***convertMbToGb(selectedFlavor?.ram)***REMOVED******REMOVED*** GB Ram
+              ***REMOVED******REMOVED***convertMbToGb(flavor?.ram)***REMOVED******REMOVED*** GB Ram
             </div>
           </div>
           <div *ngIf="selectedFlavor?.gpu <= 0" class="col"
@@ -69,7 +69,7 @@
             <figure class="flavor-card-icons">
               <img src="***REMOVED******REMOVED***cpuIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
             </figure>
-            ***REMOVED******REMOVED***selectedFlavor?.vcpus***REMOVED******REMOVED*** CPUs
+            ***REMOVED******REMOVED***flavor?.vcpus***REMOVED******REMOVED*** CPUs
           </div>
           </div>
           <div class="col"
@@ -77,15 +77,15 @@
             <figure class="flavor-card-icons">
               <img src="***REMOVED******REMOVED***storageIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
             </figure>
-            ***REMOVED******REMOVED***selectedFlavor?.rootdisk***REMOVED******REMOVED*** GB disk space
+            ***REMOVED******REMOVED***flavor?.rootdisk***REMOVED******REMOVED*** GB disk space
           </div>
           </div>
-          <div class="col" *ngIf="selectedFlavor?.gpu > 0">
+          <div class="col" *ngIf="flavor?.gpu > 0">
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="SimpleVM" style="max-height: 10px; width:10px;">
+                <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
               </figure>
-              ***REMOVED******REMOVED***selectedFlavor?.gpu***REMOVED******REMOVED*** Graphic Processing Units
+              ***REMOVED******REMOVED***flavor?.gpu***REMOVED******REMOVED*** Graphic Processing Units
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@
               <figure class="flavor-card-icons">
                 <img src="***REMOVED******REMOVED***ramIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
               </figure>
-              ***REMOVED******REMOVED***convertMbToGb(selectedFlavor?.ram)***REMOVED******REMOVED*** GB Ram
+              ***REMOVED******REMOVED***convertMbToGb(selectedFlavor.ram)***REMOVED******REMOVED*** GB Ram
             </div>
           </div>
           <div *ngIf="selectedFlavor?.gpu <= 0" class="col"
@@ -133,7 +133,7 @@
           <div class="col" *ngIf="selectedFlavor?.gpu > 0">
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="SimpleVM" style="max-height: 10px; width:10px;">
+                <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
               </figure>
               ***REMOVED******REMOVED***selectedFlavor?.gpu***REMOVED******REMOVED*** Graphic Processing Units
             </div>
@@ -159,15 +159,15 @@
                     <figure class="flavor-card-icons">
                       <img src="***REMOVED******REMOVED***ramIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
                     </figure>
-                    ***REMOVED******REMOVED***convertMbToGb(selectedFlavor?.ram)***REMOVED******REMOVED*** GB Ram
+                    ***REMOVED******REMOVED***convertMbToGb(flavor?.ram)***REMOVED******REMOVED*** GB Ram
                   </div>
                 </div>
-                <div *ngIf="selectedFlavor?.gpu <= 0" class="col"
+                <div *ngIf="flavor?.gpu <= 0" class="col"
                 ><div class="row">
                   <figure class="flavor-card-icons">
                     <img src="***REMOVED******REMOVED***cpuIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
                   </figure>
-                  ***REMOVED******REMOVED***selectedFlavor?.vcpus***REMOVED******REMOVED*** CPUs
+                  ***REMOVED******REMOVED***flavor?.vcpus***REMOVED******REMOVED*** CPUs
                 </div>
                 </div>
                 <div class="col"
@@ -175,15 +175,15 @@
                   <figure class="flavor-card-icons">
                     <img src="***REMOVED******REMOVED***storageIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
                   </figure>
-                  ***REMOVED******REMOVED***selectedFlavor?.rootdisk***REMOVED******REMOVED*** GB disk space
+                  ***REMOVED******REMOVED***flavor?.rootdisk***REMOVED******REMOVED*** GB disk space
                 </div>
                 </div>
-                <div class="col" *ngIf="selectedFlavor?.gpu > 0">
+                <div class="col" *ngIf="flavor?.gpu > 0">
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="SimpleVM" style="max-height: 10px; width:10px;">
+                      <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
                     </figure>
-                    ***REMOVED******REMOVED***selectedFlavor?.gpu***REMOVED******REMOVED*** Graphic Processing Units
+                    ***REMOVED******REMOVED***flavor?.gpu***REMOVED******REMOVED*** Graphic Processing Units
                   </div>
                 </div>
               </div>
@@ -214,15 +214,15 @@
                     <figure class="flavor-card-icons">
                       <img src="***REMOVED******REMOVED***ramIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
                     </figure>
-                    ***REMOVED******REMOVED***convertMbToGb(selectedFlavor?.ram)***REMOVED******REMOVED*** GB Ram
+                    ***REMOVED******REMOVED***convertMbToGb(flavor?.ram)***REMOVED******REMOVED*** GB Ram
                   </div>
                 </div>
-                <div *ngIf="selectedFlavor?.gpu <= 0" class="col"
+                <div *ngIf="flavor?.gpu <= 0" class="col"
                 ><div class="row">
                   <figure class="flavor-card-icons">
                     <img src="***REMOVED******REMOVED***cpuIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
                   </figure>
-                  ***REMOVED******REMOVED***selectedFlavor?.vcpus***REMOVED******REMOVED*** CPUs
+                  ***REMOVED******REMOVED***flavor?.vcpus***REMOVED******REMOVED*** CPUs
                 </div>
                 </div>
                 <div class="col"
@@ -230,15 +230,15 @@
                   <figure class="flavor-card-icons">
                     <img src="***REMOVED******REMOVED***storageIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
                   </figure>
-                  ***REMOVED******REMOVED***selectedFlavor?.rootdisk***REMOVED******REMOVED*** GB disk space
+                  ***REMOVED******REMOVED***flavor?.rootdisk***REMOVED******REMOVED*** GB disk space
                 </div>
                 </div>
-                <div class="col" *ngIf="selectedFlavor?.gpu > 0">
+                <div class="col" *ngIf="flavor?.gpu > 0">
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="SimpleVM" style="max-height: 10px; width:10px;">
+                      <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="" style="max-height: 10px; width:10px;">
                     </figure>
-                    ***REMOVED******REMOVED***selectedFlavor?.gpu***REMOVED******REMOVED*** Graphic Processing Units
+                    ***REMOVED******REMOVED***flavor?.gpu***REMOVED******REMOVED*** Graphic Processing Units
                   </div>
                 </div>
               </div>
