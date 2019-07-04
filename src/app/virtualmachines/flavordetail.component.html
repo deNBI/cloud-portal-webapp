@@ -8,8 +8,14 @@
         <strong>Selected: {{selectedFlavor.name}}</strong></div>
       <div class="card-body">
         <div class="scroll-flavor">
-          <div class="col">{{convertMbToGb(selectedFlavor?.ram)}} GB Ram
-          </div>
+
+          <div class="col">
+            <div class="row"><figure>
+              <img src="{{ramIconPath}}" alt="SimpleVM" style="max-height: 10px; width:10px;">
+            </figure>
+            {{convertMbToGb(selectedFlavor?.ram)}} GB Ram
+            </div>
+            </div>
           <div *ngIf="selectedFlavor?.gpu <= 0" class="col"
           >{{selectedFlavor?.vcpus}} CPUs
           </div>
