@@ -15,7 +15,7 @@ export class FlavorDetailComponent implements OnInit ***REMOVED***
   flavors_per_row: number = 4;
   carousel_activated: boolean = true;
   window_size: number;
-  carousel_window_min_xl_9: number = 1500;
+  carousel_window_min_xl_9: number = 1700;
   carousel_window_min_xl_8: number = 1380;
   carousel_window_min_xl6: number = 1200;
 
