@@ -19,6 +19,15 @@ export class FlavorDetailComponent implements OnInit ***REMOVED***
   carousel_window_min_xl_8: number = 1380;
   carousel_window_min_xl6: number = 1200;
 
+  //icons for graphics within flavor cards:
+
+  static_img_folder: String = 'static/webapp/assets/img/';
+
+  cpuIconPath: string;
+  ramIconPath: string;
+  storageIconPath: string;
+  gpuIconPath: string;
+
   customOptions: OwlOptions = ***REMOVED***
     loop: false,
     mouseDrag: false,
@@ -48,6 +57,11 @@ export class FlavorDetailComponent implements OnInit ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
     this.window_size = window.innerWidth;
+
+    this.cpuIconPath = this.static_img_folder + '/new_instance/cpu_icon.svg';
+    this.ramIconPath = this.static_img_folder + '/new_instance/ram_icon.svg';
+    this.storageIconPath = this.static_img_folder + '/new_instance/storage_icon.svg';
+    this.gpuIconPath = this.static_img_folder + '/new_instance/gpu_icon.svg';
 
   ***REMOVED***
 
