@@ -480,6 +480,7 @@ export class VirtualMachineComponent implements OnInit {
     this.initializeData();
     this.voService.isVo().subscribe((result: IResponseTemplate) => {
       this.is_vo = <boolean><Boolean>result.value;
-    })
+    });
+
   }
 }
