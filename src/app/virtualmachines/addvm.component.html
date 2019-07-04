@@ -273,8 +273,8 @@
                 <label class="col-md-2 form-control-label">Storage</label>
 
                 <div class="col-6">
-                  <div class="input-group mb-3" style="width:100%;">
-                    <input min="0" step="1" [value]="diskspace"
+                  <div class="input-group mb-6" style="width:100%;">
+                    <input style="width: calc(100% - 160px);" min="0" step="1" [value]="diskspace"
                            (input)="diskspace = $event.target.value"
                            type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
                            placeholder="e.g 8">
@@ -282,8 +282,8 @@
                       class="input-group-text"> GB
                                     </span></div>
 
-                    <div>
-                      <p><strong style="position: relative;top: 8px; left:5px;"> ***REMOVED******REMOVED***selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed***REMOVED******REMOVED*** GB available
+                    <div style="width:115px; text-align:right">
+                      <p><strong style="position: relative;top: 8px; text-align: right;"> ***REMOVED******REMOVED***selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed***REMOVED******REMOVED*** GB available
                       </strong></p>
                     </div>
 
