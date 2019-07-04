@@ -1,4 +1,4 @@
-import ***REMOVED***Component, ElementRef, OnInit, ViewChild***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, ElementRef, EventEmitter, OnInit, Output, ViewChild***REMOVED*** from '@angular/core';
 import ***REMOVED***BiocondaService***REMOVED*** from '../../api-connector/bioconda.service';
 import ***REMOVED***Subject***REMOVED*** from 'rxjs';
 import ***REMOVED***debounceTime, distinctUntilChanged***REMOVED*** from 'rxjs/operators';
@@ -45,6 +45,7 @@ export class BiocondaComponent implements OnInit ***REMOVED***
   filterVersionChanged: Subject<string> = new Subject<string>();
   filterBuildChanged: Subject<string> = new Subject<string>();
 
+  @Output() readonly hasTools: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('pagination') pagination: PaginationComponent;
   @ViewChild('chosenTable') chosenTable: ElementRef;
 
@@ -133,11 +134,16 @@ export class BiocondaComponent implements OnInit ***REMOVED***
       if (tool.name === item.name && tool.version === item.version && tool.build === item.build) ***REMOVED***
         this.chosen_tools.splice(index, 1);
         deleted = true;
+      ***REMOVED*** else if (tool.name === item.name && (tool.version !== item.version || tool.build !== item.build)) ***REMOVED***
+        this.chosen_tools.splice(index, 1);
+        deleted = true;
+        this.chosen_tools.push(tool);
       ***REMOVED***
     ***REMOVED***);
     if (!deleted) ***REMOVED***
       this.chosen_tools.push(tool);
     ***REMOVED***
+    this.hasTools.emit(this.hasChosenTools());
   ***REMOVED***
 
   is_added(tool: IBiocondaTool): boolean ***REMOVED***
@@ -153,5 +159,9 @@ export class BiocondaComponent implements OnInit ***REMOVED***
 
   getChosenTools(): string ***REMOVED***
     return JSON.stringify(this.chosen_tools);
+  ***REMOVED***
+
+  hasChosenTools(): boolean ***REMOVED***
+    return this.chosen_tools.length > 0;
   ***REMOVED***
 ***REMOVED***
