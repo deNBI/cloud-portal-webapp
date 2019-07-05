@@ -6,9 +6,6 @@ import ***REMOVED*** ApiSettings ***REMOVED*** from '../api-connector/api-settin
 // ---Before Send Function
 // Runs before the Ajax Appender sends the logs to the server
 function beforeSendFunction(xhr: XMLHttpRequest, json: JSON): any ***REMOVED***
-  for (const message of json['lg']) ***REMOVED***
-    message['identifier'] = Cookie.get('csrftoken').slice(5, 10);
-  ***REMOVED*** // Adds a slice of the csrftoken to the logs to anonimously group log messages
   json = filter(json); // filter out duplicate error messages
   xhr.setRequestHeader('X-CSRFToken', Cookie.get('csrftoken')); // add csrftoken to cookie
   xhr.withCredentials = true;
