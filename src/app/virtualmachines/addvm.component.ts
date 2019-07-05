@@ -29,7 +29,7 @@ import {BiocondaComponent} from './conda/bioconda.component';
              providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
                Application, ApiSettings, KeyService, ClientService, UserService, VoService]
            })
-export class VirtualMachineComponent implements OnInit {
+export class VirtualMachineComponent implements OnInit{
 
   newVm: VirtualMachine = null;
   creating_vm_status: string = 'Creating..';
@@ -45,6 +45,7 @@ export class VirtualMachineComponent implements OnInit {
   showSshCommando: boolean = true;
   showUdpCommando: boolean = true;
   is_vo: boolean = false;
+  hasTools: boolean = false;
 
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
@@ -482,5 +483,9 @@ export class VirtualMachineComponent implements OnInit {
       this.is_vo = <boolean><Boolean>result.value;
     });
 
+  }
+
+  hasChosenTools(hasSomeTools: boolean): void {
+    this.hasTools = hasSomeTools;
   }
 }
