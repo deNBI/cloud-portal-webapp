@@ -109,12 +109,12 @@
 
 <div class="row ">
   <div class="ml-auto mr-3" style="cursor: pointer;"
-       *ngIf="carousel_activated && images.length > images_per_row"
+       *ngIf="carousel_activated && images.length > images_per_row -1"
        (click)="carousel_activated=false;"><strong class="text-info">Show
     all
     images</strong></div>
   <div class="ml-auto mr-3" style="cursor: pointer;"
-       *ngIf="!carousel_activated && images.length > images_per_row"
+       *ngIf="!carousel_activated && images.length > images_per_row -1"
        (click)="carousel_activated=true;"><strong class="text-info">Hide
     images</strong></div>
 </div>
