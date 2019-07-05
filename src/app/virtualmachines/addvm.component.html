@@ -269,137 +269,137 @@
 
               <div
                 *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax"
-              
-              class="form-group row">
 
-              <label class="col-md-2 form-control-label">Storage</label>
+                class="form-group row">
 
-              <div class="col-6">
-                <div class="input-group mb-6" style="width:100%;">
-                  <input style="width: calc(100% - 160px);" min="0" step="1" [value]="diskspace"
-                         (input)="diskspace = $event.target.value"
-                         type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
-                         placeholder="e.g 8">
-                  <div class="input-group-append"><span
-                    class="input-group-text"> GB
+                <label class="col-md-2 form-control-label">Storage</label>
+
+                <div class="col-6">
+                  <div class="input-group mb-6" style="width:100%;">
+                    <input style="width: calc(100% - 160px);" min="0" step="1" [value]="diskspace"
+                           (input)="diskspace = $event.target.value"
+                           type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
+                           placeholder="e.g 8">
+                    <div class="input-group-append"><span
+                      class="input-group-text"> GB
                                     </span></div>
 
-                  <div style="width:115px; text-align:right">
-                    <p><strong
-                      style="position: relative;top: 8px; text-align: right;"> ***REMOVED******REMOVED***selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed***REMOVED******REMOVED***
-                      GB available
-                    </strong></p>
-                  </div>
+                    <div style="width:115px; text-align:right">
+                      <p><strong
+                        style="position: relative;top: 8px; text-align: right;"> ***REMOVED******REMOVED***selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed***REMOVED******REMOVED***
+                        GB available
+                      </strong></p>
+                    </div>
 
+                  </div>
+                </div>
+
+
+              </div>
+              <div
+                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
+                class="form-group row">
+
+                <label class="col-md-2 form-control-label">Open Ports</label>
+                <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP <i
+                  data-balloon="This selection is necessary for using mosh"
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question menu_links"
+                  style="cursor: pointer;"></i></i></strong></label>
+
+                  <label
+                    class="switch switch-label switch-pill switch-success">
+                    <input type="checkbox" class="switch-input"
+                           name="udp_allowed"
+                           [(ngModel)]="udp_allowed">
+                    <div class="switch-slider" data-checked="✓" data-unchecked="✕"></div>
+                    <!--<span class="switch-handle"></span>-->
+                  </label></div>
+
+
+              </div>
+
+
+              <div
+                *ngIf="selectedProject && projectDataLoaded && is_vo && selectedProjectVmsUsed < selectedProjectVmsMax"
+                class="form-group row">
+
+
+                <label class="col-md-3 form-control-label"><strong>Bioconda </strong><span class="badge badge-primary">BETA</span></label>
+                <div class="col-md-6">
+                  <button type="button" class="btn btn-info .btn-pill"
+                          (click)="bioconda_show = !bioconda_show">
+                    <strong *ngIf="!bioconda_show">Show</strong><strong
+                    *ngIf="bioconda_show">Hide</strong>
+                  </button>
                 </div>
               </div>
-
-
-            </div>
-            <div
-              *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
-              class="form-group row">
-
-              <label class="col-md-2 form-control-label">Open Ports</label>
-              <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP <i
-                data-balloon="This selection is necessary for using mosh"
-                data-balloon-pos="down" data-balloon-length="large"><i
-                class="icon-question menu_links"
-                style="cursor: pointer;"></i></i></strong></label>
-
-                <label
-                  class="switch switch-label switch-pill switch-success">
-                  <input type="checkbox" class="switch-input"
-                         name="udp_allowed"
-                         [(ngModel)]="udp_allowed">
-                  <div class="switch-slider" data-checked="✓" data-unchecked="✕"></div>
-                  <!--<span class="switch-handle"></span>-->
-                </label></div>
-
-
-            </div>
-
-
-            <div
-              *ngIf="selectedProject && projectDataLoaded && is_vo && selectedProjectVmsUsed < selectedProjectVmsMax"
-              class="form-group row">
-
-
-              <label class="col-md-3 form-control-label"><strong>Bioconda </strong><span class="badge badge-primary">BETA</span></label>
-              <div class="col-md-6">
-                <button type="button" class="btn btn-info .btn-pill"
-                        (click)="bioconda_show = !bioconda_show">
-                  <strong *ngIf="!bioconda_show">Show</strong><strong
-                  *ngIf="bioconda_show">Hide</strong>
-                </button>
+              <div [hidden]="!bioconda_show" class="col-12">
+                <app-bioconda #bioconda (hasTools)="hasChosenTools($event)"></app-bioconda>
               </div>
-            </div>
-            <div [hidden]="!bioconda_show" class="col-12">
-              <app-bioconda #bioconda (hasTools)="hasChosenTools($event)"></app-bioconda>
-            </div>
-            <div *ngIf="hasTools" class="col"
-                 [ngClass]="***REMOVED***
+              <div *ngIf="hasTools" class="col"
+                   [ngClass]="***REMOVED***
                                 'alert-danger': !respCheck.checked,
                                 'alert-success': respCheck.checked
                                 ***REMOVED***">
-              <div class="form-check">
-                <input class="form-check-input"
-                       name="bioconda_need_okay"
-                       type="checkbox"
-                       id="bioconda_need_okay"
-                       ngModel
-                       #respCheck
-                       required
-                >
-                <label class="form-check-label" for="bioconda_need_okay">
-                  I hereby confirm that I read and acknowledge the following:<br>
-                  To set up your virtual machine with the chosen tools, we generate a new rsa-keypair which we use to
-                  log into your virtual machine.<br>
-                  We install Miniconda3, create a conda environment called 'denbi' and install your chosen tools.<br>
-                  When the installation is successful we delete our key and put your public key onto your virtual
-                  machine.
-                </label>
+                <div class="form-check">
+                  <input class="form-check-input"
+                         name="bioconda_need_okay"
+                         type="checkbox"
+                         id="bioconda_need_okay"
+                         ngModel
+                         #respCheck
+                         required
+                  >
+                  <label class="form-check-label" for="bioconda_need_okay">
+                    I hereby confirm that I read and acknowledge the following:<br>
+                    To set up your virtual machine with the chosen tools, we generate a new rsa-keypair which we use to
+                    log into your virtual machine.<br>
+                    We install Miniconda3, create a conda environment called 'denbi' and install your chosen tools.<br>
+                    When the installation is successful we delete our key and put your public key onto your virtual
+                    machine.
+                  </label>
+                </div>
               </div>
             </div>
+          </form>
+
         </div>
-        </form>
-
-      </div>
 
 
-      <div class="form-group row"
-           *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && flavors?.length > 0 ">
+        <div class="form-group row"
+             *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
 
-        <button style=" margin-left: auto;margin-top: 25px;
+          <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
     width: 8em"
 
-                type="button"
-                [disabled]="f.invalid || (diskspace > 0 && volumeName == '')"
-                class="btn btn-primary  .btn-lg offset-md-8"
-                data-toggle="modal"
-                (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
-          Start VM
-        </button>
+                  type="button"
+                  [disabled]="f.invalid || (diskspace > 0 && volumeName == '')"
+                  class="btn btn-primary  .btn-lg offset-md-8"
+                  data-toggle="modal"
+                  (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
+            Start VM
+          </button>
+        </div>
+
+
+        <div class="alert alert-danger"
+             *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
+          corresponding client is currently offline.
+          If you have any questions please contact cloud@denbi.de.
+        </div>
+
+
       </div>
 
-
-      <div class="alert alert-danger"
-           *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
-        corresponding client is currently offline.
-        If you have any questions please contact cloud@denbi.de.
-      </div>
-
+      <!--/.col-->
 
     </div>
-
-    <!--/.col-->
+  </div>
+  <div class="col-md-6">
 
   </div>
-</div>
-<div class="col-md-6">
-
-</div>
 
 </div>
 
