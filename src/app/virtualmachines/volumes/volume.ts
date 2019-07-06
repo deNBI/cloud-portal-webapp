@@ -5,11 +5,12 @@ import ***REMOVED***Client***REMOVED*** from '../clients/client.model';
  * Volume class.
  */
 export class Volume ***REMOVED***
-    volume_name: string;
-    volume_project: string;
-    volume_projectid: string;
-    volume_openstackid: string;
-    volume_size: number;
-    volume_virtualmachine: VirtualMachine;
-    volume_client: Client;
+  volume_name: string;
+  volume_project: string;
+  volume_projectid: string;
+  volume_openstackid: string;
+  volume_size: number;
+  volume_virtualmachine: VirtualMachine;
+  volume_client: Client;
+  volume_created_by_user: boolean;
 ***REMOVED***
