@@ -11,6 +11,7 @@ import ***REMOVED***ProjectMemberApplication***REMOVED*** from './project_member
 import ***REMOVED***ComputecenterComponent***REMOVED*** from './computecenter.component';
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modules/baseClass/abstract-base-class';
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
+import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
 
 /**
  * Projectoverview component.
@@ -37,6 +38,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
   projects: Project[] = [];
   loaded: boolean = true;
   details_loaded: boolean = false;
+  userinfo: Userinfo;
 
   // modal variables for User list
   public usersModalProjectMembers: ProjectMember[] = [];
@@ -90,6 +92,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
 
   ngOnInit(): void ***REMOVED***
     this.getUserProjects();
+    this.getUserinfo();
 
   ***REMOVED***
 
@@ -308,6 +311,12 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
       this.UserModalFacility = null;
 
     ***REMOVED***
+  ***REMOVED***
+
+  getUserinfo(): void ***REMOVED***
+    this.userService.getUserInfo().subscribe((userinfo: any) => ***REMOVED***
+      this.userinfo = new Userinfo(userinfo);
+    ***REMOVED***)
   ***REMOVED***
 
   public addMember(groupid: number, memberid: number, firstName: string, lastName: string): void ***REMOVED***
