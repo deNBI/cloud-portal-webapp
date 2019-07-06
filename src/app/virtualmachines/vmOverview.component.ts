@@ -267,15 +267,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * @param {string} openstack_id of the instance
    * @param {string} reboot_type HARD|SOFT
    */
-  public
-
-  rebootVm(vm: VirtualMachine, reboot_type: string): void {
+  public rebootVm(vm: VirtualMachine, reboot_type: string): void {
     this.virtualmachineservice.rebootVM(vm.openstackid, reboot_type).subscribe((result: IResponseTemplate) => {
       this.status_changed = 0;
 
       if (<boolean><Boolean>result.value) {
         this.status_changed = 1;
-        this.check_status_loop(vm)
+        this.check_status_loop_when_reboot(vm)
       } else {
         this.status_changed = 2;
       }
@@ -315,6 +313,48 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
             }
             this.check_status_loop(vm)
+          }
+
+        })
+      }
+      ,
+      this.checkStatusTimeout
+    )
+    ;
+  }
+
+  /**
+   * Check Status of vm in loop till active.
+   * @param {string} id of instance.
+   */
+  check_status_loop_when_reboot(vm: VirtualMachine): void {
+
+    setTimeout(
+      () => {
+        this.virtualmachineservice.checkVmStatusWhenReboot(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+
+          if (updated_vm.status === 'ACTIVE') {
+            this.reboot_done = true;
+            this.setCollapseStatus(updated_vm.openstackid, false);
+
+            if (updated_vm.created_at !== '') {
+              updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+            }
+            if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+              updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+            } else {
+              updated_vm.stopped_at = ''
+            }
+
+            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+            this.applyFilter();
+
+          } else {
+            if (vm['error']) {
+              this.status_check_error = true
+
+            }
+            this.check_status_loop_when_reboot(vm)
           }
 
         })
