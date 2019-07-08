@@ -232,10 +232,17 @@
                   <label class="col-md-2 form-control-label"><strong>Optional
                     parameters</strong></label>
 
+
+                  <button type="button" class="btn btn-info .btn-pill"
+                          (click)="optional_params = !optional_params">
+                    <strong *ngIf="!optional_params">Show</strong><strong
+                    *ngIf="optional_params">Hide</strong>
+                  </button>
+
                 </div>
               </div>
 
-              <div
+              <div [hidden]="!optional_params"
                 *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID  && selectedProjectVmsUsed < selectedProjectVmsMax"
                 class="form-group row">
 
@@ -250,7 +257,7 @@
 
               </div>
 
-              <div
+              <div [hidden]="!optional_params"
                 *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax">
                 <div class="form-group row" *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
                   <label *ngIf="diskspace <= 0" class="col-md-2 form-control-label">Volume name</label>
@@ -267,7 +274,7 @@
                 </div>
               </div>
 
-              <div
+              <div [hidden]="!optional_params"
                 *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax"
 
                 class="form-group row">
@@ -296,7 +303,7 @@
 
 
               </div>
-              <div
+              <div [hidden]="!optional_params"
                 *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
                 class="form-group row">
 
@@ -325,15 +332,18 @@
                 class="form-group row">
 
 
-                <label class="col-md-3 form-control-label"><strong>Bioconda </strong><span class="badge badge-primary">BETA</span></label>
-                <div class="col-md-6">
+                <label class="col-md-2 form-control-label"><strong>Bioconda </strong><span class="badge badge-primary">BETA</span></label>
                   <button type="button" class="btn btn-info .btn-pill"
                           (click)="bioconda_show = !bioconda_show">
                     <strong *ngIf="!bioconda_show">Show</strong><strong
                     *ngIf="bioconda_show">Hide</strong>
                   </button>
-                </div>
               </div>
+
+              <div [hidden]="!bioconda_show" class="alert alert-primary role alert" style="max-width: 600px; margin: 10px auto">
+                <p>Please be aware that all Bioconda tools and packages are provided by third parties. de.NBI Cloud is not responsible for the functionality of the packages provided. In case of problems during installation or use, please contact the developers of the respective packages.</p>
+              </div>
+
               <div [hidden]="!bioconda_show" class="col-12">
                 <app-bioconda #bioconda (hasTools)="hasChosenTools($event)"></app-bioconda>
               </div>
@@ -366,7 +376,17 @@
 
         </div>
 
-
+        <div *ngIf="(f.invalid || !selectedImage || (diskspace > 0 && !volumeName))&& projectDataLoaded" class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
+          <p>Please choose the following before staring a VM:</p>
+        <p *ngIf="f.controls.instance_name?.invalid">- A name for your instance
+        </p>
+        <p *ngIf="!selectedFlavor">- The flavor type of your VM
+        </p>
+        <p *ngIf="!selectedImage">- The image you want to run on your VM
+        </p>
+          <p *ngIf="diskspace > 0 && !volumeName">- A name for your storage volume
+          </p>
+        </div>
         <div class="form-group row"
              *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
 
