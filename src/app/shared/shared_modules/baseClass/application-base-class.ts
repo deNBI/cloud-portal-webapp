@@ -226,12 +226,12 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
 
     ***REMOVED***
     if (aj['projectapplicationrenewal']) ***REMOVED***
-      const r: ApplicationExtension = new ApplicationExtension();
+      const extension: ApplicationExtension = new ApplicationExtension();
       let requestExtensionTotalCores: number = 0;
       let requestExtensionTotalRam: number = 0;
 
       for (const flavor of aj['projectapplicationrenewal']['flavors']) ***REMOVED***
-        r.addFlavorToRequested(
+        extension.addFlavorToRequested(
           flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
           flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk);
         requestExtensionTotalCores += flavor.vcpus * flavor.counter;
@@ -239,20 +239,20 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
 
       ***REMOVED***
 
-      r.TotalRAM = requestExtensionTotalRam;
-      r.TotalCores = requestExtensionTotalCores;
+      extension.TotalRAM = requestExtensionTotalRam;
+      extension.TotalCores = requestExtensionTotalCores;
 
-      r.Id = aj['projectapplicationrenewal']['project_application'];
-      r.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-      r.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-      r.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-      r.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-      r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-      r.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-      r.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-      r.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-      r.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-      newApp.ApplicationExtension = r;
+      extension.Id = aj['projectapplicationrenewal']['project_application'];
+      extension.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+      extension.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+      extension.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+      extension.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+      extension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+      extension.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
+      extension.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+      extension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
+      extension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+      newApp.ApplicationExtension = extension;
     ***REMOVED***
 
     return newApp
