@@ -11,6 +11,7 @@ import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 import {IResponseTemplate} from '../api-connector/response-template';
+import {Userinfo} from '../userinfo/userinfo.model';
 
 /**
  * Projectoverview component.
@@ -37,6 +38,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   projects: Project[] = [];
   loaded: boolean = true;
   details_loaded: boolean = false;
+  userinfo: Userinfo;
 
   // modal variables for User list
   public usersModalProjectMembers: ProjectMember[] = [];
@@ -90,6 +92,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
 
   ngOnInit(): void {
     this.getUserProjects();
+    this.getUserinfo();
 
   }
 
@@ -308,6 +311,12 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
       this.UserModalFacility = null;
 
     }
+  }
+
+  getUserinfo(): void {
+    this.userService.getUserInfo().subscribe((userinfo: any) => {
+      this.userinfo = new Userinfo(userinfo);
+    })
   }
 
   public addMember(groupid: number, memberid: number, firstName: string, lastName: string): void {

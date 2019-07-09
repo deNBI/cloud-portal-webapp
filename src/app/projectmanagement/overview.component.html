@@ -1,444 +1,446 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
-    <div class="row">
-        <!--/.col-->
-        <h1 class="col-md-8 ">Projects Overview</h1>
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fa fa-align-justify"></i> Projects
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>Project ID</th>
-                                <th>Project Name</th>
-                                <th>Details</th>
-                                <th>Facility</th>
-                                <!--th>Date created (d/m/y)</th>
-                                th>Expiration Date (d/m/y)</th
-                                th>Days running</th
-                                th>Lifetime in Days</th-->
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr *ngFor="let project of projects">
-                                <td>
+  <div class="row">
+    <!--/.col-->
+    <h1 class="col-md-8 ">Projects Overview</h1>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Projects
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Project ID</th>
+                <th>Project Name</th>
+                <th>Details</th>
+                <th>Facility</th>
+                <!--th>Date created (d/m/y)</th>
+                th>Expiration Date (d/m/y)</th
+                th>Days running</th
+                th>Lifetime in Days</th-->
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let project of projects">
+                <td>
                                      <span *ngIf="project.OpenStackProject"
-                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge"
+                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944"
+                                           class="badge"
                                            data-toggle="tooltip" data-placement="auto"
                                            title="This is an Openstack project">
                                     <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
                                   </span>
-                                    <span *ngIf="!project.OpenStackProject"
-                                          style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
-                                          data-toggle="tooltip" data-placement="auto"
-                                          title="This is a Simple VM project">
+                  <span *ngIf="!project.OpenStackProject"
+                        style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
+                        data-toggle="tooltip" data-placement="auto"
+                        title="This is a Simple VM project">
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span>
-                                </td>
-                                <!--[ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}"-->
-                                <td>{{ project.Id }}</td>
-                                <td>{{ project.Name }}
-                                </td>
-                                <td>
-                                    <button class="btn btn-secondary"
-                                            (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
-                                        Show Details
-                                    </button>
-                                </td>
+                </td>
+                <!--[ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}"-->
+                <td>{{ project.Id }}</td>
+                <td>{{ project.Name }}
+                </td>
+                <td>
+                  <button class="btn btn-secondary"
+                          (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
+                    Show Details
+                  </button>
+                </td>
 
-                                <td>
-                                    <p *ngIf="project.ComputeCenter?.Name">{{project.ComputeCenter.Name}}</p>
-                                    <ul *ngIf="project.ComputeCenter?.Name">
-                                        <li *ngIf="project.OpenStackProject"> Login: <a target="_blank"
-                                                                                        href="{{project.ComputeCenter.Login}}">
-                                            {{project.ComputeCenter.Login}}</a></li>
-                                        <li>Support: {{project.ComputeCenter.Support}}</li>
+                <td>
+                  <p *ngIf="project.ComputeCenter?.Name">{{project.ComputeCenter.Name}}</p>
+                  <ul *ngIf="project.ComputeCenter?.Name">
+                    <li *ngIf="project.OpenStackProject"> Login: <a target="_blank"
+                                                                    href="{{project.ComputeCenter.Login}}">
+                      {{project.ComputeCenter.Login}}</a></li>
+                    <li>Support: {{project.ComputeCenter.Support}}</li>
 
-                                    </ul>
+                  </ul>
 
-                                </td>
+                </td>
 
-                                <td>
-                                    <div class="btn-group-vertical">
-                                        <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
-                                                data-toggle="modal"
-                                                (click)="this.usersModalProjectMembers = [];showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
+                <td>
+                  <div class="btn-group-vertical">
+                    <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
+                            data-toggle="modal"
+                            (click)="this.usersModalProjectMembers = [];showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
 
 
-                                                *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
-                                            <i class="fa fa-users"></i>&nbsp;Show Members
-                                        </button>
-                                        <button
-                                                (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.RealName,project.ComputeCenter);setAddUserInvitationLink(); addUserModal.show();"
-                                                *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
-                                                type="button" style="margin-bottom: 5px"
-                                                class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
-                                        </button>
-                                        <button
-                                                *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
-                                                type="button" style="margin-bottom: 5px"
-                                                (click)="selectedProject = project;applicationModal.show();getUserProjectApplications(selectedProject?.Id);application_action_done=false;"
-                                                class="btn btn-secondary"><i class="fa fa-list-alt"></i>&nbsp;
-                                            Applications
-                                        </button>
-                                        <h4 *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)"><span
-                                                class="badge badge-dark">Project Member </span></h4>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                            *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
+                      <i class="fa fa-users"></i>&nbsp;Show Members
+                    </button>
+                    <button
+                      (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.RealName,project.ComputeCenter);setAddUserInvitationLink(); addUserModal.show();"
+                      *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
+                      type="button" style="margin-bottom: 5px"
+                      class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
+                    </button>
+                    <button
+                      *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
+                      type="button" style="margin-bottom: 5px"
+                      (click)="selectedProject = project;applicationModal.show();getUserProjectApplications(selectedProject?.Id);application_action_done=false;"
+                      class="btn btn-secondary"><i class="fa fa-list-alt"></i>&nbsp;
+                      Applications
+                    </button>
+                    <h4 *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)"><span
+                      class="badge badge-dark">Project Member </span></h4>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <!--/.col-->
+      </div>
     </div>
+    <!--/.col-->
+  </div>
 </div>
 
 
 <div bsModal #usersModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
-                    ({{ usersModalProjectName }})</h4>
-                <button type="button" class="close" style="cursor: pointer;" (click)="usersModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
+          ({{ usersModalProjectName }})</h4>
+        <button type="button" class="close" style="cursor: pointer;" (click)="usersModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-striped" style="margin: 5px">
+            <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Member ID</th>
+              <th>Full Name</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let member of usersModalProjectMembers" [ngStyle]="{'color':isPi(member)}">
+              <td>{{ member.Id }}</td>
+              <td>{{ member.MemberId }}</td>
+              <td>{{ member.Username }}</td>
+              <td>
+                <button *ngIf="!member.IsPi" (click)="usersModal.hide();promoteAdmin( usersModalProjectID,member.Id,member.Username);
+                                                notificationModal.show();
+                                               " class="btn btn-secondary" type="button" style="margin: 2px">
+                  <i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
                 </button>
-            </div>
-            <div class="modal-body">
-                <div class="table-responsive">
-                    <table class="table table-striped" style="margin: 5px">
-                        <thead>
-                        <tr>
-                            <th>User ID</th>
-                            <th>Member ID</th>
-                            <th>Full Name</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let member of usersModalProjectMembers" [ngStyle]="{'color':isPi(member)}">
-                            <td>{{ member.Id }}</td>
-                            <td>{{ member.MemberId }}</td>
-                            <td>{{ member.Username }}</td>
-                            <td>
-                                <button *ngIf="!member.IsPi" (click)="usersModal.hide();promoteAdmin( usersModalProjectID,member.Id,member.Username);
+                <button *ngIf="member.IsPi &&  userinfo.MemberId != member.MemberId" (click)="usersModal.hide();removeAdmin( usersModalProjectID,member.Id,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button" style="margin: 2px">
-                                    <i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
-                                </button>
-                                <button *ngIf="member.IsPi" (click)="usersModal.hide();removeAdmin( usersModalProjectID,member.Id,member.Username);
-                                                notificationModal.show();
-                                               " class="btn btn-secondary" type="button" style="margin: 2px">
-                                    <i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
-                                </button>
-                                <button (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username);
+                  <i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
+                </button>
+                <button *ngIf=" userinfo.MemberId != member.MemberId" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-danger" type="button" style="margin: 2px">
 
-                                    <i class="fa fa-trash"></i>&nbsp; Remove member
-                                </button>
-                            </td>
-                        </tr>
+                  <i class="fa fa-trash"></i>&nbsp; Remove member
+                </button>
+              </td>
+            </tr>
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
 <div bsModal #addUserModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content ">
-            <div class="modal-header">
-                <h4 class="modal-title">Add member to the project {{ addUserModalProjectID }}
-                    ({{ addUserModalProjectName }})</h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="addUserModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h4 class="modal-title">Add member to the project {{ addUserModalProjectID }}
+          ({{ addUserModalProjectName }})</h4>
+        <button type="button" class="close" style="cursor:pointer" (click)="addUserModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="container-fluid">
+          <div class="row">
+            <p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
+              four characters of his name:</p>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <input style="width: 100%" placeholder="" #searchString>
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary"
+                      (click)="filterMembers(searchString.value )"><i
+                class="fa fa-search"></i> Search Member
+              </button>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-12">
+              <strong>Please note</strong> that if you can not find the user, he is not registered for a
+              a de.NBI Cloud account. In that case you can invite him by sending him the following link:
+              <br>
+              <br>
+              <ul style="list-style-type:none;">
+
+                <li>
+                  <pre [hidden]="showLink">{{addUserModalInvitationLink}}</pre>
+                  <div class="btn-group-vertical">
+                    <button class="btn btn-primary" style="margin-bottom: 5px" (click)="showLink = !showLink">
+                      <span [hidden]="!showLink">Show</span>
+                      <span [hidden]="showLink">Hide</span>
+                      link
+                    </button>
+                    <button class="btn btn-success" (click)="copyToClipboard(addUserModalInvitationLink)">Copy link
+                    </button>
+                  </div>
+                </li>
+              </ul>
+              <br>
+              After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
+              Read more about the process <a target="_blank" href="{{wiki_group_invitation}}">here</a>.
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
+              <thead>
+
+              <th></th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              </thead>
+              <tbody *ngFor="  let member of filteredMembers">
+              <td>
+                <button
+                  (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                  class="btn btn-success"><i class="fa fa-plus"></i> Add Member
                 </button>
-            </div>
-            <div class="modal-body">
-
-                <div class="container-fluid">
-                    <div class="row">
-                        <p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
-                            four characters of his name:</p>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <input style="width: 100%" placeholder="" #searchString>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-primary"
-                                    (click)="filterMembers(searchString.value )"><i
-                                    class="fa fa-search"></i> Search Member
-                            </button>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <strong>Please note</strong> that if you can not find the user, he is not registered for a
-                            a de.NBI Cloud account. In that case you can invite him by sending him the following link:
-                            <br>
-                            <br>
-                            <ul style="list-style-type:none;">
-
-                                <li>
-                                    <pre [hidden]="showLink">{{addUserModalInvitationLink}}</pre>
-                                    <div class="btn-group-vertical">
-                                        <button class="btn btn-primary" style="margin-bottom: 5px" (click)="showLink = !showLink">
-                                            <span [hidden]="!showLink">Show</span>
-                                            <span [hidden]="showLink">Hide</span>
-                                            link
-                                        </button>
-                                        <button class="btn btn-success" (click)="copyToClipboard(addUserModalInvitationLink)">Copy link</button>
-                                    </div>
-                                </li>
-                            </ul>
-                            <br>
-                            After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
-                            Read more about the process <a target="_blank" href="{{wiki_group_invitation}}">here</a>.
-                        </div>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
-                            <thead>
-
-                            <th></th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            </thead>
-                            <tbody *ngFor="  let member of filteredMembers">
-                            <td>
-                                <button
-                                        (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
-                                        class="btn btn-success"><i class="fa fa-plus"></i> Add Member
-                                </button>
-                                <button style="padding-left: 10px;margin-left: 10px"
-                                        (click)="addAdmin(addUserModalProjectID,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
-                                        class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
-                                </button>
-                            </td>
-                            <td>{{member['firstName']}}</td>
-                            <td>{{member['lastName']}}</td>
-                            <td>{{member['mail']}}</td>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <!--  <button type="button" (click)="addUserModal.hide();
-                                                  notificationModal.show();
-                                                  addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
-                      Add User
-                  </button> -->
-                <button type="button" (click)="addUserModalProjectID = -1;filteredMembers=null; addUserModal.hide();"
-                        type="reset"
-                        class="btn  btn-danger"><i class="fa fa-ban"></i> Close
+                <button style="padding-left: 10px;margin-left: 10px"
+                        (click)="addAdmin(addUserModalProjectID,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                        class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
                 </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+              </td>
+              <td>{{member['firstName']}}</td>
+              <td>{{member['lastName']}}</td>
+              <td>{{member['mail']}}</td>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!--  <button type="button" (click)="addUserModal.hide();
+                                          notificationModal.show();
+                                          addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
+              Add User
+          </button> -->
+        <button type="button" (click)="addUserModalProjectID = -1;filteredMembers=null; addUserModal.hide();"
+                type="reset"
+                class="btn  btn-danger"><i class="fa fa-ban"></i> Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">{{ notificationModalTitle }}</h4>
-                <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-{{ notificationModalType }}" role="alert">
-                    {{ notificationModalMessage }}
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button *ngIf="notificationModalIsClosable == true" type="button"
-                        (click)="resetNotificationModal(); notificationModal.hide();" type="reset"
-                        class="btn  btn-secondary"> Close
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+        <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-{{ notificationModalType }}" role="alert">
+          {{ notificationModalMessage }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="notificationModalIsClosable == true" type="button"
+                (click)="resetNotificationModal(); notificationModal.hide();" type="reset"
+                class="btn  btn-secondary"> Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
 <div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-info" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Description</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()"
-                        aria-label="Close">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Description</h4>
+        <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()"
+                aria-label="Close">
 
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
-            <div class="modal-body">
-                <p>{{ selectedProject?.Description }}</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary"
-                        (click)="selectedProject=undefined;descriptionModal.hide();">
-                    Close
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+      <div class="modal-body">
+        <p>{{ selectedProject?.Description }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary"
+                (click)="selectedProject=undefined;descriptionModal.hide();">
+          Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
 
 <div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-info modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Details</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+  <div class="modal-dialog modal-info modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Details</h4>
+        <button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
-            <div class="modal-body">
-                <div *ngIf="!details_loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
-                                                                           style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
-                </div>
-                <div class="table-responsive">
-                    <table *ngIf="details_loaded" class="table table-striped">
-                        <thead>
-                        <th>Description</th>
-                        <th>Date created (d/m/y)</th>
-                        <th>Expiration Date (d/m/y)</th>
-                        <th>Days running</th>
-                        <th>Lifetime in Days</th>
-                        </thead>
-                        <tbody>
-                        <td>
-                            <button class="btn btn-secondary"
-                                    (click)="infoModal.hide();descriptionModal.show();">Show
-                                Description
-                            </button>
-                        </td>
+      <div class="modal-body">
+        <div *ngIf="!details_loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
+                                                                   style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+        </div>
+        <div class="table-responsive">
+          <table *ngIf="details_loaded" class="table table-striped">
+            <thead>
+            <th>Description</th>
+            <th>Date created (d/m/y)</th>
+            <th>Expiration Date (d/m/y)</th>
+            <th>Days running</th>
+            <th>Lifetime in Days</th>
+            </thead>
+            <tbody>
+            <td>
+              <button class="btn btn-secondary"
+                      (click)="infoModal.hide();descriptionModal.show();">Show
+                Description
+              </button>
+            </td>
 
-                        <td>{{ selectedProject?.DateCreated }}</td>
-                        <td>{{selectedProject?.DateEnd}}</td>
-                        <td>{{ selectedProject?.DaysRunning }}</td>
-                        <td>{{selectedProject?.LifetimeDays}}</td>
-                        <td>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="selectedProject=undefined;infoModal.hide();">
-                    Close
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+            <td>{{ selectedProject?.DateCreated }}</td>
+            <td>{{selectedProject?.DateEnd}}</td>
+            <td>{{ selectedProject?.DaysRunning }}</td>
+            <td>{{selectedProject?.LifetimeDays}}</td>
+            <td>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="selectedProject=undefined;infoModal.hide();">
+          Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
 
 
 <div bsModal #applicationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Applications for {{selectedProject?.Name}}</h4>
-                <button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Applications for {{selectedProject?.Name}}</h4>
+        <button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
 
-                <div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
-                                                                   style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
-                </div>
+        <div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
+                                                           style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+        </div>
 
-                <div *ngIf="loaded" class="table-responsive">
-                    <table class="table table-bordered table-striped table-sm">
-                        <thead>
+        <div *ngIf="loaded" class="table-responsive">
+          <table class="table table-bordered table-striped table-sm">
+            <thead>
 
-                        <th>Name</th>
-                        <th>Date Submitted</th>
-                        <th>Actions</th>
-                        </thead>
-                        <tbody *ngFor="  let application of selectedProject?.ProjectMemberApplications">
+            <th>Name</th>
+            <th>Date Submitted</th>
+            <th>Actions</th>
+            </thead>
+            <tbody *ngFor="  let application of selectedProject?.ProjectMemberApplications">
 
-                        <td>{{application.Name}}</td>
-                        <td>{{application.DateCreated}}</td>
-                        <td>
-                            <button
-                                    (click)="approveMemberApplication(selectedProject?.Id,application.Id,application.Name); "
-                                    class="btn btn-success"><i class="fa fa-check"></i> Approve
-                            </button>
-                            <button style="margin-left: 10px"
-                                    (click)="application_action='rejected';application_member_name=application.Name;rejectMemberApplication(selectedProject?.Id,application.Id,application.Name); "
-                                    class="btn btn-danger"><i class="fa fa-times"></i> Reject
-                            </button>
-                        </td>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <td>{{application.Name}}</td>
+            <td>{{application.DateCreated}}</td>
+            <td>
+              <button
+                (click)="approveMemberApplication(selectedProject?.Id,application.Id,application.Name); "
+                class="btn btn-success"><i class="fa fa-check"></i> Approve
+              </button>
+              <button style="margin-left: 10px"
+                      (click)="application_action='rejected';application_member_name=application.Name;rejectMemberApplication(selectedProject?.Id,application.Id,application.Name); "
+                      class="btn btn-danger"><i class="fa fa-times"></i> Reject
+              </button>
+            </td>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
 
-            <div class="modal-footer">
+      <div class="modal-footer">
 
-                <p *ngIf="application_action_success && application_action_done" class="alert alert-success mr-auto">
-                    <strong>Success:</strong> Succesfully {{application_action}} the application of
-                    {{application_member_name}}.
-                </p>
-                <p *ngIf="!application_action_success && application_action_done && !application_action_error_message"
-                   class="alert alert-danger mr-auto">
-                    <strong>Failed:</strong> The application of {{application_member_name}} could not be
-                    {{application_action}} .
-                </p>
-                <p *ngIf="!application_action_success && application_action_done && application_action_error_message"
-                   class="alert alert-danger mr-auto">
-                    <strong>Failed:</strong> User didn't verify his email address yet. Please wait until the email is
-                    verified.
-                </p>
-                <button type="button" class="btn btn-primary"
-                        (click)="getUserProjectApplications(selectedProject?.Id)">
-                    Refresh
-                </button>
-                <button type="button" class="btn btn-secondary"
-                        (click)="application_action_error_message=null;application_action_done=false;selectedProject=undefined;applicationModal.hide();">
-                    Close
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+        <p *ngIf="application_action_success && application_action_done" class="alert alert-success mr-auto">
+          <strong>Success:</strong> Succesfully {{application_action}} the application of
+          {{application_member_name}}.
+        </p>
+        <p *ngIf="!application_action_success && application_action_done && !application_action_error_message"
+           class="alert alert-danger mr-auto">
+          <strong>Failed:</strong> The application of {{application_member_name}} could not be
+          {{application_action}} .
+        </p>
+        <p *ngIf="!application_action_success && application_action_done && application_action_error_message"
+           class="alert alert-danger mr-auto">
+          <strong>Failed:</strong> User didn't verify his email address yet. Please wait until the email is
+          verified.
+        </p>
+        <button type="button" class="btn btn-primary"
+                (click)="getUserProjectApplications(selectedProject?.Id)">
+          Refresh
+        </button>
+        <button type="button" class="btn btn-secondary"
+                (click)="application_action_error_message=null;application_action_done=false;selectedProject=undefined;applicationModal.hide();">
+          Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
 
