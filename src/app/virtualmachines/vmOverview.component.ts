@@ -267,15 +267,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
    * @param ***REMOVED***string***REMOVED*** openstack_id of the instance
    * @param ***REMOVED***string***REMOVED*** reboot_type HARD|SOFT
    */
-  public
-
-  rebootVm(vm: VirtualMachine, reboot_type: string): void ***REMOVED***
+  public rebootVm(vm: VirtualMachine, reboot_type: string): void ***REMOVED***
     this.virtualmachineservice.rebootVM(vm.openstackid, reboot_type).subscribe((result: IResponseTemplate) => ***REMOVED***
       this.status_changed = 0;
 
       if (<boolean><Boolean>result.value) ***REMOVED***
         this.status_changed = 1;
-        this.check_status_loop(vm)
+        this.check_status_loop_when_reboot(vm)
       ***REMOVED*** else ***REMOVED***
         this.status_changed = 2;
       ***REMOVED***
@@ -315,6 +313,48 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
             ***REMOVED***
             this.check_status_loop(vm)
+          ***REMOVED***
+
+        ***REMOVED***)
+      ***REMOVED***
+      ,
+      this.checkStatusTimeout
+    )
+    ;
+  ***REMOVED***
+
+  /**
+   * Check Status of vm in loop till active.
+   * @param ***REMOVED***string***REMOVED*** id of instance.
+   */
+  check_status_loop_when_reboot(vm: VirtualMachine): void ***REMOVED***
+
+    setTimeout(
+      () => ***REMOVED***
+        this.virtualmachineservice.checkVmStatusWhenReboot(vm.openstackid).subscribe((updated_vm: VirtualMachine) => ***REMOVED***
+
+          if (updated_vm.status === 'ACTIVE') ***REMOVED***
+            this.reboot_done = true;
+            this.setCollapseStatus(updated_vm.openstackid, false);
+
+            if (updated_vm.created_at !== '') ***REMOVED***
+              updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+            ***REMOVED***
+            if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') ***REMOVED***
+              updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
+            ***REMOVED*** else ***REMOVED***
+              updated_vm.stopped_at = ''
+            ***REMOVED***
+
+            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+            this.applyFilter();
+
+          ***REMOVED*** else ***REMOVED***
+            if (vm['error']) ***REMOVED***
+              this.status_check_error = true
+
+            ***REMOVED***
+            this.check_status_loop_when_reboot(vm)
           ***REMOVED***
 
         ***REMOVED***)

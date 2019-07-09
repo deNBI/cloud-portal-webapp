@@ -325,6 +325,31 @@
                   </button>
                 </div>
               </div>
+              <div [hidden]="!bioconda_show" class="col-12">
+                <app-bioconda #bioconda (hasTools)="hasChosenTools($event)"></app-bioconda>
+              </div>
+              <div *ngIf="hasTools" class="col"
+                   [ngClass]="***REMOVED***
+                                'alert-danger': !respCheck.checked,
+                                'alert-success': respCheck.checked
+                                ***REMOVED***">
+                <div class="form-check">
+                  <input class="form-check-input"
+                         name="bioconda_need_okay"
+                         type="checkbox"
+                         id="bioconda_need_okay"
+                         ngModel
+                         #respCheck
+                         required
+                  >
+                  <label class="form-check-label" for="bioconda_need_okay">
+                    I hereby confirm that I read and acknowledge the following:<br>
+                    To set up your virtual machine with the chosen tools, we generate a new rsa-keypair which we use to log into your virtual machine.<br>
+                    We install Miniconda3, create a conda environment called 'denbi' and install your chosen tools.<br>
+                    When the installation is successful we delete our key and put your public key onto your virtual machine.
+                  </label>
+                </div>
+              </div>
             </div>
           </form>
 
