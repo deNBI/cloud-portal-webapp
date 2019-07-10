@@ -290,7 +290,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
 
   ***REMOVED***
 
-  removeCheckedMembers(groupId: number): void ***REMOVED***
+  removeCheckedMembers(groupId: number | string): void ***REMOVED***
     let facility_id: string | number = null;
     if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
       facility_id = this.UserModalFacility[1]
