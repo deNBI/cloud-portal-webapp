@@ -284,11 +284,16 @@ export class VirtualMachineComponent implements OnInit{
     setTimeout(
       () => {
         this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => {
+          console.log(newVm.status);
           if (newVm.status === 'ACTIVE') {
             this.resetProgressBar();
             this.newVm = newVm;
             this.loadProjectData();
 
+          } else if (newVm.status === 'BIOCONDA_FAILED' || newVm.status === 'DELETED') {
+            this.resetProgressBar();
+            this.create_error = <IResponseTemplate><any>newVm;
+            this.loadProjectData();
           } else if (newVm.status) {
             if (newVm.status === 'PORT_CLOSED') {
               this.checking_vm_status = 'Active';
