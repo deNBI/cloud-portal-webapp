@@ -1,19 +1,23 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {Image} from './virtualmachinemodels/image'
-import {Flavor} from './virtualmachinemodels/flavor';
-import {OwlOptions} from 'ngx-owl-carousel-o';
+import {OwlOptions, ResponsiveSettings} from 'ngx-owl-carousel-o';
 
 @Component({
              selector: 'app-image-detail',
              templateUrl: 'imagedetail.component.html'
 
            })
-export class ImageDetailComponent {
+export class ImageDetailComponent implements OnInit {
   @Input() selectedImage: Image;
   @Input() images: Image[];
-  @Input() collapse1: boolean;
   @Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
   carousel_activated: boolean = true;
+  images_per_row: number = 4;
+  window_size: number;
+  carousel_window_min_xl_9: number = 1700;
+  carousel_window_min_xl_8: number = 1380;
+  carousel_window_min_xl6: number = 1200;
+
   customOptions: OwlOptions = {
     loop: true,
     mouseDrag: false,
@@ -27,21 +31,48 @@ export class ImageDetailComponent {
       0: {
         items: 1
       },
-      400: {
+      550: {
         items: 2
+
       },
-      740: {
+      800: {
         items: 3
       },
-      940: {
+      1200: {
         items: 4
       }
     },
     nav: true
   };
 
+  ngOnInit(): void {
+    this.window_size = window.innerWidth;
+
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event): void {
+    this.window_size = window.innerWidth;
+  }
+
+  /**
+   * Sets the selected Image.
+   * If a selectedImage exist it will be added to the flavor list and the new selectedImage will be removed.
+   * @param image Image which will become the selected Flavor.
+   */
   setSelectedImage(image: Image): void {
+
+    const indexNewSelectedImage: number = this.images.indexOf(image, 0);
+
+    if (this.selectedImage) {
+      this.images[indexNewSelectedImage] = this.selectedImage;
+    } else {
+      this.images.splice(indexNewSelectedImage, 1);
+    }
+
     this.selectedImage = image;
+
     this.selectedImageChange.emit(this.selectedImage);
   }
+
 }

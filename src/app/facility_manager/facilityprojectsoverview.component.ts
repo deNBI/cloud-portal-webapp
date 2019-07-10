@@ -61,6 +61,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     this.facilityservice.getManagerFacilities().subscribe(result => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
+      this.emailSubject = `[${this.selectedFacility['Facility']}]`;
+
       this.getFacilityProjects(this.managerFacilities[0]['FacilityId'])
 
     })
@@ -75,8 +77,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)
   }
 
+  /**
+   * Gets projects and sets email subject prefix when selected facility changes.
+   */
   onChangeSelectedFacility(): void {
-    this.getFacilityProjects(this.selectedFacility['FacilityId'])
+    this.getFacilityProjects(this.selectedFacility['FacilityId']);
+    this.emailSubject = `[${this.selectedFacility['Facility']}`
   }
 
   getProjectLifetime(project: Project): void {
