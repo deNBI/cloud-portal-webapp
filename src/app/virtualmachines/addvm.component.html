@@ -243,8 +243,8 @@
               </div>
 
               <div [hidden]="!optional_params"
-                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID  && selectedProjectVmsUsed < selectedProjectVmsMax"
-                class="form-group row">
+                   *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID  && selectedProjectVmsUsed < selectedProjectVmsMax"
+                   class="form-group row">
 
                 <div class="alert alert-warning col-md-9" role="alert"
                      *ngIf="selectedProjectVolumesUsed >= selectedProjectVolumesMax">
@@ -258,7 +258,7 @@
               </div>
 
               <div [hidden]="!optional_params"
-                *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax">
+                   *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax">
                 <div class="form-group row" *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
                   <label *ngIf="diskspace <= 0" class="col-md-2 form-control-label">Volume name</label>
                   <label *ngIf="diskspace > 0 " class="col-md-2 form-control-label"><strong>Volume
@@ -275,9 +275,9 @@
               </div>
 
               <div [hidden]="!optional_params"
-                *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax"
+                   *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax"
 
-                class="form-group row">
+                   class="form-group row">
 
                 <label class="col-md-2 form-control-label">Storage</label>
 
@@ -304,8 +304,8 @@
 
               </div>
               <div [hidden]="!optional_params"
-                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
-                class="form-group row">
+                   *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
+                   class="form-group row">
 
                 <label class="col-md-2 form-control-label">Open Ports</label>
                 <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP <i
@@ -333,15 +333,18 @@
 
 
                 <label class="col-md-2 form-control-label"><strong>Bioconda </strong><span class="badge badge-primary">BETA</span></label>
-                  <button type="button" class="btn btn-info .btn-pill"
-                          (click)="bioconda_show = !bioconda_show">
-                    <strong *ngIf="!bioconda_show">Show</strong><strong
-                    *ngIf="bioconda_show">Hide</strong>
-                  </button>
+                <button type="button" class="btn btn-info .btn-pill"
+                        (click)="bioconda_show = !bioconda_show">
+                  <strong *ngIf="!bioconda_show">Show</strong><strong
+                  *ngIf="bioconda_show">Hide</strong>
+                </button>
               </div>
 
-              <div [hidden]="!bioconda_show" class="alert alert-primary role alert" style="max-width: 100%; margin: 20px 25px;">
-                <p>Please be aware that all Bioconda tools and packages are provided by third parties. de.NBI Cloud is not responsible for the functionality of the packages provided. In case of problems during installation or use, please contact the developers of the respective packages.</p>
+              <div [hidden]="!bioconda_show" class="alert alert-primary role alert"
+                   style="max-width: 100%; margin: 20px 25px;">
+                <p>Please be aware that all Bioconda tools and packages are provided by third parties. de.NBI Cloud is
+                  not responsible for the functionality of the packages provided. In case of problems during
+                  installation or use, please contact the developers of the respective packages.</p>
               </div>
 
               <div [hidden]="!bioconda_show" class="col-12">
@@ -376,14 +379,16 @@
 
         </div>
 
-        <div *ngIf="(f.invalid || !selectedImage || (diskspace > 0 && !volumeName))&& projectDataLoaded" class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
+        <div
+          *ngIf="(f.invalid || !selectedImage || (diskspace > 0 && !volumeName))&& projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax"
+          class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
           <p>Please choose the following before staring a VM:</p>
-        <p *ngIf="f.controls.instance_name?.invalid">- A name for your instance
-        </p>
-        <p *ngIf="!selectedFlavor">- The flavor type of your VM
-        </p>
-        <p *ngIf="!selectedImage">- The image you want to run on your VM
-        </p>
+          <p *ngIf="f.controls.instance_name?.invalid">- A name for your instance
+          </p>
+          <p *ngIf="!selectedFlavor">- The flavor type of your VM
+          </p>
+          <p *ngIf="!selectedImage">- The image you want to run on your VM
+          </p>
           <p *ngIf="diskspace > 0 && !volumeName">- A name for your storage volume
           </p>
         </div>

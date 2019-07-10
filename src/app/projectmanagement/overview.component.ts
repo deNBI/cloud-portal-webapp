@@ -1,4 +1,4 @@
-import ***REMOVED***Component, Input, OnInit***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, ElementRef, Input, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***Project***REMOVED*** from './project.model';
 import ***REMOVED***ProjectMember***REMOVED*** from './project_member.model'
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
@@ -12,6 +12,8 @@ import ***REMOVED***ComputecenterComponent***REMOVED*** from './computecenter.co
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modules/baseClass/abstract-base-class';
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
 import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
+import ***REMOVED***ViewChild, QueryList***REMOVED*** from '@angular/core';
+import ***REMOVED***forkJoin, Observable***REMOVED*** from 'rxjs';
 
 /**
  * Projectoverview component.
@@ -27,6 +29,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
   @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
+
   isAdmin: boolean = false;
   userProjects: ***REMOVED******REMOVED***[];
   filteredMembers: any = null;
@@ -39,6 +42,9 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
   loaded: boolean = true;
   details_loaded: boolean = false;
   userinfo: Userinfo;
+  allSet: boolean = false;
+
+  checked_member_list: number[] = [];
 
   // modal variables for User list
   public usersModalProjectMembers: ProjectMember[] = [];
@@ -235,6 +241,77 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
       ***REMOVED***)
 
     ***REMOVED***);
+  ***REMOVED***
+
+  setAllMembersChecked(): void ***REMOVED***
+    if (!this.allSet) ***REMOVED***
+      this.usersModalProjectMembers.forEach((member: ProjectMember) => ***REMOVED***
+        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) ***REMOVED***
+          this.checked_member_list.push(parseInt(member.MemberId.toString(), 10));
+        ***REMOVED***
+      ***REMOVED***);
+      this.allSet = true;
+    ***REMOVED*** else ***REMOVED***
+      this.checked_member_list = [];
+      this.allSet = false;
+    ***REMOVED***
+    console.log(this.checked_member_list)
+  ***REMOVED***
+
+  isMemberChecked(id: number): boolean ***REMOVED***
+    return this.checked_member_list.indexOf(id) !== -1;
+
+  ***REMOVED***
+
+  checkIfAllMembersChecked(): boolean ***REMOVED***
+    this.usersModalProjectMembers.forEach((member: ProjectMember) => ***REMOVED***
+      if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) ***REMOVED***
+        return false;
+      ***REMOVED***
+    ***REMOVED***);
+
+    return true;
+  ***REMOVED***
+
+  checkUnCheckMember(id: number): void ***REMOVED***
+    const indexOf: number = this.checked_member_list.indexOf(id);
+    if (indexOf !== -1) ***REMOVED***
+      this.checked_member_list.splice(indexOf, 1);
+      this.allSet = false;
+
+    ***REMOVED*** else ***REMOVED***
+      this.checked_member_list.push(id);
+      if (this.checkIfAllMembersChecked()) ***REMOVED***
+        this.allSet = true;
+      ***REMOVED*** else ***REMOVED***
+        this.allSet = false;
+      ***REMOVED***
+    ***REMOVED***
+
+  ***REMOVED***
+
+  removeCheckedMembers(groupId: number): void ***REMOVED***
+    let facility_id: string | number = null;
+    if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
+      facility_id = this.UserModalFacility[1]
+    ***REMOVED***
+
+    const observables: Observable<number>[] = this.checked_member_list
+      .map((id: number) => this.groupService.removeMember(groupId, id, facility_id));
+    forkJoin(observables).subscribe(() => ***REMOVED***
+      this.usersModalProjectMembers.forEach((member: ProjectMember) => ***REMOVED***
+        if (this.isMemberChecked(parseInt(member.MemberId.toString(), 10))) ***REMOVED***
+          const index: number = this.usersModalProjectMembers.indexOf(member);
+          this.usersModalProjectMembers.splice(index, 1);
+        ***REMOVED***
+      ***REMOVED***)
+
+    ***REMOVED***)
+
+  ***REMOVED***
+
+  resetCheckedMemberList(): void ***REMOVED***
+    this.checked_member_list = [];
   ***REMOVED***
 
   setAddUserInvitationLink(): void ***REMOVED***
