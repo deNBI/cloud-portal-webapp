@@ -122,7 +122,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
     this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe((result: IResponseTemplate) => ***REMOVED***
 
-      if (result.value == 'attached') ***REMOVED***
+      if (result.value === 'attached') ***REMOVED***
         this.volume_action_status = this.volumeActionStates.ATTACHING_SUCCESSFULL;
       ***REMOVED*** else ***REMOVED***
         this.volume_action_status = this.volumeActionStates.ERROR;
