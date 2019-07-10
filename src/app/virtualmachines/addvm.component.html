@@ -55,8 +55,7 @@
                 <select required class="form-control" name="selectedProject"
                         [(ngModel)]="selectedProject"
                         (ngModelChange)="getSelectedProjectClient();"
-                        [ngClass]="***REMOVED***'is-invalid':f.controls.selectedProject?.invalid && (f.controls.selectedProject?.dirty || f.controls.selectedProject.touched),
-                             'is-valid':f.controls.selectedProject?.valid && (f.controls.selectedProject?.dirty || f.controls.selectedProject?.touched)***REMOVED***">
+                >
                   <option value="undefined" disabled selected hidden> Please
                     Select
                   </option>
@@ -151,27 +150,41 @@
                     </div>
                   </div>
 
+                  <div class="col-sm-12 col-md ">
+                    <div class="text-muted">GPUs</div>
+                    <strong> ***REMOVED******REMOVED***selectedProjectGPUsUsed***REMOVED******REMOVED*** | ***REMOVED******REMOVED***selectedProjectGPUsMax***REMOVED******REMOVED***</strong>
+                    <div style="background-color: darkgray;" class="progress progress-xs mt-2">
+                      <div class="progress-bar" role="progressbar"
+                           [ngStyle]="***REMOVED***'width.%': selectedProjectGPUsUsed/selectedProjectGPUsMax *100 ***REMOVED***"
+                           [ngClass]=" ***REMOVED***'bg-success':(selectedProjectGPUsUsed / selectedProjectGPUsMax) < 0.5 ,
+                         'bg-warning':(selectedProjectGPUsUsed / selectedProjectGPUsMax) > 0.5 &&   selectedProjectGPUsUsed < selectedProjectGPUsMax,
+                         'bg-danger': selectedProjectGPUsUsed === selectedProjectGPUsMax***REMOVED***"
+
+                           aria-valuemin="0" aria-valuemax="[selectedProjectGPUsMax]"></div>
+                    </div>
+                  </div>
+
 
                 </div>
               </div>
               <div class="alert alert-warning" role="alert"
-                   *ngIf="selectedProjectVmsUsed >= selectedProjectVmsMax">
+                   *ngIf="selectedProject && selectedProjectVmsUsed >= selectedProjectVmsMax">
                 The limit for virtual machines has been reached for this project.
                 Your principal investigator can request more
                 resources if necessary.
 
               </div>
               <div class="alert alert-warning" role="alert"
-                   *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length == 0">
+                   *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
                 There are too few cores and not enough ram available for this project to start a new machine.
                 Your principal investigator can request more
                 resources if necessary.
               </div>
 
 
-              <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && flavors?.length > 0">
+              <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor)">
                 <div *ngIf="selectedProject" class="form-group row">
-                  <label class="col-md-3 form-control-label"><strong>Name*</strong></label>
+                  <label class="col-md-2 form-control-label"><strong>Name*</strong></label>
                   <div class="col-md-6">
                     <div class="input-group">
                       <input required id="id_instance_name" name="instance_name"
@@ -180,7 +193,7 @@
                              [ngClass]="***REMOVED***'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)***REMOVED***">
                     </div>
-                    <div style="color: dodgerblue">Info: The instance name will also
+                    <div class="alert alert-primary" role="alert" style="margin: 5px">Info: The instance name will also
                       be the hostname of the vm.
                     </div>
                   </div>
@@ -191,11 +204,9 @@
                   <div class="col-md-10">
 
 
-                    <div class="col-md-12">
-                      <app-flavor-detail [selectedFlavor]="selectedFlavor"
-                                         [flavors]="flavors"
-                                         (selectedFlavorChange)="selectedFlavor=$event"></app-flavor-detail>
-                    </div>
+                    <app-flavor-detail [selectedFlavor]="selectedFlavor"
+                                       [flavors]="flavors"
+                                       (selectedFlavorChange)="selectedFlavor=$event"></app-flavor-detail>
 
                   </div>
 
@@ -208,11 +219,9 @@
                   <div class="col-md-10">
 
 
-                    <div class="col-md-12">
-                      <app-image-detail [selectedImage]="selectedImage"
-                                        [images]="images"
-                                        (selectedImageChange)="selectedImage=$event"></app-image-detail>
-                    </div>
+                    <app-image-detail [selectedImage]="selectedImage"
+                                      [images]="images"
+                                      (selectedImageChange)="selectedImage=$event"></app-image-detail>
                   </div>
                 </div>
 
@@ -222,18 +231,19 @@
 
                   <label class="col-md-2 form-control-label"><strong>Optional
                     parameters</strong></label>
-                  <div class="col-md-6">
-                    <button type="button" class="btn btn-info .btn-pill"
-                            (click)="optional_params= !optional_params">
-                      <strong *ngIf="!optional_params">Show</strong><strong
-                      *ngIf="optional_params">Hide</strong>
-                    </button>
-                  </div>
+
+
+                  <button type="button" class="btn btn-info .btn-pill"
+                          (click)="optional_params = !optional_params">
+                    <strong *ngIf="!optional_params">Show</strong><strong
+                    *ngIf="optional_params">Hide</strong>
+                  </button>
+
                 </div>
               </div>
 
-              <div
-                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
+              <div [hidden]="!optional_params"
+                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID  && selectedProjectVmsUsed < selectedProjectVmsMax"
                 class="form-group row">
 
                 <div class="alert alert-warning col-md-9" role="alert"
@@ -247,46 +257,45 @@
 
               </div>
 
-              <div
-                *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax">
-                <div class="form-group row"
-                     *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params">
-                  <label *ngIf="diskspace <= 0" class="col-md-2 form-control-label">Volumename</label>
-                  <label *ngIf="diskspace > 0"
-                         class="col-md-2 form-control-label"><strong>Volumename*</strong></label>
+              <div [hidden]="!optional_params"
+                *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax">
+                <div class="form-group row" *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
+                  <label *ngIf="diskspace <= 0" class="col-md-2 form-control-label">Volume name</label>
+                  <label *ngIf="diskspace > 0 " class="col-md-2 form-control-label"><strong>Volume
+                    name*</strong></label>
 
-                  <div class="col-md-9">
-                    <div class="input-group">
-                      <input type="text" placeholder="Volumename"
-                             [value]="volumeName"
-                             (input)="volumeName = $event.target.value"
-                             [ngClass]="***REMOVED***'is-invalid':diskspace > 0 && volumeName == '',
-                             'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')***REMOVED***">
-
-                    </div>
+                  <div class="col-md-6">
+                    <input type="text" placeholder="Volume name"
+                           [value]="volumeName"
+                           (input)="volumeName = $event.target.value"
+                           [ngClass]="***REMOVED***'is-invalid':diskspace > 0 && volumeName == '',
+                             'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')***REMOVED***" style="width: 100%;">
                   </div>
                 </div>
               </div>
 
-              <div
-                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
+              <div [hidden]="!optional_params"
+                *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax"
+
                 class="form-group row">
 
                 <label class="col-md-2 form-control-label">Storage</label>
 
-                <div class="col-md-9">
-                  <div class="input-group">
-                    <input min="0" step="1" [value]="diskspace"
+                <div class="col-6">
+                  <div class="input-group mb-6" style="width:100%;">
+                    <input style="width: calc(100% - 160px);" min="0" step="1" [value]="diskspace"
                            (input)="diskspace = $event.target.value"
                            type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
-                           placeholder="e.g 8 ">
+                           placeholder="e.g 8">
                     <div class="input-group-append"><span
                       class="input-group-text"> GB
                                     </span></div>
 
-                    <div class="col-md-6">
-                      <strong> ***REMOVED******REMOVED***selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed***REMOVED******REMOVED*** GB available
-                      </strong>
+                    <div style="width:115px; text-align:right">
+                      <p><strong
+                        style="position: relative;top: 8px; text-align: right;"> ***REMOVED******REMOVED***selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed***REMOVED******REMOVED***
+                        GB available
+                      </strong></p>
                     </div>
 
                   </div>
@@ -294,37 +303,47 @@
 
 
               </div>
-              <div
-                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && optional_params && selectedProjectVmsUsed < selectedProjectVmsMax"
+              <div [hidden]="!optional_params"
+                *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
                 class="form-group row">
 
                 <label class="col-md-2 form-control-label">Open Ports</label>
-                <div class="col-md-2">
+                <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP <i
+                  data-balloon="This selection is necessary for using mosh"
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question menu_links"
+                  style="cursor: pointer;"></i></i></strong></label>
+
                   <label
-                    class="switch switch-label switch-pill switch-success">Udp
+                    class="switch switch-label switch-pill switch-success">
                     <input type="checkbox" class="switch-input"
                            name="udp_allowed"
-                           [(ngModel)]="udp_allowed"
-                    >
-                    <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                           [(ngModel)]="udp_allowed">
+                    <div class="switch-slider" data-checked="✓" data-unchecked="✕"></div>
                     <!--<span class="switch-handle"></span>-->
                   </label></div>
 
 
               </div>
-              <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && is_vo"
-                   class="form-group row">
 
 
-                <label class="col-md-3 form-control-label"><strong>Bioconda </strong><span class="badge badge-primary">BETA</span></label>
-                <div class="col-md-6">
+              <div
+                *ngIf="selectedProject && projectDataLoaded && is_vo && selectedProjectVmsUsed < selectedProjectVmsMax"
+                class="form-group row">
+
+
+                <label class="col-md-2 form-control-label"><strong>Bioconda </strong><span class="badge badge-primary">BETA</span></label>
                   <button type="button" class="btn btn-info .btn-pill"
                           (click)="bioconda_show = !bioconda_show">
                     <strong *ngIf="!bioconda_show">Show</strong><strong
                     *ngIf="bioconda_show">Hide</strong>
                   </button>
-                </div>
               </div>
+
+              <div [hidden]="!bioconda_show" class="alert alert-primary role alert" style="max-width: 100%; margin: 20px 25px;">
+                <p>Please be aware that all Bioconda tools and packages are provided by third parties. de.NBI Cloud is not responsible for the functionality of the packages provided. In case of problems during installation or use, please contact the developers of the respective packages.</p>
+              </div>
+
               <div [hidden]="!bioconda_show" class="col-12">
                 <app-bioconda #bioconda (hasTools)="hasChosenTools($event)"></app-bioconda>
               </div>
@@ -344,9 +363,11 @@
                   >
                   <label class="form-check-label" for="bioconda_need_okay">
                     I hereby confirm that I read and acknowledge the following:<br>
-                    To set up your virtual machine with the chosen tools, we generate a new rsa-keypair which we use to log into your virtual machine.<br>
+                    To set up your virtual machine with the chosen tools, we generate a new rsa-keypair which we use to
+                    log into your virtual machine.<br>
                     We install Miniconda3, create a conda environment called 'denbi' and install your chosen tools.<br>
-                    When the installation is successful we delete our key and put your public key onto your virtual machine.
+                    When the installation is successful we delete our key and put your public key onto your virtual
+                    machine.
                   </label>
                 </div>
               </div>
@@ -355,9 +376,19 @@
 
         </div>
 
-
+        <div *ngIf="(f.invalid || !selectedImage || (diskspace > 0 && !volumeName))&& projectDataLoaded" class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
+          <p>Please choose the following before staring a VM:</p>
+        <p *ngIf="f.controls.instance_name?.invalid">- A name for your instance
+        </p>
+        <p *ngIf="!selectedFlavor">- The flavor type of your VM
+        </p>
+        <p *ngIf="!selectedImage">- The image you want to run on your VM
+        </p>
+          <p *ngIf="diskspace > 0 && !volumeName">- A name for your storage volume
+          </p>
+        </div>
         <div class="form-group row"
-             *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && flavors?.length > 0">
+             *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;

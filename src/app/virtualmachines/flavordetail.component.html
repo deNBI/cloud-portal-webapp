@@ -1,64 +1,279 @@
-<div *ngIf="!carousel_activated" class="row">
-  <div *ngFor="  let flavor of flavors">
-    <div (click)="setSelectedFlavor(flavor);" class="card" style="width: 18rem;margin-right: 5px"
+<div *ngIf="!carousel_activated || flavors.length <=flavors_per_row-1" class="row">
+  <div *ngIf="selectedFlavor" class="col-12" style="cursor: pointer;" [ngClass]="***REMOVED***'col-xl-3':window_size >= carousel_window_min_xl_9,
+       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
+       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8***REMOVED***">
+    <div class="card border-success flavor-image-card"
     >
-      <div [ngClass]="***REMOVED***'bg-success':flavor == selectedFlavor,'bg-info': flavor != selectedFlavor***REMOVED***"
-           class="card-header ">
+      <div class="card-header bg-success ">
+        <strong>***REMOVED******REMOVED***selectedFlavor?.name***REMOVED******REMOVED***</strong></div>
+      <div class="card-body">
+        <div class="scroll-flavor">
+
+          <div class="col">
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="***REMOVED******REMOVED***ramIconPath***REMOVED******REMOVED***" alt="">
+              </figure>
+              ***REMOVED******REMOVED***convertMbToGb(selectedFlavor?.ram)***REMOVED******REMOVED*** GB Ram
+            </div>
+          </div>
+          <div class="col"
+          >
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="***REMOVED******REMOVED***cpuIconPath***REMOVED******REMOVED***" alt="">
+              </figure>
+              ***REMOVED******REMOVED***selectedFlavor?.vcpus***REMOVED******REMOVED*** CPUs
+            </div>
+          </div>
+          <div class="col"
+          >
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="***REMOVED******REMOVED***storageIconPath***REMOVED******REMOVED***" alt="">
+              </figure>
+              ***REMOVED******REMOVED***selectedFlavor?.rootdisk***REMOVED******REMOVED*** GB root disk
+            </div>
+          </div>
+          <div class="col" *ngIf="selectedFlavor?.gpu > 0">
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="">
+              </figure>
+              ***REMOVED******REMOVED***selectedFlavor?.gpu***REMOVED******REMOVED*** <span *ngIf="selectedFlavor?.gpu == 1"> GPU</span><span *ngIf="selectedFlavor?.gpu > 1"> GPUs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div *ngFor="  let flavor of flavors" style="cursor: pointer;" class="col-12 " [ngClass]="***REMOVED***'col-xl-3':window_size >= carousel_window_min_xl_9,
+       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
+       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8***REMOVED***">
+    <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card "
+    >
+      <div
+        class="card-header bg-info-flavor ">
         <strong>***REMOVED******REMOVED***flavor.name***REMOVED******REMOVED***</strong></div>
-      <div [ngClass]="***REMOVED***'bg-success':flavor == selectedFlavor***REMOVED***" class="card-body ">
-        <div class="col"
-        >***REMOVED******REMOVED***flavor.ram / 1024***REMOVED******REMOVED*** GB Ram
-        </div>
-        <div class="col"
-        >***REMOVED******REMOVED***flavor.vcpus***REMOVED******REMOVED*** CPUs
-        </div>
-        <div class="col"
-        >***REMOVED******REMOVED***flavor.rootdisk***REMOVED******REMOVED*** GB Disk
+      <div class="card-body">
+        <div class="scroll-flavor">
+
+          <div class="col">
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="***REMOVED******REMOVED***ramIconPath***REMOVED******REMOVED***" alt="">
+              </figure>
+              ***REMOVED******REMOVED***convertMbToGb(flavor?.ram)***REMOVED******REMOVED*** GB Ram
+            </div>
+          </div>
+          <div class="col"
+          >
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="***REMOVED******REMOVED***cpuIconPath***REMOVED******REMOVED***" alt="">
+              </figure>
+              ***REMOVED******REMOVED***flavor?.vcpus***REMOVED******REMOVED*** CPUs
+            </div>
+          </div>
+          <div class="col"
+          >
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="***REMOVED******REMOVED***storageIconPath***REMOVED******REMOVED***" alt="">
+              </figure>
+              ***REMOVED******REMOVED***flavor?.rootdisk***REMOVED******REMOVED*** GB root disk
+            </div>
+          </div>
+          <div class="col" *ngIf="flavor?.gpu > 0">
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="">
+              </figure>
+              ***REMOVED******REMOVED***flavor?.gpu***REMOVED******REMOVED*** <span *ngIf="flavor?.gpu == 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
 </div>
+<div *ngIf="carousel_activated && flavors.length >=flavors_per_row" class="row">
+  <div [hidden]="!selectedFlavor" class="col-12" style="cursor: pointer;" [ngClass]="***REMOVED***'col-xl-3':window_size >= carousel_window_min_xl_9,
+       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
+       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8***REMOVED***">
+    <div class="card border-success flavor-image-card"
+    >
+      <div
+        class="card-header bg-success">
+        <strong>***REMOVED******REMOVED***selectedFlavor?.name***REMOVED******REMOVED***</strong></div>
+      <div class="card-body">
+        <div class="scroll-flavor">
 
-<owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
-  <ng-container *ngFor="let flavor of flavors">
-    <ng-template carouselSlide>
-      <div (click)="setSelectedFlavor(flavor);" class="card" style="width: 18rem;margin-right: 5px"
-      >
-        <div [ngClass]="***REMOVED***'bg-success':flavor == selectedFlavor,'bg-info': flavor != selectedFlavor***REMOVED***"
-             class="card-header ">
-          <strong>***REMOVED******REMOVED***flavor.name***REMOVED******REMOVED***</strong></div>
-        <div [ngClass]="***REMOVED***'bg-success':flavor == selectedFlavor***REMOVED***" class="card-body ">
-          <div class="col"
-          >***REMOVED******REMOVED***ramMBtoGB(flavor.ram)***REMOVED******REMOVED*** GB Ram
+          <div class="col">
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="***REMOVED******REMOVED***ramIconPath***REMOVED******REMOVED***" alt="">
+              </figure>
+              ***REMOVED******REMOVED***convertMbToGb(selectedFlavor?.ram)***REMOVED******REMOVED*** GB Ram
+            </div>
           </div>
           <div class="col"
-          >***REMOVED******REMOVED***flavor.vcpus***REMOVED******REMOVED*** CPUs
+          >
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="***REMOVED******REMOVED***cpuIconPath***REMOVED******REMOVED***" alt="">
+              </figure>
+              ***REMOVED******REMOVED***selectedFlavor?.vcpus***REMOVED******REMOVED*** CPUs
+            </div>
           </div>
           <div class="col"
-          >***REMOVED******REMOVED***flavor.rootdisk***REMOVED******REMOVED*** GB Disk
+          >
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="***REMOVED******REMOVED***storageIconPath***REMOVED******REMOVED***" alt="">
+              </figure>
+              ***REMOVED******REMOVED***selectedFlavor?.rootdisk***REMOVED******REMOVED*** GB root disk
+            </div>
+          </div>
+          <div class="col" *ngIf="selectedFlavor?.gpu > 0">
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="">
+              </figure>
+              ***REMOVED******REMOVED***selectedFlavor?.gpu***REMOVED******REMOVED*** <span *ngIf="selectedFlavor?.gpu == 1"> GPU</span><span *ngIf="selectedFlavor?.gpu > 1"> GPUs</span>
+            </div>
           </div>
         </div>
       </div>
-    </ng-template>
-  </ng-container>
+    </div>
+  </div>
+  <div *ngIf="!selectedFlavor" class="col-12 ">
+    <owl-carousel-o [options]="customOptions">
+      <ng-container *ngFor="let flavor of flavors">
+        <ng-template carouselSlide>
+          <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card"
+          >
+            <div
+              class="card-header bg-info-flavor">
+              <strong>***REMOVED******REMOVED***flavor.name***REMOVED******REMOVED***</strong></div>
+            <div class="card-body">
+              <div class="scroll-flavor">
 
-</owl-carousel-o>
+                <div class="col">
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="***REMOVED******REMOVED***ramIconPath***REMOVED******REMOVED***" alt="">
+                    </figure>
+                    ***REMOVED******REMOVED***convertMbToGb(flavor?.ram)***REMOVED******REMOVED*** GB Ram
+                  </div>
+                </div>
+                <div class="col"
+                >
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="***REMOVED******REMOVED***cpuIconPath***REMOVED******REMOVED***" alt="">
+                    </figure>
+                    ***REMOVED******REMOVED***flavor?.vcpus***REMOVED******REMOVED*** CPUs
+                  </div>
+                </div>
+                <div class="col"
+                >
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="***REMOVED******REMOVED***storageIconPath***REMOVED******REMOVED***" alt="">
+                    </figure>
+                    ***REMOVED******REMOVED***flavor?.rootdisk***REMOVED******REMOVED*** GB root disk
+                  </div>
+                </div>
+                <div class="col" *ngIf="flavor?.gpu > 0">
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="">
+                    </figure>
+                    ***REMOVED******REMOVED***flavor?.gpu***REMOVED******REMOVED*** <span *ngIf="flavor?.gpu == 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+
+    </owl-carousel-o>
+  </div>
+  <div *ngIf="selectedFlavor" class="col-lg-12"
+       [ngClass]="***REMOVED***'col-xl-9':window_size >= carousel_window_min_xl_9,
+       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
+       'col-xl-8':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8***REMOVED***">
+    <owl-carousel-o [options]="customOptions">
+      <ng-container *ngFor="let flavor of flavors">
+        <ng-template carouselSlide>
+          <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card"
+          >
+            <div
+              class="card-header bg-info-flavor">
+              <strong>***REMOVED******REMOVED***flavor.name***REMOVED******REMOVED***</strong></div>
+            <div class="card-body">
+              <div class="scroll-flavor">
+
+                <div class="col">
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="***REMOVED******REMOVED***ramIconPath***REMOVED******REMOVED***" alt="">
+                    </figure>
+                    ***REMOVED******REMOVED***convertMbToGb(flavor?.ram)***REMOVED******REMOVED*** GB Ram
+                  </div>
+                </div>
+                <div class="col"
+                >
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="***REMOVED******REMOVED***cpuIconPath***REMOVED******REMOVED***" alt="">
+                    </figure>
+                    ***REMOVED******REMOVED***flavor?.vcpus***REMOVED******REMOVED*** CPUs
+                  </div>
+                </div>
+                <div class="col"
+                >
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="***REMOVED******REMOVED***storageIconPath***REMOVED******REMOVED***" alt="">
+                    </figure>
+                    ***REMOVED******REMOVED***flavor?.rootdisk***REMOVED******REMOVED*** GB root disk
+                  </div>
+                </div>
+                <div class="col" *ngIf="flavor?.gpu > 0">
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="***REMOVED******REMOVED***gpuIconPath***REMOVED******REMOVED***" alt="">
+                    </figure>
+                    ***REMOVED******REMOVED***flavor?.gpu***REMOVED******REMOVED*** <span *ngIf="flavor?.gpu == 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+
+    </owl-carousel-o>
+  </div>
+</div>
 
 
 <div class="row ">
-  <div
-  ><strong>Currently selected: ***REMOVED******REMOVED***selectedFlavor?.ram / 1024***REMOVED******REMOVED*** GB / ***REMOVED******REMOVED***selectedFlavor?.vcpus***REMOVED******REMOVED*** CPUs</strong></div>
-
   <div class="ml-auto mr-3"
-       *ngIf="carousel_activated"
-       (click)="carousel_activated=false;"><strong class="text-info">Show
+       *ngIf="carousel_activated && (!selectedFlavor &&flavors.length > flavors_per_row || selectedFlavor &&flavors.length > flavors_per_row-1)  "
+       (click)="carousel_activated=false;" style="cursor: pointer;"><strong class="text-info">Show
     all
     flavors</strong></div>
   <div class="ml-auto mr-3"
-       *ngIf="!carousel_activated"
-       (click)="carousel_activated=true;"><strong class="text-info">Hide
+       *ngIf="!carousel_activated && (!selectedFlavor &&flavors.length > flavors_per_row || selectedFlavor &&flavors.length > flavors_per_row-1)"
+       (click)="carousel_activated=true;" style="cursor: pointer;"><strong class="text-info">Hide
     flavors</strong></div>
 </div>
 
