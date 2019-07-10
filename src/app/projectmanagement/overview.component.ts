@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -12,6 +12,7 @@ import {ComputecenterComponent} from './computecenter.component';
 import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {Userinfo} from '../userinfo/userinfo.model';
+import {ViewChild, QueryList} from '@angular/core';
 
 /**
  * Projectoverview component.
@@ -27,6 +28,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
   @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
+
   isAdmin: boolean = false;
   userProjects: {}[];
   filteredMembers: any = null;
@@ -39,6 +41,9 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   loaded: boolean = true;
   details_loaded: boolean = false;
   userinfo: Userinfo;
+  allSet: boolean = false;
+
+  checked_member_list: number[] = [];
 
   // modal variables for User list
   public usersModalProjectMembers: ProjectMember[] = [];
@@ -235,6 +240,57 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
       })
 
     });
+  }
+
+  setAllMembersChecked(): void {
+    if (!this.allSet) {
+      this.usersModalProjectMembers.forEach((member: ProjectMember) => {
+        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) {
+          this.checked_member_list.push(parseInt(member.MemberId.toString(), 10));
+        }
+      });
+      this.allSet = true;
+    } else {
+      this.checked_member_list = [];
+      this.allSet = false;
+    }
+    console.log(this.checked_member_list)
+  }
+
+  isMemberChecked(id: number): boolean {
+    return this.checked_member_list.indexOf(id) !== -1;
+
+  }
+
+  checkIfAllMembersChecked(): boolean {
+    this.usersModalProjectMembers.forEach((member: ProjectMember) => {
+      if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) {
+        return false;
+      }
+    });
+
+    return true;
+  }
+
+  checkUnCheckMember(id: number): void {
+    const indexOf: number = this.checked_member_list.indexOf(id);
+    if (indexOf !== -1) {
+      this.checked_member_list.splice(indexOf, 1);
+      this.allSet = false;
+
+    } else {
+      this.checked_member_list.push(id);
+      if (this.checkIfAllMembersChecked()) {
+        this.allSet = true;
+      } else {
+        this.allSet = false;
+      }
+    }
+
+  }
+
+  resetCheckedMemberList(): void {
+    this.checked_member_list = [];
   }
 
   setAddUserInvitationLink(): void {
