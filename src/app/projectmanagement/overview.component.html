@@ -117,6 +117,11 @@
         </button>
       </div>
       <div class="modal-body">
+        <button (click)="removeCheckedMembers(usersModalProjectID)" style="float:right"
+                [disabled]="checked_member_list.length == 0" class="btn btn-danger"><i
+          class="fa fa-trash"></i>Remove
+          Members
+        </button>
         <div class="table-responsive">
           <table class="table table-striped" style="margin: 5px">
             <thead>
@@ -128,6 +133,7 @@
               <th>Member ID</th>
               <th>Full Name</th>
               <th>Actions</th>
+
             </tr>
             </thead>
             <tbody>

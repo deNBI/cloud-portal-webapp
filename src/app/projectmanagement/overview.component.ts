@@ -13,6 +13,7 @@ import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modul
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
 import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
 import ***REMOVED***ViewChild, QueryList***REMOVED*** from '@angular/core';
+import ***REMOVED***forkJoin, Observable***REMOVED*** from 'rxjs';
 
 /**
  * Projectoverview component.
@@ -286,6 +287,26 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
         this.allSet = false;
       ***REMOVED***
     ***REMOVED***
+
+  ***REMOVED***
+
+  removeCheckedMembers(groupId: number): void ***REMOVED***
+    let facility_id: string | number = null;
+    if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
+      facility_id = this.UserModalFacility[1]
+    ***REMOVED***
+
+    const observables: Observable<number>[] = this.checked_member_list
+      .map((id: number) => this.groupService.removeMember(groupId, id, facility_id));
+    forkJoin(observables).subscribe(() => ***REMOVED***
+      this.usersModalProjectMembers.forEach((member: ProjectMember) => ***REMOVED***
+        if (this.isMemberChecked(parseInt(member.MemberId.toString(), 10))) ***REMOVED***
+          const index: number = this.usersModalProjectMembers.indexOf(member);
+          this.usersModalProjectMembers.splice(index, 1);
+        ***REMOVED***
+      ***REMOVED***)
+
+    ***REMOVED***)
 
   ***REMOVED***
 
