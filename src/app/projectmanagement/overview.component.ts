@@ -13,6 +13,7 @@ import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-ba
 import {IResponseTemplate} from '../api-connector/response-template';
 import {Userinfo} from '../userinfo/userinfo.model';
 import {ViewChild, QueryList} from '@angular/core';
+import {forkJoin, Observable} from 'rxjs';
 
 /**
  * Projectoverview component.
@@ -286,6 +287,26 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
         this.allSet = false;
       }
     }
+
+  }
+
+  removeCheckedMembers(groupId: number): void {
+    let facility_id: string | number = null;
+    if (this.UserModalFacility && this.UserModalFacility[1]) {
+      facility_id = this.UserModalFacility[1]
+    }
+
+    const observables: Observable<number>[] = this.checked_member_list
+      .map((id: number) => this.groupService.removeMember(groupId, id, facility_id));
+    forkJoin(observables).subscribe(() => {
+      this.usersModalProjectMembers.forEach((member: ProjectMember) => {
+        if (this.isMemberChecked(parseInt(member.MemberId.toString(), 10))) {
+          const index: number = this.usersModalProjectMembers.indexOf(member);
+          this.usersModalProjectMembers.splice(index, 1);
+        }
+      })
+
+    })
 
   }
 
