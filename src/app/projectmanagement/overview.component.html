@@ -69,7 +69,7 @@
                   <div class="btn-group-vertical">
                     <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
                             data-toggle="modal"
-                            (click)="this.usersModalProjectMembers = [];showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
+                            (click)="this.usersModalProjectMembers = [];resetCheckedMemberList();showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
 
 
                             *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
@@ -121,6 +121,9 @@
           <table class="table table-striped" style="margin: 5px">
             <thead>
             <tr>
+              <th><input type="checkbox" id="selectAll" name="selectAll" (change)="setAllMembersChecked();"
+                         [checked]="allSet">
+              </th>
               <th>User ID</th>
               <th>Member ID</th>
               <th>Full Name</th>
@@ -129,7 +132,13 @@
             </thead>
             <tbody>
             <tr *ngFor="let member of usersModalProjectMembers" [ngStyle]="***REMOVED***'color':isPi(member)***REMOVED***">
-              <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
+              <td><input *ngIf="userinfo.MemberId != member.MemberId" type="checkbox" id="***REMOVED******REMOVED***member.Id***REMOVED******REMOVED***"
+                         name="***REMOVED******REMOVED***member.Id***REMOVED******REMOVED***"
+                         [checked]="isMemberChecked(member.MemberId)" (change)="checkUnCheckMember(member.MemberId);">
+              </td>
+              <td>
+
+                ***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
               <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
               <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
               <td>
