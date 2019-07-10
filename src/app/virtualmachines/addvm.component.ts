@@ -56,6 +56,8 @@ export class VirtualMachineComponent implements OnInit{
    */
   images: Image[];
 
+  flavors_loaded: boolean = false;
+
   create_error: IResponseTemplate;
 
   /**
@@ -121,6 +123,9 @@ export class VirtualMachineComponent implements OnInit{
    */
   selectedProjectVmsUsed: number;
 
+  selectedProjectGPUsUsed: number;
+  selectedProjectGPUsMax: number;
+
   /**
    * The selected project ['name',id].
    */
@@ -180,7 +185,6 @@ export class VirtualMachineComponent implements OnInit{
    */
   FREEMIUM_ID: number = environment.freemium_project_id;
 
-
   /**
    * Time for the check status loop.
    * @type {number}
@@ -209,7 +213,10 @@ export class VirtualMachineComponent implements OnInit{
    * @param {number} project_id
    */
   getFlavors(project_id: number): void {
-    this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => this.flavors = flavors);
+    this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => {
+      this.flavors = flavors;
+      this.flavors_loaded = true;
+    });
 
   }
 
@@ -404,6 +411,11 @@ export class VirtualMachineComponent implements OnInit{
 
   loadProjectData(): void {
     this.projectDataLoaded = false;
+    this.flavors = [];
+    this.flavors_loaded = false;
+    this.images = [];
+    this.selectedImage = undefined;
+    this.selectedFlavor = undefined;
     this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe(res => {
       this.selectedProjectVmsMax = res['number_vms'];
       this.selectedProjectVmsUsed = res['used_vms'];
@@ -415,6 +427,8 @@ export class VirtualMachineComponent implements OnInit{
       this.selectedProjectCoresUsed = res['cores_used'];
       this.selectedProjectRamMax = res['ram_total'];
       this.selectedProjectRamUsed = res['ram_used'];
+      this.selectedProjectGPUsMax = res['gpus_max'];
+      this.selectedProjectGPUsUsed = res['gpus_used'];
       this.projectDataLoaded = true;
 
     });
@@ -467,7 +481,8 @@ export class VirtualMachineComponent implements OnInit{
     this.initializeData();
     this.voService.isVo().subscribe((result: IResponseTemplate) => {
       this.is_vo = <boolean><Boolean>result.value;
-    })
+    });
+
   }
 
   hasChosenTools(hasSomeTools: boolean): void {

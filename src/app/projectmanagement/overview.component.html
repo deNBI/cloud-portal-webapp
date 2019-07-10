@@ -69,7 +69,7 @@
                   <div class="btn-group-vertical">
                     <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
                             data-toggle="modal"
-                            (click)="this.usersModalProjectMembers = [];showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
+                            (click)="this.usersModalProjectMembers = [];resetCheckedMemberList();showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
 
 
                             *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
@@ -117,19 +117,34 @@
         </button>
       </div>
       <div class="modal-body">
+        <button (click)="removeCheckedMembers(usersModalProjectID)" style="float:right"
+                [disabled]="checked_member_list.length == 0" class="btn btn-danger"><i
+          class="fa fa-trash"></i>Remove
+          Members
+        </button>
         <div class="table-responsive">
           <table class="table table-striped" style="margin: 5px">
             <thead>
             <tr>
+              <th><input type="checkbox" id="selectAll" name="selectAll" (change)="setAllMembersChecked();"
+                         [checked]="allSet">
+              </th>
               <th>User ID</th>
               <th>Member ID</th>
               <th>Full Name</th>
               <th>Actions</th>
+
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let member of usersModalProjectMembers" [ngStyle]="{'color':isPi(member)}">
-              <td>{{ member.Id }}</td>
+              <td><input *ngIf="userinfo.MemberId != member.MemberId" type="checkbox" id="{{member.Id}}"
+                         name="{{member.Id}}"
+                         [checked]="isMemberChecked(member.MemberId)" (change)="checkUnCheckMember(member.MemberId);">
+              </td>
+              <td>
+
+                {{ member.Id }}</td>
               <td>{{ member.MemberId }}</td>
               <td>{{ member.Username }}</td>
               <td>
