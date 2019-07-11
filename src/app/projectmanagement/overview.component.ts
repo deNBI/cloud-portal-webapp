@@ -14,6 +14,7 @@ import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/respon
 import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
 import ***REMOVED***ViewChild, QueryList***REMOVED*** from '@angular/core';
 import ***REMOVED***forkJoin, Observable***REMOVED*** from 'rxjs';
+import ***REMOVED***MemberGuardService***REMOVED*** from '../member-guard.service';
 
 /**
  * Projectoverview component.
@@ -246,7 +247,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
   setAllMembersChecked(): void ***REMOVED***
     if (!this.allSet) ***REMOVED***
       this.usersModalProjectMembers.forEach((member: ProjectMember) => ***REMOVED***
-        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) ***REMOVED***
+        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId.toString() !== member.MemberId.toString()) ***REMOVED***
           this.checked_member_list.push(parseInt(member.MemberId.toString(), 10));
         ***REMOVED***
       ***REMOVED***);
@@ -255,11 +256,10 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
       this.checked_member_list = [];
       this.allSet = false;
     ***REMOVED***
-    console.log(this.checked_member_list)
   ***REMOVED***
 
   isMemberChecked(id: number): boolean ***REMOVED***
-    return this.checked_member_list.indexOf(id) !== -1;
+    return this.checked_member_list.indexOf(id) > -1;
 
   ***REMOVED***
 
@@ -295,22 +295,29 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
     if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
       facility_id = this.UserModalFacility[1]
     ***REMOVED***
+    const members_in: ProjectMember[] = [];
 
     const observables: Observable<number>[] = this.checked_member_list
       .map((id: number) => this.groupService.removeMember(groupId, id, facility_id));
     forkJoin(observables).subscribe(() => ***REMOVED***
+
       this.usersModalProjectMembers.forEach((member: ProjectMember) => ***REMOVED***
-        if (this.isMemberChecked(parseInt(member.MemberId.toString(), 10))) ***REMOVED***
-          const index: number = this.usersModalProjectMembers.indexOf(member);
-          this.usersModalProjectMembers.splice(index, 1);
+
+        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10))) ***REMOVED***
+          members_in.push(member)
+
         ***REMOVED***
-      ***REMOVED***)
+      ***REMOVED***);
+      this.usersModalProjectMembers = members_in;
+      this.checked_member_list = [];
+      this.allSet = false;
 
     ***REMOVED***)
 
   ***REMOVED***
 
   resetCheckedMemberList(): void ***REMOVED***
+    this.allSet = false;
     this.checked_member_list = [];
   ***REMOVED***
 
