@@ -380,7 +380,7 @@
         </div>
 
         <div
-          *ngIf="(!selectedImage || !selectedFlavor || (diskspace > 0 && !volumeName))&& projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax"
+          *ngIf="(f.controls.instance_name?.invalid || !selectedImage || !selectedFlavor || (diskspace > 0 && !volumeName))&& projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax"
           class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
           <p>Please choose the following before staring a VM:</p>
           <p *ngIf="f.controls.instance_name?.invalid">- A name for your instance
