@@ -82,6 +82,14 @@ export class VirtualmachineService {
         })
     }
 
+    getLogs(openstack_id: string): Observable<any> {
+      return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
+        withCredentials: true,
+
+        headers: header
+      })
+    }
+
     deleteVM(openstack_id: string): Observable<VirtualMachine> {
 
         return this.http.delete<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/`, {
