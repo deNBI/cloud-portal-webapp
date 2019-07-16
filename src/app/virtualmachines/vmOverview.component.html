@@ -3,7 +3,7 @@
 <div *ngIf="isLoaded" class="card">
 
   <div class="card-header">
-    <i class="icon-refresh icons" style="cursor: pointer;" (click)="refreshVms()"></i><strong>Instance</strong>
+    <i class="icon-refresh icons" style="cursor: pointer;" (click)="getVms()"></i><strong>Instance</strong>
     –Overview
   </div>
   <div *ngIf="is_vo_admin">
@@ -11,7 +11,7 @@
 
     <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
             class="btn btn-primary"
-            (click)="getVms(elixir_id);toggleTab('own');">Own Machines
+            (click)="getVms();toggleTab('own');">Own Machines
     </button>
 
     <button style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
@@ -23,8 +23,10 @@
   </div>
   <div style="margin-right: 5px;margin-left: 5px;">
     <pagination
-      [totalItems]="vms_filtered?.length" [itemsPerPage]="vmsPerPage"
-      (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"></pagination>
+      [totalItems]="total_pages" [itemsPerPage]="vms_content.length"
+      (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
+      [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
+    </pagination>
   </div>
 
 
@@ -94,7 +96,7 @@
                  [(ngModel)]="filterVmStopped_at" (ngModelChange)="applyFilter();"></td>
 
 
-      <ng-container *ngFor="let vm of vms_returned">
+      <ng-container *ngFor="let vm of vms_content">
 
 
         <tr>
@@ -461,7 +463,7 @@
         ><strong>Snapshot Name*</strong></div>
 
         <div>
-          <input type="text"  style="width: 100%" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
+          <input type="text" style="width: 100%" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
                  (ngModelChange)="validSnapshotName($event);">
 
         </div>
@@ -473,8 +475,8 @@
         <br>
         <div
         ><strong>Description</strong></div>
-        <div ><textarea style="width: 100%" type="textfield" placeholder="Description"
-                         #snapshotDescription></textarea></div>
+        <div><textarea style="width: 100%" type="textfield" placeholder="Description"
+                       #snapshotDescription></textarea></div>
         <div class="alert alert-info" role="alert">
           A snapshot is an image which preserves the disk state of a running instance.
         </div>
