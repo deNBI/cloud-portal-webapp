@@ -9,6 +9,9 @@ import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
 import ***REMOVED***SnapshotModel***REMOVED*** from './snapshots/snapshot.model';
+import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
+import ***REMOVED***debounceTime, distinctUntilChanged***REMOVED*** from 'rxjs/operators';
+import ***REMOVED***Subject***REMOVED*** from 'rxjs';
 
 /**
  * Vm overview componentn.
@@ -16,7 +19,7 @@ import ***REMOVED***SnapshotModel***REMOVED*** from './snapshots/snapshot.model'
 @Component(***REMOVED***
              selector: 'app-vm-overview',
              templateUrl: 'vmOverview.component.html',
-             providers: [VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
+             providers: [FacilityService, VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
            ***REMOVED***)
 
 export class VmOverviewComponent extends FilterBaseClass implements OnInit ***REMOVED***
@@ -25,19 +28,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
    */
   vms_content: VirtualMachine[];
   currentPage: number = 1;
-  /**
-   * Index where the vm list starts.
-   * @type ***REMOVED***number***REMOVED***
-   */
-  vmStart: number = 0;
-  /**
-   * How to connect for specific vm.
-   */
-  how_to_connect: string;
-  /**
-   * End of the vms.
-   * @type ***REMOVED***number***REMOVED***
-   */
+  DEBOUNCE_TIME: number = 300;
+
   filter_status_list: string[] = [this.vm_statuses[this.vm_statuses.ACTIVE], this.vm_statuses[this.vm_statuses.SUSPENDED]];
 
   selectedVm: VirtualMachine = null;
@@ -76,6 +68,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
    */
   status_changed: number = 0;
 
+  is_facility_manager: boolean = false;
+
   /**
    * Timeout for checking vm status.
    * @type ***REMOVED***number***REMOVED***
@@ -94,10 +88,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
    */
   reboot_done: boolean;
 
-  showSshCommando: boolean = true;
-  showUdpCommando: boolean = true;
+  filterNameChanged: Subject<string> = new Subject<string>();
+  filterProjectNameChanged: Subject<string> = new Subject<string>();
+  filterElixirIdChanged: Subject<string> = new Subject<string>();
 
-  constructor(private voService: VoService, private imageService: ImageService, private userservice: UserService,
+  constructor(private facilityService: FacilityService, private voService: VoService, private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService) ***REMOVED***
     super()
   ***REMOVED***
@@ -118,7 +113,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
    * Apply filter to all vms.
    */
   applyFilter(): void ***REMOVED***
-    this.getVms();
+    if (this.tab === 'own') ***REMOVED***
+      this.getVms()
+    ***REMOVED*** else if (this.tab === 'all') ***REMOVED***
+      this.getAllVms()
+    ***REMOVED*** else if (this.tab === 'facility') ***REMOVED***
+      this.getAllVmsFacilities()
+    ***REMOVED***
 
   ***REMOVED***
 
@@ -126,10 +127,19 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
     this.currentPage = 1;
     const indexOf: number = this.filter_status_list.indexOf(status);
     if (indexOf === -1) ***REMOVED***
+
       this.filter_status_list.push(status)
     ***REMOVED*** else ***REMOVED***
       this.filter_status_list.splice(indexOf, 1);
     ***REMOVED***
+  ***REMOVED***
+
+  get_is_facility_manager(): void ***REMOVED***
+    this.facilityService.getManagerFacilities().subscribe(result => ***REMOVED***
+      if (result.length > 0) ***REMOVED***
+        this.is_facility_manager = true;
+      ***REMOVED***
+    ***REMOVED***)
   ***REMOVED***
 
   /**
@@ -375,7 +385,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
    */
   pageChanged(event): void ***REMOVED***
     this.currentPage = event.page;
-    this.getVms()
+    if (this.tab === 'own') ***REMOVED***
+      this.getVms()
+    ***REMOVED*** else if (this.tab === 'all') ***REMOVED***
+      this.getAllVms()
+    ***REMOVED*** else if (this.tab === 'facility') ***REMOVED***
+      this.getAllVmsFacilities()
+    ***REMOVED***
   ***REMOVED***
 
   /**
@@ -385,6 +401,39 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
   getVms(): void ***REMOVED***
 
     this.virtualmachineservice.getVmsFromLoggedInUser(
+      this.currentPage,
+      this.filterVmName,
+      this.filterProjectName,
+      this.filter_status_list,
+      this.filterVmElixir_id,
+      this.filterVmCreated_at,
+      this.filterVmStopped_at)
+      .subscribe(vms => ***REMOVED***
+                   this.vms_content = vms['vm_list'];
+                   this.total_pages = vms['num_pages'];
+
+                   for (const vm of this.vms_content) ***REMOVED***
+                     this.setCollapseStatus(vm.openstackid, false);
+
+                     if (vm.created_at !== '') ***REMOVED***
+                       vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                     ***REMOVED***
+
+                     if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                       vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                     ***REMOVED*** else ***REMOVED***
+                       vm.stopped_at = ''
+                     ***REMOVED***
+                   ***REMOVED***
+                   this.isLoaded = true;
+
+                 ***REMOVED***
+      );
+  ***REMOVED***
+
+  getAllVmsFacilities(): void ***REMOVED***
+
+    this.virtualmachineservice.getVmsFromFacilitiesOfLoggedUser(
       this.currentPage,
       this.filterVmName,
       this.filterProjectName,
@@ -450,31 +499,67 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
    * Get all vms.
    */
   getAllVms(): void ***REMOVED***
-    this.virtualmachineservice.getAllVM().subscribe(vms => ***REMOVED***
-                                                      this.vms_content = vms;
-                                                      for (const vm of this.vms_content) ***REMOVED***
-                                                        this.setCollapseStatus(vm.openstackid, false);
+    this.virtualmachineservice.getAllVM(this.currentPage,
+                                        this.filterVmName,
+                                        this.filterProjectName,
+                                        this.filter_status_list,
+                                        this.filterVmElixir_id,
+                                        this.filterVmCreated_at,
+                                        this.filterVmStopped_at)
+      .subscribe(vms => ***REMOVED***
+                   this.vms_content = vms['vm_list'];
+                   this.total_pages = vms['num_pages'];
 
-                                                        if (vm.created_at !== '') ***REMOVED***
-                                                          vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
-                                                        ***REMOVED***
-                                                        if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
-                                                          vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
-                                                        ***REMOVED*** else ***REMOVED***
-                                                          vm.stopped_at = ''
-                                                        ***REMOVED***
+                   for (const vm of this.vms_content) ***REMOVED***
+                     this.setCollapseStatus(vm.openstackid, false);
 
-                                                      ***REMOVED***
-                                                      this.applyFilter();
+                     if (vm.created_at !== '') ***REMOVED***
+                       vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                     ***REMOVED***
+                     if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') ***REMOVED***
+                       vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                     ***REMOVED*** else ***REMOVED***
+                       vm.stopped_at = ''
+                     ***REMOVED***
 
-                                                    ***REMOVED***
-    );
+                   ***REMOVED***
+                 ***REMOVED***
+      );
+  ***REMOVED***
+
+  changedNameFilter(text: string): void ***REMOVED***
+    this.filterNameChanged.next(text);
+
   ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
     this.getVms();
-    this.checkVOstatus()
+    this.checkVOstatus();
+    this.get_is_facility_manager();
 
+    this.filterNameChanged
+      .pipe(
+        debounceTime(this.DEBOUNCE_TIME),
+        distinctUntilChanged())
+      .subscribe(() => ***REMOVED***
+        this.applyFilter();
+      ***REMOVED***);
+
+    this.filterProjectNameChanged
+      .pipe(
+        debounceTime(this.DEBOUNCE_TIME),
+        distinctUntilChanged())
+      .subscribe(() => ***REMOVED***
+        this.applyFilter();
+      ***REMOVED***);
+
+    this.filterElixirIdChanged
+      .pipe(
+        debounceTime(this.DEBOUNCE_TIME),
+        distinctUntilChanged())
+      .subscribe(() => ***REMOVED***
+        this.applyFilter();
+      ***REMOVED***);
   ***REMOVED***
 
   /**

@@ -45,10 +45,41 @@ export class VirtualmachineService ***REMOVED***
     ***REMOVED***)
   ***REMOVED***
 
-  getAllVM(): Observable<VirtualMachine[]> ***REMOVED***
+  getAllVM(page: number, filter_name?: string, filter_project?: string,
+           filter_status?: string[],
+           filter_elixir_id?: string,
+           filter_created_at?: string, filter_stopped_at?: string): Observable<VirtualMachine[]> ***REMOVED***
+    let params: HttpParams = new HttpParams().set('page', page.toString());
+    if (filter_name) ***REMOVED***
+      params = params.set('filter_name', filter_name);
+
+    ***REMOVED***
+    if (filter_project) ***REMOVED***
+      params = params.set('filter_project', filter_project);
+
+    ***REMOVED***
+    if (filter_status) ***REMOVED***
+      params = params.append('filter_status', JSON.stringify(filter_status));
+
+    ***REMOVED***
+    if (filter_elixir_id) ***REMOVED***
+      params = params.set('filter_elixir_id', filter_elixir_id);
+
+    ***REMOVED***
+    if (filter_created_at) ***REMOVED***
+      params = params.set('filter_created_at', filter_created_at);
+
+    ***REMOVED***
+
+    if (filter_stopped_at) ***REMOVED***
+      params = params.set('filter_stopped_at', filter_stopped_at);
+
+    ***REMOVED***
 
     return this.http.get<VirtualMachine[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***voManager/vms/`, ***REMOVED***
-      withCredentials: true
+      withCredentials: true,
+      params: params
+
     ***REMOVED***)
   ***REMOVED***
 
@@ -83,12 +114,52 @@ export class VirtualmachineService ***REMOVED***
 
     ***REMOVED***
 
-    console.log(params)
     return this.http.get<VirtualMachine[]>(this.baseVmUrl, ***REMOVED***
       withCredentials: true,
       params: params
 
     ***REMOVED***)
+  ***REMOVED***
+
+  getVmsFromFacilitiesOfLoggedUser(page: number, filter_name?: string, filter_project?: string,
+                                   filter_status?: string[],
+                                   filter_elixir_id?: string,
+                                   filter_created_at?: string, filter_stopped_at?: string): Observable<VirtualMachine[]> ***REMOVED***
+    let params: HttpParams = new HttpParams().set('page', page.toString());
+    if (filter_name) ***REMOVED***
+      params = params.set('filter_name', filter_name);
+
+    ***REMOVED***
+    if (filter_project) ***REMOVED***
+      params = params.set('filter_project', filter_project);
+
+    ***REMOVED***
+    if (filter_status) ***REMOVED***
+      params = params.append('filter_status', JSON.stringify(filter_status));
+
+    ***REMOVED***
+    if (filter_elixir_id) ***REMOVED***
+      params = params.set('filter_elixir_id', filter_elixir_id);
+
+    ***REMOVED***
+    if (filter_created_at) ***REMOVED***
+      params = params.set('filter_created_at', filter_created_at);
+
+    ***REMOVED***
+
+    if (filter_stopped_at) ***REMOVED***
+      params = params.set('filter_stopped_at', filter_stopped_at);
+
+    ***REMOVED***
+
+    return this.http.get<VirtualMachine[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/vms/`,
+                                           ***REMOVED***
+                                             withCredentials: true,
+                                             params:
+                                             params
+
+                                           ***REMOVED***
+    )
   ***REMOVED***
 
   getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> ***REMOVED***
