@@ -9,6 +9,9 @@ import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-cl
 import {VoService} from '../api-connector/vo.service';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {SnapshotModel} from './snapshots/snapshot.model';
+import {FacilityService} from '../api-connector/facility.service';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject} from 'rxjs';
 
 /**
  * Vm overview componentn.
@@ -16,7 +19,7 @@ import {SnapshotModel} from './snapshots/snapshot.model';
 @Component({
              selector: 'app-vm-overview',
              templateUrl: 'vmOverview.component.html',
-             providers: [VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
+             providers: [FacilityService, VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
            })
 
 export class VmOverviewComponent extends FilterBaseClass implements OnInit {
@@ -25,19 +28,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    */
   vms_content: VirtualMachine[];
   currentPage: number = 1;
-  /**
-   * Index where the vm list starts.
-   * @type {number}
-   */
-  vmStart: number = 0;
-  /**
-   * How to connect for specific vm.
-   */
-  how_to_connect: string;
-  /**
-   * End of the vms.
-   * @type {number}
-   */
+  DEBOUNCE_TIME: number = 300;
+
   filter_status_list: string[] = [this.vm_statuses[this.vm_statuses.ACTIVE], this.vm_statuses[this.vm_statuses.SUSPENDED]];
 
   selectedVm: VirtualMachine = null;
@@ -76,6 +68,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    */
   status_changed: number = 0;
 
+  is_facility_manager: boolean = false;
+
   /**
    * Timeout for checking vm status.
    * @type {number}
@@ -94,10 +88,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    */
   reboot_done: boolean;
 
-  showSshCommando: boolean = true;
-  showUdpCommando: boolean = true;
+  filterNameChanged: Subject<string> = new Subject<string>();
+  filterProjectNameChanged: Subject<string> = new Subject<string>();
+  filterElixirIdChanged: Subject<string> = new Subject<string>();
 
-  constructor(private voService: VoService, private imageService: ImageService, private userservice: UserService,
+  constructor(private facilityService: FacilityService, private voService: VoService, private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService) {
     super()
   }
@@ -118,7 +113,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * Apply filter to all vms.
    */
   applyFilter(): void {
-    this.getVms();
+    if (this.tab === 'own') {
+      this.getVms()
+    } else if (this.tab === 'all') {
+      this.getAllVms()
+    } else if (this.tab === 'facility') {
+      this.getAllVmsFacilities()
+    }
 
   }
 
@@ -126,10 +127,19 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     this.currentPage = 1;
     const indexOf: number = this.filter_status_list.indexOf(status);
     if (indexOf === -1) {
+
       this.filter_status_list.push(status)
     } else {
       this.filter_status_list.splice(indexOf, 1);
     }
+  }
+
+  get_is_facility_manager(): void {
+    this.facilityService.getManagerFacilities().subscribe(result => {
+      if (result.length > 0) {
+        this.is_facility_manager = true;
+      }
+    })
   }
 
   /**
@@ -375,7 +385,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    */
   pageChanged(event): void {
     this.currentPage = event.page;
-    this.getVms()
+    if (this.tab === 'own') {
+      this.getVms()
+    } else if (this.tab === 'all') {
+      this.getAllVms()
+    } else if (this.tab === 'facility') {
+      this.getAllVmsFacilities()
+    }
   }
 
   /**
@@ -385,6 +401,39 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   getVms(): void {
 
     this.virtualmachineservice.getVmsFromLoggedInUser(
+      this.currentPage,
+      this.filterVmName,
+      this.filterProjectName,
+      this.filter_status_list,
+      this.filterVmElixir_id,
+      this.filterVmCreated_at,
+      this.filterVmStopped_at)
+      .subscribe(vms => {
+                   this.vms_content = vms['vm_list'];
+                   this.total_pages = vms['num_pages'];
+
+                   for (const vm of this.vms_content) {
+                     this.setCollapseStatus(vm.openstackid, false);
+
+                     if (vm.created_at !== '') {
+                       vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                     }
+
+                     if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                       vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                     } else {
+                       vm.stopped_at = ''
+                     }
+                   }
+                   this.isLoaded = true;
+
+                 }
+      );
+  }
+
+  getAllVmsFacilities(): void {
+
+    this.virtualmachineservice.getVmsFromFacilitiesOfLoggedUser(
       this.currentPage,
       this.filterVmName,
       this.filterProjectName,
@@ -450,31 +499,67 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * Get all vms.
    */
   getAllVms(): void {
-    this.virtualmachineservice.getAllVM().subscribe(vms => {
-                                                      this.vms_content = vms;
-                                                      for (const vm of this.vms_content) {
-                                                        this.setCollapseStatus(vm.openstackid, false);
+    this.virtualmachineservice.getAllVM(this.currentPage,
+                                        this.filterVmName,
+                                        this.filterProjectName,
+                                        this.filter_status_list,
+                                        this.filterVmElixir_id,
+                                        this.filterVmCreated_at,
+                                        this.filterVmStopped_at)
+      .subscribe(vms => {
+                   this.vms_content = vms['vm_list'];
+                   this.total_pages = vms['num_pages'];
 
-                                                        if (vm.created_at !== '') {
-                                                          vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
-                                                        }
-                                                        if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
-                                                          vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
-                                                        } else {
-                                                          vm.stopped_at = ''
-                                                        }
+                   for (const vm of this.vms_content) {
+                     this.setCollapseStatus(vm.openstackid, false);
 
-                                                      }
-                                                      this.applyFilter();
+                     if (vm.created_at !== '') {
+                       vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                     }
+                     if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                       vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
+                     } else {
+                       vm.stopped_at = ''
+                     }
 
-                                                    }
-    );
+                   }
+                 }
+      );
+  }
+
+  changedNameFilter(text: string): void {
+    this.filterNameChanged.next(text);
+
   }
 
   ngOnInit(): void {
     this.getVms();
-    this.checkVOstatus()
+    this.checkVOstatus();
+    this.get_is_facility_manager();
 
+    this.filterNameChanged
+      .pipe(
+        debounceTime(this.DEBOUNCE_TIME),
+        distinctUntilChanged())
+      .subscribe(() => {
+        this.applyFilter();
+      });
+
+    this.filterProjectNameChanged
+      .pipe(
+        debounceTime(this.DEBOUNCE_TIME),
+        distinctUntilChanged())
+      .subscribe(() => {
+        this.applyFilter();
+      });
+
+    this.filterElixirIdChanged
+      .pipe(
+        debounceTime(this.DEBOUNCE_TIME),
+        distinctUntilChanged())
+      .subscribe(() => {
+        this.applyFilter();
+      });
   }
 
   /**

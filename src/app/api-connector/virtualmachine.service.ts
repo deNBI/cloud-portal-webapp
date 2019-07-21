@@ -45,10 +45,41 @@ export class VirtualmachineService {
     })
   }
 
-  getAllVM(): Observable<VirtualMachine[]> {
+  getAllVM(page: number, filter_name?: string, filter_project?: string,
+           filter_status?: string[],
+           filter_elixir_id?: string,
+           filter_created_at?: string, filter_stopped_at?: string): Observable<VirtualMachine[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString());
+    if (filter_name) {
+      params = params.set('filter_name', filter_name);
+
+    }
+    if (filter_project) {
+      params = params.set('filter_project', filter_project);
+
+    }
+    if (filter_status) {
+      params = params.append('filter_status', JSON.stringify(filter_status));
+
+    }
+    if (filter_elixir_id) {
+      params = params.set('filter_elixir_id', filter_elixir_id);
+
+    }
+    if (filter_created_at) {
+      params = params.set('filter_created_at', filter_created_at);
+
+    }
+
+    if (filter_stopped_at) {
+      params = params.set('filter_stopped_at', filter_stopped_at);
+
+    }
 
     return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}voManager/vms/`, {
-      withCredentials: true
+      withCredentials: true,
+      params: params
+
     })
   }
 
@@ -83,12 +114,52 @@ export class VirtualmachineService {
 
     }
 
-    console.log(params)
     return this.http.get<VirtualMachine[]>(this.baseVmUrl, {
       withCredentials: true,
       params: params
 
     })
+  }
+
+  getVmsFromFacilitiesOfLoggedUser(page: number, filter_name?: string, filter_project?: string,
+                                   filter_status?: string[],
+                                   filter_elixir_id?: string,
+                                   filter_created_at?: string, filter_stopped_at?: string): Observable<VirtualMachine[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString());
+    if (filter_name) {
+      params = params.set('filter_name', filter_name);
+
+    }
+    if (filter_project) {
+      params = params.set('filter_project', filter_project);
+
+    }
+    if (filter_status) {
+      params = params.append('filter_status', JSON.stringify(filter_status));
+
+    }
+    if (filter_elixir_id) {
+      params = params.set('filter_elixir_id', filter_elixir_id);
+
+    }
+    if (filter_created_at) {
+      params = params.set('filter_created_at', filter_created_at);
+
+    }
+
+    if (filter_stopped_at) {
+      params = params.set('filter_stopped_at', filter_stopped_at);
+
+    }
+
+    return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/vms/`,
+                                           {
+                                             withCredentials: true,
+                                             params:
+                                             params
+
+                                           }
+    )
   }
 
   getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> {
