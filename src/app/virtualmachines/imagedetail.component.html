@@ -23,7 +23,7 @@
     <div (click)="setSelectedImage(image);" class="card flavor-image-card"
     >
       <div
-        class="card-header bg-info-image ">
+        class="card-header bg-info-image text-truncate" data-toggle="tooltip" data-placement="top" title="{{image?.name}}">
         <strong>{{image.name}}</strong></div>
       <div class="card-body">
         <div class="scroll-image">
