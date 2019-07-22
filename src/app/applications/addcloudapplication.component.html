@@ -384,6 +384,27 @@
 
 
             </div>
+          <div *ngIf="project_application_report_allowed">
+          <div class="form-group row">
+          <label class="col-md-4"></label>
+            <div class="col-md-1">
+              <label
+                class="switch switch-label switch-outline-primary-alt">
+                <input type="checkbox" class="switch-input"
+                       name="project_application_report_allowed">
+                       <!--[(ngModel)]="project_application_report_allowed"-->
+
+                <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                <span class="switch-handle"></span></label>
+            </div>
+            <label class="col-md-4">Title</label>
+          </div>
+
+            <div class="form-group row">
+            <label class="col-md-4"></label>
+            <div class="alert alert-info col-md-8">Please specify which information about your project and which platforms may be used to publish information. By default, you agree to all options.</div>
+          </div>
+          </div>
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator*
                 <i
