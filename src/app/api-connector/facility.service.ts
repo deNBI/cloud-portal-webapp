@@ -72,6 +72,8 @@ export class FacilityService ***REMOVED***
 
   ***REMOVED***
 
+
+
   /**
    * Gets all facility applications which are waiting for conirmation.
    * @param ***REMOVED***number***REMOVED*** facility
