@@ -454,26 +454,11 @@
         <p>We are setting up a machine for you. This can take up to 5 minutes.</p>
 
         <div class="progress">
-          <div class="progress-bar progress-bar-striped {{creating_vm_prograss_bar}} bg-info"
+          <div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
                role="progressbar" style="width: 33%;"
                aria-valuemin="0"
-               aria-valuemax="100">{{creating_vm_status}}
-          </div>
-
-          <div class="progress-bar progress-bar-striped {{checking_vm_status_progress_bar}}"
-               [style.width.%]="checking_vm_status_width"
-               role="progressbar"
-               aria-valuemin="0"
-               aria-valuemax="100">{{checking_vm_status}}
-          </div>
-
-          <div
-            class="progress-bar progress-bar-striped bg-success progress-bar-animated "
-            role="progressbar"
-            [style.width.%]="checking_vm_ssh_port_width"
-
-            aria-valuemin="0"
-            aria-valuemax="100">{{checking_vm_ssh_port}}
+               aria-valuemax="100" [style.width.%]="progress_bar_width"><font
+            color="black">{{progress_bar_status}}</font>
           </div>
         </div>
         <p>If you close this modal you can find instructions how to connect to the virtual
