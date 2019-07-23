@@ -385,7 +385,16 @@
 
             </div>
           <div *ngIf="project_application_report_allowed">
-          <div class="form-group row">
+
+            <div class="accordion" id="information_accordion">
+              <div class="card">
+                <div class="card-header" id="information_card_header"><h5 class="mb-0"><button class="btn btn-link"
+                type="button" data-toggle="collapse" data-target="#information_collapse"
+                aria-expanded="false" aria-controls="information_collapse">Type of information</button></h5></div>
+
+                <div id="information_collapse" class="collapse show" aria-labelledby="information_card_header" data-parent="#information_accordion">
+
+            <div class="form-group row">
           <label class="col-md-4"></label>
             <div class="col-md-1">
               <label
@@ -400,11 +409,124 @@
             <label class="col-md-4">Title</label>
           </div>
 
+
+            <div class="form-group row">
+              <label class="col-md-4"></label>
+              <div class="col-md-1">
+                <label
+                  class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_report_allowed">
+                  <!--[(ngModel)]="project_application_report_allowed"-->
+
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+              </div>
+              <label class="col-md-4">Ressources</label>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4"></label>
+              <div class="col-md-1">
+                <label
+                  class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_report_allowed">
+                  <!--[(ngModel)]="project_application_report_allowed"-->
+
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+              </div>
+              <label class="col-md-4">Description</label>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4"></label>
+              <div class="col-md-1">
+                <label
+                  class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_report_allowed" checked>
+                  <!--[(ngModel)]="project_application_report_allowed"-->
+
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+              </div>
+              <label class="col-md-4">Project Type</label>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4"></label>
+              <div class="col-md-1">
+                <label
+                  class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_report_allowed">
+                  <!--[(ngModel)]="project_application_report_allowed"-->
+
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+              </div>
+              <label class="col-md-4">Affiliation to other projects</label>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4"></label>
+              <div class="col-md-1">
+                <label
+                  class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_report_allowed">
+                  <!--[(ngModel)]="project_application_report_allowed"-->
+
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+              </div>
+              <label class="col-md-4">Lifetime</label>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4"></label>
+              <div class="col-md-1">
+                <label
+                  class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_report_allowed">
+                  <!--[(ngModel)]="project_application_report_allowed"-->
+
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+              </div>
+              <label class="col-md-4">Name of PI</label>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4"></label>
+              <div class="col-md-1">
+                <label
+                  class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_report_allowed">
+                  <!--[(ngModel)]="project_application_report_allowed"-->
+
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+              </div>
+              <label class="col-md-4">Institution and Workgroup</label>
+            </div>
+
+                </div>
+              </div>
+            </div>
+
+
             <div class="form-group row">
             <label class="col-md-4"></label>
             <div class="alert alert-info col-md-8">Please specify which information about your project and which platforms may be used to publish information. By default, you agree to all options.</div>
+            </div>
+
           </div>
-          </div>
+
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator*
                 <i
