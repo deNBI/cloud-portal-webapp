@@ -1,3 +1,32 @@
+
+##  (2019-07-23)
+
+
+#### Bug Fixes
+
+* **VirtualMachine:**
+  * choose not visisbile anymoore when bioconda is selected ([dd93071e](dd93071e))
+
+#### Features
+
+* **Virtualmachines:** added filtering ([0aacd14e](0aacd14e))
+* **Vms:** started adding real pagination ([7b767c1d](7b767c1d))
+* **application:**  user gets info about possibility to request specia… (#594) ([bf6d734b](bf6d734b))
+
+##  (2019-07-10)
+
+
+#### Features
+
+* **Flavors:**  selected flavor always on the left ([4d96a1e1](4d96a1e1))
+* **Images:** selected always to the left ([e5f9d8ad](e5f9d8ad))
+* **Projects:**
+  * added delete members method ([c857ee4d](c857ee4d))
+  * added checkbox for all members ([c6efd4f5](c6efd4f5))
+* **Volumes:** just volume owner can change the volume ([f2dae278](f2dae278))
+* **snapshot:** added description ([35899335](35899335))
+
+
 ##  (2019-06-27)
 
 

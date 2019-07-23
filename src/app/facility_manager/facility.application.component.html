@@ -49,38 +49,38 @@
                         <ng-container>
                             <tr>
                                 <td>
-                                     <span *ngIf="application.OpenStackProject"
+                                     <span *ngIf="application?.OpenStackProject"
                                            style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge"
                                            data-toggle="tooltip" data-placement="auto"
                                            title="This is an Openstack project">
                                     <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
                                   </span>
-                                    <span *ngIf="!application.OpenStackProject"
+                                    <span *ngIf="!application?.OpenStackProject"
                                           style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
                                           data-toggle="tooltip" data-placement="auto"
                                           title="This is a Simple VM project">
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                                 </td>
-                                <td>{{ application.Name }}</td>
-                                <td>{{application.Shortname}}</td>
-                                <td>{{ application.DateSubmitted }}</td>
+                                <td>{{ application?.Name }}</td>
+                                <td>{{application?.Shortname}}</td>
+                                <td>{{ application?.DateSubmitted }}</td>
                                 <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
-                                    {{ application.User }}
+                                    {{ application?.User }}
                                 </td>
-                                <td>{{application.Institute}}</td>
+                                <td>{{application?.Institute}}</td>
 
                                 <td>
                                     <div class="btn-group">
                                         <button type="button"
-                                                (click)="resetNotificationModal();notificationModal.show();approveApplication(application.Id)"
+                                                (click)="resetNotificationModal();notificationModal.show();approveApplication(application?.Id)"
                                                 class="btn btn-success"
                                                 style="margin: auto 2.5px"><i
                                                 class="fa fa-check"></i>&nbsp;
                                             Approve
                                         </button>
                                         <button
-                                                (click)='resetNotificationModal();notificationModal.show();declineApplication(application.Id)'
+                                                (click)='resetNotificationModal();notificationModal.show();declineApplication(application?.Id)'
                                                 type="button"
                                                 class="btn btn-danger"
                                                 style="margin: auto 2.5px"><i
@@ -88,14 +88,14 @@
                                             Decline
                                         </button>
                                         <button
-                                                (click)="switchCollapseStatus('application_review-' + application.Id);  getMemberDetailsByElixirIdIfCollapsed(application.User,'application_review-' + application.Id);"
+                                                (click)="switchCollapseStatus('application_review-' + application?.Id);  getMemberDetailsByElixirIdIfCollapsed(application?.User,'application_review-' + application?.Id);"
                                                 type="button"
                                                 class="btn btn-secondary"
                                                 style="margin: auto 2.5px">
                                             <i class="fa fa-info-circle"></i>&nbsp;
                                             <span
-                                                    [hidden]="!getCollapseStatus('application_review-' + application.Id)">Show</span><span
-                                                [hidden]="getCollapseStatus('application_review-' + application.Id)">Hide</span>
+                                                    [hidden]="!getCollapseStatus('application_review-' + application?.Id)">Show</span><span
+                                                [hidden]="getCollapseStatus('application_review-' + application?.Id)">Hide</span>
                                             Information
                                         </button>
                                     </div>
@@ -103,169 +103,169 @@
                             </tr>
 
                             <tr>
-                                <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + application.Id)"
+                                <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.Id)"
                                     colspan="6">
-                                    <div id="application_review-{{ application.id }}"
-                                         [class.collapse]="getCollapseStatus('application_review-' + application.Id)">
+                                    <div id="application_review-{{ application?.id }}"
+                                         [class.collapse]="getCollapseStatus('application_review-' + application?.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">
                                                 <tr>
                                                     <td>User Affiliations</td>
                                                     <td>{{
-                                                        application.UserAffiliations}}
+                                                        application?.UserAffiliations}}
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>User Name</td>
                                                     <td>
-                                                        {{application_user[application.User]?.name}}
+                                                        {{application_user[application?.User]?.name}}
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>User Email</td>
                                                     <td>
-                                                        {{application_user[application.User]?.email}}
+                                                        {{application_user[application?.User]?.email}}
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Description</td>
                                                     <td>{{
-                                                        application.Description
+                                                        application?.Description
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td>Workgroup</td>
                                                     <td>{{
-                                                        application.Workgroup
+                                                        application?.Workgroup
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>OpenStackProject</td>
                                                     <td>
-                                                        {{application.OpenStackProject}}
+                                                        {{application?.OpenStackProject}}
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td>Comment</td>
-                                                    <td>{{ application.Comment
+                                                    <td>{{ application?.Comment
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                                        {{application.ApplicationExtension?.Comment}}
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+                                                        {{application?.ApplicationExtension?.Comment}}
                                                     </td>
 
                                                 </tr>
                                                 <tr>
                                                     <td>Lifetime</td>
-                                                    <td>{{ application.Lifetime
+                                                    <td>{{ application?.Lifetime
                                                         }} months
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                                        {{application.ApplicationExtension?.Lifetime
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+                                                        {{application?.ApplicationExtension?.Lifetime
                                                         +
-                                                        application.Lifetime}}
+                                                        application?.Lifetime}}
                                                         months
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>VMs</td>
                                                     <td>{{
-                                                        application.VMsRequested
+                                                        application?.VMsRequested
                                                         }} VMs
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                                        {{application.ApplicationExtension?.VMsRequested}}
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+                                                        {{application?.ApplicationExtension?.VMsRequested}}
                                                         VMs
                                                     </td>
 
                                                 </tr>
 
-                                                <tr *ngIf="application.OpenStackProject && application.TotalCores == 0">
+                                                <tr *ngIf="application?.OpenStackProject && application?.TotalCores == 0">
                                                     <td>Cores/VM</td>
                                                     <td>{{
-                                                        application.CoresPerVM
+                                                        application?.CoresPerVM
                                                         }}
                                                     </td>
                                                 </tr>
 
-                                                <tr *ngIf="application.OpenStackProject && application.TotalCores != 0">
+                                                <tr *ngIf="application?.OpenStackProject && application?.TotalCores != 0">
                                                     <td>Cores</td>
                                                     <td>{{
-                                                        application.TotalCores
+                                                        application?.TotalCores
                                                         }}
                                                     </td>
                                                 </tr>
-                                                <tr *ngIf="application.OpenStackProject && application.TotalRam == 0">
+                                                <tr *ngIf="application?.OpenStackProject && application?.TotalRam == 0">
                                                     <td>RAM</td>
-                                                    <td>{{ application.RamPerVM
+                                                    <td>{{ application?.RamPerVM
                                                         }} GB
                                                     </td>
                                                 </tr>
-                                                <tr *ngIf="application.OpenStackProject && application.TotalRam != 0">
+                                                <tr *ngIf="application?.OpenStackProject && application?.TotalRam != 0">
                                                     <td>RAM</td>
                                                     <td>{{
-                                                        application.TotalRam}} GB
+                                                        application?.TotalRam}} GB
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Storage Limit</td>
                                                     <td>{{
-                                                        application.VolumeLimit
+                                                        application?.VolumeLimit
                                                         }} GB
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                                        {{application.ApplicationExtension?.VolumeLimit}}
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+                                                        {{application?.ApplicationExtension?.VolumeLimit}}
                                                         GB
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Volume Counter</td>
                                                     <td>{{
-                                                        application.VolumeCounter
+                                                        application?.VolumeCounter
                                                         }} volumes
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                                        {{application.ApplicationExtension?.VolumeCounter}} volumes
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+                                                        {{application?.ApplicationExtension?.VolumeCounter}} volumes
                                                     </td>
                                                 </tr>
-                                                <tr *ngIf="application.OpenStackProject">
+                                                <tr *ngIf="application?.OpenStackProject">
                                                     <td>ObjectStorage</td>
                                                     <td>{{
-                                                        application.ObjectStorage
+                                                        application?.ObjectStorage
                                                         }} GB
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
-                                                        {{application.ApplicationExtension?.ObjectStorage}}
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+                                                        {{application?.ApplicationExtension?.ObjectStorage}}
                                                         GB
                                                     </td>
                                                 </tr>
-                                                <!--tr *ngIf="application.OpenStackProject">
+                                                <!--tr *ngIf="application?.OpenStackProject">
                                                     <td>Special Hardware</td>
                                                     <td><span
                                                             style="margin-right: 5px;"
                                                             class="badge badge-primary"
-                                                            *ngFor="let sh of application.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
+                                                            *ngFor="let sh of application?.SpecialHardware">{{ sh["special_hardware_name"] }}</span>
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                                                        <span style="margin-right: 5px;"
                                                              class="badge badge-primary"
-                                                             *ngFor="let sh of application.ApplicationExtension?.SpecialHardware">{{ sh }}</span>
+                                                             *ngFor="let sh of application?.ApplicationExtension?.SpecialHardware">{{ sh }}</span>
                                                     </td>
                                                 </tr-->
 
@@ -630,99 +630,99 @@
                     <tbody>
                     <ng-container
                             *ngFor="let application of applications_history">
-                        <ng-container *ngIf="application.Status != application_states.SUBMITTED">
-                            <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning,application.DateStatusChanged)}">
+                        <ng-container *ngIf="application?.Status != application_states.SUBMITTED">
+                            <tr [ngStyle]="{'color':lifeTimeReached(application?.Lifetime,application?.DaysRunning,application?.DateStatusChanged)}">
                                 <td>
-                                     <span *ngIf="application.OpenStackProject"
+                                     <span *ngIf="application?.OpenStackProject"
                                            style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944" class="badge"
                                            data-toggle="tooltip" data-placement="auto"
                                            title="This is an Openstack project">
                                     <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
                                   </span>
-                                    <span *ngIf="!application.OpenStackProject"
+                                    <span *ngIf="!application?.OpenStackProject"
                                           style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
                                           data-toggle="tooltip" data-placement="auto"
                                           title="This is a Simple VM project">
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                                 </td>
-                                <td>{{ application.Name }}</td>
-                                <td>{{application.Shortname}}</td>
-                                <td>{{ application.DateSubmitted }}
+                                <td>{{ application?.Name }}</td>
+                                <td>{{application?.Shortname}}</td>
+                                <td>{{ application?.DateSubmitted }}
                                 </td>
-                                <td>{{ application.User }}</td>
-                                <td>{{ application.Institute }}</td>
+                                <td>{{ application?.User }}</td>
+                                <td>{{ application?.Institute }}</td>
                                 <td>{{
-                                    getStatusById(application.Status)
+                                    getStatusById(application?.Status)
                                     }}
                                 </td>
                                 <td>
-                                    <button (click)="switchCollapseStatus('application_history-' + application.Id);"
+                                    <button (click)="switchCollapseStatus('application_history-' + application?.Id);"
                                             type="button"
                                             class="btn btn-secondary">
                                         <i class="fa fa-info-circle"></i>&nbsp;
-                                        <span [hidden]="!getCollapseStatus('application_history-' + application.Id)"
+                                        <span [hidden]="!getCollapseStatus('application_history-' + application?.Id)"
                                         >Show</span><span
-                                            [hidden]="getCollapseStatus('application_history-' + application.Id)"
+                                            [hidden]="getCollapseStatus('application_history-' + application?.Id)"
                                             style="margin-left: 5px">Hide</span>
                                         Information
                                     </button>
-                                    <!--button (click)="deleteModal.show();setDeleteId(application.application_status_id)"
+                                    <!--button (click)="deleteModal.show();setDeleteId(application?.application_status_id)"
                                             type="button"
                                             class="btn btn-secondary">
                                         Remove Application
                                     </button-->
                                 </td>
                             </tr>
-                            <tr [ngStyle]="{'color':lifeTimeReached(application.Lifetime,application.DaysRunning)}">
-                                <td [class.collapse_no_margin]="getCollapseStatus('application_history-' + application.Id)"
+                            <tr [ngStyle]="{'color':lifeTimeReached(application?.Lifetime,application?.DaysRunning)}">
+                                <td [class.collapse_no_margin]="getCollapseStatus('application_history-' + application?.Id)"
                                     colspan="6">
-                                    <div id="application_history-{{ application.id }}"
-                                         [class.collapse]="getCollapseStatus('application_history-' + application.Id)">
+                                    <div id="application_history-{{ application?.id }}"
+                                         [class.collapse]="getCollapseStatus('application_history-' + application?.Id)">
                                         <div class="table-responsive">
                                             <table class="table table-striped">
                                                 <tr>
                                                     <td>Description
                                                     </td>
                                                     <td>{{
-                                                        application.Description
+                                                        application?.Description
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Horizon 2020</td>
                                                     <td>
-                                                        {{application.Horizon2020}}
+                                                        {{application?.Horizon2020}}
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                   <td>Elixir Project</td>
                                                   <td>
-                                                    {{application.ElixirProject}}
+                                                    {{application?.ElixirProject}}
                                                   </td>
                                                 </tr>
                                                 <tr>
                                                 <td>BMBF Project</td>
                                                 <td>
-                                                  {{application.BMBFProject}}
+                                                  {{application?.BMBFProject}}
                                                 </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Dissemination allowed</td>
                                                     <td>
-                                                        {{application.Dissemination}}
+                                                        {{application?.Dissemination}}
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td>Workgroup</td>
                                                     <td>{{
-                                                        application.Workgroup
+                                                        application?.Workgroup
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -730,33 +730,33 @@
                                                         OpenStackProject
                                                     </td>
                                                     <td>
-                                                        {{application.OpenStackProject}}
+                                                        {{application?.OpenStackProject}}
                                                     </td>
-                                                    <td *ngIf="application.Status == application_states.MODIFICATION_REQUESTED">
+                                                    <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td>Comment</td>
                                                     <td>{{
-                                                        application.Comment
+                                                        application?.Comment
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.ApplicationExtension">
-                                                        {{application.ApplicationExtension?.Comment}}
+                                                    <td *ngIf="application?.ApplicationExtension">
+                                                        {{application?.ApplicationExtension?.Comment}}
                                                     </td>
 
                                                 </tr>
                                                 <tr>
                                                     <td>Lifetime</td>
                                                     <td>{{
-                                                        application.Lifetime
+                                                        application?.Lifetime
                                                         }} months
                                                     </td>
-                                                    <td *ngIf="application.ApplicationExtension">
-                                                        {{application.ApplicationExtension?.Lifetime
+                                                    <td *ngIf="application?.ApplicationExtension">
+                                                        {{application?.ApplicationExtension?.Lifetime
                                                         +
-                                                        application.Lifetime}}
+                                                        application?.Lifetime}}
                                                         months
                                                     </td>
                                                 </tr>
@@ -766,32 +766,32 @@
 
                                                     <td>
                                                         Current:
-                                                        {{application.VMsRequested}}
+                                                        {{application?.VMsRequested}}
                                                     </td>
-                                                    <td *ngIf="application.ApplicationExtension ">
+                                                    <td *ngIf="application?.ApplicationExtension ">
                                                         Requested:
-                                                        {{application.ApplicationExtension?.VMsRequested}}
+                                                        {{application?.ApplicationExtension?.VMsRequested}}
                                                     </td>
 
 
                                                 </tr>
 
-                                                <tr *ngFor="let item of application.CurrentFlavors | keyvalue">
+                                                <tr *ngFor="let item of application?.CurrentFlavors | keyvalue">
                                                     <td>Flavor: {{item.key}}</td>
                                                     <td>{{item.value.counter}}</td>
-                                                    <td *ngIf="application.ApplicationExtension">
-                                                            <span *ngIf="application.ApplicationExtension?.RequestedFlavors[item.key]">
-                                                                {{application.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}</span>
-                                                        <span *ngIf="!application.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                    <td *ngIf="application?.ApplicationExtension">
+                                                            <span *ngIf="application?.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                                {{application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}</span>
+                                                        <span *ngIf="!application?.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
                                                 </tr>
                                                 <ng-container
-                                                        *ngFor="let item of application.ApplicationExtension?.RequestedFlavors| keyvalue ">
-                                                    <tr *ngIf="!application.CurrentFlavors[item.key]">
+                                                        *ngFor="let item of application?.ApplicationExtension?.RequestedFlavors| keyvalue ">
+                                                    <tr *ngIf="!application?.CurrentFlavors[item.key]">
                                                         <td>Flavor: {{item.key}}</td>
                                                         <td>0</td>
                                                         <td>
-                                                            {{application.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}
+                                                            {{application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}
 
 
                                                         </td>
@@ -801,33 +801,33 @@
                                                 </ng-container>
 
 
-                                                <tr *ngIf="application.OpenStackProject">
+                                                <tr *ngIf="application?.OpenStackProject">
                                                     <td>Total Cores</td>
-                                                    <td>{{application.TotalCores
+                                                    <td>{{application?.TotalCores
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.ApplicationExtension">
-                                                        {{application.ApplicationExtension?.TotalCores}}
+                                                    <td *ngIf="application?.ApplicationExtension">
+                                                        {{application?.ApplicationExtension?.TotalCores}}
                                                     </td>
                                                 </tr>
-                                                <tr *ngIf="application.OpenStackProject">
+                                                <tr *ngIf="application?.OpenStackProject">
                                                     <td>Total RAM</td>
                                                     <td>{{
-                                                        application.TotalRam}} GB
+                                                        application?.TotalRam}} GB
                                                     </td>
-                                                    <td *ngIf="application.ApplicationExtension">
-                                                        {{application.ApplicationExtension?.TotalRAM}} GB
+                                                    <td *ngIf="application?.ApplicationExtension">
+                                                        {{application?.ApplicationExtension?.TotalRAM}} GB
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Storage Limit
                                                     </td>
                                                     <td>{{
-                                                        application.VolumeLimit
+                                                        application?.VolumeLimit
                                                         }} GB
                                                     </td>
-                                                    <td *ngIf="application.ApplicationExtension">
-                                                        {{application.ApplicationExtension?.VolumeLimit}}
+                                                    <td *ngIf="application?.ApplicationExtension">
+                                                        {{application?.ApplicationExtension?.VolumeLimit}}
                                                         GB
                                                     </td>
                                                 </tr>
@@ -836,22 +836,22 @@
                                                         Counter
                                                     </td>
                                                     <td>{{
-                                                        application.VolumeCounter
+                                                        application?.VolumeCounter
                                                         }} volumes
                                                     </td>
-                                                    <td *ngIf="application.ApplicationExtension">
-                                                        {{application.ApplicationExtension?.VolumeCounter}} volumes
+                                                    <td *ngIf="application?.ApplicationExtension">
+                                                        {{application?.ApplicationExtension?.VolumeCounter}} volumes
                                                     </td>
                                                 </tr>
-                                                <tr *ngIf="application.OpenStackProject">
+                                                <tr *ngIf="application?.OpenStackProject">
                                                     <td>ObjectStorage
                                                     </td>
                                                     <td>{{
-                                                        application.ObjectStorage
+                                                        application?.ObjectStorage
                                                         }} GB
                                                     </td>
-                                                    <td *ngIf="application.ApplicationExtension">
-                                                        {{application.ApplicationExtension?.ObjectStorage}}
+                                                    <td *ngIf="application?.ApplicationExtension">
+                                                        {{application?.ApplicationExtension?.ObjectStorage}}
                                                         GB
                                                     </td>
                                                 </tr>
@@ -860,37 +860,37 @@
                                                         changed
                                                     </td>
                                                     <td>{{
-                                                        application.DateStatusChanged
+                                                        application?.DateStatusChanged
                                                         }}
                                                     </td>
-                                                    <td *ngIf="application.ApplicationExtension">
+                                                    <td *ngIf="application?.ApplicationExtension">
                                                     </td>
                                                 </tr>
-                                                <tr *ngIf="application.Status == application_states.APPROVED">
+                                                <tr *ngIf="application?.Status == application_states.APPROVED">
                                                     <td>DaysRunning
                                                     </td>
 
                                                     <td>
-                                                        {{application.DaysRunning}}
+                                                        {{application?.DaysRunning}}
                                                     </td>
 
                                                 </tr>
-                                                <tr *ngIf="application.ComputeCenter">
+                                                <tr *ngIf="application?.ComputeCenter">
 
                                                     <td>Facility
                                                         Details
                                                     </td>
                                                     <td>
-                                                        <ul *ngIf="application.ComputeCenter.Name">
-                                                            <li *ngIf="application.OpenStackProject">
+                                                        <ul *ngIf="application?.ComputeCenter.Name">
+                                                            <li *ngIf="application?.OpenStackProject">
                                                                 <a
                                                                         target="_blank"
-                                                                        href="application.ComputeCenter.Login">Login:
-                                                                    {{application.ComputeCenter.Login}}</a>
+                                                                        href="application?.ComputeCenter.Login">Login:
+                                                                    {{application?.ComputeCenter.Login}}</a>
                                                             </li>
                                                             <li>
                                                                 Support:
-                                                                {{application.ComputeCenter.Support}}
+                                                                {{application?.ComputeCenter.Support}}
                                                             </li>
 
                                                             <!--button (click)="verifyModal.show();UserModalFacilityDetails=project.ComputeCenterDetails;UserModalFacility=project.ComputeCenter;"

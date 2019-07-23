@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -11,6 +11,9 @@ import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 import {IResponseTemplate} from '../api-connector/response-template';
+import {Userinfo} from '../userinfo/userinfo.model';
+import {ViewChild, QueryList} from '@angular/core';
+import {forkJoin, Observable} from 'rxjs';
 
 /**
  * Projectoverview component.
@@ -26,6 +29,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
   @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
+
   isAdmin: boolean = false;
   userProjects: {}[];
   filteredMembers: any = null;
@@ -37,6 +41,10 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   projects: Project[] = [];
   loaded: boolean = true;
   details_loaded: boolean = false;
+  userinfo: Userinfo;
+  allSet: boolean = false;
+
+  checked_member_list: number[] = [];
 
   // modal variables for User list
   public usersModalProjectMembers: ProjectMember[] = [];
@@ -90,6 +98,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
 
   ngOnInit(): void {
     this.getUserProjects();
+    this.getUserinfo();
 
   }
 
@@ -234,6 +243,77 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
     });
   }
 
+  setAllMembersChecked(): void {
+    if (!this.allSet) {
+      this.usersModalProjectMembers.forEach((member: ProjectMember) => {
+        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) {
+          this.checked_member_list.push(parseInt(member.MemberId.toString(), 10));
+        }
+      });
+      this.allSet = true;
+    } else {
+      this.checked_member_list = [];
+      this.allSet = false;
+    }
+    console.log(this.checked_member_list)
+  }
+
+  isMemberChecked(id: number): boolean {
+    return this.checked_member_list.indexOf(id) !== -1;
+
+  }
+
+  checkIfAllMembersChecked(): boolean {
+    this.usersModalProjectMembers.forEach((member: ProjectMember) => {
+      if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) {
+        return false;
+      }
+    });
+
+    return true;
+  }
+
+  checkUnCheckMember(id: number): void {
+    const indexOf: number = this.checked_member_list.indexOf(id);
+    if (indexOf !== -1) {
+      this.checked_member_list.splice(indexOf, 1);
+      this.allSet = false;
+
+    } else {
+      this.checked_member_list.push(id);
+      if (this.checkIfAllMembersChecked()) {
+        this.allSet = true;
+      } else {
+        this.allSet = false;
+      }
+    }
+
+  }
+
+  removeCheckedMembers(groupId: number | string): void {
+    let facility_id: string | number = null;
+    if (this.UserModalFacility && this.UserModalFacility[1]) {
+      facility_id = this.UserModalFacility[1]
+    }
+
+    const observables: Observable<number>[] = this.checked_member_list
+      .map((id: number) => this.groupService.removeMember(groupId, id, facility_id));
+    forkJoin(observables).subscribe(() => {
+      this.usersModalProjectMembers.forEach((member: ProjectMember) => {
+        if (this.isMemberChecked(parseInt(member.MemberId.toString(), 10))) {
+          const index: number = this.usersModalProjectMembers.indexOf(member);
+          this.usersModalProjectMembers.splice(index, 1);
+        }
+      })
+
+    })
+
+  }
+
+  resetCheckedMemberList(): void {
+    this.checked_member_list = [];
+  }
+
   setAddUserInvitationLink(): void {
     const uri: string = this.invitation_group_pre + this.addUserModalRealName + this.invitation_group_post + this.addUserModalRealName;
     this.addUserModalInvitationLink = uri
@@ -308,6 +388,12 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
       this.UserModalFacility = null;
 
     }
+  }
+
+  getUserinfo(): void {
+    this.userService.getUserInfo().subscribe((userinfo: any) => {
+      this.userinfo = new Userinfo(userinfo);
+    })
   }
 
   public addMember(groupid: number, memberid: number, firstName: string, lastName: string): void {

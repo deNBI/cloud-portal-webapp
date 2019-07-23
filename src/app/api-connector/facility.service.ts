@@ -72,6 +72,8 @@ export class FacilityService {
 
   }
 
+
+
   /**
    * Gets all facility applications which are waiting for conirmation.
    * @param {number} facility
