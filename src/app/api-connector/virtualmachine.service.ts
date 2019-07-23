@@ -120,6 +120,14 @@ export class VirtualmachineService ***REMOVED***
 
     ***REMOVED***)
   ***REMOVED***
+  
+    getLogs(openstack_id: string): Observable<any> ***REMOVED***
+      return this.http.post(`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/logs/`, null, ***REMOVED***
+        withCredentials: true,
+
+        headers: header
+      ***REMOVED***)
+    ***REMOVED***
 
   getVmsFromFacilitiesOfLoggedUser(page: number, filter_name?: string, filter_project?: string,
                                    filter_status?: string[],

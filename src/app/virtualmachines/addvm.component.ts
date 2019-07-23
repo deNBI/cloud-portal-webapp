@@ -46,7 +46,8 @@ export class VirtualMachineComponent implements OnInit***REMOVED***
   showUdpCommando: boolean = true;
   is_vo: boolean = false;
   hasTools: boolean = false;
-
+  gaveOkay: boolean = false;
+  log;
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
   client_checked: boolean = false;
@@ -284,11 +285,20 @@ export class VirtualMachineComponent implements OnInit***REMOVED***
     setTimeout(
       () => ***REMOVED***
         this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => ***REMOVED***
+          console.log(newVm.status);
           if (newVm.status === 'ACTIVE') ***REMOVED***
             this.resetProgressBar();
             this.newVm = newVm;
             this.loadProjectData();
 
+          ***REMOVED*** else if (newVm.status === 'BIOCONDA_FAILED' || newVm.status === 'DELETED') ***REMOVED***
+            this.virtualmachineservice.getLogs(id).subscribe(logs => ***REMOVED***
+              this.newVm.status = 'DELETED';
+              this.log = logs;
+              this.resetProgressBar();
+              this.create_error = <IResponseTemplate><any>newVm;
+              this.loadProjectData();
+            ***REMOVED***);
           ***REMOVED*** else if (newVm.status) ***REMOVED***
             if (newVm.status === 'PORT_CLOSED') ***REMOVED***
               this.checking_vm_status = 'Active';
@@ -487,5 +497,9 @@ export class VirtualMachineComponent implements OnInit***REMOVED***
 
   hasChosenTools(hasSomeTools: boolean): void ***REMOVED***
     this.hasTools = hasSomeTools;
+  ***REMOVED***
+
+  setGaveOkay(checked: boolean): void ***REMOVED***
+    this.gaveOkay = checked;
   ***REMOVED***
 ***REMOVED***
