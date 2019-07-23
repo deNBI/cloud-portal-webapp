@@ -1,3 +1,18 @@
+
+##  (2019-07-23)
+
+
+#### Bug Fixes
+
+* **VirtualMachine:**
+  * choose not visisbile anymoore when bioconda is selected ([dd93071e](dd93071e))
+
+#### Features
+
+* **Virtualmachines:** added filtering ([0aacd14e](0aacd14e))
+* **Vms:** started adding real pagination ([7b767c1d](7b767c1d))
+* **application:**  user gets info about possibility to request specia… (#594) ([bf6d734b](bf6d734b))
+
 ##  (2019-07-10)
 
 
