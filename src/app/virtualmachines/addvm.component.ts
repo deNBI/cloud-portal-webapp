@@ -46,7 +46,8 @@ export class VirtualMachineComponent implements OnInit{
   showUdpCommando: boolean = true;
   is_vo: boolean = false;
   hasTools: boolean = false;
-
+  gaveOkay: boolean = false;
+  log;
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
   client_checked: boolean = false;
@@ -284,11 +285,20 @@ export class VirtualMachineComponent implements OnInit{
     setTimeout(
       () => {
         this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => {
+          console.log(newVm.status);
           if (newVm.status === 'ACTIVE') {
             this.resetProgressBar();
             this.newVm = newVm;
             this.loadProjectData();
 
+          } else if (newVm.status === 'BIOCONDA_FAILED' || newVm.status === 'DELETED') {
+            this.virtualmachineservice.getLogs(id).subscribe(logs => {
+              this.newVm.status = 'DELETED';
+              this.log = logs;
+              this.resetProgressBar();
+              this.create_error = <IResponseTemplate><any>newVm;
+              this.loadProjectData();
+            });
           } else if (newVm.status) {
             if (newVm.status === 'PORT_CLOSED') {
               this.checking_vm_status = 'Active';
@@ -487,5 +497,9 @@ export class VirtualMachineComponent implements OnInit{
 
   hasChosenTools(hasSomeTools: boolean): void {
     this.hasTools = hasSomeTools;
+  }
+
+  setGaveOkay(checked: boolean): void {
+    this.gaveOkay = checked;
   }
 }

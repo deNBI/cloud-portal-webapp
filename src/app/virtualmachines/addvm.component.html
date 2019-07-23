@@ -363,6 +363,7 @@
                          ngModel
                          #respCheck
                          required
+                         (click)="setGaveOkay(respCheck.checked)"
                   >
                   <label class="form-check-label" for="bioconda_need_okay">
                     I hereby confirm that I read and acknowledge the following:<br>
@@ -390,6 +391,9 @@
           <p *ngIf="!selectedImage">- The image you want to run on your VM
           </p>
           <p *ngIf="diskspace > 0 && !volumeName">- A name for your storage volume
+          </p>
+          <p *ngIf="!gaveOkay && hasTools">- Give your okay to the Bioconda install process
+
           </p>
         </div>
         <div class="form-group row"
@@ -478,6 +482,15 @@
       </div>
       <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE'">
         <app-how-to-connect [selectedVm]="newVm"></app-how-to-connect>
+      </div>
+      <div class="modal-body" *ngIf="newVm?.status == 'DELETED'">
+        <pre>
+          Statuscode: {{log['status']}}
+        </pre>
+        <pre>
+          {{log['stdout']}}
+          {{log['stderr']}}
+        </pre>
       </div>
       <div class="modal-body" *ngIf="create_error?.error">
         An Error occured.<br><br>
