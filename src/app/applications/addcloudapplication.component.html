@@ -168,6 +168,10 @@
                   <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
                 </div>
+                <div *ngIf="isFirst" class="alert alert-info"> You will have default access to all flavors in the
+                  standard category.<br>
+                  However, your selection will determine how many machines and resources you will have available.
+                </div>
                 <div *ngFor="let f of flavorList">
                   <div *ngIf="f.type.shortcut == t.shortcut"
                        class="form-group row">
