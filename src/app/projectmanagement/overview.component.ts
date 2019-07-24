@@ -308,13 +308,13 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
           members_in.push(member)
 
         ***REMOVED***
-      ***REMOVED***)
+
       ***REMOVED***);
       this.usersModalProjectMembers = members_in;
       this.checked_member_list = [];
       this.allSet = false;
 
-    ***REMOVED***)
+    ***REMOVED***);
     this.allSet = false;
   ***REMOVED***
 
