@@ -1,3 +1,22 @@
+##  (2019-07-24)
+
+
+#### Features
+
+* **Bioconda:** added bioconda build status ([4642cd00](4642cd00))
+* **Virtualmachines:** added filtering ([0aacd14e](0aacd14e))
+* **Vms:** started adding real pagination ([7b767c1d](7b767c1d))
+* **application:**  user gets info about possibility to request specia… (#594) ([bf6d734b](bf6d734b))
+
+#### Bug Fixes
+
+* **Members:** fixed remove all members bug ([1f7169b9](1f7169b9))
+* **Snapshot:** removed needless calls ([9c975432](9c975432))
+* **VirtualMachine:**
+  * start btn disabled if no image or flavor is selected, also do not show  please choose info if starting a vm isnt possible ([0329c5e3](0329c5e3))
+  * choose not visisbile anymoore when bioconda is selected ([dd93071e](dd93071e))
+  * choose not visisbile anymoore when bioconda is selected ([edb08d43](edb08d43))
+* **new-instance-alert:**  now correctly showing what is missing ([0999f734](0999f734))
 
 ##  (2019-07-23)
 
