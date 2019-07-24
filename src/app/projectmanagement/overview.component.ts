@@ -308,13 +308,13 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
           members_in.push(member)
 
         }
-      })
+
       });
       this.usersModalProjectMembers = members_in;
       this.checked_member_list = [];
       this.allSet = false;
 
-    })
+    });
     this.allSet = false;
   }
 
