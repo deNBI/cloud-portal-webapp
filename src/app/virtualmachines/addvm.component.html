@@ -383,7 +383,7 @@
         <div
           *ngIf="(f.controls.instance_name?.invalid || (!gaveOkay && hasTools) || !selectedImage || !selectedFlavor || (diskspace > 0 && !volumeName))&& projectDataLoaded  && flavors_loaded  && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length != 0"
           class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
-          <p>Please choose the following before staring a VM:</p>
+          <p>Please choose the following before starting a VM:</p>
           <p *ngIf="f.controls.instance_name?.invalid">- A name for your instance
           </p>
           <p *ngIf="!selectedFlavor">- The flavor type of your VM
@@ -404,7 +404,8 @@
     width: 8em"
 
                   type="button"
-                  [disabled]="f.invalid || (diskspace > 0 && volumeName == '') || !selectedFlavor || !selectedImage "
+
+                  [disabled]="f.invalid || !selectedFlavor || !selectedImage|| (diskspace > 0 && volumeName == '')"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">

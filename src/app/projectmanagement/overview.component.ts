@@ -14,6 +14,7 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {Userinfo} from '../userinfo/userinfo.model';
 import {ViewChild, QueryList} from '@angular/core';
 import {forkJoin, Observable} from 'rxjs';
+import {MemberGuardService} from '../member-guard.service';
 
 /**
  * Projectoverview component.
@@ -246,7 +247,6 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   setAllMembersChecked(): void {
     if (!this.allSet) {
       this.usersModalProjectMembers.forEach((member: ProjectMember) => {
-
         if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId.toString() !== member.MemberId.toString()) {
           this.checked_member_list.push(parseInt(member.MemberId.toString(), 10));
         }
@@ -259,7 +259,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   }
 
   isMemberChecked(id: number): boolean {
-    return this.checked_member_list.indexOf(id) !== -1;
+    return this.checked_member_list.indexOf(id) > -1;
 
   }
 
@@ -296,23 +296,30 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
     if (this.UserModalFacility && this.UserModalFacility[1]) {
       facility_id = this.UserModalFacility[1]
     }
+    const members_in: ProjectMember[] = [];
 
     const observables: Observable<number>[] = this.checked_member_list
       .map((id: number) => this.groupService.removeMember(groupId, id, facility_id));
     forkJoin(observables).subscribe(() => {
-      this.usersModalProjectMembers.forEach((member: ProjectMember) => {
-        if (this.isMemberChecked(parseInt(member.MemberId.toString(), 10))) {
-          const index: number = this.usersModalProjectMembers.indexOf(member);
-          this.usersModalProjectMembers.splice(index, 1);
-        }
 
+      this.usersModalProjectMembers.forEach((member: ProjectMember) => {
+
+        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10))) {
+          members_in.push(member)
+
+        }
       })
+      });
+      this.usersModalProjectMembers = members_in;
+      this.checked_member_list = [];
+      this.allSet = false;
 
     })
     this.allSet = false;
   }
 
   resetCheckedMemberList(): void {
+    this.allSet = false;
     this.checked_member_list = [];
   }
 
