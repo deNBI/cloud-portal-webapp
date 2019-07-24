@@ -246,7 +246,8 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   setAllMembersChecked(): void {
     if (!this.allSet) {
       this.usersModalProjectMembers.forEach((member: ProjectMember) => {
-        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) {
+
+        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId.toString() !== member.MemberId.toString()) {
           this.checked_member_list.push(parseInt(member.MemberId.toString(), 10));
         }
       });
@@ -255,7 +256,6 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
       this.checked_member_list = [];
       this.allSet = false;
     }
-    console.log(this.checked_member_list)
   }
 
   isMemberChecked(id: number): boolean {
@@ -291,6 +291,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   }
 
   removeCheckedMembers(groupId: number | string): void {
+
     let facility_id: string | number = null;
     if (this.UserModalFacility && this.UserModalFacility[1]) {
       facility_id = this.UserModalFacility[1]
@@ -304,10 +305,11 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
           const index: number = this.usersModalProjectMembers.indexOf(member);
           this.usersModalProjectMembers.splice(index, 1);
         }
+
       })
 
     })
-
+    this.allSet = false;
   }
 
   resetCheckedMemberList(): void {

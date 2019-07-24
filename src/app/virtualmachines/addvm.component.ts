@@ -29,21 +29,33 @@ import {BiocondaComponent} from './conda/bioconda.component';
              providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
                Application, ApiSettings, KeyService, ClientService, UserService, VoService]
            })
-export class VirtualMachineComponent implements OnInit{
+export class VirtualMachineComponent implements OnInit {
+
+  TWENTY_FIVE_PERCENT: number = 25;
+  FIFTY_PERCENT: number = 50;
+  THIRTY_THIRD_PERCENT: number = 33;
+  SIXTY_SIX_PERCENT: number = 66;
+  SEVENTY_FIVE: number = 75;
+  ACTIVE: string = 'ACTIVE';
+  BIOCONDA_FAILED: string = 'BIOCONDA_FAILED';
+  DELETED: string = 'DELETED';
+  PORT_CLOSED: string = 'PORT_CLOSED';
+  PREPARE_BIOCONDA_BUILD: string = 'PREPARE_BIOCONDA_BUILD';
+  BUILD_BIOCONDA: string = 'BUILD_BIOCONDA';
+  CREATING_STATUS: string = 'Creating...';
+  BUILD_STATUS: string = 'Building..';
+  CHECKING_PORT_STATUS: string = 'Checking port..';
+  PREPARE_BIOCONDA_STATUS: string = 'Prepare Bioconda Build...';
+  BUIDLING_BIOCONDA_STATUS: string = 'Building Bioconda...';
+  ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';
 
   newVm: VirtualMachine = null;
-  creating_vm_status: string = 'Creating..';
-  creating_vm_prograss_bar: string = 'progress-bar-animated';
-  checking_vm_status: string = '';
-  checking_vm_status_width: number = 0;
-  checking_vm_status_progress_bar: string = 'progress-bar-animated';
-  checking_vm_ssh_port: string = '';
-  checking_vm_ssh_port_width: number = 0;
+  progress_bar_status: string = 'Creating..';
+  progress_bar_animated: string = 'progress-bar-animated';
+  progress_bar_width: number = 0;
   http_allowed: boolean = false;
   https_allowed: boolean = false;
   udp_allowed: boolean = false;
-  showSshCommando: boolean = true;
-  showUdpCommando: boolean = true;
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
@@ -267,13 +279,9 @@ export class VirtualMachineComponent implements OnInit{
    * Reset the progress bar.
    */
   resetProgressBar(): void {
-    this.creating_vm_status = 'Creating..';
-    this.creating_vm_prograss_bar = 'progress-bar-animated';
-    this.checking_vm_status = '';
-    this.checking_vm_status_width = 0;
-    this.checking_vm_status_progress_bar = 'progress-bar-animated';
-    this.checking_vm_ssh_port = '';
-    this.checking_vm_ssh_port_width = 0;
+    this.progress_bar_status = this.CREATING_STATUS;
+    this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
+    this.progress_bar_width = 0;
   }
 
   /**
@@ -286,28 +294,40 @@ export class VirtualMachineComponent implements OnInit{
       () => {
         this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => {
           console.log(newVm.status);
-          if (newVm.status === 'ACTIVE') {
+          if (newVm.status === this.ACTIVE) {
             this.resetProgressBar();
             this.newVm = newVm;
             this.loadProjectData();
 
-          } else if (newVm.status === 'BIOCONDA_FAILED' || newVm.status === 'DELETED') {
+          } else if (newVm.status === this.BIOCONDA_FAILED || newVm.status === this.DELETED) {
             this.virtualmachineservice.getLogs(id).subscribe(logs => {
-              this.newVm.status = 'DELETED';
+              this.newVm.status = this.DELETED;
               this.log = logs;
               this.resetProgressBar();
               this.create_error = <IResponseTemplate><any>newVm;
               this.loadProjectData();
             });
           } else if (newVm.status) {
-            if (newVm.status === 'PORT_CLOSED') {
-              this.checking_vm_status = 'Active';
-              this.checking_vm_status_progress_bar = '';
-              this.creating_vm_prograss_bar = '';
-              this.checking_vm_ssh_port = 'Checking port..';
-              this.checking_vm_ssh_port_width = 34;
+            if (newVm.status === this.PORT_CLOSED) {
+              this.progress_bar_animated = '';
+              this.progress_bar_status = this.CHECKING_PORT_STATUS;
+              if (this.hasTools) {
+                this.progress_bar_width = this.FIFTY_PERCENT;
+              } else {
+                this.progress_bar_width = this.SIXTY_SIX_PERCENT;
+              }
 
+            } else if (newVm.status === this.PREPARE_BIOCONDA_BUILD) {
+              this.progress_bar_animated = '';
+              this.progress_bar_status = this.PREPARE_BIOCONDA_STATUS;
+              this.progress_bar_width = this.SIXTY_SIX_PERCENT;
+
+            } else if (newVm.status === this.BUILD_BIOCONDA) {
+              this.progress_bar_animated = '';
+              this.progress_bar_status = this.BUIDLING_BIOCONDA_STATUS;
+              this.progress_bar_width = this.SEVENTY_FIVE;
             }
+
             this.check_status_loop(id)
           } else {
             this.resetProgressBar();
@@ -335,32 +355,40 @@ export class VirtualMachineComponent implements OnInit{
       const re: RegExp = /\+/gi;
 
       const flavor_fixed: string = flavor.replace(re, '%2B');
+      if (this.hasTools) {
+        this.progress_bar_width = this.TWENTY_FIVE_PERCENT;
+      } else {
+        this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
+      }
 
       this.virtualmachineservice.startVM(
         flavor_fixed, image, servername, project, projectid.toString(), this.http_allowed, this.https_allowed, this.udp_allowed,
         this.volumeName, this.diskspace.toString(), this.biocondaComponent.getChosenTools()).subscribe((newVm: VirtualMachine) => {
 
         if (newVm.status === 'Build') {
-          this.creating_vm_status = 'Created';
-          this.creating_vm_prograss_bar = '';
-          this.checking_vm_status = 'Checking status..';
-          this.checking_vm_status_progress_bar = 'progress-bar-animated';
-          this.checking_vm_status_width = 33;
+          this.progress_bar_status = this.BUILD_STATUS;
+          this.progress_bar_animated = '';
+          this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
+          if (this.hasTools) {
+            this.progress_bar_width = this.TWENTY_FIVE_PERCENT;
+          } else {
+            this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
+          }
           this.check_status_loop(newVm.openstackid);
 
         } else if (newVm.status) {
-          this.creating_vm_status = 'Creating';
+          this.progress_bar_status = this.CREATING_STATUS;
           this.newVm = newVm;
           this.check_status_loop(newVm.openstackid);
         } else {
-          this.creating_vm_status = 'Creating';
+          this.progress_bar_status = this.CREATING_STATUS;
           this.create_error = <IResponseTemplate><any>newVm;
         }
 
       });
 
     } else {
-      this.creating_vm_status = 'Creating';
+      this.progress_bar_status = this.CREATING_STATUS;
 
       this.newVm = null;
 
