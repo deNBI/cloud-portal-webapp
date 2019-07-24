@@ -381,7 +381,7 @@
         </div>
 
         <div
-          *ngIf="(f.controls.instance_name?.invalid || flavors.length != 0 || !selectedImage || !selectedFlavor || (diskspace > 0 && !volumeName))&& projectDataLoaded  && flavors_loaded  && selectedProjectVmsUsed < selectedProjectVmsMax"
+          *ngIf="(f.controls.instance_name?.invalid || (!gaveOkay && hasTools) || !selectedImage || !selectedFlavor || (diskspace > 0 && !volumeName))&& projectDataLoaded  && flavors_loaded  && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length != 0"
           class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
           <p>Please choose the following before staring a VM:</p>
           <p *ngIf="f.controls.instance_name?.invalid">- A name for your instance
