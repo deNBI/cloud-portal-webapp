@@ -246,7 +246,8 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
   setAllMembersChecked(): void ***REMOVED***
     if (!this.allSet) ***REMOVED***
       this.usersModalProjectMembers.forEach((member: ProjectMember) => ***REMOVED***
-        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) ***REMOVED***
+
+        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId.toString() !== member.MemberId.toString()) ***REMOVED***
           this.checked_member_list.push(parseInt(member.MemberId.toString(), 10));
         ***REMOVED***
       ***REMOVED***);
@@ -255,7 +256,6 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
       this.checked_member_list = [];
       this.allSet = false;
     ***REMOVED***
-    console.log(this.checked_member_list)
   ***REMOVED***
 
   isMemberChecked(id: number): boolean ***REMOVED***
@@ -291,6 +291,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
   ***REMOVED***
 
   removeCheckedMembers(groupId: number | string): void ***REMOVED***
+
     let facility_id: string | number = null;
     if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
       facility_id = this.UserModalFacility[1]
@@ -304,10 +305,11 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
           const index: number = this.usersModalProjectMembers.indexOf(member);
           this.usersModalProjectMembers.splice(index, 1);
         ***REMOVED***
+
       ***REMOVED***)
 
     ***REMOVED***)
-
+    this.allSet = false;
   ***REMOVED***
 
   resetCheckedMemberList(): void ***REMOVED***
