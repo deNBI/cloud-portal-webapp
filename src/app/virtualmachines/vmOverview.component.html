@@ -3,28 +3,34 @@
 <div *ngIf="isLoaded" class="card">
 
   <div class="card-header">
-    <i class="icon-refresh icons" style="cursor: pointer;" (click)="refreshVms()"></i><strong>Instance</strong>
+    <i class="icon-refresh icons" style="cursor: pointer;" (click)="getVms()"></i><strong>Instance</strong>
     –Overview
   </div>
-  <div *ngIf="is_vo_admin">
+  <div *ngIf="is_vo_admin || is_facility_manager">
 
 
     <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
             class="btn btn-primary"
-            (click)="getVms(elixir_id);toggleTab('own');">Own Machines
+            (click)="getVms();toggleTab('own');">Own Machines
     </button>
 
-    <button style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
+    <button *ngIf="is_vo_admin" style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
             class="btn btn-primary"
             (click)="getAllVms();toggleTab('all')">All Machines
+    </button>
+    <button style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
+            class="btn btn-primary"
+            (click)="getAllVmsFacilities();toggleTab('facility')">Machines of your facilities
     </button>
 
 
   </div>
   <div style="margin-right: 5px;margin-left: 5px;">
     <pagination
-      [totalItems]="vms_filtered?.length" [itemsPerPage]="vmsPerPage"
-      (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"></pagination>
+      [totalItems]="total_pages" [itemsPerPage]="vms_content.length"
+      (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
+      [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
+    </pagination>
   </div>
 
 
@@ -48,10 +54,11 @@
       </thead>
       <tbody>
       <td><input style="width: 110px;" type="text" placeholder="Filter" name="filterVmName"
-                 [(ngModel)]="filterVmName" (ngModelChange)="applyFilter();"></td>
-      <td><input style="width: 110px;" t type="text" placeholder="Filter"
+                 [(ngModel)]="filterVmName" (ngModelChange)="filterNameChanged.next($event)"></td>
+      <td><input style="width: 110px;" type="text" placeholder="Filter"
                  name="filterProjectName"
-                 [(ngModel)]="filterProjectName" (ngModelChange)="applyFilter();"></td>
+                 [(ngModel)]="filterProjectName" (ngModelChange)="filterProjectNameChanged.next($event)">
+      </td>
       <td>
 
         <div class="checkbox">
@@ -82,19 +89,19 @@
           </label>
         </div>
       </td>
-      <td><input style="width: 110px;" t type="text" placeholder="Filter"
+      <td><!--input style="width: 110px;" t type="text" placeholder="Filter"
                  name="filterVmCreated_at"
-                 [(ngModel)]="filterVmCreated_at" (ngModelChange)="applyFilter();"></td>
+                 [(ngModel)]="filterVmCreated_at" (ngModelChange)="filterCreatedAtChanged.next($event)"--></td>
       <td></td>
-      <td *ngIf="is_vo_admin"><input style="width: 110px;" t type="text" placeholder="Filter"
+      <td *ngIf="is_vo_admin"><input style="width: 110px;" type="text" placeholder="Filter"
                                      name="filterVmElixir_id" [(ngModel)]="filterVmElixir_id"
-                                     (ngModelChange)="applyFilter();"></td>
-      <td><input style="width: 110px;" t type="text" placeholder="Filter"
+                                     (ngModelChange)="filterElixirIdChanged.next($event);"></td>
+      <td><!--input style="width: 110px;" t type="text" placeholder="Filter"
                  name="filterVmStopped_at"
-                 [(ngModel)]="filterVmStopped_at" (ngModelChange)="applyFilter();"></td>
+                 [(ngModel)]="filterVmStopped_at" (ngModelChange)="applyFilter();"--></td>
 
 
-      <ng-container *ngFor="let vm of vms_returned">
+      <ng-container *ngFor="let vm of vms_content">
 
 
         <tr>
@@ -461,7 +468,7 @@
         ><strong>Snapshot Name*</strong></div>
 
         <div>
-          <input type="text"  style="width: 100%" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
+          <input type="text" style="width: 100%" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
                  (ngModelChange)="validSnapshotName($event);">
 
         </div>
@@ -473,8 +480,8 @@
         <br>
         <div
         ><strong>Description</strong></div>
-        <div ><textarea style="width: 100%" type="textfield" placeholder="Description"
-                         #snapshotDescription></textarea></div>
+        <div><textarea style="width: 100%" type="textfield" placeholder="Description"
+                       #snapshotDescription></textarea></div>
         <div class="alert alert-info" role="alert">
           A snapshot is an image which preserves the disk state of a running instance.
         </div>

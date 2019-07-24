@@ -291,6 +291,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
   ***REMOVED***
 
   removeCheckedMembers(groupId: number | string): void ***REMOVED***
+
     let facility_id: string | number = null;
     if (this.UserModalFacility && this.UserModalFacility[1]) ***REMOVED***
       facility_id = this.UserModalFacility[1]
@@ -307,13 +308,14 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
           members_in.push(member)
 
         ***REMOVED***
+      ***REMOVED***)
       ***REMOVED***);
       this.usersModalProjectMembers = members_in;
       this.checked_member_list = [];
       this.allSet = false;
 
     ***REMOVED***)
-
+    this.allSet = false;
   ***REMOVED***
 
   resetCheckedMemberList(): void ***REMOVED***
