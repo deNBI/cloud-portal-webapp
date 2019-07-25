@@ -20,6 +20,11 @@ import {UserService} from '../api-connector/user.service';
 import {VoService} from '../api-connector/vo.service';
 import {BiocondaComponent} from './conda/bioconda.component';
 
+export interface IPlaybook {
+  [name: string]: {
+    [variable: string]: string;
+  };
+}
 /**
  * Start virtualmachine component.
  */
@@ -360,10 +365,9 @@ export class VirtualMachineComponent implements OnInit {
       } else {
         this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
       }
-
       this.virtualmachineservice.startVM(
         flavor_fixed, image, servername, project, projectid.toString(), this.http_allowed, this.https_allowed, this.udp_allowed,
-        this.volumeName, this.diskspace.toString(), this.biocondaComponent.getChosenTools()).subscribe((newVm: VirtualMachine) => {
+        this.volumeName, this.diskspace.toString(), this.biocondaComponent.getChosenTools(), this.getPlaybookInformation()).subscribe((newVm: VirtualMachine) => {
 
         if (newVm.status === 'Build') {
           this.progress_bar_status = this.BUILD_STATUS;
@@ -393,6 +397,23 @@ export class VirtualMachineComponent implements OnInit {
       this.newVm = null;
 
     }
+  }
+
+  getPlaybookInformation(): string {
+    const playbook_info: {
+      [name: string]: {
+        [variable: string]: string
+      }
+    } = {};
+    if (this.biocondaComponent.hasChosenTools()) {
+      playbook_info['bioconda'] = {
+        packages: this.biocondaComponent.getChosenTools()
+      }
+    }
+    console.log(playbook_info);
+    console.log(JSON.stringify(playbook_info));
+
+    return JSON.stringify(playbook_info);
   }
 
   /**
