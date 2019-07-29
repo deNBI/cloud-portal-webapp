@@ -447,7 +447,10 @@
       </div>
       <div class="modal-body"
            *ngIf="(newVm?.status == 'BUILD' || newVm?.status == 'PORT_CLOSED' || newVm ==null) && !create_error?.error ">
-        <p>We are setting up a machine for you. This can take up to 5 minutes.</p>
+        <p *ngIf="playbook_run == 0">We are setting up a machine for you. This can take up to 5 minutes.</p>
+        <p *ngIf="playbook_run == 1">We are setting up a machine for you.
+          This can take some time, depending on your chosen playbooks.
+          At maximum it can take up to {{getTimeoutMinutes()}} minutes and {{getTimeoutSeconds()}} seconds, due to the accumulation of timeouts in your generated playbook.</p>
 
         <div class="progress">
           <div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
@@ -461,17 +464,8 @@
           machine on the
           instance overview site</p>
       </div>
-      <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE'">
-        <app-how-to-connect [selectedVm]="newVm"></app-how-to-connect>
-      </div>
-      <div class="modal-body" *ngIf="newVm?.status == 'DELETED'">
-        <pre>
-          Statuscode: {{log['status']}}
-        </pre>
-        <pre>
-          {{log['stdout']}}
-          {{log['stderr']}}
-        </pre>
+      <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE' || newVm?.status == 'DELETED'">
+        <app-how-to-connect [selectedVm]="newVm" [playbook_run]="playbook_run" [logs]="logs"></app-how-to-connect>
       </div>
       <div class="modal-body" *ngIf="create_error?.error">
         An Error occured.<br><br>
@@ -491,5 +485,3 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-<button (click)="getPlaybookInformation()">asdasd</button>
