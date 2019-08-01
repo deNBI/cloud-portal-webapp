@@ -3,12 +3,13 @@ import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
 import ***REMOVED***HttpClient, HttpHeaders***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
+import ***REMOVED***ApplicationDissemination***REMOVED*** from '../applications/application-dissemination';
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
-  'X-CSRFToken': Cookie.get('csrftoken'),
-  'Content-Type': 'application/json'
+                                              'X-CSRFToken': Cookie.get('csrftoken'),
+                                              'Content-Type': 'application/json'
 
-***REMOVED***);
+                                            ***REMOVED***);
 
 /**
  * Service which provides methods for creating application.
@@ -35,10 +36,18 @@ export class ApplicationsService ***REMOVED***
 
   validateApplicationAsPIByHash(hash: string): Observable<any> ***REMOVED***
 
-    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/validation/$***REMOVED***hash***REMOVED***/`, null,***REMOVED***
+    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/validation/$***REMOVED***hash***REMOVED***/`, null, ***REMOVED***
       headers: header,
       withCredentials: true
     ***REMOVED***)
+  ***REMOVED***
+
+  setApplicationDissemination(project_application_id: string | number, dissemination: ApplicationDissemination): Observable<any> ***REMOVED***
+    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***project_application_id***REMOVED***/dissemination/`,
+                          dissemination, ***REMOVED***
+                            headers: header,
+                            withCredentials: true
+                          ***REMOVED***)
   ***REMOVED***
 
   getUserApplication(project_id: string | number): Observable<any> ***REMOVED***
