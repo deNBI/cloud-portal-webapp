@@ -128,7 +128,7 @@
             {{vm.created_at}}
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-            <button type="button" class="btn btn-secondary btn-block"
+            <button type="button" class="btn btn-info btn-block"
                     style="white-space: normal; word-wrap: break-word;"
                     (click)="selectedVm=vm;infoModal.show()"> Show
               Information
@@ -145,62 +145,62 @@
           <td>
             <div
               *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
-              class="btn-group" dropdown>
-
-              <button class="btn btn-secondary" type="button"
-                      *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
-                      (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();">
-
-                Create Snapshot
-              </button>
-              <button *ngIf="vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]" style="cursor: pointer;"
-                      class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+              class="dropdown" dropdown>
+              <button *ngIf="vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
+                      style="cursor: pointer"
+                      class="btn btn-info dropdown-toggle dropdown-toggle-split btn-block"
                       type="button" aria-haspopup="true" aria-expanded="false"
-                      dropdownToggle aria-controls="dropdown-split"></button>
-              <ul class="dropdown-menu" role="menu" *dropdownMenu>
-                <li style="cursor: pointer;" role="menuitem"
-                    *ngIf="vm.status ==vm_statuses[vm_statuses.ACTIVE]">
-                  <a class="dropdown-item"
-                     (click)="selectedVm=vm;stopVm(vm);stopModal.show();">Stop
-                    Vm</a>
-                </li>
+                      dropdownToggle aria-controls="dropdown-split">Select
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" role="menu" *dropdownMenu>
+                <button style="cursor: pointer" role="menuitem" class="dropdown-item"
+                        *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
+                        (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();"
+                >
 
-                <li style="cursor: pointer;" *ngIf="vm.status ==vm_statuses[vm_statuses.SUSPENDED]"
-                    role="menuitem">
-                  <a class="dropdown-item"
-                     (click)="selectedVm=vm;resumeVM(vm);resumeModal.show();">Resume
-                    Vm</a>
-                </li>
-                <li style="cursor: pointer;"
-                    *ngIf="vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != 'FREEMIUM'"
-                    role="menuitem">
-                  <a class="dropdown-item"
-                     (click)="checkStatus(vm);">Check Status
-                  </a>
-                </li>
-                <li style="cursor: pointer;" *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
-                    role="menuitem">
-                  <a class="dropdown-item"
-                     (click)="selectedVm=vm;verifyModal.show();">Delete
-                    Vm</a>
-                </li>
-                <li style="cursor: pointer;"
-                    *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.client.features['VM_REBOOT']"
-                    role="menuitem">
-                  <a class="dropdown-item"
-                     (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='HARD';rebootModal.show();">Hard
-                    Reboot Vm
-                  </a>
-                </li>
-                <li style="cursor: pointer;"
+                  Create Snapshot
+                </button>
+                <button style="cursor: pointer" role="menuitem" class="dropdown-item"
+                        *ngIf="vm.status ==vm_statuses[vm_statuses.ACTIVE]"
+                        (click)="selectedVm=vm;stopVm(vm);stopModal.show();">
+                  Stop
+                  Vm
+                </button>
+
+                <button style="cursor: pointer;" class="dropdown-item"
+                        *ngIf="vm.status ==vm_statuses[vm_statuses.SUSPENDED]"
+                        role="menuitem" (click)="selectedVm=vm;resumeVM(vm);resumeModal.show();">
+                  Resume
+                  Vm
+                </button>
+                <button style="cursor: pointer;" class="dropdown-item" (click)="checkStatus(vm);"
+                        *ngIf="vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != 'FREEMIUM'"
+                        role="menuitem">
+                  Check Status
+
+                </button>
+                <button style="cursor: pointer;" *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
+                        role="menuitem" class="dropdown-item" (click)="selectedVm=vm;verifyModal.show();">
+                  Delete
+                  Vm
+                </button>
+                <button style="cursor: pointer;" class="dropdown-item"
+                        (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='HARD';rebootModal.show();"
+                        *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.client.features['VM_REBOOT']"
+                        role="menuitem">
+                  Hard
+                  Reboot Vm
+
+                </button>
+                <li style="cursor: pointer;" class="dropdown-item btn-dark"
+                    (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='SOFT';rebootModal.show();"
                     *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.client.features['VM_REBOOT']"
                     role="menuitem">
-                  <a class="dropdown-item"
-                     (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='SOFT';rebootModal.show();">Soft
-                    Reboot Vm
-                  </a>
+                  Soft
+                  Reboot Vm
+
                 </li>
-              </ul>
+              </div>
             </div>
 
 
@@ -321,7 +321,7 @@
         <div *ngIf="status_check_error">
           <div class="alert alert-warning" role="alert">
 
-            An error occured when checking the status of {{selectedVm?.name}}.
+            An error occurred when checking the status of {{selectedVm?.name}}.
           </div>
         </div>
       </div>
