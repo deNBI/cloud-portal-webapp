@@ -21,10 +21,46 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from 'app/shared/shared_mo
 export class AddcloudapplicationComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
 
   /**
+   * Fields for getting dissemination options for platforms.
+   */
+  public platform_newsletter: boolean;
+  public platform_twitter: boolean;
+  public platform_landing_page: boolean;
+  public platform_portal_news: boolean;
+
+  /**
+   * Fileds for getting dissemination options for information.
+   */
+  public information_title: string;
+  public information_description: string;
+  public information_resources: boolean;
+  public information_higher_projects: boolean;
+  public information_runtime: boolean;
+  public information_pi_name: boolean;
+  public information_institution: boolean;
+  public information_workgroup: boolean;
+  public information_project_type: boolean;
+
+  public public_description_enabled: boolean;
+
+
+  /**
    * If it is in production or dev mode.
    * @type ***REMOVED***boolean***REMOVED***
    */
   public production: boolean = environment.production;
+
+  /**
+   * Boolean indicating whether information selection accordion is open or not.
+   * @type ***REMOVED***boolean***REMOVED***
+   */
+  public dissemination_information_open: boolean = false;
+
+  /**
+   * Boolean indicating whether platform selection accordion is open or not
+   * @type ***REMOVED***boolean***REMOVED***
+   */
+  public dissemination_platforms_open: boolean = false;
 
   /**
    * List of all collapse booleans.
