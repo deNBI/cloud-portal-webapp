@@ -3,7 +3,7 @@ import ***REMOVED***Image***REMOVED*** from './virtualmachinemodels/image';
 import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor';
 import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
-import ***REMOVED***forkJoin***REMOVED*** from 'rxjs';
+import ***REMOVED***forkJoin, of***REMOVED*** from 'rxjs';
 import ***REMOVED***VirtualmachineService***REMOVED*** from '../api-connector/virtualmachine.service';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
@@ -37,16 +37,16 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   SIXTY_SIX_PERCENT: number = 66;
   SEVENTY_FIVE: number = 75;
   ACTIVE: string = 'ACTIVE';
-  BIOCONDA_FAILED: string = 'BIOCONDA_FAILED';
+  PLAYBOOK_FAILED: string = 'PLAYBOOK_FAILED';
   DELETED: string = 'DELETED';
   PORT_CLOSED: string = 'PORT_CLOSED';
-  PREPARE_BIOCONDA_BUILD: string = 'PREPARE_BIOCONDA_BUILD';
-  BUILD_BIOCONDA: string = 'BUILD_BIOCONDA';
+  PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
+  BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
   CREATING_STATUS: string = 'Creating...';
   BUILD_STATUS: string = 'Building..';
   CHECKING_PORT_STATUS: string = 'Checking port..';
-  PREPARE_BIOCONDA_STATUS: string = 'Prepare Bioconda Build...';
-  BUIDLING_BIOCONDA_STATUS: string = 'Building Bioconda...';
+  PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
+  BUIDLING_PLAYBOOK_STATUS: string = 'Building Playbook...';
   ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';
 
   newVm: VirtualMachine = null;
@@ -59,10 +59,12 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
-  log;
+  logs: ***REMOVED***[selector: string]: string | number***REMOVED*** = ***REMOVED******REMOVED***;
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
   client_checked: boolean = false;
+  playbook_run: number = 0;
+  timeout: number = 0;
 
   /**
    * All image of a project.
@@ -293,16 +295,20 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     setTimeout(
       () => ***REMOVED***
         this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => ***REMOVED***
-          console.log(newVm.status);
           if (newVm.status === this.ACTIVE) ***REMOVED***
+            if (this.playbook_run === 1) ***REMOVED***
+              this.virtualmachineservice.getLogs(id).subscribe(logs => ***REMOVED***
+                this.logs = logs;
+              ***REMOVED***);
+            ***REMOVED***
             this.resetProgressBar();
             this.newVm = newVm;
             this.loadProjectData();
 
-          ***REMOVED*** else if (newVm.status === this.BIOCONDA_FAILED || newVm.status === this.DELETED) ***REMOVED***
+          ***REMOVED*** else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) ***REMOVED***
             this.virtualmachineservice.getLogs(id).subscribe(logs => ***REMOVED***
               this.newVm.status = this.DELETED;
-              this.log = logs;
+              this.logs = logs;
               this.resetProgressBar();
               this.create_error = <IResponseTemplate><any>newVm;
               this.loadProjectData();
@@ -317,14 +323,14 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
                 this.progress_bar_width = this.SIXTY_SIX_PERCENT;
               ***REMOVED***
 
-            ***REMOVED*** else if (newVm.status === this.PREPARE_BIOCONDA_BUILD) ***REMOVED***
+            ***REMOVED*** else if (newVm.status === this.PREPARE_PLAYBOOK_BUILD) ***REMOVED***
               this.progress_bar_animated = '';
-              this.progress_bar_status = this.PREPARE_BIOCONDA_STATUS;
+              this.progress_bar_status = this.PREPARE_PLAYBOOK_STATUS;
               this.progress_bar_width = this.SIXTY_SIX_PERCENT;
 
-            ***REMOVED*** else if (newVm.status === this.BUILD_BIOCONDA) ***REMOVED***
+            ***REMOVED*** else if (newVm.status === this.BUILD_PLAYBOOK) ***REMOVED***
               this.progress_bar_animated = '';
-              this.progress_bar_status = this.BUIDLING_BIOCONDA_STATUS;
+              this.progress_bar_status = this.BUIDLING_PLAYBOOK_STATUS;
               this.progress_bar_width = this.SEVENTY_FIVE;
             ***REMOVED***
 
@@ -360,10 +366,16 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       ***REMOVED*** else ***REMOVED***
         this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
       ***REMOVED***
-
+      const play_information: string = this.getPlaybookInformation();
+      if (play_information !== '***REMOVED******REMOVED***') ***REMOVED***
+        this.playbook_run = 1;
+      ***REMOVED***
       this.virtualmachineservice.startVM(
-        flavor_fixed, image, servername, project, projectid.toString(), this.http_allowed, this.https_allowed, this.udp_allowed,
-        this.volumeName, this.diskspace.toString(), this.biocondaComponent.getChosenTools()).subscribe((newVm: VirtualMachine) => ***REMOVED***
+        flavor_fixed, image, servername,
+        project, projectid.toString(), this.http_allowed,
+        this.https_allowed, this.udp_allowed, this.volumeName,
+        this.diskspace.toString(), this.biocondaComponent.getChosenTools(), play_information)
+        .subscribe((newVm: VirtualMachine) => ***REMOVED***
 
         if (newVm.status === 'Build') ***REMOVED***
           this.progress_bar_status = this.BUILD_STATUS;
@@ -393,6 +405,22 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       this.newVm = null;
 
     ***REMOVED***
+  ***REMOVED***
+
+  getPlaybookInformation(): string ***REMOVED***
+    const playbook_info: ***REMOVED***
+      [name: string]: ***REMOVED***
+        [variable: string]: string
+      ***REMOVED***
+    ***REMOVED*** = ***REMOVED******REMOVED***;
+    if (this.biocondaComponent.hasChosenTools()) ***REMOVED***
+      playbook_info['bioconda'] = ***REMOVED***
+        packages: this.biocondaComponent.getChosenTools()
+      ***REMOVED***;
+      this.timeout += this.biocondaComponent.getTimeout();
+    ***REMOVED***
+
+    return JSON.stringify(playbook_info);
   ***REMOVED***
 
   /**
@@ -530,4 +558,9 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   setGaveOkay(checked: boolean): void ***REMOVED***
     this.gaveOkay = checked;
   ***REMOVED***
+
+  getTimeoutMinutes(): number ***REMOVED***
+    return Math.ceil(this.timeout / 60);
+  ***REMOVED***
+
 ***REMOVED***
