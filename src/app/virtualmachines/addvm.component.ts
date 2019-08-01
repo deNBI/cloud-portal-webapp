@@ -3,7 +3,7 @@ import {Image} from './virtualmachinemodels/image';
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
 import {FlavorService} from '../api-connector/flavor.service';
-import {forkJoin} from 'rxjs';
+import {forkJoin, of} from 'rxjs';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {ApplicationsService} from '../api-connector/applications.service'
 import {Userinfo} from '../userinfo/userinfo.model';
@@ -37,16 +37,16 @@ export class VirtualMachineComponent implements OnInit {
   SIXTY_SIX_PERCENT: number = 66;
   SEVENTY_FIVE: number = 75;
   ACTIVE: string = 'ACTIVE';
-  BIOCONDA_FAILED: string = 'BIOCONDA_FAILED';
+  PLAYBOOK_FAILED: string = 'PLAYBOOK_FAILED';
   DELETED: string = 'DELETED';
   PORT_CLOSED: string = 'PORT_CLOSED';
-  PREPARE_BIOCONDA_BUILD: string = 'PREPARE_BIOCONDA_BUILD';
-  BUILD_BIOCONDA: string = 'BUILD_BIOCONDA';
+  PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
+  BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
   CREATING_STATUS: string = 'Creating...';
   BUILD_STATUS: string = 'Building..';
   CHECKING_PORT_STATUS: string = 'Checking port..';
-  PREPARE_BIOCONDA_STATUS: string = 'Prepare Bioconda Build...';
-  BUIDLING_BIOCONDA_STATUS: string = 'Building Bioconda...';
+  PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
+  BUIDLING_PLAYBOOK_STATUS: string = 'Building Playbook...';
   ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';
 
   newVm: VirtualMachine = null;
@@ -59,10 +59,12 @@ export class VirtualMachineComponent implements OnInit {
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
-  log;
+  logs: {[selector: string]: string | number} = {};
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
   client_checked: boolean = false;
+  playbook_run: number = 0;
+  timeout: number = 0;
 
   /**
    * All image of a project.
@@ -293,16 +295,20 @@ export class VirtualMachineComponent implements OnInit {
     setTimeout(
       () => {
         this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => {
-          console.log(newVm.status);
           if (newVm.status === this.ACTIVE) {
+            if (this.playbook_run === 1) {
+              this.virtualmachineservice.getLogs(id).subscribe(logs => {
+                this.logs = logs;
+              });
+            }
             this.resetProgressBar();
             this.newVm = newVm;
             this.loadProjectData();
 
-          } else if (newVm.status === this.BIOCONDA_FAILED || newVm.status === this.DELETED) {
+          } else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) {
             this.virtualmachineservice.getLogs(id).subscribe(logs => {
               this.newVm.status = this.DELETED;
-              this.log = logs;
+              this.logs = logs;
               this.resetProgressBar();
               this.create_error = <IResponseTemplate><any>newVm;
               this.loadProjectData();
@@ -317,14 +323,14 @@ export class VirtualMachineComponent implements OnInit {
                 this.progress_bar_width = this.SIXTY_SIX_PERCENT;
               }
 
-            } else if (newVm.status === this.PREPARE_BIOCONDA_BUILD) {
+            } else if (newVm.status === this.PREPARE_PLAYBOOK_BUILD) {
               this.progress_bar_animated = '';
-              this.progress_bar_status = this.PREPARE_BIOCONDA_STATUS;
+              this.progress_bar_status = this.PREPARE_PLAYBOOK_STATUS;
               this.progress_bar_width = this.SIXTY_SIX_PERCENT;
 
-            } else if (newVm.status === this.BUILD_BIOCONDA) {
+            } else if (newVm.status === this.BUILD_PLAYBOOK) {
               this.progress_bar_animated = '';
-              this.progress_bar_status = this.BUIDLING_BIOCONDA_STATUS;
+              this.progress_bar_status = this.BUIDLING_PLAYBOOK_STATUS;
               this.progress_bar_width = this.SEVENTY_FIVE;
             }
 
@@ -360,10 +366,16 @@ export class VirtualMachineComponent implements OnInit {
       } else {
         this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
       }
-
+      const play_information: string = this.getPlaybookInformation();
+      if (play_information !== '{}') {
+        this.playbook_run = 1;
+      }
       this.virtualmachineservice.startVM(
-        flavor_fixed, image, servername, project, projectid.toString(), this.http_allowed, this.https_allowed, this.udp_allowed,
-        this.volumeName, this.diskspace.toString(), this.biocondaComponent.getChosenTools()).subscribe((newVm: VirtualMachine) => {
+        flavor_fixed, image, servername,
+        project, projectid.toString(), this.http_allowed,
+        this.https_allowed, this.udp_allowed, this.volumeName,
+        this.diskspace.toString(), this.biocondaComponent.getChosenTools(), play_information)
+        .subscribe((newVm: VirtualMachine) => {
 
         if (newVm.status === 'Build') {
           this.progress_bar_status = this.BUILD_STATUS;
@@ -393,6 +405,22 @@ export class VirtualMachineComponent implements OnInit {
       this.newVm = null;
 
     }
+  }
+
+  getPlaybookInformation(): string {
+    const playbook_info: {
+      [name: string]: {
+        [variable: string]: string
+      }
+    } = {};
+    if (this.biocondaComponent.hasChosenTools()) {
+      playbook_info['bioconda'] = {
+        packages: this.biocondaComponent.getChosenTools()
+      };
+      this.timeout += this.biocondaComponent.getTimeout();
+    }
+
+    return JSON.stringify(playbook_info);
   }
 
   /**
@@ -530,4 +558,9 @@ export class VirtualMachineComponent implements OnInit {
   setGaveOkay(checked: boolean): void {
     this.gaveOkay = checked;
   }
+
+  getTimeoutMinutes(): number {
+    return Math.ceil(this.timeout / 60);
+  }
+
 }
