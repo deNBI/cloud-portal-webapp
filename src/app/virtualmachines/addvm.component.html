@@ -182,58 +182,53 @@
               </div>
 
 
-              <accordion>
-                <accordion-group *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor)" #mandatoryGroup [isOpen]="true">
-                  <div accordion-heading style="width: 100%; cursor: pointer">
-                    Mandatory parameters
-                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
-                            'icon-arrow-up': mandatoryGroup.isOpen, 'icon-arrow-down': !mandatoryGroup.isOpen}"></i>
-                  </div>
-                  <div *ngIf="selectedProject" class="form-group row">
-                    <label class="col-md-2 form-control-label"><strong>Name*</strong></label>
-                    <div class="col-md-6">
-                      <div class="input-group">
-                        <input required id="id_instance_name" name="instance_name"
-                               class="form-control"
-                               type="text" placeholder="Instancename" ngModel
-                               [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
+              <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor)">
+                <div *ngIf="selectedProject" class="form-group row">
+                  <label class="col-md-2 form-control-label"><strong>Name*</strong></label>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <input required id="id_instance_name" name="instance_name"
+                             class="form-control"
+                             type="text" placeholder="Instancename" ngModel
+                             [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
-                      </div>
-                      <div class="alert alert-primary" role="alert" style="margin: 5px">Info: The instance name will
-                        also
-                        be the hostname of the vm.
-                      </div>
+                    </div>
+                    <div class="alert alert-primary" role="alert" style="margin: 5px">Info: The instance name will
+                      also
+                      be the hostname of the vm.
                     </div>
                   </div>
+                </div>
 
-                  <div *ngIf="selectedProject" class="form-group row">
-                    <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
-                    <div class="col-md-10">
+                <div *ngIf="selectedProject" class="form-group row">
+                  <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
+                  <div class="col-md-10">
 
 
-                      <app-flavor-detail [selectedFlavor]="selectedFlavor"
-                                         [flavors]="flavors"
-                                         (selectedFlavorChange)="selectedFlavor=$event"></app-flavor-detail>
-
-                    </div>
-
+                    <app-flavor-detail [selectedFlavor]="selectedFlavor"
+                                       [flavors]="flavors"
+                                       (selectedFlavorChange)="selectedFlavor=$event"></app-flavor-detail>
 
                   </div>
 
 
-                  <div *ngIf="selectedProject" class="form-group row">
-                    <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
-                    <div class="col-md-10">
+                </div>
 
 
-                      <app-image-detail [selectedImage]="selectedImage"
-                                        [images]="images"
-                                        (selectedImageChange)="selectedImage=$event"></app-image-detail>
-                    </div>
+                <div *ngIf="selectedProject" class="form-group row">
+                  <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
+                  <div class="col-md-10">
+
+
+                    <app-image-detail [selectedImage]="selectedImage"
+                                      [images]="images"
+                                      (selectedImageChange)="selectedImage=$event"></app-image-detail>
                   </div>
+                </div>
 
 
-                </accordion-group>
+              </div>
+              <accordion>
                 <accordion-group #optionalGroup *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     Optional parameters
@@ -450,7 +445,7 @@
         <p *ngIf="playbook_run == 0">We are setting up a machine for you. This can take up to 5 minutes.</p>
         <p *ngIf="playbook_run == 1">We are setting up a machine for you.
           This can take some time, depending on your chosen playbooks.
-          At maximum it can take up to {{getTimeoutMinutes()}} minutes and {{getTimeoutSeconds()}} seconds, due to the accumulation of timeouts in your generated playbook.</p>
+          At maximum it can take up to {{getTimeoutMinutes()}} minutes, due to the accumulation of timeouts in your generated playbook.</p>
 
         <div class="progress">
           <div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"

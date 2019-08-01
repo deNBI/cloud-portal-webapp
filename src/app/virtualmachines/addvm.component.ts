@@ -414,7 +414,6 @@ export class VirtualMachineComponent implements OnInit {
       }
     } = {};
     if (this.biocondaComponent.hasChosenTools()) {
-      this.timeout += 600;
       playbook_info['bioconda'] = {
         packages: this.biocondaComponent.getChosenTools()
       };
@@ -561,10 +560,7 @@ export class VirtualMachineComponent implements OnInit {
   }
 
   getTimeoutMinutes(): number {
-    return Math.floor(this.timeout / 60);
+    return Math.ceil(this.timeout / 60);
   }
 
-  getTimeoutSeconds(): number {
-    return this.timeout % 60;
-  }
 }
