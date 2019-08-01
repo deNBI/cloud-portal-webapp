@@ -7,6 +7,7 @@ import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {environment} from '../../environments/environment';
 import {ApplicationBaseClass} from 'app/shared/shared_modules/baseClass/application-base-class';
+import {ApplicationDissemination} from './application-dissemination';
 
 /**
  * This components provides the functions to create a new Cloud Application.
@@ -23,26 +24,10 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
   /**
    * Fields for getting dissemination options for platforms.
    */
-  public platform_newsletter: boolean;
-  public platform_twitter: boolean;
-  public platform_landing_page: boolean;
-  public platform_portal_news: boolean;
 
-  /**
-   * Fileds for getting dissemination options for information.
-   */
-  public information_title: string;
-  public information_description: string;
-  public information_resources: boolean;
-  public information_higher_projects: boolean;
-  public information_runtime: boolean;
-  public information_pi_name: boolean;
-  public information_institution: boolean;
-  public information_workgroup: boolean;
-  public information_project_type: boolean;
+  public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
-  public public_description_enabled: boolean;
-
+  public public_description_enabled: boolean = false;
 
   /**
    * If it is in production or dev mode.
@@ -149,6 +134,7 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    */
   onSubmit(form: NgForm): void {
     this.error = null;
+    console.log(this.application_dissemination);
     if (this.wronginput) {
 
       this.updateNotificationModal(
@@ -171,7 +157,11 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
         }
       }
       this.applicationsservice.addNewApplication(values).toPromise()
-        .then(() => {
+        .then(application => {
+          if (this.project_application_report_allowed) {
+            this.applicationsservice.setApplicationDissemination(application['project_application_id'], this.application_dissemination).subscribe()
+
+          }
           this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
           this.notificationModalStay = false;
         }).catch((error: string) => {

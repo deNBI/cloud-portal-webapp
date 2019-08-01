@@ -3,12 +3,13 @@ import {ApiSettings} from './api-settings.service'
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {ApplicationDissemination} from '../applications/application-dissemination';
 
 const header: HttpHeaders = new HttpHeaders({
-  'X-CSRFToken': Cookie.get('csrftoken'),
-  'Content-Type': 'application/json'
+                                              'X-CSRFToken': Cookie.get('csrftoken'),
+                                              'Content-Type': 'application/json'
 
-});
+                                            });
 
 /**
  * Service which provides methods for creating application.
@@ -35,10 +36,18 @@ export class ApplicationsService {
 
   validateApplicationAsPIByHash(hash: string): Observable<any> {
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, null,{
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, null, {
       headers: header,
       withCredentials: true
     })
+  }
+
+  setApplicationDissemination(project_application_id: string | number, dissemination: ApplicationDissemination): Observable<any> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${project_application_id}/dissemination/`,
+                          dissemination, {
+                            headers: header,
+                            withCredentials: true
+                          })
   }
 
   getUserApplication(project_id: string | number): Observable<any> {
