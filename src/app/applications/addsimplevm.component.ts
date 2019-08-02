@@ -7,6 +7,7 @@ import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.ser
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
+import ***REMOVED***ApplicationDissemination***REMOVED*** from './application-dissemination';
 
 /**
  * Component to create single vm applications.
@@ -18,28 +19,9 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_mod
            ***REMOVED***)
 export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
 
-  /**
-   * Fields for getting dissemination options for platforms.
-   */
-  public platform_newsletter: boolean;
-  public platform_twitter: boolean;
-  public platform_landing_page: boolean;
-  public platform_portal_news: boolean;
+  public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
-  /**
-   * Fileds for getting dissemination options for information.
-   */
-  public information_title: string;
-  public information_description: string;
-  public information_resources: boolean;
-  public information_higher_projects: boolean;
-  public information_runtime: boolean;
-  public information_pi_name: boolean;
-  public information_institution: boolean;
-  public information_workgroup: boolean;
-  public information_project_type: boolean;
-
-  public public_description_enabled: boolean;
+  public public_description_enabled: boolean = false;
 
   /**
    * Boolean indicating whether information selection accordion is open or not.
@@ -56,7 +38,6 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
   /**
    * List of all collapse booleans.
    */
-
 
   /**
    * List of flavor types.
@@ -188,7 +169,11 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
       ***REMOVED***
 
       this.applicationsservice.addNewApplication(values).toPromise()
-        .then(() => ***REMOVED***
+        .then(application => ***REMOVED***
+          if (this.project_application_report_allowed) ***REMOVED***
+            this.applicationsservice.setApplicationDissemination(application['project_application_id'], this.application_dissemination).subscribe()
+
+          ***REMOVED***
           this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
           this.notificationModalStay = false;
         ***REMOVED***).catch((error: object) => ***REMOVED***

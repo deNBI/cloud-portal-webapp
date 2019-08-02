@@ -390,7 +390,8 @@
                     </div>
                     <div class="col-md-6"><input type="text" class="form-control" id="information_public_title_input"
                                                  placeholder="Choose a public title - Leave blank for existing title."
-                                                 [ngModel]="information_title">
+                                                 name="information_title"
+                                                 [(ngModel)]="application_dissemination.information_title">
                     </div>
                   </div>
 
@@ -398,8 +399,10 @@
                     <label class="col-md-4 form-control-label">Description</label>
                     <div class="col-md-2">
                       <label class="switch switch-label switch-outline-primary-alt">
-                        <input type="checkbox" class="switch-input" name="information_description"
-                               [(ngModel)]="public_description_enabled">
+                        <input type="checkbox" class="switch-input" name="public_description_enabled"
+                               [(ngModel)]="public_description_enabled"
+                               name="public_description_enabled"
+                        >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -407,7 +410,9 @@
                     <div *ngIf="public_description_enabled" class="col-md-6">
                     <textarea type="text" name="project_application_comment" class="form-control" maxlength="8192"
                               placeholder="Enter public description. Leave blank for existing description."
-                              [ngModel]="information_description"></textarea>
+                              name="information_description"
+
+                              [(ngModel)]="application_dissemination.information_description"></textarea>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -415,7 +420,7 @@
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="information_resources"
-                               [(ngModel)]="information_resources">
+                               [(ngModel)]="application_dissemination.information_resources">
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -427,7 +432,9 @@
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="information_runtime"
-                               [(ngModel)]="information_runtime">
+                               [(ngModel)]="application_dissemination.information_runtime"
+                               name="information_runtime"
+                        >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -439,7 +446,10 @@
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="information_project_type"
-                               [(ngModel)]="information_project_type">
+                               [(ngModel)]="application_dissemination.information_project_type"
+                               name="information_project_type"
+
+                        >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -451,7 +461,9 @@
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="information_pi_name"
-                               [(ngModel)]="information_pi_name">
+                               [(ngModel)]="application_dissemination.information_pi_name"
+                               name="information_pi_name"
+                        >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -463,7 +475,10 @@
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="information_institution"
-                               [(ngModel)]="information_institution">
+                               [(ngModel)]="application_dissemination.information_institution"
+
+                               name="information_institution"
+                        >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -475,7 +490,10 @@
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="information_workgroup"
-                               [(ngModel)]="information_workgroup">
+                               [(ngModel)]="application_dissemination.information_workgroup"
+
+                               name="information_workgroup"
+                        >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -487,7 +505,10 @@
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="information_higher_projects"
-                               [(ngModel)]="information_higher_projects">
+                               [(ngModel)]="application_dissemination.information_higher_projects"
+
+                               name="information_higher_projects"
+                        >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -508,7 +529,9 @@
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="platform_newsletter"
-                               [(ngModel)]="platform_newsletter">
+                               [(ngModel)]="application_dissemination.platform_newsletter"
+                               name="platform_newsletter"
+                        >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -520,7 +543,9 @@
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="platform_landing_page"
-                               [(ngModel)]="platform_landing_page">
+                               [(ngModel)]="application_dissemination.platform_landing_page"
+                               name="platform_landing_page"
+                        >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -532,7 +557,10 @@
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="platform_portal_news"
-                               [(ngModel)]="platform_portal_news">
+                               [(ngModel)]="application_dissemination.platform_portal_news"
+
+                               name="platform_portal_news"
+                        >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -544,7 +572,9 @@
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="platform_twitter"
-                               [(ngModel)]="platform_twitter">
+                               [(ngModel)]="application_dissemination.platform_twitter"
+                               name="platform_twitter"
+                        >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -558,7 +588,8 @@
               <div class="form-group row">
                 <div class="alert alert-info col-md-auto"><span>Please specify which information about your project and which platforms may be used to publish information.
             Select or deselect options by enabling or disabling the switches within the fields above.
-            If publication is permitted, at least the title (or optionally a public title) and at least one platform must be selected.</span></div>
+            If publication is permitted, at least the title (or optionally a public title) and at least one platform must be selected.</span>
+                </div>
               </div>
 
             </div>
