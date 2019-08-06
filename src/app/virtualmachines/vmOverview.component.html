@@ -229,11 +229,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0 &&  selectedVm?.status != 'SUSPENDED'">
           Stopping ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
+        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1 || selectedVm?.status == 'SUSPENDED'">
           ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED*** was succesfully stopped.
         </div>
       </div>
@@ -353,11 +353,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0  && selectedVm?.status !== 'ACTIVE'">
           Resuming ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
+        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1  || selectedVm?.status == 'ACTIVE'">
           ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED*** was succesfully resumed.
         </div>
       </div>
