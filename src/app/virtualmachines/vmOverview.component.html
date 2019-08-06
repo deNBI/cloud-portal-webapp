@@ -229,11 +229,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0 &&  selectedVm?.status != 'SUSPENDED'">
           Stopping {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
+        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1 || selectedVm?.status == 'SUSPENDED'">
           {{selectedVm?.name}} was succesfully stopped.
         </div>
       </div>
@@ -353,11 +353,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0  && selectedVm?.status !== 'ACTIVE'">
           Resuming {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
+        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1  || selectedVm?.status == 'ACTIVE'">
           {{selectedVm?.name}} was succesfully resumed.
         </div>
       </div>
