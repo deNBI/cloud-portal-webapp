@@ -1,5 +1,5 @@
 export const environment = {
-  wiki_group_invitations: 'https://cloud.denbi.de/wiki/Portal/project_overview/#inviting-members',
+  wiki_group_invitations: 'https://cloud.denbi.de/wiki/portal/project_overview/#inviting-members',
   production: true,
   vo: 3335,
   freemium_project_id: -1,
