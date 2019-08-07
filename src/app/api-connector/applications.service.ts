@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
+import {ApplicationDissemination} from '../applications/application-dissemination';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken'),
@@ -42,6 +43,14 @@ export class ApplicationsService {
     })
   }
 
+  setApplicationDissemination(project_application_id: string | number, dissemination: ApplicationDissemination): Observable<any> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${project_application_id}/dissemination/`,
+                          dissemination, {
+                            headers: header,
+                            withCredentials: true
+                          })
+  }
+
   getUserApplication(project_id: string | number): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/${project_id}/`, {
       headers: header,
@@ -71,8 +80,9 @@ export class ApplicationsService {
   }
 
   addEdamOntologyTerms(application_id: number | string, data: EdamOntologyTerm[]): Observable<any> {
+    const params = {edam_ontology_terms: data};
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/edam_terms/`, data, {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/edam_terms/`, params, {
       headers: header,
       withCredentials: true
     })

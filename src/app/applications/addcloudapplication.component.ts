@@ -9,6 +9,7 @@ import {environment} from '../../environments/environment';
 import {ApplicationBaseClass} from 'app/shared/shared_modules/baseClass/application-base-class';
 import {EdamOntologyTerm} from './edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
+import {ApplicationDissemination} from './application-dissemination';
 
 /**
  * This components provides the functions to create a new Cloud Application.
@@ -23,6 +24,14 @@ import {AutocompleteComponent} from 'angular-ng-autocomplete';
 export class AddcloudapplicationComponent extends ApplicationBaseClass implements OnInit {
 
   /**
+   * Fields for getting dissemination options for platforms.
+   */
+
+  public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
+
+  public public_description_enabled: boolean = false;
+
+  /**
    * If it is in production or dev mode.
    * @type {boolean}
    */
@@ -31,6 +40,18 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
   public edam_ontology_terms: EdamOntologyTerm[];
 
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
+
+  /**
+   * Boolean indicating whether information selection accordion is open or not.
+   * @type {boolean}
+   */
+  public dissemination_information_open: boolean = false;
+
+  /**
+   * Boolean indicating whether platform selection accordion is open or not
+   * @type {boolean}
+   */
+  public dissemination_platforms_open: boolean = false;
 
   /**
    * List of all collapse booleans.
@@ -132,14 +153,7 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
     this.edam_ontology.clear();
   }
 
-  onChangeSearch(val: string) {
-    // fetch remote data from here
-    // And reassign the 'data' which is binded to 'data' property.
-  }
 
-  onFocused(e) {
-    // do something when input is focused
-  }
 
   /**
    * Submits a new cloud application.
@@ -148,6 +162,7 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    */
   onSubmit(form: NgForm): void {
     this.error = null;
+    console.log(this.application_dissemination);
     if (this.wronginput) {
 
       this.updateNotificationModal(
@@ -170,7 +185,12 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
         }
       }
       this.applicationsservice.addNewApplication(values).toPromise()
-        .then(() => {
+        .then(application => {
+          if (this.project_application_report_allowed) {
+            this.applicationsservice.setApplicationDissemination(application['project_application_id'], this.application_dissemination).subscribe()
+
+          }
+          this.applicationsservice.addEdamOntologyTerms(application['project_application_id'], this.selected_ontology_terms).subscribe();
           this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
           this.notificationModalStay = false;
         }).catch((error: string) => {
