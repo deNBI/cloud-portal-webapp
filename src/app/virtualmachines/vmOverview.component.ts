@@ -590,4 +590,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     })
   }
 
+  logsome(v1, v2) {
+    console.log(v1, v2);
+  }
 }

@@ -229,7 +229,7 @@
 
               </div>
               <accordion>
-                <accordion-group #optionalGroup *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
+                <accordion-group #optionalGroup *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     Optional parameters
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
@@ -461,7 +461,7 @@
           instance overview site</p>
       </div>
       <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE' || newVm?.status == 'DELETED'">
-        <app-how-to-connect [selectedVm]="newVm" [playbook_run]="playbook_run" [logs]="logs"></app-how-to-connect>
+        <app-how-to-connect [selectedVirtualMachine]="newVm" [playbook_run]="playbook_run"></app-how-to-connect>
       </div>
       <div class="modal-body" *ngIf="create_error?.error">
         An Error occured.<br><br>
