@@ -416,14 +416,14 @@
                     <div class="col-md-2">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="public_description_enabled"
-                               [(ngModel)]="public_description_enabled"
-                               name="public_description_enabled"
+                               [(ngModel)]="application_dissemination.information_description_allowed"
+                               name="information_description_allowed"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
                     </div>
-                    <div *ngIf="public_description_enabled" class="col-md-6">
+                    <div *ngIf="application_dissemination.information_description_allowed" class="col-md-6">
                     <textarea type="text" name="project_application_comment" class="form-control" maxlength="8192"
                               placeholder="Enter public description. Leave blank for existing description."
                               name="information_description"

@@ -6,6 +6,7 @@ export class ApplicationDissemination {
   private _platform_portal_news: boolean = false;
   private _information_title: string = '';
   private _information_description: string = '';
+  private _information_description_allowed: boolean = false;
   private _information_resources: boolean = false;
   private _information_higher_projects: boolean = false;
   private _information_runtime: boolean = false;
@@ -15,6 +16,14 @@ export class ApplicationDissemination {
   private _information_project_type: boolean = false;
 
   constructor() {
+  }
+
+  get information_description_allowed(): boolean {
+    return this._information_description_allowed;
+  }
+
+  set information_description_allowed(value: boolean) {
+    this._information_description_allowed = value;
   }
 
   get platform_newsletter(): boolean {

@@ -21,7 +21,6 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
 
   public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
-  public public_description_enabled: boolean = false;
 
   /**
    * Boolean indicating whether information selection accordion is open or not.
