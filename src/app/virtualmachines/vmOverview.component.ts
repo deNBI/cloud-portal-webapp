@@ -30,7 +30,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
 
-  filter_status_list: string[] = [this.vm_statuses[this.vm_statuses.ACTIVE], this.vm_statuses[this.vm_statuses.SUSPENDED]];
+  filter_status_list: string[] = [this.vm_statuses[this.vm_statuses.ACTIVE], this.vm_statuses[this.vm_statuses.SHUTOFF]];
 
   selectedVm: VirtualMachine = null;
 
@@ -369,8 +369,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       this.applyFilter();
-
-      if (updated_vm.status === 'SUSPENDED') ***REMOVED***
+      if (updated_vm.status === 'SHUTOFF') ***REMOVED***
         this.status_changed = 1;
       ***REMOVED*** else ***REMOVED***
         this.status_changed = 2;

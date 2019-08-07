@@ -166,7 +166,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse ***REMOVED***
     ***REMOVED***
 
     isFilterstatus(vmstatus: string): boolean ***REMOVED***
-        if (vmstatus !== 'ACTIVE' && vmstatus !== 'DELETED' && vmstatus !== 'SUSPENDED') ***REMOVED***
+        if (vmstatus !== 'ACTIVE' && vmstatus !== 'DELETED' && vmstatus !== 'SHUTOFF') ***REMOVED***
             return true
         ***REMOVED***
         if (this.filterstatus_list[vmstatus]
