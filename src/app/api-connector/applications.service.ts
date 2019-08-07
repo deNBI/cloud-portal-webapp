@@ -3,12 +3,13 @@ import {ApiSettings} from './api-settings.service'
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 
 const header: HttpHeaders = new HttpHeaders({
-  'X-CSRFToken': Cookie.get('csrftoken'),
-  'Content-Type': 'application/json'
+                                              'X-CSRFToken': Cookie.get('csrftoken'),
+                                              'Content-Type': 'application/json'
 
-});
+                                            });
 
 /**
  * Service which provides methods for creating application.
@@ -35,7 +36,7 @@ export class ApplicationsService {
 
   validateApplicationAsPIByHash(hash: string): Observable<any> {
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, null,{
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, null, {
       headers: header,
       withCredentials: true
     })
@@ -57,6 +58,13 @@ export class ApplicationsService {
 
   getApplicationClient(app_id: string): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/client/`, {
+      headers: header,
+      withCredentials: true
+    })
+  }
+
+  getEdamOntologyTerms(): Observable<EdamOntologyTerm[]> {
+    return this.http.get<EdamOntologyTerm[]>(`${ApiSettings.getApiBaseURL()}edam_ontology/`, {
       headers: header,
       withCredentials: true
     })

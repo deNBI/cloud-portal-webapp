@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {ApplicationsService} from '../api-connector/applications.service'
@@ -7,6 +7,8 @@ import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {environment} from '../../environments/environment';
 import {ApplicationBaseClass} from 'app/shared/shared_modules/baseClass/application-base-class';
+import {EdamOntologyTerm} from './edam-ontology-term';
+import {AutocompleteComponent} from 'angular-ng-autocomplete';
 
 /**
  * This components provides the functions to create a new Cloud Application.
@@ -26,10 +28,18 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    */
   public production: boolean = environment.production;
 
+  public edam_ontology_terms: EdamOntologyTerm[];
+
+  @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
+
   /**
    * List of all collapse booleans.
    */
   public collapseList: boolean[];
+
+  ontology_search_keyword: string = 'term';
+
+  selected_ontology_terms: EdamOntologyTerm[] = [];
 
   /**
    * Contains errors recieved when submitting an application.
@@ -72,6 +82,9 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
   ngOnInit(): void {
     this.getListOfFlavors();
     this.getListOfTypes();
+    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
+      this.edam_ontology_terms = terms;
+    })
   }
 
   /**
@@ -104,6 +117,28 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    */
   getListOfFlavors(): void {
     this.flavorservice.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
+  }
+
+  removeEDAMterm(term: EdamOntologyTerm): void {
+    const indexOf: number = this.selected_ontology_terms.indexOf(term);
+    this.selected_ontology_terms.splice(indexOf, 1);
+
+  }
+
+  selectEvent(item) {
+    if (this.selected_ontology_terms.indexOf(item) === -1) {
+      this.selected_ontology_terms.push(item);
+    }
+    this.edam_ontology.clear();
+  }
+
+  onChangeSearch(val: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+  }
+
+  onFocused(e) {
+    // do something when input is focused
   }
 
   /**
