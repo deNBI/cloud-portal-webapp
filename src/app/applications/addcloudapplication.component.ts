@@ -27,7 +27,6 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
 
   public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
-  public public_description_enabled: boolean = false;
 
   /**
    * If it is in production or dev mode.
@@ -134,7 +133,6 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    */
   onSubmit(form: NgForm): void ***REMOVED***
     this.error = null;
-    console.log(this.application_dissemination);
     if (this.wronginput) ***REMOVED***
 
       this.updateNotificationModal(
