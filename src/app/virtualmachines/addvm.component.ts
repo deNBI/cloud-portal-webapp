@@ -404,7 +404,7 @@ export class VirtualMachineComponent implements OnInit {
         [variable: string]: string
       }
     } = {};
-    this.timeout = 0;
+    this.timeout = 300;
     if (this.biocondaComponent.hasChosenTools()) {
       playbook_info['bioconda'] = {
         packages: this.biocondaComponent.getChosenTools()

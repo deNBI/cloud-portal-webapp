@@ -162,7 +162,7 @@ export class BiocondaComponent implements OnInit {
   }
 
   getTimeout(): number {
-    return ((this.chosen_tools.length) * 300) + 600;
+    return ((this.chosen_tools.length) * 300) + 840;
   }
 
   hasChosenTools(): boolean {
