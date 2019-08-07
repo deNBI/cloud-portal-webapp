@@ -59,7 +59,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
-  logs: ***REMOVED***[selector: string]: string | number***REMOVED*** = ***REMOVED******REMOVED***;
+  logs: ***REMOVED*** [selector: string]: string | number ***REMOVED*** = ***REMOVED******REMOVED***;
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
   client_checked: boolean = false;
@@ -220,7 +220,10 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
    */
   getImages(project_id: number): void ***REMOVED***
 
-    this.imageService.getImages(project_id).subscribe((images: Image[]) => this.images = images);
+    this.imageService.getImages(project_id).subscribe((images: Image[]) => ***REMOVED***
+      this.images = images;
+      this.images.sort((x, y) => Number(x.is_snapshot) - Number(y.is_snapshot));
+    ***REMOVED***);
   ***REMOVED***
 
   /**
@@ -377,27 +380,27 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
         this.diskspace.toString(), this.biocondaComponent.getChosenTools(), play_information)
         .subscribe((newVm: VirtualMachine) => ***REMOVED***
 
-        if (newVm.status === 'Build') ***REMOVED***
-          this.progress_bar_status = this.BUILD_STATUS;
-          this.progress_bar_animated = '';
-          this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
-          if (this.hasTools) ***REMOVED***
-            this.progress_bar_width = this.TWENTY_FIVE_PERCENT;
+          if (newVm.status === 'Build') ***REMOVED***
+            this.progress_bar_status = this.BUILD_STATUS;
+            this.progress_bar_animated = '';
+            this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
+            if (this.hasTools) ***REMOVED***
+              this.progress_bar_width = this.TWENTY_FIVE_PERCENT;
+            ***REMOVED*** else ***REMOVED***
+              this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
+            ***REMOVED***
+            this.check_status_loop(newVm.openstackid);
+
+          ***REMOVED*** else if (newVm.status) ***REMOVED***
+            this.progress_bar_status = this.CREATING_STATUS;
+            this.newVm = newVm;
+            this.check_status_loop(newVm.openstackid);
           ***REMOVED*** else ***REMOVED***
-            this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
+            this.progress_bar_status = this.CREATING_STATUS;
+            this.create_error = <IResponseTemplate><any>newVm;
           ***REMOVED***
-          this.check_status_loop(newVm.openstackid);
 
-        ***REMOVED*** else if (newVm.status) ***REMOVED***
-          this.progress_bar_status = this.CREATING_STATUS;
-          this.newVm = newVm;
-          this.check_status_loop(newVm.openstackid);
-        ***REMOVED*** else ***REMOVED***
-          this.progress_bar_status = this.CREATING_STATUS;
-          this.create_error = <IResponseTemplate><any>newVm;
-        ***REMOVED***
-
-      ***REMOVED***);
+        ***REMOVED***);
 
     ***REMOVED*** else ***REMOVED***
       this.progress_bar_status = this.CREATING_STATUS;
