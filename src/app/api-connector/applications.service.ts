@@ -1,9 +1,10 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
-import ***REMOVED***HttpClient, HttpHeaders***REMOVED*** from '@angular/common/http';
+import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 import ***REMOVED***EdamOntologyTerm***REMOVED*** from '../applications/edam-ontology-term';
+import ***REMOVED***ApplicationDissemination***REMOVED*** from '../applications/application-dissemination';
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
                                               'X-CSRFToken': Cookie.get('csrftoken'),
@@ -42,6 +43,14 @@ export class ApplicationsService ***REMOVED***
     ***REMOVED***)
   ***REMOVED***
 
+  setApplicationDissemination(project_application_id: string | number, dissemination: ApplicationDissemination): Observable<any> ***REMOVED***
+    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***project_application_id***REMOVED***/dissemination/`,
+                          dissemination, ***REMOVED***
+                            headers: header,
+                            withCredentials: true
+                          ***REMOVED***)
+  ***REMOVED***
+
   getUserApplication(project_id: string | number): Observable<any> ***REMOVED***
     return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/project_applications/$***REMOVED***project_id***REMOVED***/`, ***REMOVED***
       headers: header,
@@ -71,8 +80,9 @@ export class ApplicationsService ***REMOVED***
   ***REMOVED***
 
   addEdamOntologyTerms(application_id: number | string, data: EdamOntologyTerm[]): Observable<any> ***REMOVED***
+    const params = ***REMOVED***edam_ontology_terms: data***REMOVED***;
 
-    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***application_id***REMOVED***/edam_terms/`, data, ***REMOVED***
+    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***application_id***REMOVED***/edam_terms/`, params, ***REMOVED***
       headers: header,
       withCredentials: true
     ***REMOVED***)

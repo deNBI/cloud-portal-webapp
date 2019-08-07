@@ -9,6 +9,7 @@ import ***REMOVED***environment***REMOVED*** from '../../environments/environmen
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from 'app/shared/shared_modules/baseClass/application-base-class';
 import ***REMOVED***EdamOntologyTerm***REMOVED*** from './edam-ontology-term';
 import ***REMOVED***AutocompleteComponent***REMOVED*** from 'angular-ng-autocomplete';
+import ***REMOVED***ApplicationDissemination***REMOVED*** from './application-dissemination';
 
 /**
  * This components provides the functions to create a new Cloud Application.
@@ -23,6 +24,14 @@ import ***REMOVED***AutocompleteComponent***REMOVED*** from 'angular-ng-autocomp
 export class AddcloudapplicationComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
 
   /**
+   * Fields for getting dissemination options for platforms.
+   */
+
+  public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
+
+  public public_description_enabled: boolean = false;
+
+  /**
    * If it is in production or dev mode.
    * @type ***REMOVED***boolean***REMOVED***
    */
@@ -31,6 +40,18 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
   public edam_ontology_terms: EdamOntologyTerm[];
 
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
+
+  /**
+   * Boolean indicating whether information selection accordion is open or not.
+   * @type ***REMOVED***boolean***REMOVED***
+   */
+  public dissemination_information_open: boolean = false;
+
+  /**
+   * Boolean indicating whether platform selection accordion is open or not
+   * @type ***REMOVED***boolean***REMOVED***
+   */
+  public dissemination_platforms_open: boolean = false;
 
   /**
    * List of all collapse booleans.
@@ -132,14 +153,7 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
     this.edam_ontology.clear();
   ***REMOVED***
 
-  onChangeSearch(val: string) ***REMOVED***
-    // fetch remote data from here
-    // And reassign the 'data' which is binded to 'data' property.
-  ***REMOVED***
 
-  onFocused(e) ***REMOVED***
-    // do something when input is focused
-  ***REMOVED***
 
   /**
    * Submits a new cloud application.
@@ -148,6 +162,7 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    */
   onSubmit(form: NgForm): void ***REMOVED***
     this.error = null;
+    console.log(this.application_dissemination);
     if (this.wronginput) ***REMOVED***
 
       this.updateNotificationModal(
@@ -170,7 +185,12 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
         ***REMOVED***
       ***REMOVED***
       this.applicationsservice.addNewApplication(values).toPromise()
-        .then(() => ***REMOVED***
+        .then(application => ***REMOVED***
+          if (this.project_application_report_allowed) ***REMOVED***
+            this.applicationsservice.setApplicationDissemination(application['project_application_id'], this.application_dissemination).subscribe()
+
+          ***REMOVED***
+          this.applicationsservice.addEdamOntologyTerms(application['project_application_id'], this.selected_ontology_terms).subscribe();
           this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
           this.notificationModalStay = false;
         ***REMOVED***).catch((error: string) => ***REMOVED***
