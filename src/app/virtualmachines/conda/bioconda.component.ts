@@ -19,7 +19,7 @@ export class BiocondaComponent implements OnInit {
   FIRST_PAGE: number = 1;
   DEBOUNCE_TIME: number = 300;
 
-  bioconda_tools: IBiocondaTool[] = [];
+  all_tools: IBiocondaTool[] = [];
 
   chosen_tools: IBiocondaTool[] = [];
 
@@ -92,16 +92,17 @@ export class BiocondaComponent implements OnInit {
   }
 
   getBiocondaTools(page: number): void {
-    this.condaService.getBiocondaTools(page, this.filterToolName, this.filterToolVersion, this.filterToolBuild).subscribe(
+    this.isSearching = true;
+    this.condaService.getAllTools(page, this.filterToolName, this.filterToolVersion, this.filterToolBuild).subscribe(
       res => {
-        this.bioconda_tools = [];
+        this.all_tools = [];
 
         for (const line of res['packages']) {
-          this.bioconda_tools.push({
-                                     name: line['name'],
-                                     version: line['version'],
-                                     build: line['build']
-                                   })
+          this.all_tools.push({
+                                name: line['name'],
+                                version: line['version'],
+                                build: line['build']
+                              })
         }
 
         this.total_pages = res['num_pages'];
@@ -110,6 +111,7 @@ export class BiocondaComponent implements OnInit {
 
         this.currentPage = page;
         this.pagination.selectPage(this.currentPage);
+        this.isSearching = false;
       });
   }
 
