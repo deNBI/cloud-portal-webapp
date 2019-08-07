@@ -70,6 +70,15 @@ export class ApplicationsService ***REMOVED***
     ***REMOVED***)
   ***REMOVED***
 
+  addEdamOntologyTerms(application_id: number | string, data: EdamOntologyTerm[]): Observable<any> ***REMOVED***
+
+    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***application_id***REMOVED***/edam_terms/`, data, ***REMOVED***
+      headers: header,
+      withCredentials: true
+    ***REMOVED***)
+
+  ***REMOVED***
+
   /**
    * Checks if some client has the ressource avaiable for an application.
    * @param ***REMOVED***string***REMOVED*** app_id
