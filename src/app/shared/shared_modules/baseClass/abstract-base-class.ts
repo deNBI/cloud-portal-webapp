@@ -24,7 +24,7 @@ enum Application_States {
 
 enum Vm_Statuses {
     ACTIVE = 1,
-    SUSPENDED = 2,
+    SHUTOFF = 2,
     DELETED = 3,
     CLIENT_OFFLINE = 4
 }
