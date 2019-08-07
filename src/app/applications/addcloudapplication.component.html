@@ -292,7 +292,9 @@
               <label class="col-md-4"></label>
               <div class="col-md-8">
                 <div class="alert alert-primary" role="alert">
-                  In case you need additional and/or special resources, which are not available in the flavour selection, use the comment field to state so. The same applies to unusually large amounts of resources.
+                  In case you need additional and/or special resources, which are not available in the flavour
+                  selection, use the comment field to state so. The same applies to unusually large amounts of
+                  resources.
                 </div>
               </div>
             </div>
@@ -340,6 +342,43 @@
             </div>
             <div class="form-group row">
               <h5 class="col-md-6 form-control-label">Additional Information</h5>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>EDAM ontology
+                Terms </strong></label>
+              <div class="col-md-8">
+                <div class="ng-autocomplete">
+                  <ng-autocomplete #edam_ontology
+                                   [data]="edam_ontology_terms"
+                                   [searchKeyword]="ontology_search_keyword"
+                                   (selected)='selectEvent($event)'
+                                   (inputChanged)='onChangeSearch($event)'
+                                   (inputFocused)='onFocused($event)'
+                                   placeHolder="Add your EDAM ontology terms"
+
+                                   [itemTemplate]="itemTemplate"
+                                   [notFoundTemplate]="notFoundTemplate">
+                  </ng-autocomplete>
+
+                  <ng-template #itemTemplate let-item>
+                    <a [innerHTML]="item.term"></a>
+                  </ng-template>
+
+                  <ng-template #notFoundTemplate let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                  </ng-template>
+                </div>
+                <div>
+                  <h5><span *ngFor="let term of selected_ontology_terms"
+                            style="margin-left: 5px; "
+                            class="badge badge-info">***REMOVED******REMOVED***term.term***REMOVED******REMOVED***
+                    <span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
+ </span>
+
+                  </h5>
+                </div>
+              </div>
+
             </div>
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon

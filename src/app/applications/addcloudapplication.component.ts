@@ -1,4 +1,4 @@
-import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
+import ***REMOVED***Component, OnInit, ViewChild***REMOVED*** from '@angular/core';
 import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
@@ -7,6 +7,8 @@ import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinem
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from 'app/shared/shared_modules/baseClass/application-base-class';
+import ***REMOVED***EdamOntologyTerm***REMOVED*** from './edam-ontology-term';
+import ***REMOVED***AutocompleteComponent***REMOVED*** from 'angular-ng-autocomplete';
 
 /**
  * This components provides the functions to create a new Cloud Application.
@@ -26,10 +28,18 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    */
   public production: boolean = environment.production;
 
+  public edam_ontology_terms: EdamOntologyTerm[];
+
+  @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
+
   /**
    * List of all collapse booleans.
    */
   public collapseList: boolean[];
+
+  ontology_search_keyword: string = 'term';
+
+  selected_ontology_terms: EdamOntologyTerm[] = [];
 
   /**
    * Contains errors recieved when submitting an application.
@@ -72,6 +82,9 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
   ngOnInit(): void ***REMOVED***
     this.getListOfFlavors();
     this.getListOfTypes();
+    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => ***REMOVED***
+      this.edam_ontology_terms = terms;
+    ***REMOVED***)
   ***REMOVED***
 
   /**
@@ -104,6 +117,28 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    */
   getListOfFlavors(): void ***REMOVED***
     this.flavorservice.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
+  ***REMOVED***
+
+  removeEDAMterm(term: EdamOntologyTerm): void ***REMOVED***
+    const indexOf: number = this.selected_ontology_terms.indexOf(term);
+    this.selected_ontology_terms.splice(indexOf, 1);
+
+  ***REMOVED***
+
+  selectEvent(item) ***REMOVED***
+    if (this.selected_ontology_terms.indexOf(item) === -1) ***REMOVED***
+      this.selected_ontology_terms.push(item);
+    ***REMOVED***
+    this.edam_ontology.clear();
+  ***REMOVED***
+
+  onChangeSearch(val: string) ***REMOVED***
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+  ***REMOVED***
+
+  onFocused(e) ***REMOVED***
+    // do something when input is focused
   ***REMOVED***
 
   /**
