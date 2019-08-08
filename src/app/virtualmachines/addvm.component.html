@@ -193,7 +193,8 @@
                              [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
                     </div>
-                    <div class="alert alert-primary" role="alert" style="margin: 5px">Info: The instance name will also
+                    <div class="alert alert-primary" role="alert" style="margin-top: 5px">Info: The instance name will
+                      also
                       be the hostname of the vm.
                     </div>
                   </div>
@@ -226,155 +227,150 @@
                 </div>
 
 
-                <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID"
-                     class="form-group row">
-
-                  <label class="col-md-2 form-control-label"><strong>Optional
-                    parameters</strong></label>
-
-
-                  <button type="button" class="btn btn-info .btn-pill"
-                          (click)="optional_params = !optional_params">
-                    <strong *ngIf="!optional_params">Show</strong><strong
-                    *ngIf="optional_params">Hide</strong>
-                  </button>
-
-                </div>
               </div>
-
-              <div [hidden]="!optional_params"
-                   *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID  && selectedProjectVmsUsed < selectedProjectVmsMax"
-                   class="form-group row">
-
-                <div class="alert alert-warning col-md-9" role="alert"
-                     *ngIf="selectedProjectVolumesUsed >= selectedProjectVolumesMax">
-                  The limit for volumes has been reached for this project.
-                  Your principal investigator can request more
-                  resources if necessary
-
-                </div>
-
-
-              </div>
-
-              <div [hidden]="!optional_params"
-                   *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax">
-                <div class="form-group row" *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
-                  <label *ngIf="diskspace <= 0" class="col-md-2 form-control-label">Volume name</label>
-                  <label *ngIf="diskspace > 0 " class="col-md-2 form-control-label"><strong>Volume
-                    name*</strong></label>
-
-                  <div class="col-md-6">
-                    <input type="text" placeholder="Volume name"
-                           [value]="volumeName"
-                           (input)="volumeName = $event.target.value"
-                           [ngClass]="{'is-invalid':diskspace > 0 && volumeName == '',
-                             'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')}" style="width: 100%;">
+              <accordion>
+                <accordion-group #optionalGroup *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
+                  <div accordion-heading style="width: 100%; cursor: pointer">
+                    Optional parameters
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': optionalGroup.isOpen, 'icon-arrow-down': !optionalGroup.isOpen}"></i>
                   </div>
-                </div>
-              </div>
+                  <div
+                    *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID  && selectedProjectVmsUsed < selectedProjectVmsMax"
+                    class="form-group row">
 
-              <div [hidden]="!optional_params"
-                   *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax"
+                    <div class="alert alert-warning col-md-9" role="alert"
+                         *ngIf="selectedProjectVolumesUsed >= selectedProjectVolumesMax">
+                      The limit for volumes has been reached for this project.
+                      Your principal investigator can request more
+                      resources if necessary
 
-                   class="form-group row">
-
-                <label class="col-md-2 form-control-label">Storage</label>
-
-                <div class="col-6">
-                  <div class="input-group mb-6" style="width:100%;">
-                    <input style="width: calc(100% - 160px);" min="0" step="1" [value]="diskspace"
-                           (input)="diskspace = $event.target.value"
-                           type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
-                           placeholder="e.g 8">
-                    <div class="input-group-append"><span
-                      class="input-group-text"> GB
-                                    </span></div>
-
-                    <div style="width:115px; text-align:right">
-                      <p><strong
-                        style="position: relative;top: 8px; text-align: right;"> {{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}
-                        GB available
-                      </strong></p>
                     </div>
 
+
                   </div>
-                </div>
+
+                  <div
+                    *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax">
+                    <div class="form-group row" *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
+                      <label *ngIf="diskspace <= 0" class="col-md-2 form-control-label">Volume name</label>
+                      <label *ngIf="diskspace > 0 " class="col-md-2 form-control-label"><strong>Volume
+                        name*</strong></label>
+
+                      <div class="col-md-6">
+                        <input type="text" placeholder="Volume name"
+                               [value]="volumeName"
+                               (input)="volumeName = $event.target.value"
+                               [ngClass]="{'is-invalid':diskspace > 0 && volumeName == '',
+                             'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')}" style="width: 100%;">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax"
+
+                    class="form-group row">
+
+                    <label class="col-md-2 form-control-label">Storage</label>
+
+                    <div class="col-6">
+                      <div class="input-group mb-6" style="width:100%;">
+                        <input style="width: calc(100% - 160px);" min="0" step="1" [value]="diskspace"
+                               (input)="diskspace = $event.target.value"
+                               type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
+                               placeholder="e.g 8">
+                        <div class="input-group-append"><span
+                          class="input-group-text"> GB
+                                    </span></div>
+
+                        <div style="width:115px; text-align:right">
+                          <p><strong
+                            style="position: relative;top: 8px; text-align: right;"> {{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}
+                            GB available
+                          </strong></p>
+                        </div>
+
+                      </div>
+                    </div>
 
 
-              </div>
-              <div [hidden]="!optional_params"
-                   *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
-                   class="form-group row">
+                  </div>
+                  <div
+                    *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
+                    class="form-group row">
 
-                <label class="col-md-2 form-control-label">Open Ports</label>
-                <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP <i
-                  data-balloon="This selection is necessary for using mosh"
-                  data-balloon-pos="down" data-balloon-length="large"><i
-                  class="icon-question menu_links"
-                  style="cursor: pointer;"></i></i></strong></label>
+                    <label class="col-md-2 form-control-label">Open Ports</label>
+                    <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP
+                      <i
+                        data-balloon="This selection is necessary for using mosh"
+                        data-balloon-pos="down" data-balloon-length="large"><i
+                        class="icon-question menu_links"
+                        style="cursor: pointer;"></i></i></strong></label>
 
-                  <label
-                    class="switch switch-label switch-pill switch-success">
-                    <input type="checkbox" class="switch-input"
-                           name="udp_allowed"
-                           [(ngModel)]="udp_allowed">
-                    <div class="switch-slider" data-checked="✓" data-unchecked="✕"></div>
-                    <!--<span class="switch-handle"></span>-->
-                  </label></div>
-
-
-              </div>
+                      <label
+                        class="switch switch-label switch-pill switch-success">
+                        <input type="checkbox" class="switch-input"
+                               name="udp_allowed"
+                               [(ngModel)]="udp_allowed">
+                        <div class="switch-slider" data-checked="✓" data-unchecked="✕"></div>
+                        <!--<span class="switch-handle"></span>-->
+                      </label></div>
 
 
-              <div
-                *ngIf="selectedProject && projectDataLoaded && is_vo && selectedProjectVmsUsed < selectedProjectVmsMax"
-                class="form-group row">
+                  </div>
+                </accordion-group>
 
 
-                <label class="col-md-2 form-control-label"><strong>Bioconda </strong><span class="badge badge-primary">BETA</span></label>
-                <button type="button" class="btn btn-info .btn-pill"
-                        (click)="bioconda_show = !bioconda_show">
-                  <strong *ngIf="!bioconda_show">Show</strong><strong
-                  *ngIf="bioconda_show">Hide</strong>
-                </button>
-              </div>
+                <accordion-group #autoGroup
+                                 *ngIf="selectedProject && projectDataLoaded && is_vo && selectedProjectVmsUsed < selectedProjectVmsMax">
+                  <div accordion-heading style="width: 100%; cursor: pointer">
+                    <strong>Bioconda </strong><span
+                    class="badge badge-primary">BETA</span>
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': autoGroup.isOpen, 'icon-arrow-down': !autoGroup.isOpen}"></i>
+                  </div>
 
-              <div [hidden]="!bioconda_show" class="alert alert-primary role alert"
-                   style="max-width: 100%; margin: 20px 25px;">
-                <p>Please be aware that all Bioconda tools and packages are provided by third parties. de.NBI Cloud is
-                  not responsible for the functionality of the packages provided. In case of problems during
-                  installation or use, please contact the developers of the respective packages.</p>
-              </div>
+                  <div class="alert alert-primary role alert"
+                       style="max-width: 100%; margin: 20px 25px;">
+                    <p>Please be aware that all Bioconda tools and packages are provided by third parties. de.NBI Cloud
+                      is
+                      not responsible for the functionality of the packages provided. In case of problems during
+                      installation or use, please contact the developers of the respective packages.</p>
+                  </div>
 
-              <div [hidden]="!bioconda_show" class="col-12">
-                <app-bioconda #bioconda (hasTools)="hasChosenTools($event)"></app-bioconda>
-              </div>
-              <div *ngIf="hasTools" class="col"
-                   [ngClass]="{
+                  <div class="col-12">
+                    <app-bioconda #bioconda (hasTools)="hasChosenTools($event)"></app-bioconda>
+                  </div>
+                  <div *ngIf="hasTools" class="col"
+                       [ngClass]="{
                                 'alert-danger': !respCheck.checked,
                                 'alert-success': respCheck.checked
                                 }">
-                <div class="form-check">
-                  <input class="form-check-input"
-                         name="bioconda_need_okay"
-                         type="checkbox"
-                         id="bioconda_need_okay"
-                         ngModel
-                         #respCheck
-                         required
-                         (click)="setGaveOkay(respCheck.checked)"
-                  >
-                  <label class="form-check-label" for="bioconda_need_okay">
-                    I hereby confirm that I read and acknowledge the following:<br>
-                    To set up your virtual machine with the chosen tools, we generate a new rsa-keypair which we use to
-                    log into your virtual machine.<br>
-                    We install Miniconda3, create a conda environment called 'denbi' and install your chosen tools.<br>
-                    When the installation is successful we delete our key and put your public key onto your virtual
-                    machine.
-                  </label>
-                </div>
-              </div>
+                    <div class="form-check">
+                      <input class="form-check-input"
+                             name="bioconda_need_okay"
+                             type="checkbox"
+                             id="bioconda_need_okay"
+                             ngModel
+                             #respCheck
+                             required
+                             (click)="setGaveOkay(respCheck.checked)"
+                      >
+                      <label class="form-check-label" for="bioconda_need_okay">
+                        I hereby confirm that I read and acknowledge the following:<br>
+                        To set up your virtual machine with the chosen tools, we generate a new rsa-keypair which we use
+                        to
+                        log into your virtual machine.<br>
+                        We install Miniconda3, create a conda environment called 'denbi' and install your chosen
+                        tools.<br>
+                        When the installation is successful we delete our key and put your public key onto your virtual
+                        machine.
+                      </label>
+                    </div>
+                  </div>
+                </accordion-group>
+              </accordion>
             </div>
           </form>
 
@@ -452,7 +448,11 @@
       </div>
       <div class="modal-body"
            *ngIf="(newVm?.status == 'BUILD' || newVm?.status == 'PORT_CLOSED' || newVm ==null) && !create_error?.error ">
-        <p>We are setting up a machine for you. This can take up to 5 minutes.</p>
+        <p *ngIf="playbook_run == 0">We are setting up a machine for you. This can take up to 5 minutes.</p>
+        <p *ngIf="playbook_run == 1">We are setting up a machine for you.
+          This can take some time, depending on your chosen playbooks.
+          At maximum it can take up to {{getTimeoutMinutes()}} minutes, due to the accumulation of timeouts in your
+          generated playbook.</p>
 
         <div class="progress">
           <div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
@@ -466,17 +466,8 @@
           machine on the
           instance overview site</p>
       </div>
-      <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE'">
-        <app-how-to-connect [selectedVm]="newVm"></app-how-to-connect>
-      </div>
-      <div class="modal-body" *ngIf="newVm?.status == 'DELETED'">
-        <pre>
-          Statuscode: {{log['status']}}
-        </pre>
-        <pre>
-          {{log['stdout']}}
-          {{log['stderr']}}
-        </pre>
+      <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE' || newVm?.status == 'DELETED'">
+        <app-how-to-connect [selectedVm]="newVm" [playbook_run]="playbook_run" [logs]="logs"></app-how-to-connect>
       </div>
       <div class="modal-body" *ngIf="create_error?.error">
         An Error occured.<br><br>
@@ -496,5 +487,3 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-

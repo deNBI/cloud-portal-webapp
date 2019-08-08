@@ -15,7 +15,7 @@ import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component'
 import {PaginationModule} from 'ngx-bootstrap/pagination'
 import {PublicKeyModule} from '../shared/shared_modules/public-key/public-key.module';
 import {ClickOutsideModule} from 'ng4-click-outside';
-import {BsDropdownModule} from 'ngx-bootstrap';
+import {AccordionModule, BsDropdownModule} from 'ngx-bootstrap';
 import {BiocondaComponent} from './conda/bioconda.component';
 import {HowToConnectComponent} from './shared-modal/how-to-connect.component';
 
@@ -33,7 +33,8 @@ import {HowToConnectComponent} from './shared-modal/how-to-connect.component';
               ModalModule.forRoot(),
               PaginationModule.forRoot(),
               BsDropdownModule.forRoot(),
-              CarouselModule
+              CarouselModule,
+              AccordionModule.forRoot()
 
             ],
             declarations: [
