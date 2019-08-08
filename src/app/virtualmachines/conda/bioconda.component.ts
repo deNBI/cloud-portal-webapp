@@ -53,11 +53,11 @@ export class BiocondaComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
   pageChanged(event): void ***REMOVED***
-    this.getBiocondaTools(event.page);
+    this.getAllTools(event.page);
   ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
-    this.getBiocondaTools(this.FIRST_PAGE);
+    this.getAllTools(this.FIRST_PAGE);
 
     this.filternameChanged
       .pipe(
@@ -65,7 +65,7 @@ export class BiocondaComponent implements OnInit ***REMOVED***
         distinctUntilChanged())
       .subscribe((filterName: string) => ***REMOVED***
         this.filterToolName = filterName;
-        this.getBiocondaTools(this.FIRST_PAGE)
+        this.getAllTools(this.FIRST_PAGE)
 
       ***REMOVED***);
 
@@ -75,7 +75,7 @@ export class BiocondaComponent implements OnInit ***REMOVED***
         distinctUntilChanged())
       .subscribe((filterVersion: string) => ***REMOVED***
         this.filterToolVersion = filterVersion;
-        this.getBiocondaTools(this.FIRST_PAGE)
+        this.getAllTools(this.FIRST_PAGE)
 
       ***REMOVED***);
 
@@ -85,13 +85,13 @@ export class BiocondaComponent implements OnInit ***REMOVED***
         distinctUntilChanged())
       .subscribe((filterBuild: string) => ***REMOVED***
         this.filterToolBuild = filterBuild;
-        this.getBiocondaTools(this.FIRST_PAGE)
+        this.getAllTools(this.FIRST_PAGE)
 
       ***REMOVED***);
 
   ***REMOVED***
 
-  getBiocondaTools(page: number): void ***REMOVED***
+  getAllTools(page: number): void ***REMOVED***
     this.isSearching = true;
     this.condaService.getAllTools(page, this.filterToolName, this.filterToolVersion, this.filterToolBuild).subscribe(
       res => ***REMOVED***
@@ -104,8 +104,8 @@ export class BiocondaComponent implements OnInit ***REMOVED***
                                 build: line['build']
                               ***REMOVED***)
         ***REMOVED***
-
-        this.total_pages = res['num_pages'];
+        this.toolsPerPage = res['items_per_page'];
+        this.total_pages = res['total_items'];
         this.toolsStart = 0;
         this.toolsEnd = this.toolsPerPage;
 
