@@ -424,7 +424,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       this.filterVmStopped_at)
       .subscribe(vms => {
                    this.vms_content = vms['vm_list'];
-                   this.total_pages = vms['num_pages'];
+                   this.total_pages = vms['total_items'];
 
                    for (const vm of this.vms_content) {
                      this.setCollapseStatus(vm.openstackid, false);
@@ -459,7 +459,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       this.filterVmStopped_at)
       .subscribe(vms => {
                    this.vms_content = vms['vm_list'];
-                   this.total_pages = vms['num_pages'];
+                   this.total_pages = vms['total_items'];
 
                    for (const vm of this.vms_content) {
                      this.setCollapseStatus(vm.openstackid, false);
@@ -533,7 +533,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                                         this.filterVmStopped_at)
       .subscribe(vms => {
                    this.vms_content = vms['vm_list'];
-                   this.total_pages = vms['num_pages'];
+                   this.total_pages = vms['total_items'];
 
                    for (const vm of this.vms_content) {
                      this.setCollapseStatus(vm.openstackid, false);

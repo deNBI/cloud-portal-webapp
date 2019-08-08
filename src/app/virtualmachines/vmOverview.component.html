@@ -44,7 +44,7 @@
         <th>Status</th>
         <th>Created at (d/m/y)</th>
         <th>How to Connect</th>
-        <th *ngIf="is_vo_admin">Elixir ID</th>
+        <th >Elixir ID</th>
         <th>Stopped at (d/m/y)</th>
         <th>Actions</th>
 
@@ -93,7 +93,7 @@
                  name="filterVmCreated_at"
                  [(ngModel)]="filterVmCreated_at" (ngModelChange)="filterCreatedAtChanged.next($event)"--></td>
       <td></td>
-      <td *ngIf="is_vo_admin"><input style="width: 110px;" type="text" placeholder="Filter"
+      <td><input style="width: 110px;" type="text" placeholder="Filter"
                                      name="filterVmElixir_id" [(ngModel)]="filterVmElixir_id"
                                      (ngModelChange)="filterElixirIdChanged.next($event);"></td>
       <td><!--input style="width: 110px;" t type="text" placeholder="Filter"
@@ -134,7 +134,7 @@
               Information
             </button>
           </td>
-          <td *ngIf="is_vo_admin"
+          <td
               style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
             {{vm.elixir_id}}
           </td>
