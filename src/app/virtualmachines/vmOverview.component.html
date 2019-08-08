@@ -74,10 +74,10 @@
         <div class="checkbox">
           <label>
             <input type="checkbox"
-                   (change)="changeFilterStatus(vm_statuses[vm_statuses.SUSPENDED]);applyFilter();"
+                   (change)="changeFilterStatus(vm_statuses[vm_statuses.SHUTOFF]);applyFilter();"
                    checked/>
             <span style="margin-left: 5px"
-                  class="badge badge-warning">{{vm_statuses[vm_statuses.SUSPENDED]}}</span>
+                  class="badge badge-warning">{{vm_statuses[vm_statuses.SHUTOFF]}}</span>
           </label>
         </div>
         <div class="checkbox">
@@ -118,11 +118,11 @@
             <span *ngIf="vm.status == vm_statuses[vm_statuses.ACTIVE]"
                   style="margin-left: 5px"
                   class="badge badge-success"> {{vm.status}}</span>
-            <span *ngIf="vm.status == vm_statuses[vm_statuses.SUSPENDED]"
+            <span *ngIf="vm.status == vm_statuses[vm_statuses.SHUTOFF]"
                   style="margin-left: 5px"
                   class="badge badge-warning"> {{vm.status}}</span>
             <span class="badge badge-info"
-                  *ngIf="vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.SUSPENDED]">{{vm.status}}</span>
+                  *ngIf="vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.SHUTOFF]">{{vm.status}}</span>
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
             {{vm.created_at}}
@@ -165,14 +165,14 @@
                     Vm</a>
                 </li>
 
-                <li style="cursor: pointer;" *ngIf="vm.status ==vm_statuses[vm_statuses.SUSPENDED]"
+                <li style="cursor: pointer;" *ngIf="vm.status ==vm_statuses[vm_statuses.SHUTOFF]"
                     role="menuitem">
                   <a class="dropdown-item"
-                     (click)="selectedVm=vm;resumeVM(vm);resumeModal.show();">Resume
+                     (click)="selectedVm=vm;resumeVM(vm);resumeModal.show();">Restart
                     Vm</a>
                 </li>
                 <li style="cursor: pointer;"
-                    *ngIf="vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != 'FREEMIUM'"
+                    *ngIf="vm.status !=vm_statuses[vm_statuses.SHUTOFF] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != 'FREEMIUM'"
                     role="menuitem">
                   <a class="dropdown-item"
                      (click)="checkStatus(vm);">Check Status
@@ -193,7 +193,7 @@
                   </a>
                 </li>
                 <li style="cursor: pointer;"
-                    *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.client.features['VM_REBOOT']"
+                    *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.SHUTOFF] && vm.client.features['VM_REBOOT']"
                     role="menuitem">
                   <a class="dropdown-item"
                      (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='SOFT';rebootModal.show();">Soft
@@ -229,16 +229,16 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0 &&  selectedVm?.status != 'SUSPENDED'">
+        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0 &&  selectedVm?.status != 'SHUTOFF'">
           Stopping {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1 || selectedVm?.status == 'SUSPENDED'">
-          {{selectedVm?.name}} was succesfully stopped.
+        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1 || selectedVm?.status == 'SHUTOFF'">
+          {{selectedVm?.name}} was successfully stopped.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When stopping {{selectedVm?.name}} an error occured.
+        When stopping {{selectedVm?.name}} an error occurred.
       </div>
 
 
@@ -315,7 +315,7 @@
         <div *ngIf="reboot_done">
           <div class="alert alert-success" role="alert">
 
-            Sucessfully {{reboot_type}} rebooted {{selectedVm?.name}}.
+            Successfully {{reboot_type}} rebooted {{selectedVm?.name}}.
           </div>
         </div>
         <div *ngIf="status_check_error">
@@ -354,15 +354,15 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-info" role="alert" *ngIf="status_changed == 0  && selectedVm?.status !== 'ACTIVE'">
-          Resuming {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
+          Starting {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
         </div>
         <div class="alert alert-success" role="alert" *ngIf="status_changed == 1  || selectedVm?.status == 'ACTIVE'">
-          {{selectedVm?.name}} was succesfully resumed.
+          {{selectedVm?.name}} was successfully started.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When resuming {{selectedVm?.name}} an error occured.
+        When starting {{selectedVm?.name}} an error occurred.
       </div>
 
 
@@ -565,7 +565,7 @@
 
 
       <div class="modal-body">
-        <app-how-to-connect [selectedVm]="selectedVm"></app-how-to-connect>
+        <app-how-to-connect *ngIf="selectedVm" [selectedVm]="selectedVm"></app-how-to-connect>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="infoModal.hide();">Close

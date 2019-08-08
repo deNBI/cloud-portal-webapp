@@ -30,7 +30,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
 
-  filter_status_list: string[] = [this.vm_statuses[this.vm_statuses.ACTIVE], this.vm_statuses[this.vm_statuses.SUSPENDED]];
+  filter_status_list: string[] = [this.vm_statuses[this.vm_statuses.ACTIVE], this.vm_statuses[this.vm_statuses.SHUTOFF]];
 
   selectedVm: VirtualMachine = null;
 
@@ -160,7 +160,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         if (vm.created_at !== '') {
           vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
         }
-        if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+        if (vm.stopped_at !== '' && vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
           vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
         } else {
           vm.stopped_at = ''
@@ -203,7 +203,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                    if (updated_vm.created_at !== '') {
                      updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
                    }
-                   if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+                   if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
                      updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
                    } else {
                      updated_vm.stopped_at = ''
@@ -227,7 +227,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       if (updated_vm.created_at !== '') {
         updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
       }
-      if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+      if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
         updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
       } else {
         updated_vm.stopped_at = ''
@@ -235,7 +235,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       this.applyFilter();
-      if (updated_vm.status === 'DELETED') {
+      if (updated_vm.status === this.vm_statuses[this.vm_statuses.DELETED]) {
         this.status_changed = 1;
       } else {
         this.status_changed = 2;
@@ -273,6 +273,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       () => {
         this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
           this.selectedVm = updated_vm;
+          console.log(this.selectedVm)
 
           if (updated_vm.status === final_state) {
             this.reboot_done = true;
@@ -316,14 +317,14 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       () => {
         this.virtualmachineservice.checkVmStatusWhenReboot(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
-          if (updated_vm.status === 'ACTIVE') {
+          if (updated_vm.status === this.vm_statuses[this.vm_statuses.ACTIVE]) {
             this.reboot_done = true;
             this.setCollapseStatus(updated_vm.openstackid, false);
 
             if (updated_vm.created_at !== '') {
               updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
             }
-            if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+            if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
               updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
             } else {
               updated_vm.stopped_at = ''
@@ -363,7 +364,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                    if (updated_vm.created_at !== '') {
                      updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
                    }
-                   if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== 'ACTIVE') {
+                   if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
                      updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
                    } else {
                      updated_vm.stopped_at = ''
@@ -374,11 +375,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                    this.selectedVm = updated_vm;
 
                    switch (updated_vm.status) {
-                     case 'SUSPENDED':
+                     case this.vm_statuses[this.vm_statuses.SHUTOFF]:
                        this.status_changed = 1;
                        break;
-                     case 'SUSPENDING':
-                       this.check_status_loop(updated_vm, 'SUSPENDED');
+                     case 'POWERING OFF':
+                       this.check_status_loop(updated_vm, this.vm_statuses[this.vm_statuses.SHUTOFF]);
                        break;
                      default:
                        this.status_changed = 2;
@@ -411,9 +412,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * Get all vms of user.
    * @param {string} elixir_id of user
    */
-  getVms()
-    :
-    void {
+  getVms(): void {
 
     this.virtualmachineservice.getVmsFromLoggedInUser(
       this.currentPage,
@@ -434,7 +433,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
 
-                     if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                     if (vm.stopped_at !== '' && vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
                      } else {
                        vm.stopped_at = ''
@@ -469,7 +468,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
 
-                     if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                     if (vm.stopped_at !== '' && vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
                      } else {
                        vm.stopped_at = ''
@@ -485,10 +484,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * Resume a vm.
    * @param {string} openstack_id of instance.
    */
-  resumeVM(vm
-             :
-             VirtualMachine
-  ):
+  resumeVM(vm: VirtualMachine):
     void {
 
     this.virtualmachineservice.resumeVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
@@ -499,7 +495,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       if (updated_vm.created_at !== '') {
         updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
       }
-      if (updated_vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+      if (updated_vm.stopped_at !== '' && vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
         updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
       } else {
         updated_vm.stopped_at = ''
@@ -508,11 +504,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       this.applyFilter();
       switch (updated_vm.status) {
-        case 'ACTIVE':
+        case this.vm_statuses[this.vm_statuses.ACTIVE]:
           this.status_changed = 1;
           break;
-        case 'RESUMING':
-          this.check_status_loop(updated_vm, 'ACTIVE');
+        case this.vm_statuses[this.vm_statuses.RESTARTING]:
+          this.check_status_loop(updated_vm, this.vm_statuses[this.vm_statuses.ACTIVE]);
           break;
         default:
           this.status_changed = 2;
@@ -545,7 +541,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
-                     if (vm.stopped_at !== '' && vm.stopped_at !== 'ACTIVE') {
+                     if (vm.stopped_at !== '' && vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
                        vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
                      } else {
                        vm.stopped_at = ''
@@ -614,11 +610,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * @param {string} snapshot_instance which is used for creating the snapshot
    * @param {string} snapshot_name name of the snapshot
    */
-  createSnapshot(snapshot_instance
-                   :
-                   string, snapshot_name
-                   :
-                   string, description ?: string
+  createSnapshot(snapshot_instance: string, snapshot_name: string, description ?: string
   ):
     void {
     this.imageService.createSnapshot(snapshot_instance, snapshot_name, description).subscribe((newSnapshot: SnapshotModel) => {
