@@ -50,6 +50,7 @@
       </table>
       <div class="d-flex justify-content-center">
         <pagination [totalItems]="total_pages" [itemsPerPage]="toolsPerPage"
+
                     (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
                     [boundaryLinks]="true" [maxSize]="max_pages" [rotate]="false" #pagination>
         </pagination>

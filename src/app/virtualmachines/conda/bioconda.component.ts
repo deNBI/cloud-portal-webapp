@@ -53,11 +53,11 @@ export class BiocondaComponent implements OnInit {
   }
 
   pageChanged(event): void {
-    this.getBiocondaTools(event.page);
+    this.getAllTools(event.page);
   }
 
   ngOnInit(): void {
-    this.getBiocondaTools(this.FIRST_PAGE);
+    this.getAllTools(this.FIRST_PAGE);
 
     this.filternameChanged
       .pipe(
@@ -65,7 +65,7 @@ export class BiocondaComponent implements OnInit {
         distinctUntilChanged())
       .subscribe((filterName: string) => {
         this.filterToolName = filterName;
-        this.getBiocondaTools(this.FIRST_PAGE)
+        this.getAllTools(this.FIRST_PAGE)
 
       });
 
@@ -75,7 +75,7 @@ export class BiocondaComponent implements OnInit {
         distinctUntilChanged())
       .subscribe((filterVersion: string) => {
         this.filterToolVersion = filterVersion;
-        this.getBiocondaTools(this.FIRST_PAGE)
+        this.getAllTools(this.FIRST_PAGE)
 
       });
 
@@ -85,13 +85,13 @@ export class BiocondaComponent implements OnInit {
         distinctUntilChanged())
       .subscribe((filterBuild: string) => {
         this.filterToolBuild = filterBuild;
-        this.getBiocondaTools(this.FIRST_PAGE)
+        this.getAllTools(this.FIRST_PAGE)
 
       });
 
   }
 
-  getBiocondaTools(page: number): void {
+  getAllTools(page: number): void {
     this.isSearching = true;
     this.condaService.getAllTools(page, this.filterToolName, this.filterToolVersion, this.filterToolBuild).subscribe(
       res => {
@@ -104,8 +104,8 @@ export class BiocondaComponent implements OnInit {
                                 build: line['build']
                               })
         }
-
-        this.total_pages = res['num_pages'];
+        this.toolsPerPage = res['items_per_page'];
+        this.total_pages = res['total_items'];
         this.toolsStart = 0;
         this.toolsEnd = this.toolsPerPage;
 
