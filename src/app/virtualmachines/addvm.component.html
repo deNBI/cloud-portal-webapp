@@ -193,7 +193,7 @@
                              [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
                     </div>
-                    <div class="alert alert-primary" role="alert" style="margin: 5px">Info: The instance name will
+                    <div class="alert alert-primary" role="alert" style="margin-top: 5px">Info: The instance name will
                       also
                       be the hostname of the vm.
                     </div>
@@ -235,8 +235,9 @@
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': optionalGroup.isOpen, 'icon-arrow-down': !optionalGroup.isOpen}"></i>
                   </div>
-                  <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID  && selectedProjectVmsUsed < selectedProjectVmsMax"
-                       class="form-group row">
+                  <div
+                    *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID  && selectedProjectVmsUsed < selectedProjectVmsMax"
+                    class="form-group row">
 
                     <div class="alert alert-warning col-md-9" role="alert"
                          *ngIf="selectedProjectVolumesUsed >= selectedProjectVolumesMax">
@@ -249,7 +250,8 @@
 
                   </div>
 
-                  <div *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax">
+                  <div
+                    *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax">
                     <div class="form-group row" *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
                       <label *ngIf="diskspace <= 0" class="col-md-2 form-control-label">Volume name</label>
                       <label *ngIf="diskspace > 0 " class="col-md-2 form-control-label"><strong>Volume
@@ -265,9 +267,10 @@
                     </div>
                   </div>
 
-                  <div *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax"
+                  <div
+                    *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax"
 
-                       class="form-group row">
+                    class="form-group row">
 
                     <label class="col-md-2 form-control-label">Storage</label>
 
@@ -293,8 +296,9 @@
 
 
                   </div>
-                  <div *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
-                       class="form-group row">
+                  <div
+                    *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
+                    class="form-group row">
 
                     <label class="col-md-2 form-control-label">Open Ports</label>
                     <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP
@@ -318,9 +322,10 @@
                 </accordion-group>
 
 
-                <accordion-group #autoGroup *ngIf="selectedProject && projectDataLoaded && is_vo && selectedProjectVmsUsed < selectedProjectVmsMax">
+                <accordion-group #autoGroup
+                                 *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax">
                   <div accordion-heading style="width: 100%; cursor: pointer">
-                    <strong>Bioconda </strong><span
+                    <strong>Tools </strong><span
                     class="badge badge-primary">BETA</span>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': autoGroup.isOpen, 'icon-arrow-down': !autoGroup.isOpen}"></i>
@@ -446,7 +451,8 @@
         <p *ngIf="playbook_run == 0">We are setting up a machine for you. This can take up to 5 minutes.</p>
         <p *ngIf="playbook_run == 1">We are setting up a machine for you.
           This can take some time, depending on your chosen playbooks.
-          At maximum it can take up to {{getTimeoutMinutes()}} minutes, due to the accumulation of timeouts in your generated playbook.</p>
+          At maximum it can take up to {{getTimeoutMinutes()}} minutes, due to the accumulation of timeouts in your
+          generated playbook.</p>
 
         <div class="progress">
           <div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
