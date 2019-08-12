@@ -57,7 +57,7 @@ export class ResourcesComponent implements OnInit ***REMOVED***
             const contentDataURL: string = canvas.toDataURL('image/png');
             const pdf: jspdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
             const position: number = 0;
-            pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+            pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
             pdf.save('VoResources.pdf'); // Generated PDF
         ***REMOVED***);
     ***REMOVED***

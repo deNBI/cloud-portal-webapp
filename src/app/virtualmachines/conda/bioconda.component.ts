@@ -161,6 +161,10 @@ export class BiocondaComponent implements OnInit ***REMOVED***
     return JSON.stringify(this.chosen_tools);
   ***REMOVED***
 
+  getTimeout(): number ***REMOVED***
+    return ((this.chosen_tools.length) * 300) + 600;
+  ***REMOVED***
+
   hasChosenTools(): boolean ***REMOVED***
     return this.chosen_tools.length > 0;
   ***REMOVED***
