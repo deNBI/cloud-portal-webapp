@@ -1,3 +1,12 @@
+##  (2019-08-08)
+
+
+#### Bug Fixes
+
+* **Virtualmachine:** not timeout when stopping or resuming vm ([db519ca2](db519ca2))
+* **Wiki:** fixed wiki link ([b580fb40](b580fb40))
+* **vm:**  now stops instead of suspend ([39e7c45f](39e7c45f))
+
 ##  (2019-07-24)
 
 
