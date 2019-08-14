@@ -3,6 +3,7 @@
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
 @import "node_modules/bootstrap/scss/modal";
+@import url('https://fonts.googleapis.com/css?family=Raleway'); //Raleway-Font as used on landing-page
 
 //de.NBI-Colors:
 
@@ -19,13 +20,70 @@ $deNBI_black: #000000;
 $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
 
+.app-footer
+{
+  background-color: $deNBI_white;
+  margin: 15px !important;
+  width: 200px;
+  left: 0px;
+  border-radius: 10px;
+  border-top: none !important;
+  font-family: 'Raleway', sans-serif;
+}
+
+.sidebar-fixed .app-header + .app-body .sidebar{
+  height: calc(100vh - 175px);
+  border: 20px;
+  border-radius: 10px;
+  top: 75px;
+  margin: 15px;
+}
+
+.app-header .navbar-brand
+{
+  width: 100%;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.app-header.navbar
+{
+  float: left;
+  position: fixed;
+  width: 200px;
+  left: 0px;
+}
+
+#title_headline
+{
+  font-size: 20px !important;
+}
+
+
+app-dashboard
+{
+  position: relative;
+}
+
+.header-fixed .app-header
+{
+  margin: 15px;
+  border-radius: 10px;
+}
+
+main{
+  margin-top: 35px !important;
+  margin-left: 210px !important;
+}
+
 .btn{
   cursor: pointer;
 }
 
-header {
-  color:red;
+.btn-primary {
+    background-color: $deNBI_cyan;
 }
+
 
 #header-help {
   padding-right: 19px;
@@ -44,59 +102,39 @@ header {
   padding: 1.25rem;
 }
 
-.flavor-image-card
-{
-  width: 16rem;margin-right: 5px; cursor: pointer;
-}
-
-
-.flavor-card-icons
-{
-    margin: 0px 5px 10px 0px;
-    width: 18px;
-    max-height:18px;
-}
-
-.scroll-flavor
-{
-  max-height:90px;
-  min-height: 90px;
-  overflow-y: auto;
-}
-
-.scroll-image
-{
-  max-height: 120px;
-  min-height: 120px;
-  overflow-y: auto;
-}
-
 .collapse_no_margin{
   margin: 0;
 }
 
-.card.border-success
-{
-  border-width: 3px;
-}
-.bg-info-flavor
-{
-    background-color: $deNBI_blue;
+.sidebar .sidebar-minimizer {
+  background-color: $deNBI_white !important;
+  color: $deNBI_cyan !important;
+  position: relative !important;
 }
 
-.bg-info-image
-{
-  background-color: $deNBI_cyan;
+.sidebar .sidebar-minimizer:hover {
+  background-color: $deNBI_lightgrey !important;
 }
 
-.card-header.bg-info-flavor {
-  color: $deNBI_white;
+.nav-item{
+  border-radius: 10px !important;
 }
 
-.card-header.bg-info-image
+.sidebar-nav .nav-item:hover
 {
-  color: $deNBI_white;
+  background-color: $deNBI_lightgrey !important;
 }
+
+.nav
+{
+  overflow-x: hidden !important;
+  overflow-y: visible;
+}
+
+.app{
+  background-color: #E3E3E3
+}
+
 
 
 .btn-openstack {
@@ -114,32 +152,104 @@ header {
 .btn-outline-simplevm {
     @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour,5%), $simplevmcolour);
 }
+// Google Font as on landing page.
+@import url('https://fonts.googleapis.com/css?family=Raleway');
 
-
-
-#newsbadge
+.app-body
 {
-  margin: 15px !important;
-  position: relative !important;
+  color: $deNBI_darkgrey;
+  font-family: 'Raleway', sans-serif;
+}
+
+
+#title_headline
+{
+  font-family: Raleway;
+  text-align: center;
+  bottom:5px;
+  color: $deNBI_blue;
+  height: 100%;
+  margin-top:15px;
+
+}
+
+.w3-bar-block
+{
+  background-color: $deNBI_white;
+  height: 54px;
   border-radius: 10px;
-  background-color: rgba(255,255,255, 1);
-  padding: 10px !important;
-  max-width: 200px;
-
+  width: calc(100vw - 240px);
+  position: fixed;
+  top: 15px;
+  left: 225px;
+  right: 15px;
+  text-align: center;
+  margin:auto;
+  z-index: 100;
 }
 
-#newsimage
+.sidebar {
+  background-color: $deNBI_white;
+}
+
+.sidebar .nav-link:hover
 {
-  width: 100%;
-  position: relative;
-  transition: 0.5s;
+  background-color: $deNBI_lightgrey;
 }
 
-#newsbadge:hover
+.sidebar .nav-dropdown.open .nav-link:hover
 {
-  opacity: 0.8;
-  transition: 0.5s;
-
+  background-color: $deNBI_lightgrey;
+  color: $deNBI_white;
 }
 
+.sidebar .nav-dropdown.open .nav-link.active {
+  background-color: $deNBI_cyan;
+  color: $deNBI_white;
+}
+
+.sidebar .nav-item.nav-dropdown:hover
+{
+  background-color: $deNBI_lightgrey;
+  color: $deNBI_white;
+}
+
+.sidebar .nav-link.active {
+  background-color: $deNBI_cyan;
+  color: $deNBI_white;
+}
+
+.sidebar .nav-link.active .nav-icon
+{
+  color: $deNBI_white;
+}
+
+
+.sidebar .nav-link {
+  color: $deNBI_blue;
+}
+
+.sidebar .nav-title {
+  color: $deNBI_darkgrey;
+}
+
+.sidebar .nav-item .nav-dropdown-toggle{
+  color: $deNBI_blue;
+  background-color: $deNBI_white;
+}
+
+.sidebar .nav-item .nav-dropdown-toggle:hover{
+  color: $deNBI_white;
+  background-color: $deNBI_lightgrey;
+}
+
+.sidebar .nav-dropdown.open .nav-link{
+  color: $deNBI_blue;
+  background-color: $deNBI_white;
+}
+
+.sidebar .nav-dropdown-items .nav-item{
+  color: $deNBI_blue;
+  background-color: $deNBI_white;
+}
 
