@@ -1,6 +1,7 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app style="width: 100%">
+
   <div class="row">
     <!--/.col-->
     <h1 *ngIf="selectedFacility">Projects Overview: {{selectedFacility['Facility']}}
@@ -77,6 +78,7 @@
             </tr>
             </tbody>
           </table>
+
         </div>
       </div>
       <div>

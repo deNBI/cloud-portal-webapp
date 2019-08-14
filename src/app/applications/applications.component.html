@@ -4,6 +4,7 @@
 </div>
 <div *ngIf="isLoaded_userApplication && isLoaded_AllApplication"
      class="animated fadeIn">
+
   <div class="row">
     <!--/.col-->
     <div class="col-md-8"><h1>Applications Overview</h1></div>
@@ -41,6 +42,7 @@
                               class="badge"
                               data-toggle="tooltip" data-placement="auto"
                               title="This is an Openstack project">
+
                                     <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                     <span *ngIf="!application?.OpenStackProject"

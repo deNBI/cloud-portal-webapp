@@ -16,7 +16,10 @@ export class HelpComponent {
     public emailAdress: string;
     public emailReply: string = '';
 
-    constructor(private userService: UserService) {
+  title: string="HELP";
+
+
+  constructor(private userService: UserService) {
 
     }
 

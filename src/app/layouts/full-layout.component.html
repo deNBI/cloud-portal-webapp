@@ -1,3 +1,4 @@
+<app-title-headbar  [page_title]="TITLE"></app-title-headbar>
 <app-header
   [asideMenuToggler]="false"
   [sidebarToggler]="false"
@@ -6,13 +7,21 @@
   [navbarBrandRouterLink]="'/'"
 
 >
-  <ul class="nav navbar-nav ml-md-auto">
-    <li><strong class="text-muted" style="cursor: pointer;padding-right: 2pc" routerLinkActive="active"
-                [routerLink]="['/userinfo']"
-    >{{login_name}}</strong></li>
+
+    <ul class="nav navbar-nav ml-md-auto">
+
+      <!--<cui-breadcrumb>
+
+      </cui-breadcrumb> -->
+      <!--<li><strong class="text-muted" style="cursor: pointer;padding-right: 2pc" routerLinkActive="active"
+                    [routerLink]="['/userinfo']"
+        >{{login_name}}</strong></li>-->
+
 
   </ul>
+
 </app-header>
+
 <div class="app-body">
   <div class="sidebar">
     <nav class="sidebar-nav" [perfectScrollbar]>
@@ -53,32 +62,8 @@
           </a>
 
         </li>
-        <!--
-        <li class="nav-item nav-dropdown " appNavDropdown>
-            <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;"
-               appNavDropdownToggle><i
-                    class="nav-icon icon-pencil"></i> New Application</a>
-            <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                    <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
-                       [routerLink]="['/applications/newCloudApplication']">
-                        <i class="nav-icon icon-question" onmouseover="" style="cursor: pointer;"
-                           data-toggle="tooltip" data-placement="auto"
-                           title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i>
-                        Cloud Project </a></li>
-                <li class="nav-item">
-                    <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
-                       [routerLink]="['/applications/newSimpleVmApplication']"><i
-                            class="nav-icon icon-question" onmouseover="" style="cursor: pointer;"
-                            data-toggle="tooltip" data-placement="auto"
-                            title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i>
-                        Simple VM Project </a></li>
+        <li *ngIf="vm_project_member || get_is_vo_admin()" class="nav-title">
 
-            </ul>
-
-        </li>
-        -->
-        <li class="nav-title">
           Virtual Machines
         </li>
         <li class="nav-item" *ngIf="vm_project_member ">
@@ -164,9 +149,11 @@
 
       </ul>
     </nav>
-  </div>
+    <app-sidebar-minimizer></app-sidebar-minimizer>
 
+  </div>
   <!-- Main content -->
+
   <main class="main">
 
     <!-- Breadcrumb-->
@@ -176,16 +163,19 @@
       </ol>
       -->
 
-    <cui-breadcrumb>
+   <!-- <cui-breadcrumb>
 
-    </cui-breadcrumb>
+    </cui-breadcrumb> -->
 
     <div class="container-fluid">
-      <router-outlet></router-outlet>
+      <router-outlet (activate)="componentAdded($event)"></router-outlet>
     </div><!-- /.conainer-fluid -->
   </main>
 </div>
 
 <app-footer>
-  <a href="https://cloud.denbi.de">de.NBI</a> &copy; {{ year }}
+
+    <a href="https://cloud.denbi.de">de.NBI&nbsp;</a> &copy; {{ year }}
+
 </app-footer>
+

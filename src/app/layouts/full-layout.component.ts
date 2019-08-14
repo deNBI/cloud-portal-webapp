@@ -7,6 +7,7 @@ import {GroupService} from '../api-connector/group.service';
 import {VoService} from '../api-connector/vo.service';
 import {IResponseTemplate} from '../api-connector/response-template';
 
+
 /**
  * FullLayout component.
  */
@@ -18,6 +19,7 @@ import {IResponseTemplate} from '../api-connector/response-template';
 export class FullLayoutComponent implements OnInit {
 
   public year: number = new Date().getFullYear();
+  public page_title: string = "what";
   public disabled: boolean = false;
   public status: { isopen: boolean } = {isopen: false};
   is_vo_admin: boolean = false;
@@ -26,9 +28,18 @@ export class FullLayoutComponent implements OnInit {
   public login_name: string = '';
   navbar_state: string = 'closed';
   overview_state: string = 'closed';
+  TITLE:string='dddd';
 
   constructor(private voService: VoService, private groupService: GroupService, private userservice: UserService,
               private facilityservice: FacilityService) {
+  }
+
+
+  componentAdded(e){
+
+    console.log(e)
+    this.TITLE=e.title;
+
   }
 
   public get_is_vo_admin(): boolean {
