@@ -7,6 +7,9 @@ import {FlavorService} from '../api-connector/flavor.service';
 import {environment} from '../../environments/environment';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationDissemination} from './application-dissemination';
+import {EdamOntologyTerm} from './edam-ontology-term';
+import {AutocompleteComponent} from 'angular-ng-autocomplete';
 
 /**
  * Component to create single vm applications.
@@ -17,6 +20,34 @@ import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/applicati
              providers: [FlavorService, ApiSettings, ApplicationsService]
            })
 export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit {
+
+  public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
+
+  public public_description_enabled: boolean = false;
+
+  public edam_ontology_terms: EdamOntologyTerm[];
+
+  ontology_search_keyword: string = 'term';
+
+  selected_ontology_terms: EdamOntologyTerm[] = [];
+
+  @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
+
+  /**
+   * Boolean indicating whether information selection accordion is open or not.
+   * @type {boolean}
+   */
+  public dissemination_information_open: boolean = false;
+
+  /**
+   * Boolean indicating whether platform selection accordion is open or not
+   * @type {boolean}
+   */
+  public dissemination_platforms_open: boolean = false;
+
+  /**
+   * List of all collapse booleans.
+   */
 
   /**
    * List of flavor types.
@@ -61,6 +92,22 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
   ngOnInit(): void {
     this.getListOfFlavors();
     this.getListOfTypes();
+    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
+      this.edam_ontology_terms = terms;
+    })
+
+  }
+
+  selectEvent(item) {
+    if (this.selected_ontology_terms.indexOf(item) === -1) {
+      this.selected_ontology_terms.push(item);
+    }
+    this.edam_ontology.clear();
+  }
+
+  removeEDAMterm(term: EdamOntologyTerm): void {
+    const indexOf: number = this.selected_ontology_terms.indexOf(term);
+    this.selected_ontology_terms.splice(indexOf, 1);
 
   }
 
@@ -148,7 +195,13 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
       }
 
       this.applicationsservice.addNewApplication(values).toPromise()
-        .then(() => {
+        .then(application => {
+          if (this.project_application_report_allowed) {
+            this.applicationsservice.setApplicationDissemination(application['project_application_id'], this.application_dissemination).subscribe()
+
+          }
+          this.applicationsservice.addEdamOntologyTerms(application['project_application_id'], this.selected_ontology_terms).subscribe();
+
           this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
           this.notificationModalStay = false;
         }).catch((error: object) => {

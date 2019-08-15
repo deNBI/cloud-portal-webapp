@@ -270,7 +270,9 @@
               <label class="col-md-4"></label>
               <div class="col-md-8">
                 <div class="alert alert-primary" role="alert">
-                  In case you need additional and/or special resources, which are not available in the flavour selection, use the comment field to state so. The same applies to unusually large amounts of resources.
+                  In case you need additional and/or special resources, which are not available in the flavour
+                  selection, use the comment field to state so. The same applies to unusually large amounts of
+                  resources.
                 </div>
               </div>
             </div>
@@ -325,6 +327,41 @@
               <h5 class="col-md-6 form-control-label">Additional Information</h5>
             </div>
             <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>EDAM ontology
+                Terms </strong></label>
+              <div class="col-md-8">
+                <div class="ng-autocomplete col-md-8">
+                  <ng-autocomplete #edam_ontology
+                                   [data]="edam_ontology_terms"
+                                   [searchKeyword]="ontology_search_keyword"
+                                   (selected)='selectEvent($event)'
+                                   placeHolder="Add your EDAM ontology terms"
+
+                                   [itemTemplate]="itemTemplate"
+                                   [notFoundTemplate]="notFoundTemplate">
+                  </ng-autocomplete>
+
+                  <ng-template #itemTemplate let-item>
+                    <a [innerHTML]="item.term"></a>
+                  </ng-template>
+
+                  <ng-template #notFoundTemplate let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                  </ng-template>
+                </div>
+                <div>
+                  <h5><span *ngFor="let term of selected_ontology_terms"
+                            style="margin-left: 5px; "
+                            class="badge badge-info">{{term.term}}
+                    <span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
+ </span>
+
+                  </h5>
+                </div>
+              </div>
+
+            </div>
+            <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon
                 2020</strong></label>
               <div class="col-md-8">
@@ -355,6 +392,7 @@
                 <span class="help-block">Is your project part of a BMBF project?</span>
               </div>
             </div>
+
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>
               <div class="col-md-8">
@@ -366,14 +404,238 @@
                          name="project_application_report_allowed"
                          [(ngModel)]="project_application_report_allowed"
                   >
-                  <span class="switch-slider" data-checked="Yes"
-                        data-unchecked="No"></span>
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                   <span class="switch-handle"></span></label>
                 <p> Do you permit the de.NBI Cloud to publicly mention your
                   project's participation?</p>
 
               </div>
 
+
+            </div>
+            <div *ngIf="project_application_report_allowed">
+
+              <accordion>
+                <accordion-group [isOpen]="dissemination_information_open" #dissemination_information_accordion>
+                  <div accordion-heading style="width: 100%; cursor: pointer">
+                    Type of Information
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': dissemination_information_accordion.isOpen, 'icon-arrow-down': !dissemination_information_accordion.isOpen}"></i>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Project Title</label>
+                    <div class="col-md-2">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_title" checked
+                               disabled>
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                    <div class="col-md-6"><input type="text" class="form-control" id="information_public_title_input"
+                                                 placeholder="Choose a public title - Leave blank for existing title."
+                                                 name="information_title"
+                                                 [(ngModel)]="application_dissemination.information_title">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Description</label>
+                    <div class="col-md-2">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="public_description_enabled"
+                               [(ngModel)]="public_description_enabled"
+                               name="public_description_enabled"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                    <div *ngIf="public_description_enabled" class="col-md-6">
+                    <textarea type="text" name="project_application_comment" class="form-control" maxlength="8192"
+                              placeholder="Enter public description. Leave blank for existing description."
+                              name="information_description"
+
+                              [(ngModel)]="application_dissemination.information_description"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Resources</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_resources"
+                               [(ngModel)]="application_dissemination.information_resources">
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Runtime</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_runtime"
+                               [(ngModel)]="application_dissemination.information_runtime"
+                               name="information_runtime"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Project Type</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_project_type"
+                               [(ngModel)]="application_dissemination.information_project_type"
+                               name="information_project_type"
+
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Name of PI</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_pi_name"
+                               [(ngModel)]="application_dissemination.information_pi_name"
+                               name="information_pi_name"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Institution</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_institution"
+                               [(ngModel)]="application_dissemination.information_institution"
+
+                               name="information_institution"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Workgroup</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_workgroup"
+                               [(ngModel)]="application_dissemination.information_workgroup"
+
+                               name="information_workgroup"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Higher Projects</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_higher_projects"
+                               [(ngModel)]="application_dissemination.information_higher_projects"
+
+                               name="information_higher_projects"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                </accordion-group>
+
+                <accordion-group [isOpen]="dissemination_platforms_open" #dissemination_platforms_accordion>
+                  <div accordion-heading style="width: 100%; cursor: pointer">
+                    Publication Platforms
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': dissemination_platforms_accordion.isOpen, 'icon-arrow-down': !dissemination_platforms_accordion.isOpen}"></i>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Newsletter</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="platform_newsletter"
+                               [(ngModel)]="application_dissemination.platform_newsletter"
+                               name="platform_newsletter"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Landing Page</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="platform_landing_page"
+                               [(ngModel)]="application_dissemination.platform_landing_page"
+                               name="platform_landing_page"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Portal News</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="platform_portal_news"
+                               [(ngModel)]="application_dissemination.platform_portal_news"
+
+                               name="platform_portal_news"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Twitter</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="platform_twitter"
+                               [(ngModel)]="application_dissemination.platform_twitter"
+                               name="platform_twitter"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                </accordion-group>
+
+              </accordion>
+
+              <div class="form-group row">
+                <div class="alert alert-info col-md-auto"><span>Please specify which information about your project and which platforms may be used to publish information.
+            Select or deselect options by enabling or disabling the switches within the fields above.
+            If publication is permitted, at least the title (or optionally a public title) and at least one platform must be selected.</span>
+                </div>
+              </div>
 
             </div>
 
