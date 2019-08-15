@@ -34,6 +34,13 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
   selectedVm: VirtualMachine = null;
 
+  STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
+
+  CPU_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/cpu_icon.svg';
+  RAM_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/ram_icon.svg';
+  STORAGE_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/storage_icon.svg';
+  GPU_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/gpu_icon.svg';
+
   total_pages: number;
   /**
    * If user is vo admin.

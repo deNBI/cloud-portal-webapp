@@ -41,10 +41,11 @@
       <tr>
         <th>Name</th>
         <th>Project</th>
+        <th>Flavor</th>
         <th>Status</th>
         <th>Created at (d/m/y)</th>
         <th>How to Connect</th>
-        <th >Elixir ID</th>
+        <th>Elixir ID</th>
         <th>Stopped at (d/m/y)</th>
         <th>Actions</th>
 
@@ -59,6 +60,7 @@
                  name="filterProjectName"
                  [(ngModel)]="filterProjectName" (ngModelChange)="filterProjectNameChanged.next($event)">
       </td>
+      <td></td>
       <td>
 
         <div class="checkbox">
@@ -94,8 +96,8 @@
                  [(ngModel)]="filterVmCreated_at" (ngModelChange)="filterCreatedAtChanged.next($event)"--></td>
       <td></td>
       <td><input style="width: 110px;" type="text" placeholder="Filter"
-                                     name="filterVmElixir_id" [(ngModel)]="filterVmElixir_id"
-                                     (ngModelChange)="filterElixirIdChanged.next($event);"></td>
+                 name="filterVmElixir_id" [(ngModel)]="filterVmElixir_id"
+                 (ngModelChange)="filterElixirIdChanged.next($event);"></td>
       <td><!--input style="width: 110px;" t type="text" placeholder="Filter"
                  name="filterVmStopped_at"
                  [(ngModel)]="filterVmStopped_at" (ngModelChange)="applyFilter();"--></td>
@@ -106,10 +108,70 @@
 
         <tr>
           <td>
-            ***REMOVED******REMOVED***vm.name***REMOVED******REMOVED***
+            <popover-content #namePopover
+                             [title]="vm?.name"
+                             placement="right"
+                             [animation]="true"
+                             [closeOnClickOutside]="true">
+              <table class="table-bordered">
+                <tr>
+                  <td>ID</td>
+                  <td>***REMOVED******REMOVED***vm?.openstackid***REMOVED******REMOVED***</td>
+                </tr>
+              </table>
+            </popover-content>
+
+            <strong [popover]="namePopover"><span style="color: #005AA9;">***REMOVED******REMOVED***vm?.name***REMOVED******REMOVED***</span></strong>
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
             ***REMOVED******REMOVED***vm.project***REMOVED******REMOVED***
+          </td>
+          <td>
+            <popover-content #myPopover
+                             [title]="vm?.flavor?.name"
+                             placement="right"
+                             [animation]="true"
+                             [closeOnClickOutside]="true">
+              <div class="scroll-flavor">
+
+                <div class="col">
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="***REMOVED******REMOVED***RAM_ICON_PATH***REMOVED******REMOVED***" alt="">
+                    </figure>
+                    ***REMOVED******REMOVED***vm?.flavor?.ram***REMOVED******REMOVED*** GB Ram
+                  </div>
+                </div>
+                <div class="col"
+                >
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="***REMOVED******REMOVED***CPU_ICON_PATH***REMOVED******REMOVED***" alt="">
+                    </figure>
+                    ***REMOVED******REMOVED***vm?.flavor.vcpus***REMOVED******REMOVED*** Cores
+                  </div>
+                </div>
+                <div class="col"
+                >
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="***REMOVED******REMOVED***STORAGE_ICON_PATH***REMOVED******REMOVED***" alt="">
+                    </figure>
+                    ***REMOVED******REMOVED*** vm?.flavor.rootdisk***REMOVED******REMOVED*** GB root disk
+                  </div>
+                </div>
+                <div class="col" *ngIf="vm?.flavor?.gpu  > 0">
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="***REMOVED******REMOVED***GPU_ICON_PATH***REMOVED******REMOVED***" alt="">
+                    </figure>
+                    ***REMOVED******REMOVED***vm?.flavor?.gpu***REMOVED******REMOVED*** <span *ngIf="vm?.flavor?.gpu == 1"> GPU</span><span *ngIf="vm?.flavor?.gpu > 1"> GPUs</span>
+                  </div>
+                </div>
+              </div>
+            </popover-content>
+
+            <strong [popover]="myPopover"><span style="color: #005AA9;">***REMOVED******REMOVED***vm?.flavor?.name***REMOVED******REMOVED***</span></strong>
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
                          <span *ngIf="vm.status == vm_statuses[vm_statuses.DELETED]"
@@ -135,7 +197,7 @@
             </button>
           </td>
           <td
-              style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
+            style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
             ***REMOVED******REMOVED***vm.elixir_id***REMOVED******REMOVED***
           </td>
           <td>

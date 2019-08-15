@@ -18,6 +18,7 @@ import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
 import ***REMOVED***AccordionModule, BsDropdownModule***REMOVED*** from 'ngx-bootstrap';
 import ***REMOVED***BiocondaComponent***REMOVED*** from './conda/bioconda.component';
 import ***REMOVED***HowToConnectComponent***REMOVED*** from './shared-modal/how-to-connect.component';
+import ***REMOVED***PopoverModule***REMOVED*** from 'ngx-smart-popover';
 
 /**
  * VM module.
@@ -34,7 +35,8 @@ import ***REMOVED***HowToConnectComponent***REMOVED*** from './shared-modal/how-
               PaginationModule.forRoot(),
               BsDropdownModule.forRoot(),
               CarouselModule,
-              AccordionModule.forRoot()
+              AccordionModule.forRoot(),
+              PopoverModule
 
             ],
             declarations: [
