@@ -12,7 +12,7 @@
           <div class="col">
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="{{ramIconPath}}" alt="">
+                <img src="{{RAM_ICON_PATH}}" alt="">
               </figure>
               {{convertMbToGb(selectedFlavor?.ram)}} GB Ram
             </div>
@@ -21,16 +21,16 @@
           >
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="{{cpuIconPath}}" alt="">
+                <img src="{{CPU_ICON_PATH}}" alt="">
               </figure>
-              {{selectedFlavor?.vcpus}} CPUs
+              {{selectedFlavor?.vcpus}} Cores
             </div>
           </div>
           <div class="col"
           >
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="{{storageIconPath}}" alt="">
+                <img src="{{STORAGE_ICON_PATH}}" alt="">
               </figure>
               {{selectedFlavor?.rootdisk}} GB root disk
             </div>
@@ -38,7 +38,7 @@
           <div class="col" *ngIf="selectedFlavor?.gpu > 0">
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="{{gpuIconPath}}" alt="">
+                <img src="{{GPU_ICON_PATH}}" alt="">
               </figure>
               {{selectedFlavor?.gpu}} <span *ngIf="selectedFlavor?.gpu == 1"> GPU</span><span *ngIf="selectedFlavor?.gpu > 1"> GPUs</span>
             </div>
@@ -64,7 +64,7 @@
           <div class="col">
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="{{ramIconPath}}" alt="">
+                <img src="{{RAM_ICON_PATH}}" alt="">
               </figure>
               {{convertMbToGb(flavor?.ram)}} GB Ram
             </div>
@@ -73,16 +73,16 @@
           >
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="{{cpuIconPath}}" alt="">
+                <img src="{{CPU_ICON_PATH}}" alt="">
               </figure>
-              {{flavor?.vcpus}} CPUs
+              {{flavor?.vcpus}} Cores
             </div>
           </div>
           <div class="col"
           >
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="{{storageIconPath}}" alt="">
+                <img src="{{STORAGE_ICON_PATH}}" alt="">
               </figure>
               {{flavor?.rootdisk}} GB root disk
             </div>
@@ -90,7 +90,7 @@
           <div class="col" *ngIf="flavor?.gpu > 0">
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="{{gpuIconPath}}" alt="">
+                <img src="{{GPU_ICON_PATH}}" alt="">
               </figure>
               {{flavor?.gpu}} <span *ngIf="flavor?.gpu == 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
             </div>
@@ -116,7 +116,7 @@
           <div class="col">
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="{{ramIconPath}}" alt="">
+                <img src="{{RAM_ICON_PATH}}" alt="">
               </figure>
               {{convertMbToGb(selectedFlavor?.ram)}} GB Ram
             </div>
@@ -125,16 +125,16 @@
           >
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="{{cpuIconPath}}" alt="">
+                <img src="{{CPU_ICON_PATH}}" alt="">
               </figure>
-              {{selectedFlavor?.vcpus}} CPUs
+              {{selectedFlavor?.vcpus}} Cores
             </div>
           </div>
           <div class="col"
           >
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="{{storageIconPath}}" alt="">
+                <img src="{{STORAGE_ICON_PATH}}" alt="">
               </figure>
               {{selectedFlavor?.rootdisk}} GB root disk
             </div>
@@ -142,7 +142,7 @@
           <div class="col" *ngIf="selectedFlavor?.gpu > 0">
             <div class="row">
               <figure class="flavor-card-icons">
-                <img src="{{gpuIconPath}}" alt="">
+                <img src="{{GPU_ICON_PATH}}" alt="">
               </figure>
               {{selectedFlavor?.gpu}} <span *ngIf="selectedFlavor?.gpu == 1"> GPU</span><span *ngIf="selectedFlavor?.gpu > 1"> GPUs</span>
             </div>
@@ -167,7 +167,7 @@
                 <div class="col">
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="{{ramIconPath}}" alt="">
+                      <img src="{{RAM_ICON_PATH}}" alt="">
                     </figure>
                     {{convertMbToGb(flavor?.ram)}} GB Ram
                   </div>
@@ -176,16 +176,16 @@
                 >
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="{{cpuIconPath}}" alt="">
+                      <img src="{{CPU_ICON_PATH}}" alt="">
                     </figure>
-                    {{flavor?.vcpus}} CPUs
+                    {{flavor?.vcpus}} Cores
                   </div>
                 </div>
                 <div class="col"
                 >
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="{{storageIconPath}}" alt="">
+                      <img src="{{STORAGE_ICON_PATH}}" alt="">
                     </figure>
                     {{flavor?.rootdisk}} GB root disk
                   </div>
@@ -193,7 +193,7 @@
                 <div class="col" *ngIf="flavor?.gpu > 0">
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="{{gpuIconPath}}" alt="">
+                      <img src="{{GPU_ICON_PATH}}" alt="">
                     </figure>
                     {{flavor?.gpu}} <span *ngIf="flavor?.gpu == 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
                   </div>
@@ -225,7 +225,7 @@
                 <div class="col">
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="{{ramIconPath}}" alt="">
+                      <img src="{{RAM_ICON_PATH}}" alt="">
                     </figure>
                     {{convertMbToGb(flavor?.ram)}} GB Ram
                   </div>
@@ -234,16 +234,16 @@
                 >
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="{{cpuIconPath}}" alt="">
+                      <img src="{{CPU_ICON_PATH}}" alt="">
                     </figure>
-                    {{flavor?.vcpus}} CPUs
+                    {{flavor?.vcpus}} Cores
                   </div>
                 </div>
                 <div class="col"
                 >
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="{{storageIconPath}}" alt="">
+                      <img src="{{STORAGE_ICON_PATH}}" alt="">
                     </figure>
                     {{flavor?.rootdisk}} GB root disk
                   </div>
@@ -251,7 +251,7 @@
                 <div class="col" *ngIf="flavor?.gpu > 0">
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="{{gpuIconPath}}" alt="">
+                      <img src="{{GPU_ICON_PATH}}" alt="">
                     </figure>
                     {{flavor?.gpu}} <span *ngIf="flavor?.gpu == 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
                   </div>
