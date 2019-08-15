@@ -19,7 +19,6 @@ import {IResponseTemplate} from '../api-connector/response-template';
 export class FullLayoutComponent implements OnInit {
 
   public year: number = new Date().getFullYear();
-  public page_title: string = "what";
   public disabled: boolean = false;
   public status: { isopen: boolean } = {isopen: false};
   is_vo_admin: boolean = false;

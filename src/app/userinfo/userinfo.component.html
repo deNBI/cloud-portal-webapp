@@ -1,19 +1,16 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 <div *ngIf="isLoaded" class="animated fadeIn">
-    <div class="row">
+    <!--<div class="row">
         <div class="col-md-12">
-            <!--/.col-->
+
         <div class="col-md-4">
             <button *ngIf="freemiumActive && !isProjectMember" class="btn btn-primary btn-lg"
                     (click)="freemiummodal.show();">Join Freemium!
             </button>
         </div>
-    </div>
+    </div> -->
 
-    <div>
 
-      <div class="row" id="newsbadge"><a id="newsimage" href="https://cloud.denbi.de/2nd-de-nbi-cloud-user-meeting/"><img src="https://cloud.denbi.de/wp-content/uploads/2019/05/2nd_user_meeting.svg" alt="de.NBI Cloud User Meeting"></a></div>
-    </div>
     <div class="card">
         <div class="card-header">
             <i class="fa fa-align-justify"></i> Personal Information
@@ -71,6 +68,14 @@
             </div>
         </div>
     </div>
+
+
+
+    <div class="row" id="newsbadge">
+      <a id="newsimage" href="https://cloud.denbi.de/2nd-de-nbi-cloud-user-meeting/">
+        <img src="https://cloud.denbi.de/wp-content/uploads/2019/05/2nd_user_meeting.svg" alt="de.NBI Cloud User Meeting">
+      </a>
+  </div>
 </div>
 
 
