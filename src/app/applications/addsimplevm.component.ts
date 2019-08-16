@@ -18,6 +18,8 @@ import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/applicati
            })
 export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit {
 
+
+  title: string = "New SimpleVM Application";
   /**
    * List of flavor types.
    */

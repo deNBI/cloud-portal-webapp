@@ -10,6 +10,9 @@ import {ImageTag} from './image-tag';
              providers: [ImageService]
            })
 export class ImageTagComponent implements OnInit {
+
+  title: string = 'Image Tags';
+
   isLoaded: boolean = false;
 
   imageTags: ImageTag[];

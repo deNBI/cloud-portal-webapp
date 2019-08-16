@@ -65,6 +65,7 @@ export class VirtualMachineComponent implements OnInit {
   client_checked: boolean = false;
   playbook_run: number = 0;
   timeout: number = 0;
+  title: string = 'New Instance';
 
   /**
    * All image of a project.

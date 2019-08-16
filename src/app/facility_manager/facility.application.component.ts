@@ -21,6 +21,7 @@ import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/applicati
            })
 export class FacilityApplicationComponent extends ApplicationBaseClass implements OnInit {
 
+  title: string = 'Application Overview';
   /**
    * All Applications waiting for confirmation for the selected facility.
    * @type {Array}

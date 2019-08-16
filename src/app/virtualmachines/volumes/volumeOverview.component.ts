@@ -19,6 +19,7 @@ import {IResponseTemplate} from '../../api-connector/response-template';
            })
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit {
+  title: string = 'Volume Overview';
   /**
    * Enum of all volume action states.
    */

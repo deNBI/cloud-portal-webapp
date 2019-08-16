@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TypeOverviewComponent implements OnInit {
 
+    title: string = 'Project Type Overview';
+
     simpleVM_logo_link: String;
     simpleVM_ease_logo: String;
     simpleVM_curve_logo: String;

@@ -23,6 +23,7 @@ import {Subject} from 'rxjs';
            })
 
 export class VmOverviewComponent extends FilterBaseClass implements OnInit {
+  title: string = 'Instance Overview';
   /**
    * All  vms.
    */

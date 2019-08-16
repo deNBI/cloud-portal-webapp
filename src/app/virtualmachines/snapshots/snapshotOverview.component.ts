@@ -17,6 +17,9 @@ enum Snapshot_Delete_Statuses {
            })
 
 export class SnapshotOverviewComponent implements OnInit {
+
+  title: string = 'Snapshot Overview';
+
   /**
    * All snapshots.
    * @type {Array}

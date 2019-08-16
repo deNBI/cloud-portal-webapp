@@ -20,6 +20,7 @@ import {ApplicationBaseClass} from 'app/shared/shared_modules/baseClass/applicat
 
 export class AddcloudapplicationComponent extends ApplicationBaseClass implements OnInit {
 
+  title: string = 'New OpenStack Application';
   /**
    * If it is in production or dev mode.
    * @type {boolean}

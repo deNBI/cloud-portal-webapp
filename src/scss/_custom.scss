@@ -20,15 +20,19 @@ $deNBI_black: #000000;
 $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
 
+
+
+
 .app-footer
 {
-  background-color: $deNBI_white;
-  margin: 15px !important;
+  background-color: #FFFFFF;
   width: 200px;
-  left: 0px;
+  left: -185px;
   border-radius: 10px;
-  border-top: none !important;
   font-family: 'Raleway', sans-serif;
+  bottom: 10px;
+  position: fixed;
+  height: 54px;
 }
 
 .sidebar-fixed .app-header + .app-body .sidebar{
@@ -110,10 +114,12 @@ main{
   background-color: $deNBI_white !important;
   color: $deNBI_cyan !important;
   position: relative !important;
+  border-radius:10px;
 }
 
 .sidebar .sidebar-minimizer:hover {
   background-color: $deNBI_lightgrey !important;
+  border-radius: 10px;
 }
 
 .nav-item{
@@ -161,6 +167,19 @@ main{
   font-family: 'Raleway', sans-serif;
 }
 
+.animated.fadeIn
+{
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 100px);
+  border-radius:10px;
+}
+
+
+.main .container-fluid
+{
+  padding: 0 15px 0 30px;
+}
 
 #title_headline
 {
