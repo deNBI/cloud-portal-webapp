@@ -13,14 +13,14 @@
           <i class="fa fa-align-justify"></i> Your applications
         </div>
         <div class="card-body" *ngIf="user_applications.length == 0">
-          <div class="alert alert-success" role="alert">
+          <div class="alert alert-primary" role="alert">
             <strong>No Applications!</strong> You have no
             applications in review.
           </div>
         </div>
         <div *ngIf="user_applications.length > 0" class="card-body">
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-hover">
               <thead>
               <tr>
                 <th></th>
@@ -94,7 +94,7 @@
                     <div id="user_application-{{ application?.id }}"
                          [class.collapse]="getCollapseStatus('user_application-' + application?.Id)"
                          class="table-responsive">
-                      <table class="table table-striped" style="width: 80%">
+                      <table class="table table-hover" style="width: 80%">
                         <tr  *ngIf="application?.PIApproved">
                           <td>
                             PI Name
@@ -267,7 +267,7 @@
         </div>
         <div class="card-body"
              *ngIf="!this.activeApplicationsAvailable()">
-          <div class="alert alert-success" role="alert">
+          <div class="alert alert-primary" role="alert">
             <strong>No new Applications!</strong> There are no new
             project applications for review.
           </div>
@@ -276,7 +276,7 @@
         <div *ngIf="this.activeApplicationsAvailable()"
              class="card-body">
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-hover">
               <thead>
               <tr>
                 <th></th>
@@ -457,7 +457,7 @@
                       <div id="application_review-{{ application?.id }}"
                            [class.collapse]="getCollapseStatus('application_review-' + application?.Id)">
                         <div class="table-responsive">
-                          <table class="table table-striped">
+                          <table class="table table-hover">
 
 
                             <tr  *ngIf="application?.PIApproved">
@@ -706,7 +706,7 @@
           <i class="fa fa-align-justify"></i> Application history
         </div>
         <div class="card-body" *ngIf="all_applications.length == 0">
-          <div class="alert alert-warning" role="alert">
+          <div class="alert alert-primary" role="alert">
             <strong>No Applications!</strong> There are no
             applications at all!
           </div>
@@ -714,7 +714,7 @@
 
         <div *ngIf="all_applications.length > 0" class="card-body">
           <div class="table-responsive">
-            <table class="table table-striped table-hover">
+            <table class="table table-hover table-hover">
               <thead>
               <tr>
                 <th></th>
@@ -796,7 +796,7 @@
                            [class.collapse]="getCollapseStatus('application_history-' + application?.Id)">
                         <div>
                           <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-hover">
                               <tr *ngIf="application?.PIApproved">
                                 <td>
                                   PI Name
@@ -1103,7 +1103,7 @@
           <div *ngFor="let c of notificationClientInfo" class="table-responsive">
             <br>
             <p>Client: {{c.location}}</p>
-            <table class="table table-striped">
+            <table class="table table-hover">
               <thead>
               <tr>
                 <td></td>
@@ -1551,7 +1551,7 @@
           and take changes.
         </div>
         <div class="table-responsive">
-          <table class="table table-striped">
+          <table class="table table-hover">
             <tr *ngFor="let str of valuesToConfirm">
               <td>{{str}}</td>
             </tr>
