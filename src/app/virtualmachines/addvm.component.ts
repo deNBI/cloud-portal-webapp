@@ -565,5 +565,4 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   getTimeoutMinutes(): number ***REMOVED***
     return Math.ceil(this.timeout / 60);
   ***REMOVED***
-
 ***REMOVED***

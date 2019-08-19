@@ -1,5 +1,5 @@
 import ***REMOVED*** Directive, Input ***REMOVED*** from '@angular/core';
-import ***REMOVED*** NG_VALIDATORS, AbstractControl, ValidatorFn, Validator, FormControl ***REMOVED*** from '@angular/forms';
+import ***REMOVED*** NG_VALIDATORS, AbstractControl, ValidatorFn, Validator***REMOVED*** from '@angular/forms';
 
 @Directive(***REMOVED***
   selector: '[appMinAmount]',
