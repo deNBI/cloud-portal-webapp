@@ -23,18 +23,6 @@ $simplevmcolour: #00ADEF;
 
 
 
-.app-footer
-{
-  background-color: #FFFFFF;
-  width: 200px;
-  left: -185px;
-  border-radius: 10px;
-  font-family: 'Raleway', sans-serif;
-  bottom: 10px;
-  position: fixed;
-  height: 54px;
-}
-
 .sidebar-fixed .app-header + .app-body .sidebar{
   height: calc(100vh - 175px);
   border: 20px;
@@ -200,7 +188,6 @@ main{
   width: calc(100vw - 240px);
   position: fixed;
   top: 15px;
-  left: 225px;
   right: 15px;
   text-align: center;
   margin:auto;
@@ -297,3 +284,35 @@ main{
 
 }
 
+.brand-minimized .app-header.navbar, .brand-minimized .app-footer
+{
+  width: 50px !important;
+}
+
+.app-footer
+{
+  background-color: #FFFFFF;
+  width: 200px;
+  left: -185px;
+  border-radius: 10px;
+  font-family: 'Raleway', sans-serif;
+  bottom: 10px;
+  position: fixed;
+  height: 54px;
+}
+
+.sidebar-minimized .app-footer
+{
+  left: -35px;
+}
+
+.sidebar-minimized .main
+{
+  margin-left: 45px !important;
+}
+
+.sidebar-minimized .w3-bar-block
+{
+  width: calc(100vw - 90px);
+  margin:auto;
+}
