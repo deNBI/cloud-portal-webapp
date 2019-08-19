@@ -29,6 +29,20 @@ export class BiocondaService ***REMOVED***
     ***REMOVED***)
   ***REMOVED***
 
+  getAllTools(page: number, name?: string, version?: string, build?: string): Observable<any> ***REMOVED***
+    const params: HttpParams = new HttpParams()
+      .set('page', page.toString())
+      .set('build', build)
+      .set('version', version)
+      .set('name', name);
+
+    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***conda/all/`, ***REMOVED***
+      headers: header,
+      withCredentials: true,
+      params: params
+    ***REMOVED***)
+  ***REMOVED***
+
   getAnacondaTools(): Observable<any> ***REMOVED***
     return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***conda/anaconda/`, ***REMOVED***
       headers: header,

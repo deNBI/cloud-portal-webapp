@@ -19,7 +19,7 @@ export class BiocondaComponent implements OnInit ***REMOVED***
   FIRST_PAGE: number = 1;
   DEBOUNCE_TIME: number = 300;
 
-  bioconda_tools: IBiocondaTool[] = [];
+  all_tools: IBiocondaTool[] = [];
 
   chosen_tools: IBiocondaTool[] = [];
 
@@ -53,11 +53,11 @@ export class BiocondaComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
   pageChanged(event): void ***REMOVED***
-    this.getBiocondaTools(event.page);
+    this.getAllTools(event.page);
   ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
-    this.getBiocondaTools(this.FIRST_PAGE);
+    this.getAllTools(this.FIRST_PAGE);
 
     this.filternameChanged
       .pipe(
@@ -65,7 +65,7 @@ export class BiocondaComponent implements OnInit ***REMOVED***
         distinctUntilChanged())
       .subscribe((filterName: string) => ***REMOVED***
         this.filterToolName = filterName;
-        this.getBiocondaTools(this.FIRST_PAGE)
+        this.getAllTools(this.FIRST_PAGE)
 
       ***REMOVED***);
 
@@ -75,7 +75,7 @@ export class BiocondaComponent implements OnInit ***REMOVED***
         distinctUntilChanged())
       .subscribe((filterVersion: string) => ***REMOVED***
         this.filterToolVersion = filterVersion;
-        this.getBiocondaTools(this.FIRST_PAGE)
+        this.getAllTools(this.FIRST_PAGE)
 
       ***REMOVED***);
 
@@ -85,31 +85,33 @@ export class BiocondaComponent implements OnInit ***REMOVED***
         distinctUntilChanged())
       .subscribe((filterBuild: string) => ***REMOVED***
         this.filterToolBuild = filterBuild;
-        this.getBiocondaTools(this.FIRST_PAGE)
+        this.getAllTools(this.FIRST_PAGE)
 
       ***REMOVED***);
 
   ***REMOVED***
 
-  getBiocondaTools(page: number): void ***REMOVED***
-    this.condaService.getBiocondaTools(page, this.filterToolName, this.filterToolVersion, this.filterToolBuild).subscribe(
+  getAllTools(page: number): void ***REMOVED***
+    this.isSearching = true;
+    this.condaService.getAllTools(page, this.filterToolName, this.filterToolVersion, this.filterToolBuild).subscribe(
       res => ***REMOVED***
-        this.bioconda_tools = [];
+        this.all_tools = [];
 
         for (const line of res['packages']) ***REMOVED***
-          this.bioconda_tools.push(***REMOVED***
-                                     name: line['name'],
-                                     version: line['version'],
-                                     build: line['build']
-                                   ***REMOVED***)
+          this.all_tools.push(***REMOVED***
+                                name: line['name'],
+                                version: line['version'],
+                                build: line['build']
+                              ***REMOVED***)
         ***REMOVED***
-
-        this.total_pages = res['num_pages'];
+        this.toolsPerPage = res['items_per_page'];
+        this.total_pages = res['total_items'];
         this.toolsStart = 0;
         this.toolsEnd = this.toolsPerPage;
 
         this.currentPage = page;
         this.pagination.selectPage(this.currentPage);
+        this.isSearching = false;
       ***REMOVED***);
   ***REMOVED***
 

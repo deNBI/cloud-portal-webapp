@@ -12,7 +12,11 @@
         </thead>
         <tbody>
         <tr>
-          <td></td>
+          <td align="center">
+            <div *ngIf="isSearching" class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </td>
           <td>
             <input type="text" placeholder="Filter"
                    name="filterToolNameRef" (ngModelChange)='changedNameFilter($event)'
@@ -31,12 +35,13 @@
                    (ngModelChange)="changedBuildFilter($event)">
           </td>
         </tr>
-        <tr *ngFor="let tool of bioconda_tools">
+        <tr *ngFor="let tool of all_tools">
           <td class="text-center" style="width: 10%">
             <button class="btn btn-lg" (click)="add_or_remove(tool)">
               <i *ngIf="!is_added(tool)" class="icon-plus" style="color: green"></i>
               <i *ngIf="is_added(tool)" class="icon-minus" style="color: red"></i>
-            </button></td>
+            </button>
+          </td>
           <td>***REMOVED******REMOVED***tool.name***REMOVED******REMOVED***</td>
           <td>***REMOVED******REMOVED***tool.version***REMOVED******REMOVED***</td>
           <td>***REMOVED******REMOVED***tool.build***REMOVED******REMOVED***</td>
@@ -45,6 +50,7 @@
       </table>
       <div class="d-flex justify-content-center">
         <pagination [totalItems]="total_pages" [itemsPerPage]="toolsPerPage"
+
                     (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
                     [boundaryLinks]="true" [maxSize]="max_pages" [rotate]="false" #pagination>
         </pagination>
@@ -55,21 +61,22 @@
     <div class="table-responsive">
       <table class="table table-striped" #chosenTable>
         <thead>
-          <tr>
-            <th style="width: 25%">Remove</th>
-            <th>Chosen Package</th>
-          </tr>
+        <tr>
+          <th style="width: 25%">Remove</th>
+          <th>Chosen Package</th>
+        </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let tool of chosen_tools">
-            <td class="text-center" style="width: 25%">
-              <button class="btn btn-lg" (click)="add_or_remove(tool)">
-                <i class="icon-minus" style="color: red"></i>
-              </button></td>
-            <td>Name: ***REMOVED******REMOVED***tool.name***REMOVED******REMOVED***<br>
-                Version: ***REMOVED******REMOVED***tool.version***REMOVED******REMOVED***<br>
-                Build: ***REMOVED******REMOVED***tool.build***REMOVED******REMOVED***</td>
-          </tr>
+        <tr *ngFor="let tool of chosen_tools">
+          <td class="text-center" style="width: 25%">
+            <button class="btn btn-lg" (click)="add_or_remove(tool)">
+              <i class="icon-minus" style="color: red"></i>
+            </button>
+          </td>
+          <td>Name: ***REMOVED******REMOVED***tool.name***REMOVED******REMOVED***<br>
+            Version: ***REMOVED******REMOVED***tool.version***REMOVED******REMOVED***<br>
+            Build: ***REMOVED******REMOVED***tool.build***REMOVED******REMOVED***</td>
+        </tr>
         </tbody>
       </table>
     </div>

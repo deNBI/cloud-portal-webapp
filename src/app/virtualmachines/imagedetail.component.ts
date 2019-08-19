@@ -19,7 +19,7 @@ export class ImageDetailComponent implements OnInit ***REMOVED***
   carousel_window_min_xl6: number = 1200;
 
   customOptions: OwlOptions = ***REMOVED***
-    loop: true,
+    loop: false,
     mouseDrag: false,
     touchDrag: false,
     pullDrag: false,
