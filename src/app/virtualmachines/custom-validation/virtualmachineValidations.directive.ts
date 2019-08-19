@@ -1,38 +1,29 @@
-import {Directive, forwardRef, Injectable, Input} from '@angular/core';
-import {AbstractControl, AsyncValidator, NG_ASYNC_VALIDATORS, ValidationErrors} from '@angular/forms';
+import {Directive, Input} from '@angular/core';
+import {AbstractControl, AsyncValidator, AsyncValidatorFn, NG_ASYNC_VALIDATORS, ValidationErrors} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
 import {catchError, map} from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' })
-export class UniqueInstanceNameValidator implements AsyncValidator {
-  constructor(private virtualmachineservice: VirtualmachineService) {}
-
-  validate(
-    ctrl: AbstractControl
-  ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
-    return this.virtualmachineservice.isInstanceNameTaken(ctrl.value).pipe(
-      map((isTaken: any) => (isTaken ? { uniqueInstanceName: true } : null)),
+export function existingInstanceNameValidator(virtualmachineservice: VirtualmachineService,
+                                              client: {[key: string]: string}):
+  AsyncValidatorFn {
+  return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+    return virtualmachineservice.isInstanceNameTaken(control.value, client['host'], client['port']).pipe(
+      map((isTaken: any) => (isTaken === 'true' ? { uniqueInstanceName: true } : null)),
       catchError(() => null)
     );
-  }
+  };
 }
 
 @Directive({
-             selector: '[appUniqueInstanceName]',
-             providers: [
-               {
-                 provide: NG_ASYNC_VALIDATORS,
-                 useExisting: forwardRef(() => UniqueInstanceNameValidator),
-                 multi: true
-               }
-             ]
+             selector: '[appInstanceNameUnique]',
+             providers: [{provide: NG_ASYNC_VALIDATORS, useExisting: ExistingUsernameValidatorDirective, multi: true}]
            })
-export class UniqueInstanceNameDirective {
-  @Input('appUniqueInstanceName') client: {[selector: string]: string};
-  constructor(private validator: UniqueInstanceNameValidator) {}
+export class ExistingUsernameValidatorDirective implements AsyncValidator {
+  @Input('appInstanceNameUnique') client: {[key: string]: string};
+  constructor(private virtualmachineservice: VirtualmachineService) {}
 
-  validate(control: AbstractControl): any {
-    this.validator.validate(control);
+  validate(control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
+    return existingInstanceNameValidator(this.virtualmachineservice, this.client)(control);
   }
 }

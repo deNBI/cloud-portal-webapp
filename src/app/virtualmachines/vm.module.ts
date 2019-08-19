@@ -19,7 +19,7 @@ import {AccordionModule, BsDropdownModule} from 'ngx-bootstrap';
 import {BiocondaComponent} from './conda/bioconda.component';
 import {HowToConnectComponent} from './shared-modal/how-to-connect.component';
 import {PopoverModule} from 'ngx-smart-popover';
-import {UniqueInstanceNameDirective} from './custom-validation/virtualmachineValidations.directive';
+import {ExistingUsernameValidatorDirective} from './custom-validation/virtualmachineValidations.directive';
 
 /**
  * VM module.
@@ -50,7 +50,7 @@ import {UniqueInstanceNameDirective} from './custom-validation/virtualmachineVal
               SnapshotOverviewComponent,
               HowToConnectComponent,
               BiocondaComponent,
-              UniqueInstanceNameDirective
+              ExistingUsernameValidatorDirective
             ]
           })
 export class VmModule {
