@@ -23,7 +23,6 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
 
   public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
-  public public_description_enabled: boolean = false;
 
   public edam_ontology_terms: EdamOntologyTerm[];
 

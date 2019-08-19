@@ -6,15 +6,24 @@ export class ApplicationDissemination ***REMOVED***
   private _platform_portal_news: boolean = false;
   private _information_title: string = '';
   private _information_description: string = '';
+  private _information_description_allowed: boolean = false;
   private _information_resources: boolean = false;
-  private _information_higher_projects: boolean = false;
-  private _information_runtime: boolean = false;
+  private _information_project_affiliation: boolean = false;
+  private _information_lifetime: boolean = false;
   private _information_pi_name: boolean = false;
   private _information_institution: boolean = false;
   private _information_workgroup: boolean = false;
   private _information_project_type: boolean = false;
 
   constructor() ***REMOVED***
+  ***REMOVED***
+
+  get information_description_allowed(): boolean ***REMOVED***
+    return this._information_description_allowed;
+  ***REMOVED***
+
+  set information_description_allowed(value: boolean) ***REMOVED***
+    this._information_description_allowed = value;
   ***REMOVED***
 
   get platform_newsletter(): boolean ***REMOVED***
@@ -73,20 +82,20 @@ export class ApplicationDissemination ***REMOVED***
     this._information_resources = value;
   ***REMOVED***
 
-  get information_higher_projects(): boolean ***REMOVED***
-    return this._information_higher_projects;
+  get information_project_affiliation(): boolean ***REMOVED***
+    return this._information_project_affiliation;
   ***REMOVED***
 
-  set information_higher_projects(value: boolean) ***REMOVED***
-    this._information_higher_projects = value;
+  set information_project_affiliation(value: boolean) ***REMOVED***
+    this._information_project_affiliation = value;
   ***REMOVED***
 
-  get information_runtime(): boolean ***REMOVED***
-    return this._information_runtime;
+  get information_lifetime(): boolean ***REMOVED***
+    return this._information_lifetime;
   ***REMOVED***
 
-  set information_runtime(value: boolean) ***REMOVED***
-    this._information_runtime = value;
+  set information_lifetime(value: boolean) ***REMOVED***
+    this._information_lifetime = value;
   ***REMOVED***
 
   get information_pi_name(): boolean ***REMOVED***
