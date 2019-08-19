@@ -78,7 +78,7 @@
 
         </li>
         -->
-        <li *ngIf="vm_project_member || get_is_vo_admin()" class="nav-title">
+        <li class="nav-title">
           Virtual Machines
         </li>
         <li class="nav-item" *ngIf="vm_project_member ">
@@ -87,13 +87,13 @@
 
             class="nav-icon icon-screen-desktop"></i> New Instance</a>
         </li>
-        <li *ngIf="vm_project_member || is_vo_admin"
-            class="nav-item nav-dropdown" appNavDropdown>
+        <li
+          class="nav-item nav-dropdown" appNavDropdown>
           <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;"
              appNavDropdownToggle><i
             class="nav-icon icon-list" onmouseover="" style="cursor: pointer;"></i> Overviews</a>
           <ul class="nav-dropdown-items">
-            <li class="nav-item" *ngIf="vm_project_member || is_vo_admin">
+            <li class="nav-item">
               <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                  [routerLink]="['/virtualmachines/vmOverview']"><i
                 class="nav-icon icon-list"></i> Instances</a>

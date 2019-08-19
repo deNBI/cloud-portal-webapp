@@ -193,7 +193,7 @@
                              [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
                     </div>
-                    <div class="alert alert-primary" role="alert" style="margin: 5px">Info: The instance name will
+                    <div class="alert alert-primary" role="alert" style="margin-top: 5px">Info: The instance name will
                       also
                       be the hostname of the vm.
                     </div>
@@ -323,7 +323,7 @@
 
 
                 <accordion-group #autoGroup
-                                 *ngIf="selectedProject && projectDataLoaded  && selectedProjectVmsUsed < selectedProjectVmsMax">
+                                 *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Tools </strong><span
                     class="badge badge-primary">BETA</span>
