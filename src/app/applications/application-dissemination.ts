@@ -6,15 +6,24 @@ export class ApplicationDissemination {
   private _platform_portal_news: boolean = false;
   private _information_title: string = '';
   private _information_description: string = '';
+  private _information_description_allowed: boolean = false;
   private _information_resources: boolean = false;
-  private _information_higher_projects: boolean = false;
-  private _information_runtime: boolean = false;
+  private _information_project_affiliation: boolean = false;
+  private _information_lifetime: boolean = false;
   private _information_pi_name: boolean = false;
   private _information_institution: boolean = false;
   private _information_workgroup: boolean = false;
   private _information_project_type: boolean = false;
 
   constructor() {
+  }
+
+  get information_description_allowed(): boolean {
+    return this._information_description_allowed;
+  }
+
+  set information_description_allowed(value: boolean) {
+    this._information_description_allowed = value;
   }
 
   get platform_newsletter(): boolean {
@@ -73,20 +82,20 @@ export class ApplicationDissemination {
     this._information_resources = value;
   }
 
-  get information_higher_projects(): boolean {
-    return this._information_higher_projects;
+  get information_project_affiliation(): boolean {
+    return this._information_project_affiliation;
   }
 
-  set information_higher_projects(value: boolean) {
-    this._information_higher_projects = value;
+  set information_project_affiliation(value: boolean) {
+    this._information_project_affiliation = value;
   }
 
-  get information_runtime(): boolean {
-    return this._information_runtime;
+  get information_lifetime(): boolean {
+    return this._information_lifetime;
   }
 
-  set information_runtime(value: boolean) {
-    this._information_runtime = value;
+  set information_lifetime(value: boolean) {
+    this._information_lifetime = value;
   }
 
   get information_pi_name(): boolean {

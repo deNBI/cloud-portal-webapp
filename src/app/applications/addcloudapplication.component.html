@@ -431,12 +431,25 @@
             </div>
             <div *ngIf="project_application_report_allowed">
 
+              <div class="form-group row col-md-12">
+                <div class="alert alert-info col-md-auto"><span>Please specify which information about your project and which platforms may be used to publish information.
+            Select or deselect options by enabling or disabling the switches within the fields below. To do this, open the Dissemination Options.
+            If publication is permitted, at least the title (or optionally a public title) and at least one platform must be selected.</span>
+                </div>
+              </div>
+
               <accordion>
                 <accordion-group [isOpen]="dissemination_information_open" #dissemination_information_accordion>
                   <div accordion-heading style="width: 100%; cursor: pointer">
-                    Type of Information
+                    Dissemination Options
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': dissemination_information_accordion.isOpen, 'icon-arrow-down': !dissemination_information_accordion.isOpen}"></i>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-md-4">
+                      <h6><strong>Type of Information</strong></h6>
+                    </div>
                   </div>
 
                   <div class="form-group row">
@@ -461,14 +474,14 @@
                     <div class="col-md-2">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="public_description_enabled"
-                               [(ngModel)]="public_description_enabled"
-                               name="public_description_enabled"
+                               [(ngModel)]="application_dissemination.information_description_allowed"
+                               name="information_description_allowed"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
                     </div>
-                    <div *ngIf="public_description_enabled" class="col-md-6">
+                    <div *ngIf="application_dissemination.information_description_allowed" class="col-md-6">
                     <textarea type="text" name="project_application_comment" class="form-control" maxlength="8192"
                               placeholder="Enter public description. Leave blank for existing description."
                               name="information_description"
@@ -489,12 +502,12 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Runtime</label>
+                    <label class="col-md-4 form-control-label">lifetime</label>
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
-                        <input type="checkbox" class="switch-input" name="information_runtime"
-                               [(ngModel)]="application_dissemination.information_runtime"
-                               name="information_runtime"
+                        <input type="checkbox" class="switch-input" name="information_lifetime"
+                               [(ngModel)]="application_dissemination.information_lifetime"
+                               name="information_lifetime"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
@@ -562,13 +575,13 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Higher Projects</label>
+                    <label class="col-md-4 form-control-label">Project Affiliation</label>
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
-                        <input type="checkbox" class="switch-input" name="information_higher_projects"
-                               [(ngModel)]="application_dissemination.information_higher_projects"
+                        <input type="checkbox" class="switch-input" name="information_project_affiliation"
+                               [(ngModel)]="application_dissemination.information_project_affiliation"
 
-                               name="information_higher_projects"
+                               name="information_project_affiliation"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
@@ -576,14 +589,14 @@
                     </div>
                   </div>
 
-                </accordion-group>
+                  <hr class="my-4">
 
-                <accordion-group [isOpen]="dissemination_platforms_open" #dissemination_platforms_accordion>
-                  <div accordion-heading style="width: 100%; cursor: pointer">
-                    Publication Platforms
-                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
-                            'icon-arrow-up': dissemination_platforms_accordion.isOpen, 'icon-arrow-down': !dissemination_platforms_accordion.isOpen}"></i>
+                  <div class="form-group row">
+                    <div class="col-md-4">
+                      <h6><strong>Platforms</strong></h6>
+                    </div>
                   </div>
+
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Newsletter</label>
@@ -591,8 +604,8 @@
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="platform_newsletter"
                                [(ngModel)]="application_dissemination.platform_newsletter"
-                               name="platform_newsletter"
-                        >
+                               name="platform_newsletter">
+
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
                       </label>
@@ -646,12 +659,6 @@
 
               </accordion>
 
-              <div class="form-group row">
-                <div class="alert alert-info col-md-auto"><span>Please specify which information about your project and which platforms may be used to publish information.
-            Select or deselect options by enabling or disabling the switches within the fields above.
-            If publication is permitted, at least the title (or optionally a public title) and at least one platform must be selected.</span>
-                </div>
-              </div>
 
             </div>
 
