@@ -7,6 +7,7 @@ import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmac
 import {Volume} from '../virtualmachines/volumes/volume';
 import {IResponseTemplate} from './response-template';
 import {IBiocondaTool} from '../virtualmachines/conda/bioconda.component';
+import {Client} from '../virtualmachines/clients/client.model';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -121,7 +122,7 @@ export class VirtualmachineService {
 
     })
   }
-  
+
     getLogs(openstack_id: string): Observable<any> {
       return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
         withCredentials: true,
@@ -299,4 +300,12 @@ export class VirtualmachineService {
     })
   }
 
+  isInstanceNameTaken(name: string, host: string, port: string): Observable<any> {
+    const params: HttpParams = new HttpParams().set('name', name).set('host', host).set('port', port);
+
+    return this.http.post(`${this.baseVmUrl}/exist/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+  }
 }
