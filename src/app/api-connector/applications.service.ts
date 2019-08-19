@@ -1,14 +1,16 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
-import ***REMOVED***HttpClient, HttpHeaders***REMOVED*** from '@angular/common/http';
+import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
+import ***REMOVED***EdamOntologyTerm***REMOVED*** from '../applications/edam-ontology-term';
+import ***REMOVED***ApplicationDissemination***REMOVED*** from '../applications/application-dissemination';
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
-  'X-CSRFToken': Cookie.get('csrftoken'),
-  'Content-Type': 'application/json'
+                                              'X-CSRFToken': Cookie.get('csrftoken'),
+                                              'Content-Type': 'application/json'
 
-***REMOVED***);
+                                            ***REMOVED***);
 
 /**
  * Service which provides methods for creating application.
@@ -35,10 +37,18 @@ export class ApplicationsService ***REMOVED***
 
   validateApplicationAsPIByHash(hash: string): Observable<any> ***REMOVED***
 
-    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/validation/$***REMOVED***hash***REMOVED***/`, null,***REMOVED***
+    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/validation/$***REMOVED***hash***REMOVED***/`, null, ***REMOVED***
       headers: header,
       withCredentials: true
     ***REMOVED***)
+  ***REMOVED***
+
+  setApplicationDissemination(project_application_id: string | number, dissemination: ApplicationDissemination): Observable<any> ***REMOVED***
+    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***project_application_id***REMOVED***/dissemination/`,
+                          dissemination, ***REMOVED***
+                            headers: header,
+                            withCredentials: true
+                          ***REMOVED***)
   ***REMOVED***
 
   getUserApplication(project_id: string | number): Observable<any> ***REMOVED***
@@ -60,6 +70,23 @@ export class ApplicationsService ***REMOVED***
       headers: header,
       withCredentials: true
     ***REMOVED***)
+  ***REMOVED***
+
+  getEdamOntologyTerms(): Observable<EdamOntologyTerm[]> ***REMOVED***
+    return this.http.get<EdamOntologyTerm[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***edam_ontology/`, ***REMOVED***
+      headers: header,
+      withCredentials: true
+    ***REMOVED***)
+  ***REMOVED***
+
+  addEdamOntologyTerms(application_id: number | string, data: EdamOntologyTerm[]): Observable<any> ***REMOVED***
+    const params = ***REMOVED***edam_ontology_terms: data***REMOVED***;
+
+    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***application_id***REMOVED***/edam_terms/`, params, ***REMOVED***
+      headers: header,
+      withCredentials: true
+    ***REMOVED***)
+
   ***REMOVED***
 
   /**
