@@ -1,12 +1,11 @@
 import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
 import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
-import ***REMOVED***Observable***REMOVED*** from 'rxjs';
+import ***REMOVED***Observable, of***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
 import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import ***REMOVED***Volume***REMOVED*** from '../virtualmachines/volumes/volume';
 import ***REMOVED***IResponseTemplate***REMOVED*** from './response-template';
-import ***REMOVED***IBiocondaTool***REMOVED*** from '../virtualmachines/conda/bioconda.component';
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -121,7 +120,7 @@ export class VirtualmachineService ***REMOVED***
 
     ***REMOVED***)
   ***REMOVED***
-  
+
     getLogs(openstack_id: string): Observable<any> ***REMOVED***
       return this.http.post(`$***REMOVED***this.baseVmUrl***REMOVED***$***REMOVED***openstack_id***REMOVED***/logs/`, null, ***REMOVED***
         withCredentials: true,
@@ -299,4 +298,12 @@ export class VirtualmachineService ***REMOVED***
     ***REMOVED***)
   ***REMOVED***
 
+  isInstanceNameTaken(name: string, host: string, port: string): Observable<boolean> ***REMOVED***
+    const params: HttpParams = new HttpParams().set('name', name).set('host', host).set('port', port);
+
+    return this.http.post<boolean>(`$***REMOVED***this.baseVmUrl***REMOVED***exist/`, params, ***REMOVED***
+      withCredentials: true,
+      headers: header
+    ***REMOVED***)
+  ***REMOVED***
 ***REMOVED***
