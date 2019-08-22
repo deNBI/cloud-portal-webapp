@@ -4,6 +4,21 @@
 @import "node_modules/bootstrap/scss/mixins";
 @import "node_modules/bootstrap/scss/modal";
 
+//de.NBI-Colors:
+
+$deNBI_cyan: #00ADEF;
+$deNBI_blue: #005AA9;
+$deNBI_magenta: #EB008B;
+$deNBI_darkgrey: #58595B;
+$deNBI_lightgrey: #939496;
+$deNBI_white: #FFFFFF;
+$deNBI_black: #000000;
+
+//project-type-colors
+
+$openstackcolour: #ED1944;
+$simplevmcolour: #00ADEF;
+
 .btn***REMOVED***
   cursor: pointer;
 ***REMOVED***
@@ -29,6 +44,102 @@ header ***REMOVED***
   padding: 1.25rem;
 ***REMOVED***
 
+.flavor-image-card
+***REMOVED***
+  width: 16rem;margin-right: 5px; cursor: pointer;
+***REMOVED***
+
+
+.flavor-card-icons
+***REMOVED***
+    margin: 0px 5px 10px 0px;
+    width: 18px;
+    max-height:18px;
+***REMOVED***
+
+.scroll-flavor
+***REMOVED***
+  max-height:90px;
+  min-height: 90px;
+  overflow-y: auto;
+***REMOVED***
+
+.scroll-image
+***REMOVED***
+  max-height: 120px;
+  min-height: 120px;
+  overflow-y: auto;
+***REMOVED***
+
 .collapse_no_margin***REMOVED***
   margin: 0;
 ***REMOVED***
+
+.card.border-success
+***REMOVED***
+  border-width: 3px;
+***REMOVED***
+.bg-info-flavor
+***REMOVED***
+    background-color: $deNBI_blue;
+***REMOVED***
+
+.bg-info-image
+***REMOVED***
+  background-color: $deNBI_cyan;
+***REMOVED***
+
+.card-header.bg-info-flavor ***REMOVED***
+  color: $deNBI_white;
+***REMOVED***
+
+.card-header.bg-info-image
+***REMOVED***
+  color: $deNBI_white;
+***REMOVED***
+
+
+.btn-openstack ***REMOVED***
+    @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour,5%), lighten($openstackcolour, 10%), darken($openstackcolour,30%));
+***REMOVED***
+
+.btn-outline-openstack ***REMOVED***
+    @include button-outline-variant($openstackcolour, #222222, lighten($openstackcolour,5%), $openstackcolour);
+***REMOVED***
+
+.btn-simplevm ***REMOVED***
+    @include button-variant($simplevmcolour, darken($simplevmcolour, 7.5%), darken($simplevmcolour, 10%), lighten($simplevmcolour,5%), lighten($simplevmcolour, 10%), darken($simplevmcolour,30%));
+***REMOVED***
+
+.btn-outline-simplevm ***REMOVED***
+    @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour,5%), $simplevmcolour);
+***REMOVED***
+
+
+
+#newsbadge
+***REMOVED***
+  margin: 15px !important;
+  position: relative !important;
+  border-radius: 10px;
+  background-color: rgba(255,255,255, 1);
+  padding: 10px !important;
+  max-width: 200px;
+
+***REMOVED***
+
+#newsimage
+***REMOVED***
+  width: 100%;
+  position: relative;
+  transition: 0.5s;
+***REMOVED***
+
+#newsbadge:hover
+***REMOVED***
+  opacity: 0.8;
+  transition: 0.5s;
+
+***REMOVED***
+
+

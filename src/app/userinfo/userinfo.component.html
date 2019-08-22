@@ -3,12 +3,17 @@
     <div class="row">
         <div class="col-md-8">
             <!--/.col-->
-            <h1>Welcome ***REMOVED******REMOVED*** userinfo.FirstName ***REMOVED******REMOVED*** ***REMOVED******REMOVED*** userinfo.LastName ***REMOVED******REMOVED***</h1></div>
+            <h1>Welcome ***REMOVED******REMOVED*** userInfo.FirstName ***REMOVED******REMOVED*** ***REMOVED******REMOVED*** userInfo.LastName ***REMOVED******REMOVED***</h1></div>
         <div class="col-md-4">
-            <button *ngIf="freemium_active && !is_project_member" class="btn btn-primary btn-lg"
+            <button *ngIf="freemiumActive && !isProjectMember" class="btn btn-primary btn-lg"
                     (click)="freemiummodal.show();">Join Freemium!
             </button>
         </div>
+    </div>
+
+    <div>
+
+      <div class="row" id="newsbadge"><a id="newsimage" href="https://cloud.denbi.de/2nd-de-nbi-cloud-user-meeting/"><img src="https://cloud.denbi.de/wp-content/uploads/2019/05/2nd_user_meeting.svg" alt="de.NBI Cloud User Meeting"></a></div>
     </div>
     <div class="card">
         <div class="card-header">
@@ -20,19 +25,19 @@
 
                     <tr>
                         <th>Elixir Login</th>
-                        <td>***REMOVED******REMOVED*** userinfo.UserLogin ***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED*** userInfo?.UserLogin ***REMOVED******REMOVED***</td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Elixir ID</th>
-                        <td>***REMOVED******REMOVED***userinfo.ElxirId***REMOVED******REMOVED***</td>
+                        <td>***REMOVED******REMOVED***userInfo?.ElxirId***REMOVED******REMOVED***</td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Preferred Email</th>
-                        <td>***REMOVED******REMOVED***userinfo.Email***REMOVED******REMOVED***
+                        <td>***REMOVED******REMOVED***userInfo?.Email***REMOVED******REMOVED***
 
-                            <div style="color: red" *ngFor="  let pendingEmail of userinfo.PendingEmails">You
+                          <div style="color: red" *ngFor="  let pendingEmail of userInfo?.PendingEmails">You
                                 have pending change
                                 request. Please check inbox of: ***REMOVED******REMOVED***pendingEmail***REMOVED******REMOVED*** for validation email.
                             </div>
@@ -41,7 +46,7 @@
                             <button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
                         </td>
                     </tr>
-                    <tr app-public-key [userinfo]="userinfo"></tr>
+                    <tr app-public-key [userinfo]="userInfo"></tr>
 
                     <tr>
                         <th>Newsletter</th>
@@ -50,7 +55,7 @@
                                 <div class="col-md-2"><label
                                         class="switch switch-label switch-outline-primary-alt">
                                     <input type="checkbox" class="switch-input"
-                                           [(ngModel)]="newsletter_subscribed"
+                                           [(ngModel)]="newsletterSubscribed"
                                            (change)="setNewsletterSubscription($event)">
                                     <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
                                     <!--<span class="switch-handle"></span>-->
@@ -83,7 +88,7 @@
 
             </div>
             <div class="modal-body">
-                <alert type="info" *ngIf="public_key?.length ==0 ">
+                <alert type="info" *ngIf="newPublicKey?.length ==0 ">
                     <strong>Info: </strong> Please enter a valid public key!
 
                 </alert>
@@ -92,11 +97,11 @@
                 <alert type="success" *ngIf="validatePublicKey()">
                     <strong>Info: </strong> This is a valid public key!
                 </alert>
-                <alert type="danger" *ngIf="!validatePublicKey() && public_key?.length >0">
+                <alert type="danger" *ngIf="!validatePublicKey() && newPublicKey?.length >0">
                     <strong>Warning</strong> This is not a valid public key!
                 </alert>
                 <textarea rows="8" type="text" class="form-control input-lg"
-                          placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="public_key"
+                          placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="newPublicKey"
                           #publickey></textarea>
 
                 <br>
@@ -114,7 +119,7 @@
 
                 <button [disabled]="!validatePublicKey()"
                         class="btn btn-success col-md4" type="button"
-                        (click)="importKey(publickey.value, userinfo.ElxirId);show_key();pubKeyModal.hide();">Set
+                        (click)="importKey(publickey.value);pubKeyModal.hide();">Set
                 </button>
                 <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide();">Cancel
                 </button>
@@ -182,7 +187,7 @@
                         <div class="col-md-12">
                             <input required id="emailChange" name="emailChang" placeholder="" class="form-control"
                                    type="text" [(ngModel)]="emailChange" #emailChang="ngModel"
-                                   pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`***REMOVED***|***REMOVED***~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                                   pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.***REMOVED***2,***REMOVED***.*)|^.***REMOVED***254***REMOVED***.)([a-zA-Z0-9!#$%&'*+\/=?^_`***REMOVED***|***REMOVED***~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]***REMOVED***1,63***REMOVED***\.)+[a-zA-Z]***REMOVED***2,15***REMOVED***"
                                    [ngClass]="***REMOVED***'is-invalid':emailChang.invalid && (emailChang.dirty || emailChang.touched),
                     'is-valid':emailChang.valid && (emailChang.dirty || emailChang.touched)
                     ***REMOVED***">

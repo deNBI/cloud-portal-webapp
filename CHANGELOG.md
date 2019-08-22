@@ -1,3 +1,230 @@
+##  (2019-08-08)
+
+
+#### Bug Fixes
+
+* **Virtualmachine:** not timeout when stopping or resuming vm ([db519ca2](db519ca2))
+* **Wiki:** fixed wiki link ([b580fb40](b580fb40))
+* **vm:**  now stops instead of suspend ([39e7c45f](39e7c45f))
+
+##  (2019-07-24)
+
+
+#### Features
+
+* **Bioconda:** added bioconda build status ([4642cd00](4642cd00))
+* **Virtualmachines:** added filtering ([0aacd14e](0aacd14e))
+* **Vms:** started adding real pagination ([7b767c1d](7b767c1d))
+* **application:**  user gets info about possibility to request specia… (#594) ([bf6d734b](bf6d734b))
+
+#### Bug Fixes
+
+* **Members:** fixed remove all members bug ([1f7169b9](1f7169b9))
+* **Snapshot:** removed needless calls ([9c975432](9c975432))
+* **VirtualMachine:**
+  * start btn disabled if no image or flavor is selected, also do not show  please choose info if starting a vm isnt possible ([0329c5e3](0329c5e3))
+  * choose not visisbile anymoore when bioconda is selected ([dd93071e](dd93071e))
+  * choose not visisbile anymoore when bioconda is selected ([edb08d43](edb08d43))
+* **new-instance-alert:**  now correctly showing what is missing ([0999f734](0999f734))
+
+##  (2019-07-23)
+
+
+#### Bug Fixes
+
+* **VirtualMachine:**
+  * choose not visisbile anymoore when bioconda is selected ([dd93071e](dd93071e))
+
+#### Features
+
+* **Virtualmachines:** added filtering ([0aacd14e](0aacd14e))
+* **Vms:** started adding real pagination ([7b767c1d](7b767c1d))
+* **application:**  user gets info about possibility to request specia… (#594) ([bf6d734b](bf6d734b))
+
+##  (2019-07-10)
+
+
+#### Features
+
+* **Flavors:**  selected flavor always on the left ([4d96a1e1](4d96a1e1))
+* **Images:** selected always to the left ([e5f9d8ad](e5f9d8ad))
+* **Projects:**
+  * added delete members method ([c857ee4d](c857ee4d))
+  * added checkbox for all members ([c6efd4f5](c6efd4f5))
+* **Volumes:** just volume owner can change the volume ([f2dae278](f2dae278))
+* **snapshot:** added description ([35899335](35899335))
+
+
+##  (2019-06-27)
+
+
+#### Features
+
+* **bioconda:**  declared as beta ([1a600650](1a600650))
+* **github:**  new pr-template (#502) ([5b3ff3a0](5b3ff3a0))
+* **userinfo:**  added linked logo for user meeting ([486c409c](486c409c))
+* **flavors:** added cards and carousel
+* **images** added images and carousel
+
+
+##  (2019-06-17)
+
+
+
+#### Features
+
+* **VirtualMachines:** tabs should load faster
+
+#### Bug Fixes
+
+* **TestButton:**
+  *  openstack  test applicaiton btn works again ([b0bb967c](b0bb967c))
+  *  simple vm test applicaiton btn works again ([d768120f](d768120f))
+
+* **Loop:**
+  * fixed the loop
+
+
+#### Features
+
+* **VirtualMachines:** added small loader when selecting a project, progressbar background darkgray ([ff3de0c2](ff3de0c2))
+
+
+##  (2019-06-05)
+
+
+#### Features
+
+* **VirtualMachines:**
+  * added info when no flavor is available ([58e7af3e](58e7af3e))
+  * added overview ([094ba18c](094ba18c))
+
+
+##  (2019-06-03)
+
+
+#### Features
+
+* **Email:**
+  * facility manager now can send emails to specific projects (#493) ([43990b4b](43990b4b))
+
+#### Bug Fixes
+
+* **Lifetime:** fixed dateCreated etc in projects overviews (#500) ([8c5df4f2](8c5df4f2))
+* **html2canvas:**  pin version ([ab3fd928](ab3fd928))
+
+
+
+
+##  (2019-05-29)
+
+
+#### Bug Fixes
+
+* **serviceWorker:**  delete all serviceWorker mentions (#498) ([06a15db6](06a15db6))
+
+##  (2019-05-28)
+
+
+#### Bug Fixes
+
+* **application:**
+  *  lifetime and numbers get loaded ([263b168c](263b168c))
+  *  Modification Request - Number of requested Flavors now showing ([d825fc22](d825fc22))
+* **readme:**  add intellij debug screenshot ([edccae7d](edccae7d))
+
+
+##  (2019-05-24)
+
+
+#### Features
+
+* **Application:**
+  * detailed desc text ([2b8c7de9](2b8c7de9))
+  * detailed desc text ([f7caeaed](f7caeaed))
+* **SecurityGroups:** added udp conneciton info ([20b9d3d2](20b9d3d2))
+* **SecurtyGroup:** added checkbox for udp,http,https ([8f06062b](8f06062b))
+
+#### Bug Fixes
+
+* **Projects:** fixed typo ([25ca93e8](25ca93e8))
+* **ServiceWorker:** deactivated ([c1cc87d5](c1cc87d5))
+* **Volumes:**
+  * fixed another parsing bug ([81d2fa89](81d2fa89))
+  * fixed response parsing ([837e1eac](837e1eac))
+* **readme:**  small change how to serve webapp ([e4ba7675](e4ba7675))
+
+
+##  (2019-05-10)
+#### Bug Fixes
+* **makefile:**  remove unnecessary fi ([cee3c715](cee3c715))
+
+#### Features
+
+* **Login:** if user wasn't logged in and requests a site ,he will be redirectet to the site after login ([1ff7a05a](1ff7a05a))
+
+
+
+##  (2019-05-02)
+
+#### Bug Fixes
+
+* **Applications:** reload single applcation perun_approved now set ([6abdd875](6abdd875))
+* **application:**  small typo ([2f28eabb](2f28eabb))
+
+
+
+##  (2019-04-29)
+
+
+#### Bug Fixes
+
+* **Applications:**
+  *  single-> simple ([8571bf39](8571bf39))
+  * project => application renamed ([9b5ba7f6](9b5ba7f6))
+
+#### Features
+
+* **Applicaitons:**
+  * added pi field ([ebebef3f](ebebef3f))
+  * added pi field ([5203dbc0](5203dbc0))
+* **Application:**
+  * pi can now see also the application,removed double elixir and random request ([a120cc32](a120cc32))
+  * pi will also be added ([4168b181](4168b181))
+  * pi will also be added ([4d4b20af](4d4b20af))
+* **Applications:** approve & create reenabled ([8b562d08](8b562d08))
+* **Approval:** added pi approval endpoints ([626a57c4](626a57c4))
+* **ProjectHash:** useing url params ([889d3e9d](889d3e9d))
+* **Validation:**
+  *  flavor and total cores/ram shown ([fccf932d](fccf932d))
+  *  closing validation modal redirects to /applications ([dfec7a02](dfec7a02))
+  *  header, sidebar shown in val. page, pi name and email shown in application information ([5ca44c8d](5ca44c8d))
+  * added method to validate btn, added modal ([0fd577d7](0fd577d7))
+  * added 404 ([bfb94222](bfb94222))
+  * first prototype of valdiation site ([c9f429a7](c9f429a7))
+  * added validation component ([c1e81e9b](c1e81e9b))
+* **validation:**  dissemination showing correctly, approve&create disabled and info if pi not approved ([a86408b3](a86408b3))
+
+
+
+
+##  (2019-04-17)
+
+
+#### Bug Fixes
+
+* **AddVM:**  fixed typo ([c580ce7f](c580ce7f))
+* **Projects:**
+  * suspend working again ([8f519c11](8f519c11))
+  * suspend working again ([7a407298](7a407298))
+* **addProjects:**  storage limit disabled for # of volumes == 0 ([264a4985](264a4985))
+* **applicationHistoryButtons:**  Buttons more responsive to screen size ([072ba746](072ba746))
+* **storageLimit:**
+  *  storage limit row hidden when number equals zero ([c63a855d](c63a855d))
+  *  zero submitted if disabled ([6c8ec01a](6c8ec01a))
+
+
+
 ##  (2019-04-11)
 
 
@@ -26,7 +253,21 @@
 
 #### Features
 
-* **Client:** able to change host and port ([53a75d93](53a75d93))
+* **Client:** able to change ##  (2019-04-17)
+
+
+#### Bug Fixes
+
+* **AddVM:**  fixed typo ([c580ce7f](c580ce7f))
+* **Projects:**
+  * suspend working again ([8f519c11](8f519c11))
+  * suspend working again ([7a407298](7a407298))
+* **addProjects:**  storage limit disabled for # of volumes == 0 ([264a4985](264a4985))
+* **applicationHistoryButtons:**  Buttons more responsive to screen size ([072ba746](072ba746))
+* **storageLimit:**
+  *  storage limit row hidden when number equals zero ([c63a855d](c63a855d))
+  *  zero submitted if disabled ([6c8ec01a](6c8ec01a))
+host and port ([53a75d93](53a75d93))
 * **Email:**
   * added for vo ([35de3ebd](35de3ebd))
   * splitted in projects ([1600f987](1600f987))
