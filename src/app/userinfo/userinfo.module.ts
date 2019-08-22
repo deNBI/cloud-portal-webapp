@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 
 import {TabsModule} from 'ngx-bootstrap/tabs';
-import {UserinfoComponent} from './userinfo.component';
-import {UserinfoRoutingModule} from './userinfo-routing.module';
+import {UserInfoComponent} from './userinfo.component';
+import {UserInfoRoutingModule} from './userinfo-routing.module';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {ModalModule} from 'ngx-bootstrap/modal';
@@ -12,7 +12,7 @@ import {PublicKeyModule} from '../shared/shared_modules/public-key/public-key.mo
 @NgModule({
     imports: [
         PublicKeyModule,
-        UserinfoRoutingModule,
+        UserInfoRoutingModule,
         TabsModule,
         CommonModule,
         FormsModule, ModalModule.forRoot(),
@@ -20,9 +20,9 @@ import {PublicKeyModule} from '../shared/shared_modules/public-key/public-key.mo
     ],
 
     declarations: [
-        UserinfoComponent
+        UserInfoComponent
     ],
-    exports: [UserinfoComponent, UserinfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
+    exports: [UserInfoComponent, UserInfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
 })
 export class UserinfoModule {
 }
