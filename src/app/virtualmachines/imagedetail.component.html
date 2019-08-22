@@ -1,29 +1,142 @@
-<div class="table-responsive">
-  <table class="table table-striped">
-    <tr *ngIf="collapse1">
-      <td class="field-label col-md-6 active">
-        Description
-      </td>
-      <td class="col-md-6">
-        {{image.description}}
-      </td>
-    </tr>
-    <tr *ngIf="collapse1">
-      <td class="field-label col-md-6 active">
-        Min_Disk
-      </td>
-      <td class="col-md-6">
-        {{image.min_disk}} GB
-      </td>
-    </tr>
-    <tr *ngIf="collapse1">
-      <td class="field-label col-md-6 active">
-        Min_Ram
-      </td>
-      <td class="col-md-6">
-        {{image.min_ram}} MB
-      </td>
-    </tr>
+<div *ngIf="!carousel_activated || images.length <=images_per_row-1" class="row">
+  <div *ngIf="selectedImage" class="col-xl-3 col-12" style="cursor: pointer;"
+       [ngClass]="{'col-xl-3':window_size >= carousel_window_min_xl_9,
+       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
+       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}">
+    <div class="card border-success flavor-image-card"
+    >
+      <div
+        class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
+        title="{{selectedImage?.name}}">
+        <i
+        *ngIf="selectedImage?.is_snapshot"
+        class="fa fa-camera" aria-hidden="true"></i>
+        <strong>{{selectedImage?.name}}</strong></div>
+      <div class="card-body">
+        <div class="scroll-image">
+          <div class="col scroll-image">
+            {{selectedImage?.description}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngFor="  let image of images" style="cursor: pointer;" class="col-12" [ngClass]="{'col-xl-3':window_size > carousel_window_min_xl_9,
+       'col-xl-6':window_size > carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
+       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>carousel_window_min_xl_8}">
+    <div (click)="setSelectedImage(image);" class="card flavor-image-card"
+    >
+      <div
+        [ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
 
-  </table>
+        class="card-header  text-truncate" data-toggle="tooltip" data-placement="top" title="{{image?.name}}"><i
+        *ngIf="image?.is_snapshot"
+        class="fa fa-camera" aria-hidden="true"></i>
+        <strong>{{image.name}}</strong></div>
+      <div class="card-body">
+        <div class="scroll-image">
+          <div class="col">
+            {{image.description}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<div *ngIf="carousel_activated && images.length >=images_per_row" class="row"
+>
+  <div [hidden]="!selectedImage" class="col-lg-12" style="cursor: pointer; padding-top: 10px"
+       [ngClass]="{'col-xl-3':window_size >= carousel_window_min_xl_9,
+       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
+       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}">
+    <div class="card border-success flavor-image-card"
+    >
+      <div
+        class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
+        title="{{selectedImage?.name}}">
+           <i
+        *ngIf="selectedImage?.is_snapshot"
+        class="fa fa-camera" aria-hidden="true"></i>
+        <strong>{{selectedImage?.name}}</strong></div>
+      <div class="card-body">
+        <div class="scroll-image">
+          <div class="col scroll-image">
+            {{selectedImage?.description}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!selectedImage" class="col-12" style="border-style: dashed; border-color: lightgray; padding-top: 10px">
+    <owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
+      <ng-container *ngFor="let image of images">
+        <ng-template carouselSlide>
+          <div (click)="setSelectedImage(image);" class="card flavor-image-card"
+          >
+            <div
+              [ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
+
+              class="card-header text-truncate" data-toggle="tooltip" data-placement="top"
+              title="{{image?.name}}"><i *ngIf="image?.is_snapshot"
+                                         class="fa fa-camera" aria-hidden="true"></i>
+              <strong>{{image.name}}</strong></div>
+            <div class="card-body">
+              <div class="scroll-image">
+                <div class="col">
+                  {{image.description}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+
+    </owl-carousel-o>
+  </div>
+  <div *ngIf="selectedImage" class="col-lg-12 "
+       [ngClass]="{'col-xl-9':window_size >= carousel_window_min_xl_9,
+       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
+       'col-xl-8':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}"
+       style="border-style: dashed; border-color: lightgray; padding-top: 10px">
+    <owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
+      <ng-container *ngFor="let image of images">
+        <ng-template carouselSlide>
+          <div (click)="setSelectedImage(image);" class="card flavor-image-card"
+          >
+            <div
+              [ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
+
+              class="card-header  text-truncate" data-toggle="tooltip" data-placement="top"
+              title="{{image?.name}}"><i *ngIf="image?.is_snapshot"
+                                         class="fa fa-camera" aria-hidden="true"></i>
+              <strong>{{image.name}}</strong></div>
+            <div class="card-body">
+              <div class="scroll-image">
+                <div class="col">
+                  {{image.description}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+
+    </owl-carousel-o>
+  </div>
+</div>
+
+
+<div class="row ">
+  <div class="ml-auto mr-3" style="cursor: pointer;"
+       *ngIf="carousel_activated && images.length > images_per_row -1"
+       (click)="carousel_activated=false;"><strong class="text-info">Show
+    all
+    images</strong></div>
+  <div class="ml-auto mr-3" style="cursor: pointer;"
+       *ngIf="!carousel_activated && images.length > images_per_row -1"
+       (click)="carousel_activated=true;"><strong class="text-info">Hide
+    images</strong></div>
+</div>
+

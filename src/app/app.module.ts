@@ -18,30 +18,33 @@ import {UserService} from './api-connector/user.service';
 import {AppRoutingModule} from './app.routing';
 import {ConsentInfoComponent} from './consent-info.component';
 // Layouts
-import {
-  AppAsideModule,
-  AppBreadcrumbModule,
-  AppHeaderModule,
-  AppFooterModule,
-  AppSidebarModule,
-} from '@coreui/angular';
+import {AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule} from '@coreui/angular';
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {RegistrationInfoComponent} from './registration-info.component';
 import {AsideToggleDirective} from './shared/aside.directive';
-import {ApplicationBaseClass} from "./shared/shared_modules/baseClass/application-base-class";
 import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
-import {BreadcrumbsComponent} from "./shared/breadcrumb.component";
+import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {
-    MobileSidebarToggleDirective, SidebarMinimizeDirective, SidebarOffCanvasCloseDirective,
+    MobileSidebarToggleDirective,
+    SidebarMinimizeDirective,
+    SidebarOffCanvasCloseDirective,
     SidebarToggleDirective
 } from "./shared/sidebar.directive";
-
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ServiceWorkerModule} from '@angular/service-worker';
+import {MatSnackBarModule} from "@angular/material";
+import {Angulartics2Module} from 'angulartics2';
+import { ErrorHandler } from '@angular/core';
+import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler.service';
+import {environment} from "../environments/environment";
+import {CookieService} from 'ngx-cookie-service';
 
 /**
  * App module.
  */
 @NgModule({
+
     imports: [
         AppAsideModule,
         AppBreadcrumbModule.forRoot(),
@@ -52,6 +55,7 @@ import {
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
+        MatSnackBarModule,
         BsDropdownModule.forRoot(),
         TabsModule.forRoot(),
         ChartsModule,
@@ -59,7 +63,9 @@ import {
         PopoverModule,
         PaginationModule.forRoot(),
         ExportAsModule,
-        SharedModuleModule
+        SharedModuleModule,
+        Angulartics2Module.forRoot(),
+        BrowserAnimationsModule
     ],
     declarations: [
         AppComponent,
@@ -72,16 +78,19 @@ import {
         SidebarMinimizeDirective,
         MobileSidebarToggleDirective,
         SidebarOffCanvasCloseDirective
-
-
     ],
-    providers: [{
+    providers: [
+      {
         provide: LocationStrategy,
         useClass: HashLocationStrategy
-    },
-
+      },
+      {
+        provide: ErrorHandler,
+        useClass: UncaughtExceptionHandler
+      },
         ApiSettings,
-        UserService
+        UserService,
+        CookieService,
     ],
     bootstrap: [AppComponent]
 })

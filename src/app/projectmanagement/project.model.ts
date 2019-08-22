@@ -43,6 +43,9 @@ export class Project {
 
 // todo exdend with additional information
 
+
+
+
     get LifetimeReached(): number {
         return this._LifetimeReached
     }
@@ -68,6 +71,7 @@ export class Project {
         this._Status = value;
 
     }
+
 
     get ProjectMemberApplications(): ProjectMemberApplication[] {
         return this._ProjectMemberApplications;

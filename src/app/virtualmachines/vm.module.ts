@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-
+import {CarouselModule} from 'ngx-owl-carousel-o';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {VmRoutingModule} from './vm_routing.module';
 import {CommonModule} from '@angular/common';
@@ -15,33 +15,43 @@ import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component'
 import {PaginationModule} from 'ngx-bootstrap/pagination'
 import {PublicKeyModule} from '../shared/shared_modules/public-key/public-key.module';
 import {ClickOutsideModule} from 'ng4-click-outside';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import {AccordionModule, BsDropdownModule} from 'ngx-bootstrap';
+import {BiocondaComponent} from './conda/bioconda.component';
+import {HowToConnectComponent} from './shared-modal/how-to-connect.component';
+import {PopoverModule} from 'ngx-smart-popover';
+import {ExistingUsernameValidatorDirective} from './custom-validation/virtualmachineValidations.directive';
 
 /**
  * VM module.
  */
 @NgModule({
-    imports: [
-        ClickOutsideModule,
-        PublicKeyModule,
-        VmRoutingModule,
-        TabsModule,
-        CommonModule,
-        FormsModule,
-        ModalModule.forRoot(),
-        PaginationModule.forRoot(),
-        BsDropdownModule.forRoot()
+            imports: [
+              ClickOutsideModule,
+              PublicKeyModule,
+              VmRoutingModule,
+              TabsModule,
+              CommonModule,
+              FormsModule,
+              ModalModule.forRoot(),
+              PaginationModule.forRoot(),
+              BsDropdownModule.forRoot(),
+              CarouselModule,
+              AccordionModule.forRoot(),
+              PopoverModule
 
-    ],
-    declarations: [
-        ImageDetailComponent,
-        VirtualMachineComponent,
-        FlavorDetailComponent,
-        ClientOverviewComponent,
-        VmOverviewComponent,
-        VolumeOverviewComponent,
-        SnapshotOverviewComponent
-    ]
-})
+            ],
+            declarations: [
+              ImageDetailComponent,
+              VirtualMachineComponent,
+              FlavorDetailComponent,
+              ClientOverviewComponent,
+              VmOverviewComponent,
+              VolumeOverviewComponent,
+              SnapshotOverviewComponent,
+              HowToConnectComponent,
+              BiocondaComponent,
+              ExistingUsernameValidatorDirective
+            ]
+          })
 export class VmModule {
 }

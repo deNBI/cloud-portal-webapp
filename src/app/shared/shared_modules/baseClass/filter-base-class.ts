@@ -2,6 +2,7 @@ import {AbstractBaseClasse} from './abstract-base-class';
 
 export abstract class FilterBaseClass extends AbstractBaseClasse {
 
+
     filterstatus_list: { [status: string]: boolean } = {
         ACTIVE: true,
         SUSPENDED: true,
@@ -14,7 +15,6 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     filterProjectLongName: string;
     filterVmUsername: string;
     filterVmIp: string;
-    filterVmStatus: string;
     filterVmCreated_at: string;
     filterVmElixir_id: string;
     filterVmStopped_at: string;
@@ -166,7 +166,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     }
 
     isFilterstatus(vmstatus: string): boolean {
-        if (vmstatus !== 'ACTIVE' && vmstatus !== 'DELETED' && vmstatus !== 'SUSPENDED') {
+        if (vmstatus !== 'ACTIVE' && vmstatus !== 'DELETED' && vmstatus !== 'SHUTOFF') {
             return true
         }
         if (this.filterstatus_list[vmstatus]
