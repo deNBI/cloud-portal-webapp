@@ -9,6 +9,6 @@ describe('core-ui App', function() ***REMOVED***
 
   it('should display message saying app works', () => ***REMOVED***
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect<any>(page.getParagraphText()).toEqual('app works!');
   ***REMOVED***);
 ***REMOVED***);

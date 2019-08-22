@@ -1,4 +1,4 @@
-import ***REMOVED*** browser, element, by ***REMOVED*** from 'protractor/globals';
+import ***REMOVED***browser, by, element***REMOVED*** from 'protractor'
 
 export class CoreUIPage ***REMOVED***
   navigateTo() ***REMOVED***
