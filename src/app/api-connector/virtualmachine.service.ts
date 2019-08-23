@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from '../virtualmachines/volumes/volume';
 import {IResponseTemplate} from './response-template';
-import {IBiocondaTool} from '../virtualmachines/conda/bioconda.component';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -121,7 +120,7 @@ export class VirtualmachineService {
 
     })
   }
-  
+
     getLogs(openstack_id: string): Observable<any> {
       return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
         withCredentials: true,
@@ -299,4 +298,12 @@ export class VirtualmachineService {
     })
   }
 
+  isInstanceNameTaken(name: string, host: string, port: string): Observable<boolean> {
+    const params: HttpParams = new HttpParams().set('name', name).set('host', host).set('port', port);
+
+    return this.http.post<boolean>(`${this.baseVmUrl}exist/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+  }
 }

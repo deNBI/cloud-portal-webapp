@@ -219,7 +219,10 @@ export class VirtualMachineComponent implements OnInit {
    */
   getImages(project_id: number): void {
 
-    this.imageService.getImages(project_id).subscribe((images: Image[]) => this.images = images);
+    this.imageService.getImages(project_id).subscribe((images: Image[]) => {
+      this.images = images;
+      this.images.sort((x, y) => Number(x.is_snapshot) - Number(y.is_snapshot));
+    });
   }
 
   /**
@@ -368,27 +371,27 @@ export class VirtualMachineComponent implements OnInit {
         this.diskspace.toString(), this.biocondaComponent.getChosenTools(), play_information)
         .subscribe((newVm: VirtualMachine) => {
 
-        if (newVm.status === 'Build') {
-          this.progress_bar_status = this.BUILD_STATUS;
-          this.progress_bar_animated = '';
-          this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
-          if (this.hasTools) {
-            this.progress_bar_width = this.TWENTY_FIVE_PERCENT;
+          if (newVm.status === 'Build') {
+            this.progress_bar_status = this.BUILD_STATUS;
+            this.progress_bar_animated = '';
+            this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
+            if (this.hasTools) {
+              this.progress_bar_width = this.TWENTY_FIVE_PERCENT;
+            } else {
+              this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
+            }
+            this.check_status_loop(newVm.openstackid);
+
+          } else if (newVm.status) {
+            this.progress_bar_status = this.CREATING_STATUS;
+            this.newVm = newVm;
+            this.check_status_loop(newVm.openstackid);
           } else {
-            this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
+            this.progress_bar_status = this.CREATING_STATUS;
+            this.create_error = <IResponseTemplate><any>newVm;
           }
-          this.check_status_loop(newVm.openstackid);
 
-        } else if (newVm.status) {
-          this.progress_bar_status = this.CREATING_STATUS;
-          this.newVm = newVm;
-          this.check_status_loop(newVm.openstackid);
-        } else {
-          this.progress_bar_status = this.CREATING_STATUS;
-          this.create_error = <IResponseTemplate><any>newVm;
-        }
-
-      });
+        });
 
     } else {
       this.progress_bar_status = this.CREATING_STATUS;
@@ -554,5 +557,4 @@ export class VirtualMachineComponent implements OnInit {
   getTimeoutMinutes(): number {
     return Math.ceil(this.timeout / 60);
   }
-
 }

@@ -41,10 +41,11 @@
       <tr>
         <th>Name</th>
         <th>Project</th>
+        <th>Flavor</th>
         <th>Status</th>
         <th>Created at (d/m/y)</th>
         <th>How to Connect</th>
-        <th *ngIf="is_vo_admin">Elixir ID</th>
+        <th>Elixir ID</th>
         <th>Stopped at (d/m/y)</th>
         <th>Actions</th>
 
@@ -59,6 +60,7 @@
                  name="filterProjectName"
                  [(ngModel)]="filterProjectName" (ngModelChange)="filterProjectNameChanged.next($event)">
       </td>
+      <td></td>
       <td>
 
         <div class="checkbox">
@@ -74,10 +76,10 @@
         <div class="checkbox">
           <label>
             <input type="checkbox"
-                   (change)="changeFilterStatus(vm_statuses[vm_statuses.SUSPENDED]);applyFilter();"
+                   (change)="changeFilterStatus(vm_statuses[vm_statuses.SHUTOFF]);applyFilter();"
                    checked/>
             <span style="margin-left: 5px"
-                  class="badge badge-warning">{{vm_statuses[vm_statuses.SUSPENDED]}}</span>
+                  class="badge badge-warning">{{vm_statuses[vm_statuses.SHUTOFF]}}</span>
           </label>
         </div>
         <div class="checkbox">
@@ -93,9 +95,9 @@
                  name="filterVmCreated_at"
                  [(ngModel)]="filterVmCreated_at" (ngModelChange)="filterCreatedAtChanged.next($event)"--></td>
       <td></td>
-      <td *ngIf="is_vo_admin"><input style="width: 110px;" type="text" placeholder="Filter"
-                                     name="filterVmElixir_id" [(ngModel)]="filterVmElixir_id"
-                                     (ngModelChange)="filterElixirIdChanged.next($event);"></td>
+      <td><input style="width: 110px;" type="text" placeholder="Filter"
+                 name="filterVmElixir_id" [(ngModel)]="filterVmElixir_id"
+                 (ngModelChange)="filterElixirIdChanged.next($event);"></td>
       <td><!--input style="width: 110px;" t type="text" placeholder="Filter"
                  name="filterVmStopped_at"
                  [(ngModel)]="filterVmStopped_at" (ngModelChange)="applyFilter();"--></td>
@@ -106,10 +108,70 @@
 
         <tr>
           <td>
-            {{vm.name}}
+            <popover-content #namePopover
+                             [title]="vm?.name"
+                             placement="right"
+                             [animation]="true"
+                             [closeOnClickOutside]="true">
+              <table class="table-bordered">
+                <tr>
+                  <td>ID</td>
+                  <td>{{vm?.openstackid}}</td>
+                </tr>
+              </table>
+            </popover-content>
+
+            <strong [popover]="namePopover"><span style="color: #005AA9;">{{vm?.name}}</span></strong>
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
             {{vm.project}}
+          </td>
+          <td>
+            <popover-content #myPopover
+                             [title]="vm?.flavor?.name"
+                             placement="right"
+                             [animation]="true"
+                             [closeOnClickOutside]="true">
+              <div class="scroll-flavor">
+
+                <div class="col">
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="{{RAM_ICON_PATH}}" alt="">
+                    </figure>
+                    {{vm?.flavor?.ram}} GB Ram
+                  </div>
+                </div>
+                <div class="col"
+                >
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="{{CPU_ICON_PATH}}" alt="">
+                    </figure>
+                    {{vm?.flavor.vcpus}} Cores
+                  </div>
+                </div>
+                <div class="col"
+                >
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="{{STORAGE_ICON_PATH}}" alt="">
+                    </figure>
+                    {{ vm?.flavor.rootdisk}} GB root disk
+                  </div>
+                </div>
+                <div class="col" *ngIf="vm?.flavor?.gpu  > 0">
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="{{GPU_ICON_PATH}}" alt="">
+                    </figure>
+                    {{vm?.flavor?.gpu}} <span *ngIf="vm?.flavor?.gpu == 1"> GPU</span><span *ngIf="vm?.flavor?.gpu > 1"> GPUs</span>
+                  </div>
+                </div>
+              </div>
+            </popover-content>
+
+            <strong [popover]="myPopover"><span style="color: #005AA9;">{{vm?.flavor?.name}}</span></strong>
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
                          <span *ngIf="vm.status == vm_statuses[vm_statuses.DELETED]"
@@ -118,24 +180,24 @@
             <span *ngIf="vm.status == vm_statuses[vm_statuses.ACTIVE]"
                   style="margin-left: 5px"
                   class="badge badge-success"> {{vm.status}}</span>
-            <span *ngIf="vm.status == vm_statuses[vm_statuses.SUSPENDED]"
+            <span *ngIf="vm.status == vm_statuses[vm_statuses.SHUTOFF]"
                   style="margin-left: 5px"
                   class="badge badge-warning"> {{vm.status}}</span>
             <span class="badge badge-info"
-                  *ngIf="vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.SUSPENDED]">{{vm.status}}</span>
+                  *ngIf="vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.SHUTOFF]">{{vm.status}}</span>
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
             {{vm.created_at}}
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-            <button type="button" class="btn btn-secondary btn-block"
+            <button type="button" class="btn btn-info btn-block"
                     style="white-space: normal; word-wrap: break-word;"
                     (click)="selectedVm=vm;infoModal.show()"> Show
               Information
             </button>
           </td>
-          <td *ngIf="is_vo_admin"
-              style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
+          <td
+            style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
             {{vm.elixir_id}}
           </td>
           <td>
@@ -145,62 +207,62 @@
           <td>
             <div
               *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
-              class="btn-group" dropdown>
-
-              <button class="btn btn-secondary" type="button"
-                      *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
-                      (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();">
-
-                Create Snapshot
-              </button>
-              <button *ngIf="vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]" style="cursor: pointer;"
-                      class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+              class="dropdown" dropdown>
+              <button *ngIf="vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
+                      style="cursor: pointer"
+                      class="btn btn-info dropdown-toggle dropdown-toggle-split btn-block"
                       type="button" aria-haspopup="true" aria-expanded="false"
-                      dropdownToggle aria-controls="dropdown-split"></button>
-              <ul class="dropdown-menu" role="menu" *dropdownMenu>
-                <li style="cursor: pointer;" role="menuitem"
-                    *ngIf="vm.status ==vm_statuses[vm_statuses.ACTIVE]">
-                  <a class="dropdown-item"
-                     (click)="selectedVm=vm;stopVm(vm);stopModal.show();">Stop
-                    Vm</a>
-                </li>
+                      dropdownToggle aria-controls="dropdown-split">Select
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" role="menu" *dropdownMenu>
+                <button style="cursor: pointer" role="menuitem" class="dropdown-item"
+                        *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
+                        (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();"
+                >
 
-                <li style="cursor: pointer;" *ngIf="vm.status ==vm_statuses[vm_statuses.SUSPENDED]"
+                  Create Snapshot
+                </button>
+                <button style="cursor: pointer" role="menuitem" class="dropdown-item"
+                        *ngIf="vm.status ==vm_statuses[vm_statuses.ACTIVE]"
+                        (click)="selectedVm=vm;stopVm(vm);stopModal.show();">
+                  Stop
+                  Vm
+                </button>
+
+                <button style="cursor: pointer;" class="dropdown-item"
+                        *ngIf="vm.status ==vm_statuses[vm_statuses.SHUTOFF]"
+                        role="menuitem" (click)="selectedVm=vm;resumeVM(vm);resumeModal.show();">
+                  Restart
+                  Vm
+                </button>
+                <button style="cursor: pointer;" class="dropdown-item" (click)="checkStatus(vm);"
+                        *ngIf="vm.status !=vm_statuses[vm_statuses.SHUTOFF] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != 'FREEMIUM'"
+                        role="menuitem">
+                  Check Status
+
+                </button>
+                <button style="cursor: pointer;" *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
+                        role="menuitem" class="dropdown-item" (click)="selectedVm=vm;verifyModal.show();">
+                  Delete
+                  Vm
+                </button>
+                <button style="cursor: pointer;" class="dropdown-item"
+                        (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='HARD';rebootModal.show();"
+                        *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.client.features['VM_REBOOT']"
+                        role="menuitem">
+                  Hard
+                  Reboot Vm
+
+                </button>
+                <li style="cursor: pointer;" class="dropdown-item btn-dark"
+                    (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='SOFT';rebootModal.show();"
+                    *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.SHUTOFF] && vm.client.features['VM_REBOOT']"
                     role="menuitem">
-                  <a class="dropdown-item"
-                     (click)="selectedVm=vm;resumeVM(vm);resumeModal.show();">Resume
-                    Vm</a>
+                  Soft
+                  Reboot Vm
+
                 </li>
-                <li style="cursor: pointer;"
-                    *ngIf="vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != 'FREEMIUM'"
-                    role="menuitem">
-                  <a class="dropdown-item"
-                     (click)="checkStatus(vm);">Check Status
-                  </a>
-                </li>
-                <li style="cursor: pointer;" *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
-                    role="menuitem">
-                  <a class="dropdown-item"
-                     (click)="selectedVm=vm;verifyModal.show();">Delete
-                    Vm</a>
-                </li>
-                <li style="cursor: pointer;"
-                    *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.client.features['VM_REBOOT']"
-                    role="menuitem">
-                  <a class="dropdown-item"
-                     (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='HARD';rebootModal.show();">Hard
-                    Reboot Vm
-                  </a>
-                </li>
-                <li style="cursor: pointer;"
-                    *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.SUSPENDED] && vm.client.features['VM_REBOOT']"
-                    role="menuitem">
-                  <a class="dropdown-item"
-                     (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='SOFT';rebootModal.show();">Soft
-                    Reboot Vm
-                  </a>
-                </li>
-              </ul>
+              </div>
             </div>
 
 
@@ -229,16 +291,16 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0 &&  selectedVm?.status != 'SHUTOFF'">
           Stopping {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
-          {{selectedVm?.name}} was succesfully stopped.
+        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1 || selectedVm?.status == 'SHUTOFF'">
+          {{selectedVm?.name}} was successfully stopped.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When stopping {{selectedVm?.name}} an error occured.
+        When stopping {{selectedVm?.name}} an error occurred.
       </div>
 
 
@@ -315,13 +377,13 @@
         <div *ngIf="reboot_done">
           <div class="alert alert-success" role="alert">
 
-            Sucessfully {{reboot_type}} rebooted {{selectedVm?.name}}.
+            Successfully {{reboot_type}} rebooted {{selectedVm?.name}}.
           </div>
         </div>
         <div *ngIf="status_check_error">
           <div class="alert alert-warning" role="alert">
 
-            An error occured when checking the status of {{selectedVm?.name}}.
+            An error occurred when checking the status of {{selectedVm?.name}}.
           </div>
         </div>
       </div>
@@ -353,16 +415,16 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-          Resuming {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
+        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0  && selectedVm?.status !== 'ACTIVE'">
+          Starting {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1">
-          {{selectedVm?.name}} was succesfully resumed.
+        <div class="alert alert-success" role="alert" *ngIf="status_changed == 1  || selectedVm?.status == 'ACTIVE'">
+          {{selectedVm?.name}} was successfully started.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When resuming {{selectedVm?.name}} an error occured.
+        When starting {{selectedVm?.name}} an error occurred.
       </div>
 
 
@@ -565,7 +627,7 @@
 
 
       <div class="modal-body">
-        <app-how-to-connect [selectedVirtualMachine]="selectedVm"></app-how-to-connect>
+        <app-how-to-connect *ngIf="selectedVm" [selectedVirtualMachine]="selectedVm"></app-how-to-connect>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="infoModal.hide();">Close

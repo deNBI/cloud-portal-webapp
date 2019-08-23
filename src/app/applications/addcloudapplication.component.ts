@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {ApplicationsService} from '../api-connector/applications.service'
@@ -7,6 +7,9 @@ import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {environment} from '../../environments/environment';
 import {ApplicationBaseClass} from 'app/shared/shared_modules/baseClass/application-base-class';
+import {EdamOntologyTerm} from './edam-ontology-term';
+import {AutocompleteComponent} from 'angular-ng-autocomplete';
+import {ApplicationDissemination} from './application-dissemination';
 
 /**
  * This components provides the functions to create a new Cloud Application.
@@ -21,15 +24,42 @@ import {ApplicationBaseClass} from 'app/shared/shared_modules/baseClass/applicat
 export class AddcloudapplicationComponent extends ApplicationBaseClass implements OnInit {
 
   /**
+   * Fields for getting dissemination options for platforms.
+   */
+
+  public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
+
+
+  /**
    * If it is in production or dev mode.
    * @type {boolean}
    */
   public production: boolean = environment.production;
 
+  public edam_ontology_terms: EdamOntologyTerm[];
+
+  @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
+
+  /**
+   * Boolean indicating whether information selection accordion is open or not.
+   * @type {boolean}
+   */
+  public dissemination_information_open: boolean = false;
+
+  /**
+   * Boolean indicating whether platform selection accordion is open or not
+   * @type {boolean}
+   */
+  public dissemination_platforms_open: boolean = false;
+
   /**
    * List of all collapse booleans.
    */
   public collapseList: boolean[];
+
+  ontology_search_keyword: string = 'term';
+
+  selected_ontology_terms: EdamOntologyTerm[] = [];
 
   /**
    * Contains errors recieved when submitting an application.
@@ -72,6 +102,9 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
   ngOnInit(): void {
     this.getListOfFlavors();
     this.getListOfTypes();
+    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
+      this.edam_ontology_terms = terms;
+    })
   }
 
   /**
@@ -106,6 +139,21 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
     this.flavorservice.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
   }
 
+  removeEDAMterm(term: EdamOntologyTerm): void {
+    const indexOf: number = this.selected_ontology_terms.indexOf(term);
+    this.selected_ontology_terms.splice(indexOf, 1);
+
+  }
+
+  selectEvent(item) {
+    if (this.selected_ontology_terms.indexOf(item) === -1) {
+      this.selected_ontology_terms.push(item);
+    }
+    this.edam_ontology.clear();
+  }
+
+
+
   /**
    * Submits a new cloud application.
    * Therefore checks if the different values are valid.
@@ -135,7 +183,12 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
         }
       }
       this.applicationsservice.addNewApplication(values).toPromise()
-        .then(() => {
+        .then(application => {
+          if (this.project_application_report_allowed) {
+            this.applicationsservice.setApplicationDissemination(application['project_application_id'], this.application_dissemination).subscribe()
+
+          }
+          this.applicationsservice.addEdamOntologyTerms(application['project_application_id'], this.selected_ontology_terms).subscribe();
           this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
           this.notificationModalStay = false;
         }).catch((error: string) => {
