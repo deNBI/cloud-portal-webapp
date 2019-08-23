@@ -10,7 +10,7 @@ exports.config = {
     seleniumAddress: 'http://localhost:4444/wd/hub',
     params: {
     timeout: credentials['timeout'],
-    
+
     portal: credentials['portal'],
     login: {
       email: credentials['email'],
@@ -43,6 +43,6 @@ exports.config = {
   },
   onPrepare() {
     jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: true}}));
-      browser.manage().window().setSize(1600, 1000);
+      browser.manage().window().setSize(1920, 1080);
   }
 };

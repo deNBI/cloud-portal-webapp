@@ -414,7 +414,7 @@
               <div class="col-md-8">
 
 
-                <label
+                <label  id="id_project_application_report_allowed"
                   class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input"
                          name="project_application_report_allowed"
@@ -439,7 +439,7 @@
               </div>
 
               <accordion>
-                <accordion-group [isOpen]="dissemination_information_open" #dissemination_information_accordion>
+                <accordion-group [isOpen]="dissemination_information_open" id="dissemination_information_accordion" #dissemination_information_accordion>
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     Dissemination Options
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
@@ -462,9 +462,8 @@
                         <span class="switch-handle"></span>
                       </label>
                     </div>
-                    <div class="col-md-6"><input type="text" class="form-control" id="information_public_title_input"
+                    <div class="col-md-6"><input type="text" class="form-control" name="information_public_title_input"
                                                  placeholder="Choose a public title - Leave blank for existing title."
-                                                 name="information_title"
                                                  [(ngModel)]="application_dissemination.information_title">
                     </div>
                   </div>
@@ -472,8 +471,8 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Description</label>
                     <div class="col-md-2">
-                      <label class="switch switch-label switch-outline-primary-alt">
-                        <input type="checkbox" class="switch-input" name="public_description_enabled"
+                      <label class="switch switch-label switch-outline-primary-alt" id="public_description_enabled">
+                        <input type="checkbox" class="switch-input"
                                [(ngModel)]="application_dissemination.information_description_allowed"
                                name="information_description_allowed"
                         >
@@ -482,7 +481,7 @@
                       </label>
                     </div>
                     <div *ngIf="application_dissemination.information_description_allowed" class="col-md-6">
-                    <textarea type="text" name="project_application_comment" class="form-control" maxlength="8192"
+                    <textarea type="text"  class="form-control" maxlength="8192"
                               placeholder="Enter public description. Leave blank for existing description."
                               name="information_description"
 
@@ -490,9 +489,9 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Resources</label>
+                    <label class="col-md-4 form-control-label" >Resources</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt">
+                      <label class="switch switch-label switch-outline-primary-alt" id="information_resources_checkbox">
                         <input type="checkbox" class="switch-input" name="information_resources"
                                [(ngModel)]="application_dissemination.information_resources">
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
@@ -502,12 +501,11 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label">lifetime</label>
+                    <label class="col-md-4 form-control-label" >lifetime</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt">
+                      <label class="switch switch-label switch-outline-primary-alt" id="information_lifetime_checkbox">
                         <input type="checkbox" class="switch-input" name="information_lifetime"
                                [(ngModel)]="application_dissemination.information_lifetime"
-                               name="information_lifetime"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
@@ -516,12 +514,11 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Project Type</label>
+                    <label class="col-md-4 form-control-label" >Project Type</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt">
+                      <label class="switch switch-label switch-outline-primary-alt" id="information_project_type_checkbox">
                         <input type="checkbox" class="switch-input" name="information_project_type"
                                [(ngModel)]="application_dissemination.information_project_type"
-                               name="information_project_type"
 
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
@@ -531,12 +528,11 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Name of PI</label>
+                    <label class="col-md-4 form-control-label" >Name of PI</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt">
+                      <label class="switch switch-label switch-outline-primary-alt" id="information_pi_name_checkbox">
                         <input type="checkbox" class="switch-input" name="information_pi_name"
                                [(ngModel)]="application_dissemination.information_pi_name"
-                               name="information_pi_name"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
@@ -547,7 +543,7 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Institution</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt">
+                      <label class="switch switch-label switch-outline-primary-alt"  id="information_institution_checkbox">
                         <input type="checkbox" class="switch-input" name="information_institution"
                                [(ngModel)]="application_dissemination.information_institution"
 
@@ -560,9 +556,9 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Workgroup</label>
+                    <label class="col-md-4 form-control-label" >Workgroup</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt">
+                      <label class="switch switch-label switch-outline-primary-alt" id="information_workgroup_checkbox">
                         <input type="checkbox" class="switch-input" name="information_workgroup"
                                [(ngModel)]="application_dissemination.information_workgroup"
 
@@ -575,13 +571,12 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Project Affiliation</label>
+                    <label class="col-md-4 form-control-label" >Project Affiliation</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt">
+                      <label class="switch switch-label switch-outline-primary-alt" id="information_project_affiliation_checkbox">
                         <input type="checkbox" class="switch-input" name="information_project_affiliation"
                                [(ngModel)]="application_dissemination.information_project_affiliation"
 
-                               name="information_project_affiliation"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
@@ -601,10 +596,10 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Newsletter</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt">
+                      <label class="switch switch-label switch-outline-primary-alt" id="platform_newsletter_checkbox">
                         <input type="checkbox" class="switch-input" name="platform_newsletter"
                                [(ngModel)]="application_dissemination.platform_newsletter"
-                               name="platform_newsletter">
+                             >
 
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
@@ -615,10 +610,9 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Landing Page</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt">
+                      <label class="switch switch-label switch-outline-primary-alt" id="platform_landing_page_checkbox">
                         <input type="checkbox" class="switch-input" name="platform_landing_page"
                                [(ngModel)]="application_dissemination.platform_landing_page"
-                               name="platform_landing_page"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
@@ -629,11 +623,10 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Portal News</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt">
+                      <label class="switch switch-label switch-outline-primary-alt" id="platform_portal_news_checkbox">
                         <input type="checkbox" class="switch-input" name="platform_portal_news"
                                [(ngModel)]="application_dissemination.platform_portal_news"
 
-                               name="platform_portal_news"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
@@ -644,10 +637,9 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Twitter</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt">
+                      <label class="switch switch-label switch-outline-primary-alt" id="platform_twitter_checkbox">
                         <input type="checkbox" class="switch-input" name="platform_twitter"
                                [(ngModel)]="application_dissemination.platform_twitter"
-                               name="platform_twitter"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
@@ -673,7 +665,7 @@
 
 
                 <label
-                  class="switch switch-label switch-outline-primary-alt">
+                  class="switch switch-label switch-outline-primary-alt" id="project_application_pi_approved_checkbox">
                   <input type="checkbox" class="switch-input"
                          name="project_application_pi_approved"
                          [(ngModel)]="project_application_pi_approved"
@@ -718,7 +710,7 @@
                   He will get an email with further information how to verify the application.</p></div>
             </div>
             <div *ngIf="project_application_pi_approved" class="form-group row">
-              <label class="col-md-4 form-control-label" for="project_application_responsibility">
+              <label class="col-md-4 form-control-label" for="project_application_responsibility" id="project_application_responsibility_checkbox">
                 <strong>Confirmation of Responsibility*</strong>
               </label>
               <div class="col-md-8"
@@ -755,7 +747,7 @@
               cloud
               usage policy.</p>
           </div>
-          <button (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
+          <button id="submit_btn" (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
                   class="btn btn-sm btn-success" [disabled]="f.invalid">
             <i class="fa fa-dot-circle-o"></i>
             Submit Application
@@ -790,13 +782,13 @@
       </div>
       <div class="modal-footer">
         <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
-                type="button"
+                type="button" id="notification_btn_redirect"
                 (click)="notificationModal.hide();resetNotificationModal()"
                 class="btn  btn-secondary"> Close
         </button>
         <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
            [routerLink]="['/applications']">
-          <button type="button"
+          <button id="notification_btn_redirect"
                   (click)="notificationModal.hide();resetNotificationModal()" type="reset"
                   class="btn  btn-secondary"> Close
           </button>
@@ -832,7 +824,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" (click)="acknowledgemodal.hide(); notificationModal.show();"
+        <button id="acknowledge_approve_btn" (click)="acknowledgemodal.hide(); notificationModal.show();"
                 class="btn  btn-success" type="submit" name="_save" form="application_form">
           Accept
         </button>
@@ -889,7 +881,7 @@
       <div class="modal-footer">
 
 
-        <button class="btn btn-success col-md4" type="button"
+        <button class="btn btn-success col-md4" type="button" id="verification_btn"
                 (click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
         </button>
         <button class="btn  btn-warning col-md-4" type="reset"
