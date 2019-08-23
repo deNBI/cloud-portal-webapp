@@ -59,7 +59,6 @@ export class VirtualMachineComponent implements OnInit {
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
-  logs: { [selector: string]: string | number } = {};
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
   client_checked: boolean = false;
@@ -299,23 +298,15 @@ export class VirtualMachineComponent implements OnInit {
       () => {
         this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => {
           if (newVm.status === this.ACTIVE) {
-            if (this.playbook_run === 1) {
-              this.virtualmachineservice.getLogs(id).subscribe(logs => {
-                this.logs = logs;
-              });
-            }
             this.resetProgressBar();
             this.newVm = newVm;
             this.loadProjectData();
 
           } else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) {
-            this.virtualmachineservice.getLogs(id).subscribe(logs => {
-              this.newVm.status = this.DELETED;
-              this.logs = logs;
-              this.resetProgressBar();
-              this.create_error = <IResponseTemplate><any>newVm;
-              this.loadProjectData();
-            });
+            this.newVm.status = this.DELETED;
+            this.resetProgressBar();
+            this.create_error = <IResponseTemplate><any>newVm;
+            this.loadProjectData();
           } else if (newVm.status) {
             if (newVm.status === this.PORT_CLOSED) {
               this.progress_bar_animated = '';
@@ -416,6 +407,7 @@ export class VirtualMachineComponent implements OnInit {
         [variable: string]: string
       }
     } = {};
+    this.timeout = 300;
     if (this.biocondaComponent.hasChosenTools()) {
       playbook_info['bioconda'] = {
         packages: this.biocondaComponent.getChosenTools()
