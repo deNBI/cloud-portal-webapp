@@ -632,4 +632,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
     ***REMOVED***)
   ***REMOVED***
 
+  logsome(v1, v2) ***REMOVED***
+    console.log(v1, v2);
+  ***REMOVED***
 ***REMOVED***
