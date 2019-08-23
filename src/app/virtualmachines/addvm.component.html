@@ -49,7 +49,7 @@
               <span *ngIf="client_avaiable && !projectDataLoaded" class="spinner-border text-info"></span>
 
 
-              <div class="col-md-6">
+              <div class="col-md-8">
 
 
                 <select required class="form-control" name="selectedProject"
@@ -75,7 +75,7 @@
                 <label class="col-md-2 form-control-label"><strong>Overview</strong></label>
 
 
-                <div class="row text-center col-md 6">
+                <div class="row text-center col-md-10">
 
                   <div class="col-sm-12 col-md">
                     <div class="text-muted">Vms</div>
@@ -183,9 +183,9 @@
 
 
               <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor)">
-                <div *ngIf="selectedProject" class="form-group row">
+                <div *ngIf="selectedProject" class="form-group row col-md-12">
                   <label class="col-md-2 form-control-label"><strong>Name*</strong></label>
-                  <div class="col-md-6">
+                  <div class="col-md-10">
                     <div class="input-group">
                       <input required id="id_instance_name" name="instance_name"
                              class="form-control"
@@ -208,7 +208,7 @@
                   </div>
                 </div>
 
-                <div *ngIf="selectedProject" class="form-group row">
+                <div *ngIf="selectedProject" class="form-group row col-md-12">
                   <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
                   <div class="col-md-10">
 
@@ -223,7 +223,7 @@
                 </div>
 
 
-                <div *ngIf="selectedProject" class="form-group row">
+                <div *ngIf="selectedProject" class="form-group row col-md-12">
                   <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
                   <div class="col-md-10">
 
@@ -236,10 +236,10 @@
 
 
               </div>
-              <accordion>
+              <accordion class="col-md-12">
                 <accordion-group #optionalGroup *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
                   <div accordion-heading style="width: 100%; cursor: pointer">
-                    Optional parameters
+                    <strong>Optional parameters</strong>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': optionalGroup.isOpen, 'icon-arrow-down': !optionalGroup.isOpen}"></i>
                   </div>
@@ -333,8 +333,8 @@
                 <accordion-group #autoGroup
                                  *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax">
                   <div accordion-heading style="width: 100%; cursor: pointer">
-                    <strong>Tools </strong><span
-                    class="badge badge-primary">BETA</span>
+                    <strong>Tools </strong> powered by <img src="{{bioconda_img_path}}" alt="Bioconda® " style="height: 12px; width: auto"><span
+                    class="badge badge-primary" style="margin-left:5px;">BETA</span>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': autoGroup.isOpen, 'icon-arrow-down': !autoGroup.isOpen}"></i>
                   </div>
