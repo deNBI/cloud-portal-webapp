@@ -3,29 +3,33 @@
 
 const ***REMOVED***SpecReporter***REMOVED*** = require('jasmine-spec-reporter');
 const fs = require('fs');
-let rawdata = fs.readFileSync('tests/environment.json');
+let rawdata = fs.readFileSync('e2e/environment.json');
 let credentials = JSON.parse(rawdata);
 
 exports.config = ***REMOVED***
-    seleniumAddress: 'http://localhost:4444/wd/hub',
-    params: ***REMOVED***
+  seleniumAddress: 'http://localhost:4444/wd/hub',
+  params: ***REMOVED***
     timeout: credentials['timeout'],
 
     portal: credentials['portal'],
     login: ***REMOVED***
-      email: credentials['email'],
-      password: credentials['password'],
+      email_user: credentials['email_user'],
+      password_user: credentials['password_user'],
+      email_fm: credentials['email_fm'],
+      password_fm: credentials['password_fm'],
+      email_vo: credentials['email_vo'],
+      password_vo: credentials['password_vo'],
       auth: credentials['auth']
     ***REMOVED***
   ***REMOVED***,
   allScriptsTimeout: 11000,
   specs: [
-    'cloud_application_test.ts'
+    'login_test.ts', 'cloud_application_test.ts'
   ],
   capabilities: ***REMOVED***
     'browserName': 'chrome',
     chromeOptions: ***REMOVED***
-        args: ["--incognito"]
+      args: ["--incognito"]
     ***REMOVED***
   ***REMOVED***,
   directConnect: true,
@@ -43,6 +47,6 @@ exports.config = ***REMOVED***
   ***REMOVED***,
   onPrepare() ***REMOVED***
     jasmine.getEnv().addReporter(new SpecReporter(***REMOVED***spec: ***REMOVED***displayStacktrace: true***REMOVED******REMOVED***));
-      browser.manage().window().setSize(1920, 1080);
+    browser.manage().window().setSize(1920, 1080);
   ***REMOVED***
 ***REMOVED***;
