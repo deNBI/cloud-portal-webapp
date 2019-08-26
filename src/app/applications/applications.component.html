@@ -20,7 +20,7 @@
         </div>
         <div *ngIf="user_applications.length > 0" class="card-body">
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="own_applications">
               <thead>
               <tr>
                 <th></th>
@@ -49,7 +49,7 @@
                           title="This is a Simple VM project">
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span></td>
-                  <td>{{ application?.Name }}
+                  <td [id]="application?.Name">{{ application?.Name }}
                   </td>
                   <td>{{application?.Shortname}}</td>
                   <td>{{ application?.Lifetime }}</td>
