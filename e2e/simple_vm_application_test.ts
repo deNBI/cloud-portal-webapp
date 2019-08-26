@@ -4,7 +4,7 @@ import ***REMOVED***LoginPage***REMOVED*** from './page_objects/login.po';
 import ***REMOVED***FormularPage***REMOVED*** from "./page_objects/application_formular.po";
 import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "./page_objects/application_overview.po";
 
-describe('Cloud Application Test', function () ***REMOVED***
+describe('Simple Application Test', function () ***REMOVED***
     const formularPage: FormularPage = new FormularPage();
     const applicationOverviewPage: ApplicationOverviewPage = new ApplicationOverviewPage();
     const loginPage: LoginPage = new LoginPage();
@@ -15,8 +15,8 @@ describe('Cloud Application Test', function () ***REMOVED***
         await loginPage.login(browser.params.login.email_user, browser.params.login.password_user, true);
     ***REMOVED***);
 
-    it('should send a cloud application', async function () ***REMOVED***
-        await formularPage.navigateToCloudApplication();
+    it('should send a simple vm application', async function () ***REMOVED***
+        await formularPage.navigateToSimpleVmApplication();
         console.log('Getting form.');
         await formularPage.fillFormular();
 
