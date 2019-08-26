@@ -171,7 +171,7 @@
         "e2e": ***REMOVED***
           "builder": "@angular-devkit/build-angular:protractor",
           "options": ***REMOVED***
-            "protractorConfig": "./protractor.conf.js",
+            "protractorConfig": "./e2e/protractor.conf.js",
             "devServerTarget": "cloud-webapp:serve"
           ***REMOVED***
         ***REMOVED***,
