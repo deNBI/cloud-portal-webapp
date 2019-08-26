@@ -192,14 +192,8 @@
                              type="text" placeholder="Instancename" ngModel
                              pattern="[a-zA-Z0-9]+"
                              [ngModelOptions]="***REMOVED***updateOn: 'blur'***REMOVED***"
-                             [appInstanceNameUnique]="***REMOVED***'host':selectedProjectClient.host, 'port':selectedProjectClient.port***REMOVED***"
                              [ngClass]="***REMOVED***'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)***REMOVED***">
-                    <div class="spinner-border" *ngIf="f.controls.instance_name?.pending"></div>
-                    </div>
-                    <div *ngIf="f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)">
-                      <div class="alert alert-danger" role="alert" style="margin-top: 5px" *ngIf="f.controls.instance_name?.hasError('uniqueInstanceName')">
-                        The instance name has to be unique!</div>
                     </div>
                     <div class="alert alert-primary" role="alert" style="margin-top: 5px">Info: The instance name will
                       also
