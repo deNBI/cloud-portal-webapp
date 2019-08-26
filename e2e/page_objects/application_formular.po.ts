@@ -13,23 +13,25 @@ export class FormularPage {
         const submitBtn = element(by.id(this.SUBMIT_BTN));
         console.log("Submit Application");
 
-        await browser.wait(this.until.elementToBeClickable(submitBtn)).then(function () {
+        await browser.driver.wait(this.until.elementToBeClickable(submitBtn)).then(function () {
             submitBtn.click()
         });
 
         const verificationBtn = element(by.id(this.VERIFICATION_BTN));
-        await browser.wait(this.until.elementToBeClickable(verificationBtn), this.timeout).then(function () {
+        await browser.driver.wait(this.until.elementToBeClickable(verificationBtn), this.timeout).then(function () {
             verificationBtn.click()
         });
 
+        browser.sleep(1000);
+
         const acknowledgeBtn = element(by.id(this.ACKNOWLEDGE_BTN));
-        await browser.wait(this.until.elementToBeClickable(acknowledgeBtn), this.timeout).then(function () {
+        await browser.driver.wait(this.until.elementToBeClickable(acknowledgeBtn), this.timeout).then(function () {
             acknowledgeBtn.click()
 
         });
 
         const redirectBtn = element(by.id(this.NOTIFICATION_REDIRECT_BTN));
-        await browser.wait(this.until.elementToBeClickable(redirectBtn), this.timeout).then(function () {
+        await browser.driver.wait(this.until.elementToBeClickable(redirectBtn), this.timeout).then(function () {
             redirectBtn.click()
 
         });
@@ -37,19 +39,37 @@ export class FormularPage {
 
     }
 
-
-    async fillFormular(): Promise<any> {
-        await browser.getCurrentUrl().then(function (url) {
+    async navigateToCloudApplication(): Promise<any> {
+        console.log("Navigate to CloudApplicaiton form");
+        await browser.driver.getCurrentUrl().then(async function (url) {
             console.log('GetUrl: ' + url);
             url = url.substring(0, url.indexOf('#'));
             console.log('SubstringUrl: ' + url);
             console.log('AddedUrl: ' + url + '#/applications/newCloudApplication');
-            browser.get(url + '#/applications/newCloudApplication');
+            await browser.driver.get(url + '#/applications/newCloudApplication');
 
         });
+    }
+
+    async navigateToSimpleVmApplication(): Promise<any> {
+        console.log("Navigate to SimpleApplication form");
+
+        await browser.driver.getCurrentUrl().then(async function (url) {
+            console.log('GetUrl: ' + url);
+            url = url.substring(0, url.indexOf('#'));
+            console.log('SubstringUrl: ' + url);
+            console.log('AddedUrl: ' + url + '#/applications/newSimpleVmApplication');
+            await browser.driver.get(url + '#/applications/newSimpleVmApplication');
+
+        });
+    }
+
+
+    async fillFormular(): Promise<any> {
+
         console.log('Getting form.');
         const form_name = element(by.name('project_application_name'));
-        await browser.wait(this.until.presenceOf(form_name), this.timeout).then(async function () {
+        await browser.driver.wait(this.until.presenceOf(form_name), this.timeout).then(async function () {
             // fill  Formular
             element(by.name('project_application_name')).sendKeys('ProtractorTest');
             element(by.name('project_application_shortname')).sendKeys('ProtractorTest');
@@ -59,6 +79,7 @@ export class FormularPage {
             element(by.name('project_application_workgroup')).sendKeys('Proctractor Workgroup');
             element(by.name('project_application_bmbf_project')).sendKeys('BMBF Project');
             element(by.name('project_application_elixir_project')).sendKeys('Elixir Project');
+            element(by.id('project_application_de.NBI default')).sendKeys('1');
             element(by.name('project_application_horizon2020')).sendKeys('Horizon2020Project');
             element(by.id('id_project_application_report_allowed')).click();
             element(by.id('dissemination_information_accordion')).click();
