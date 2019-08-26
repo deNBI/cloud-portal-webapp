@@ -1,7 +1,7 @@
 {
-   "password":"password",
-   "email":"email",
+   "password":"Diamond9",
+   "email":"ekatchko1",
    "portal":"http://portal-dev.denbi.de:8000",
-   "auth":"google",
+   "auth":"",
    "timeout":10000
 }

@@ -1,0 +1,13 @@
+{
+  "password_user":"",
+  "email_user":"",
+  "password_fm":"",
+  "email_fm":"",
+  "password_vo":"",
+  "email_vo":"",
+  "portal":"http://portal-dev.denbi.de:8000",
+  "auth":"google",
+  "timeout":10000,
+  "browser_h": 900,
+  "browser_w": 1600
+}
