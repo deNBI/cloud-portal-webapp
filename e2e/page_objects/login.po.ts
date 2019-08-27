@@ -1,11 +1,11 @@
-import {browser, by, element, protractor, ProtractorExpectedConditions} from 'protractor';
+import {browser, by, element} from 'protractor';
 import {Util} from "../util";
 
 export class LoginPage {
-    private timeout: number = browser.params.timeout;
-    private auth = browser.params.login.auth;
+    private static timeout: number = browser.params.timeout;
+    private static auth = browser.params.login.auth;
 
-    async login(email: string, psw: string, relog: boolean = false): Promise<any> {
+    static async login(email: string, psw: string, relog: boolean = false): Promise<any> {
 
         await browser.driver.get(browser.params.portal);
 
@@ -17,13 +17,8 @@ export class LoginPage {
             console.log("Need to relog");
             await this.logOut();
             await browser.waitForAngularEnabled(false);
-            let newLogin = new LoginPage();
-            return await newLogin.login(email, psw)
-
-
-        }
-
-        if (this.auth === 'google') {
+            await LoginPage.login(email, psw)
+        } else if (this.auth === 'google') {
             console.log('Login with Google');
             await this.useGoogle(email, psw);
         } else {
@@ -32,7 +27,7 @@ export class LoginPage {
         }
     }
 
-    async useGoogle(email: string, psw: string): Promise<any> {
+    static async useGoogle(email: string, psw: string): Promise<any> {
         const el = element(by.className('metalist list-group'));
         el.click();
         // Input Email
@@ -51,7 +46,7 @@ export class LoginPage {
         });
     }
 
-    async useUni(email: string, psw: string): Promise<any> {
+    static async useUni(email: string, psw: string): Promise<any> {
         await Util.waitForPresenceOfElement('query');
         await element(by.id('query')).sendKeys('Bielefeld');
         await element(by.linkText('University of Bielefeld')).click();
@@ -66,7 +61,7 @@ export class LoginPage {
         });
     }
 
-    async logOut(): Promise<any> {
+    static async logOut(): Promise<any> {
         console.log('Restarting browser');
         await browser.restart();
         await browser.waitForAngularEnabled(false);
