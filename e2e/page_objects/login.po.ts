@@ -1,11 +1,11 @@
-import ***REMOVED***browser, by, element, protractor, ProtractorExpectedConditions***REMOVED*** from 'protractor';
+import ***REMOVED***browser, by, element***REMOVED*** from 'protractor';
 import ***REMOVED***Util***REMOVED*** from "../util";
 
 export class LoginPage ***REMOVED***
-    private timeout: number = browser.params.timeout;
-    private auth = browser.params.login.auth;
+    private static timeout: number = browser.params.timeout;
+    private static auth = browser.params.login.auth;
 
-    async login(email: string, psw: string, relog: boolean = false): Promise<any> ***REMOVED***
+    static async login(email: string, psw: string, relog: boolean = false): Promise<any> ***REMOVED***
 
         await browser.driver.get(browser.params.portal);
 
@@ -17,13 +17,8 @@ export class LoginPage ***REMOVED***
             console.log("Need to relog");
             await this.logOut();
             await browser.waitForAngularEnabled(false);
-            let newLogin = new LoginPage();
-            return await newLogin.login(email, psw)
-
-
-        ***REMOVED***
-
-        if (this.auth === 'google') ***REMOVED***
+            await LoginPage.login(email, psw)
+        ***REMOVED*** else if (this.auth === 'google') ***REMOVED***
             console.log('Login with Google');
             await this.useGoogle(email, psw);
         ***REMOVED*** else ***REMOVED***
@@ -32,7 +27,7 @@ export class LoginPage ***REMOVED***
         ***REMOVED***
     ***REMOVED***
 
-    async useGoogle(email: string, psw: string): Promise<any> ***REMOVED***
+    static async useGoogle(email: string, psw: string): Promise<any> ***REMOVED***
         const el = element(by.className('metalist list-group'));
         el.click();
         // Input Email
@@ -51,7 +46,7 @@ export class LoginPage ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    async useUni(email: string, psw: string): Promise<any> ***REMOVED***
+    static async useUni(email: string, psw: string): Promise<any> ***REMOVED***
         await Util.waitForPresenceOfElement('query');
         await element(by.id('query')).sendKeys('Bielefeld');
         await element(by.linkText('University of Bielefeld')).click();
@@ -66,7 +61,7 @@ export class LoginPage ***REMOVED***
         ***REMOVED***);
     ***REMOVED***
 
-    async logOut(): Promise<any> ***REMOVED***
+    static async logOut(): Promise<any> ***REMOVED***
         console.log('Restarting browser');
         await browser.restart();
         await browser.waitForAngularEnabled(false);
