@@ -1,18 +1,16 @@
 import ***REMOVED***browser, by, element, protractor, ProtractorExpectedConditions***REMOVED*** from 'protractor';
+import ***REMOVED***Util***REMOVED*** from "../util";
 
 export class ApplicationOverviewPage ***REMOVED***
     private timeout: number = browser.params.timeout;
-    private until: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    private auth = browser.params.login.auth;
     private OWN_APPLICATION_ID: string = "own_applications";
 
     async isApplicationRequestPresent(application_name: string): Promise<boolean> ***REMOVED***
-        console.log("Check if " + application_name + " is present");
-        await browser.driver.wait(this.until.urlContains('applications'));
-        const own_applications = element(by.id(this.OWN_APPLICATION_ID));
-        await browser.driver.wait(this.until.presenceOf(own_applications), this.timeout, 'Element taking too long to appear in the DOM');
+        await Util.waitForPage('applications');
+        await Util.waitForPresenceOfElement(this.OWN_APPLICATION_ID);
         const elm = element(by.id(application_name));
-        return elm.isPresent()
+
+        return await elm.isPresent()
     ***REMOVED***
 
 ***REMOVED***

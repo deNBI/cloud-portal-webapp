@@ -5,7 +5,6 @@ import ***REMOVED***FormularPage***REMOVED*** from "./page_objects/application_f
 import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "./page_objects/application_overview.po";
 
 describe('Cloud Application Test', function () ***REMOVED***
-    const formularPage: FormularPage = new FormularPage();
     const applicationOverviewPage: ApplicationOverviewPage = new ApplicationOverviewPage();
     const loginPage: LoginPage = new LoginPage();
 
@@ -16,11 +15,10 @@ describe('Cloud Application Test', function () ***REMOVED***
     ***REMOVED***);
 
     it('should send a cloud application', async function () ***REMOVED***
-        await formularPage.navigateToCloudApplication();
-        console.log('Getting form.');
-        await formularPage.fillFormular();
+        await FormularPage.navigateToCloudApplication();
+        await FormularPage.fillFormular();
 
-        await formularPage.submitApplication();
+        await FormularPage.submitApplication();
         applicationOverviewPage.isApplicationRequestPresent("ProtractorTest").then(function (isPresent) ***REMOVED***
             expect(isPresent).toBeTruthy();
 

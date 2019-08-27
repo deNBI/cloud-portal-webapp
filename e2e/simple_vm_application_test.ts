@@ -5,7 +5,6 @@ import ***REMOVED***FormularPage***REMOVED*** from "./page_objects/application_f
 import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "./page_objects/application_overview.po";
 
 describe('Simple Application Test', function () ***REMOVED***
-    const formularPage: FormularPage = new FormularPage();
     const applicationOverviewPage: ApplicationOverviewPage = new ApplicationOverviewPage();
     const loginPage: LoginPage = new LoginPage();
 
@@ -16,16 +15,15 @@ describe('Simple Application Test', function () ***REMOVED***
     ***REMOVED***);
 
     it('should send a simple vm application', async function () ***REMOVED***
-        await formularPage.navigateToSimpleVmApplication();
+        await FormularPage.navigateToSimpleVmApplication();
         console.log('Getting form.');
-        await formularPage.fillFormular();
+        await FormularPage.fillFormular();
 
-        await formularPage.submitApplication();
-        applicationOverviewPage.isApplicationRequestPresent("ProtractorTest").then(function (isPresent) ***REMOVED***
+        await FormularPage.submitApplication();
+        applicationOverviewPage.isApplicationRequestPresent("ProtractorTest").then(async function (isPresent) ***REMOVED***
             expect(isPresent).toBeTruthy();
 
         ***REMOVED***);
 
     ***REMOVED***);
-***REMOVED***)
-;
+***REMOVED***);
