@@ -26,7 +26,6 @@ export class FormularPage ***REMOVED***
 
     static async navigateToSimpleVmApplication(): Promise<any> ***REMOVED***
         await Util.navigateToAngularPage('applications/newSimpleVmApplication');
-
         await Util.waitForPage('applications/newSimpleVmApplication');
 
     ***REMOVED***

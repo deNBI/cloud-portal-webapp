@@ -7,19 +7,32 @@ import ***REMOVED***Util***REMOVED*** from "../util";
 
 describe('Cloud Application Test', function () ***REMOVED***
 
-    beforeEach(async function () ***REMOVED***
+    beforeAll(async function () ***REMOVED***
         await browser.waitForAngularEnabled(false);
         await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
     ***REMOVED***);
 
-    it('should send a cloud application', async function () ***REMOVED***
+    it('should navigate to cloud application form', async function () ***REMOVED***
         console.log("Starting send a cloud  application test!");
-
         await FormularPage.navigateToCloudApplication();
+    ***REMOVED***);
+
+    it('should fill cloud application form', async function () ***REMOVED***
+
         await FormularPage.fillApplicationFormular(Util.OPENSTACK_APPLICATION_NAME);
+    ***REMOVED***);
+
+
+    it('should submit cloud application ', async function () ***REMOVED***
+
         await FormularPage.submitApplication();
         let isPresent: boolean = await ApplicationOverviewPage.isApplicationRequestPresent(Util.OPENSTACK_APPLICATION_NAME);
         expect(isPresent).toBeTruthy();
     ***REMOVED***);
-***REMOVED***)
-;
+
+    it('should have a cloud vm application in the application overview', async function () ***REMOVED***
+
+        let isPresent: boolean = await ApplicationOverviewPage.isApplicationRequestPresent(Util.OPENSTACK_APPLICATION_NAME);
+        expect(isPresent).toBeTruthy();
+    ***REMOVED***);
+***REMOVED***);

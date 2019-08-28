@@ -7,20 +7,31 @@ import ***REMOVED***Util***REMOVED*** from "../util";
 
 describe('Simple Application Test', function () ***REMOVED***
 
-    beforeEach(async function () ***REMOVED***
+    beforeAll(async function () ***REMOVED***
         await browser.waitForAngularEnabled(false);
-        await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user,browser.params.login.auth_user, false);
+        await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
     ***REMOVED***);
 
-    it('should send a simple vm application', async function () ***REMOVED***
+    it('should navigate to the simple vm form', async function () ***REMOVED***
         console.log("Starting send a simple vm application test!");
         await FormularPage.navigateToSimpleVmApplication();
-        console.log('Getting form.');
+    ***REMOVED***);
+
+    it('should fill the simple vm form', async function () ***REMOVED***
         await FormularPage.fillApplicationFormular(Util.SIMPLE_VM_APPLICATION_NAME);
 
+    ***REMOVED***);
+
+    it('should submit the simple vm form', async function () ***REMOVED***
         await FormularPage.submitApplication();
-        let isPresent: boolean = await ApplicationOverviewPage.isApplicationRequestPresent(Util.SIMPLE_VM_APPLICATION_NAME);
-        expect(isPresent).toBeTruthy();
 
     ***REMOVED***);
+
+    it('should have a simple vm application in the application overview', async function () ***REMOVED***
+
+        let isPresent: boolean = await ApplicationOverviewPage.isApplicationRequestPresent(Util.SIMPLE_VM_APPLICATION_NAME);
+        expect(isPresent).toBeTruthy();
+    ***REMOVED***);
+
+
 ***REMOVED***);
