@@ -19,7 +19,6 @@ import ***REMOVED***AccordionModule, BsDropdownModule***REMOVED*** from 'ngx-boo
 import ***REMOVED***BiocondaComponent***REMOVED*** from './conda/bioconda.component';
 import ***REMOVED***HowToConnectComponent***REMOVED*** from './shared-modal/how-to-connect.component';
 import ***REMOVED***PopoverModule***REMOVED*** from 'ngx-smart-popover';
-import ***REMOVED***ExistingUsernameValidatorDirective***REMOVED*** from './custom-validation/virtualmachineValidations.directive';
 
 /**
  * VM module.
@@ -49,8 +48,7 @@ import ***REMOVED***ExistingUsernameValidatorDirective***REMOVED*** from './cust
               VolumeOverviewComponent,
               SnapshotOverviewComponent,
               HowToConnectComponent,
-              BiocondaComponent,
-              ExistingUsernameValidatorDirective
+              BiocondaComponent
             ]
           ***REMOVED***)
 export class VmModule ***REMOVED***

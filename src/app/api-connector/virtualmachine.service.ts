@@ -297,13 +297,4 @@ export class VirtualmachineService ***REMOVED***
       headers: header
     ***REMOVED***)
   ***REMOVED***
-
-  isInstanceNameTaken(name: string, host: string, port: string): Observable<boolean> ***REMOVED***
-    const params: HttpParams = new HttpParams().set('name', name).set('host', host).set('port', port);
-
-    return this.http.post<boolean>(`$***REMOVED***this.baseVmUrl***REMOVED***exist/`, params, ***REMOVED***
-      withCredentials: true,
-      headers: header
-    ***REMOVED***)
-  ***REMOVED***
 ***REMOVED***

@@ -59,7 +59,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
-  logs: ***REMOVED*** [selector: string]: string | number ***REMOVED*** = ***REMOVED******REMOVED***;
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
   client_checked: boolean = false;
@@ -299,23 +298,15 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       () => ***REMOVED***
         this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => ***REMOVED***
           if (newVm.status === this.ACTIVE) ***REMOVED***
-            if (this.playbook_run === 1) ***REMOVED***
-              this.virtualmachineservice.getLogs(id).subscribe(logs => ***REMOVED***
-                this.logs = logs;
-              ***REMOVED***);
-            ***REMOVED***
             this.resetProgressBar();
             this.newVm = newVm;
             this.loadProjectData();
 
           ***REMOVED*** else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) ***REMOVED***
-            this.virtualmachineservice.getLogs(id).subscribe(logs => ***REMOVED***
-              this.newVm.status = this.DELETED;
-              this.logs = logs;
-              this.resetProgressBar();
-              this.create_error = <IResponseTemplate><any>newVm;
-              this.loadProjectData();
-            ***REMOVED***);
+            this.newVm.status = this.DELETED;
+            this.resetProgressBar();
+            this.create_error = <IResponseTemplate><any>newVm;
+            this.loadProjectData();
           ***REMOVED*** else if (newVm.status) ***REMOVED***
             if (newVm.status === this.PORT_CLOSED) ***REMOVED***
               this.progress_bar_animated = '';
@@ -416,6 +407,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
         [variable: string]: string
       ***REMOVED***
     ***REMOVED*** = ***REMOVED******REMOVED***;
+    this.timeout = 300;
     if (this.biocondaComponent.hasChosenTools()) ***REMOVED***
       playbook_info['bioconda'] = ***REMOVED***
         packages: this.biocondaComponent.getChosenTools()
