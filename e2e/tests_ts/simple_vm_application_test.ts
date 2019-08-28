@@ -1,9 +1,9 @@
 // spec.js
 import ***REMOVED***browser, by, element, protractor***REMOVED*** from 'protractor';
-import ***REMOVED***LoginPage***REMOVED*** from './page_objects/login.po';
-import ***REMOVED***FormularPage***REMOVED*** from "./page_objects/application_formular.po";
-import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "./page_objects/application_overview.po";
-import ***REMOVED***Util***REMOVED*** from "./util";
+import ***REMOVED***LoginPage***REMOVED*** from '../page_objects/login.po';
+import ***REMOVED***FormularPage***REMOVED*** from "../page_objects/application_formular.po";
+import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "../page_objects/application_overview.po";
+import ***REMOVED***Util***REMOVED*** from "../util";
 
 describe('Simple Application Test', function () ***REMOVED***
 

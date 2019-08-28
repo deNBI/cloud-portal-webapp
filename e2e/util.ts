@@ -15,6 +15,36 @@ export class Util ***REMOVED***
         return this._OPENSTACK_APPLICATION_NAME;
     ***REMOVED***
 
+    static async sendTextToElementByName(name: string, text: string): Promise<void> ***REMOVED***
+        console.log(`Send text [$***REMOVED***text***REMOVED***] to element $***REMOVED***name***REMOVED***`);
+        const elem = element(by.name(name));
+
+        return await elem.sendKeys(text);
+    ***REMOVED***
+
+    static async sendTextToElementById(id: string, text: string): Promise<void> ***REMOVED***
+        console.log(`Send text [$***REMOVED***text***REMOVED***] to element $***REMOVED***id***REMOVED***`);
+        const elem = element(by.id(id));
+
+        return await elem.sendKeys(text);
+    ***REMOVED***
+
+    static async clickElementById(id: string): Promise<void> ***REMOVED***
+        await this.waitForElementToBeClickableById(id);
+        console.log(`Clicking element $***REMOVED***id***REMOVED***`);
+        const elem = element(by.id(id));
+
+        return await elem.click();
+    ***REMOVED***
+
+    static async clickElementByName(name: string): Promise<void> ***REMOVED***
+        await this.waitForElementToBeClickableByName(name);
+        console.log(`Clicking element $***REMOVED***name***REMOVED***`);
+        const elem = element(by.name(name));
+
+        return await elem.click();
+    ***REMOVED***
+
     static async waitForPage(url: string): Promise<boolean> ***REMOVED***
         const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -44,6 +74,14 @@ export class Util ***REMOVED***
 
         console.log(`Waiting until element is clickable $***REMOVED***id***REMOVED***`);
         const elem = element(by.id(id));
+        return await browser.driver.wait(until.elementToBeClickable(elem), this.timeout, 'Element taking too long to be clickable');
+    ***REMOVED***
+
+    static async waitForElementToBeClickableByName(name: string): Promise<boolean> ***REMOVED***
+        const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
+
+        console.log(`Waiting until element is clickable $***REMOVED***name***REMOVED***`);
+        const elem = element(by.name(name));
         return await browser.driver.wait(until.elementToBeClickable(elem), this.timeout, 'Element taking too long to be clickable');
     ***REMOVED***
 

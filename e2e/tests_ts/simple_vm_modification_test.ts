@@ -1,19 +1,20 @@
 // spec.js
 import ***REMOVED***browser, by, element, protractor***REMOVED*** from 'protractor';
-import ***REMOVED***LoginPage***REMOVED*** from './page_objects/login.po';
-import ***REMOVED***FormularPage***REMOVED*** from "./page_objects/application_formular.po";
-import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "./page_objects/application_overview.po";
-import ***REMOVED***Util***REMOVED*** from "./util";
+import ***REMOVED***LoginPage***REMOVED*** from '../page_objects/login.po';
+import ***REMOVED***FormularPage***REMOVED*** from "../page_objects/application_formular.po";
+import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "../page_objects/application_overview.po";
+import ***REMOVED***Util***REMOVED*** from "../util";
 
-describe('Simple Application Approval Test', function () ***REMOVED***
+describe('Simple Application Modification Test', function () ***REMOVED***
 
     beforeEach(async function () ***REMOVED***
         await browser.waitForAngularEnabled(false);
         await LoginPage.login(browser.params.login.email_vo, browser.params.login.password_vo, browser.params.login.auth_vo, true);
     ***REMOVED***);
 
-    it('should approve A SIMPLE VM APPLICATION', async function () ***REMOVED***
+    it('should send a modification request', async function () ***REMOVED***
         await ApplicationOverviewPage.navigateToApplicationOverview();
+        await Util.waitForElementToBeClickableById('extension_' + Util.SIMPLE_VM_APPLICATION_NAME);
 
         await ApplicationOverviewPage.approveSimpleVm(Util.SIMPLE_VM_APPLICATION_NAME);
         await Util.waitForTextPresenceInElementById('notification_message', "The new project was created and assigned to de.NBI Cloud Portal - Development.");
