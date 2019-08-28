@@ -33,6 +33,8 @@ export class Util ***REMOVED***
     ***REMOVED***
 
     static async sendTextToElementById(id: string, text: string, show_output: boolean = true): Promise<void> ***REMOVED***
+        await this.waitForVisibilityOfElementById(id);
+
         if (show_output) ***REMOVED***
             console.log(`Send text [$***REMOVED***text***REMOVED***] to element $***REMOVED***id***REMOVED***`);
         ***REMOVED***
@@ -43,7 +45,6 @@ export class Util ***REMOVED***
 
     static async clickElementById(id: string): Promise<void> ***REMOVED***
         await this.waitForVisibilityOfElementById(id);
-
         await this.waitForElementToBeClickableById(id);
         console.log(`Clicking element $***REMOVED***id***REMOVED***`);
         const elem = element(by.id(id));
