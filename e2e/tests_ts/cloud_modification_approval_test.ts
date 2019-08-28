@@ -6,7 +6,7 @@ import {ApplicationOverviewPage} from "../page_objects/application_overview.po";
 import {Util} from "../util";
 import {FacilityOverviewPage} from "../page_objects/facility_overview.po";
 
-describe('Cloud Application Approval Test', function () {
+describe('Simple Application Modification Approval Test', function () {
 
     beforeAll(async function () {
         await browser.waitForAngularEnabled(false);
@@ -15,12 +15,10 @@ describe('Cloud Application Approval Test', function () {
 
     it('should navigate to application overview', async function () {
         await ApplicationOverviewPage.navigateToApplicationOverview();
-
-
     });
 
-    it('should approve cloud application with denbi default facility', async function () {
-        await ApplicationOverviewPage.approveCloudApplication(Util.OPENSTACK_APPLICATION_NAME);
+    it('should approve a cloud  modification request', async function () {
+        await ApplicationOverviewPage.approveModificationRequest(Util.OPENSTACK_APPLICATION_NAME);
     });
 
     it('should relog with facility manager', async function () {
@@ -32,8 +30,6 @@ describe('Cloud Application Approval Test', function () {
     });
 
     it('should approve cloud application', async function () {
-        await FacilityOverviewPage.approveApplication(Util.OPENSTACK_APPLICATION_NAME);
+        await FacilityOverviewPage.approveApplicationExtension(Util.OPENSTACK_APPLICATION_NAME);
     });
-
-
 });
