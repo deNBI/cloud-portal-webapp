@@ -7,7 +7,8 @@ export class ApplicationOverviewPage {
     private static SUBMIT_RENEWAL_BTN: string = 'submit_renewal_btn';
     private static EXTENSION_RESULT: string = 'extension result';
     private static EXTENSION_SUCCESSFULLY_SUBMITTED: string = 'Modify request successfully submitted!';
-    private static EXTENSION_SUCCESSFULLY_APPROVED: string = 'Modify request successfully approved!';
+    private static EXTENSION_SV_SUCCESSFULLY_APPROVED: string = 'Modify request successfully approved!';
+    private  static EXTENSION_OP_SUCCESFULLY_APPROVED:string='Modify request successfully approved and forwarded to facility!';
     private static EXTENSION_APPROVAL_BTN_PREFIX: string = 'extension_approval_';
     private static EXTENSION_REQUEST_BTN_PREFIX: string = 'extension_';
     private static COMPUTE_CENTER_SELECTION_PREFIX: string = 'id_compute_center_option_';
@@ -26,7 +27,7 @@ export class ApplicationOverviewPage {
 
     static async approveModificationRequest(application_name: string): Promise<any> {
         await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
-        await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SUCCESSFULLY_APPROVED);
+        await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_OP_SUCCESFULLY_APPROVED);
 
     }
 
