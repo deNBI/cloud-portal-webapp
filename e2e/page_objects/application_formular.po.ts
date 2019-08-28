@@ -9,6 +9,7 @@ export class FormularPage {
     private static ACKNOWLEDGE_BTN: string = 'acknowledge_approve_btn';
     private static NOTIFICATION_REDIRECT_BTN: string = "notification_btn_redirect";
 
+
     static async submitApplication(): Promise<any> {
         console.log("Submit Application");
 
@@ -45,9 +46,9 @@ export class FormularPage {
         await Util.waitForPage('#/applications/newSimpleVmApplication');
 
     }
+    
 
-
-    static async fillFormular(name: string): Promise<any> {
+    static async fillApplicationFormular(name: string): Promise<any> {
 
         // fill  Formular
         console.log("Fill form");

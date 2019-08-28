@@ -13,9 +13,10 @@ describe('Simple Application Test', function () {
     });
 
     it('should send a simple vm application', async function () {
+        console.log("Starting send a simple vm application test!");
         await FormularPage.navigateToSimpleVmApplication();
         console.log('Getting form.');
-        await FormularPage.fillFormular(Util.SIMPLE_VM_APPLICATION_NAME);
+        await FormularPage.fillApplicationFormular(Util.SIMPLE_VM_APPLICATION_NAME);
 
         await FormularPage.submitApplication();
         let isPresent: boolean = await ApplicationOverviewPage.isApplicationRequestPresent(Util.SIMPLE_VM_APPLICATION_NAME);

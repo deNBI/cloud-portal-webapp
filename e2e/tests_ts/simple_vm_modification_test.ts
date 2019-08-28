@@ -9,18 +9,12 @@ describe('Simple Application Modification Test', function () {
 
     beforeEach(async function () {
         await browser.waitForAngularEnabled(false);
-        await LoginPage.login(browser.params.login.email_vo, browser.params.login.password_vo, browser.params.login.auth_vo, true);
+        await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
     });
 
     it('should send a modification request', async function () {
+        console.log("Starting send a simple vm modification request  test!");
         await ApplicationOverviewPage.navigateToApplicationOverview();
-        await Util.waitForElementToBeClickableById('extension_' + Util.SIMPLE_VM_APPLICATION_NAME);
-
-        await ApplicationOverviewPage.approveSimpleVm(Util.SIMPLE_VM_APPLICATION_NAME);
-        await Util.waitForTextPresenceInElementById('notification_message', "The new project was created and assigned to de.NBI Cloud Portal - Development.");
-        const elem = element(by.id('notification_message'));
-        console.log(await elem.getText());
-
-
+        await ApplicationOverviewPage.sendModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
     });
 });
