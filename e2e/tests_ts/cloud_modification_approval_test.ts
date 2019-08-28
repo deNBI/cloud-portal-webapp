@@ -6,7 +6,7 @@ import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "../page_objects/a
 import ***REMOVED***Util***REMOVED*** from "../util";
 import ***REMOVED***FacilityOverviewPage***REMOVED*** from "../page_objects/facility_overview.po";
 
-describe('Cloud Application Approval Test', function () ***REMOVED***
+describe('Simple Application Modification Approval Test', function () ***REMOVED***
 
     beforeAll(async function () ***REMOVED***
         await browser.waitForAngularEnabled(false);
@@ -15,12 +15,10 @@ describe('Cloud Application Approval Test', function () ***REMOVED***
 
     it('should navigate to application overview', async function () ***REMOVED***
         await ApplicationOverviewPage.navigateToApplicationOverview();
-
-
     ***REMOVED***);
 
-    it('should approve cloud application with denbi default facility', async function () ***REMOVED***
-        await ApplicationOverviewPage.approveCloudApplication(Util.OPENSTACK_APPLICATION_NAME);
+    it('should approve a cloud  modification request', async function () ***REMOVED***
+        await ApplicationOverviewPage.approveModificationRequest(Util.OPENSTACK_APPLICATION_NAME);
     ***REMOVED***);
 
     it('should relog with facility manager', async function () ***REMOVED***
@@ -32,8 +30,6 @@ describe('Cloud Application Approval Test', function () ***REMOVED***
     ***REMOVED***);
 
     it('should approve cloud application', async function () ***REMOVED***
-        await FacilityOverviewPage.approveApplication(Util.OPENSTACK_APPLICATION_NAME);
+        await FacilityOverviewPage.approveApplicationExtension(Util.OPENSTACK_APPLICATION_NAME);
     ***REMOVED***);
-
-
 ***REMOVED***);
