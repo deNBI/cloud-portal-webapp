@@ -158,7 +158,7 @@ export class VMOverviewPage {
     console.log(`Deleting ${name}`);
     await this.clickSelectDropdown(name);
     await element(by.id(this.TABLE_ID)).element(by.id(`${this.ROW_PREFIX}${name}`)).element(by.id(this.DELETE_BUTTON)).click();
-    await Util.waitForPresenceOfElement(this.VERIFY_MODAL);
+    await Util.waitForPresenceOfElementById(this.VERIFY_MODAL);
     await element(by.id(this.VERIFY_MODAL)).element(by.id(this.CONFIRM_DELETE_BUTTON)).click();
     await Util.waitForPresenceByElement(
       element(by.id(this.DELETE_MODAL)).element(by.id(this.DELETE_SUCCESS)),

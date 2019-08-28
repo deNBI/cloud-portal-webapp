@@ -5,12 +5,12 @@
   "email_fm": "",
   "password_vo": "",
   "email_vo": "",
-  "portal": "http://portal-dev.denbi.de:8000",
-  "angular":"http://portal-dev.denbi.de:8001",
+  "portal": "",
+  "angular":"",
   "auth_user": "",
   "auth_fm": "",
-  "auth_vo": "google",
+  "auth_vo": "",
   "timeout": 30000,
-  "browser_h": 900,
-  "browser_w": 1600
+  "browser_h": 1080,
+  "browser_w": 1920
 }
