@@ -6,7 +6,10 @@ export class ApplicationOverviewPage ***REMOVED***
     private static SUBMIT_MODEL_BTN: string = "submit_modal_btn";
     private static SUBMIT_RENEWAL_BTN: string = 'submit_renewal_btn';
     private static EXTENSION_RESULT: string = 'extension result';
-    private static EXTENSION_SUCCESFFULY_SUBMITTED: string = 'Modify request successfully submitted!'
+    private static EXTENSION_SUCCESSFULLY_SUBMITTED: string = 'Modify request successfully submitted!';
+    private static EXTENSION_SUCCESSFULLY_APPROVED: string = 'Modify request successfully approved!'
+    private static EXTENSION_APPROVAL_BTN_PREFIX: string = 'extension_approval_';
+    private static EXTENSION_REQUEST_BTN_PREFIX: string = 'extension_';
 
 
     static async navigateToApplicationOverview(): Promise<any> ***REMOVED***
@@ -15,13 +18,20 @@ export class ApplicationOverviewPage ***REMOVED***
         await Util.waitForPage('applications');
     ***REMOVED***
 
+
+    static async approveModificationRequest(application_name: string): Promise<any> ***REMOVED***
+        await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
+        await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SUCCESSFULLY_APPROVED);
+
+    ***REMOVED***
+
     static async sendModificationRequest(application_name: string): Promise<any> ***REMOVED***
-        await Util.clickElementById('extension_' + application_name);
+        await Util.clickElementById(this.EXTENSION_REQUEST_BTN_PREFIX + application_name);
         await Util.waitForVisibilityOfElementById('id_project_application_renewal_lifetime');
         await this.fillModificationRequest();
         await Util.clickElementById(this.SUBMIT_RENEWAL_BTN);
         await Util.clickElementById(this.SUBMIT_MODEL_BTN);
-        await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SUCCESFFULY_SUBMITTED);
+        await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SUCCESSFULLY_SUBMITTED);
     ***REMOVED***
 
 
@@ -49,6 +59,4 @@ export class ApplicationOverviewPage ***REMOVED***
 
 
     ***REMOVED***
-
-
 ***REMOVED***

@@ -42,6 +42,8 @@ export class Util ***REMOVED***
     ***REMOVED***
 
     static async clickElementById(id: string): Promise<void> ***REMOVED***
+        await this.waitForVisibilityOfElementById(id);
+
         await this.waitForElementToBeClickableById(id);
         console.log(`Clicking element $***REMOVED***id***REMOVED***`);
         const elem = element(by.id(id));
