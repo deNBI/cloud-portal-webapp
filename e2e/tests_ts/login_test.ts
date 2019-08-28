@@ -1,6 +1,6 @@
 import ***REMOVED***browser***REMOVED*** from 'protractor';
-import ***REMOVED***LoginPage***REMOVED*** from './page_objects/login.po';
-import ***REMOVED***Util***REMOVED*** from './util';
+import ***REMOVED***LoginPage***REMOVED*** from '../page_objects/login.po';
+import ***REMOVED***Util***REMOVED*** from '../util';
 
 describe('Login test', async function () ***REMOVED***
 
@@ -11,7 +11,7 @@ describe('Login test', async function () ***REMOVED***
   ***REMOVED***);
 
   it('should login', async function () ***REMOVED***
-    LoginPage.login(browser.params.login.email_user, browser.params.login.password_user);
+    LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user);
     await Util.waitForPage('userinfo').then(function (result) ***REMOVED***
       expect(result).toEqual(true);
     ***REMOVED***);

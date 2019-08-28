@@ -34,8 +34,8 @@ export class NewInstancePage ***REMOVED***
   ***REMOVED***
 
   static async chooseProject(): Promise<any> ***REMOVED***
-    await Util.waitForPresenceOfElement('application_form');
-    await Util.waitForPresenceOfElement(this.PROJECT_SELECT_ID);
+    await Util.waitForPresenceOfElementById('application_form');
+    await Util.waitForPresenceOfElementById(this.PROJECT_SELECT_ID);
     await Util.getOptionOfSelect(this.PROJECT_NAME, this.PROJECT_SELECT_ID);
   ***REMOVED***
 
@@ -48,11 +48,11 @@ export class NewInstancePage ***REMOVED***
   ***REMOVED***
 
   static async fillMandatoryFormWith(instance_name: string, flavor: string, image: string): Promise<any> ***REMOVED***
-    await Util.waitForPresenceOfElement(this.ID_INSTANCE_NAME);
+    await Util.waitForPresenceOfElementById(this.ID_INSTANCE_NAME);
     await element(by.id(this.ID_INSTANCE_NAME)).sendKeys(instance_name);
-    await Util.waitForPresenceOfElement(this.FLAVOR_ID);
+    await Util.waitForPresenceOfElementById(this.FLAVOR_ID);
     await element(by.id(this.FLAVOR_ID)).element(by.id(`$***REMOVED***this.FLAVOR_PREFIX***REMOVED***$***REMOVED***flavor***REMOVED***`)).click();
-    await Util.waitForPresenceOfElement(this.IMAGE_ID);
+    await Util.waitForPresenceOfElementById(this.IMAGE_ID);
     await element(by.id(this.IMAGE_ID)).element(by.id(`$***REMOVED***this.IMAGE_PREFIX***REMOVED***$***REMOVED***image***REMOVED***`)).click();
   ***REMOVED***
 
@@ -62,7 +62,7 @@ export class NewInstancePage ***REMOVED***
   ***REMOVED***
 
   static async waitForConfirmation(): Promise<boolean> ***REMOVED***
-    return await Util.waitForPresenceOfElement(this.OVERVIEW_BUTTON, 420000);
+    return await Util.waitForPresenceOfElementById(this.OVERVIEW_BUTTON, 420000);
   ***REMOVED***
 
   static async setVolume(): Promise<any> ***REMOVED***

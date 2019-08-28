@@ -75,7 +75,7 @@
                               class="btn btn-danger">
                         Remove Application
                       </button>
-                      <button
+                      <button [id]="'extension_' + application.Name"
                         *ngIf="application?.Status == application_states.APPROVED || application?.Status == application_states.MODIFICATION_DECLINED"
                         (click)="setSelectedApplication(application);calculateRamCores();extensionModal.show()"
                         type="button"
@@ -90,11 +90,11 @@
                 <tr>
                   <td [class.collapse_no_margin]="getCollapseStatus('user_application-' + application?.Id)"
                       colspan="6">
-                    <div id="user_application-***REMOVED******REMOVED*** application?.id ***REMOVED******REMOVED***"
+                    <div id="user_application-***REMOVED******REMOVED*** application?.Id ***REMOVED******REMOVED***"
                          [class.collapse]="getCollapseStatus('user_application-' + application?.Id)"
                          class="table-responsive">
                       <table class="table table-striped" style="width: 80%">
-                        <tr  *ngIf="application?.PIApproved">
+                        <tr *ngIf="application?.PIApproved">
                           <td>
                             PI Name
                           </td>
@@ -104,7 +104,7 @@
                           <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                           </td>
                         </tr>
-                        <tr  *ngIf="application?.PIApproved">
+                        <tr *ngIf="application?.PIApproved">
                           <td>
                             PI Email
                           </td>
@@ -180,8 +180,9 @@
                         <tr *ngFor="let item of application?.CurrentFlavors | keyvalue">
                           <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
                           <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
-                          <td  *ngIf="application?.Status == 4">
-                                                            <span *ngIf="application?.ApplicationExtension?.RequestedFlavors[item.key]">
+                          <td *ngIf="application?.Status == 4">
+                                                            <span
+                                                              *ngIf="application?.ApplicationExtension?.RequestedFlavors[item.key]">
 
 
                                                                 ***REMOVED******REMOVED***application?.ApplicationExtension.RequestedFlavors[item.key].counter***REMOVED******REMOVED***</span>
@@ -290,7 +291,7 @@
               </thead>
               <tbody>
               <ng-container
-                *ngFor="let application of all_applications">
+                *ngFor="let application of all_applications" id="applications_for_review">
                 <ng-container
                   *ngIf="application?.Status == application_states.SUBMITTED || application?.Status == application_states.MODIFICATION_REQUESTED || application?.Status == application_states.WAIT_FOR_CONFIRMATION || application?.Status == application_states.CONFIRMATION_DENIED">
                   <tr>
@@ -387,7 +388,7 @@
                           (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
                           type="button"
-                          class="btn btn-success">
+                          class="btn btn-success" [id]="application?.Shortname">
                           <i class="fa fa-check"></i>&nbsp;
                           Approve
                           & Create
@@ -399,7 +400,7 @@
                           (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
                           type="button"
-                          class="btn btn-success">
+                          class="btn btn-success" [id]="application?.Shortname">
                           <i class="fa fa-check"></i>&nbsp;
                           Approve
                           & Create
@@ -459,7 +460,7 @@
                           <table class="table table-striped">
 
 
-                            <tr  *ngIf="application?.PIApproved">
+                            <tr *ngIf="application?.PIApproved">
                               <td>
                                 PI Name
                               </td>
@@ -469,7 +470,7 @@
                               <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                               </td>
                             </tr>
-                            <tr  *ngIf="application?.PIApproved">
+                            <tr *ngIf="application?.PIApproved">
                               <td>
                                 PI Email
                               </td>
@@ -1095,7 +1096,7 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***"
-             role="alert">
+             role="alert" id="notification_message">
           ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
         </div>
         <div *ngIf="notificationClientInfo.length > 0">
@@ -1237,7 +1238,7 @@
           These numbers <strong>will not be added</strong> to your current numbers, but
           will <strong>replace them</strong>.
         </div>
-        <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+        <form id="extension_application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
               class="form-horizontal">
 
 
@@ -1254,7 +1255,7 @@
             <div class="col">
               <div class="input-group">
                 <input class="form-control"
-                       name="project_application_lifetime" placeholder="NA"
+                       name="extension_project_application_lifetime" placeholder="NA"
                        type="text" value="***REMOVED******REMOVED***showLifetime(selectedApplication)***REMOVED******REMOVED***"
                        disabled>
 
@@ -1322,8 +1323,8 @@
                       <div class="input-group">
                         <input class="form-control"
                                (change)="valuesChanged(f)"
-                               id="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***"
-                               name="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***"
+                               id="id_project_application_renewal_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***"
+                               name="project_application_renewal_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***"
                                type="number" min="0" step="1"
                                placeholder="e.g 1"
                                [ngModel]="selectedApplication?.CurrentFlavors[fl.name]?.counter"
@@ -1477,7 +1478,8 @@
             <label class="col-md-4"></label>
             <div class="col-md-8">
               <div class="alert alert-primary" role="alert">
-                In case you need additional and/or special resources, which are not available in the flavour selection, use the comment field to state so. The same applies to unusually large amounts of resources.
+                In case you need additional and/or special resources, which are not available in the flavour selection,
+                use the comment field to state so. The same applies to unusually large amounts of resources.
               </div>
             </div>
           </div>
@@ -1508,7 +1510,7 @@
             By submitting this application you agree to the cloud usage policy.
           </div>
           <button type="button" class="btn  btn-primary"
-                  form="application_form"
+                  form="application_form" id="submit_renewal_btn"
                   (click)="extension_request=true;filterEnteredData(f); submitModal.show();"
                   [disabled]="f.invalid"><i
             class="fa fa-dot-circle-o">
@@ -1570,7 +1572,7 @@
       <div class="modal-footer">
 
 
-        <button class="btn btn-success col-md4" type="button"
+        <button class="btn btn-success col-md4" type="button" id="submit_modal_btn"
                 (click)="resultModal.show(); extensionModal.hide(); submitModal.hide();onSubmit(f);">Confirm Application
         </button>
         <button class="btn  btn-primary col-md-4" type="reset"
@@ -1601,27 +1603,27 @@
       </div>
 
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
+        <div class="alert alert-info" role="alert" *ngIf="extension_status==0" id="extension result">
           Waiting... <i class="fa fa-spinner fa-spin"
                         style="font-size:24px"></i>
         </div>
 
 
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status == 1" id="extension result">
 
           Modify request successfully submitted!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 3">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status == 3" id="extension result">
           Modify request successfully approved!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status == 4" id="extension result">
           Modify request successfully declined!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 5">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status == 5" id="extension result">
           Modify request successfully approved and forwarded to facility!
         </div>
 
-        <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
+          <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2" id="extension result">
           An error occured.
 
         </div>

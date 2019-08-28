@@ -39,7 +39,6 @@ testem.log
 /e2e/environment.json
 
 # e2e
-/e2e/*.js
 /e2e/*.map
 
 # System Files

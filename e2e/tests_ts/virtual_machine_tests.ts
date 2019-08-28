@@ -1,8 +1,8 @@
 import ***REMOVED***browser***REMOVED*** from 'protractor';
-import ***REMOVED***NewInstancePage***REMOVED*** from './page_objects/new_instance.po';
-import ***REMOVED***LoginPage***REMOVED*** from './page_objects/login.po';
-import ***REMOVED***VolumeOverviewPage***REMOVED*** from './page_objects/volume_overview.po';
-import ***REMOVED***VMOverviewPage***REMOVED*** from './page_objects/vm_overview.po';
+import ***REMOVED***NewInstancePage***REMOVED*** from '../page_objects/new_instance.po';
+import ***REMOVED***LoginPage***REMOVED*** from '../page_objects/login.po';
+import ***REMOVED***VolumeOverviewPage***REMOVED*** from '../page_objects/volume_overview.po';
+import ***REMOVED***VMOverviewPage***REMOVED*** from '../page_objects/vm_overview.po';
 
 describe('Virtual Machine Tests', async function () ***REMOVED***
 
@@ -11,7 +11,7 @@ describe('Virtual Machine Tests', async function () ***REMOVED***
   beforeAll(async function () ***REMOVED***
     console.log('------------------------------All virtual machine tests: started');
     browser.waitForAngularEnabled(false);
-    await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user);
+    await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user);
   ***REMOVED***);
 
   it('should start a basic vm', async function () ***REMOVED***
