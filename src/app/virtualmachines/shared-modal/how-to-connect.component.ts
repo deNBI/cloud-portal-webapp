@@ -14,7 +14,7 @@ export class HowToConnectComponent implements OnChanges {
   showUdpCommando: boolean = true;
   showLogs: boolean = true;
 
-  private _selectedVirtualMachine: VirtualMachine;
+  public _selectedVirtualMachine: VirtualMachine;
 
   @Input() playbook_run: number = 0;
 
