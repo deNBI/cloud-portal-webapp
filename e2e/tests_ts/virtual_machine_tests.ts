@@ -1,8 +1,8 @@
 import {browser} from 'protractor';
-import {NewInstancePage} from './page_objects/new_instance.po';
-import {LoginPage} from './page_objects/login.po';
-import {VolumeOverviewPage} from './page_objects/volume_overview.po';
-import {VMOverviewPage} from './page_objects/vm_overview.po';
+import {NewInstancePage} from '../page_objects/new_instance.po';
+import {LoginPage} from '../page_objects/login.po';
+import {VolumeOverviewPage} from '../page_objects/volume_overview.po';
+import {VMOverviewPage} from '../page_objects/vm_overview.po';
 
 describe('Virtual Machine Tests', async function () {
 
@@ -11,7 +11,7 @@ describe('Virtual Machine Tests', async function () {
   beforeAll(async function () {
     console.log('------------------------------All virtual machine tests: started');
     browser.waitForAngularEnabled(false);
-    await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user);
+    await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user);
   });
 
   it('should start a basic vm', async function () {

@@ -1,25 +1,23 @@
 import {browser, by, element} from 'protractor';
-import {Util} from "../util";
+import {Util} from '../util';
 
 export class LoginPage {
     private static timeout: number = browser.params.timeout;
-    private static auth = browser.params.login.auth;
 
-    static async login(email: string, psw: string, relog: boolean = false): Promise<any> {
+    static async login(email: string, psw: string, auth: string, relog: boolean = false): Promise<any> {
 
         await browser.driver.get(browser.params.portal);
 
-        console.log("Login");
+        console.log('Login');
 
         const current_url = await browser.driver.getCurrentUrl();
         console.log(current_url);
-        if (relog && current_url.includes("userinfo")) {
-            console.log("Need to relog");
+        if (relog && current_url.includes('userinfo')) {
+            console.log('Need to relog');
             await this.logOut();
             await browser.waitForAngularEnabled(false);
-
-            return await LoginPage.login(email, psw);
-        } else if (this.auth === 'google') {
+            await LoginPage.login(email, psw, auth)
+        } else if (auth === 'google') {
             console.log('Login with Google');
             await this.useGoogle(email, psw);
         } else {
@@ -31,37 +29,32 @@ export class LoginPage {
     }
 
     static async useGoogle(email: string, psw: string): Promise<any> {
-        const el = element(by.className('metalist list-group'));
-        el.click();
+        await element(by.className('metalist list-group')).click();
         // Input Email
-        await Util.waitForPage('accounts.google.com/signin/oauth/').then(function () {
-            element(by.id('identifierId')).sendKeys(email);
-            // Click next btn
-            element(by.id('identifierNext')).click();
-        });
+        await Util.waitForPage('accounts.google.com/signin/oauth/');
+        await Util.sendTextToElementById('identifierId', email, false);
 
-        await Util.waitForPage('accounts.google.com/signin/v2/challenge').then(async function () {
-            const password = element(by.name('password'));
-            await browser.driver.wait(this.this.until.elementToBeClickable(password), this.this.timeout).then(function () {
-                element(by.name('password')).sendKeys(psw);
-                element(by.id('passwordNext')).click();
-            })
-        });
+        // Click next btn
+        await Util.clickElementById('identifierNext');
+        await Util.waitForPage('accounts.google.com/signin/v2/challenge');
+        await Util.waitForElementToBeClickableById('password');
+        await Util.sendTextToElementByName('password', psw, false);
+        await Util.clickElementById('passwordNext');
+        await Util.waitForPage('userinfo');
+
     }
 
     static async useUni(email: string, psw: string): Promise<any> {
-        await Util.waitForPresenceOfElement('query');
-        await element(by.id('query')).sendKeys('Bielefeld');
+        await Util.waitForPresenceOfElementById('query');
+        await Util.sendTextToElementById('query', 'Bielefeld');
         await element(by.linkText('University of Bielefeld')).click();
-
         await Util.waitForElementToBeClickableById('password');
-        await element(by.id('username')).sendKeys(email);
-        await element(by.id('password')).sendKeys(psw);
-        await element(by.name('_eventId_proceed')).click();
-
-        await Util.waitForPage('execution=e1s2').then(function () {
-            element(by.name('_eventId_proceed')).click()
-        });
+        await Util.sendTextToElementById('username', email, false);
+        await Util.sendTextToElementById('password', psw, false);
+        await Util.clickElementByName('_eventId_proceed');
+        await Util.waitForPage('execution=e1s2');
+        await Util.clickElementByName('_eventId_proceed');
+        await Util.waitForPage('userinfo');
     }
 
     static async logOut(): Promise<any> {
