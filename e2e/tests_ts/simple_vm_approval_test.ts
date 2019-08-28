@@ -13,12 +13,11 @@ describe('Simple Application Approval Test', function () ***REMOVED***
     ***REMOVED***);
 
     it('should approve A SIMPLE VM APPLICATION', async function () ***REMOVED***
+        console.log("Starting approve a simple vm application test!");
+
         await ApplicationOverviewPage.navigateToApplicationOverview();
 
         await ApplicationOverviewPage.approveSimpleVm(Util.SIMPLE_VM_APPLICATION_NAME);
-        await Util.waitForTextPresenceInElementById('notification_message', "The new project was created and assigned to de.NBI Cloud Portal - Development.");
-        const elem = element(by.id('notification_message'));
-        console.log(await elem.getText());
 
 
     ***REMOVED***);

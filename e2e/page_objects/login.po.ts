@@ -30,25 +30,25 @@ export class LoginPage ***REMOVED***
         await element(by.className('metalist list-group')).click();
         // Input Email
         await Util.waitForPage('accounts.google.com/signin/oauth/');
-        await element(by.id('identifierId')).sendKeys(email);
+        await Util.sendTextToElementById('identifierId', email, false);
+
         // Click next btn
         await Util.clickElementById('identifierNext');
         await Util.waitForPage('accounts.google.com/signin/v2/challenge');
         await Util.waitForElementToBeClickableById('password');
-        await element(by.name('password')).sendKeys(psw);
-        browser.sleep(1000);
+        await Util.sendTextToElementByName('password', psw, false);
         await Util.clickElementById('passwordNext');
         await Util.waitForPage('userinfo');
 
     ***REMOVED***
 
     static async useUni(email: string, psw: string): Promise<any> ***REMOVED***
-        await Util.waitForPresenceOfElement('query');
+        await Util.waitForPresenceOfElementById('query');
         await Util.sendTextToElementById('query', 'Bielefeld');
         await element(by.linkText('University of Bielefeld')).click();
         await Util.waitForElementToBeClickableById('password');
-        await Util.sendTextToElementById('username', email);
-        await Util.sendTextToElementById('password', psw);
+        await Util.sendTextToElementById('username', email, false);
+        await Util.sendTextToElementById('password', psw, false);
         await Util.clickElementByName('_eventId_proceed');
         await Util.waitForPage('execution=e1s2');
         await Util.clickElementByName('_eventId_proceed');
