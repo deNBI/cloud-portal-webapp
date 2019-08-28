@@ -90,11 +90,11 @@
                 <tr>
                   <td [class.collapse_no_margin]="getCollapseStatus('user_application-' + application?.Id)"
                       colspan="6">
-                    <div id="user_application-{{ application?.id }}"
+                    <div id="user_application-{{ application?.Id }}"
                          [class.collapse]="getCollapseStatus('user_application-' + application?.Id)"
                          class="table-responsive">
                       <table class="table table-striped" style="width: 80%">
-                        <tr  *ngIf="application?.PIApproved">
+                        <tr *ngIf="application?.PIApproved">
                           <td>
                             PI Name
                           </td>
@@ -104,7 +104,7 @@
                           <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                           </td>
                         </tr>
-                        <tr  *ngIf="application?.PIApproved">
+                        <tr *ngIf="application?.PIApproved">
                           <td>
                             PI Email
                           </td>
@@ -180,8 +180,9 @@
                         <tr *ngFor="let item of application?.CurrentFlavors | keyvalue">
                           <td>Flavor: {{item.key}}</td>
                           <td>{{item.value.counter}}</td>
-                          <td  *ngIf="application?.Status == 4">
-                                                            <span *ngIf="application?.ApplicationExtension?.RequestedFlavors[item.key]">
+                          <td *ngIf="application?.Status == 4">
+                                                            <span
+                                                              *ngIf="application?.ApplicationExtension?.RequestedFlavors[item.key]">
 
 
                                                                 {{application?.ApplicationExtension.RequestedFlavors[item.key].counter}}</span>
@@ -290,7 +291,7 @@
               </thead>
               <tbody>
               <ng-container
-                *ngFor="let application of all_applications">
+                *ngFor="let application of all_applications" id="applications_for_review">
                 <ng-container
                   *ngIf="application?.Status == application_states.SUBMITTED || application?.Status == application_states.MODIFICATION_REQUESTED || application?.Status == application_states.WAIT_FOR_CONFIRMATION || application?.Status == application_states.CONFIRMATION_DENIED">
                   <tr>
@@ -387,7 +388,7 @@
                           (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
                           type="button"
-                          class="btn btn-success">
+                          class="btn btn-success" [id]="application?.Shortname">
                           <i class="fa fa-check"></i>&nbsp;
                           Approve
                           & Create
@@ -399,7 +400,7 @@
                           (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
                           type="button"
-                          class="btn btn-success">
+                          class="btn btn-success" [id]="application?.Shortname">
                           <i class="fa fa-check"></i>&nbsp;
                           Approve
                           & Create
@@ -459,7 +460,7 @@
                           <table class="table table-striped">
 
 
-                            <tr  *ngIf="application?.PIApproved">
+                            <tr *ngIf="application?.PIApproved">
                               <td>
                                 PI Name
                               </td>
@@ -469,7 +470,7 @@
                               <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
                               </td>
                             </tr>
-                            <tr  *ngIf="application?.PIApproved">
+                            <tr *ngIf="application?.PIApproved">
                               <td>
                                 PI Email
                               </td>
@@ -1095,7 +1096,7 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-{{ notificationModalType }}"
-             role="alert">
+             role="alert" id="notification_message">
           {{ notificationModalMessage }}
         </div>
         <div *ngIf="notificationClientInfo.length > 0">
@@ -1477,7 +1478,8 @@
             <label class="col-md-4"></label>
             <div class="col-md-8">
               <div class="alert alert-primary" role="alert">
-                In case you need additional and/or special resources, which are not available in the flavour selection, use the comment field to state so. The same applies to unusually large amounts of resources.
+                In case you need additional and/or special resources, which are not available in the flavour selection,
+                use the comment field to state so. The same applies to unusually large amounts of resources.
               </div>
             </div>
           </div>

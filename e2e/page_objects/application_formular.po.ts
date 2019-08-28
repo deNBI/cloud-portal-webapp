@@ -64,13 +64,13 @@ export class FormularPage {
     }
 
 
-    static async fillFormular(): Promise<any> {
+    static async fillFormular(name:string): Promise<any> {
 
         console.log('Getting form.');
         // fill  Formular
         console.log("Fill form");
-        element(by.name('project_application_name')).sendKeys('ProtractorTest');
-        element(by.name('project_application_shortname')).sendKeys('ProtractorTest');
+        element(by.name('project_application_name')).sendKeys(name);
+        element(by.name('project_application_shortname')).sendKeys(name);
         element(by.name('project_application_description')).sendKeys('ProtractorTest Description');
         element(by.name('project_application_lifetime')).sendKeys('4');
         element(by.name('project_application_institute')).sendKeys('Proctractor Institute');
