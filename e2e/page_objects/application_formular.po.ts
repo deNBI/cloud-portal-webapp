@@ -37,29 +37,15 @@ export class FormularPage {
     }
 
     static async navigateToCloudApplication(): Promise<any> {
-        console.log("Navigate to CloudApplicaiton form");
-        let url = await browser.driver.getCurrentUrl();
-        console.log('GetUrl: ' + url);
-        url = url.substring(0, url.indexOf('#'));
-        console.log('SubstringUrl: ' + url);
-        console.log('AddedUrl: ' + url + '#/applications/newCloudApplication');
+        await Util.navigateToAngularPage('applications/newCloudApplication');
 
-        await browser.driver.get(url + '#/applications/newCloudApplication');
-        await Util.waitForPage('#/applications/newCloudApplication');
-
-
+        return await Util.waitForPage('applications/newCloudApplication');
     }
 
     static async navigateToSimpleVmApplication(): Promise<any> {
-        console.log("Navigate to SimpleApplication form");
+        await Util.navigateToAngularPage('applications/newSimpleVmApplication');
 
-        let url = await browser.driver.getCurrentUrl();
-        console.log('GetUrl: ' + url);
-        url = url.substring(0, url.indexOf('#'));
-        console.log('SubstringUrl: ' + url);
-        console.log('AddedUrl: ' + url + '#/applications/newSimpleVmApplication');
-        await browser.driver.get(url + '#/applications/newSimpleVmApplication');
-        await Util.waitForPage('#/applications/newSimpleVmApplication');
+        await Util.waitForPage('applications/newSimpleVmApplication');
 
     }
 
