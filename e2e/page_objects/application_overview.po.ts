@@ -27,19 +27,10 @@ export class ApplicationOverviewPage {
         return await elm.isPresent()
     }
 
-    static async isApplicationRequestPresentForVo(application_name: string): Promise<boolean> {
-        await Util.waitForPage('applications');
-        await Util.waitForPresenceOfElement(this.APPLICATION_FOR_REVIEW_ID);
-        const elm = element(by.id(application_name));
-
-        return await elm.isPresent()
-    }
-
     static async approveSimpleVm(application_name: string): Promise<any> {
         await Util.waitForPage('applications');
-        await Util.waitForElementToBeClickableById(application_name);
-        const elm = element(by.id(application_name));
-        return await elm.click()
+        return await Util.clickElementById(application_name);
+
     }
 
 

@@ -15,6 +15,36 @@ export class Util {
         return this._OPENSTACK_APPLICATION_NAME;
     }
 
+    static async sendTextToElementByName(name: string, text: string): Promise<void> {
+        console.log(`Send text [${text}] to element ${name}`);
+        const elem = element(by.name(name));
+
+        return await elem.sendKeys(text);
+    }
+
+    static async sendTextToElementById(id: string, text: string): Promise<void> {
+        console.log(`Send text [${text}] to element ${id}`);
+        const elem = element(by.id(id));
+
+        return await elem.sendKeys(text);
+    }
+
+    static async clickElementById(id: string): Promise<void> {
+        await this.waitForElementToBeClickableById(id);
+        console.log(`Clicking element ${id}`);
+        const elem = element(by.id(id));
+
+        return await elem.click();
+    }
+
+    static async clickElementByName(name: string): Promise<void> {
+        await this.waitForElementToBeClickableByName(name);
+        console.log(`Clicking element ${name}`);
+        const elem = element(by.name(name));
+
+        return await elem.click();
+    }
+
     static async waitForPage(url: string): Promise<boolean> {
         const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -44,6 +74,14 @@ export class Util {
 
         console.log(`Waiting until element is clickable ${id}`);
         const elem = element(by.id(id));
+        return await browser.driver.wait(until.elementToBeClickable(elem), this.timeout, 'Element taking too long to be clickable');
+    }
+
+    static async waitForElementToBeClickableByName(name: string): Promise<boolean> {
+        const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
+
+        console.log(`Waiting until element is clickable ${name}`);
+        const elem = element(by.name(name));
         return await browser.driver.wait(until.elementToBeClickable(elem), this.timeout, 'Element taking too long to be clickable');
     }
 
