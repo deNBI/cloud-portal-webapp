@@ -344,15 +344,15 @@
               <h5 class="col-md-6 form-control-label">Additional Information</h5>
             </div>
             <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>EDAM ontology
-                Terms </strong></label>
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Project Tags
+                 </strong></label>
               <div class="col-md-8 ">
                 <div class="ng-autocomplete col-md-8">
                   <ng-autocomplete #edam_ontology
                                    [data]="edam_ontology_terms"
                                    [searchKeyword]="ontology_search_keyword"
                                    (selected)='selectEvent($event)'
-                                   placeHolder="Add your EDAM ontology terms"
+                                   placeHolder="Please add you project tags"
 
                                    [itemTemplate]="itemTemplate"
                                    [notFoundTemplate]="notFoundTemplate">
