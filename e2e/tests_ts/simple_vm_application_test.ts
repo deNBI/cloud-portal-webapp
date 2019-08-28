@@ -7,20 +7,31 @@ import {Util} from "../util";
 
 describe('Simple Application Test', function () {
 
-    beforeEach(async function () {
+    beforeAll(async function () {
         await browser.waitForAngularEnabled(false);
-        await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user,browser.params.login.auth_user, false);
+        await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
     });
 
-    it('should send a simple vm application', async function () {
+    it('should navigate to the simple vm form', async function () {
         console.log("Starting send a simple vm application test!");
         await FormularPage.navigateToSimpleVmApplication();
-        console.log('Getting form.');
+    });
+
+    it('should fill the simple vm form', async function () {
         await FormularPage.fillApplicationFormular(Util.SIMPLE_VM_APPLICATION_NAME);
 
+    });
+
+    it('should submit the simple vm form', async function () {
         await FormularPage.submitApplication();
-        let isPresent: boolean = await ApplicationOverviewPage.isApplicationRequestPresent(Util.SIMPLE_VM_APPLICATION_NAME);
-        expect(isPresent).toBeTruthy();
 
     });
+
+    it('should have a simple vm application in the application overview', async function () {
+
+        let isPresent: boolean = await ApplicationOverviewPage.isApplicationRequestPresent(Util.SIMPLE_VM_APPLICATION_NAME);
+        expect(isPresent).toBeTruthy();
+    });
+
+
 });
