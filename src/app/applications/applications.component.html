@@ -343,12 +343,12 @@
                     <td>
                       <select
                         [style.display]="application?.OpenStackProject && (application?.Status == application_states.SUBMITTED || application?.Status == application_states.CONFIRMATION_DENIED || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
-                        class="form-control"
+                        class="form-control" [id]="'id_compute_center_option_' + application?.Name"
                         #selectedComputeCenter>
 
                         <option value="undefined" selected> no center
                         </option>
-                        <option *ngFor="let computeCenter of computeCenters"
+                        <option *ngFor="let computeCenter of computeCenters" [id]="computeCenter.Name"
                                 value="***REMOVED******REMOVED***computeCenter.FacilityId***REMOVED******REMOVED***">
                           ***REMOVED******REMOVED***computeCenter.Name***REMOVED******REMOVED***
                         </option>
