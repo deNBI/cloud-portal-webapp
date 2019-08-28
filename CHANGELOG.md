@@ -1,6 +1,11 @@
 ##  (2019-08-19)
 
 
+#### Bug Fixes
+
+* **instance_name:**  remove async name check (#649) ([904703a4](904703a4))
+
+
 #### Features
 
 * **Conda:** added also conda forge and anaconda ([04d094fe](04d094fe))
