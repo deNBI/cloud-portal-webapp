@@ -32,7 +32,7 @@
           </div>
 
           <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
-                class="form-horizontal">
+                class="form-horizontal" (keydown.enter)="$event.preventDefault();">
             <div class="form-group row">
               <h5 class="col-md-6 form-control-label">General Information</h5>
             </div>
