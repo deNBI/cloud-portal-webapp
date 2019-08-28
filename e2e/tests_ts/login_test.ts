@@ -4,23 +4,23 @@ import ***REMOVED***Util***REMOVED*** from '../util';
 
 describe('Login test', async function () ***REMOVED***
 
-  beforeAll(function () ***REMOVED***
-    console.log('------------------------------Login test started');
-    browser.waitForAngularEnabled(false);
-    browser.get(browser.params.portal);
-  ***REMOVED***);
-
-  it('should login', async function () ***REMOVED***
-    LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user);
-    await Util.waitForPage('userinfo').then(function (result) ***REMOVED***
-      expect(result).toEqual(true);
+    beforeAll(function () ***REMOVED***
+        console.log('------------------------------Login test started');
+        browser.waitForAngularEnabled(false);
+        browser.get(browser.params.portal);
     ***REMOVED***);
-  ***REMOVED***);
 
-  it('should restart', async function () ***REMOVED***
-    await LoginPage.logOut();
-    await Util.waitForPage('data:,').then(function (result) ***REMOVED***
-      expect(result).toEqual(true);
+    it('should login', async function () ***REMOVED***
+        LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user);
+        let result: boolean = await Util.waitForPage('userinfo');
+        expect(result).toEqual(true);
+
     ***REMOVED***);
-  ***REMOVED***)
+
+    it('should restart', async function () ***REMOVED***
+        await LoginPage.logOut();
+        let result: boolean = await Util.waitForPage('data:,');
+        expect(result).toEqual(true);
+
+    ***REMOVED***)
 ***REMOVED***);

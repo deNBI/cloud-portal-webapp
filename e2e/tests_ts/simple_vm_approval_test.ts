@@ -14,9 +14,7 @@ describe('Simple Application Approval Test', function () ***REMOVED***
 
     it('should approve A SIMPLE VM APPLICATION', async function () ***REMOVED***
         console.log("Starting approve a simple vm application test!");
-
         await ApplicationOverviewPage.navigateToApplicationOverview();
-
         await ApplicationOverviewPage.approveSimpleVm(Util.SIMPLE_VM_APPLICATION_NAME);
 
 
