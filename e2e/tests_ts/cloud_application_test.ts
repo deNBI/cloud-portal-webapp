@@ -7,19 +7,32 @@ import {Util} from "../util";
 
 describe('Cloud Application Test', function () {
 
-    beforeEach(async function () {
+    beforeAll(async function () {
         await browser.waitForAngularEnabled(false);
         await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
     });
 
-    it('should send a cloud application', async function () {
+    it('should navigate to cloud application form', async function () {
         console.log("Starting send a cloud  application test!");
-
         await FormularPage.navigateToCloudApplication();
+    });
+
+    it('should fill cloud application form', async function () {
+
         await FormularPage.fillApplicationFormular(Util.OPENSTACK_APPLICATION_NAME);
+    });
+
+
+    it('should submit cloud application ', async function () {
+
         await FormularPage.submitApplication();
         let isPresent: boolean = await ApplicationOverviewPage.isApplicationRequestPresent(Util.OPENSTACK_APPLICATION_NAME);
         expect(isPresent).toBeTruthy();
     });
-})
-;
+
+    it('should have a cloud vm application in the application overview', async function () {
+
+        let isPresent: boolean = await ApplicationOverviewPage.isApplicationRequestPresent(Util.OPENSTACK_APPLICATION_NAME);
+        expect(isPresent).toBeTruthy();
+    });
+});

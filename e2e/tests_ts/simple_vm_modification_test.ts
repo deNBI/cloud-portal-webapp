@@ -7,14 +7,18 @@ import {Util} from "../util";
 
 describe('Simple Application Modification Test', function () {
 
-    beforeEach(async function () {
+    beforeAll(async function () {
         await browser.waitForAngularEnabled(false);
         await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
     });
 
-    it('should send a modification request', async function () {
+    it('should navigate to application overview', async function () {
         console.log("Starting send a simple vm modification request  test!");
         await ApplicationOverviewPage.navigateToApplicationOverview();
+    });
+
+
+    it('should send a modification request', async function () {
         await ApplicationOverviewPage.sendModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
     });
 });
