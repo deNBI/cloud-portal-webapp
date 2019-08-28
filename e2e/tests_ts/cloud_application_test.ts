@@ -9,12 +9,14 @@ describe('Cloud Application Test', function () {
 
     beforeEach(async function () {
         await browser.waitForAngularEnabled(false);
-        await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user,browser.params.login.auth_user, true);
+        await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
     });
 
     it('should send a cloud application', async function () {
+        console.log("Starting send a cloud  application test!");
+
         await FormularPage.navigateToCloudApplication();
-        await FormularPage.fillFormular(Util.OPENSTACK_APPLICATION_NAME);
+        await FormularPage.fillApplicationFormular(Util.OPENSTACK_APPLICATION_NAME);
         await FormularPage.submitApplication();
         let isPresent: boolean = await ApplicationOverviewPage.isApplicationRequestPresent(Util.OPENSTACK_APPLICATION_NAME);
         expect(isPresent).toBeTruthy();

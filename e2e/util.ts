@@ -15,15 +15,20 @@ export class Util {
         return this._OPENSTACK_APPLICATION_NAME;
     }
 
-    static async sendTextToElementByName(name: string, text: string): Promise<void> {
-        console.log(`Send text [${text}] to element ${name}`);
+    static async sendTextToElementByName(name: string, text: string, show_output: boolean = true): Promise<void> {
+        if (show_output) {
+
+            console.log(`Send text [${text}] to element ${name}`);
+        }
         const elem = element(by.name(name));
 
         return await elem.sendKeys(text);
     }
 
-    static async sendTextToElementById(id: string, text: string): Promise<void> {
-        console.log(`Send text [${text}] to element ${id}`);
+    static async sendTextToElementById(id: string, text: string, show_output: boolean = true): Promise<void> {
+        if (show_output) {
+            console.log(`Send text [${text}] to element ${id}`);
+        }
         const elem = element(by.id(id));
 
         return await elem.sendKeys(text);
@@ -61,12 +66,20 @@ export class Util {
         return await browser.driver.wait(until.textToBePresentInElement(elem, text), this.timeout, 'Text taking too long to appear in the Element');
     }
 
-    static async waitForPresenceOfElement(id: string): Promise<boolean> {
+    static async waitForPresenceOfElementById(id: string): Promise<boolean> {
         const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
         console.log(`Waiting until page contains element ${id}`);
         const elem = element(by.id(id));
         return await browser.driver.wait(until.presenceOf(elem), this.timeout, 'Element taking too long to appear in the DOM');
+    }
+
+    static async waitForVisibilityOfElementById(id: string): Promise<boolean> {
+        const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
+
+        console.log(`Waiting until element ${id} is visibile`);
+        const elem = element(by.id(id));
+        return await browser.driver.wait(until.visibilityOf(elem), this.timeout, 'Element taking too long to be visibile');
     }
 
     static async waitForElementToBeClickableById(id: string): Promise<boolean> {
