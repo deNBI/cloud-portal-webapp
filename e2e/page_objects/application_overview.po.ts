@@ -7,9 +7,14 @@ export class ApplicationOverviewPage {
     private static SUBMIT_RENEWAL_BTN: string = 'submit_renewal_btn';
     private static EXTENSION_RESULT: string = 'extension result';
     private static EXTENSION_SUCCESSFULLY_SUBMITTED: string = 'Modify request successfully submitted!';
-    private static EXTENSION_SUCCESSFULLY_APPROVED: string = 'Modify request successfully approved!'
+    private static EXTENSION_SUCCESSFULLY_APPROVED: string = 'Modify request successfully approved!';
     private static EXTENSION_APPROVAL_BTN_PREFIX: string = 'extension_approval_';
     private static EXTENSION_REQUEST_BTN_PREFIX: string = 'extension_';
+    private static COMPUTE_CENTER_SELECTION_PREFIX: string = 'id_compute_center_option_';
+    private static DEFAULT_DENBI_COMPUTE_CENTER: string = 'de.NBI Cloud Portal - Development';
+    private static CLOUD_PROJECT_CREATED: string = 'The new project was created';
+    private static SIMPLE_VM_CREATED: string = 'The new project was created and assigned to de.NBI Cloud Portal - Development.';
+    private static NOTIFICATION_MESSAGE: string = 'notification_message';
 
 
     static async navigateToApplicationOverview(): Promise<any> {
@@ -55,8 +60,14 @@ export class ApplicationOverviewPage {
     static async approveSimpleVm(application_name: string): Promise<any> {
         await Util.waitForPage('applications');
         await Util.clickElementById(application_name);
-        return await Util.waitForTextPresenceInElementById('notification_message', "The new project was created and assigned to de.NBI Cloud Portal - Development.");
+        return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SIMPLE_VM_CREATED);
+    }
 
-
+    static async approveCloudApplication(application_name: string): Promise<any> {
+        await Util.waitForPage('applications');
+        await Util.waitForPresenceOfElementById(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
+        await Util.getOptionOfSelect(this.DEFAULT_DENBI_COMPUTE_CENTER, this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
+        await Util.clickElementById(application_name);
+        return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.CLOUD_PROJECT_CREATED);
     }
 }
