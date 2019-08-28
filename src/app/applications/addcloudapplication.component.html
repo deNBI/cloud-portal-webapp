@@ -20,12 +20,12 @@
             </a>
           </div>
           <div *ngIf="!production">
-            <button (click)="sendTestApplication(test_name.value);notificationModal.show();">Test
+            <button type="button" (click)="sendTestApplication(test_name.value);notificationModal.show();">Test
               Application
             </button>
             <input name="test_name" placeholder="TestAppName" #test_name>
           </div>
-          <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+          <form id="application_form" #f="ngForm"  (ngSubmit)="onSubmit(f)" (keydown.enter)="$event.preventDefault();"
                 class="form-horizontal">
             <div class="form-group row">
               <h5 class="col-md-6 form-control-label">General Information</h5>
@@ -755,7 +755,7 @@
               cloud
               usage policy.</p>
           </div>
-          <button (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
+          <button type="button" (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
                   class="btn btn-sm btn-success" [disabled]="f.invalid">
             <i class="fa fa-dot-circle-o"></i>
             Submit Application
@@ -892,7 +892,7 @@
         <button class="btn btn-success col-md4" type="button"
                 (click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
         </button>
-        <button class="btn  btn-warning col-md-4" type="reset"
+        <button type="button" class="btn  btn-warning col-md-4" type="reset"
                 (click)="submitModal.hide();">Cancel
         </button>
 
