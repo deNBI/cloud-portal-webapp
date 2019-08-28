@@ -3,6 +3,7 @@ import ***REMOVED***browser, by, element, protractor***REMOVED*** from 'protract
 import ***REMOVED***LoginPage***REMOVED*** from './page_objects/login.po';
 import ***REMOVED***FormularPage***REMOVED*** from "./page_objects/application_formular.po";
 import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "./page_objects/application_overview.po";
+import ***REMOVED***Util***REMOVED*** from './util';
 
 describe('Cloud Application Test', function () ***REMOVED***
 

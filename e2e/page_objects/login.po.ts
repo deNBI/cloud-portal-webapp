@@ -17,7 +17,8 @@ export class LoginPage ***REMOVED***
             console.log("Need to relog");
             await this.logOut();
             await browser.waitForAngularEnabled(false);
-            await LoginPage.login(email, psw)
+
+            return await LoginPage.login(email, psw);
         ***REMOVED*** else if (this.auth === 'google') ***REMOVED***
             console.log('Login with Google');
             await this.useGoogle(email, psw);
@@ -25,6 +26,8 @@ export class LoginPage ***REMOVED***
             console.log('Login with University of Bielefeld');
             await this.useUni(email, psw);
         ***REMOVED***
+        console.log('Checking login success.');
+        await Util.waitForPage('userinfo');
     ***REMOVED***
 
     static async useGoogle(email: string, psw: string): Promise<any> ***REMOVED***
@@ -65,6 +68,5 @@ export class LoginPage ***REMOVED***
         console.log('Restarting browser');
         await browser.restart();
         await browser.waitForAngularEnabled(false);
-
     ***REMOVED***
 ***REMOVED***

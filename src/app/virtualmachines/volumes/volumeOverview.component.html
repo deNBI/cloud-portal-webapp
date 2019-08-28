@@ -28,14 +28,14 @@
           </tr>
 
           </thead>
-          <tbody>
+          <tbody id="volume_table_body">
           <tr *ngFor="let volume of volumes">
             <td>***REMOVED******REMOVED***volume.volume_project***REMOVED******REMOVED***</td>
             <td *ngIf="volume.volume_virtualmachine">
               ***REMOVED******REMOVED***volume.volume_virtualmachine.name***REMOVED******REMOVED***
             </td>
             <td *ngIf="!volume.volume_virtualmachine"></td>
-            <td>***REMOVED******REMOVED***volume.volume_name***REMOVED******REMOVED***</td>
+            <td id="cell_name_id_***REMOVED******REMOVED***volume.volume_name***REMOVED******REMOVED***">***REMOVED******REMOVED***volume.volume_name***REMOVED******REMOVED***</td>
             <td>***REMOVED******REMOVED***volume.volume_size ***REMOVED******REMOVED*** GB</td>
             <td>
               <div *ngIf="volume.volume_created_by_user" class="btn-group" dropdown>
