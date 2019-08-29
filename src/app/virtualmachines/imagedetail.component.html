@@ -1,5 +1,5 @@
 <div *ngIf="!carousel_activated || images.length <=images_per_row-1" class="row">
-  <div *ngIf="selectedImage" class="col-xl-3 col-12" style="cursor: pointer;"
+  <div *ngIf="selectedImage" class="col-xl-3 col-md-12" style="cursor: pointer;"
        [ngClass]="{'col-xl-3':window_size >= carousel_window_min_xl_9,
        'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
        'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}">
@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-  <div *ngFor="  let image of images" style="cursor: pointer;" class="col-12" [ngClass]="{'col-xl-3':window_size > carousel_window_min_xl_9,
+  <div *ngFor="  let image of images" style="cursor: pointer;" class="col-md-12" [ngClass]="{'col-xl-3':window_size > carousel_window_min_xl_9,
        'col-xl-6':window_size > carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
        'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>carousel_window_min_xl_8}">
     <div (click)="setSelectedImage(image);" class="card flavor-image-card"
@@ -46,7 +46,7 @@
 
 <div *ngIf="carousel_activated && images.length >=images_per_row" class="row"
 >
-  <div [hidden]="!selectedImage" class="col-lg-12" style="cursor: pointer; padding-top: 10px"
+  <div [hidden]="!selectedImage" class="col-md-12" style="cursor: pointer; padding-top: 10px"
        [ngClass]="{'col-xl-3':window_size >= carousel_window_min_xl_9,
        'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
        'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}">
@@ -69,7 +69,7 @@
     </div>
   </div>
 
-  <div *ngIf="!selectedImage" class="col-12" style="border-style: dashed; border-color: lightgray; padding-top: 10px">
+  <div *ngIf="!selectedImage" class="col-md-12" style="border-style: dashed; border-color: lightgray; padding-top: 10px">
     <owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
       <ng-container *ngFor="let image of images">
         <ng-template carouselSlide>
@@ -95,7 +95,7 @@
 
     </owl-carousel-o>
   </div>
-  <div *ngIf="selectedImage" class="col-lg-12 "
+  <div *ngIf="selectedImage" class="col-md-12 "
        [ngClass]="{'col-xl-9':window_size >= carousel_window_min_xl_9,
        'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
        'col-xl-8':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}"
