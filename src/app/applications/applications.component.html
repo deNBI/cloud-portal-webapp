@@ -76,11 +76,11 @@
                         Remove Application
                       </button>
                       <button [id]="'extension_' + application.Name"
-                        *ngIf="application?.Status == application_states.APPROVED || application?.Status == application_states.MODIFICATION_DECLINED"
-                        (click)="setSelectedApplication(application);calculateRamCores();extensionModal.show()"
-                        type="button"
-                        class="btn btn-secondary"
-                        style="margin: auto auto 5px">
+                              *ngIf="application?.Status == application_states.APPROVED || application?.Status == application_states.MODIFICATION_DECLINED"
+                              (click)="setSelectedApplication(application);calculateRamCores();extensionModal.show()"
+                              type="button"
+                              class="btn btn-secondary"
+                              style="margin: auto auto 5px">
                         Request Extension/Modification
                       </button>
                     </div>
@@ -343,12 +343,12 @@
                     <td>
                       <select
                         [style.display]="application?.OpenStackProject && (application?.Status == application_states.SUBMITTED || application?.Status == application_states.CONFIRMATION_DENIED || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
-                        class="form-control"
+                        class="form-control" [id]="'id_compute_center_option_' + application?.Name"
                         #selectedComputeCenter>
 
                         <option value="undefined" selected> no center
                         </option>
-                        <option *ngFor="let computeCenter of computeCenters"
+                        <option *ngFor="let computeCenter of computeCenters" [id]="computeCenter.Name"
                                 value="***REMOVED******REMOVED***computeCenter.FacilityId***REMOVED******REMOVED***">
                           ***REMOVED******REMOVED***computeCenter.Name***REMOVED******REMOVED***
                         </option>
@@ -410,7 +410,7 @@
                           style="margin: auto 2.5px"
                           (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
                           type="button"
-                          class="btn btn-success">
+                          class="btn btn-success" [id]="'extension_approval_' + application.Name">
                           <i class="fa fa-check"></i>&nbsp;
                           Approve
                           Modification
@@ -454,7 +454,7 @@
                   <tr>
                     <td [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.Id)"
                         colspan="6">
-                      <div id="application_review-***REMOVED******REMOVED*** application?.id ***REMOVED******REMOVED***"
+                      <div id="application_review-***REMOVED******REMOVED*** application?.Id ***REMOVED******REMOVED***"
                            [class.collapse]="getCollapseStatus('application_review-' + application?.Id)">
                         <div class="table-responsive">
                           <table class="table table-striped">
@@ -1623,7 +1623,7 @@
           Modify request successfully approved and forwarded to facility!
         </div>
 
-          <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2" id="extension result">
+        <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2" id="extension result">
           An error occured.
 
         </div>

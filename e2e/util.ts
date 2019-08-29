@@ -33,20 +33,13 @@ export class Util ***REMOVED***
   ***REMOVED***
 
   static async sendTextToElementById(id: string, text: string, show_output: boolean = true): Promise<void> ***REMOVED***
+    await this.waitForVisibilityOfElementById(id);
     if (show_output) ***REMOVED***
       console.log(`Send text [$***REMOVED***text***REMOVED***] to element $***REMOVED***id***REMOVED***`);
     ***REMOVED***
     const elem = element(by.id(id));
 
     return await elem.sendKeys(text);
-  ***REMOVED***
-
-  static async clickElementById(id: string): Promise<void> ***REMOVED***
-    await this.waitForElementToBeClickableById(id);
-    console.log(`Clicking element $***REMOVED***id***REMOVED***`);
-    const elem = element(by.id(id));
-
-    return await elem.click();
   ***REMOVED***
 
   static async clickElementByName(name: string): Promise<void> ***REMOVED***
@@ -66,11 +59,21 @@ export class Util ***REMOVED***
     return await elem.click();
   ***REMOVED***
 
+  static async clickElementById(id: string): Promise<void> ***REMOVED***
+    await this.waitForVisibilityOfElementById(id);
+    await this.waitForElementToBeClickableById(id);
+    console.log(`Clicking element $***REMOVED***id***REMOVED***`);
+    const elem = element(by.id(id));
+
+    return await elem.click();
+  ***REMOVED***
+
   static async waitForTextPresenceInElementById(id: string, text: string, timeout: number = this.timeout): Promise<boolean> ***REMOVED***
     const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     console.log(`Waiting until text [$***REMOVED***text***REMOVED***] appears in  element $***REMOVED***id***REMOVED***`);
     const elem = element(by.id(id));
+
     return await browser.driver.wait(until.textToBePresentInElement(elem, text), timeout, 'Text taking too long to appear in the Element');
   ***REMOVED***
 
@@ -94,6 +97,7 @@ export class Util ***REMOVED***
 
     console.log(`Waiting until element $***REMOVED***id***REMOVED*** is visibile`);
     const elem = element(by.id(id));
+
     return await browser.driver.wait(until.visibilityOf(elem), timeout, 'Element taking too long to be visibile');
   ***REMOVED***
 
