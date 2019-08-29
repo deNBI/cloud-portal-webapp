@@ -33,20 +33,13 @@ export class Util {
   }
 
   static async sendTextToElementById(id: string, text: string, show_output: boolean = true): Promise<void> {
+    await this.waitForVisibilityOfElementById(id);
     if (show_output) {
       console.log(`Send text [${text}] to element ${id}`);
     }
     const elem = element(by.id(id));
 
     return await elem.sendKeys(text);
-  }
-
-  static async clickElementById(id: string): Promise<void> {
-    await this.waitForElementToBeClickableById(id);
-    console.log(`Clicking element ${id}`);
-    const elem = element(by.id(id));
-
-    return await elem.click();
   }
 
   static async clickElementByName(name: string): Promise<void> {
@@ -66,11 +59,21 @@ export class Util {
     return await elem.click();
   }
 
+  static async clickElementById(id: string): Promise<void> {
+    await this.waitForVisibilityOfElementById(id);
+    await this.waitForElementToBeClickableById(id);
+    console.log(`Clicking element ${id}`);
+    const elem = element(by.id(id));
+
+    return await elem.click();
+  }
+
   static async waitForTextPresenceInElementById(id: string, text: string, timeout: number = this.timeout): Promise<boolean> {
     const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     console.log(`Waiting until text [${text}] appears in  element ${id}`);
     const elem = element(by.id(id));
+
     return await browser.driver.wait(until.textToBePresentInElement(elem, text), timeout, 'Text taking too long to appear in the Element');
   }
 
@@ -94,6 +97,7 @@ export class Util {
 
     console.log(`Waiting until element ${id} is visibile`);
     const elem = element(by.id(id));
+
     return await browser.driver.wait(until.visibilityOf(elem), timeout, 'Element taking too long to be visibile');
   }
 
