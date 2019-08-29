@@ -61,5 +61,6 @@ export class LoginPage ***REMOVED***
         console.log('Restarting browser');
         await browser.restart();
         await browser.waitForAngularEnabled(false);
+        await browser.manage().window().setSize(browser.params.width, browser.params.height);
     ***REMOVED***
 ***REMOVED***

@@ -12,6 +12,8 @@ exports.config = ***REMOVED***
     timeout: credentials['timeout'],
     portal: credentials['portal'],
     angular: credentials['angular'],
+    width: credentials["browser_w"],
+    height: credentials["browser_h"],
     login: ***REMOVED***
       email_user: credentials['email_user'],
       password_user: credentials['password_user'],
@@ -27,10 +29,6 @@ exports.config = ***REMOVED***
   allScriptsTimeout: 11000,
   specs: [
     'tests_ts/login_test.ts',
-    'tests_ts/cloud_application_test.ts',
-    'tests_ts/simple_vm_application_test.ts',
-    'tests_ts/simple_vm_approval_test.ts',
-    'tests_ts/simple_vm_modification_test.ts',
     'tests_ts/virtual_machine_tests.ts'
   ],
   capabilities: ***REMOVED***
@@ -44,6 +42,7 @@ exports.config = ***REMOVED***
   jasmineNodeOpts: ***REMOVED***
     showColors: true,
     defaultTimeoutInterval: 900000,
+    realtimeFailure: true,
     print: function () ***REMOVED***
     ***REMOVED***
   ***REMOVED***,

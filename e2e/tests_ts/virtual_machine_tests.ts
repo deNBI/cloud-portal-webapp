@@ -57,7 +57,7 @@ describe('Virtual Machine Tests', async function () ***REMOVED***
     console.log('------------------------------Start virtual machine tests: ended');
   ***REMOVED***);
 
-  it('should show both virtual machines as active', async function () ***REMOVED***
+  it('should show all virtual machines as active', async function () ***REMOVED***
     console.log('------------------------------Overview virtual machine tests: started');
     await vmOverviewPage.navigateToOverview();
     console.log('Checking if every VM is active');
@@ -89,13 +89,15 @@ describe('Virtual Machine Tests', async function () ***REMOVED***
   it('should delete the basic vm', async function () ***REMOVED***
     console.log('Deleting the basic vm');
     await vmOverviewPage.deleteBasicVM();
+    await vmOverviewPage.showDeleted();
     const deleted: boolean = await vmOverviewPage.isBasicVMDeleted();
     expect(deleted).toBeTruthy();
   ***REMOVED***);
 
   it('should should delete the volume vm without deleting the volume', async function () ***REMOVED***
     console.log('Deleting the volume vm');
-    const deleted: boolean = await vmOverviewPage.deleteVolumeVM();
+    await vmOverviewPage.deleteVolumeVM();
+    const deleted: boolean = await vmOverviewPage.isVolumeVMDeleted();
     expect(deleted).toBeTruthy();
     await VolumeOverviewPage.navigateToVolumeOverview();
     const isVolumePresent: boolean = await VolumeOverviewPage.isVolumePresent();

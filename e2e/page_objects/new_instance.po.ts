@@ -36,6 +36,8 @@ export class NewInstancePage ***REMOVED***
   static async chooseProject(): Promise<any> ***REMOVED***
     await Util.waitForPresenceOfElementById('application_form');
     await Util.waitForPresenceOfElementById(this.PROJECT_SELECT_ID);
+    await Util.waitForElementToBeClickableById(this.PROJECT_SELECT_ID);
+    console.log('Getting option from select');
     await Util.getOptionOfSelect(this.PROJECT_NAME, this.PROJECT_SELECT_ID);
   ***REMOVED***
 
