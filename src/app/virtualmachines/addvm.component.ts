@@ -65,6 +65,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   playbook_run: number = 0;
   timeout: number = 0;
 
+  bioconda_img_path: string = `static/webapp/assets/img/bioconda_logo.svg`;
+
   /**
    * All image of a project.
    */
