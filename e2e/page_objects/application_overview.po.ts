@@ -49,7 +49,7 @@ export class ApplicationOverviewPage ***REMOVED***
 
     static async fillModificationRequest(): Promise<any> ***REMOVED***
         await Util.sendTextToElementById('id_project_application_renewal_lifetime', '1');
-        await Util.sendTextToElementById('id_project_application_renewal_de.NBI default', '1');
+        await Util.sendTextToElementById('id_project_application_renewal_de.NBI default', '2');
         await Util.sendTextToElementById('id_project_application_renewal_volume_counter', '1');
         await Util.sendTextToElementById('id_project_application_renewal_volume_limit', '1');
         await Util.sendTextToElementById('id_project_application_renewal_comment', 'This is a Protrector test modificatioN!');

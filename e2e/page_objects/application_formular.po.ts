@@ -42,7 +42,7 @@ export class FormularPage ***REMOVED***
         await Util.sendTextToElementByName('project_application_workgroup', 'Proctractor Workgroup');
         await Util.sendTextToElementByName('project_application_bmbf_project', 'BMBF Project');
         await Util.sendTextToElementByName('project_application_elixir_project', 'Elixir Project');
-        await Util.sendTextToElementById('project_application_de.NBI default', '1');
+        await Util.sendTextToElementById('project_application_de.NBI default', '2');
         await Util.sendTextToElementByName('project_application_horizon2020', 'Horizon2020Project');
         await Util.clickElementById('id_project_application_report_allowed');
         await Util.clickElementById('dissemination_information_accordion');

@@ -11,7 +11,7 @@ describe('Virtual Machine Tests', async function () ***REMOVED***
   beforeAll(async function () ***REMOVED***
     console.log('------------------------------All virtual machine tests: started');
     browser.waitForAngularEnabled(false);
-    await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user);
+    await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user,true);
   ***REMOVED***);
 
   it('should start a basic vm', async function () ***REMOVED***
