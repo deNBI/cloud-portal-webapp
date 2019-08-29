@@ -1,3 +1,22 @@
+##  (2019-08-19)
+
+
+#### Bug Fixes
+
+* **instance_name:**  remove async name check (#649) ([904703a4](904703a4))
+
+
+#### Features
+
+* **Conda:** added also conda forge and anaconda ([04d094fe](04d094fe))
+* **Dissemination:**
+  * added first public endpoint ([a5beb0fc](a5beb0fc))
+  * also added for simple vm ([2562e619](2562e619))
+  * added diss model ([5f59f90c](5f59f90c))
+* **VirtualMachine:** added flavor and instance id popover to vm overvieew ([879b0270](879b0270))
+* **dissemination:**  combined options into one accordion splitted by headlines ([8fb3f23f](8fb3f23f))
+
+
 ##  (2019-08-08)
 
 

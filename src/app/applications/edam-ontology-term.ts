@@ -1,25 +1,13 @@
 export class EdamOntologyTerm {
 
-  private _storid: number;
   private _name: string;
   private _term: string;
   private _uri: string;
-  private _is_a: number[];
 
   constructor(storid: number, name: string, term: string, uri: string, is_a: number[]) {
-    this._storid = storid;
     this._name = name;
     this._term = term;
     this._uri = uri;
-    this._is_a = is_a;
-  }
-
-  get storid(): number {
-    return this._storid;
-  }
-
-  set storid(value: number) {
-    this._storid = value;
   }
 
   get name(): string {
@@ -46,11 +34,4 @@ export class EdamOntologyTerm {
     this._uri = value;
   }
 
-  get is_a(): number[] {
-    return this._is_a;
-  }
-
-  set is_a(value: number[]) {
-    this._is_a = value;
-  }
 }

@@ -192,14 +192,8 @@
                              type="text" placeholder="Instancename" ngModel
                              pattern="[a-zA-Z0-9]+"
                              [ngModelOptions]="{updateOn: 'blur'}"
-                             [appInstanceNameUnique]="{'host':selectedProjectClient.host, 'port':selectedProjectClient.port}"
                              [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
-                    <div class="spinner-border" *ngIf="f.controls.instance_name?.pending"></div>
-                    </div>
-                    <div *ngIf="f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)">
-                      <div class="alert alert-danger" role="alert" style="margin-top: 5px" *ngIf="f.controls.instance_name?.hasError('uniqueInstanceName')">
-                        The instance name has to be unique!</div>
                     </div>
                     <div class="alert alert-primary" role="alert" style="margin-top: 5px">Info: The instance name will
                       also
@@ -237,7 +231,7 @@
 
               </div>
               <accordion class="col-md-12">
-                <accordion-group #optionalGroup *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
+                <accordion-group #optionalGroup *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Optional parameters</strong>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
@@ -475,7 +469,7 @@
           instance overview site</p>
       </div>
       <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE' || newVm?.status == 'DELETED'">
-        <app-how-to-connect [selectedVm]="newVm" [playbook_run]="playbook_run" [logs]="logs"></app-how-to-connect>
+        <app-how-to-connect [selectedVirtualMachine]="newVm" [playbook_run]="playbook_run"></app-how-to-connect>
       </div>
       <div class="modal-body" *ngIf="create_error?.error">
         An Error occured.<br><br>
