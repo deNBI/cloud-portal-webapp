@@ -25,9 +25,15 @@ export class ApplicationOverviewPage ***REMOVED***
     ***REMOVED***
 
 
-    static async approveModificationRequest(application_name: string): Promise<any> ***REMOVED***
+    static async approveOPModificationRequest(application_name: string): Promise<any> ***REMOVED***
         await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
         await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_OP_SUCCESFULLY_APPROVED);
+
+    ***REMOVED***
+    
+      static async approveSVModificationRequest(application_name: string): Promise<any> ***REMOVED***
+        await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
+        await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SV_SUCCESSFULLY_APPROVED);
 
     ***REMOVED***
 

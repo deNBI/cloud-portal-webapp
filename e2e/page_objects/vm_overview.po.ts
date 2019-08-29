@@ -6,29 +6,35 @@ export class VMOverviewPage ***REMOVED***
   private VM_OVERVIEW_URL: string = 'virtualmachines/vmOverview';
   private TABLE_ID: string = 'vm_overview_table_body';
   private ROW_PREFIX: string = 'id_table_row_';
+
   private ACTIVE_BADGE: string = 'active_badge';
   private SHUTOFF_BADGE: string = 'shutoff_badge';
-  private SHUTOFF_BUTTON: string = 'shutoff_button';
   private DELETED_BADGE: string = 'delete_badge';
+  private CHECKBOX_DELETED: string = 'checkbox_deleted';
+
+  private SELECT_BUTTON: string = 'select_button';
+  private SHUTOFF_BUTTON: string = 'shutoff_button';
   private RESUME_BUTTON: string = 'resume_button';
-  private CLOSE_STOP_MODAL: string = 'close_stop_modal';
+  private DELETE_BUTTON: string = 'delete_vm_button';
+
   private STOP_MODAL: string = 'stop_modal';
   private SHUTOFF_SUCCESS: string = 'stop_success_div';
-  private CLOSE_RESUME_MODAL: string = 'close_resume_modal';
+  private CLOSE_STOP_MODAL: string = 'close_stop_modal';
+
   private RESUME_MODAL: string = 'resume_modal';
   private RESUME_SUCCESS: string = 'resume_success_div';
-  private SELECT_BUTTON: string = 'select_button';
+  private CLOSE_RESUME_MODAL: string = 'close_resume_modal';
 
-  private CONFIRM_DELETE_BUTTON: string = 'confirm_delete_button';
-  private DELETE_BUTTON: string = 'delete_button';
   private VERIFY_MODAL: string = 'verify_modal';
   private DELETE_MODAL: string = 'delete_modal';
-  private CLOSE_DELETE_MODAL: string = 'close_delete_modal';
+  private CONFIRM_DELETE_BUTTON: string = 'confirm_delete_button';
   private DELETE_SUCCESS: string = 'delete_success_div';
+  private CLOSE_DELETE_MODAL: string = 'close_delete_modal';
 
   private BASIC_VM_NAME_KEY: string = 'basic_vm_name';
   private VOLUME_VM_NAME_KEY: string = 'volume_vm_name';
   private vm_names: ***REMOVED***[key: string]: string***REMOVED*** = ***REMOVED******REMOVED***;
+  private name_counter: number = 0;
 
   async navigateToOverview(): Promise<any> ***REMOVED***
     console.log('Navigating to VM Overview Page')
@@ -40,11 +46,13 @@ export class VMOverviewPage ***REMOVED***
   async setBasicVMName(name: string): Promise<any> ***REMOVED***
     console.log(`Setting basic vm name as $***REMOVED***name***REMOVED***`);
     this.vm_names[this.BASIC_VM_NAME_KEY] = name;
+    this.name_counter += 1;
   ***REMOVED***
 
   async setVolumeVMName(name: string): Promise<any> ***REMOVED***
     console.log(`Setting volume vm name as $***REMOVED***name***REMOVED***`);
     this.vm_names[this.VOLUME_VM_NAME_KEY] = name;
+    this.name_counter += 1;
   ***REMOVED***
 
   async getBasicVMName(): Promise<string> ***REMOVED***
@@ -68,7 +76,9 @@ export class VMOverviewPage ***REMOVED***
     await Util.waitForPresenceByElement(
       await element(by.id(this.TABLE_ID))
       .element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`))
-      .element(by.id(this.ACTIVE_BADGE)));
+      .element(by.id(this.ACTIVE_BADGE)),
+      Util.timeout,
+      this.ACTIVE_BADGE);
 
     return await element(by.id(this.TABLE_ID)).element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`)).element(by.id(this.ACTIVE_BADGE)).isPresent();
   ***REMOVED***
@@ -78,10 +88,11 @@ export class VMOverviewPage ***REMOVED***
   ***REMOVED***
 
   async areAllVMActive(): Promise<boolean> ***REMOVED***
-    console.log('Checking every vm if active');
+    console.log(`Checking active for $***REMOVED***this.name_counter***REMOVED*** active vm`);
     for (const key in this.vm_names) ***REMOVED***
       const val = this.vm_names[key];
       console.log(`Key: $***REMOVED***key***REMOVED*** Value: $***REMOVED***val***REMOVED***`);
+      this.name_counter -= 1;
       if (await !this.isVmActive(val)) ***REMOVED***
         return false;
       ***REMOVED***
@@ -92,7 +103,12 @@ export class VMOverviewPage ***REMOVED***
 
   async isVMShutoff(name: string): Promise<boolean> ***REMOVED***
     console.log(`Checking if $***REMOVED***name***REMOVED*** is shutoff`);
-    await element(by.id(this.TABLE_ID)).element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`)).element(by.id(this.SHUTOFF_BADGE));
+    await Util.waitForPresenceByElement(
+      element(by.id(this.TABLE_ID))
+        .element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`))
+        .element(by.id(this.SHUTOFF_BADGE)),
+      Util.timeout,
+      this.SHUTOFF_BADGE);
 
     return await element(by.id(this.TABLE_ID)).element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`)).element(by.id(this.SHUTOFF_BADGE))
       .isPresent();
@@ -102,8 +118,19 @@ export class VMOverviewPage ***REMOVED***
     return await this.isVMShutoff(this.vm_names[this.BASIC_VM_NAME_KEY]);
   ***REMOVED***
 
+  async showDeleted(): Promise<any> ***REMOVED***
+    console.log('Showing all deleted VM');
+    await Util.clickElementById(this.CHECKBOX_DELETED);
+  ***REMOVED***
+
   async isVMDeleted(name: string): Promise<boolean> ***REMOVED***
     console.log(`Checking if $***REMOVED***name***REMOVED*** is deleted`);
+    await Util.waitForPresenceByElement(
+      element(by.id(this.TABLE_ID))
+        .element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`))
+        .element(by.id(this.DELETED_BADGE)),
+      Util.timeout,
+      this.DELETED_BADGE);
 
     return await element(by.id(this.TABLE_ID)).element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`)).element(by.id(this.DELETED_BADGE))
       .isPresent();
@@ -118,9 +145,12 @@ export class VMOverviewPage ***REMOVED***
   ***REMOVED***
 
   async clickSelectDropdown(name: string): Promise<any> ***REMOVED***
-    await Util.waitForPresenceByElement(element(by.id(this.TABLE_ID)).element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`))
-                                          .element(by.id(this.SELECT_BUTTON)));
-    await element(by.id(this.TABLE_ID)).element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`)).element(by.id(this.SELECT_BUTTON)).click();
+    await Util.clickElementByElement(
+      element(by.id(this.TABLE_ID))
+       .element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`))
+       .element(by.id(this.SELECT_BUTTON)),
+      Util.timeout,
+      this.SELECT_BUTTON);
   ***REMOVED***
 
   async shutoffVM(name: string): Promise<any> ***REMOVED***
@@ -129,10 +159,14 @@ export class VMOverviewPage ***REMOVED***
     await element(by.id(this.TABLE_ID)).element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`)).element(by.id(this.SHUTOFF_BUTTON)).click();
     await Util.waitForPresenceByElement(
       element(by.id(this.STOP_MODAL)).element(by.id(this.SHUTOFF_SUCCESS)),
-      420000
+      420000,
+      this.SHUTOFF_SUCCESS
     );
-    await Util.waitForPresenceByElement(element(by.id(this.STOP_MODAL)).element(by.id(this.CLOSE_STOP_MODAL)));
+    await Util.waitForPresenceByElement(element(by.id(this.STOP_MODAL)).element(by.id(this.CLOSE_STOP_MODAL)),
+                                        Util.timeout,
+                                        this.CLOSE_STOP_MODAL);
     await element(by.id(this.STOP_MODAL)).element(by.id(this.CLOSE_STOP_MODAL)).click();
+    console.log(`Shutoff method for $***REMOVED***name***REMOVED*** completed`)
   ***REMOVED***
 
   async shutOffBasicVM(): Promise<any> ***REMOVED***
@@ -145,9 +179,11 @@ export class VMOverviewPage ***REMOVED***
     await element(by.id(this.TABLE_ID)).element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`)).element(by.id(this.RESUME_BUTTON)).click();
     await Util.waitForPresenceByElement(
       element(by.id(this.RESUME_MODAL)).element(by.id(this.RESUME_SUCCESS)),
-      420000
+      420000,
+      this.RESUME_SUCCESS
     );
     await element(by.id(this.RESUME_MODAL)).element(by.id(this.CLOSE_RESUME_MODAL)).click();
+    console.log(`Resuming method for $***REMOVED***name***REMOVED*** completed`)
   ***REMOVED***
 
   async resumeBasicVM(): Promise<any> ***REMOVED***
@@ -157,14 +193,26 @@ export class VMOverviewPage ***REMOVED***
   async deleteVM(name: string): Promise<any> ***REMOVED***
     console.log(`Deleting $***REMOVED***name***REMOVED***`);
     await this.clickSelectDropdown(name);
-    await element(by.id(this.TABLE_ID)).element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`)).element(by.id(this.DELETE_BUTTON)).click();
+    await Util.clickElementByElement(
+      element(by.id(this.TABLE_ID))
+        .element(by.id(`$***REMOVED***this.ROW_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`))
+        .element(by.id(this.DELETE_BUTTON)),
+      Util.timeout,
+      this.DELETE_BUTTON);
     await Util.waitForPresenceOfElementById(this.VERIFY_MODAL);
-    await element(by.id(this.VERIFY_MODAL)).element(by.id(this.CONFIRM_DELETE_BUTTON)).click();
+    await Util.clickElementByElement(element(by.id(this.VERIFY_MODAL)).element(by.id(this.CONFIRM_DELETE_BUTTON)),
+                                     Util.timeout,
+                                     this.CONFIRM_DELETE_BUTTON);
     await Util.waitForPresenceByElement(
       element(by.id(this.DELETE_MODAL)).element(by.id(this.DELETE_SUCCESS)),
-      420000
+      420000,
+      this.DELETE_SUCCESS
     );
-    await element(by.id(this.DELETE_MODAL)).element(by.id(this.CLOSE_DELETE_MODAL)).click();
+    await Util.clickElementByElement(element(by.id(this.DELETE_MODAL)).element(by.id(this.CLOSE_DELETE_MODAL)),
+                                     Util.timeout,
+                                     this.CLOSE_DELETE_MODAL);
+    await Util.waitForInvisibilityOfElementByElement(element(by.id(this.DELETE_MODAL)));
+    console.log(`Deletion method for $***REMOVED***name***REMOVED*** completed`)
   ***REMOVED***
 
   async deleteBasicVM(): Promise<any> ***REMOVED***

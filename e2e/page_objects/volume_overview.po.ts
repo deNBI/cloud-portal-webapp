@@ -15,7 +15,9 @@ export class VolumeOverviewPage ***REMOVED***
 
   static async isVolumePresent(): Promise<boolean> ***REMOVED***
     await Util.waitForPresenceByElement(element(by.id(this.TABLE_ID))
-                                          .element(by.id(`$***REMOVED***this.VOLUME_NAME_CELL_ID_PREFIX***REMOVED***$***REMOVED***this.VOLUME_NAME***REMOVED***`)));
+                                          .element(by.id(`$***REMOVED***this.VOLUME_NAME_CELL_ID_PREFIX***REMOVED***$***REMOVED***this.VOLUME_NAME***REMOVED***`)),
+                                        Util.timeout,
+                                        this.VOLUME_NAME);
 
     return await element(by.id(this.TABLE_ID)).element(by.id(`$***REMOVED***this.VOLUME_NAME_CELL_ID_PREFIX***REMOVED***$***REMOVED***this.VOLUME_NAME***REMOVED***`)).isPresent();
   ***REMOVED***

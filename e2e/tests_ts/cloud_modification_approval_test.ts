@@ -18,7 +18,7 @@ describe('Simple Application Modification Approval Test', function () ***REMOVED
     ***REMOVED***);
 
     it('should approve a cloud  modification request', async function () ***REMOVED***
-        await ApplicationOverviewPage.approveModificationRequest(Util.OPENSTACK_APPLICATION_NAME);
+        await ApplicationOverviewPage.approveOPModificationRequest(Util.OPENSTACK_APPLICATION_NAME);
     ***REMOVED***);
 
     it('should relog with facility manager', async function () ***REMOVED***

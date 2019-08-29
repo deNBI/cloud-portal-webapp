@@ -1,10 +1,10 @@
-import ***REMOVED***browser, by, element***REMOVED*** from 'protractor';
+import ***REMOVED***by, element***REMOVED*** from 'protractor';
 import ***REMOVED***Util***REMOVED*** from '../util';
 
 export class NewInstancePage ***REMOVED***
   private static NEW_INSTANCE_URL: string = 'virtualmachines/newVM';
   private static PROJECT_SELECT_ID: string = 'projectSelect';
-  private static PROJECT_NAME: string = 'id_option_ProtractorTest';
+  private static PROJECT_NAME: string = `id_option_$***REMOVED***Util.SIMPLE_VM_APPLICATION_NAME***REMOVED***`;
   private static BASIC_VM_NAME: string = 'ProtractorVM';
   private static VOLUME_VM_NAME: string = 'ProtractorVMVolume';
   private static ID_INSTANCE_NAME: string = 'id_instance_name';
@@ -36,6 +36,8 @@ export class NewInstancePage ***REMOVED***
   static async chooseProject(): Promise<any> ***REMOVED***
     await Util.waitForPresenceOfElementById('application_form');
     await Util.waitForPresenceOfElementById(this.PROJECT_SELECT_ID);
+    await Util.waitForElementToBeClickableById(this.PROJECT_SELECT_ID);
+    console.log('Getting option from select');
     await Util.getOptionOfSelect(this.PROJECT_NAME, this.PROJECT_SELECT_ID);
   ***REMOVED***
 

@@ -17,6 +17,6 @@ describe('Simple Application Modification Approval Test', function () ***REMOVED
     ***REMOVED***);
 
     it('should approve a simple vm modification request', async function () ***REMOVED***
-        await ApplicationOverviewPage.approveModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
+        await ApplicationOverviewPage.approveSVModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
     ***REMOVED***);
 ***REMOVED***);
