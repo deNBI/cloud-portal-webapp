@@ -148,7 +148,7 @@
                     <figure class="flavor-card-icons">
                       <img src="{{CPU_ICON_PATH}}" alt="">
                     </figure>
-                    {{vm?.flavor.vcpus}} Cores
+                    {{vm?.flavor?.vcpus}} Cores
                   </div>
                 </div>
                 <div class="col"
@@ -157,7 +157,7 @@
                     <figure class="flavor-card-icons">
                       <img src="{{STORAGE_ICON_PATH}}" alt="">
                     </figure>
-                    {{ vm?.flavor.rootdisk}} GB root disk
+                    {{ vm?.flavor?.rootdisk}} GB root disk
                   </div>
                 </div>
                 <div class="col" *ngIf="vm?.flavor?.gpu  > 0">
