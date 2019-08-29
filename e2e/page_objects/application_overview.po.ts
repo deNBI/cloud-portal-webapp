@@ -25,9 +25,15 @@ export class ApplicationOverviewPage {
     }
 
 
-    static async approveModificationRequest(application_name: string): Promise<any> {
+    static async approveOPModificationRequest(application_name: string): Promise<any> {
         await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
         await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_OP_SUCCESFULLY_APPROVED);
+
+    }
+    
+      static async approveSVModificationRequest(application_name: string): Promise<any> {
+        await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
+        await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SV_SUCCESSFULLY_APPROVED);
 
     }
 

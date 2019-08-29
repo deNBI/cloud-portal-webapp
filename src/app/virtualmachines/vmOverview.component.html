@@ -85,7 +85,8 @@
         <div class="checkbox">
           <label>
             <input type="checkbox"
-                   (change)="changeFilterStatus(vm_statuses[vm_statuses.DELETED]);applyFilter();"/>
+                   (change)="changeFilterStatus(vm_statuses[vm_statuses.DELETED]);applyFilter();"
+            id="checkbox_deleted"/>
             <span style="margin-left: 5px"
                   class="badge badge-danger">{{vm_statuses[vm_statuses.DELETED]}}</span>
           </label>
