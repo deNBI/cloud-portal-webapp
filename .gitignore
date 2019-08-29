@@ -36,7 +36,7 @@ testem.log
 
 #test environment
 /tests/environment.json
-/e2e/environment.json
+*e2e/environment.json
 
 # e2e
 /e2e/*.map
