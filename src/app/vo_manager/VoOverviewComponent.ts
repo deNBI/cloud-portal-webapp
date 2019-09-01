@@ -11,6 +11,8 @@ import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility
 import ***REMOVED***forkJoin***REMOVED*** from 'rxjs/index';
 import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
 import ***REMOVED***DomSanitizer, SafeResourceUrl, SafeUrl***REMOVED*** from '@angular/platform-browser';
+import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachines/virtualmachinemodels/virtualmachine';
+import ***REMOVED***Volume***REMOVED*** from '../virtualmachines/volumes/volume';
 
 /**
  * Vo Overview component.
@@ -32,6 +34,8 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
   public emailVerify: string;
   public emailType: number;
   public selectedProject: Project;
+  public selectedProjectVms: VirtualMachine[] = [];
+  public selectedProjectVolumes: Volume[] = [];
   computecenters: ComputecenterComponent[] = [];
 
   selectedProjectType: string = 'ALL';
@@ -244,6 +248,13 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
         this.computecenters.push(compute_center)
       ***REMOVED***
 
+    ***REMOVED***)
+  ***REMOVED***
+
+  public getProjectDetails(): void ***REMOVED***
+    this.voserice.getProjectDetails(this.selectedProject.Id).subscribe(res => ***REMOVED***
+      this.selectedProjectVms = res['vms'];
+      this.selectedProjectVolumes = res['volumes'];
     ***REMOVED***)
   ***REMOVED***
 
