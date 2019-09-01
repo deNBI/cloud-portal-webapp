@@ -11,6 +11,8 @@ import {FacilityService} from '../api-connector/facility.service';
 import {forkJoin} from 'rxjs/index';
 import {Application} from '../applications/application.model';
 import {DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
+import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
+import {Volume} from '../virtualmachines/volumes/volume';
 
 /**
  * Vo Overview component.
@@ -32,6 +34,8 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   public emailVerify: string;
   public emailType: number;
   public selectedProject: Project;
+  public selectedProjectVms: VirtualMachine[] = [];
+  public selectedProjectVolumes: Volume[] = [];
   computecenters: ComputecenterComponent[] = [];
 
   selectedProjectType: string = 'ALL';
@@ -244,6 +248,13 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
         this.computecenters.push(compute_center)
       }
 
+    })
+  }
+
+  public getProjectDetails(): void {
+    this.voserice.getProjectDetails(this.selectedProject.Id).subscribe(res => {
+      this.selectedProjectVms = res['vms'];
+      this.selectedProjectVolumes = res['volumes'];
     })
   }
 
