@@ -41,6 +41,15 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   STORAGE_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/storage_icon.svg';
   GPU_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/gpu_icon.svg';
 
+  /**
+   * Facilitties where the user is manager ['name',id].
+   */
+  public managerFacilities: [string, number][];
+  /**
+   * Chosen facility.
+   */
+  public selectedFacility: [string, number];
+
   total_pages: number;
   /**
    * If user is vo admin.
@@ -452,11 +461,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       );
   }
 
-  getAllVmsFacilities()
-    :
-    void {
+  getAllVmsFacilities(): void {
 
     this.virtualmachineservice.getVmsFromFacilitiesOfLoggedUser(
+      this.selectedFacility['FacilityId'],
       this.currentPage,
       this.filterVmName,
       this.filterProjectName,
@@ -568,12 +576,14 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
   }
 
-  ngOnInit()
-    :
-    void {
+  ngOnInit(): void {
     this.getVms();
     this.checkVOstatus();
     this.get_is_facility_manager();
+    this.facilityService.getManagerFacilities().subscribe(result => {
+      this.managerFacilities = result;
+      this.selectedFacility = this.managerFacilities[0];
+    });
 
     this.filterNameChanged
       .pipe(
