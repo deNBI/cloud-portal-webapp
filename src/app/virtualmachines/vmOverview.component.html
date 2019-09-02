@@ -214,8 +214,12 @@
           </td>
 
           <td>
+            <div *ngIf=" vm.status =='NOT FOUND'" class="alert alert-danger" role="alert"
+            >
+              Your instance was not found! Please contact cloud support at cloud@denbi.de .
+            </div>
             <div
-              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
+              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !='NOT FOUND'"
               class="dropdown" dropdown>
               <button *ngIf="vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
                       style="cursor: pointer"
