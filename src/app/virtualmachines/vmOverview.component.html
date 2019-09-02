@@ -32,6 +32,15 @@
       [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
     </pagination>
   </div>
+  <div *ngIf="tab=='facility'" style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
+                                                                   (ngModelChange)="onChangeSelectedFacility($event)"
+                                                                   class="form-control " name="selectedFacility">
+    <option *ngFor="  let facility of managerFacilities"
+            [ngValue]="facility">
+      ***REMOVED******REMOVED***facility['Facility']***REMOVED******REMOVED***
+    </option>
+
+  </select></div>
 
 
   <div class="table-responsive" style="overflow-x: visible; overflow-y: visible">
