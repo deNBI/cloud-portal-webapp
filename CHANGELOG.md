@@ -1,3 +1,11 @@
+##  (2019-09-03)
+
+
+#### Bug Fixes
+
+* **project-overview:**  Buttons for Actions now aligned, table structured with bootstrap-col ([029085ec](029085ec))
+* **instance-overview** Instances sync with openstack
+
 ##  (2019-08-19)
 
 
