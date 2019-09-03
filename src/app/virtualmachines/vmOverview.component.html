@@ -32,6 +32,15 @@
       [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
     </pagination>
   </div>
+  <div *ngIf="tab=='facility'" style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
+                                                                   (ngModelChange)="onChangeSelectedFacility($event)"
+                                                                   class="form-control " name="selectedFacility">
+    <option *ngFor="  let facility of managerFacilities"
+            [ngValue]="facility">
+      ***REMOVED******REMOVED***facility['Facility']***REMOVED******REMOVED***
+    </option>
+
+  </select></div>
 
 
   <div class="table-responsive" style="overflow-x: visible; overflow-y: visible">
@@ -205,8 +214,12 @@
           </td>
 
           <td>
+            <div *ngIf=" vm.status =='NOT FOUND'" class="alert alert-danger" role="alert"
+            >
+              Your instance was not found! Please contact cloud support at cloud@denbi.de .
+            </div>
             <div
-              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
+              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !='NOT FOUND'"
               class="dropdown" dropdown>
               <button *ngIf="vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
                       style="cursor: pointer"
