@@ -122,17 +122,17 @@
           class="fa fa-trash"></i>Remove
           Members
         </button>
-        <div class="table-responsive">
-          <table class="table table-striped" style="margin: 5px">
+        <div>
+          <table class="table table-striped table-responsive" style="margin: 5px">
             <thead>
             <tr>
               <th><input type="checkbox" id="selectAll" name="selectAll" (change)="setAllMembersChecked();"
                          [checked]="allSet">
               </th>
-              <th>User ID</th>
-              <th>Member ID</th>
-              <th>Full Name</th>
-              <th>Actions</th>
+              <th class="col-md-2">User ID</th>
+              <th class="col-md-2">Member ID</th>
+              <th class="col-md-4">Full Name</th>
+              <th class="col-md-6">Actions</th>
 
             </tr>
             </thead>
