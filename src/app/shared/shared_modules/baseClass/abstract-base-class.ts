@@ -28,7 +28,8 @@ enum Vm_Statuses {
   DELETED = 3,
   CLIENT_OFFLINE = 4,
   'POWERING OFF' = 5,
-  RESTARTING = 6
+  RESTARTING = 6,
+  'NOT FOUND' = 7
 }
 
 export abstract class AbstractBaseClasse {
