@@ -103,12 +103,12 @@
                  [routerLink]="['/virtualmachines/clientOverview']"><i
                 class="nav-icon icon-list"></i> Clients</a>
             </li>
-            <li class="nav-item" *ngIf="vm_project_member || is_vo_admin">
+            <li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
               <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                  [routerLink]="['/virtualmachines/volumeOverview']"><i
                 class="nav-icon icon-list"></i> Volumes</a>
             </li>
-            <li class="nav-item" *ngIf="vm_project_member || is_vo_admin">
+            <li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
               <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                  [routerLink]="['/virtualmachines/snapshotOverview']"><i
                 class="nav-icon icon-list"></i>Snapshots</a>
