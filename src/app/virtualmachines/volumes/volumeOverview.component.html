@@ -1,7 +1,8 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 <div *ngIf="isLoaded">
   <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
-          (click)="selectedProject = undefined;selected_vm=undefined; createModal.show();">Create
+          (click)="selectedProject = undefined;selected_vm=undefined; createModal.show();"
+  id="create_attach_button">Create
     & Attach Volume
   </button>
 </div>
@@ -31,17 +32,19 @@
           <tbody id="volume_table_body">
           <tr *ngFor="let volume of volumes">
             <td>{{volume.volume_project}}</td>
-            <td *ngIf="volume.volume_virtualmachine">
+            <td *ngIf="volume.volume_virtualmachine"
+                id="cell_vm_id_{{volume.volume_virtualmachine.name}}">
               {{volume.volume_virtualmachine.name}}
             </td>
-            <td *ngIf="!volume.volume_virtualmachine"></td>
+            <td *ngIf="!volume.volume_virtualmachine"
+            id="cell_vm_free_id"></td>
             <td id="cell_name_id_{{volume.volume_name}}">{{volume.volume_name}}</td>
             <td>{{volume.volume_size }} GB</td>
             <td>
               <div *ngIf="volume.volume_created_by_user" class="btn-group" dropdown>
                 <button class="btn btn-secondary"
                         (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
-                        type="button">Delete Volume
+                        type="button" id="delete_button">Delete Volume
                 </button>
                 <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                         type="button" aria-haspopup="true" aria-expanded="false"
@@ -86,7 +89,8 @@
 
 <div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
-     aria-hidden="true">
+     aria-hidden="true"
+id="result_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -100,7 +104,8 @@
 
         <button type="button" class="close" style="cursor:pointer"
                 (click)="resultModal.hide()"
-                aria-label="Close">
+                aria-label="Close"
+        id="close_result_modal">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -130,7 +135,8 @@
           Deleting {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
                                                           style="font-size:24px"></i>
         </div>
-        <div class="alert alert-success" role="alert"
+        <div id="successfully_created_attached_div"
+             class="alert alert-success" role="alert"
              *ngIf="volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED">
           Successfully created and attached Volume.
 
@@ -140,7 +146,8 @@
           Successfully renamed Volume.
 
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="volume_action_status == volumeActionStates.SUCCESS">
+        <div class="alert alert-success" role="alert" *ngIf="volume_action_status == volumeActionStates.SUCCESS"
+        id="successfully_deleted_div">
           {{selected_volume?.volume_name}} was successfully deleted.
         </div>
         <div class="alert alert-success" role="alert"
@@ -176,7 +183,8 @@
 
 <div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
-     aria-hidden="true">
+     aria-hidden="true"
+id="verify_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -199,7 +207,8 @@
 
       </div>
       <div class="modal-footer">
-        <button *ngIf="request_status==volumeRequestStates.DELETE;" class="btn  btn-success col-md-4"
+        <button id="verify_deletion_button"
+          *ngIf="request_status==volumeRequestStates.DELETE;" class="btn  btn-success col-md-4"
                 (click)="deleteVolume(selected_volume.volume_openstackid,selected_volume.volume_virtualmachine?.openstackid);verifyModal.hide();resultModal.show()">
           Yes
         </button>
@@ -300,14 +309,16 @@
 
 <div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
-     aria-hidden="true">
+     aria-hidden="true"
+id="create_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Create & Attach Volume</h4>
         <button type="button" class="close" style="cursor: pointer"
                 (click)="createModal.hide()"
-                aria-label="Close">
+                aria-label="Close"
+        id="close_create_modal_button">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -323,12 +334,14 @@
           <label class="col-md-3 form-control-label">Project</label>
           <div class="col-md-6">
 
-            <select class="form-control"
+            <select id="select_project_id"
+              class="form-control"
                     name="selectedProject" [(ngModel)]="selectedProject"
                     (ngModelChange)="getActiveVmsByProject(selectedProject[1]);getSelectedProjectDiskspace();getSelectedProjectVolumes();">
               <option value="undefined" disabled selected hidden> Please Select
               </option>
-              <option *ngFor="let project of projects" [ngValue]="project">
+              <option *ngFor="let project of projects" [ngValue]="project"
+              id="project_option_{{project[0]}}">
                 {{project[0]}}
               </option>
 
@@ -382,10 +395,12 @@
           <label class="col-md-3 form-control-label">Vm</label>
           <div class="col-md-9">
             <select class="form-control col-md-6" name="selected_vm"
-                    [(ngModel)]="selected_vm">
+                    [(ngModel)]="selected_vm"
+            id="select_vm_id">
               <option value="undefined" disabled selected hidden> Please Select
               </option>
-              <option *ngFor="let vm of project_vms" [ngValue]="vm"> {{vm.name}}
+              <option *ngFor="let vm of project_vms" [ngValue]="vm"
+              id="vm_option_{{vm.name}}"> {{vm.name}}
               </option>
 
             </select></div>
@@ -400,7 +415,8 @@
           <div class="col-md-9">
             <div class="input-group">
               <input type="text" placeholder="Volumename" [value]="volumeName"
-                     (input)="volumeName = $event.target.value">
+                     (input)="volumeName = $event.target.value"
+              id="name_input_id">
             </div>
           </div>
         </div>
@@ -412,7 +428,8 @@
             <div class="input-group">
               <input min="0" step="1" [value]="diskspace"
                      (input)="diskspace = $event.target.value;calcDiskSpaceSum();"
-                     type="number" placeholder="e.g 8 ">
+                     type="number" placeholder="e.g 8 "
+              id="space_input_id">
               <div class="input-group-append"><span
                 class="input-group-text"> GB
                                     </span></div>
@@ -429,7 +446,8 @@
 
       </div>
       <div class="modal-footer">
-        <button class="btn  btn-success col-md-6"
+        <button id="verify_create_attach_button"
+                class="btn  btn-success col-md-6"
                 [disabled]="selected_vm == undefined || diskspace <= 0 || volumeName.length == 0 || (selectedProjectDiskSpaceSum > selectedProjectDiskspaceMax)"
                 (click)="createAndAttachvolume(volumeName,diskspace,selected_vm.openstackid);createModal.hide();resultModal.show()">
           Create & Attach Volume

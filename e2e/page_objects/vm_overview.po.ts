@@ -39,8 +39,9 @@ export class VMOverviewPage {
   async navigateToOverview(): Promise<any> {
     console.log('Navigating to VM Overview Page')
     await Util.navigateToAngularPage(this.VM_OVERVIEW_URL);
+    await Util.waitForPage(this.VM_OVERVIEW_URL);
 
-    return await Util.waitForPage(this.VM_OVERVIEW_URL);
+    return await browser.driver.sleep(10000);
   }
 
   async setBasicVMName(name: string): Promise<any> {
@@ -156,16 +157,19 @@ export class VMOverviewPage {
   async shutoffVM(name: string): Promise<any> {
     console.log(`Shutting off ${name}`);
     await this.clickSelectDropdown(name);
-    await element(by.id(this.TABLE_ID)).element(by.id(`${this.ROW_PREFIX}${name}`)).element(by.id(this.SHUTOFF_BUTTON)).click();
+    await Util.clickElementByElement(element(by.id(this.TABLE_ID))
+                                       .element(by.id(`${this.ROW_PREFIX}${name}`))
+                                       .element(by.id(this.SHUTOFF_BUTTON)));
     await Util.waitForPresenceByElement(
       element(by.id(this.STOP_MODAL)).element(by.id(this.SHUTOFF_SUCCESS)),
       420000,
       this.SHUTOFF_SUCCESS
     );
+
     await Util.waitForPresenceByElement(element(by.id(this.STOP_MODAL)).element(by.id(this.CLOSE_STOP_MODAL)),
                                         Util.timeout,
                                         this.CLOSE_STOP_MODAL);
-    await element(by.id(this.STOP_MODAL)).element(by.id(this.CLOSE_STOP_MODAL)).click();
+    await Util.clickElementByElement(element(by.id(this.STOP_MODAL)).element(by.id(this.CLOSE_STOP_MODAL)));
     console.log(`Shutoff method for ${name} completed`)
   }
 
@@ -176,13 +180,15 @@ export class VMOverviewPage {
   async resumeVM(name: string): Promise<any> {
     console.log(`Resuming ${name}`);
     await this.clickSelectDropdown(name);
-    await element(by.id(this.TABLE_ID)).element(by.id(`${this.ROW_PREFIX}${name}`)).element(by.id(this.RESUME_BUTTON)).click();
+    await Util.clickElementByElement(element(by.id(this.TABLE_ID))
+                                       .element(by.id(`${this.ROW_PREFIX}${name}`))
+                                       .element(by.id(this.RESUME_BUTTON)));
     await Util.waitForPresenceByElement(
       element(by.id(this.RESUME_MODAL)).element(by.id(this.RESUME_SUCCESS)),
       420000,
       this.RESUME_SUCCESS
     );
-    await element(by.id(this.RESUME_MODAL)).element(by.id(this.CLOSE_RESUME_MODAL)).click();
+    await Util.clickElementByElement(element(by.id(this.RESUME_MODAL)).element(by.id(this.CLOSE_RESUME_MODAL)));
     console.log(`Resuming method for ${name} completed`)
   }
 

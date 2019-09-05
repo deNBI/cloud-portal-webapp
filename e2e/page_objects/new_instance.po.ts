@@ -19,7 +19,7 @@ export class NewInstancePage {
   private static VOLUME_NAME_ID: string = 'volume_name';
   private static VOLUME_NAME: string = 'ProtractorVolume';
   private static VOLUME_SPACE_ID: string = 'volume_space';
-  private static VOLUME_SPACE: number = 5;
+  private static VOLUME_SPACE: number = 1;
   private static HOW_TO_CONNECT: string = 'howToConnect';
   private static HTC_VM_NAME: string = 'htc_vm_name';
   private static INFO_MODAL: string = 'info_modal';
@@ -38,7 +38,7 @@ export class NewInstancePage {
     await Util.waitForPresenceOfElementById(this.PROJECT_SELECT_ID);
     await Util.waitForElementToBeClickableById(this.PROJECT_SELECT_ID);
     console.log('Getting option from select');
-    await Util.getOptionOfSelect(this.PROJECT_NAME, this.PROJECT_SELECT_ID);
+    await Util.clickOptionOfSelect(this.PROJECT_NAME, this.PROJECT_SELECT_ID);
   }
 
   static async fillBasicForm(): Promise<any> {
