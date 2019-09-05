@@ -54,6 +54,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   /**
    * If user is vo admin.
    */
+
+  items_per_page = 7;
   is_vo_admin: boolean;
   /**
    * Vm which is used to create a snapshot.
@@ -441,6 +443,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       .subscribe(vms => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
+                   this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
                      this.setCollapseStatus(vm.openstackid, false);
@@ -475,6 +478,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       .subscribe(vms => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
+                   this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
                      this.setCollapseStatus(vm.openstackid, false);
@@ -549,6 +553,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       .subscribe(vms => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
+                   this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
                      this.setCollapseStatus(vm.openstackid, false);
