@@ -78,6 +78,7 @@ describe('Virtual Machine Tests', async function () {
     const isActive: boolean = await vmOverviewPage.isBasicVMActive();
     expect(isActive).toBeTruthy();
   });
+
   /*
   it('should create a snapshot of the basic vm', async function () {
     console.log('Creating a snapshot of the basic vm');
@@ -86,13 +87,6 @@ describe('Virtual Machine Tests', async function () {
     expect(isSnapshot).toBeTruthy();
   });
   */
-  it('should delete the basic vm', async function () {
-    console.log('Deleting the basic vm');
-    await vmOverviewPage.deleteBasicVM();
-    await vmOverviewPage.showDeleted();
-    const deleted: boolean = await vmOverviewPage.isBasicVMDeleted();
-    expect(deleted).toBeTruthy();
-  });
 
   it('should should delete the volume vm without deleting the volume', async function () {
     console.log('Deleting the volume vm');
@@ -102,7 +96,41 @@ describe('Virtual Machine Tests', async function () {
     await VolumeOverviewPage.navigateToVolumeOverview();
     const isVolumePresent: boolean = await VolumeOverviewPage.isVolumePresent();
     expect(isVolumePresent).toBeTruthy();
-    console.log('------------------------------Overview virtual machine tests: ended');
+  });
+
+  it('should delete the vm created volume', async function () {
+    console.log('Deleting the volume created in new instance tab');
+    await VolumeOverviewPage.deleteVolume();
+    const deleted: boolean = await VolumeOverviewPage.isVolumeDeleted();
+    expect(deleted).toBeTruthy();
+  });
+
+  it('should create and attach a volume to basic vm', async function () {
+    console.log('Creating and attaching a volume to basic vm');
+    await VolumeOverviewPage.createAndAttachVolumeToProjectVm(await vmOverviewPage.getBasicVMName());
+    const present: boolean = await VolumeOverviewPage.isVolumePresent();
+    const attached: boolean = await VolumeOverviewPage.isVolumeAttachedToVM(await vmOverviewPage.getBasicVMName());
+    expect(present && attached).toBeTruthy();
+  });
+
+  it('should should delete the basic vm without deleting the volume', async function () {
+    console.log('Deleting the volume vm');
+    await vmOverviewPage.navigateToOverview();
+    await vmOverviewPage.deleteBasicVM();
+    const deleted: boolean = await vmOverviewPage.isBasicVMDeleted();
+    expect(deleted).toBeTruthy();
+    await VolumeOverviewPage.navigateToVolumeOverview();
+    const isVolumePresent: boolean = await VolumeOverviewPage.isVolumePresent();
+    const notAttached: boolean = await VolumeOverviewPage.isVolumeFree();
+    expect(isVolumePresent && notAttached).toBeTruthy();
+  });
+
+  it('should delete the manually created volume', async function () {
+    console.log('Deleting the volume created by attachment');
+    VolumeOverviewPage.navigateToVolumeOverview();
+    await VolumeOverviewPage.deleteVolume();
+    const deleted: boolean = await VolumeOverviewPage.isVolumeDeleted();
+    expect(deleted).toBeTruthy();
   });
 
 });

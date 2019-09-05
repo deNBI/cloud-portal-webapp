@@ -3,10 +3,12 @@ import {browser, by, element, protractor, ProtractorExpectedConditions, until} f
 export class Util {
 
     private static angular_url: string = browser.params.angular;
-    public static timeout: number = browser.params.timeout;
+    private static _timeout: number = browser.params.timeout;
     private static auth = browser.params.login.auth;
     private static _SIMPLE_VM_APPLICATION_NAME: string = "PTSimpleVM";
     private static _OPENSTACK_APPLICATION_NAME: string = "PTOpenStack";
+    private static _VOLUME_NAME: string = 'ProtractorVolume';
+    private static _VOLUME_SPACE: string = '1';
 
     static get SIMPLE_VM_APPLICATION_NAME(): string {
         return this._SIMPLE_VM_APPLICATION_NAME;
@@ -16,11 +18,23 @@ export class Util {
         return this._OPENSTACK_APPLICATION_NAME;
     }
 
+    static get VOLUME_NAME(): string {
+      return this._VOLUME_NAME
+    }
+
+    static get timeout(): number {
+      return this._timeout;
+    }
+
+    static get VOLUME_SPACE(): string {
+      return this._VOLUME_SPACE;
+    }
+
     static async waitForPage(url: string): Promise<boolean> {
         const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
         console.log(`Waiting until page contains ${url}`);
 
-        return await browser.driver.wait(until.urlContains(url), this.timeout);
+        return await browser.driver.wait(until.urlContains(url), this._timeout);
     }
 
     static async sendTextToElementByName(name: string, text: string, show_output: boolean = true): Promise<void> {
@@ -93,6 +107,14 @@ export class Util {
         return await browser.driver.wait(until.presenceOf(elem), timeout, 'Element taking too long to appear in the DOM');
     }
 
+  static async waitForAbsenceOfElementById(id: string, timeout: number = this.timeout): Promise<boolean> {
+    const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
+    console.log(`Waiting until page does not contain element ${id}`);
+    const elem = element(by.id(id));
+
+    return await browser.driver.wait(until.not(until.presenceOf(elem)), timeout, 'Element taking too long to appear in the DOM');
+  }
+
     static async waitForVisibilityOfElementById(id: string, timeout: number = this.timeout): Promise<boolean> {
         const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -143,8 +165,9 @@ export class Util {
         return await browser.get(`${this.angular_url}/#/${url_suffix}`);
     }
 
-    static async getOptionOfSelect(option: string, selectId: string): Promise<any> {
+    static async clickOptionOfSelect(option: string, selectId: string): Promise<any> {
         console.log(`Getting option ${option} from select ${selectId}`);
+        await this.waitForPresenceOfElementById(selectId);
 
         return await element(by.id(selectId)).element(by.id(option)).click();
     }
