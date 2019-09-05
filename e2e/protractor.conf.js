@@ -29,6 +29,7 @@ exports.config = ***REMOVED***
     allScriptsTimeout: 11000,
     specs: [
         'tests_ts/login_test.ts',
+      /*
         'tests_ts/simple_vm_application_test.ts',
         'tests_ts/simple_vm_approval_test.ts',
         'tests_ts/member_test.ts',
@@ -38,6 +39,7 @@ exports.config = ***REMOVED***
         'tests_ts/cloud_application_approval_test.ts',
         'tests_ts/cloud_application_modification_test.ts',
         'tests_ts/cloud_modification_approval_test.ts',
+       */
         'tests_ts/virtual_machine_tests.ts'
     ],
     capabilities: ***REMOVED***

@@ -30,7 +30,7 @@ export class ApplicationOverviewPage ***REMOVED***
         await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_OP_SUCCESFULLY_APPROVED);
 
     ***REMOVED***
-    
+
       static async approveSVModificationRequest(application_name: string): Promise<any> ***REMOVED***
         await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
         await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SV_SUCCESSFULLY_APPROVED);
@@ -73,7 +73,7 @@ export class ApplicationOverviewPage ***REMOVED***
     static async approveCloudApplication(application_name: string): Promise<any> ***REMOVED***
         await Util.waitForPage('applications');
         await Util.waitForPresenceOfElementById(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
-        await Util.getOptionOfSelect(this.DEFAULT_DENBI_COMPUTE_CENTER, this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
+        await Util.clickOptionOfSelect(this.DEFAULT_DENBI_COMPUTE_CENTER, this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
         await Util.clickElementById(application_name);
         return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.CLOUD_PROJECT_CREATED);
     ***REMOVED***

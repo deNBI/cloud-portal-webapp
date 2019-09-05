@@ -3,10 +3,12 @@ import ***REMOVED***browser, by, element, protractor, ProtractorExpectedConditio
 export class Util ***REMOVED***
 
     private static angular_url: string = browser.params.angular;
-    public static timeout: number = browser.params.timeout;
+    private static _timeout: number = browser.params.timeout;
     private static auth = browser.params.login.auth;
     private static _SIMPLE_VM_APPLICATION_NAME: string = "PTSimpleVM";
     private static _OPENSTACK_APPLICATION_NAME: string = "PTOpenStack";
+    private static _VOLUME_NAME: string = 'ProtractorVolume';
+    private static _VOLUME_SPACE: string = '1';
 
     static get SIMPLE_VM_APPLICATION_NAME(): string ***REMOVED***
         return this._SIMPLE_VM_APPLICATION_NAME;
@@ -16,11 +18,23 @@ export class Util ***REMOVED***
         return this._OPENSTACK_APPLICATION_NAME;
     ***REMOVED***
 
+    static get VOLUME_NAME(): string ***REMOVED***
+      return this._VOLUME_NAME
+    ***REMOVED***
+
+    static get timeout(): number ***REMOVED***
+      return this._timeout;
+    ***REMOVED***
+
+    static get VOLUME_SPACE(): string ***REMOVED***
+      return this._VOLUME_SPACE;
+    ***REMOVED***
+
     static async waitForPage(url: string): Promise<boolean> ***REMOVED***
         const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
         console.log(`Waiting until page contains $***REMOVED***url***REMOVED***`);
 
-        return await browser.driver.wait(until.urlContains(url), this.timeout);
+        return await browser.driver.wait(until.urlContains(url), this._timeout);
     ***REMOVED***
 
     static async sendTextToElementByName(name: string, text: string, show_output: boolean = true): Promise<void> ***REMOVED***
@@ -93,6 +107,14 @@ export class Util ***REMOVED***
         return await browser.driver.wait(until.presenceOf(elem), timeout, 'Element taking too long to appear in the DOM');
     ***REMOVED***
 
+  static async waitForAbsenceOfElementById(id: string, timeout: number = this.timeout): Promise<boolean> ***REMOVED***
+    const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
+    console.log(`Waiting until page does not contain element $***REMOVED***id***REMOVED***`);
+    const elem = element(by.id(id));
+
+    return await browser.driver.wait(until.not(until.presenceOf(elem)), timeout, 'Element taking too long to appear in the DOM');
+  ***REMOVED***
+
     static async waitForVisibilityOfElementById(id: string, timeout: number = this.timeout): Promise<boolean> ***REMOVED***
         const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -143,8 +165,9 @@ export class Util ***REMOVED***
         return await browser.get(`$***REMOVED***this.angular_url***REMOVED***/#/$***REMOVED***url_suffix***REMOVED***`);
     ***REMOVED***
 
-    static async getOptionOfSelect(option: string, selectId: string): Promise<any> ***REMOVED***
+    static async clickOptionOfSelect(option: string, selectId: string): Promise<any> ***REMOVED***
         console.log(`Getting option $***REMOVED***option***REMOVED*** from select $***REMOVED***selectId***REMOVED***`);
+        await this.waitForPresenceOfElementById(selectId);
 
         return await element(by.id(selectId)).element(by.id(option)).click();
     ***REMOVED***
