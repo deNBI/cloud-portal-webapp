@@ -166,6 +166,11 @@
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="***REMOVED***
                             'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen***REMOVED***"></i>
                   </div>
+                  <div *ngIf="isFirst" class="alert alert-info"> You will have default access to all flavors in the
+                    standard category.<br>
+                    However, your selection will determine how many machines, how many cores and how much RAM will be
+                    available for your project.
+                  </div>
                   <div *ngFor="let f of flavorList">
                     <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
                          class="form-group row">
