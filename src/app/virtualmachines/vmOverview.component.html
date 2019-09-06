@@ -27,7 +27,7 @@
   </div>
   <div style="margin-right: 5px;margin-left: 5px;">
     <pagination
-      [totalItems]="total_pages" [itemsPerPage]="vms_content.length"
+      [totalItems]="total_pages" [itemsPerPage]="items_per_page"
       (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
       [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
     </pagination>
@@ -211,6 +211,8 @@
           </td>
           <td>
             {{vm.stopped_at}}
+
+            {{ vm.status}}
           </td>
 
           <td>
@@ -218,8 +220,12 @@
             >
               Your instance was not found! Please contact cloud support at cloud@denbi.de .
             </div>
+            <div *ngIf=" vm.status =='CLIENT OFFLINE'" class="alert alert-danger" role="alert"
+            >
+              The client associated with the instance is offline! Please contact cloud support at cloud@denbi.de .
+            </div>
             <div
-              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !='NOT FOUND'"
+              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !='NOT FOUND'  && vm.status !='CLIENT OFFLINE'"
               class="dropdown" dropdown>
               <button *ngIf="vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
                       style="cursor: pointer"

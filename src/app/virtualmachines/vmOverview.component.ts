@@ -55,7 +55,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * If user is vo admin.
    */
 
-  items_per_page = 7;
+  items_per_page: number = 7;
+
   is_vo_admin: boolean;
   /**
    * Vm which is used to create a snapshot.
