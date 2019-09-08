@@ -72,8 +72,6 @@ export class FacilityService ***REMOVED***
 
   ***REMOVED***
 
-
-
   /**
    * Gets all facility applications which are waiting for conirmation.
    * @param ***REMOVED***number***REMOVED*** facility
@@ -96,6 +94,32 @@ export class FacilityService ***REMOVED***
   getFacilityApplicationsHistory(facility: number | string): Observable<any> ***REMOVED***
 
     return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications_history/`, ***REMOVED***
+      withCredentials: true
+    ***REMOVED***)
+
+  ***REMOVED***
+
+  /**
+   * Gets all volumes from a specific facility.
+   * @param ***REMOVED***number***REMOVED*** facility
+   * @returns ***REMOVED***Observable<any>***REMOVED***
+   */
+  getFacilityVolumes(facility: number | string): Observable<any> ***REMOVED***
+
+    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/volumes/`, ***REMOVED***
+      withCredentials: true
+    ***REMOVED***)
+
+  ***REMOVED***
+
+  /**
+   * Gets all volumes from a specific facility.
+   * @param ***REMOVED***number***REMOVED*** facility
+   * @returns ***REMOVED***Observable<any>***REMOVED***
+   */
+  getFacilitySnapshots(facility: number | string): Observable<any> ***REMOVED***
+
+    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/snapshots/`, ***REMOVED***
       withCredentials: true
     ***REMOVED***)
 
