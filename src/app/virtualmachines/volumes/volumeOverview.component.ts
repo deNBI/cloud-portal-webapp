@@ -7,6 +7,7 @@ import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../../shared/shared_mo
 import ***REMOVED***VolumeActionStates***REMOVED*** from './volume-action-states.enum';
 import ***REMOVED***VolumeRequestStates***REMOVED*** from './volume-request-states.enum';
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../../api-connector/response-template';
+import ***REMOVED***FacilityService***REMOVED*** from '../../api-connector/facility.service';
 
 /**
  * Volume overview component.
@@ -15,7 +16,7 @@ import ***REMOVED***IResponseTemplate***REMOVED*** from '../../api-connector/res
 
              selector: 'app-volume-overview',
              templateUrl: 'volumeOverview.component.html',
-             providers: [GroupService, VirtualmachineService]
+             providers: [FacilityService, GroupService, VirtualmachineService]
            ***REMOVED***)
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit ***REMOVED***
@@ -24,11 +25,22 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   volumeActionStates: typeof VolumeActionStates = VolumeActionStates;
 
+  showFacilities: boolean = false;
+
   /**
    * Enum of all request states.
    * @type ***REMOVED***VolumeRequestStates***REMOVED***
    */
   volumeRequestStates: typeof VolumeRequestStates = VolumeRequestStates;
+
+  /**
+   * Facilitties where the user is manager ['name',id].
+   */
+  managerFacilities: [string, number][];
+  /**
+   * Chosen facility.
+   */
+  selectedFacility: [string, number];
 
   /**
    * Array of all volumes.
@@ -100,7 +112,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   request_status: number;
 
-  constructor(private groupService: GroupService, private vmService: VirtualmachineService) ***REMOVED***
+  constructor(private facilityService: FacilityService, private groupService: GroupService, private vmService: VirtualmachineService) ***REMOVED***
     super();
 
   ***REMOVED***
@@ -108,6 +120,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   ngOnInit(): void ***REMOVED***
     this.getVolumes();
     this.getUserApprovedProjects();
+    this.facilityService.getManagerFacilities().subscribe(result => ***REMOVED***
+      this.managerFacilities = result;
+      this.selectedFacility = this.managerFacilities[0];
+    ***REMOVED***);
 
   ***REMOVED***
 
@@ -128,6 +144,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         this.volume_action_status = this.volumeActionStates.ERROR;
       ***REMOVED***
       this.getVolumes();
+    ***REMOVED***)
+  ***REMOVED***
+
+  getFacilityVolumes(): void ***REMOVED***
+    this.volumes = [];
+
+    this.facilityService.getFacilityVolumes(this.selectedFacility['FacilityId']).subscribe(res => ***REMOVED***
+      this.volumes = res;
     ***REMOVED***)
   ***REMOVED***
 
@@ -264,6 +288,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * @returns ***REMOVED***void***REMOVED***
    */
   getVolumes(): void ***REMOVED***
+    this.volumes = [];
     this.vmService.getVolumesByUser().subscribe(result => ***REMOVED***
       this.volumes = result;
       for (const volume of this.volumes) ***REMOVED***

@@ -166,6 +166,11 @@
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="***REMOVED***
                             'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen***REMOVED***"></i>
                   </div>
+                  <div *ngIf="isFirst" class="alert alert-info"> You will have default access to all flavors in the
+                    standard category.<br>
+                    However, your selection will determine how many machines, how many cores and how much RAM will be
+                    available for your project.
+                  </div>
                   <div *ngFor="let f of flavorList">
                     <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
                          class="form-group row">
@@ -327,14 +332,14 @@
               <h5 class="col-md-6 form-control-label">Additional Information</h5>
             </div>
             <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Project Tags </strong></label>
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Research Topics </strong></label>
               <div class="col-md-8">
                 <div class="ng-autocomplete col-md-8">
                   <ng-autocomplete #edam_ontology
                                    [data]="edam_ontology_terms"
                                    [searchKeyword]="ontology_search_keyword"
                                    (selected)='selectEvent($event)'
-                                   placeHolder="Please add your project tags"
+                                   placeHolder="Please add your research topics"
 
                                    [itemTemplate]="itemTemplate"
                                    [notFoundTemplate]="notFoundTemplate">
