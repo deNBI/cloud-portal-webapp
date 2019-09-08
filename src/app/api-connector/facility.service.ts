@@ -72,8 +72,6 @@ export class FacilityService {
 
   }
 
-
-
   /**
    * Gets all facility applications which are waiting for conirmation.
    * @param {number} facility
@@ -96,6 +94,32 @@ export class FacilityService {
   getFacilityApplicationsHistory(facility: number | string): Observable<any> {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`, {
+      withCredentials: true
+    })
+
+  }
+
+  /**
+   * Gets all volumes from a specific facility.
+   * @param {number} facility
+   * @returns {Observable<any>}
+   */
+  getFacilityVolumes(facility: number | string): Observable<any> {
+
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/volumes/`, {
+      withCredentials: true
+    })
+
+  }
+
+  /**
+   * Gets all volumes from a specific facility.
+   * @param {number} facility
+   * @returns {Observable<any>}
+   */
+  getFacilitySnapshots(facility: number | string): Observable<any> {
+
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
       withCredentials: true
     })
 

@@ -33,7 +33,6 @@
     </pagination>
   </div>
   <div *ngIf="tab=='facility'" style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
-                                                                   (ngModelChange)="onChangeSelectedFacility($event)"
                                                                    class="form-control " name="selectedFacility">
     <option *ngFor="  let facility of managerFacilities"
             [ngValue]="facility">
