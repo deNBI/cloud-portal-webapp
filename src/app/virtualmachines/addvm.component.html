@@ -452,9 +452,8 @@
            *ngIf="(newVm?.status == 'BUILD' || newVm?.status == 'PORT_CLOSED' || newVm ==null) && !create_error?.error ">
         <p *ngIf="playbook_run == 0">We are setting up a machine for you. This can take up to 5 minutes.</p>
         <p *ngIf="playbook_run == 1">We are setting up a machine for you.
-          This can take some time, depending on your chosen playbooks.
-          At maximum it can take up to {{getTimeoutMinutes()}} minutes, due to the accumulation of timeouts in your
-          generated playbook.</p>
+          This can take some time, depending on your chosen tools.
+          At maximum it can take up to {{getTimeoutMinutes()}} minutes.</p>
 
         <div class="progress">
           <div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
