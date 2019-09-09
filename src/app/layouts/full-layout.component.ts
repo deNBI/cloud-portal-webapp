@@ -6,6 +6,9 @@ import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
+import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
+import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
+import * as moment from 'moment';
 
 /**
  * FullLayout component.
@@ -26,6 +29,9 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
   public login_name: string = '';
   navbar_state: string = 'closed';
   overview_state: string = 'closed';
+  userProjects: ***REMOVED******REMOVED***[];
+
+  projects: Project[] = [];
 
   constructor(private voService: VoService, private groupService: GroupService, private userservice: UserService,
               private facilityservice: FacilityService) ***REMOVED***
@@ -77,6 +83,44 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     ***REMOVED***
   ***REMOVED***
 
+  getUserProjects(): void ***REMOVED***
+
+    this.groupService.getGroupDetails().subscribe((result: any) => ***REMOVED***
+      this.userProjects = result;
+      for (const group of this.userProjects) ***REMOVED***
+        const dateCreated: moment.Moment = moment.unix(group['createdAt']);
+        const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
+        const is_pi: boolean = group['is_pi'];
+        const groupid: string = group['id'];
+        const facility: any = group['compute_center'];
+        const shortname: string = group['shortname'];
+
+        const realname: string = group['name'];
+        let compute_center: ComputecenterComponent = null;
+
+        if (facility) ***REMOVED***
+          compute_center = new ComputecenterComponent(
+            facility['compute_center_facility_id'], facility['compute_center_name'],
+            facility['compute_center_login'], facility['compute_center_support_mail']);
+        ***REMOVED***
+
+        const newProject: Project = new Project(
+          groupid,
+          shortname,
+          group['description'],
+          moment(dateCreated).format('DD.MM.YYYY'),
+          dateDayDifference,
+          is_pi,
+          group['is_pi'],
+          compute_center);
+        newProject.OpenStackProject = group['openstack_project'];
+        newProject.RealName = realname;
+        this.projects.push(newProject);
+      ***REMOVED***
+    ***REMOVED***)
+
+  ***REMOVED***
+
   checkVOstatus(): void ***REMOVED***
     this.voService.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
       this.is_vo_admin = <boolean><Boolean>result.value;
@@ -86,6 +130,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
   ngOnInit(): void ***REMOVED***
     this.is_vm_project_member();
     this.get_is_facility_manager();
+    this.getUserProjects();
     this.getLoginName();
 
     this.checkVOstatus();

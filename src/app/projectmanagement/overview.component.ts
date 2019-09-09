@@ -12,9 +12,8 @@ import ***REMOVED***ComputecenterComponent***REMOVED*** from './computecenter.co
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../shared/shared_modules/baseClass/abstract-base-class';
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
 import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
-import ***REMOVED***ViewChild, QueryList***REMOVED*** from '@angular/core';
 import ***REMOVED***forkJoin, Observable***REMOVED*** from 'rxjs';
-import ***REMOVED***MemberGuardService***REMOVED*** from '../member-guard.service';
+import ***REMOVED***ActivatedRoute***REMOVED*** from '@angular/router';
 
 /**
  * Projectoverview component.
@@ -30,6 +29,8 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
   @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
+
+  project_id: string;
 
   isAdmin: boolean = false;
   userProjects: ***REMOVED******REMOVED***[];
@@ -67,7 +68,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
   public UserModalFacility: [string, number];
 
   constructor(private groupService: GroupService,
-              private userService: UserService) ***REMOVED***
+              private userService: UserService, private activatedRoute: ActivatedRoute) ***REMOVED***
     super();
 
   ***REMOVED***
@@ -98,7 +99,12 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit ***R
   ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
-    this.getUserProjects();
+    this.activatedRoute.params.subscribe(paramsId => ***REMOVED***
+      this.project_id = paramsId.id;
+      this.getMembersOfTheProject(this.project_id, 'test')
+
+    ***REMOVED***);
+
     this.getUserinfo();
 
   ***REMOVED***
