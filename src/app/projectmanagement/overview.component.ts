@@ -12,9 +12,8 @@ import {ComputecenterComponent} from './computecenter.component';
 import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {Userinfo} from '../userinfo/userinfo.model';
-import {ViewChild, QueryList} from '@angular/core';
 import {forkJoin, Observable} from 'rxjs';
-import {MemberGuardService} from '../member-guard.service';
+import {ActivatedRoute} from '@angular/router';
 
 /**
  * Projectoverview component.
@@ -30,6 +29,8 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
   @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
+
+  project_id: string;
 
   isAdmin: boolean = false;
   userProjects: {}[];
@@ -67,7 +68,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   public UserModalFacility: [string, number];
 
   constructor(private groupService: GroupService,
-              private userService: UserService) {
+              private userService: UserService, private activatedRoute: ActivatedRoute) {
     super();
 
   }
@@ -98,7 +99,12 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUserProjects();
+    this.activatedRoute.params.subscribe(paramsId => {
+      this.project_id = paramsId.id;
+      this.getMembersOfTheProject(this.project_id, 'test')
+
+    });
+
     this.getUserinfo();
 
   }
