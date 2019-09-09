@@ -210,8 +210,6 @@
           </td>
           <td>
             ***REMOVED******REMOVED***vm.stopped_at***REMOVED******REMOVED***
-
-            ***REMOVED******REMOVED*** vm.status***REMOVED******REMOVED***
           </td>
 
           <td>
@@ -219,12 +217,12 @@
             >
               Your instance was not found! Please contact cloud support at cloud@denbi.de .
             </div>
-            <div *ngIf=" vm.status =='CLIENT OFFLINE'" class="alert alert-danger" role="alert"
+            <div *ngIf=" vm.status =='CLIENT OFFLINE' || vm.status ==' CLIENT OFFLINE'" class="alert alert-danger" role="alert"
             >
               The client associated with the instance is offline! Please contact cloud support at cloud@denbi.de .
             </div>
             <div
-              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !='NOT FOUND'  && vm.status !='CLIENT OFFLINE'"
+              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !='NOT FOUND'  && vm.status !='CLIENT OFFLINE' && vm.status !=' CLIENT OFFLINE'"
               class="dropdown" dropdown>
               <button *ngIf="vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
                       style="cursor: pointer"
