@@ -31,6 +31,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
   DEBOUNCE_TIME: number = 300;
 
   filter_status_list: string[] = [this.vm_statuses[this.vm_statuses.ACTIVE], this.vm_statuses[this.vm_statuses.SHUTOFF]];
+  isSearching: boolean = true;
 
   selectedVm: VirtualMachine = null;
 
@@ -132,6 +133,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
    * Apply filter to all vms.
    */
   applyFilter(): void ***REMOVED***
+    this.isSearching = true;
     if (this.tab === 'own') ***REMOVED***
       this.getVms()
     ***REMOVED*** else if (this.tab === 'all') ***REMOVED***
@@ -460,6 +462,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                      ***REMOVED***
                    ***REMOVED***
                    this.isLoaded = true;
+                   this.isSearching = false;
 
                  ***REMOVED***
       );
@@ -495,6 +498,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                      ***REMOVED***
                    ***REMOVED***
                    this.isLoaded = true;
+                   this.isSearching = false;
 
                  ***REMOVED***
       );
@@ -569,6 +573,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
                      ***REMOVED***
 
                    ***REMOVED***
+                   this.isSearching = false;
+
                  ***REMOVED***
       );
   ***REMOVED***

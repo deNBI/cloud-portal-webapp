@@ -1,6 +1,4 @@
-<div *ngIf="isLoaded==false" class="loader"></div>
-
-<div *ngIf="isLoaded" class="card">
+<div  class="card">
 
   <div class="card-header">
     <i class="icon-refresh icons" style="cursor: pointer;" (click)="getVms()"></i><strong>Instance</strong>
@@ -109,12 +107,16 @@
       <td><!--input style="width: 110px;" t type="text" placeholder="Filter"
                  name="filterVmStopped_at"
                  [(ngModel)]="filterVmStopped_at" (ngModelChange)="applyFilter();"--></td>
+      <tr>
+        <td style="text-align:center;position:relative;" colspan="12" *ngIf="isSearching">
+          <div class="spinner-border text-primary"></div>
+        </td>
+      </tr>
 
 
       <ng-container *ngFor="let vm of vms_content">
 
-
-        <tr>
+        <tr *ngIf="!isSearching">
           <td>
             <popover-content #namePopover
                              [title]="vm?.name"
@@ -217,7 +219,8 @@
             >
               Your instance was not found! Please contact cloud support at cloud@denbi.de .
             </div>
-            <div *ngIf=" vm.status =='CLIENT OFFLINE' || vm.status ==' CLIENT OFFLINE'" class="alert alert-danger" role="alert"
+            <div *ngIf=" vm.status =='CLIENT OFFLINE' || vm.status ==' CLIENT OFFLINE'" class="alert alert-danger"
+                 role="alert"
             >
               The client associated with the instance is offline! Please contact cloud support at cloud@denbi.de .
             </div>
