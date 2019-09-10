@@ -269,19 +269,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
   }
 
-  calculateRamCores() {
-    this.totalNumberOfCores = 0;
-    this.totalRAM = 0;
-    for (const key in this.selectedApplication.CurrentFlavors) {
-      const flavor = this.selectedApplication.CurrentFlavors[key];
-      if (flavor != null) {
-        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * flavor.counter);
-        this.totalRAM = this.totalRAM + (flavor.ram * flavor.counter);
 
-      }
-
-    }
-  }
 
   /**
    * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
@@ -714,24 +702,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
       });
   }
 
-  /**
-   * Delete an application.
-   * @param application_id
-   */
-  public deleteApplication(application_id: string | number): void {
-    this.applicationsservice.deleteApplication(application_id).toPromise()
-      .then(() => {
-        this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
-      }).then(() => {
-      this.user_applications = [];
-      this.all_applications = [];
-      this.getUserApplications();
-      this.getAllApplications();
-    })
-      .catch(() => {
-        this.updateNotificationModal('Failed', 'Application could not be removed!', true, 'danger');
-      });
-  }
 
   /**
    * Set the id of the application which should be deleted.

@@ -23,6 +23,7 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
 
   public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
+  new_application_id: string | number;
 
   public edam_ontology_terms: EdamOntologyTerm[];
 
@@ -195,11 +196,15 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
 
       this.applicationsservice.addNewApplication(values).toPromise()
         .then(application => {
+          this.new_application_id = application['project_application_id'];
+
           if (this.project_application_report_allowed) {
-            this.applicationsservice.setApplicationDissemination(application['project_application_id'], this.application_dissemination).subscribe()
+            this.applicationsservice.setApplicationDissemination(this.new_application_id, this.application_dissemination).subscribe()
 
           }
-          this.applicationsservice.addEdamOntologyTerms(application['project_application_id'], this.selected_ontology_terms).subscribe();
+          this.applicationsservice.addEdamOntologyTerms(this.new_application_id,
+                                                        this.selected_ontology_terms
+          ).subscribe();
 
           this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
           this.notificationModalStay = false;
@@ -227,6 +232,7 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
   getListOfFlavors(): void {
     this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
   }
+
 
   /**
    * Check if shortname is valid.

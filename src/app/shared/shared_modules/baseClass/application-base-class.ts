@@ -127,6 +127,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
    */
   getIdByStatus(name: string): number {
     const s: number = -1;
+
     for (const status of this.application_status) {
       if (status.application_status_name === name) {
         return status.application_status_id;

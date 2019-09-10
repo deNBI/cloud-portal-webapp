@@ -3,12 +3,13 @@ import {ApiSettings} from './api-settings.service';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
-import {IResponseTemplate} from "./response-template";
-import {Client} from "../virtualmachines/clients/client.model";
+import {IResponseTemplate} from './response-template';
+import {Client} from '../virtualmachines/clients/client.model';
+import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 
 const header: HttpHeaders = new HttpHeaders({
-  'X-CSRFToken': Cookie.get('csrftoken')
-});
+                                              'X-CSRFToken': Cookie.get('csrftoken')
+                                            });
 
 /**
  * Service which provides Group methods.
@@ -230,13 +231,25 @@ export class GroupService {
 
   }
 
-  getGroupDetails(): Observable<any> {
+  getGroupsDetails(): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/details/`, {
       withCredentials: true
     })
   }
 
-  getGroupApplications(group: number): Observable<any> {
+  getGroupsEnumeration(): Observable<ProjectEnumeration[]> {
+    return this.http.get<ProjectEnumeration[]>(`${ApiSettings.getApiBaseURL()}projects/enumeration/`, {
+      withCredentials: true
+    })
+  }
+
+  getGroupDetails(groupid: number | string): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/details/`, {
+      withCredentials: true
+    })
+  }
+
+  getGroupApplications(group: number | string): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${group}/applications/`, {
       withCredentials: true
     })
@@ -276,22 +289,21 @@ export class GroupService {
       .set('compute_center_id', compute_center_id.toString());
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/openStack/`, params,
-      {
-        withCredentials: true,
-        headers: header
-      })
+                          {
+                            withCredentials: true,
+                            headers: header
+                          })
   }
 
   createGroup(group_name: string, group_description: string): Observable<any> {
     const params: HttpParams = new HttpParams().set('name', group_name).set('description', group_description.substring(0, 512));
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/`, params,
-      {
-        withCredentials: true,
-        headers: header
-      })
+                          {
+                            withCredentials: true,
+                            headers: header
+                          })
   }
-
 
   getLifetime(groupid: string | number): Observable<IResponseTemplate> {
 

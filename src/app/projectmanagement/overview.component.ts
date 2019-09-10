@@ -9,11 +9,17 @@ import * as moment from 'moment';
 import {VoService} from '../api-connector/vo.service';
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
-import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
-import {IResponseTemplate} from '../api-connector/response-template';
 import {Userinfo} from '../userinfo/userinfo.model';
 import {forkJoin, Observable} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
+import {Application} from '../applications/application.model';
+import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationStatusService} from '../api-connector/application-status.service';
+import {FacilityService} from '../api-connector/facility.service';
+import {ApplicationsService} from '../api-connector/applications.service';
+import {Router} from '@angular/router'
+import {FullLayoutComponent} from '../layouts/full-layout.component';
+import {NgForm} from '@angular/forms';
 
 /**
  * Projectoverview component.
@@ -21,9 +27,9 @@ import {ActivatedRoute} from '@angular/router';
 @Component({
              selector: 'app-project-overview',
              templateUrl: 'overview.component.html',
-             providers: [VoService, UserService, GroupService, ApiSettings]
+             providers: [ApplicationStatusService, ApplicationsService, FacilityService, VoService, UserService, GroupService, ApiSettings]
            })
-export class OverviewComponent extends AbstractBaseClasse implements OnInit {
+export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
   @Input() invitation_group_post: string = environment.invitation_group_post;
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
@@ -31,10 +37,20 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
 
   project_id: string;
+  application_id: string;
+  project: Project;
+  application_details_visible: boolean = false;
+
+  /**
+   * id of the extension status.
+   * @type {number}
+   */
+  extension_status: number = 0;
 
   isAdmin: boolean = false;
-  userProjects: {}[];
+  invitation_link: string;
   filteredMembers: any = null;
+  project_application: Application;
   application_action: string = '';
   application_member_name: string = '';
   application_action_done: boolean = false;
@@ -49,27 +65,13 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   checked_member_list: number[] = [];
 
   // modal variables for User list
-  public usersModalProjectMembers: ProjectMember[] = [];
-  public usersModalProjectID: number | string;
-  public usersModalProjectName: string;
-  public selectedProject: Project;
-
+  public project_members: ProjectMember[] = [];
   public isLoaded: boolean = false;
-
-  // modal variables for Add User Modal
-  public addUserModalProjectID: number;
-  public addUserModalProjectName: string;
-  public addUserModalRealName: string;
-  public addUserModalInvitationLink: string = '';
-
   public showLink: boolean = true;
 
-  public UserModalFacilityDetails: [string, string][];
-  public UserModalFacility: [string, number];
-
-  constructor(private groupService: GroupService,
-              private userService: UserService, private activatedRoute: ActivatedRoute) {
-    super();
+  constructor(private groupService: GroupService, applicationstatusservice: ApplicationStatusService, applicationsservice: ApplicationsService, facilityService: FacilityService,
+              userservice: UserService, private activatedRoute: ActivatedRoute, private fullLayout: FullLayoutComponent, private router: Router) {
+    super(userservice, applicationstatusservice, applicationsservice, facilityService);
 
   }
 
@@ -77,8 +79,6 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
     this.loaded = false;
     this.application_action_done = false;
     this.groupService.approveGroupApplication(project, application).subscribe((tmp_application: any) => {
-      this.selectedProject.ProjectMemberApplications = [];
-
       if (tmp_application['state'] === 'APPROVED') {
         this.application_action_success = true;
       } else if (tmp_application['message']) {
@@ -93,19 +93,135 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
       this.application_action = 'approved';
       this.application_member_name = membername;
       this.application_action_done = true;
-      this.getUserProjectApplications(project);
 
     });
   }
 
+  getApplication(): void {
+    this.applicationsservice.getApplication(this.application_id).subscribe((aj: object) => {
+      const newApp: Application = this.setNewApplication(aj);
+      this.project_application = newApp;
+      this.applicationsservice.getApplicationPerunId(this.application_id).subscribe(id => {
+        if (id['perun_id']) {
+          this.project_id = id['perun_id'];
+          this.getMembersOfTheProject();
+          this.getProject();
+
+        } else {
+          this.isLoaded = true;
+        }
+
+      })
+    })
+  }
+
+  /**
+   * Submits an renewal request for an application.
+   * @param {NgForm} form
+   */
+  onSubmit(form: NgForm): void {
+    const values: { [key: string]: string | number | boolean } = {};
+    for (const value in form.controls) {
+      if (form.controls[value].disabled) {
+        continue;
+      }
+      if (form.controls[value].value) {
+        values[value] = form.controls[value].value;
+      }
+    }
+    values['project_application_id'] = this.selectedApplication.Id;
+    values['total_cores_new'] = this.totalNumberOfCores;
+    values['total_ram_new'] = this.totalRAM;
+    this.requestExtension(values);
+
+  }
+
+  /**
+   * Request an extension from an application.
+   * @param data
+   */
+  public requestExtension(data: { [key: string]: string | number | boolean }): void {
+    this.applicationsservice.requestRenewal(data).subscribe((result: { [key: string]: string }) => {
+      if (result['Error']) {
+        this.extension_status = 2
+      } else {
+        this.extension_status = 1;
+      }
+      this.getApplication()
+
+    })
+
+  }
+
+  /**
+   * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
+   * @param approval date in string when the application was approved
+   * @param months number of months the application is permitted
+   */
+  getEndDate(months: number, approval?: string,): string {
+    if (!approval) {
+      return ''
+    }
+    let date1: Date = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
+    const month: number = date1.getMonth();
+    if ((month + months) > 11) {
+      date1 = new Date(date1.getFullYear(), (month + months - 12), date1.getDate());
+    } else {
+      date1.setMonth(date1.getMonth() + months);
+    }
+
+    return `${date1.getFullYear()}-${this.fillUp((date1.getMonth() + 1).toString())}-${this.fillUp(date1.getDate().toString())}`;
+  }
+
+  showLifetime(sa?: Application): string {
+    if (!sa) {
+      return
+    }
+
+    return `${sa.DateApproved} - ${this.getEndDate(sa.Lifetime, sa.DateApproved,)}`;
+  }
+
+  /**
+   * Bugfix not scrollable site after closing modal
+   */
+  removeModalOpen(): void {
+    document.body.classList.remove('modal-open');
+  }
+
   ngOnInit(): void {
+    this.getApplicationStatus();
+    this.getUserinfo();
     this.activatedRoute.params.subscribe(paramsId => {
-      this.project_id = paramsId.id;
-      this.getMembersOfTheProject(this.project_id, 'test')
+      this.isLoaded = false;
+      this.project = null;
+      this.project_application = null;
+      this.project_members = [];
+      this.application_id = paramsId.id;
+      this.getApplication();
 
     });
 
-    this.getUserinfo();
+  }
+
+  /**
+   * Get the facility of an application.
+   * @param {Application} app
+   */
+  getFacilityProject(): void {
+
+    if (!this.project_application.ComputeCenter && this.project_application.Status !== this.application_states.SUBMITTED && this.project_application.Status !== this.application_states.TERMINATED) {
+      this.groupService.getFacilityByGroup(this.project_application.PerunId.toString()).subscribe((res: object) => {
+
+        const login: string = res['Login'];
+        const suport: string = res['Support'];
+        const facilityname: string = res['Facility'];
+        const facilityId: number = res['FacilityId'];
+        if (facilityId) {
+          this.project_application.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
+        }
+
+      })
+    }
 
   }
 
@@ -115,7 +231,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
 
     this.groupService.rejectGroupApplication(project, application)
       .subscribe((tmp_application: any) => {
-                   this.selectedProject.ProjectMemberApplications = [];
+                   this.project.ProjectMemberApplications = [];
 
                    if (tmp_application['state'] === 'REJECTED') {
                      this.application_action_success = true;
@@ -130,33 +246,19 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
                    this.application_action = 'rejected';
                    this.application_member_name = membername;
                    this.application_action_done = true;
-                   this.getUserProjectApplications(project);
+                   this.getUserProjectApplications();
 
                  }
       );
-  }
-
-  showMembersOfTheProject(projectid: number | string, projectname: string, facility?: [string, number]): void {
-    this.getMembersOfTheProject(projectid, projectname);
-
-    if (facility) {
-      this.UserModalFacility = facility;
-
-    } else {
-      this.UserModalFacility = null;
-
-    }
-
   }
 
   /**
    * Get all user applications for a project.
    * @param projectId id of the project
    */
-  getUserProjectApplications(projectId: number): void {
+  getUserProjectApplications(): void {
     this.loaded = false;
-    this.groupService.getGroupApplications(projectId).subscribe((applications: any) => {
-      this.selectedProject.ProjectMemberApplications = [];
+    this.groupService.getGroupApplications(this.project.Id).subscribe((applications: any) => {
 
       const newProjectApplications: ProjectMemberApplication[] = [];
       if (applications.length === 0) {
@@ -174,7 +276,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
           );
         newProjectApplications.push(newMemberApplication);
 
-        this.selectedProject.ProjectMemberApplications = newProjectApplications;
+        this.project.ProjectMemberApplications = newProjectApplications;
         this.loaded = true;
 
       }
@@ -183,40 +285,47 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
 
   }
 
-  getUserProjects(): void {
+  getProject(): void {
 
-    this.groupService.getGroupDetails().subscribe((result: any) => {
-      this.userProjects = result;
-      for (const group of this.userProjects) {
-        const dateCreated: moment.Moment = moment.unix(group['createdAt']);
-        const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
-        const is_pi: boolean = group['is_pi'];
-        const groupid: string = group['id'];
-        const facility: any = group['compute_center'];
-        const shortname: string = group['shortname'];
+    this.groupService.getGroupDetails(this.project_id).subscribe((group: any) => {
+      const dateCreated: moment.Moment = moment.unix(group['createdAt']);
+      const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
+      const is_pi: boolean = group['is_pi'];
+      const groupid: string = group['id'];
+      const facility: any = group['compute_center'];
+      const shortname: string = group['shortname'];
 
-        const realname: string = group['name'];
-        let compute_center: ComputecenterComponent = null;
+      const realname: string = group['name'];
+      let compute_center: ComputecenterComponent = null;
 
-        if (facility) {
-          compute_center = new ComputecenterComponent(
-            facility['compute_center_facility_id'], facility['compute_center_name'],
-            facility['compute_center_login'], facility['compute_center_support_mail']);
-        }
-
-        const newProject: Project = new Project(
-          groupid,
-          shortname,
-          group['description'],
-          moment(dateCreated).format('DD.MM.YYYY'),
-          dateDayDifference,
-          is_pi,
-          this.isAdmin,
-          compute_center);
-        newProject.OpenStackProject = group['openstack_project'];
-        newProject.RealName = realname;
-        this.projects.push(newProject);
+      if (facility) {
+        compute_center = new ComputecenterComponent(
+          facility['compute_center_facility_id'], facility['compute_center_name'],
+          facility['compute_center_login'], facility['compute_center_support_mail']);
       }
+
+      const newProject: Project = new Project(
+        groupid,
+        shortname,
+        group['description'],
+        moment(dateCreated).format('DD.MM.YYYY'),
+        dateDayDifference,
+        is_pi,
+        this.isAdmin,
+        compute_center);
+      const lifetime: number | string = <number>group['lifetime'];
+      if (lifetime !== -1) {
+        const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+        const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
+                                                .diff(moment(dateCreated), 'days'));
+        newProject.DateEnd = expirationDate;
+        newProject.LifetimeDays = lifetimeDays;
+
+      }
+      newProject.OpenStackProject = group['openstack_project'];
+      newProject.RealName = realname;
+      this.project = newProject;
+
       this.isLoaded = true;
     })
 
@@ -227,13 +336,11 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
    * @param projectId id of the project
    * @param projectName
    */
-  getMembersOfTheProject(projectId: number | string, projectName: string): void {
-    this.groupService.getGroupMembers(projectId.toString()).subscribe((members: any) => {
+  getMembersOfTheProject(): void {
+    this.project_members = [];
+    this.groupService.getGroupMembers(this.project_id).subscribe((members: any) => {
 
-      this.usersModalProjectID = projectId;
-      this.usersModalProjectName = projectName;
-      this.usersModalProjectMembers = [];
-      this.groupService.getGroupAdminIds(projectId.toString()).subscribe((result: any) => {
+      this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any) => {
         const admindIds: any = result['adminIds'];
         for (const member of members) {
           const member_id: string = member['id'];
@@ -242,7 +349,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
           const projectMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
           projectMember.ElixirId = member['elixirId'];
           projectMember.IsPi = admindIds.indexOf(user_id) !== -1;
-          this.usersModalProjectMembers.push(projectMember);
+          this.project_members.push(projectMember);
 
         }
       })
@@ -252,7 +359,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
 
   setAllMembersChecked(): void {
     if (!this.allSet) {
-      this.usersModalProjectMembers.forEach((member: ProjectMember) => {
+      this.project_members.forEach((member: ProjectMember) => {
         if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId.toString() !== member.MemberId.toString()) {
           this.checked_member_list.push(parseInt(member.MemberId.toString(), 10));
         }
@@ -270,7 +377,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   }
 
   checkIfAllMembersChecked(): boolean {
-    this.usersModalProjectMembers.forEach((member: ProjectMember) => {
+    this.project_members.forEach((member: ProjectMember) => {
       if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) {
         return false;
       }
@@ -298,17 +405,13 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
 
   removeCheckedMembers(groupId: number | string): void {
 
-    let facility_id: string | number = null;
-    if (this.UserModalFacility && this.UserModalFacility[1]) {
-      facility_id = this.UserModalFacility[1]
-    }
     const members_in: ProjectMember[] = [];
 
     const observables: Observable<number>[] = this.checked_member_list
-      .map((id: number) => this.groupService.removeMember(groupId, id, facility_id));
+      .map((id: number) => this.groupService.removeMember(groupId, id, this.project.ComputeCenter.FacilityId));
     forkJoin(observables).subscribe(() => {
 
-      this.usersModalProjectMembers.forEach((member: ProjectMember) => {
+      this.project_members.forEach((member: ProjectMember) => {
 
         if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10))) {
           members_in.push(member)
@@ -316,7 +419,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
         }
 
       });
-      this.usersModalProjectMembers = members_in;
+      this.project_members = members_in;
       this.checked_member_list = [];
       this.allSet = false;
 
@@ -330,32 +433,8 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   }
 
   setAddUserInvitationLink(): void {
-    const uri: string = this.invitation_group_pre + this.addUserModalRealName + this.invitation_group_post + this.addUserModalRealName;
-    this.addUserModalInvitationLink = uri
-
-  }
-
-  getProjectLifetime(project: Project): void {
-    this.details_loaded = false;
-    if (!project.Lifetime) {
-      this.groupService.getLifetime(project.Id).subscribe((time: IResponseTemplate) => {
-        const lifetime: number | string = <number>time.value;
-        const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
-        if (lifetime !== -1) {
-          const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-          const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
-                                                  .diff(moment(dateCreated), 'days'));
-
-          project.LifetimeDays = lifetimeDays;
-          project.DateEnd = expirationDate;
-        }
-        project.Lifetime = lifetime;
-        this.details_loaded = true;
-
-      })
-    } else {
-      this.details_loaded = true;
-    }
+    const uri: string = this.invitation_group_pre + this.project.RealName + this.invitation_group_post + this.project.RealName;
+    this.invitation_link = uri;
 
   }
 
@@ -368,20 +447,13 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
     document.execCommand('copy');
   }
 
-  resetAddUserModal(): void {
-    this.addUserModalProjectID = null;
-    this.addUserModalProjectName = null;
-    this.UserModalFacility = null;
-  }
-
   filterMembers(searchString: string): void {
-    this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object) => {
+    this.userservice.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object) => {
       this.filteredMembers = result;
     })
   }
 
   isPi(member: ProjectMember): string {
-
     if (member.IsPi) {
       return 'blue'
     } else {
@@ -390,37 +462,18 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
 
   }
 
-  public showAddUserToProjectModal(projectid: number, projectname: string, realname: string, facility?: [string, number]): void {
-    this.addUserModalProjectID = projectid;
-    this.addUserModalProjectName = projectname;
-    this.addUserModalRealName = realname;
-    this.UserModalFacility = facility;
-
-    if (facility) {
-      this.UserModalFacility = facility;
-
-    } else {
-      this.UserModalFacility = null;
-
-    }
-  }
-
   getUserinfo(): void {
-    this.userService.getUserInfo().subscribe((userinfo: any) => {
+    this.userservice.getUserInfo().subscribe((userinfo: any) => {
       this.userinfo = new Userinfo(userinfo);
     })
   }
 
   public addMember(groupid: number, memberid: number, firstName: string, lastName: string): void {
-    let facility_id: string | number = null;
-    if (this.UserModalFacility && this.UserModalFacility[1]) {
-      facility_id = this.UserModalFacility[1]
-    }
-    this.groupService.addMember(groupid, memberid, facility_id).subscribe(
+    this.groupService.addMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
       (result: any) => {
         if (result.status === 200) {
           this.updateNotificationModal('Success', `Member ${firstName} ${lastName} added.`, true, 'success');
-
+          this.getMembersOfTheProject()
         } else {
 
           this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
@@ -437,19 +490,29 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
 
   }
 
-  public addAdmin(groupId: number, memberId: number, userId: number, firstName: string, lastName: string): void {
-    let facility_id: string | number = null;
-    if (this.UserModalFacility && this.UserModalFacility[1]) {
-      facility_id = this.UserModalFacility[1]
+  calculateRamCores(): void {
+    this.totalNumberOfCores = 0;
+    this.totalRAM = 0;
+    for (const key in this.selectedApplication.CurrentFlavors) {
+      const flavor = this.selectedApplication.CurrentFlavors[key];
+      if (flavor != null) {
+        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * flavor.counter);
+        this.totalRAM = this.totalRAM + (flavor.ram * flavor.counter);
+
+      }
+
     }
-    this.groupService.addMember(groupId, memberId, facility_id).subscribe(
+  }
+
+  public addAdmin(groupId: number, memberId: number, userId: number, firstName: string, lastName: string): void {
+    this.groupService.addMember(groupId, memberId, this.project.ComputeCenter.FacilityId).subscribe(
       () => {
-        this.groupService.addAdmin(groupId, userId, facility_id).subscribe(
+        this.groupService.addAdmin(groupId, userId, this.project.ComputeCenter.FacilityId).subscribe(
           (result: any) => {
 
             if (result.status === 200) {
               this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
-
+              this.getMembersOfTheProject();
             } else {
               this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
             }
@@ -465,7 +528,7 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
           })
       },
       () => {
-        this.groupService.addAdmin(groupId, userId, facility_id).subscribe(
+        this.groupService.addAdmin(groupId, userId, this.project.ComputeCenter.FacilityId).subscribe(
           (result: any) => {
 
             if (result.status === 200) {
@@ -488,11 +551,8 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   }
 
   public promoteAdmin(groupid: number, userid: number, username: string): void {
-    let facility_id: string | number = null;
-    if (this.UserModalFacility && this.UserModalFacility[1]) {
-      facility_id = this.UserModalFacility[1]
-    }
-    this.groupService.addAdmin(groupid, userid, facility_id).toPromise()
+
+    this.groupService.addAdmin(groupid, userid, this.project.ComputeCenter.FacilityId).toPromise()
       .then((result: any) => {
 
         if (result.status === 200) {
@@ -507,16 +567,13 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
   }
 
   public removeAdmin(groupid: number, userid: number, name: string): void {
-    let facility_id: string | number = null;
-    if (this.UserModalFacility && this.UserModalFacility[1]) {
-      facility_id = this.UserModalFacility[1]
-    }
-    this.groupService.removeAdmin(groupid, userid, facility_id).toPromise()
+
+    this.groupService.removeAdmin(groupid, userid, this.project.ComputeCenter.FacilityId).toPromise()
       .then((result: any) => {
 
         if (result.status === 200) {
           this.updateNotificationModal('Success', `${name} was removed as Admin`, true, 'success');
-
+          this.getMembersOfTheProject()
         } else {
           this.updateNotificationModal('Failed', `${name} could not be removed as Admin!`, true, 'danger');
         }
@@ -533,15 +590,13 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
    * @param name  of the member
    */
   public removeMember(groupid: number, memberid: number, name: string): void {
-    let facility_id: string | number = null;
-    if (this.UserModalFacility && this.UserModalFacility[1]) {
-      facility_id = this.UserModalFacility[1]
-    }
-    this.groupService.removeMember(groupid, memberid, facility_id).subscribe(
+
+    this.groupService.removeMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
       (result: any) => {
 
         if (result.status === 200) {
           this.updateNotificationModal('Success', `Member ${name}  removed from the group`, true, 'success');
+          this.getMembersOfTheProject()
 
         } else {
           this.updateNotificationModal('Failed', `Member ${name}  could not be removed !`, true, 'danger');
@@ -552,9 +607,21 @@ export class OverviewComponent extends AbstractBaseClasse implements OnInit {
       });
   }
 
-  public resetFacilityDetailsModal(): void {
-    this.UserModalFacility = null;
-    this.UserModalFacilityDetails = null;
+  /**
+   * Delete an application.
+   * @param application_id
+   */
+  public deleteApplication(): void {
+    this.applicationsservice.deleteApplication(this.project_application.Id).subscribe(
+      () => {
+        this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
+        this.fullLayout.getGroupsEnumeration();
+        this.router.navigate(['/userinfo'])
+      },
+      () => {
+        this.updateNotificationModal('Failed', 'Application could not be removed!', true, 'danger');
+      })
+
   }
 
   public comingSoon(): void {

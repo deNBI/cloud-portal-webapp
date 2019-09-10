@@ -25,7 +25,7 @@
             </button>
             <input name="test_name" placeholder="TestAppName" #test_name>
           </div>
-          <form id="application_form" #f="ngForm"  (ngSubmit)="onSubmit(f)" (keydown.enter)="$event.preventDefault();"
+          <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" (keydown.enter)="$event.preventDefault();"
                 class="form-horizontal">
             <div class="form-group row">
               <h5 class="col-md-6 form-control-label">General Information</h5>
@@ -350,7 +350,7 @@
             </div>
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Research Topics
-                 </strong></label>
+              </strong></label>
               <div class="col-md-8 ">
                 <div class="ng-autocomplete col-md-8">
                   <ng-autocomplete #edam_ontology
@@ -800,7 +800,7 @@
                 class="btn  btn-secondary"> Close
         </button>
         <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
-           [routerLink]="['/applications']">
+           [routerLink]="['/project-management/' + new_application_id]">
           <button type="button"
                   (click)="notificationModal.hide();resetNotificationModal()" type="reset"
                   class="btn  btn-secondary"> Close
@@ -905,4 +905,7 @@
     </div><!-- /.modal-content -->L
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+
 

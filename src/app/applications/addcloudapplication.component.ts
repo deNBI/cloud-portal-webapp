@@ -10,6 +10,7 @@ import {ApplicationBaseClass} from 'app/shared/shared_modules/baseClass/applicat
 import {EdamOntologyTerm} from './edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
 import {ApplicationDissemination} from './application-dissemination';
+import {FullLayoutComponent} from '../layouts/full-layout.component';
 
 /**
  * This components provides the functions to create a new Cloud Application.
@@ -29,7 +30,6 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
 
   public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
-
   /**
    * If it is in production or dev mode.
    * @type {boolean}
@@ -37,6 +37,8 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
   public production: boolean = environment.production;
 
   public edam_ontology_terms: EdamOntologyTerm[];
+
+  new_application_id: string | number;
 
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
 
@@ -94,7 +96,7 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    * @param {ApplicationsService} applicationsservice
    * @param {FlavorService} flavorservice
    */
-  constructor(applicationsservice: ApplicationsService, private flavorservice: FlavorService) {
+  constructor(applicationsservice: ApplicationsService, private flavorservice: FlavorService, private fullLayout: FullLayoutComponent) {
     super(null, null, applicationsservice, null);
 
   }
@@ -152,8 +154,6 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
     this.edam_ontology.clear();
   }
 
-
-
   /**
    * Submits a new cloud application.
    * Therefore checks if the different values are valid.
@@ -188,8 +188,10 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
             this.applicationsservice.setApplicationDissemination(application['project_application_id'], this.application_dissemination).subscribe()
 
           }
-          this.applicationsservice.addEdamOntologyTerms(application['project_application_id'], this.selected_ontology_terms).subscribe();
+          this.new_application_id = application['project_application_id'];
+          this.applicationsservice.addEdamOntologyTerms(this.new_application_id, this.selected_ontology_terms).subscribe();
           this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
+          this.fullLayout.getGroupsEnumeration();
           this.notificationModalStay = false;
         }).catch((error: string) => {
         const error_json: string = error;
