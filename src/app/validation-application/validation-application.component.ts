@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ApplicationsService} from '../api-connector/applications.service';
-import {Application} from '../applications/application.model';
+import {Application} from '../applications/application.model/application.model';
 import {ActivatedRoute} from '@angular/router';
 import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
 import {FlavorService} from '../api-connector/flavor.service';

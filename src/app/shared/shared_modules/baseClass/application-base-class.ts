@@ -1,6 +1,6 @@
 import {AbstractBaseClasse} from './abstract-base-class';
 import {ApplicationStatus} from '../../../applications/application_status.model';
-import {Application} from '../../../applications/application.model';
+import {Application} from '../../../applications/application.model/application.model';
 import {Flavor} from '../../../virtualmachines/virtualmachinemodels/flavor';
 import {ApplicationExtension} from '../../../applications/application_extension.model';
 import {ApplicationsService} from '../../../api-connector/applications.service';
@@ -45,7 +45,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
    */
   application_status: ApplicationStatus[] = [];
 
-  /**
+  /**application_user
    * User which requested the Application {id: Elixir id of user : {name and email}}.
    * @type {{}}
    */
@@ -386,6 +386,24 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
           this.application_user[elixir_id] = appuser;
         })
       }
+    }
+  }
+
+  /**
+   * Get details of member like name and email by elixir.
+   * @param {string} elixir_id
+   * @param {string} collapse_id
+   */
+  public getMemberDetailsByElixirId(elixir_id: string): void {
+    if (!(elixir_id in this.application_user)) {
+      this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe((result: { [key: string]: string }) => {
+
+        const name: string = `${result['firstName']} ${result['lastName']}`;
+        const appuser: { [id: string]: string } = {};
+        appuser['name'] = name;
+        appuser['email'] = result['email'];
+        this.application_user[elixir_id] = appuser;
+      })
     }
   }
 

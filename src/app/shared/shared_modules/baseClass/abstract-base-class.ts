@@ -10,7 +10,7 @@ enum Project_States {
 
 }
 
-enum Application_States {
+export enum Application_States {
   SUBMITTED = 1,
   APPROVED = 2,
   DECLINED = 3,

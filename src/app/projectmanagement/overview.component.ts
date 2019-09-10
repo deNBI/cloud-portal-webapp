@@ -12,7 +12,7 @@ import {ComputecenterComponent} from './computecenter.component';
 import {Userinfo} from '../userinfo/userinfo.model';
 import {forkJoin, Observable} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
-import {Application} from '../applications/application.model';
+import {Application} from '../applications/application.model/application.model';
 import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {FacilityService} from '../api-connector/facility.service';
@@ -20,6 +20,9 @@ import {ApplicationsService} from '../api-connector/applications.service';
 import {Router} from '@angular/router'
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 import {NgForm} from '@angular/forms';
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
+import {FlavorService} from '../api-connector/flavor.service';
 
 /**
  * Projectoverview component.
@@ -27,7 +30,8 @@ import {NgForm} from '@angular/forms';
 @Component({
              selector: 'app-project-overview',
              templateUrl: 'overview.component.html',
-             providers: [ApplicationStatusService, ApplicationsService, FacilityService, VoService, UserService, GroupService, ApiSettings]
+             providers: [FlavorService, ApplicationStatusService, ApplicationsService,
+               FacilityService, VoService, UserService, GroupService, ApiSettings]
            })
 export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
@@ -69,10 +73,16 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
   public isLoaded: boolean = false;
   public showLink: boolean = true;
 
-  constructor(private groupService: GroupService, applicationstatusservice: ApplicationStatusService, applicationsservice: ApplicationsService, facilityService: FacilityService,
-              userservice: UserService, private activatedRoute: ActivatedRoute, private fullLayout: FullLayoutComponent, private router: Router) {
+  constructor(private flavorService: FlavorService,
+              private groupService: GroupService,
+              applicationstatusservice: ApplicationStatusService,
+              applicationsservice: ApplicationsService,
+              facilityService: FacilityService,
+              userservice: UserService,
+              private activatedRoute: ActivatedRoute,
+              private fullLayout: FullLayoutComponent,
+              private router: Router) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
-
   }
 
   approveMemberApplication(project: number, application: number, membername: string): void {
@@ -100,19 +110,44 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
   getApplication(): void {
     this.applicationsservice.getApplication(this.application_id).subscribe((aj: object) => {
       const newApp: Application = this.setNewApplication(aj);
+
       this.project_application = newApp;
-      this.applicationsservice.getApplicationPerunId(this.application_id).subscribe(id => {
-        if (id['perun_id']) {
-          this.project_id = id['perun_id'];
-          this.getMembersOfTheProject();
-          this.getProject();
+      if (this.project_application) {
 
-        } else {
-          this.isLoaded = true;
-        }
+        this.applicationsservice.getApplicationPerunId(this.application_id).subscribe(id => {
+          if (id['perun_id']) {
+            this.project_id = id['perun_id'];
 
-      })
+            this.getProject();
+
+          } else {
+            this.isLoaded = true;
+          }
+
+        })
+      } else {
+        this.isLoaded = true;
+      }
     })
+  }
+
+  /**
+   * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
+   * @param form the form which contains the input-fields
+   */
+  protected valuesChanged(form: NgForm): void {
+    this.totalNumberOfCores = 0;
+    this.totalRAM = 0;
+    for (const key in form.controls) {
+      if (form.controls[key].value) {
+        const flavor: Flavor = this.isKeyFlavor(key.toString());
+        if (flavor != null) {
+          this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * form.controls[key].value);
+          this.totalRAM = this.totalRAM + (flavor.ram * form.controls[key].value);
+        }
+      }
+    }
+
   }
 
   /**
@@ -129,7 +164,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
         values[value] = form.controls[value].value;
       }
     }
-    values['project_application_id'] = this.selectedApplication.Id;
+    values['project_application_id'] = this.project_application.Id;
     values['total_cores_new'] = this.totalNumberOfCores;
     values['total_ram_new'] = this.totalRAM;
     this.requestExtension(values);
@@ -151,6 +186,28 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
     })
 
+  }
+
+  /**
+   * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+   */
+  getListOfFlavors(): void {
+    this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
+  }
+
+  /**
+   * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+   */
+  getListOfTypes(): void {
+    this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
+  }
+
+  fillUp(date: string): string {
+    if (date.length === 1) {
+      return `0${date}`;
+    }
+
+    return date;
   }
 
   /**
@@ -191,6 +248,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
   ngOnInit(): void {
     this.getApplicationStatus();
     this.getUserinfo();
+    this.getListOfFlavors();
+    this.getListOfTypes();
     this.activatedRoute.params.subscribe(paramsId => {
       this.isLoaded = false;
       this.project = null;
@@ -325,8 +384,12 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
       newProject.OpenStackProject = group['openstack_project'];
       newProject.RealName = realname;
       this.project = newProject;
+      if (this.project.UserIsPi || this.project.UserIsAdmin) {
+        this.getMembersOfTheProject();
+      } else {
 
-      this.isLoaded = true;
+        this.isLoaded = true;
+      }
     })
 
   }
@@ -337,10 +400,11 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
    * @param projectName
    */
   getMembersOfTheProject(): void {
-    this.project_members = [];
     this.groupService.getGroupMembers(this.project_id).subscribe((members: any) => {
 
       this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any) => {
+        this.project_members = [];
+
         const admindIds: any = result['adminIds'];
         for (const member of members) {
           const member_id: string = member['id'];
@@ -352,6 +416,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
           this.project_members.push(projectMember);
 
         }
+        this.isLoaded = true;
+
       })
 
     });
@@ -493,8 +559,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
   calculateRamCores(): void {
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
-    for (const key in this.selectedApplication.CurrentFlavors) {
-      const flavor = this.selectedApplication.CurrentFlavors[key];
+    for (const key in this.project_application.CurrentFlavors) {
+      const flavor = this.project_application.CurrentFlavors[key];
       if (flavor != null) {
         this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * flavor.counter);
         this.totalRAM = this.totalRAM + (flavor.ram * flavor.counter);
@@ -533,6 +599,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
             if (result.status === 200) {
               this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
+              this.getMembersOfTheProject();
 
             } else {
               this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
@@ -557,6 +624,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
         if (result.status === 200) {
           this.updateNotificationModal('Success', `${username} promoted to Admin`, true, 'success');
+          this.getMembersOfTheProject();
 
         } else {
           this.updateNotificationModal('Failed', `${username} could not be promoted to Admin!`, true, 'danger');

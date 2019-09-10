@@ -9,7 +9,7 @@ import {ApplicationsService} from '../api-connector/applications.service'
 import {Userinfo} from '../userinfo/userinfo.model';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {ClientService} from '../api-connector/client.service';
-import {Application} from '../applications/application.model';
+import {Application} from '../applications/application.model/application.model';
 import {KeyService} from '../api-connector/key.service';
 import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';

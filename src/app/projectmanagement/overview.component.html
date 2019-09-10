@@ -2,7 +2,9 @@
 
 <div class="container col-12" *ngIf="isLoaded==true">
   <div class="row">
-    <div class="col-12" *ngIf="project">
+    <div class="col-12"
+         *ngIf="project && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
+
       <div class="card">
         <div class="card-header ">
           <h3><span *ngIf="project?.OpenStackProject"
@@ -74,7 +76,7 @@
     <!--/.col-->
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="project_application && (project?.UserIsPi ||project?.UserIsAdmin  || !project)">
     <div class="col">
       <div class="card">
         <div class="card-header">
@@ -144,180 +146,21 @@
                   <td>{{ getStatusById(project_application?.Status) }}</td>
                 </tr>
 
-                <tr>
-                  <td *ngIf="application_details_visible"
-                      colspan="6">
-                    <div id="user_application-{{ project_application?.Id }}"
 
-                         class="table-responsive">
-                      <table class="table table-striped" style="width: 80%">
-                        <tr *ngIf="project_application?.PIApproved">
-                          <td>
-                            PI Name
-                          </td>
-                          <td>
-                            {{project_application?.PI}}
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED">
-                          </td>
-                        </tr>
-                        <tr *ngIf="project_application?.PIApproved">
-                          <td>
-                            PI Email
-                          </td>
-                          <td>
-                            {{project_application?.PIEmail}}
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED">
-                          </td>
-                        </tr>
-                        <tr *ngIf="project_application?.Status != application_states.SUBMITTED">
-                          <td>Facility</td>
-                          <td>
-                            {{project_application?.ComputeCenter?.Name}}
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED"></td>
-
-                        </tr>
-                        <tr>
-                          <td>Dissemination allowed</td>
-                          <td>
-                            {{project_application?.Dissemination}}
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED"></td>
-
-                        </tr>
-                        <tr>
-                          <td>Description</td>
-                          <td>{{project_application?.Description}}
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED"></td>
-                        </tr>
-                        <tr>
-                          <td>Horizon 2020</td>
-                          <td>
-                            {{project_application?.Horizon2020}}
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED"></td>
-                        </tr>
-                        <tr>
-                          <td>Elixir Project</td>
-                          <td>
-                            {{project_application?.ElixirProject}}
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED"></td>
-                        </tr>
-                        <tr>
-                          <td>BMBF Project</td>
-                          <td>
-                            {{project_application?.BMBFProject}}
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED"></td>
-                        </tr>
-                        <tr>
-                          <td>Comment</td>
-                          <td>{{project_application?.Comment}}
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED">
-                            {{project_application?.ApplicationExtension?.Comment}}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><b>VMs</b>
-                          </td>
-                          <td>
-                            <span> Current: </span>
-                            {{project_application?.VMsRequested}}
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED">
-                            Requested:
-                            {{project_application?.ApplicationExtension?.VMsRequested}}
-                          </td>
-                        </tr>
-                        <tr *ngFor="let item of project_application?.CurrentFlavors | keyvalue">
-                          <td>Flavor: {{item.key}}</td>
-                          <td>{{item.value.counter}}</td>
-                          <td *ngIf="project_application?.Status == 4">
-                                                            <span
-                                                              *ngIf="project_application?.ApplicationExtension?.RequestedFlavors[item.key]">
-
-
-                                                                {{project_application?.ApplicationExtension.RequestedFlavors[item.key].counter}}</span>
-                            <span *ngIf="!project_application?.ApplicationExtension?.RequestedFlavors[item.key]">
-                                                               0</span></td>
-                        </tr>
-                        <ng-container
-                          *ngFor="let item of project_application?.ApplicationExtension?.RequestedFlavors| keyvalue ">
-                          <tr *ngIf="!project_application?.CurrentFlavors[item.key]">
-                            <td>Flavor: {{item.key}}</td>
-                            <td>0</td>
-                            <td>
-                              {{project_application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}
-
-
-                            </td>
-
-
-                          </tr>
-                        </ng-container>
-
-                        <tr>
-                          <td>Cores</td>
-                          <td>{{project_application?.TotalCores}}
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED">
-                            {{project_application?.ApplicationExtension?.TotalCores}}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>RAM</td>
-                          <td>{{ project_application?.TotalRam}} GB
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED">
-                            {{project_application?.ApplicationExtension?.TotalRAM}}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Storage Limit</td>
-                          <td>{{project_application?.VolumeLimit}} GB
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED">
-                            {{project_application?.ApplicationExtension?.VolumeLimit}}
-                            GB
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Volume Counter</td>
-                          <td>{{ project_application?.VolumeCounter}} volumes
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED">
-                            {{project_application?.ApplicationExtension?.VolumeCounter}} volumes
-                          </td>
-                        </tr>
-                        <tr *ngIf="project_application?.OpenStackProject">
-                          <td>ObjectStorage</td>
-                          <td>{{project_application?.ObjectStorage}} GB
-                          </td>
-                          <td *ngIf="project_application?.Status == application_states.MODIFICATION_REQUESTED">
-                            {{project_application?.ApplicationExtension?.ObjectStorage}}
-                            GB
-                          </td>
-                        </tr>
-
-                      </table>
-                    </div>
-                  </td>
-                </tr>
               </ng-container>
               </tbody>
             </table>
+            <app-application-detail *ngIf="application_details_visible"
+                                    [application]="project_application"></app-application-detail>
+
           </div>
         </div>
 
       </div>
     </div>
 
-    <div class="col" *ngIf="project">
+    <div class="col"
+         *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)  && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
       <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i>Members of the Project {{ project?.Name }}

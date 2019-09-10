@@ -9,27 +9,28 @@ import {FacilitymanagerRoutingModule} from './facilitymanager-routing.module';
 import {FacilityApplicationComponent} from './facility.application.component';
 import {ResourcesComponent} from './resources/resources.component';
 import {ExportAsModule} from 'ngx-export-as';
+import {ApplicationsModule} from '../applications/applications.module';
 
 /**
  * Facilitymanager module.
  */
 @NgModule({
-    imports: [
-        FacilitymanagerRoutingModule,
-        TabsModule,
-        FormsModule,
-        CommonModule,
-        ModalModule.forRoot(),
-        ExportAsModule
+            imports: [
+              FacilitymanagerRoutingModule,
+              TabsModule,
+              FormsModule,
+              CommonModule,
+              ModalModule.forRoot(),
+              ExportAsModule, ApplicationsModule
 
-    ],
-    declarations: [
-        FacilityProjectsOverviewComponent,
-        ImageTagComponent,
-        FacilityApplicationComponent,
-        ResourcesComponent
+            ],
+            declarations: [
+              FacilityProjectsOverviewComponent,
+              ImageTagComponent,
+              FacilityApplicationComponent,
+              ResourcesComponent
 
-    ]
-})
+            ]
+          })
 export class FacilitymanagerModule {
 }

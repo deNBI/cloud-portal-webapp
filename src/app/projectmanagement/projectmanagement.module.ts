@@ -6,6 +6,7 @@ import {CommonModule} from '@angular/common';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {FormsModule} from '@angular/forms';
 import {AccordionModule} from 'ngx-bootstrap';
+import {ApplicationsModule} from '../applications/applications.module';
 
 @NgModule({
             imports: [
@@ -14,7 +15,8 @@ import {AccordionModule} from 'ngx-bootstrap';
               TabsModule,
               FormsModule,
               CommonModule,
-              ModalModule.forRoot()
+              ModalModule.forRoot(),
+              ApplicationsModule
             ],
             declarations: [
               OverviewComponent
