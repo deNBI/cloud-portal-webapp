@@ -6,9 +6,10 @@ import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
-import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
-import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
-import * as moment from 'moment';
+import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
+import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service';
+import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service';
+import ***REMOVED***ProjectEnumeration***REMOVED*** from '../projectmanagement/project-enumeration';
 
 /**
  * FullLayout component.
@@ -16,9 +17,9 @@ import * as moment from 'moment';
 @Component(***REMOVED***
              selector: 'app-dashboard',
              templateUrl: './full-layout.component.html',
-             providers: [VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings]
+             providers: [ApplicationsService, ApplicationStatusService, VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings]
            ***REMOVED***)
-export class FullLayoutComponent implements OnInit ***REMOVED***
+export class FullLayoutComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
 
   public year: number = new Date().getFullYear();
   public disabled: boolean = false;
@@ -29,12 +30,14 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
   public login_name: string = '';
   navbar_state: string = 'closed';
   overview_state: string = 'closed';
-  userProjects: ***REMOVED******REMOVED***[];
+  project_enumeration: ProjectEnumeration[] = [];
 
-  projects: Project[] = [];
+  constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
+              facilityService: FacilityService, applicationsservice: ApplicationsService,
+              applicationstatusservice: ApplicationStatusService,
+  ) ***REMOVED***
+    super(userservice, applicationstatusservice, applicationsservice, facilityService);
 
-  constructor(private voService: VoService, private groupService: GroupService, private userservice: UserService,
-              private facilityservice: FacilityService) ***REMOVED***
   ***REMOVED***
 
   public get_is_vo_admin(): boolean ***REMOVED***
@@ -52,7 +55,7 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
   public get_is_facility_manager(): void ***REMOVED***
-    this.facilityservice.getManagerFacilities().subscribe(result => ***REMOVED***
+    this.facilityService.getManagerFacilities().subscribe(result => ***REMOVED***
       if (result.length > 0) ***REMOVED***
         this.is_facility_manager = true
       ***REMOVED***
@@ -83,42 +86,10 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
     ***REMOVED***
   ***REMOVED***
 
-  getUserProjects(): void ***REMOVED***
-
-    this.groupService.getGroupDetails().subscribe((result: any) => ***REMOVED***
-      this.userProjects = result;
-      for (const group of this.userProjects) ***REMOVED***
-        const dateCreated: moment.Moment = moment.unix(group['createdAt']);
-        const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
-        const is_pi: boolean = group['is_pi'];
-        const groupid: string = group['id'];
-        const facility: any = group['compute_center'];
-        const shortname: string = group['shortname'];
-
-        const realname: string = group['name'];
-        let compute_center: ComputecenterComponent = null;
-
-        if (facility) ***REMOVED***
-          compute_center = new ComputecenterComponent(
-            facility['compute_center_facility_id'], facility['compute_center_name'],
-            facility['compute_center_login'], facility['compute_center_support_mail']);
-        ***REMOVED***
-
-        const newProject: Project = new Project(
-          groupid,
-          shortname,
-          group['description'],
-          moment(dateCreated).format('DD.MM.YYYY'),
-          dateDayDifference,
-          is_pi,
-          group['is_pi'],
-          compute_center);
-        newProject.OpenStackProject = group['openstack_project'];
-        newProject.RealName = realname;
-        this.projects.push(newProject);
-      ***REMOVED***
+  getGroupsEnumeration(): void ***REMOVED***
+    this.groupService.getGroupsEnumeration().subscribe(res => ***REMOVED***
+      this.project_enumeration = res;
     ***REMOVED***)
-
   ***REMOVED***
 
   checkVOstatus(): void ***REMOVED***
@@ -128,9 +99,9 @@ export class FullLayoutComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
+    this.getGroupsEnumeration();
     this.is_vm_project_member();
     this.get_is_facility_manager();
-    this.getUserProjects();
     this.getLoginName();
 
     this.checkVOstatus();

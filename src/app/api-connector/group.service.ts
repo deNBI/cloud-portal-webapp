@@ -3,12 +3,13 @@ import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
 import ***REMOVED***Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
 import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
-import ***REMOVED***IResponseTemplate***REMOVED*** from "./response-template";
-import ***REMOVED***Client***REMOVED*** from "../virtualmachines/clients/client.model";
+import ***REMOVED***IResponseTemplate***REMOVED*** from './response-template';
+import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/client.model';
+import ***REMOVED***ProjectEnumeration***REMOVED*** from '../projectmanagement/project-enumeration';
 
 const header: HttpHeaders = new HttpHeaders(***REMOVED***
-  'X-CSRFToken': Cookie.get('csrftoken')
-***REMOVED***);
+                                              'X-CSRFToken': Cookie.get('csrftoken')
+                                            ***REMOVED***);
 
 /**
  * Service which provides Group methods.
@@ -230,13 +231,25 @@ export class GroupService ***REMOVED***
 
   ***REMOVED***
 
-  getGroupDetails(): Observable<any> ***REMOVED***
+  getGroupsDetails(): Observable<any> ***REMOVED***
     return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/details/`, ***REMOVED***
       withCredentials: true
     ***REMOVED***)
   ***REMOVED***
 
-  getGroupApplications(group: number): Observable<any> ***REMOVED***
+  getGroupsEnumeration(): Observable<ProjectEnumeration[]> ***REMOVED***
+    return this.http.get<ProjectEnumeration[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/enumeration/`, ***REMOVED***
+      withCredentials: true
+    ***REMOVED***)
+  ***REMOVED***
+
+  getGroupDetails(groupid: number | string): Observable<any> ***REMOVED***
+    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***groupid***REMOVED***/details/`, ***REMOVED***
+      withCredentials: true
+    ***REMOVED***)
+  ***REMOVED***
+
+  getGroupApplications(group: number | string): Observable<any> ***REMOVED***
     return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***group***REMOVED***/applications/`, ***REMOVED***
       withCredentials: true
     ***REMOVED***)
@@ -276,22 +289,21 @@ export class GroupService ***REMOVED***
       .set('compute_center_id', compute_center_id.toString());
 
     return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/openStack/`, params,
-      ***REMOVED***
-        withCredentials: true,
-        headers: header
-      ***REMOVED***)
+                          ***REMOVED***
+                            withCredentials: true,
+                            headers: header
+                          ***REMOVED***)
   ***REMOVED***
 
   createGroup(group_name: string, group_description: string): Observable<any> ***REMOVED***
     const params: HttpParams = new HttpParams().set('name', group_name).set('description', group_description.substring(0, 512));
 
     return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/`, params,
-      ***REMOVED***
-        withCredentials: true,
-        headers: header
-      ***REMOVED***)
+                          ***REMOVED***
+                            withCredentials: true,
+                            headers: header
+                          ***REMOVED***)
   ***REMOVED***
-
 
   getLifetime(groupid: string | number): Observable<IResponseTemplate> ***REMOVED***
 

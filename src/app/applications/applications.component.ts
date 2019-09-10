@@ -269,19 +269,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
   ***REMOVED***
 
-  calculateRamCores() ***REMOVED***
-    this.totalNumberOfCores = 0;
-    this.totalRAM = 0;
-    for (const key in this.selectedApplication.CurrentFlavors) ***REMOVED***
-      const flavor = this.selectedApplication.CurrentFlavors[key];
-      if (flavor != null) ***REMOVED***
-        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * flavor.counter);
-        this.totalRAM = this.totalRAM + (flavor.ram * flavor.counter);
 
-      ***REMOVED***
-
-    ***REMOVED***
-  ***REMOVED***
 
   /**
    * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
@@ -714,24 +702,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
       ***REMOVED***);
   ***REMOVED***
 
-  /**
-   * Delete an application.
-   * @param application_id
-   */
-  public deleteApplication(application_id: string | number): void ***REMOVED***
-    this.applicationsservice.deleteApplication(application_id).toPromise()
-      .then(() => ***REMOVED***
-        this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
-      ***REMOVED***).then(() => ***REMOVED***
-      this.user_applications = [];
-      this.all_applications = [];
-      this.getUserApplications();
-      this.getAllApplications();
-    ***REMOVED***)
-      .catch(() => ***REMOVED***
-        this.updateNotificationModal('Failed', 'Application could not be removed!', true, 'danger');
-      ***REMOVED***);
-  ***REMOVED***
 
   /**
    * Set the id of the application which should be deleted.

@@ -127,6 +127,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
    */
   getIdByStatus(name: string): number ***REMOVED***
     const s: number = -1;
+
     for (const status of this.application_status) ***REMOVED***
       if (status.application_status_name === name) ***REMOVED***
         return status.application_status_id;
