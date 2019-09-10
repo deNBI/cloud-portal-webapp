@@ -9,7 +9,7 @@ import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
 import ***REMOVED***forkJoin***REMOVED*** from 'rxjs/index';
-import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
+import ***REMOVED***Application***REMOVED*** from '../applications/application.model/application.model';
 import ***REMOVED***DomSanitizer, SafeResourceUrl, SafeUrl***REMOVED*** from '@angular/platform-browser';
 import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import ***REMOVED***Volume***REMOVED*** from '../virtualmachines/volumes/volume';

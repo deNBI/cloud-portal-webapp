@@ -10,7 +10,7 @@ enum Project_States ***REMOVED***
 
 ***REMOVED***
 
-enum Application_States ***REMOVED***
+export enum Application_States ***REMOVED***
   SUBMITTED = 1,
   APPROVED = 2,
   DECLINED = 3,

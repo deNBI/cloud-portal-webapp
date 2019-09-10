@@ -12,7 +12,7 @@ import ***REMOVED***ComputecenterComponent***REMOVED*** from './computecenter.co
 import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
 import ***REMOVED***forkJoin, Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***ActivatedRoute***REMOVED*** from '@angular/router';
-import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
+import ***REMOVED***Application***REMOVED*** from '../applications/application.model/application.model';
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
@@ -20,6 +20,9 @@ import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/appl
 import ***REMOVED***Router***REMOVED*** from '@angular/router'
 import ***REMOVED***FullLayoutComponent***REMOVED*** from '../layouts/full-layout.component';
 import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
+import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
+import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
+import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 
 /**
  * Projectoverview component.
@@ -27,7 +30,8 @@ import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
 @Component(***REMOVED***
              selector: 'app-project-overview',
              templateUrl: 'overview.component.html',
-             providers: [ApplicationStatusService, ApplicationsService, FacilityService, VoService, UserService, GroupService, ApiSettings]
+             providers: [FlavorService, ApplicationStatusService, ApplicationsService,
+               FacilityService, VoService, UserService, GroupService, ApiSettings]
            ***REMOVED***)
 export class OverviewComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
 
@@ -69,10 +73,16 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
   public isLoaded: boolean = false;
   public showLink: boolean = true;
 
-  constructor(private groupService: GroupService, applicationstatusservice: ApplicationStatusService, applicationsservice: ApplicationsService, facilityService: FacilityService,
-              userservice: UserService, private activatedRoute: ActivatedRoute, private fullLayout: FullLayoutComponent, private router: Router) ***REMOVED***
+  constructor(private flavorService: FlavorService,
+              private groupService: GroupService,
+              applicationstatusservice: ApplicationStatusService,
+              applicationsservice: ApplicationsService,
+              facilityService: FacilityService,
+              userservice: UserService,
+              private activatedRoute: ActivatedRoute,
+              private fullLayout: FullLayoutComponent,
+              private router: Router) ***REMOVED***
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
-
   ***REMOVED***
 
   approveMemberApplication(project: number, application: number, membername: string): void ***REMOVED***
@@ -100,19 +110,44 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
   getApplication(): void ***REMOVED***
     this.applicationsservice.getApplication(this.application_id).subscribe((aj: object) => ***REMOVED***
       const newApp: Application = this.setNewApplication(aj);
+
       this.project_application = newApp;
-      this.applicationsservice.getApplicationPerunId(this.application_id).subscribe(id => ***REMOVED***
-        if (id['perun_id']) ***REMOVED***
-          this.project_id = id['perun_id'];
-          this.getMembersOfTheProject();
-          this.getProject();
+      if (this.project_application) ***REMOVED***
 
-        ***REMOVED*** else ***REMOVED***
-          this.isLoaded = true;
-        ***REMOVED***
+        this.applicationsservice.getApplicationPerunId(this.application_id).subscribe(id => ***REMOVED***
+          if (id['perun_id']) ***REMOVED***
+            this.project_id = id['perun_id'];
 
-      ***REMOVED***)
+            this.getProject();
+
+          ***REMOVED*** else ***REMOVED***
+            this.isLoaded = true;
+          ***REMOVED***
+
+        ***REMOVED***)
+      ***REMOVED*** else ***REMOVED***
+        this.isLoaded = true;
+      ***REMOVED***
     ***REMOVED***)
+  ***REMOVED***
+
+  /**
+   * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
+   * @param form the form which contains the input-fields
+   */
+  protected valuesChanged(form: NgForm): void ***REMOVED***
+    this.totalNumberOfCores = 0;
+    this.totalRAM = 0;
+    for (const key in form.controls) ***REMOVED***
+      if (form.controls[key].value) ***REMOVED***
+        const flavor: Flavor = this.isKeyFlavor(key.toString());
+        if (flavor != null) ***REMOVED***
+          this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * form.controls[key].value);
+          this.totalRAM = this.totalRAM + (flavor.ram * form.controls[key].value);
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+
   ***REMOVED***
 
   /**
@@ -129,7 +164,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
         values[value] = form.controls[value].value;
       ***REMOVED***
     ***REMOVED***
-    values['project_application_id'] = this.selectedApplication.Id;
+    values['project_application_id'] = this.project_application.Id;
     values['total_cores_new'] = this.totalNumberOfCores;
     values['total_ram_new'] = this.totalRAM;
     this.requestExtension(values);
@@ -151,6 +186,28 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
 
     ***REMOVED***)
 
+  ***REMOVED***
+
+  /**
+   * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+   */
+  getListOfFlavors(): void ***REMOVED***
+    this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
+  ***REMOVED***
+
+  /**
+   * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+   */
+  getListOfTypes(): void ***REMOVED***
+    this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
+  ***REMOVED***
+
+  fillUp(date: string): string ***REMOVED***
+    if (date.length === 1) ***REMOVED***
+      return `0$***REMOVED***date***REMOVED***`;
+    ***REMOVED***
+
+    return date;
   ***REMOVED***
 
   /**
@@ -191,6 +248,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
   ngOnInit(): void ***REMOVED***
     this.getApplicationStatus();
     this.getUserinfo();
+    this.getListOfFlavors();
+    this.getListOfTypes();
     this.activatedRoute.params.subscribe(paramsId => ***REMOVED***
       this.isLoaded = false;
       this.project = null;
@@ -325,8 +384,12 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
       newProject.OpenStackProject = group['openstack_project'];
       newProject.RealName = realname;
       this.project = newProject;
+      if (this.project.UserIsPi || this.project.UserIsAdmin) ***REMOVED***
+        this.getMembersOfTheProject();
+      ***REMOVED*** else ***REMOVED***
 
-      this.isLoaded = true;
+        this.isLoaded = true;
+      ***REMOVED***
     ***REMOVED***)
 
   ***REMOVED***
@@ -337,10 +400,11 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
    * @param projectName
    */
   getMembersOfTheProject(): void ***REMOVED***
-    this.project_members = [];
     this.groupService.getGroupMembers(this.project_id).subscribe((members: any) => ***REMOVED***
 
       this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any) => ***REMOVED***
+        this.project_members = [];
+
         const admindIds: any = result['adminIds'];
         for (const member of members) ***REMOVED***
           const member_id: string = member['id'];
@@ -352,6 +416,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
           this.project_members.push(projectMember);
 
         ***REMOVED***
+        this.isLoaded = true;
+
       ***REMOVED***)
 
     ***REMOVED***);
@@ -493,8 +559,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
   calculateRamCores(): void ***REMOVED***
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
-    for (const key in this.selectedApplication.CurrentFlavors) ***REMOVED***
-      const flavor = this.selectedApplication.CurrentFlavors[key];
+    for (const key in this.project_application.CurrentFlavors) ***REMOVED***
+      const flavor = this.project_application.CurrentFlavors[key];
       if (flavor != null) ***REMOVED***
         this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * flavor.counter);
         this.totalRAM = this.totalRAM + (flavor.ram * flavor.counter);
@@ -533,6 +599,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
 
             if (result.status === 200) ***REMOVED***
               this.updateNotificationModal('Success', `Admin $***REMOVED***firstName***REMOVED*** $***REMOVED***lastName***REMOVED*** added.`, true, 'success');
+              this.getMembersOfTheProject();
 
             ***REMOVED*** else ***REMOVED***
               this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
@@ -557,6 +624,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
 
         if (result.status === 200) ***REMOVED***
           this.updateNotificationModal('Success', `$***REMOVED***username***REMOVED*** promoted to Admin`, true, 'success');
+          this.getMembersOfTheProject();
 
         ***REMOVED*** else ***REMOVED***
           this.updateNotificationModal('Failed', `$***REMOVED***username***REMOVED*** could not be promoted to Admin!`, true, 'danger');

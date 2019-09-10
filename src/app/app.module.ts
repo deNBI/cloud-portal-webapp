@@ -32,12 +32,10 @@ import ***REMOVED***
     SidebarToggleDirective
 ***REMOVED*** from "./shared/sidebar.directive";
 import ***REMOVED***BrowserAnimationsModule***REMOVED*** from '@angular/platform-browser/animations';
-import ***REMOVED***ServiceWorkerModule***REMOVED*** from '@angular/service-worker';
 import ***REMOVED***MatSnackBarModule***REMOVED*** from "@angular/material";
 import ***REMOVED***Angulartics2Module***REMOVED*** from 'angulartics2';
 import ***REMOVED*** ErrorHandler ***REMOVED*** from '@angular/core';
 import ***REMOVED***UncaughtExceptionHandler***REMOVED*** from './error-handler/UncaughtExceptionHandler.service';
-import ***REMOVED***environment***REMOVED*** from "../environments/environment";
 import ***REMOVED***CookieService***REMOVED*** from 'ngx-cookie-service';
 
 /**

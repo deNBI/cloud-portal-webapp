@@ -10,6 +10,7 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_mod
 import ***REMOVED***ApplicationDissemination***REMOVED*** from './application-dissemination';
 import ***REMOVED***EdamOntologyTerm***REMOVED*** from './edam-ontology-term';
 import ***REMOVED***AutocompleteComponent***REMOVED*** from 'angular-ng-autocomplete';
+import ***REMOVED***FullLayoutComponent***REMOVED*** from '../layouts/full-layout.component';
 
 /**
  * Component to create single vm applications.
@@ -85,7 +86,7 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
   public acknowledgeModalTitle: string = 'Acknowledge';
   public acknowledgeModalType: string = 'info';
 
-  constructor(applicationsservice: ApplicationsService, private flavorService: FlavorService) ***REMOVED***
+  constructor(applicationsservice: ApplicationsService, private flavorService: FlavorService, private fullLayout: FullLayoutComponent) ***REMOVED***
     super(null, null, applicationsservice, null);
   ***REMOVED***
 
@@ -207,6 +208,8 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
           ).subscribe();
 
           this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
+          this.fullLayout.getGroupsEnumeration();
+
           this.notificationModalStay = false;
         ***REMOVED***).catch((error: object) => ***REMOVED***
         const error_json: object = error;
@@ -232,7 +235,6 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
   getListOfFlavors(): void ***REMOVED***
     this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
   ***REMOVED***
-
 
   /**
    * Check if shortname is valid.

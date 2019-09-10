@@ -2,10 +2,9 @@ import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service'
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
-import ***REMOVED***Application***REMOVED*** from './application.model';
+import ***REMOVED***Application***REMOVED*** from './application.model/application.model';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
-import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
 import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
@@ -13,7 +12,6 @@ import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.ser
 import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/client.model';
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
-import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
 import ***REMOVED***forkJoin***REMOVED*** from 'rxjs/index';
 
@@ -46,20 +44,8 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
   /**
    * id of Application set for deletion.
    */
-  public deleteId: number;
 
   private WAIT_FOR_EXTENSION_STATUS: number = 6;
-
-  /**
-   * Total number of cores.
-   * @type ***REMOVED***number***REMOVED***
-   */
-  public totalNumberOfCores: number = 0;
-  /**
-   * Total number of ram.
-   * @type ***REMOVED***number***REMOVED***
-   */
-  public totalRAM: number = 0;
 
   /**
    * Constructor.
@@ -87,7 +73,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
   ngOnInit(): void ***REMOVED***
     this.voService.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
       this.is_vo_admin = <boolean><Boolean>result.value;
-      this.getUserApplications();
       this.getApplicationStatus();
       if (this.is_vo_admin) ***REMOVED***
         this.getAllApplications();
@@ -99,8 +84,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
       ***REMOVED***
 
     ***REMOVED***);
-    this.getListOfFlavors();
-    this.getListOfTypes();
 
   ***REMOVED***
 
@@ -118,17 +101,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     ***REMOVED***
 
     return null;
-
-  ***REMOVED***
-
-  checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean ***REMOVED***
-    for (const flav of this.flavorList) ***REMOVED***
-      if (flav.type.shortcut === type.shortcut && flav.simple_vm) ***REMOVED***
-        return true
-      ***REMOVED***
-
-    ***REMOVED***
-    return false
 
   ***REMOVED***
 
@@ -196,210 +168,13 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
   ***REMOVED***
 
-  /**
-   * Gets all Application of the user viewing the application overview.
-   * Saves them in the userApplication array.
-   */
-  getUserApplications(): void ***REMOVED***
-    this.applicationsservice
-      .getUserApplications().subscribe((res: [***REMOVED*** [key: string]: string ***REMOVED***]) => ***REMOVED***
-      if (Object.keys(res).length === 0) ***REMOVED***
-        this.isLoaded_userApplication = true;
-      ***REMOVED***
-      const newApps: Application [] = this.setNewApplications(res);
-      this.user_applications.push.apply(this.user_applications, newApps);
-      this.isLoaded_userApplication = true;
-
-    ***REMOVED***)
-
-  ***REMOVED***
-
-  /**
-   * Gets a user application with the actual values.
-   * @param ***REMOVED***Application***REMOVED*** application
-   */
-  public getUserApplication(application: Application): void ***REMOVED***
-    let index: number = this.user_applications.indexOf(application);
-
-    this.applicationsservice.getUserApplication(application.Id.toString()).subscribe(aj => ***REMOVED***
-      const newApp: Application = this.setNewApplication(aj);
-
-      this.user_applications[index] = newApp;
-
-    ***REMOVED***)
-
-  ***REMOVED***
-
-  /**
-   * Check if active applications are available.
-   * @returns ***REMOVED***boolean***REMOVED***
-   */
-  public activeApplicationsAvailable(): boolean ***REMOVED***
-    for (const application of this.all_applications) ***REMOVED***
-      if (application.Status === 1 || application.Status === 4 || application.Status === 7 || application.Status === 6) ***REMOVED***
-        return true;
-      ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
-
-  /**
-   * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
-   */
-  getListOfFlavors(): void ***REMOVED***
-    this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
-  ***REMOVED***
-
-  /**
-   * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
-   */
-  getListOfTypes(): void ***REMOVED***
-    this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
-  ***REMOVED***
-
-  /**
-   * Resets the values of totalRAM und totalNumberOfCores to 0 and changes the text at the end of the extension form.
-   * @param elemIDcores the ID of the label containing the number of cores
-   * @param elemIDram the ID of the label containing the amount of RAM
-   */
-  unsetValues(elemIDcores: string, elemIDram: string): void ***REMOVED***
-    this.totalRAM = 0;
-    this.totalNumberOfCores = 0;
-    //document.getElementById(elemIDcores).innerHTML = `Number of total cores:  $***REMOVED***this.totalNumberOfCores.toString()***REMOVED***`;
-    //document.getElementById(elemIDram).innerHTML = `Total amout of RAM:  $***REMOVED***this.totalRAM.toString()***REMOVED*** GB`;
-
-  ***REMOVED***
-
-
-
-  /**
-   * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
-   * @param form the form which contains the input-fields
-   */
-  protected valuesChanged(form: NgForm): void ***REMOVED***
-    this.totalNumberOfCores = 0;
-    this.totalRAM = 0;
-    for (const key in form.controls) ***REMOVED***
-      if (form.controls[key].value) ***REMOVED***
-        const flavor: Flavor = this.isKeyFlavor(key.toString());
-        if (flavor != null) ***REMOVED***
-          this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * form.controls[key].value);
-          this.totalRAM = this.totalRAM + (flavor.ram * form.controls[key].value);
-        ***REMOVED***
-      ***REMOVED***
-    ***REMOVED***
-
-    //  document.getElementById('corenumbers').innerHTML = `Number of total cores:  $***REMOVED***this.totalNumberOfCores.toString()***REMOVED***`;
-    //document.getElementById('ramnumbers').innerHTML = `Total amout of RAM:  $***REMOVED***this.totalRAM.toString()***REMOVED*** GB`;
-
-  ***REMOVED***
-
-  /**
-   * Submits an renewal request for an application.
-   * @param ***REMOVED***NgForm***REMOVED*** form
-   */
-  onSubmit(form: NgForm): void ***REMOVED***
-    const values: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED*** = ***REMOVED******REMOVED***;
-    for (const value in form.controls) ***REMOVED***
-      if (form.controls[value].disabled) ***REMOVED***
-        continue;
-      ***REMOVED***
-      if (form.controls[value].value) ***REMOVED***
-        values[value] = form.controls[value].value;
-      ***REMOVED***
-    ***REMOVED***
-    values['project_application_id'] = this.selectedApplication.Id;
-    values['total_cores_new'] = this.totalNumberOfCores;
-    values['total_ram_new'] = this.totalRAM;
-    this.requestExtension(values);
-
-  ***REMOVED***
-
-  /**
-   * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
-   * @param approval date in string when the application was approved
-   * @param months number of months the application is permitted
-   */
-  getEndDate(months: number, approval?: string,): string ***REMOVED***
-    if (!approval) ***REMOVED***
-      return ''
-    ***REMOVED***
-    let date1: Date = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
-    const month: number = date1.getMonth();
-    if ((month + months) > 11) ***REMOVED***
-      date1 = new Date(date1.getFullYear(), (month + months - 12), date1.getDate());
-    ***REMOVED*** else ***REMOVED***
-      date1.setMonth(date1.getMonth() + months);
-    ***REMOVED***
-
-    return `$***REMOVED***date1.getFullYear()***REMOVED***-$***REMOVED***this.fillUp((date1.getMonth() + 1).toString())***REMOVED***-$***REMOVED***this.fillUp(date1.getDate().toString())***REMOVED***`;
-  ***REMOVED***
-
-  fillUp(date: string): string ***REMOVED***
-    if (date.length === 1) ***REMOVED***
-      return `0$***REMOVED***date***REMOVED***`;
-    ***REMOVED***
-
-    return date;
-  ***REMOVED***
-
-  showLifetime(sa?: Application): string ***REMOVED***
-    if (!sa) ***REMOVED***
-      return
-    ***REMOVED***
-
-    return `$***REMOVED***sa.DateApproved***REMOVED*** - $***REMOVED***this.getEndDate(sa.Lifetime, sa.DateApproved,)***REMOVED***`;
-  ***REMOVED***
-
-  /**
-   * Request an extension from an application.
-   * @param data
-   */
-  public requestExtension(data: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED***): void ***REMOVED***
-    this.applicationsservice.requestRenewal(data).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
-      if (result['Error']) ***REMOVED***
-        this.extension_status = 2
-      ***REMOVED*** else ***REMOVED***
-        this.extension_status = 1;
-      ***REMOVED***
-      this.getUserApplication(this.selectedApplication);
-
-      for (const app of this.all_applications) ***REMOVED***
-        if (this.selectedApplication.PerunId === app.PerunId) ***REMOVED***
-          this.getApplication(app);
-          break;
-        ***REMOVED***
-
-      ***REMOVED***
-    ***REMOVED***)
-
-  ***REMOVED***
-
-  /**
-   * Terminateda project.
-   * Deletes the Perun Group and sets the application status to terminated.
-   * @param ***REMOVED***Application***REMOVED*** app
-   */
-  public terminateProject(app: Application): void ***REMOVED***
-    this.applicationstatusservice.setApplicationStatus(app.Id, this.application_states.TERMINATED).subscribe(res => ***REMOVED***
-      this.getApplication(app);
-      if (res === 'null') ***REMOVED***
-        this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
-
-      ***REMOVED*** else ***REMOVED***
-        this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
-
-      ***REMOVED***
-
-    ***REMOVED***)
-  ***REMOVED***
-
   public approveExtension(app: Application): void ***REMOVED***
 
     if (app.OpenStackProject) ***REMOVED***
       if (!app.ComputeCenter) ***REMOVED***
         this.applicationsservice.approveRenewal(app.Id.toString()).subscribe(result => ***REMOVED***
           if (result['Error']) ***REMOVED***
-            this.extension_status = 2
+            this.extension_status = 2;
             this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
           ***REMOVED*** else ***REMOVED***
             this.extension_status = 3;
@@ -407,7 +182,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
             this.updateNotificationModal('Success', 'Successfully approved the application modification.', true, 'success');
             this.all_applications = [];
             this.user_applications = [];
-            this.getUserApplications();
             this.getAllApplications();
 
           ***REMOVED***
@@ -418,11 +192,9 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
           this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe(() => ***REMOVED***
           this.extension_status = 5;
           this.getApplication(app);
-          this.getUserApplication(app);
 
           for (const appl of this.user_applications) ***REMOVED***
             if (this.selectedApplication.Id.toString() === appl.Id.toString()) ***REMOVED***
-              this.getUserApplication(appl);
               break;
             ***REMOVED***
 
@@ -438,13 +210,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
         ***REMOVED***
         this.getApplication(this.selectedApplication);
 
-        for (const appl of this.user_applications) ***REMOVED***
-          if (this.selectedApplication.Id.toString() === appl.PerunId.toString()) ***REMOVED***
-            this.getUserApplication(appl);
-            break;
-          ***REMOVED***
-
-        ***REMOVED***
       ***REMOVED***)
     ***REMOVED***
   ***REMOVED***
@@ -462,13 +227,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
       ***REMOVED***
       this.getApplication(this.selectedApplication);
 
-      for (const app of this.user_applications) ***REMOVED***
-        if (this.selectedApplication.PerunId.toString() === app.PerunId.toString()) ***REMOVED***
-          this.getUserApplication(app);
-          break;
-        ***REMOVED***
-
-      ***REMOVED***
     ***REMOVED***)
   ***REMOVED***
 
@@ -502,7 +260,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                    ***REMOVED*** else ***REMOVED***
                      this.updateNotificationModal('Success', 'The new project was created', true, 'success');
                    ***REMOVED***
-                   this.getUserApplication(application);
                    this.getApplication(application);
                  ***REMOVED***,
                  () => ***REMOVED***
@@ -616,14 +373,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
                                                                                                             ***REMOVED***);
                                                                                                           ***REMOVED***
 
-                                                                                                          for (const app of this.user_applications) ***REMOVED***
-                                                                                                            if (app.Id.toString() === application_id.toString()) ***REMOVED***
-                                                                                                              this.getUserApplication(app);
-                                                                                                              break;
-
-                                                                                                            ***REMOVED***
-
-                                                                                                          ***REMOVED***
                                                                                                           for (const app of this.all_applications) ***REMOVED***
                                                                                                             if (app.Id.toString() === application_id.toString()) ***REMOVED***
                                                                                                               this.getApplication(app);
@@ -693,22 +442,12 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
       .then(() => ***REMOVED***
         this.all_applications = [];
         this.user_applications = [];
-        this.getUserApplications();
         this.getAllApplications();
         this.updateNotificationModal('Success', 'The Application was declined', true, 'success');
       ***REMOVED***)
       .catch(() => ***REMOVED***
         this.updateNotificationModal('Failed', 'Application could be declined!', true, 'danger');
       ***REMOVED***);
-  ***REMOVED***
-
-
-  /**
-   * Set the id of the application which should be deleted.
-   * @param applicationId
-   */
-  public setDeleteId(applicationId: number): void ***REMOVED***
-    this.deleteId = applicationId;
   ***REMOVED***
 
 ***REMOVED***

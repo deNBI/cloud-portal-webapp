@@ -1,6 +1,6 @@
 import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service';
-import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
+import ***REMOVED***Application***REMOVED*** from '../applications/application.model/application.model';
 import ***REMOVED***ActivatedRoute***REMOVED*** from '@angular/router';
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';

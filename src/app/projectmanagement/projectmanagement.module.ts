@@ -6,6 +6,7 @@ import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
 import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap/modal';
 import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
 import ***REMOVED***AccordionModule***REMOVED*** from 'ngx-bootstrap';
+import ***REMOVED***ApplicationsModule***REMOVED*** from '../applications/applications.module';
 
 @NgModule(***REMOVED***
             imports: [
@@ -14,7 +15,8 @@ import ***REMOVED***AccordionModule***REMOVED*** from 'ngx-bootstrap';
               TabsModule,
               FormsModule,
               CommonModule,
-              ModalModule.forRoot()
+              ModalModule.forRoot(),
+              ApplicationsModule
             ],
             declarations: [
               OverviewComponent
