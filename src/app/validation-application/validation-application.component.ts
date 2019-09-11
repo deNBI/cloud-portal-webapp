@@ -6,6 +6,7 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_mod
 import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
 import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
+import ***REMOVED***FullLayoutComponent***REMOVED*** from '../layouts/full-layout.component';
 
 @Component(***REMOVED***
              selector: 'app-validation-application',
@@ -33,7 +34,7 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
 
   constructor(private applicationsService: ApplicationsService,
               private activatedRoute: ActivatedRoute,
-              private flavorService: FlavorService) ***REMOVED***
+              private flavorService: FlavorService, private fullLayout: FullLayoutComponent) ***REMOVED***
     super(null, null, applicationsService, null);
 
   ***REMOVED***
@@ -42,6 +43,7 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
     this.applicationsService.validateApplicationAsPIByHash(this.hash).subscribe(res => ***REMOVED***
       if (res['project_application_pi_approved']) ***REMOVED***
         this.validated = true;
+        this.fullLayout.getGroupsEnumeration();
         this.updateNotificationModal(
           'Success',
           'The application was successfully approved.',
