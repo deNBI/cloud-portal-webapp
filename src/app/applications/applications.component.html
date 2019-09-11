@@ -147,7 +147,7 @@
                       <button
                         *ngIf="application?.Status == application_states.SUBMITTED && !application?.OpenStackProject"
                         style="margin: auto 2.5px"
-                        (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
+                        (click)="resetNotificationModal();createSimpleVmProjectGroup(application); notificationModal.show();"
 
                         type="button"
                         class="btn btn-success">

@@ -295,10 +295,11 @@ export class GroupService ***REMOVED***
                           ***REMOVED***)
   ***REMOVED***
 
-  createGroup(group_name: string, group_description: string): Observable<any> ***REMOVED***
-    const params: HttpParams = new HttpParams().set('name', group_name).set('description', group_description.substring(0, 512));
+  createGroupByApplication(application_id: string | number): Observable<any> ***REMOVED***
+    const params: HttpParams = new HttpParams()
+      .set('application_id', application_id.toString());
 
-    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/`, params,
+    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/simple_vm/`, params,
                           ***REMOVED***
                             withCredentials: true,
                             headers: header
