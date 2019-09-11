@@ -285,113 +285,46 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
   /**
    * Create a new Group in perun with the specific attributes.
-   * @param name
-   * @param description
-   * @param manager_elixir_id
-   * @param application_id
-   * @param compute_center
+   * @param app
    */
-  public createSimpleVmProjectGroup(app: Application,
-                                    compute_center: string): void {
-    // get memeber id in order to add the user later as the new member and manager of the group
-    let manager_member_id: string;
-    let manager_member_user_id: string;
-    let new_group_id: string;
-    const manager_elixir_id: string = app.UserEmail;
-    const description: string = app.Description;
+  public createSimpleVmProjectGroup(app: Application): void {
+
     const application_id: string = <string>app.Id;
-    const pi_elixir_id: string = app.PIElixir;
-    const name: string = app.Shortname;
     this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
       (res: Client) => {
-        if (res['Info']) {
-          if (res['Clients']) {
-            for (const client of res['Clients']) {
-              const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
-              newClient.location = client.location;
-              newClient.maxVolumeLimit = client.max_ressources.maxTotalVolumeGigabytes;
-              newClient.maxVolumes = client.max_ressources.maxTotalVolumes;
-              newClient.maxVMs = client.max_ressources.maxTotalInstances;
-              newClient.assignedVMs = client.assigned_ressources.vms;
-              newClient.assignedVolumes = client.assigned_ressources.volumes;
-              newClient.assignedVolumesStorage = client.assigned_ressources.volumeLimit;
-              this.notificationClientInfo.push(newClient);
-            }
-          }
-          this.updateNotificationModal('Failed', res['Info'], true, 'danger');
+        if (!res['client_available']) {
+          this.updateNotificationModal('Failed',"No client with the necessary resources online!", true, 'danger');
 
         } else {
-          this.applicationstatusservice.setApplicationStatus(
-            application_id,
-            this.application_states.APPROVED.toString()).subscribe((result: { [key: string]: string }) => {
-            if (result['Error']) {
 
-              this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+          this.groupservice.createGroupByApplication(application_id).subscribe(() => {
+            this.applicationsservice.getApplicationClient(
+              application_id).subscribe((client: object) => {
+              const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
+              newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
+              newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
+              newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
+              newClient.assignedVMs = client['assigned_ressources']['vms'];
+              newClient.assignedVolumes = client['assigned_ressources']['volumes'];
+              newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
+              this.notificationClientInfo.push(newClient);
+              this.updateNotificationModal(
+                'Success', `The new project was created and assigned to ${newClient.location}.`,
+                true,
+                'success');
 
-            } else {
-              forkJoin(
-                this.userservice.getMemberByExtSourceNameAndExtLogin(manager_elixir_id),
-                this.userservice.getMemberByExtSourceNameAndExtLogin(pi_elixir_id)).subscribe(
-                res => {
-                  const manager_member = res[0];
-                  manager_member_id = manager_member['id'];
-                  manager_member_user_id = manager_member['userId'];
-                  const pi = res[1];
-                  const pi_member_id: string = pi['id'];
-                  const pi_member_user_id: string = pi['userId'];
-                  this.groupservice.createGroup(name, description).subscribe((group: { [key: string]: string }) => {
-                    new_group_id = group['id'];
-                    if (manager_elixir_id !== pi_elixir_id) {
-                      forkJoin(
-                        this.groupservice.addMember(new_group_id, pi_member_id, compute_center),
-                        this.groupservice.addAdmin(new_group_id, pi_member_user_id, compute_center)).subscribe()
-                    }
-                    forkJoin(
-                      this.groupservice.addMember(new_group_id, manager_member_id, compute_center),
-                      this.groupservice.addAdmin(new_group_id, manager_member_user_id, compute_center)
-                    ).subscribe(() => {
-                      this.groupservice.setPerunGroupAttributes(application_id, new_group_id).subscribe(() => {
-                                                                                                          if (result['Info']) {
-                                                                                                            this.updateNotificationModal('Failed', result['Info'], true, 'danger');
+            });
 
-                                                                                                          } else {
-                                                                                                            this.applicationsservice.getApplicationClient(
-                                                                                                              application_id).subscribe((client: object) => {
-                                                                                                              const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
-                                                                                                              newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
-                                                                                                              newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
-                                                                                                              newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
-                                                                                                              newClient.assignedVMs = client['assigned_ressources']['vms'];
-                                                                                                              newClient.assignedVolumes = client['assigned_ressources']['volumes'];
-                                                                                                              newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
-                                                                                                              this.notificationClientInfo.push(newClient);
-                                                                                                              this.updateNotificationModal(
-                                                                                                                'Success', `The new project was created and assigned to ${newClient.location}.`,
-                                                                                                                true,
-                                                                                                                'success');
+            for (const app of this.all_applications) {
+              if (app.Id.toString() === application_id.toString()) {
+                this.getApplication(app);
+                break;
 
-                                                                                                            });
-                                                                                                          }
-
-                                                                                                          for (const app of this.all_applications) {
-                                                                                                            if (app.Id.toString() === application_id.toString()) {
-                                                                                                              this.getApplication(app);
-                                                                                                              break;
-
-                                                                                                            }
-                                                                                                          }
-
-                                                                                                        }
-                      )
-
-                    });
-
-                  });
-
-                })
+              }
             }
 
-          })
+          });
+
         }
 
       },
