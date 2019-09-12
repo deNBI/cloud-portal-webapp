@@ -310,7 +310,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
             }
 
             this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-            this.applyFilter();
 
           } else {
             if (vm['error']) {
@@ -392,7 +391,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                    }
 
                    this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-                   this.applyFilter();
                    this.selectedVm = updated_vm;
 
                    switch (updated_vm.status) {
@@ -526,7 +524,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       }
 
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-      this.applyFilter();
       switch (updated_vm.status) {
         case this.vm_statuses[this.vm_statuses.ACTIVE]:
           this.status_changed = 1;
