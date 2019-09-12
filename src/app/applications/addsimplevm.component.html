@@ -31,8 +31,8 @@
             <input name="test_name" placeholder="TestAppName" #test_name>
           </div>
 
-          <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
-                class="form-horizontal" (keydown.enter)="$event.preventDefault();">
+          <form id="application_form" #f="ngForm"
+                class="form-horizontal">
             <div class="form-group row">
               <h5 class="col-md-6 form-control-label">General Information</h5>
             </div>
@@ -235,7 +235,7 @@
               </div>
             </div>
             <div class="form-group row" [hidden]="f.controls.project_application_volume_counter?.value == 0">
-              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong> Volume Storage
                 Limit*
                 <i
                   data-balloon="Storage limit is the sum of extra storage provided by volumes."
@@ -748,7 +748,8 @@
           </div>
           <button (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
                   [disabled]="f.invalid || !min_vm"
-                  class="btn btn-sm btn-success"><i
+                  class="btn btn-sm btn-success"
+                  type="button"><i
             class="fa fa-dot-circle-o"></i> Submit
             Application
           </button>
@@ -824,8 +825,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" (click)="acknowledgemodal.hide(); notificationModal.show();"
-                class="btn  btn-success" type="submit" name="_save" form="application_form">
+        <button type="button" (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
+                class="btn  btn-success" name="_save" form="application_form">
           Accept
         </button>
 
