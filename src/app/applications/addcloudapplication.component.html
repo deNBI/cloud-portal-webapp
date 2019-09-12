@@ -25,7 +25,8 @@
             </button>
             <input name="test_name" placeholder="TestAppName" #test_name>
           </div>
-          <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)" (keydown.enter)="$event.preventDefault();"
+
+          <form id="application_form" #f="ngForm"
                 class="form-horizontal">
             <div class="form-group row">
               <h5 class="col-md-6 form-control-label">General Information</h5>
@@ -837,8 +838,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" (click)="acknowledgemodal.hide(); notificationModal.show();"
-                class="btn  btn-success" type="submit" name="_save" form="application_form">
+        <button type="button" (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
+                class="btn  btn-success" name="_save" form="application_form">
           Accept
         </button>
 
