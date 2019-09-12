@@ -160,6 +160,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
   ***REMOVED***
 
   getVoProjects(): void ***REMOVED***
+    this.projects = [];
     this.voserice.getAllGroupsWithDetails().subscribe(result => ***REMOVED***
       const vo_projects = result;
       for (const group of vo_projects) ***REMOVED***
@@ -313,6 +314,13 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
     this.voserice.removeResourceFromGroup(project.Id).subscribe(() => ***REMOVED***
       this.getProjectStatus(project);
       project.ComputeCenter = null;
+    ***REMOVED***);
+
+  ***REMOVED***
+
+  resumeProject(project: Project): void ***REMOVED***
+    this.voserice.resumeProject(project.Id).subscribe(() => ***REMOVED***
+      this.getVoProjects();
     ***REMOVED***);
 
   ***REMOVED***
