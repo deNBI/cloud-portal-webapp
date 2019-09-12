@@ -6,7 +6,7 @@ enum Lifetime_States {
 
 enum Project_States {
   ACTIVE = 2,
-  SUSPENDED = 4
+  SUSPENDED = 9
 
 }
 
@@ -18,7 +18,8 @@ export enum Application_States {
   MODIFICATION_DECLINED = 5,
   WAIT_FOR_CONFIRMATION = 6,
   CONFIRMATION_DENIED = 7,
-  TERMINATED = 8
+  TERMINATED = 8,
+  SUSPENDED = 9
 
 }
 

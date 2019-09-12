@@ -266,7 +266,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
                    this.projects.splice(indexAll, 1);
                    this.applyFilter();
-                   this.fullLayout.getGroupsEnumeration()
+                   this.fullLayout.getGroupsEnumeration();
 
                    this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
 
@@ -310,16 +310,11 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   suspendProject(project: Project): void {
-    forkJoin(this.voserice.removeResourceFromGroup(project.Id), this.voserice.setProjectStatus(project.Id, 4)
-    ).subscribe((res: IResponseTemplate[]) => {
-      const removedRes: number = <number>res[0].value;
-      const newProjectSatus: number = <number>res[1].value;
-
-      project.Status = newProjectSatus;
-      if (removedRes === -1) {
-        project.ComputeCenter = null
-      }
+    this.voserice.removeResourceFromGroup(project.Id).subscribe(() => {
+      this.getProjectStatus(project);
+      project.ComputeCenter = null;
     });
+
   }
 
   setProjectStatus(project: Project, status: number): void {
