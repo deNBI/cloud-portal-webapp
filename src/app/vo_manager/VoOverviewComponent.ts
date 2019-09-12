@@ -13,6 +13,7 @@ import ***REMOVED***Application***REMOVED*** from '../applications/application.m
 import ***REMOVED***DomSanitizer, SafeResourceUrl, SafeUrl***REMOVED*** from '@angular/platform-browser';
 import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import ***REMOVED***Volume***REMOVED*** from '../virtualmachines/volumes/volume';
+import ***REMOVED***FullLayoutComponent***REMOVED*** from '../layouts/full-layout.component';
 
 /**
  * Vo Overview component.
@@ -59,7 +60,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
   // public selectedFacility: [string, number];
 
-  constructor(private sanitizer: DomSanitizer, private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) ***REMOVED***
+  constructor(private fullLayout: FullLayoutComponent, private sanitizer: DomSanitizer, private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) ***REMOVED***
     super();
 
   ***REMOVED***
@@ -265,6 +266,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
                    this.projects.splice(indexAll, 1);
                    this.applyFilter();
+                   this.fullLayout.getGroupsEnumeration()
 
                    this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
 

@@ -15,6 +15,7 @@ import ***REMOVED***FacilityService***REMOVED*** from '../../api-connector/facil
            ***REMOVED***)
 export class ApplicationDetailComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
   @Input() application: Application;
+  @Input() isModification: boolean = false;
 
   constructor(applicationsservice: ApplicationsService,
               applicationstatusservice: ApplicationStatusService,

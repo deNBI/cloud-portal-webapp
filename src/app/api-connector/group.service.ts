@@ -110,7 +110,7 @@ export class GroupService ***REMOVED***
     ***REMOVED***)
   ***REMOVED***
 
-  removeMember(group_id: number | string, member_id: number | string, facility_id?: number | string): Observable<any> ***REMOVED***
+    removeMember(group_id: number | string, member_id: number | string, facility_id?: number | string): Observable<any> ***REMOVED***
     const params: HttpParams = new HttpParams();
 
     if (facility_id !== null) ***REMOVED***

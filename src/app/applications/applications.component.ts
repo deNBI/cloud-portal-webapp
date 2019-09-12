@@ -293,7 +293,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
       (res: Client) => ***REMOVED***
         if (!res['client_available']) ***REMOVED***
-          this.updateNotificationModal('Failed',"No client with the necessary resources online!", true, 'danger');
+          this.updateNotificationModal('Failed', 'No client with the necessary resources online!', true, 'danger');
 
         ***REMOVED*** else ***REMOVED***
 

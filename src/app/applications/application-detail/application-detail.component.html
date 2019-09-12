@@ -9,7 +9,7 @@
       <td>
         ***REMOVED******REMOVED***application?.PI***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr *ngIf="application?.PIApproved">
@@ -19,7 +19,7 @@
       <td>
         ***REMOVED******REMOVED***application?.PIEmail***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -29,7 +29,7 @@
       <td>***REMOVED******REMOVED***
         application?.UserAffiliations***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -37,7 +37,7 @@
       <td>
         ***REMOVED******REMOVED***application_user[application?.User]?.name***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -45,7 +45,7 @@
       <td>
         ***REMOVED******REMOVED***application_user[application?.User]?.email***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -55,7 +55,7 @@
         application?.Description
         ***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -63,7 +63,7 @@
       <td>
         ***REMOVED******REMOVED***application?.Horizon2020***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -71,7 +71,7 @@
       <td>
         ***REMOVED******REMOVED***application?.ElixirProject***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -79,7 +79,7 @@
       <td>
         ***REMOVED******REMOVED***application?.BMBFProject***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -87,7 +87,7 @@
       <td>
         ***REMOVED******REMOVED***application?.Dissemination***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
 
@@ -97,7 +97,7 @@
         application?.Workgroup
         ***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
 
@@ -107,7 +107,7 @@
         application?.Comment
         ***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         ***REMOVED******REMOVED***application?.ApplicationExtension?.Comment***REMOVED******REMOVED***
       </td>
 
@@ -118,7 +118,7 @@
         application?.Lifetime
         ***REMOVED******REMOVED*** months
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         ***REMOVED******REMOVED***
         application?.ApplicationExtension?.Lifetime***REMOVED******REMOVED***
       </td>
@@ -131,7 +131,7 @@
         <span>Current:</span>
         ***REMOVED******REMOVED***application?.VMsRequested***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         Requested:
         ***REMOVED******REMOVED***application?.ApplicationExtension?.VMsRequested***REMOVED******REMOVED***
       </td>
@@ -141,7 +141,7 @@
     <tr *ngFor="let item of application?.CurrentFlavors | keyvalue">
       <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
       <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED ">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED  || isModification">
                                                             <span
                                                               *ngIf="application?.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 ***REMOVED******REMOVED***application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
@@ -172,7 +172,7 @@
 
       </td>
 
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         ***REMOVED******REMOVED***application?.ApplicationExtension?.TotalCores***REMOVED******REMOVED***
       </td>
     </tr>
@@ -182,7 +182,7 @@
       <td>***REMOVED******REMOVED***
         application?.TotalRam***REMOVED******REMOVED*** GB
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         ***REMOVED******REMOVED***application?.ApplicationExtension?.TotalRAM***REMOVED******REMOVED***
       </td>
     </tr>
@@ -193,7 +193,7 @@
         application?.VolumeLimit
         ***REMOVED******REMOVED*** GB
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         ***REMOVED******REMOVED***application?.ApplicationExtension?.VolumeLimit***REMOVED******REMOVED***
         GB
       </td>
@@ -206,7 +206,7 @@
         application?.VolumeCounter
         ***REMOVED******REMOVED*** volumes
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         ***REMOVED******REMOVED***application?.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED*** volumes
       </td>
     </tr>
@@ -217,7 +217,7 @@
         application?.ObjectStorage
         ***REMOVED******REMOVED*** GB
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED ">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification ">
         ***REMOVED******REMOVED***application?.ApplicationExtension?.ObjectStorage***REMOVED******REMOVED***
         GB
       </td>
@@ -230,7 +230,7 @@
         application?.DateStatusChanged
         ***REMOVED******REMOVED***
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
 

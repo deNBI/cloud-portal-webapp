@@ -203,6 +203,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
     newApp.Status = aj['project_application_status'];
     newApp.Dissemination = aj['project_application_report_allowed'];
     newApp.Horizon2020 = aj['project_application_horizon2020'];
+    newApp.BMBFProject = aj['project_application_bmbf_project'];
     newApp.ElixirProject = aj['project_application_elixir_project'];
     newApp.Comment = aj['project_application_comment'];
     newApp.PerunId = aj['project_application_perun_id'];

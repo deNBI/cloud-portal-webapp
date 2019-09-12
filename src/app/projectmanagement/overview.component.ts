@@ -50,6 +50,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
    * @type ***REMOVED***number***REMOVED***
    */
   extension_status: number = 0;
+  remove_members_clicked: boolean;
+  life_time_string: string;
 
   isAdmin: boolean = false;
   invitation_link: string;
@@ -113,6 +115,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
 
       this.project_application = newApp;
       if (this.project_application) ***REMOVED***
+        this.setLifetime();
 
         this.applicationsservice.getApplicationPerunId(this.application_id).subscribe(id => ***REMOVED***
           if (id['perun_id']) ***REMOVED***
@@ -215,7 +218,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
    * @param approval date in string when the application was approved
    * @param months number of months the application is permitted
    */
-  getEndDate(months: number, approval?: string,): string ***REMOVED***
+  getEndDate(months: number, approval?: string): string ***REMOVED***
     if (!approval) ***REMOVED***
       return ''
     ***REMOVED***
@@ -230,12 +233,10 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
     return `$***REMOVED***date1.getFullYear()***REMOVED***-$***REMOVED***this.fillUp((date1.getMonth() + 1).toString())***REMOVED***-$***REMOVED***this.fillUp(date1.getDate().toString())***REMOVED***`;
   ***REMOVED***
 
-  showLifetime(sa?: Application): string ***REMOVED***
-    if (!sa) ***REMOVED***
-      return
-    ***REMOVED***
+  setLifetime(): void ***REMOVED***
 
-    return `$***REMOVED***sa.DateApproved***REMOVED*** - $***REMOVED***this.getEndDate(sa.Lifetime, sa.DateApproved,)***REMOVED***`;
+    this.life_time_string = `$***REMOVED***this.project_application.DateApproved***REMOVED*** - $***REMOVED***this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)***REMOVED***`;
+
   ***REMOVED***
 
   /**
@@ -470,6 +471,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
   ***REMOVED***
 
   removeCheckedMembers(groupId: number | string): void ***REMOVED***
+    this.remove_members_clicked = true;
 
     const members_in: ProjectMember[] = [];
 
@@ -488,6 +490,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
       this.project_members = members_in;
       this.checked_member_list = [];
       this.allSet = false;
+      this.remove_members_clicked = false;
 
     ***REMOVED***);
     this.allSet = false;
