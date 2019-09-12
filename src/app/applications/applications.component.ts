@@ -293,7 +293,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
       (res: Client) => {
         if (!res['client_available']) {
-          this.updateNotificationModal('Failed',"No client with the necessary resources online!", true, 'danger');
+          this.updateNotificationModal('Failed', 'No client with the necessary resources online!', true, 'danger');
 
         } else {
 

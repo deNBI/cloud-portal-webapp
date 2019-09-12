@@ -9,7 +9,7 @@
       <td>
         {{application?.PI}}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr *ngIf="application?.PIApproved">
@@ -19,7 +19,7 @@
       <td>
         {{application?.PIEmail}}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -29,7 +29,7 @@
       <td>{{
         application?.UserAffiliations}}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -37,7 +37,7 @@
       <td>
         {{application_user[application?.User]?.name}}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -45,7 +45,7 @@
       <td>
         {{application_user[application?.User]?.email}}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -55,7 +55,7 @@
         application?.Description
         }}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -63,7 +63,7 @@
       <td>
         {{application?.Horizon2020}}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -71,7 +71,7 @@
       <td>
         {{application?.ElixirProject}}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -79,7 +79,7 @@
       <td>
         {{application?.BMBFProject}}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
     <tr>
@@ -87,7 +87,7 @@
       <td>
         {{application?.Dissemination}}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
 
@@ -97,7 +97,7 @@
         application?.Workgroup
         }}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
 
@@ -107,7 +107,7 @@
         application?.Comment
         }}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         {{application?.ApplicationExtension?.Comment}}
       </td>
 
@@ -118,7 +118,7 @@
         application?.Lifetime
         }} months
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         {{
         application?.ApplicationExtension?.Lifetime}}
       </td>
@@ -131,7 +131,7 @@
         <span>Current:</span>
         {{application?.VMsRequested}}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         Requested:
         {{application?.ApplicationExtension?.VMsRequested}}
       </td>
@@ -141,7 +141,7 @@
     <tr *ngFor="let item of application?.CurrentFlavors | keyvalue">
       <td>Flavor: {{item.key}}</td>
       <td>{{item.value.counter}}</td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED ">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED  || isModification">
                                                             <span
                                                               *ngIf="application?.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 {{application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}</span>
@@ -172,7 +172,7 @@
 
       </td>
 
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         {{application?.ApplicationExtension?.TotalCores}}
       </td>
     </tr>
@@ -182,7 +182,7 @@
       <td>{{
         application?.TotalRam}} GB
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         {{application?.ApplicationExtension?.TotalRAM}}
       </td>
     </tr>
@@ -193,7 +193,7 @@
         application?.VolumeLimit
         }} GB
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         {{application?.ApplicationExtension?.VolumeLimit}}
         GB
       </td>
@@ -206,7 +206,7 @@
         application?.VolumeCounter
         }} volumes
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         {{application?.ApplicationExtension?.VolumeCounter}} volumes
       </td>
     </tr>
@@ -217,7 +217,7 @@
         application?.ObjectStorage
         }} GB
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED ">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification ">
         {{application?.ApplicationExtension?.ObjectStorage}}
         GB
       </td>
@@ -230,7 +230,7 @@
         application?.DateStatusChanged
         }}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED">
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
 

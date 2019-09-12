@@ -50,6 +50,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
    * @type {number}
    */
   extension_status: number = 0;
+  remove_members_clicked: boolean;
+  life_time_string: string;
 
   isAdmin: boolean = false;
   invitation_link: string;
@@ -113,6 +115,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
       this.project_application = newApp;
       if (this.project_application) {
+        this.setLifetime();
 
         this.applicationsservice.getApplicationPerunId(this.application_id).subscribe(id => {
           if (id['perun_id']) {
@@ -215,7 +218,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
    * @param approval date in string when the application was approved
    * @param months number of months the application is permitted
    */
-  getEndDate(months: number, approval?: string,): string {
+  getEndDate(months: number, approval?: string): string {
     if (!approval) {
       return ''
     }
@@ -230,12 +233,10 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
     return `${date1.getFullYear()}-${this.fillUp((date1.getMonth() + 1).toString())}-${this.fillUp(date1.getDate().toString())}`;
   }
 
-  showLifetime(sa?: Application): string {
-    if (!sa) {
-      return
-    }
+  setLifetime(): void {
 
-    return `${sa.DateApproved} - ${this.getEndDate(sa.Lifetime, sa.DateApproved,)}`;
+    this.life_time_string = `${this.project_application.DateApproved} - ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
+
   }
 
   /**
@@ -470,6 +471,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
   }
 
   removeCheckedMembers(groupId: number | string): void {
+    this.remove_members_clicked = true;
 
     const members_in: ProjectMember[] = [];
 
@@ -488,6 +490,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
       this.project_members = members_in;
       this.checked_member_list = [];
       this.allSet = false;
+      this.remove_members_clicked = false;
 
     });
     this.allSet = false;

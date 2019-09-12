@@ -183,7 +183,7 @@
             </button>
 
             <button (click)="removeCheckedMembers(project_id)" type="button" style="margin-bottom:5px;"
-                    [disabled]="checked_member_list.length <= 0" class="btn btn-danger"><i
+                    [disabled]="checked_member_list.length <= 0 || remove_members_clicked" class="btn btn-danger"><i
               class="fa fa-trash"></i>&nbsp;Remove
               Members
             </button>
@@ -607,7 +607,7 @@
               <div class="input-group">
                 <input class="form-control"
                        name="project_application_lifetime" placeholder="NA"
-                       type="text" value="{{showLifetime(project_application)}}"
+                       type="text" value="{{life_time_string}}"
                        disabled>
 
               </div>

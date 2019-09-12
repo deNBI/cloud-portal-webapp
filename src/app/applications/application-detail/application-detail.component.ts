@@ -15,6 +15,7 @@ import {FacilityService} from '../../api-connector/facility.service';
            })
 export class ApplicationDetailComponent extends ApplicationBaseClass implements OnInit {
   @Input() application: Application;
+  @Input() isModification: boolean = false;
 
   constructor(applicationsservice: ApplicationsService,
               applicationstatusservice: ApplicationStatusService,
