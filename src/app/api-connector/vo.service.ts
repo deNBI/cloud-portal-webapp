@@ -66,6 +66,14 @@ export class VoService {
 
   }
 
+  resumeProject(groupid: number | string): Observable<object> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, null, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
   getAllGroupsWithDetails(): Observable<any> {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/details/`, {
