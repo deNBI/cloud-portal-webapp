@@ -1,3 +1,12 @@
+##  (2019-09-10)
+
+
+#### Bug Fixes
+
+* **application:**  enter does not submit form anymore ([510fa96b](510fa96b))
+* **modification:**  Amount of RAM now classified with GB ([ea851630](ea851630))
+
+
 ##  (2019-09-03)
 
 

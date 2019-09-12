@@ -416,9 +416,9 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
    * Load vms depending on page.
    * @param event
    */
-  pageChanged(event)
-    :
-    void ***REMOVED***
+  pageChanged(event): void ***REMOVED***
+    this.isSearching = true;
+
     this.currentPage = event.page;
     if (this.tab === 'own') ***REMOVED***
       this.getVms()
