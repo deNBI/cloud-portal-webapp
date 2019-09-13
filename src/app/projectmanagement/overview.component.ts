@@ -443,14 +443,17 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
   }
 
-  checkIfAllMembersChecked(): boolean {
+  checkIfAllMembersChecked(): void {
+    let all_set: boolean = true;
     this.project_members.forEach((member: ProjectMember) => {
       if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) {
-        return false;
+        all_set = false;
+
       }
     });
 
-    return true;
+    this.allSet = all_set;
+
   }
 
   checkUnCheckMember(id: number): void {
@@ -461,11 +464,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
     } else {
       this.checked_member_list.push(id);
-      if (this.checkIfAllMembersChecked()) {
-        this.allSet = true;
-      } else {
-        this.allSet = false;
-      }
+      this.checkIfAllMembersChecked()
+
     }
 
   }
@@ -661,6 +661,11 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
    * @param name  of the member
    */
   public removeMember(groupid: number, memberid: number, name: string): void {
+    const indexOf: number = this.checked_member_list.indexOf(memberid);
+    if (indexOf !== -1) {
+      this.checked_member_list.splice(indexOf, 1);
+      this.allSet = false;
+    }
 
     this.groupService.removeMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
       (result: any) => {
