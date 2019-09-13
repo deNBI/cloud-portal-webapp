@@ -443,14 +443,17 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
 
   ***REMOVED***
 
-  checkIfAllMembersChecked(): boolean ***REMOVED***
+  checkIfAllMembersChecked(): void ***REMOVED***
+    let all_set: boolean = true;
     this.project_members.forEach((member: ProjectMember) => ***REMOVED***
       if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) ***REMOVED***
-        return false;
+        all_set = false;
+
       ***REMOVED***
     ***REMOVED***);
 
-    return true;
+    this.allSet = all_set;
+
   ***REMOVED***
 
   checkUnCheckMember(id: number): void ***REMOVED***
@@ -461,11 +464,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
 
     ***REMOVED*** else ***REMOVED***
       this.checked_member_list.push(id);
-      if (this.checkIfAllMembersChecked()) ***REMOVED***
-        this.allSet = true;
-      ***REMOVED*** else ***REMOVED***
-        this.allSet = false;
-      ***REMOVED***
+      this.checkIfAllMembersChecked()
+
     ***REMOVED***
 
   ***REMOVED***
@@ -661,6 +661,11 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit **
    * @param name  of the member
    */
   public removeMember(groupid: number, memberid: number, name: string): void ***REMOVED***
+    const indexOf: number = this.checked_member_list.indexOf(memberid);
+    if (indexOf !== -1) ***REMOVED***
+      this.checked_member_list.splice(indexOf, 1);
+      this.allSet = false;
+    ***REMOVED***
 
     this.groupService.removeMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
       (result: any) => ***REMOVED***
