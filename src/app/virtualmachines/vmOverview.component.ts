@@ -310,6 +310,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
             }
 
             this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+
           } else {
             if (vm['error']) {
               this.status_check_error = true
