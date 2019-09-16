@@ -310,6 +310,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit ***RE
             ***REMOVED***
 
             this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+
           ***REMOVED*** else ***REMOVED***
             if (vm['error']) ***REMOVED***
               this.status_check_error = true
