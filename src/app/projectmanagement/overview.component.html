@@ -1,96 +1,70 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
-<div *ngIf="isLoaded" class="animated fadeIn" ng-app>
+
+<div class="container col-12" *ngIf="isLoaded==true">
   <div class="row">
-    <!--/.col-->
-    <h1 class="col-md-8 ">Projects Overview</h1>
-    <div class="col-lg-12">
+    <div class="col-12"
+         *ngIf="project && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
+
       <div class="card">
-        <div class="card-header">
-          <i class="fa fa-align-justify"></i> Projects
+        <div class="card-header ">
+          <h3><span *ngIf="project?.OpenStackProject"
+                    style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944"
+                    class="badge"
+                    data-toggle="tooltip" data-placement="auto"
+                    title="This is an Openstack project">
+                                    <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+            <span *ngIf="!project?.OpenStackProject"
+                  style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
+                  data-toggle="tooltip" data-placement="auto"
+                  title="This is a Simple VM project">
+                                    <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
+          </span>
+            {{project?.Name}}</h3>
         </div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
               <tr>
-                <th></th>
-                <th>Project ID</th>
                 <th>Project Name</th>
-                <th>Details</th>
+                <th>Description</th>
+                <th>Date created (d/m/y)</th>
+                <th>Expiration Date (d/m/y)</th>
+                <th>Days running</th>
+                <th>Lifetime in Days</th>
                 <th>Facility</th>
-                <!--th>Date created (d/m/y)</th>
-                th>Expiration Date (d/m/y)</th
-                th>Days running</th
-                th>Lifetime in Days</th-->
-                <th></th>
+
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let project of projects">
-                <td>
-                                     <span *ngIf="project.OpenStackProject"
-                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944"
-                                           class="badge"
-                                           data-toggle="tooltip" data-placement="auto"
-                                           title="This is an Openstack project">
-                                    <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
-                                  </span>
-                  <span *ngIf="!project.OpenStackProject"
-                        style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
-                        data-toggle="tooltip" data-placement="auto"
-                        title="This is a Simple VM project">
-                                    <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
-                                  </span>
+              <tr>
+                <!--[ngStyle]="{'color':lifeTimeReached(project?.LifetimeDays,project?.DaysRunning)}"-->
+                <td>{{ project?.Name }}
                 </td>
-                <!--[ngStyle]="{'color':lifeTimeReached(project.LifetimeDays,project.DaysRunning)}"-->
-                <td>{{ project.Id }}</td>
-                <td>{{ project.Name }}
-                </td>
+
                 <td>
-                  <button class="btn btn-secondary"
-                          (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
-                    Show Details
+                  <button class="btn btn-info"
+                          (click)="infoModal.hide();descriptionModal.show();">Show
+                    Description
                   </button>
                 </td>
 
+                <td>{{ project?.DateCreated }}</td>
+                <td>{{project?.DateEnd}}</td>
+                <td>{{ project?.DaysRunning }}</td>
+                <td>{{project?.LifetimeDays}}</td>
+
                 <td>
-                  <p *ngIf="project.ComputeCenter?.Name">{{project.ComputeCenter.Name}}</p>
-                  <ul *ngIf="project.ComputeCenter?.Name">
-                    <li *ngIf="project.OpenStackProject"> Login: <a target="_blank"
-                                                                    href="{{project.ComputeCenter.Login}}">
-                      {{project.ComputeCenter.Login}}</a></li>
-                    <li>Support: {{project.ComputeCenter.Support}}</li>
+                  <p *ngIf="project?.ComputeCenter?.Name">{{project?.ComputeCenter.Name}}</p>
+                  <ul *ngIf="project?.ComputeCenter?.Name">
+                    <li *ngIf="project?.OpenStackProject"> Login: <a target="_blank"
+                                                                     href="{{project?.ComputeCenter.Login}}">
+                      {{project?.ComputeCenter.Login}}</a></li>
+                    <li>Support: {{project?.ComputeCenter.Support}}</li>
 
                   </ul>
 
-                </td>
-
-                <td>
-                  <div class="btn-group-vertical">
-                    <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
-                            data-toggle="modal"
-                            (click)="allSet=false; checked_member_list=[];usersModalProjectMembers = [];resetCheckedMemberList();showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter); usersModal.show(); "
-
-
-                            *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)">
-                      <i class="fa fa-users"></i>&nbsp;Show Members
-                    </button>
-                    <button
-                      (click)="resetAddUserModal(); showAddUserToProjectModal(project.Id, project.Name,project.RealName,project.ComputeCenter);setAddUserInvitationLink(); addUserModal.show();"
-                      *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
-                      type="button" style="margin-bottom: 5px"
-                      class="btn btn-secondary"><i class="fa fa-plus"></i>&nbsp; Add Member
-                    </button>
-                    <button
-                      *ngIf="(project.UserIsPi == true) || (project.UserIsAdmin == true)"
-                      type="button" style="margin-bottom: 5px"
-                      (click)="selectedProject = project;applicationModal.show();getUserProjectApplications(selectedProject?.Id);application_action_done=false;"
-                      class="btn btn-secondary"><i class="fa fa-list-alt"></i>&nbsp;
-                      Applications
-                    </button>
-                    <h4 *ngIf="(project.UserIsPi == false) && (project.UserIsAdmin == false)"><span
-                      class="badge badge-dark">Project Member </span></h4>
-                  </div>
                 </td>
               </tr>
               </tbody>
@@ -101,82 +75,174 @@
     </div>
     <!--/.col-->
   </div>
-</div>
+
+  <div class="row" *ngIf="project_application && (project?.UserIsPi ||project?.UserIsAdmin  || !project)">
+    <div class="col">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Your project application
+        </div>
+        <div class="card-body">
+          <div class="btn-group col-12">
+            <button
+              (click)="application_details_visible=!application_details_visible;getFacilityProject();"
+              type="button"
+              class="btn btn-info" style="margin-bottom:5px;margin-right:5px">
+              <i class="fa fa-info-circle"></i>&nbsp;
+              <span
+                [hidden]="application_details_visible">Show</span><span
+              [hidden]="!application_details_visible">Hide</span>
+              Information
+            </button>
+            <button *ngIf="project_application?.Status == application_states.SUBMITTED"
+                    (click)="deleteModal.show();"
+                    type="button" style="margin-bottom:5px;"
+                    class="btn btn-danger">
+              Remove Application
+            </button>
+            <button
+              *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
+              (click)="calculateRamCores();extensionModal.show()"
+              class="btn btn-warning"
+              type="button" style="margin-bottom:5px;"
+            >
+              Request Extension/Modification
+            </button>
+
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Project Name</th>
+                <th>Short Name</th>
+                <th>Lifetime</th>
+                <th>Date submitted</th>
+                <th>Status</th>
+              </tr>
+              </thead>
+              <tbody>
+              <ng-container>
+                <tr>
+                  <td>  <span *ngIf="project_application?.OpenStackProject"
+                              style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944"
+                              class="badge"
+                              data-toggle="tooltip" data-placement="auto"
+                              title="This is an Openstack project">
+                                    <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
+                                  </span>
+                    <span *ngIf="!project_application?.OpenStackProject"
+                          style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
+                          data-toggle="tooltip" data-placement="auto"
+                          title="This is a Simple VM project">
+                                    <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
+                                  </span></td>
+                  <td>{{ project_application?.Name }}
+                  </td>
+                  <td>{{project_application?.Shortname}}</td>
+                  <td>{{ project_application?.Lifetime }}</td>
+                  <td>{{ project_application?.DateSubmitted }}</td>
+                  <td>{{ getStatusById(project_application?.Status) }}</td>
+                </tr>
 
 
-<div bsModal #usersModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
-          ({{ usersModalProjectName }})</h4>
-        <button type="button" class="close" style="cursor: pointer;" (click)="usersModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+              </ng-container>
+              </tbody>
+            </table>
+            <app-application-detail *ngIf="application_details_visible"
+                                    [application]="project_application"></app-application-detail>
+
+          </div>
+        </div>
+
       </div>
-      <div class="modal-body">
-        <button (click)="removeCheckedMembers(usersModalProjectID)" style="float:right"
-                [disabled]="checked_member_list.length <= 0" class="btn btn-danger"><i
-          class="fa fa-trash"></i>Remove
-          Members
-        </button>
-        <div>
-          <table class="table table-striped table-responsive" style="margin: 5px">
-            <thead>
-            <tr>
-              <th><input type="checkbox" id="selectAll" name="selectAll" (change)="setAllMembersChecked();"
-                         [checked]="allSet">
-              </th>
-              <th class="col-md-2">User ID</th>
-              <th class="col-md-2">Member ID</th>
-              <th class="col-md-4">Full Name</th>
-              <th class="col-md-6">Actions</th>
+    </div>
 
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let member of usersModalProjectMembers" [ngStyle]="{'color':isPi(member)}">
-              <td><input *ngIf="userinfo.MemberId != member.MemberId" type="checkbox" id="{{member.Id}}"
-                         name="{{member.Id}}"
-                         [checked]="isMemberChecked(member.MemberId)" (change)="checkUnCheckMember(member.MemberId);">
-              </td>
-              <td>
+    <div class="col"
+         *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)  && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>Members of the Project {{ project?.Name }}
+        </div>
 
-                {{ member.Id }}</td>
-              <td>{{ member.MemberId }}</td>
-              <td>{{ member.Username }}</td>
-              <td>
-                <button *ngIf="!member.IsPi" (click)="usersModal.hide();promoteAdmin( usersModalProjectID,member.Id,member.Username);
+        <div class="card-body">
+          <div class="btn-group col-12">
+            <button
+              (click)="setAddUserInvitationLink(); addUserModal.show();"
+
+              type="button" style="margin-bottom:5px;margin-right:5px"
+              class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Add Member
+            </button>
+
+            <button
+              type="button" style="margin-bottom:5px;margin-right:5px"
+              (click)="applicationModal.show();getUserProjectApplications();application_action_done=false;"
+              class="btn btn-info"><i class="fa fa-list-alt"></i>&nbsp;
+              Member Applications
+            </button>
+
+            <button (click)="removeCheckedMembers(project_id)" type="button" style="margin-bottom:5px;"
+                    [disabled]="checked_member_list.length <= 0 || remove_members_clicked" class="btn btn-danger"><i
+              class="fa fa-trash"></i>&nbsp;Remove
+              Members
+            </button>
+
+          </div>
+          <div>
+            <table class="table table-striped table-responsive" style="margin: 5px">
+              <thead>
+              <tr>
+                <th><input type="checkbox" id="selectAll" name="selectAll" (change)="setAllMembersChecked();"
+                           [checked]="allSet">
+                </th>
+                <th class="col-md-2">User ID</th>
+                <th class="col-md-2">Member ID</th>
+                <th class="col-md-4">Full Name</th>
+                <th class="col-md-6">Actions</th>
+
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let member of project_members" [ngStyle]="{'color':isPi(member)}">
+                <td><input *ngIf="userinfo?.MemberId != member.MemberId" type="checkbox" id="{{member.Id}}"
+                           name="{{member.Id}}"
+                           [checked]="isMemberChecked(member.MemberId)" (change)="checkUnCheckMember(member.MemberId);">
+                </td>
+                <td>
+
+                  {{ member.Id }}</td>
+                <td>{{ member.MemberId }}</td>
+                <td>{{ member.Username }}</td>
+                <td>
+                  <button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.Id,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button" style="margin: 2px">
-                  <i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
-                </button>
-                <button *ngIf="member.IsPi &&  userinfo.MemberId != member.MemberId" (click)="usersModal.hide();removeAdmin( usersModalProjectID,member.Id,member.Username);
+                    <i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
+                  </button>
+                  <button *ngIf="member.IsPi &&  userinfo?.MemberId != member.MemberId" (click)="removeAdmin( project?.Id,member.Id,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button" style="margin: 2px">
-                  <i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
-                </button>
-                <button *ngIf=" userinfo.MemberId != member.MemberId" (click)="usersModal.hide();removeMember(usersModalProjectID,member.MemberId,member.Username);
+                    <i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
+                  </button>
+                  <button *ngIf=" userinfo?.MemberId != member.MemberId" (click)="removeMember(project?.Id,member.MemberId,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-danger" type="button" style="margin: 2px">
 
-                  <i class="fa fa-trash"></i>&nbsp; Remove member
-                </button>
-              </td>
-            </tr>
+                    <i class="fa fa-trash"></i>&nbsp; Remove member
+                  </button>
+                </td>
+              </tr>
 
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>
+
+  </div>
+</div>
 
 
 <div bsModal #addUserModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
@@ -184,8 +250,8 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content ">
       <div class="modal-header">
-        <h4 class="modal-title">Add member to the project {{ addUserModalProjectID }}
-          ({{ addUserModalProjectName }})</h4>
+        <h4 class="modal-title">Add member to the project {{project?.Name }}
+        </h4>
         <button type="button" class="close" style="cursor:pointer" (click)="addUserModal.hide()"
                 aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -219,14 +285,14 @@
               <ul style="list-style-type:none;">
 
                 <li>
-                  <pre [hidden]="showLink">{{addUserModalInvitationLink}}</pre>
+                  <pre [hidden]="showLink">{{invitation_link}}</pre>
                   <div class="btn-group-vertical">
                     <button class="btn btn-primary" style="margin-bottom: 5px" (click)="showLink = !showLink">
                       <span [hidden]="!showLink">Show</span>
                       <span [hidden]="showLink">Hide</span>
                       link
                     </button>
-                    <button class="btn btn-success" (click)="copyToClipboard(addUserModalInvitationLink)">Copy link
+                    <button class="btn btn-success" (click)="copyToClipboard(invitation_link)">Copy link
                     </button>
                   </div>
                 </li>
@@ -249,11 +315,11 @@
               <tbody *ngFor="  let member of filteredMembers">
               <td>
                 <button
-                  (click)="addMember(addUserModalProjectID,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                  (click)="addMember(project?.Id,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
                   class="btn btn-success"><i class="fa fa-plus"></i> Add Member
                 </button>
                 <button style="padding-left: 10px;margin-left: 10px"
-                        (click)="addAdmin(addUserModalProjectID,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null;addUserModalProjectID = -1; addUserModal.hide();notificationModal.show();"
+                        (click)="addAdmin(project?.Id,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
                         class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
                 </button>
               </td>
@@ -271,7 +337,7 @@
                                           addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
               Add User
           </button> -->
-        <button type="button" (click)="addUserModalProjectID = -1;filteredMembers=null; addUserModal.hide();"
+        <button type="button" (click)="filteredMembers=null; addUserModal.hide();"
                 type="reset"
                 class="btn  btn-danger"><i class="fa fa-ban"></i> Close
         </button>
@@ -279,6 +345,82 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<div bsModal #applicationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Applications for {{project?.Name}}</h4>
+        <button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
+                                                           style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+        </div>
+
+        <div *ngIf="loaded" class="table-responsive">
+          <table class="table table-bordered table-striped table-sm">
+            <thead>
+
+            <th>Name</th>
+            <th>Date Submitted</th>
+            <th>Actions</th>
+            </thead>
+            <tbody *ngFor="  let application of project?.ProjectMemberApplications">
+
+            <td>{{application.Name}}</td>
+            <td>{{application.DateCreated}}</td>
+            <td>
+              <button
+                (click)="approveMemberApplication(project?.Id,application.Id,application.Name); "
+                class="btn btn-success"><i class="fa fa-check"></i> Approve
+              </button>
+              <button style="margin-left: 10px"
+                      (click)="application_action='rejected';application_member_name=application.Name;rejectMemberApplication(project?.Id,application.Id,application.Name); "
+                      class="btn btn-danger"><i class="fa fa-times"></i> Reject
+              </button>
+            </td>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <div class="modal-footer">
+
+        <p *ngIf="application_action_success && application_action_done" class="alert alert-success mr-auto">
+          <strong>Success:</strong> Succesfully {{application_action}} the application of
+          {{application_member_name}}.
+        </p>
+        <p *ngIf="!application_action_success && application_action_done && !application_action_error_message"
+           class="alert alert-danger mr-auto">
+          <strong>Failed:</strong> The application of {{application_member_name}} could not be
+          {{application_action}} .
+        </p>
+        <p *ngIf="!application_action_success && application_action_done && application_action_error_message"
+           class="alert alert-danger mr-auto">
+          <strong>Failed:</strong> User didn't verify his email address yet. Please wait until the email is
+          verified.
+        </p>
+        <button type="button" class="btn btn-primary"
+                (click)="getUserProjectApplications()">
+          Refresh
+        </button>
+        <button type="button" class="btn btn-secondary"
+                (click)="application_action_error_message=null;application_action_done=false;applicationModal.hide();">
+          Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
 
 <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
@@ -307,32 +449,6 @@
 </div><!-- /.modal -->
 
 
-<div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-info" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Description</h4>
-        <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()"
-                aria-label="Close">
-
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <p>{{ selectedProject?.Description }}</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary"
-                (click)="selectedProject=undefined;descriptionModal.hide();">
-          Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
-
 <div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-info modal-lg" role="document">
@@ -360,23 +476,23 @@
             </thead>
             <tbody>
             <td>
-              <button class="btn btn-secondary"
+              <button class="btn btn-info"
                       (click)="infoModal.hide();descriptionModal.show();">Show
                 Description
               </button>
             </td>
 
-            <td>{{ selectedProject?.DateCreated }}</td>
-            <td>{{selectedProject?.DateEnd}}</td>
-            <td>{{ selectedProject?.DaysRunning }}</td>
-            <td>{{selectedProject?.LifetimeDays}}</td>
+            <td>{{ project?.DateCreated }}</td>
+            <td>{{project?.DateEnd}}</td>
+            <td>{{ project?.DaysRunning }}</td>
+            <td>{{project?.LifetimeDays}}</td>
             <td>
             </tbody>
           </table>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="selectedProject=undefined;infoModal.hide();">
+        <button type="button" class="btn btn-primary" (click)="infoModal.hide();">
           Close
         </button>
       </div>
@@ -385,46 +501,422 @@
 </div>
 
 
-<div bsModal #applicationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+<div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-info" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Applications for {{selectedProject?.Name}}</h4>
-        <button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()"
+        <h4 class="modal-title">Description</h4>
+        <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()"
                 aria-label="Close">
+
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p>{{ project?.Description }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary"
+                (click)="descriptionModal.hide();">
+          Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Application</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="deleteModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
 
-        <div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
-                                                           style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+        <div class="alert alert-warning" role="alert">
+          Are you sure you want to remove this application?
         </div>
 
-        <div *ngIf="loaded" class="table-responsive">
-          <table class="table table-bordered table-striped table-sm">
-            <thead>
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                (click)="deleteApplication();deleteModal.hide();notificationModal.show()">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="deleteModal.hide()">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
-            <th>Name</th>
-            <th>Date Submitted</th>
-            <th>Actions</th>
-            </thead>
-            <tbody *ngFor="  let application of selectedProject?.ProjectMemberApplications">
 
-            <td>{{application.Name}}</td>
-            <td>{{application.DateCreated}}</td>
-            <td>
-              <button
-                (click)="approveMemberApplication(selectedProject?.Id,application.Id,application.Name); "
-                class="btn btn-success"><i class="fa fa-check"></i> Approve
-              </button>
-              <button style="margin-left: 10px"
-                      (click)="application_action='rejected';application_member_name=application.Name;rejectMemberApplication(selectedProject?.Id,application.Id,application.Name); "
-                      class="btn btn-danger"><i class="fa fa-times"></i> Reject
-              </button>
-            </td>
-            </tbody>
+<div bsModal #extensionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Modification/Extension request for {{project_application?.Shortname}}</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="extensionModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="alert alert-info">
+          <strong>Please be aware:</strong>
+          If your last renewal or initial application was dated before flavor-categories
+          where introduced, the data which is shown on the left side of the form might be
+          misleading.
+          This does not change the modification-request-process as it only
+          serves as an additional information. You are only able to pick flavors which are
+          currently available.
+          <br><br>
+          The number of flavors, GBs of storage and storage volumes which you enter within
+          this request will be the numbers you will actually get.
+          These numbers <strong>will not be added</strong> to your current numbers, but
+          will <strong>replace them</strong>.
+        </div>
+        <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+              class="form-horizontal">
+
+
+          <div class="form-group row">
+
+            <label class="col-md-4 form-control-label" for="textarea-input">
+              <strong>Lifetime* <i class="icon-question" data-toggle="tooltip"
+                                   title="Current timespan of your project. You can extend your project by a maximum of 12 months">
+              </i>
+              </strong>
+            </label>
+
+
+            <div class="col">
+              <div class="input-group">
+                <input class="form-control"
+                       name="project_application_lifetime" placeholder="NA"
+                       type="text" value="{{life_time_string}}"
+                       disabled>
+
+              </div>
+              <span class="help-block">Current lifetime</span>
+            </div>
+
+            <div class="col">
+              <div class="input-group">
+                <input class="form-control"
+                       id="id_project_application_renewal_lifetime"
+                       name="project_application_renewal_lifetime"
+                       placeholder="e.g 3"
+                       type="number" min="0" max="12" step="1" ngModel required
+                       appInteger appMinAmount="0" appMaxAmount="12"
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_renewal_lifetime?.invalid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched),
+                                'is-valid': f.controls.project_application_renewal_lifetime?.valid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched)
+                                }">
+                <div class="input-group-append">
+                  <span class="input-group-text"> months</span>
+                </div>
+              </div>
+              <span class="help-block">Number of months you want to extend the project</span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <h6 class="col-md-8 form-control-label">Resources*
+              <i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour"
+                 data-balloon-pos="down">
+                <i class="icon-question"></i></i>
+            </h6>
+          </div>
+
+
+          <accordion>
+            <ng-container *ngFor="let t of typeList, first as isFirst">
+              <accordion-group *ngIf="project_application?.OpenStackProject || checkIfTypeGotSimpleVmFlavor(t)"
+                               [isOpen]="isFirst" #groupval>
+                <div accordion-heading style="width: 100%; cursor: pointer">
+                  {{t.long_name}}
+                  <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
+                </div>
+                <div *ngFor="let fl of flavorList" class="form-group row">
+                  <div
+                    *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || project_application?.OpenStackProject)"
+                    class="form-group row">
+                    <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
+                      Number of cores: {{fl.vcpus}}<br>
+                      RAM: {{fl.ram}} GB</label>
+                    <div class="col">
+                      <div class="input-group">
+                        <input class="form-control"
+                               name="project_application_{{fl.name}}_old"
+                               type="text"
+                               value="{{project_application?.CurrentFlavors[fl.name]?.counter}}"
+                               placeholder="NA" disabled>
+                        <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                      </div>
+                      <span class="help-block">Currently approved of this type </span>
+                    </div>
+                    <div class="col">
+                      <div class="input-group">
+                        <input class="form-control"
+                               (change)="valuesChanged(f)"
+                               id="project_application_{{fl.name}}"
+                               name="project_application_{{fl.name}}"
+                               type="number" min="0" step="1"
+                               placeholder="e.g 1"
+                               [ngModel]="project_application?.CurrentFlavors[fl.name]?.counter"
+                               #name="ngModel"
+                               appMinAmount="0" appIntegerOrNull
+                               [ngClass]="{
+                                'is-invalid': name?.invalid,
+                                'is-valid': name?.valid
+                                }">
+                        <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                      </div>
+                      <span class="help-block">Number of VMs you would like to run in the future</span>
+                    </div>
+                  </div>
+
+                </div>
+              </accordion-group>
+            </ng-container>
+          </accordion>
+          <div class="form-group row">
+            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
+              of storage
+              volumes*
+              <i
+                data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+                data-balloon-pos="down" data-balloon-length="large"><i
+                class="icon-question"
+                style="cursor: pointer;"></i></i></strong></label>
+            <div class="col">
+              <div class="input-group">
+                <input required class="form-control"
+                       name="project_application_volume_counter"
+                       placeholder="NA"
+                       value="{{project_application?.VolumeCounter}}"
+                       type="text" disabled>
+              </div>
+              <span class="help-block">Current number of storage volumes</span>
+            </div>
+
+            <div class="col">
+              <div class="input-group">
+                <input required class="form-control"
+                       id="id_project_application_renewal_volume_counter"
+                       name="project_application_renewal_volume_counter"
+                       placeholder="e.g. 20"
+                       type="number" min="0" step="1"
+                       [ngModel]="project_application?.VolumeCounter"
+                       appMinAmount="0" appInteger
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_renewal_volume_counter?.invalid,
+                                'is-valid': f.controls.project_application_renewal_volume_counter?.valid
+                                }">
+              </div>
+              <span class="help-block">How many storage volumes do you need in the future?</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage
+              Limit*
+              <i
+                data-balloon="Storage limit is the sum of extra storage provided by volumes."
+                data-balloon-pos="down" data-balloon-length="medium"><i
+                class="icon-question"
+                style="cursor: pointer;"></i></i></strong></label>
+            <div class="col">
+              <div class="input-group">
+                <input class="form-control"
+                       name="project_application_renewal_volume_limit"
+                       value="{{project_application?.VolumeLimit}}"
+                       placeholder="NA"
+                       type="text" disabled>
+                <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+              </div>
+              <span class="help-block">Current extra storage</span>
+            </div>
+            <div class="col">
+              <div class="input-group">
+                <input class="form-control"
+                       id="id_project_application_renewal_volume_limit"
+                       name="project_application_renewal_volume_limit"
+                       placeholder="e.g. 20"
+                       value="{{project_application?.VolumeLimit}}"
+                       type="number" min="1" step="1" [ngModel]="20"
+                       appMinAmount="1" appInteger
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_renewal_volume_limit?.invalid,
+                                'is-valid': f.controls.project_application_renewal_volume_limit?.valid
+                                }"
+                       [disabled]="f.controls.project_application_renewal_volume_counter?.value == 0">
+                <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+              </div>
+              <span class="help-block">How much extra storage do you need in the future?</span>
+            </div>
+          </div>
+
+
+          <div *ngIf="project_application?.OpenStackProject" class="form-group row">
+            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Object
+              Storage* </strong><i
+              data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
+              data-balloon-pos="down" data-balloon-length="large"><i
+              class="icon-question"
+              style="cursor: pointer;"></i></i></label>
+
+            <div class="col">
+              <div class="input-group">
+                <input class="form-control"
+                       name="project_application_object_storage"
+                       placeholder="NA"
+                       value="{{project_application?.ObjectStorage}}"
+                       type="text" disabled>
+                <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+              </div>
+              <span class="help-block">Current Object Storage capacity</span>
+            </div>
+
+            <div *ngIf="project_application?.OpenStackProject" class="col">
+              <div class="input-group">
+                <input class="form-control"
+                       id="id_project_application_renewal_object_storage"
+                       name="project_application_renewal_object_storage"
+                       placeholder="e.g. 8"
+                       value="{{project_application?.ObjectStorage}}"
+                       type="number" min="0" step="1" [ngModel]="0"
+                       appInteger appMinAmount="0" required
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_renewal_object_storage?.invalid ,
+                                'is-valid': f.controls.project_application_renewal_object_storage?.valid
+                                }">
+                <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+              </div>
+              <span class="help-block">How much Object Storage do you need in the future?</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-4 form-control-label"
+                   for="text-input"><strong>Comment</strong></label>
+            <div class="col-md-8">
+                <textarea type="text" id="id_project_application_renewal_comment"
+                          name="project_application_renewal_comment" class="form-control"
+                          maxlength="8192"
+                          placeholder='' [ngModel]="project_application?.Comment"></textarea>
+              <span class="help-block">Additional information you want to share?</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-4"></label>
+            <div class="col-md-8">
+              <div class="alert alert-primary" role="alert">
+                In case you need additional and/or special resources, which are not available in the flavour selection,
+                use the comment field to state so. The same applies to unusually large amounts of resources.
+              </div>
+            </div>
+          </div>
+
+
+          <strong>
+            <div class="form-group row">
+              <label #corenumbers id="corenumbers" class="col">Number of total
+                cores: {{totalNumberOfCores}}</label>
+            </div>
+            <div class="form-group row">
+              <label #ramnumbers id="ramnumbers" class="col">Amount of total
+                RAM: {{totalRAM}} </label>
+            </div>
+          </strong>
+
+
+        </form>
+        <div *ngIf="f.invalid" class=" form-group row alert alert-warning">
+          Some required fields are incorrect or not filled in yet.
+          Please check if all required (*) fields are filled in correctly.
+
+        </div>
+
+
+        <div class="modal-footer">
+          <div class="label">
+            By submitting this application you agree to the cloud usage policy.
+          </div>
+          <button type="button" class="btn  btn-primary"
+                  form="application_form"
+                  (click)="extension_request=true;filterEnteredData(f); submitModal.show();"
+                  [disabled]="f.invalid"><i
+            class="fa fa-dot-circle-o">
+
+          </i>
+            Submit
+          </button>
+          <button type="button" class="btn btn-danger"
+                  (click)="extensionModal.hide();    totalRAM = 0;
+    totalNumberOfCores = 0;">
+            Close
+          </button>
+
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div>
+
+
+<div bsModal #submitModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{projectName}}</h4>
+        <button type="button" class="close" style="cursor: pointer;"
+                (click)="submitModal.hide()"
+                data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info">
+          <strong>Please check the data you have entered and confirm your application
+            below.</strong><br>
+          If the entered data mismatches with your requirements cancel this confirmation
+          and take changes.
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <tr *ngFor="let str of valuesToConfirm">
+              <td>{{str}}</td>
+            </tr>
+            <tr>
+              <td><strong>Number of cores in total:
+                {{totalNumberOfCores.toString()}}</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Value of RAM in total: {{totalRAM.toString()}} GBs</strong>
+              </td>
+            </tr>
           </table>
         </div>
       </div>
@@ -432,30 +924,73 @@
 
       <div class="modal-footer">
 
-        <p *ngIf="application_action_success && application_action_done" class="alert alert-success mr-auto">
-          <strong>Success:</strong> Succesfully {{application_action}} the application of
-          {{application_member_name}}.
-        </p>
-        <p *ngIf="!application_action_success && application_action_done && !application_action_error_message"
-           class="alert alert-danger mr-auto">
-          <strong>Failed:</strong> The application of {{application_member_name}} could not be
-          {{application_action}} .
-        </p>
-        <p *ngIf="!application_action_success && application_action_done && application_action_error_message"
-           class="alert alert-danger mr-auto">
-          <strong>Failed:</strong> User didn't verify his email address yet. Please wait until the email is
-          verified.
-        </p>
-        <button type="button" class="btn btn-primary"
-                (click)="getUserProjectApplications(selectedProject?.Id)">
-          Refresh
+
+        <button class="btn btn-success col-md4" type="button"
+                (click)="resultModal.show(); extensionModal.hide(); submitModal.hide();onSubmit(f);">Confirm Application
         </button>
-        <button type="button" class="btn btn-secondary"
-                (click)="application_action_error_message=null;application_action_done=false;selectedProject=undefined;applicationModal.hide();">
-          Close
+        <button class="btn  btn-primary col-md-4" type="reset"
+                (click)="submitModal.hide();">Cancel
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->L
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" *ngIf="extension_status == 0">
+          Waiting </h4>
+        <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
+        <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="resultModal.hide();extension_status= 0;removeModalOpen();"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
         </button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+
+      <div class="modal-body">
+        <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
+          Waiting... <i class="fa fa-spinner fa-spin"
+                        style="font-size:24px"></i>
+        </div>
+
+
+        <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
+
+          Modify request successfully submitted!
+        </div>
+        <div class="alert alert-success" role="alert" *ngIf="extension_status == 3">
+          Modify request successfully approved!
+        </div>
+        <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+          Modify request successfully declined!
+        </div>
+        <div class="alert alert-success" role="alert" *ngIf="extension_status == 5">
+          Modify request successfully approved and forwarded to facility!
+        </div>
+
+        <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
+          An error occured.
+
+        </div>
+
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  (click)="resultModal.hide();extension_status= 0;removeModalOpen();">
+            Close
+          </button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 </div>
 

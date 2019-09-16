@@ -9,10 +9,11 @@ import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-cl
 import {IResponseTemplate} from '../api-connector/response-template';
 import {FacilityService} from '../api-connector/facility.service';
 import {forkJoin} from 'rxjs/index';
-import {Application} from '../applications/application.model';
+import {Application} from '../applications/application.model/application.model';
 import {DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from '../virtualmachines/volumes/volume';
+import {FullLayoutComponent} from '../layouts/full-layout.component';
 
 /**
  * Vo Overview component.
@@ -59,7 +60,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   // public selectedFacility: [string, number];
 
-  constructor(private sanitizer: DomSanitizer, private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) {
+  constructor(private fullLayout: FullLayoutComponent, private sanitizer: DomSanitizer, private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) {
     super();
 
   }
@@ -159,6 +160,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   getVoProjects(): void {
+    this.projects = [];
     this.voserice.getAllGroupsWithDetails().subscribe(result => {
       const vo_projects = result;
       for (const group of vo_projects) {
@@ -265,6 +267,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
                    this.projects.splice(indexAll, 1);
                    this.applyFilter();
+                   this.fullLayout.getGroupsEnumeration();
 
                    this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
 
@@ -308,16 +311,18 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   suspendProject(project: Project): void {
-    forkJoin(this.voserice.removeResourceFromGroup(project.Id), this.voserice.setProjectStatus(project.Id, 4)
-    ).subscribe((res: IResponseTemplate[]) => {
-      const removedRes: number = <number>res[0].value;
-      const newProjectSatus: number = <number>res[1].value;
-
-      project.Status = newProjectSatus;
-      if (removedRes === -1) {
-        project.ComputeCenter = null
-      }
+    this.voserice.removeResourceFromGroup(project.Id).subscribe(() => {
+      this.getProjectStatus(project);
+      project.ComputeCenter = null;
     });
+
+  }
+
+  resumeProject(project: Project): void {
+    this.voserice.resumeProject(project.Id).subscribe(() => {
+      this.getVoProjects();
+    });
+
   }
 
   setProjectStatus(project: Project, status: number): void {

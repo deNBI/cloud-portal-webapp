@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ApplicationsService} from '../api-connector/applications.service';
-import {Application} from '../applications/application.model';
+import {Application} from '../applications/application.model/application.model';
 import {ActivatedRoute} from '@angular/router';
 import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
 import {FlavorService} from '../api-connector/flavor.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
+import {FullLayoutComponent} from '../layouts/full-layout.component';
 
 @Component({
              selector: 'app-validation-application',
@@ -33,7 +34,7 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
 
   constructor(private applicationsService: ApplicationsService,
               private activatedRoute: ActivatedRoute,
-              private flavorService: FlavorService) {
+              private flavorService: FlavorService, private fullLayout: FullLayoutComponent) {
     super(null, null, applicationsService, null);
 
   }
@@ -42,6 +43,7 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
     this.applicationsService.validateApplicationAsPIByHash(this.hash).subscribe(res => {
       if (res['project_application_pi_approved']) {
         this.validated = true;
+        this.fullLayout.getGroupsEnumeration();
         this.updateNotificationModal(
           'Success',
           'The application was successfully approved.',
