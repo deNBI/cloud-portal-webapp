@@ -20,6 +20,7 @@ import ***REMOVED***TypeOverviewComponent***REMOVED*** from './type-overview.com
 import ***REMOVED***AppSidebarModule***REMOVED*** from '@coreui/angular';
 import ***REMOVED***ValidationApplicationComponent***REMOVED*** from '../validation-application/validation-application.component';
 import ***REMOVED***AutocompleteLibModule***REMOVED*** from 'angular-ng-autocomplete';
+import ***REMOVED***ApplicationDetailComponent***REMOVED*** from './application-detail/application-detail.component';
 
 /**
  * Applications Module.
@@ -45,8 +46,10 @@ import ***REMOVED***AutocompleteLibModule***REMOVED*** from 'angular-ng-autocomp
               IntegerValidatorDirective,
               IntegerOrNullValidatorDirective,
               TypeOverviewComponent,
-              ValidationApplicationComponent
-            ]
+              ValidationApplicationComponent,
+              ApplicationDetailComponent
+            ],
+            exports: [ApplicationDetailComponent]
           ***REMOVED***)
 export class ApplicationsModule ***REMOVED***
 ***REMOVED***

@@ -9,10 +9,11 @@ import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
 import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
 import ***REMOVED***forkJoin***REMOVED*** from 'rxjs/index';
-import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
+import ***REMOVED***Application***REMOVED*** from '../applications/application.model/application.model';
 import ***REMOVED***DomSanitizer, SafeResourceUrl, SafeUrl***REMOVED*** from '@angular/platform-browser';
 import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import ***REMOVED***Volume***REMOVED*** from '../virtualmachines/volumes/volume';
+import ***REMOVED***FullLayoutComponent***REMOVED*** from '../layouts/full-layout.component';
 
 /**
  * Vo Overview component.
@@ -59,7 +60,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
   // public selectedFacility: [string, number];
 
-  constructor(private sanitizer: DomSanitizer, private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) ***REMOVED***
+  constructor(private fullLayout: FullLayoutComponent, private sanitizer: DomSanitizer, private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) ***REMOVED***
     super();
 
   ***REMOVED***
@@ -159,6 +160,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
   ***REMOVED***
 
   getVoProjects(): void ***REMOVED***
+    this.projects = [];
     this.voserice.getAllGroupsWithDetails().subscribe(result => ***REMOVED***
       const vo_projects = result;
       for (const group of vo_projects) ***REMOVED***
@@ -265,6 +267,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
 
                    this.projects.splice(indexAll, 1);
                    this.applyFilter();
+                   this.fullLayout.getGroupsEnumeration();
 
                    this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
 
@@ -308,16 +311,18 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit ***RE
   ***REMOVED***
 
   suspendProject(project: Project): void ***REMOVED***
-    forkJoin(this.voserice.removeResourceFromGroup(project.Id), this.voserice.setProjectStatus(project.Id, 4)
-    ).subscribe((res: IResponseTemplate[]) => ***REMOVED***
-      const removedRes: number = <number>res[0].value;
-      const newProjectSatus: number = <number>res[1].value;
-
-      project.Status = newProjectSatus;
-      if (removedRes === -1) ***REMOVED***
-        project.ComputeCenter = null
-      ***REMOVED***
+    this.voserice.removeResourceFromGroup(project.Id).subscribe(() => ***REMOVED***
+      this.getProjectStatus(project);
+      project.ComputeCenter = null;
     ***REMOVED***);
+
+  ***REMOVED***
+
+  resumeProject(project: Project): void ***REMOVED***
+    this.voserice.resumeProject(project.Id).subscribe(() => ***REMOVED***
+      this.getVoProjects();
+    ***REMOVED***);
+
   ***REMOVED***
 
   setProjectStatus(project: Project, status: number): void ***REMOVED***
