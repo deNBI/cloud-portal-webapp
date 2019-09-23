@@ -1,5 +1,5 @@
-import {ApplicationExtension} from './application_extension.model';
-import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
+import {ApplicationExtension} from '../application_extension.model';
+import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
 
 /**
  * Application class.

@@ -65,6 +65,13 @@ export class ApplicationsService {
     })
   }
 
+  getApplicationPerunId(app_id: string): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/perun/`, {
+      headers: header,
+      withCredentials: true
+    })
+  }
+
   getApplicationClient(app_id: string): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/client/`, {
       headers: header,
