@@ -231,7 +231,8 @@
 
               </div>
               <accordion class="col-md-12">
-                <accordion-group #optionalGroup *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax">
+                <accordion-group #optionalGroup
+                                 *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Optional parameters</strong>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
@@ -327,7 +328,8 @@
                 <accordion-group #autoGroup
                                  *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax">
                   <div accordion-heading style="width: 100%; cursor: pointer">
-                    <strong>Tools </strong> powered by <img src="{{bioconda_img_path}}" alt="Bioconda® " style="height: 12px; width: auto"><span
+                    <strong>Tools </strong> powered by <img src="{{bioconda_img_path}}" alt="Bioconda® "
+                                                            style="height: 12px; width: auto"><span
                     class="badge badge-primary" style="margin-left:5px;">BETA</span>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': autoGroup.isOpen, 'icon-arrow-down': !autoGroup.isOpen}"></i>
@@ -403,7 +405,7 @@
 
                   type="button"
 
-                  [disabled]="f.invalid || !selectedFlavor || !selectedImage|| (diskspace > 0 && volumeName == '')"
+                  [disabled]="f.invalid || started_machine || !selectedFlavor || !selectedImage|| (diskspace > 0 && volumeName == '')"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
@@ -471,7 +473,7 @@
         <app-how-to-connect [selectedVirtualMachine]="newVm" [playbook_run]="playbook_run"></app-how-to-connect>
       </div>
       <div class="modal-body" *ngIf="create_error?.error">
-        An Error occured.<br><br>
+        An Error occurred.<br><br>
         <pre><code>{{create_error.error}}</code></pre>
       </div>
       <div class="modal-footer">

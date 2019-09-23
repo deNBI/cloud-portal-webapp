@@ -65,6 +65,8 @@ export class VirtualMachineComponent implements OnInit {
   playbook_run: number = 0;
   timeout: number = 0;
 
+  started_machine: boolean = false;
+
   bioconda_img_path: string = `static/webapp/assets/img/bioconda_logo.svg`;
 
   /**
@@ -333,8 +335,8 @@ export class VirtualMachineComponent implements OnInit {
             this.check_status_loop(id)
           } else {
             this.resetProgressBar();
-            this.create_error = <IResponseTemplate><any>newVm;
             this.loadProjectData();
+            this.create_error = <IResponseTemplate><any>newVm;
           }
 
         })
@@ -354,6 +356,8 @@ export class VirtualMachineComponent implements OnInit {
     this.create_error = null;
     if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
+      this.started_machine = true;
+
       const re: RegExp = /\+/gi;
 
       const flavor_fixed: string = flavor.replace(re, '%2B');
@@ -372,6 +376,7 @@ export class VirtualMachineComponent implements OnInit {
         this.https_allowed, this.udp_allowed, this.volumeName,
         this.diskspace.toString(), this.biocondaComponent.getChosenTools(), play_information)
         .subscribe((newVm: VirtualMachine) => {
+          this.started_machine = false;
 
           if (newVm.status === 'Build') {
             this.progress_bar_status = this.BUILD_STATUS;
@@ -390,6 +395,7 @@ export class VirtualMachineComponent implements OnInit {
             this.check_status_loop(newVm.openstackid);
           } else {
             this.progress_bar_status = this.CREATING_STATUS;
+            this.loadProjectData();
             this.create_error = <IResponseTemplate><any>newVm;
           }
 
@@ -397,7 +403,6 @@ export class VirtualMachineComponent implements OnInit {
 
     } else {
       this.progress_bar_status = this.CREATING_STATUS;
-
       this.newVm = null;
 
     }
