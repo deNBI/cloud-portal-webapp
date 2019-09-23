@@ -256,17 +256,23 @@
               <tbody>
               <tr>
                 <td>VMs</td>
-                <td>***REMOVED******REMOVED***c.assignedVMs***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED***c.maxVMs***REMOVED******REMOVED***</td>
+                <td>***REMOVED******REMOVED***c.assignedVMs***REMOVED******REMOVED***<span *ngIf="c.newVms"
+                                           [ngStyle]="***REMOVED***'color':c.assignedVMs + c.newVms <= c.maxVMs? 'green':'red'***REMOVED***"> + ***REMOVED******REMOVED***c.newVms***REMOVED******REMOVED***</span>
+                </td>
+                <td>***REMOVED******REMOVED***c.maxVMs***REMOVED******REMOVED*** </td>
               </tr>
               <tr>
                 <td>Volumes</td>
-                <td>***REMOVED******REMOVED***c.assignedVolumes***REMOVED******REMOVED***</td>
+                <td>***REMOVED******REMOVED***c.assignedVolumes***REMOVED******REMOVED*** <span *ngIf="c.newVolumes"
+                                                [ngStyle]="***REMOVED***'color':c.assignedVolumes + c.newVolumes <= c.maxVolumes? 'green':'red'***REMOVED***"> + ***REMOVED******REMOVED***c.newVolumes***REMOVED******REMOVED***</span>
+                </td>
                 <td>***REMOVED******REMOVED***c.maxVolumes***REMOVED******REMOVED***</td>
               </tr>
               <tr>
                 <td>Volume Storage</td>
-                <td>***REMOVED******REMOVED***c.assignedVolumesStorage***REMOVED******REMOVED***</td>
+                <td>***REMOVED******REMOVED***c.assignedVolumesStorage***REMOVED******REMOVED*** <span *ngIf="c.newVolumeLimit"
+                                                       [ngStyle]="***REMOVED***'color':c.assignedVolumesStorage + c.newVolumeLimit <= c.maxVolumeLimit? 'green':'red'***REMOVED***"> + ***REMOVED******REMOVED***c.newVolumeLimit***REMOVED******REMOVED***</span>
+                </td>
                 <td>***REMOVED******REMOVED***c.maxVolumeLimit***REMOVED******REMOVED***</td>
               </tr>
               </tbody>
