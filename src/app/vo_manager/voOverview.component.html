@@ -165,13 +165,22 @@
                   >
                     <i class="fa fa-users"></i>&nbsp;Show Members
                   </button>
-                  <button *ngIf="project.Status == 2" style="margin-left: 5px"
+                  <button *ngIf="project.Status ==  project_states.ACTIVE" style="margin-left: 5px"
                           type="button"
                           class="btn btn-warning"
                           (click)="selectedProject = project;suspendModal.show();"
 
                   >
                     <i class="fa fa-pause"></i>&nbsp;Suspend Project
+                  </button>
+
+                  <button *ngIf="project.Status == project_states.SUSPENDED" style="margin-left: 5px"
+                          type="button"
+                          class="btn btn-success"
+                          (click)="selectedProject = project;resumeModal.show();"
+
+                  >
+                    <i class="fa fa-play"></i>&nbsp;Resume Project
                   </button>
                   <button
                     *ngIf="project?.Status == project_states.ACTIVE || project?.Status == project_states.SUSPENDED"
@@ -409,6 +418,38 @@
         </button>
         <button class="btn  btn-danger col-md-4" type="reset"
                 (click)="suspendModal.hide();">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #resumeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Resume Project ***REMOVED******REMOVED***selectedProject?.Name***REMOVED******REMOVED***</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="resumeModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        Are you sure you want to resume ***REMOVED******REMOVED***selectedProject?.Name***REMOVED******REMOVED*** ?
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                (click)="resumeProject(selectedProject);resumeModal.hide()">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="resumeModal.hide();">Cancel
         </button>
       </div>
     </div><!-- /.modal-content -->

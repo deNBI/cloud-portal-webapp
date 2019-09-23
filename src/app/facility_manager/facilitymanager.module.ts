@@ -9,27 +9,28 @@ import ***REMOVED***FacilitymanagerRoutingModule***REMOVED*** from './facilityma
 import ***REMOVED***FacilityApplicationComponent***REMOVED*** from './facility.application.component';
 import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.component';
 import ***REMOVED***ExportAsModule***REMOVED*** from 'ngx-export-as';
+import ***REMOVED***ApplicationsModule***REMOVED*** from '../applications/applications.module';
 
 /**
  * Facilitymanager module.
  */
 @NgModule(***REMOVED***
-    imports: [
-        FacilitymanagerRoutingModule,
-        TabsModule,
-        FormsModule,
-        CommonModule,
-        ModalModule.forRoot(),
-        ExportAsModule
+            imports: [
+              FacilitymanagerRoutingModule,
+              TabsModule,
+              FormsModule,
+              CommonModule,
+              ModalModule.forRoot(),
+              ExportAsModule, ApplicationsModule
 
-    ],
-    declarations: [
-        FacilityProjectsOverviewComponent,
-        ImageTagComponent,
-        FacilityApplicationComponent,
-        ResourcesComponent
+            ],
+            declarations: [
+              FacilityProjectsOverviewComponent,
+              ImageTagComponent,
+              FacilityApplicationComponent,
+              ResourcesComponent
 
-    ]
-***REMOVED***)
+            ]
+          ***REMOVED***)
 export class FacilitymanagerModule ***REMOVED***
 ***REMOVED***

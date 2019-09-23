@@ -10,6 +10,7 @@ import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_mod
 import ***REMOVED***ApplicationDissemination***REMOVED*** from './application-dissemination';
 import ***REMOVED***EdamOntologyTerm***REMOVED*** from './edam-ontology-term';
 import ***REMOVED***AutocompleteComponent***REMOVED*** from 'angular-ng-autocomplete';
+import ***REMOVED***FullLayoutComponent***REMOVED*** from '../layouts/full-layout.component';
 
 /**
  * Component to create single vm applications.
@@ -23,6 +24,7 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
 
   public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
+  new_application_id: string | number;
 
   public edam_ontology_terms: EdamOntologyTerm[];
 
@@ -84,7 +86,7 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
   public acknowledgeModalTitle: string = 'Acknowledge';
   public acknowledgeModalType: string = 'info';
 
-  constructor(applicationsservice: ApplicationsService, private flavorService: FlavorService) ***REMOVED***
+  constructor(applicationsservice: ApplicationsService, private flavorService: FlavorService, private fullLayout: FullLayoutComponent) ***REMOVED***
     super(null, null, applicationsservice, null);
   ***REMOVED***
 
@@ -195,13 +197,19 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
 
       this.applicationsservice.addNewApplication(values).toPromise()
         .then(application => ***REMOVED***
+          this.new_application_id = application['project_application_id'];
+
           if (this.project_application_report_allowed) ***REMOVED***
-            this.applicationsservice.setApplicationDissemination(application['project_application_id'], this.application_dissemination).subscribe()
+            this.applicationsservice.setApplicationDissemination(this.new_application_id, this.application_dissemination).subscribe()
 
           ***REMOVED***
-          this.applicationsservice.addEdamOntologyTerms(application['project_application_id'], this.selected_ontology_terms).subscribe();
+          this.applicationsservice.addEdamOntologyTerms(this.new_application_id,
+                                                        this.selected_ontology_terms
+          ).subscribe();
 
           this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
+          this.fullLayout.getGroupsEnumeration();
+
           this.notificationModalStay = false;
         ***REMOVED***).catch((error: object) => ***REMOVED***
         const error_json: object = error;
