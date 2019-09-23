@@ -293,6 +293,24 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
     this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
       (res: Client) => {
         if (!res['client_available']) {
+          // tslint:disable-next-line:forin
+          console.log(res['clients']);
+          for (const client of res['clients']) {
+            console.log(client);
+            const newClient: Client = new Client(null, null, client['client_location'], null);
+            newClient.maxVolumeLimit = client['max_volume_gb'];
+            newClient.maxVolumes = client['max_volumes'];
+            newClient.maxVMs = client['max_instances'];
+            newClient.assignedVMs = client['assigned_instances'];
+            newClient.assignedVolumes = client['assigned_volumes'];
+            newClient.assignedVolumesStorage = client['assigned_volume_gb'];
+            newClient.newVms = client['additional_instances'];
+            newClient.newVolumeLimit = client['new_volume_gb'];
+            newClient.newVolumes = client['new_volumes'];
+            this.notificationClientInfo.push(newClient);
+            console.log(this.notificationClientInfo)
+
+          }
           this.updateNotificationModal('Failed', 'No client with the necessary resources online!', true, 'danger');
 
         } else {

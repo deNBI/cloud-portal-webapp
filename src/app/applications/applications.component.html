@@ -256,17 +256,23 @@
               <tbody>
               <tr>
                 <td>VMs</td>
-                <td>{{c.assignedVMs}}</td>
-                <td>{{c.maxVMs}}</td>
+                <td>{{c.assignedVMs}}<span *ngIf="c.newVms"
+                                           [ngStyle]="{'color':c.assignedVMs + c.newVms <= c.maxVMs? 'green':'red'}"> + {{c.newVms}}</span>
+                </td>
+                <td>{{c.maxVMs}} </td>
               </tr>
               <tr>
                 <td>Volumes</td>
-                <td>{{c.assignedVolumes}}</td>
+                <td>{{c.assignedVolumes}} <span *ngIf="c.newVolumes"
+                                                [ngStyle]="{'color':c.assignedVolumes + c.newVolumes <= c.maxVolumes? 'green':'red'}"> + {{c.newVolumes}}</span>
+                </td>
                 <td>{{c.maxVolumes}}</td>
               </tr>
               <tr>
                 <td>Volume Storage</td>
-                <td>{{c.assignedVolumesStorage}}</td>
+                <td>{{c.assignedVolumesStorage}} <span *ngIf="c.newVolumeLimit"
+                                                       [ngStyle]="{'color':c.assignedVolumesStorage + c.newVolumeLimit <= c.maxVolumeLimit? 'green':'red'}"> + {{c.newVolumeLimit}}</span>
+                </td>
                 <td>{{c.maxVolumeLimit}}</td>
               </tr>
               </tbody>
