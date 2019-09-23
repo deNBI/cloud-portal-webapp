@@ -1,3 +1,11 @@
+##  (2019-09-23)
+
+
+#### Bug Fixes
+
+* **Popover:** now id is copyable ([51e5b032](51e5b032))
+
+
 ##  (2019-09-12)
 
 
