@@ -27,7 +27,7 @@
         Affiliations
       </td>
       <td>{{
-        application?.UserAffiliations}}
+          application?.UserAffiliations}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -49,10 +49,19 @@
       </td>
     </tr>
     <tr>
+      <td>Research Topics</td>
+      <td><h5><span *ngFor="let term of application?.EdamTopics"
+                    style="margin-left: 5px; "
+                    class="badge badge-info">{{term}}
+ </span>
+
+      </h5></td>
+    </tr>
+    <tr>
       <td>Description
       </td>
       <td>{{
-        application?.Description
+          application?.Description
         }}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
@@ -94,7 +103,7 @@
     <tr>
       <td>Workgroup</td>
       <td>{{
-        application?.Workgroup
+          application?.Workgroup
         }}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
@@ -104,7 +113,7 @@
     <tr>
       <td>Comment</td>
       <td>{{
-        application?.Comment
+          application?.Comment
         }}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
@@ -115,12 +124,12 @@
     <tr>
       <td>Lifetime</td>
       <td>{{
-        application?.Lifetime
+          application?.Lifetime
         }} months
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         {{
-        application?.ApplicationExtension?.Lifetime}}
+          application?.ApplicationExtension?.Lifetime}}
       </td>
     </tr>
     <tr>
@@ -166,7 +175,7 @@
     <tr>
       <td>Total Cores</td>
       <td>{{
-        application?.TotalCores
+          application?.TotalCores
         }}
 
 
@@ -180,7 +189,7 @@
     <tr>
       <td>Total RAM</td>
       <td>{{
-        application?.TotalRam}} GB
+          application?.TotalRam}} GB
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         {{application?.ApplicationExtension?.TotalRAM}}
@@ -190,7 +199,7 @@
       <td>Storage Limit
       </td>
       <td>{{
-        application?.VolumeLimit
+          application?.VolumeLimit
         }} GB
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
@@ -203,7 +212,7 @@
         Counter
       </td>
       <td>{{
-        application?.VolumeCounter
+          application?.VolumeCounter
         }} volumes
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
@@ -214,7 +223,7 @@
       <td>ObjectStorage
       </td>
       <td>{{
-        application?.ObjectStorage
+          application?.ObjectStorage
         }} GB
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification ">
@@ -227,7 +236,7 @@
         changed
       </td>
       <td>{{
-        application?.DateStatusChanged
+          application?.DateStatusChanged
         }}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
