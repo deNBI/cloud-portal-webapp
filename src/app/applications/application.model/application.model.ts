@@ -37,6 +37,7 @@ export class Application ***REMOVED***
   private _DateApproved: string;
   private _Horizon2020: string;
   private _BMBFProject: string;
+  private _EdamTopics: string[];
 
   private _ElixirProject: string;
   private _Dissemination: boolean;
@@ -68,6 +69,13 @@ export class Application ***REMOVED***
     ***REMOVED***;
   ***REMOVED***
 
+  get EdamTopics(): string[] ***REMOVED***
+    return this._EdamTopics;
+  ***REMOVED***
+
+  set EdamTopics(value: string[]) ***REMOVED***
+    this._EdamTopics = value;
+  ***REMOVED***
 
   get PIElixir(): string ***REMOVED***
     return this._PIElixir;
@@ -343,8 +351,6 @@ export class Application ***REMOVED***
     this._PerunId = value;
   ***REMOVED***
 
-
-
   get BMBFProject(): string ***REMOVED***
     return this._BMBFProject;
   ***REMOVED***
@@ -352,7 +358,6 @@ export class Application ***REMOVED***
   set BMBFProject(value: string) ***REMOVED***
     this._BMBFProject = value;
   ***REMOVED***
-
 
   get Horizon2020(): string ***REMOVED***
     return this._Horizon2020;
