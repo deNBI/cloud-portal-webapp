@@ -26,6 +26,7 @@ export class Application {
   private _User: string;
   private _UserEmail: string;
   private _UserAffiliations: string[];
+  private _PiAffiliations: string[];
   private _Status: number;
   private _ComputeCenter: ComputecenterComponent;
   private _OpenStackProject: boolean;
@@ -67,6 +68,14 @@ export class Application {
       gpu: gpu,
       epheremal_disk: epheremal_disk
     };
+  }
+
+  get PiAffiliations(): string[] {
+    return this.__PiAffiliations;
+  }
+
+  set PiAffiliations(value: string[]) {
+    this.__PiAffiliations = value;
   }
 
   get EdamTopics(): string[] {
