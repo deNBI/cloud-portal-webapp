@@ -179,6 +179,8 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
     newApp.Description = aj['project_application_description'];
     newApp.Lifetime = aj['project_application_lifetime'];
     newApp.EdamTopics = aj['project_application_edam_terms'];
+            newApp.PiAffiliations = aj['pi_affiliations'];
+
 
     newApp.VMsRequested = aj['project_application_vms_requested'];
     newApp.RamPerVM = aj['project_application_ram_per_vm'];
@@ -276,7 +278,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
         newApp.Lifetime = aj['project_application_lifetime'];
         newApp.VMsRequested = aj['project_application_vms_requested'];
         newApp.EdamTopics = aj['project_application_edam_terms'];
-
+        newApp.PiAffiliations = aj['pi_affiliations'];
         newApp.RamPerVM = aj['project_application_ram_per_vm'];
         newApp.TotalRam = aj['project_application_total_ram'];
         newApp.TotalCores = aj['project_application_total_cores'];

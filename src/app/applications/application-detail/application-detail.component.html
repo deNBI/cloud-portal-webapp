@@ -22,6 +22,16 @@
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
+    <tr *ngIf="application?.PIApproved">
+      <td>
+        PI Affiliations
+      </td>
+      <td>
+        ***REMOVED******REMOVED***application?.PiAffiliations***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
     <tr>
       <td>User
         Affiliations
