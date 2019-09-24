@@ -14,6 +14,7 @@ import {DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser'
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from '../virtualmachines/volumes/volume';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
+import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
 
 /**
  * Vo Overview component.
@@ -37,6 +38,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   public selectedProject: Project;
   public selectedProjectVms: VirtualMachine[] = [];
   public selectedProjectVolumes: Volume[] = [];
+  public selectedProjectSnapshots: SnapshotModel[] = [];
   computecenters: ComputecenterComponent[] = [];
 
   selectedProjectType: string = 'ALL';
@@ -257,6 +259,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
     this.voserice.getProjectDetails(this.selectedProject.Id).subscribe(res => {
       this.selectedProjectVms = res['vms'];
       this.selectedProjectVolumes = res['volumes'];
+      this.selectedProjectSnapshots =res['snapshots'];
     })
   }
 

@@ -633,6 +633,26 @@
 
             </tbody>
           </table>
+          <table class="table table-striped table-bordered">
+            <tbody>
+
+
+            <tr>
+              <th colspan="3">Snapshots</th>
+
+            </tr>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+            </tr>
+            <tr *ngFor="let snapshot of selectedProjectSnapshots">
+              <td>{{snapshot?.snapshot_openstackid}}</td>
+              <td>{{snapshot?.snapshot_name}}</td>
+
+            </tr>
+
+            </tbody>
+          </table>
         </div>
 
       </div>
