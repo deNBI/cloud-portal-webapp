@@ -28,9 +28,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClass implements 
   }
 
   ngOnInit(): void {
-    console.log(this.application.User)
     this.getMemberDetailsByElixirId(this.application.User);
-
   }
 
 }
