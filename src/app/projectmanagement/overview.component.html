@@ -759,8 +759,7 @@
                        id="id_project_application_renewal_volume_limit"
                        name="project_application_renewal_volume_limit"
                        placeholder="e.g. 20"
-                       value="{{project_application?.VolumeLimit}}"
-                       type="number" min="1" step="1" [ngModel]="20"
+                       type="number" min="1" step="1" [ngModel]="project_application?.VolumeLimit"
                        appMinAmount="1" appInteger
                        [ngClass]="{
                                 'is-invalid': f.controls.project_application_renewal_volume_limit?.invalid,
