@@ -22,12 +22,22 @@
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
+    <tr *ngIf="application?.PIApproved">
+      <td>
+        PI Affiliations
+      </td>
+      <td>
+        ***REMOVED******REMOVED***application?.PiAffiliations***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
     <tr>
       <td>User
         Affiliations
       </td>
       <td>***REMOVED******REMOVED***
-        application?.UserAffiliations***REMOVED******REMOVED***
+          application?.UserAffiliations***REMOVED******REMOVED***
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -49,10 +59,19 @@
       </td>
     </tr>
     <tr>
+      <td>Research Topics</td>
+      <td><h5><span *ngFor="let term of application?.EdamTopics"
+                    style="margin-left: 5px; "
+                    class="badge badge-info">***REMOVED******REMOVED***term***REMOVED******REMOVED***
+ </span>
+
+      </h5></td>
+    </tr>
+    <tr>
       <td>Description
       </td>
       <td>***REMOVED******REMOVED***
-        application?.Description
+          application?.Description
         ***REMOVED******REMOVED***
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
@@ -94,7 +113,7 @@
     <tr>
       <td>Workgroup</td>
       <td>***REMOVED******REMOVED***
-        application?.Workgroup
+          application?.Workgroup
         ***REMOVED******REMOVED***
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
@@ -104,7 +123,7 @@
     <tr>
       <td>Comment</td>
       <td>***REMOVED******REMOVED***
-        application?.Comment
+          application?.Comment
         ***REMOVED******REMOVED***
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
@@ -115,12 +134,12 @@
     <tr>
       <td>Lifetime</td>
       <td>***REMOVED******REMOVED***
-        application?.Lifetime
+          application?.Lifetime
         ***REMOVED******REMOVED*** months
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         ***REMOVED******REMOVED***
-        application?.ApplicationExtension?.Lifetime***REMOVED******REMOVED***
+          application?.ApplicationExtension?.Lifetime***REMOVED******REMOVED***
       </td>
     </tr>
     <tr>
@@ -166,7 +185,7 @@
     <tr>
       <td>Total Cores</td>
       <td>***REMOVED******REMOVED***
-        application?.TotalCores
+          application?.TotalCores
         ***REMOVED******REMOVED***
 
 
@@ -180,7 +199,7 @@
     <tr>
       <td>Total RAM</td>
       <td>***REMOVED******REMOVED***
-        application?.TotalRam***REMOVED******REMOVED*** GB
+          application?.TotalRam***REMOVED******REMOVED*** GB
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         ***REMOVED******REMOVED***application?.ApplicationExtension?.TotalRAM***REMOVED******REMOVED***
@@ -190,7 +209,7 @@
       <td>Storage Limit
       </td>
       <td>***REMOVED******REMOVED***
-        application?.VolumeLimit
+          application?.VolumeLimit
         ***REMOVED******REMOVED*** GB
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
@@ -203,7 +222,7 @@
         Counter
       </td>
       <td>***REMOVED******REMOVED***
-        application?.VolumeCounter
+          application?.VolumeCounter
         ***REMOVED******REMOVED*** volumes
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
@@ -214,7 +233,7 @@
       <td>ObjectStorage
       </td>
       <td>***REMOVED******REMOVED***
-        application?.ObjectStorage
+          application?.ObjectStorage
         ***REMOVED******REMOVED*** GB
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification ">
@@ -227,7 +246,7 @@
         changed
       </td>
       <td>***REMOVED******REMOVED***
-        application?.DateStatusChanged
+          application?.DateStatusChanged
         ***REMOVED******REMOVED***
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">

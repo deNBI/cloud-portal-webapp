@@ -28,9 +28,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClass implements 
   ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
-    console.log(this.application.User)
     this.getMemberDetailsByElixirId(this.application.User);
-
   ***REMOVED***
 
 ***REMOVED***

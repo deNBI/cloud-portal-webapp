@@ -8,7 +8,7 @@
     </button>
   </div>
   <div class="row justify-content-center">
-    <pre [hidden]="showSshCommando">***REMOVED******REMOVED***_selectedVirtualMachine?.ssh_command***REMOVED******REMOVED***</pre>
+    <pre [hidden]="showSshCommando" style="word-wrap: break-word;">***REMOVED******REMOVED***_selectedVirtualMachine?.ssh_command***REMOVED******REMOVED***</pre>
   </div>
 </div>
 
@@ -57,7 +57,8 @@
     </button>
   </div>
   <div class="row justify-content-center" [hidden]="showLogs">
-    <button class="btn btn-secondary" (click)="downloadFile('pdf')" style="margin: 5px">Download as PDF</button><br>
+    <button class="btn btn-secondary" (click)="downloadFile('pdf')" style="margin: 5px">Download as PDF</button>
+    <br>
     <button class="btn btn-secondary" (click)="downloadFile('txt')" style="margin: 5px">Download as txt</button>
   </div>
 </div>
