@@ -71,11 +71,11 @@ export class Application ***REMOVED***
   ***REMOVED***
 
   get PiAffiliations(): string[] ***REMOVED***
-    return this.__PiAffiliations;
+    return this._PiAffiliations;
   ***REMOVED***
 
   set PiAffiliations(value: string[]) ***REMOVED***
-    this.__PiAffiliations = value;
+    this._PiAffiliations = value;
   ***REMOVED***
 
   get EdamTopics(): string[] ***REMOVED***
