@@ -71,11 +71,11 @@ export class Application {
   }
 
   get PiAffiliations(): string[] {
-    return this.__PiAffiliations;
+    return this._PiAffiliations;
   }
 
   set PiAffiliations(value: string[]) {
-    this.__PiAffiliations = value;
+    this._PiAffiliations = value;
   }
 
   get EdamTopics(): string[] {
