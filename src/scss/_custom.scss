@@ -125,10 +125,9 @@ main{
   overflow-y: visible;
 }
 
-.app{
-  background-color: #E3E3E3
+.app {
+  background-color: #F1F1F1;
 }
-
 
 
 .btn-openstack {
@@ -153,6 +152,7 @@ main{
 {
   color: $deNBI_darkgrey;
   font-family: 'Raleway', sans-serif;
+
 }
 
 .animated.fadeIn
@@ -320,3 +320,4 @@ main{
   width: calc(100vw - 90px);
   margin:auto;
 }
+
