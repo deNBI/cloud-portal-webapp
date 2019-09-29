@@ -10,6 +10,7 @@
                     <i class="fa fa-align-justify"></i> Image Tags
                 </div>
                 <div class="card-body">
+                    <div class="alert" [ngClass]="this.alertRed ? 'alert-danger' : 'alert-primary'" #tagAlert>Notice: The image tags must not contain spaces or special characters.</div>
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
                             <tr>
@@ -28,14 +29,14 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="text" placeholder="Tag" #tag></td>
+                                <td><input type="text" placeholder="Tag" #tag pattern="[0-9a-zA-Z]*" required></td>
                                 <td><textarea type="text" class="form-control input-lg"
                                               placeholder="Description"
                                               #description></textarea>
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-primary"
-                                            (click)="addTag(tag.value,description.value);">Add Tag
+                                            (click)="addTag(tag.value,description.value, tag);">Add Tag
                                     </button>
                                 </td>
 

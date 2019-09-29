@@ -3,7 +3,7 @@ import {FacilityService} from '../api-connector/facility.service';
 import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {ApiSettings} from '../api-connector/api-settings.service';
-import {Application} from '../applications/application.model';
+import {Application} from '../applications/application.model/application.model';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ApplicationsService} from '../api-connector/applications.service';
 import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';

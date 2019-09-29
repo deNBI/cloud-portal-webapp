@@ -7,6 +7,7 @@ import {AbstractBaseClasse} from '../../shared/shared_modules/baseClass/abstract
 import {VolumeActionStates} from './volume-action-states.enum';
 import {VolumeRequestStates} from './volume-request-states.enum';
 import {IResponseTemplate} from '../../api-connector/response-template';
+import {FacilityService} from '../../api-connector/facility.service';
 
 /**
  * Volume overview component.
@@ -15,7 +16,7 @@ import {IResponseTemplate} from '../../api-connector/response-template';
 
              selector: 'app-volume-overview',
              templateUrl: 'volumeOverview.component.html',
-             providers: [GroupService, VirtualmachineService]
+             providers: [FacilityService, GroupService, VirtualmachineService]
            })
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit {
@@ -25,11 +26,22 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   volumeActionStates: typeof VolumeActionStates = VolumeActionStates;
 
+  showFacilities: boolean = false;
+
   /**
    * Enum of all request states.
    * @type {VolumeRequestStates}
    */
   volumeRequestStates: typeof VolumeRequestStates = VolumeRequestStates;
+
+  /**
+   * Facilitties where the user is manager ['name',id].
+   */
+  managerFacilities: [string, number][];
+  /**
+   * Chosen facility.
+   */
+  selectedFacility: [string, number];
 
   /**
    * Array of all volumes.
@@ -101,7 +113,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   request_status: number;
 
-  constructor(private groupService: GroupService, private vmService: VirtualmachineService) {
+  constructor(private facilityService: FacilityService, private groupService: GroupService, private vmService: VirtualmachineService) {
     super();
 
   }
@@ -109,6 +121,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   ngOnInit(): void {
     this.getVolumes();
     this.getUserApprovedProjects();
+    this.facilityService.getManagerFacilities().subscribe(result => {
+      this.managerFacilities = result;
+      this.selectedFacility = this.managerFacilities[0];
+    });
 
   }
 
@@ -129,6 +145,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         this.volume_action_status = this.volumeActionStates.ERROR;
       }
       this.getVolumes();
+    })
+  }
+
+  getFacilityVolumes(): void {
+    this.volumes = [];
+
+    this.facilityService.getFacilityVolumes(this.selectedFacility['FacilityId']).subscribe(res => {
+      this.volumes = res;
     })
   }
 
@@ -265,6 +289,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * @returns {void}
    */
   getVolumes(): void {
+    this.volumes = [];
     this.vmService.getVolumesByUser().subscribe(result => {
       this.volumes = result;
       for (const volume of this.volumes) {

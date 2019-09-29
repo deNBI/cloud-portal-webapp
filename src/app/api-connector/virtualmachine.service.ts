@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from '../virtualmachines/volumes/volume';
 import {IResponseTemplate} from './response-template';
-import {IBiocondaTool} from '../virtualmachines/conda/bioconda.component';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -121,19 +120,19 @@ export class VirtualmachineService {
 
     })
   }
-  
-    getLogs(openstack_id: string): Observable<any> {
-      return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
-        withCredentials: true,
 
-        headers: header
-      })
-    }
+  getLogs(openstack_id: string): Observable<any> {
+    return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
+      withCredentials: true,
 
-  getVmsFromFacilitiesOfLoggedUser(page: number, filter_name?: string, filter_project?: string,
+      headers: header
+    })
+  }
+
+  getVmsFromFacilitiesOfLoggedUser(facility_id: string | number, page: number, filter_name?: string, filter_project?: string,
                                    filter_status?: string[],
                                    filter_elixir_id?: string,
-                                   filter_created_at?: string, filter_stopped_at?: string): Observable<VirtualMachine[]> {
+                                   filter_created_at?: string, filter_stopped_at?: string,): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString());
     if (filter_name) {
       params = params.set('filter_name', filter_name);
@@ -161,7 +160,7 @@ export class VirtualmachineService {
 
     }
 
-    return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/vms/`,
+    return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/vms/`,
                                            {
                                              withCredentials: true,
                                              params:
@@ -298,5 +297,4 @@ export class VirtualmachineService {
       headers: header
     })
   }
-
 }

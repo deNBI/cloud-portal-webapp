@@ -14,7 +14,7 @@
           </div>
           <div class="card-body">
             <form #f="ngForm"
-              class="form-horizontal">
+                  class="form-horizontal">
               <div class="form-group row">
                 <h5 class="col-md-6 form-control-label">General Information</h5>
               </div>
@@ -370,7 +370,7 @@
                 <strong>Confirmation of Responsibility*</strong>
               </label>
               <div class="col-md-8"
-                   >
+              >
                 <div class="form-check">
                   <input class="form-check-input"
                          name="project_application_responsibility"
@@ -380,7 +380,8 @@
                          #respCheck
                          required>
                   <label class="form-check-label" for="project_application_responsibility">
-                    I hereby confirm that I am responsible for the project and any action of the project members in the de.NBI Cloud.
+                    I hereby confirm that I am responsible for the project and any action of the project members in the
+                    de.NBI Cloud.
                   </label>
                 </div>
               </div>
@@ -397,8 +398,6 @@
     </div>
   </div>
 </div>
-
-
 
 
 <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
@@ -427,7 +426,7 @@
                 class="btn  btn-secondary"> Close
         </button>
         <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)">
-          <button  [routerLink]="['/applications']"  type="button"
+          <button [routerLink]="['/project-management/' + application?.Id]" type="button"
                   (click)="notificationModal.hide();resetNotificationModal()" type="reset"
                   class="btn  btn-secondary"> Close
           </button>

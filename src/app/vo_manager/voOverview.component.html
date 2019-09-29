@@ -164,7 +164,7 @@
                   >
                     <i class="fa fa-users"></i>&nbsp;Show Members
                   </button>
-                  <button *ngIf="project.Status == 2" style="margin-left: 5px"
+                  <button *ngIf="project.Status ==  project_states.ACTIVE" style="margin-left: 5px"
                           type="button"
                           class="btn btn-warning"
                           (click)="selectedProject = project;suspendModal.show();"
@@ -172,10 +172,21 @@
                   >
                     <i class="fa fa-pause"></i>&nbsp;Suspend Project
                   </button>
-                  <button *ngIf="project.Status == 2" style="margin-left: 5px"
+
+                  <button *ngIf="project.Status == project_states.SUSPENDED" style="margin-left: 5px"
                           type="button"
-                          class="btn btn-danger"
-                          (click)="selectedProject = project;terminateModal.show();"
+                          class="btn btn-success"
+                          (click)="selectedProject = project;resumeModal.show();"
+
+                  >
+                    <i class="fa fa-play"></i>&nbsp;Resume Project
+                  </button>
+                  <button
+                    *ngIf="project?.Status == project_states.ACTIVE || project?.Status == project_states.SUSPENDED"
+                    style="margin-left: 5px"
+                    type="button"
+                    class="btn btn-danger"
+                    (click)="selectedProject = project;getProjectDetails();terminateModal.show();"
 
                   >
                     <i class="fa fa-trash"></i>&nbsp;Terminate Project
@@ -412,6 +423,38 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+<div bsModal #resumeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Resume Project {{selectedProject?.Name}}</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="resumeModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        Are you sure you want to resume {{selectedProject?.Name}} ?
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                (click)="resumeProject(selectedProject);resumeModal.hide()">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="resumeModal.hide();">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
@@ -549,6 +592,66 @@
 
         <div class="alert alert-warning" role="alert">
           Are you sure you want to terminate this project?
+        </div>
+        <div *ngIf="!selectedProject?.OpenStackProject" role="alert">
+          <table class="table table-striped table-bordered">
+
+            <tbody>
+            <tr>
+              <th colspan="3">Virtual Machines</th>
+
+            </tr>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+            </tr>
+            <tr *ngFor="let vm of selectedProjectVms">
+              <td>{{vm?.openstackid}}</td>
+              <td>{{vm?.name}}</td>
+
+            </tr>
+            </tbody>
+          </table>
+          <table class="table table-striped table-bordered">
+            <tbody>
+
+
+            <tr>
+              <th colspan="3">Volumes</th>
+
+            </tr>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+            </tr>
+            <tr *ngFor="let volume of selectedProjectVolumes">
+              <td>{{volume?.volume_openstackid}}</td>
+              <td>{{volume?.volume_name}}</td>
+
+            </tr>
+
+            </tbody>
+          </table>
+          <table class="table table-striped table-bordered">
+            <tbody>
+
+
+            <tr>
+              <th colspan="3">Snapshots</th>
+
+            </tr>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+            </tr>
+            <tr *ngFor="let snapshot of selectedProjectSnapshots">
+              <td>{{snapshot?.snapshot_openstackid}}</td>
+              <td>{{snapshot?.snapshot_name}}</td>
+
+            </tr>
+
+            </tbody>
+          </table>
         </div>
 
       </div>

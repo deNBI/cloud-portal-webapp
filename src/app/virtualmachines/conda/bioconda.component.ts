@@ -19,7 +19,7 @@ export class BiocondaComponent implements OnInit {
   FIRST_PAGE: number = 1;
   DEBOUNCE_TIME: number = 300;
 
-  bioconda_tools: IBiocondaTool[] = [];
+  all_tools: IBiocondaTool[] = [];
 
   chosen_tools: IBiocondaTool[] = [];
 
@@ -53,11 +53,11 @@ export class BiocondaComponent implements OnInit {
   }
 
   pageChanged(event): void {
-    this.getBiocondaTools(event.page);
+    this.getAllTools(event.page);
   }
 
   ngOnInit(): void {
-    this.getBiocondaTools(this.FIRST_PAGE);
+    this.getAllTools(this.FIRST_PAGE);
 
     this.filternameChanged
       .pipe(
@@ -65,7 +65,7 @@ export class BiocondaComponent implements OnInit {
         distinctUntilChanged())
       .subscribe((filterName: string) => {
         this.filterToolName = filterName;
-        this.getBiocondaTools(this.FIRST_PAGE)
+        this.getAllTools(this.FIRST_PAGE)
 
       });
 
@@ -75,7 +75,7 @@ export class BiocondaComponent implements OnInit {
         distinctUntilChanged())
       .subscribe((filterVersion: string) => {
         this.filterToolVersion = filterVersion;
-        this.getBiocondaTools(this.FIRST_PAGE)
+        this.getAllTools(this.FIRST_PAGE)
 
       });
 
@@ -85,31 +85,33 @@ export class BiocondaComponent implements OnInit {
         distinctUntilChanged())
       .subscribe((filterBuild: string) => {
         this.filterToolBuild = filterBuild;
-        this.getBiocondaTools(this.FIRST_PAGE)
+        this.getAllTools(this.FIRST_PAGE)
 
       });
 
   }
 
-  getBiocondaTools(page: number): void {
-    this.condaService.getBiocondaTools(page, this.filterToolName, this.filterToolVersion, this.filterToolBuild).subscribe(
+  getAllTools(page: number): void {
+    this.isSearching = true;
+    this.condaService.getAllTools(page, this.filterToolName, this.filterToolVersion, this.filterToolBuild).subscribe(
       res => {
-        this.bioconda_tools = [];
+        this.all_tools = [];
 
         for (const line of res['packages']) {
-          this.bioconda_tools.push({
-                                     name: line['name'],
-                                     version: line['version'],
-                                     build: line['build']
-                                   })
+          this.all_tools.push({
+                                name: line['name'],
+                                version: line['version'],
+                                build: line['build']
+                              })
         }
-
-        this.total_pages = res['num_pages'];
+        this.toolsPerPage = res['items_per_page'];
+        this.total_pages = res['total_items'];
         this.toolsStart = 0;
         this.toolsEnd = this.toolsPerPage;
 
         this.currentPage = page;
         this.pagination.selectPage(this.currentPage);
+        this.isSearching = false;
       });
   }
 
@@ -162,7 +164,7 @@ export class BiocondaComponent implements OnInit {
   }
 
   getTimeout(): number {
-    return ((this.chosen_tools.length) * 300) + 600;
+    return ((this.chosen_tools.length) * 300) + 840;
   }
 
   hasChosenTools(): boolean {

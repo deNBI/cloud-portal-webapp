@@ -1,4 +1,4 @@
-<div *ngIf="selectedVm.status != 'DELETED'">
+<div *ngIf="_selectedVirtualMachine?.status != 'DELETED'">
   <div class="row justify-content-center">
     <button class="btn btn-primary" style="margin-bottom: 5px; width: 100%"
             (click)="showSshCommando = !showSshCommando">
@@ -8,13 +8,13 @@
     </button>
   </div>
   <div class="row justify-content-center">
-    <pre [hidden]="showSshCommando">{{selectedVm?.ssh_command}}</pre>
+    <pre [hidden]="showSshCommando" style="word-wrap: break-word;">{{_selectedVirtualMachine?.ssh_command}}</pre>
   </div>
 </div>
 
-<div *ngIf="selectedVm.status != 'DELETED'">
+<div *ngIf="_selectedVirtualMachine?.status != 'DELETED'">
   <div class="row justify-content-center">
-    <button *ngIf="selectedVm?.udp_command" class="btn btn-primary" style="margin-bottom: 5px; width: 100%"
+    <button *ngIf="_selectedVirtualMachine?.udp_command" class="btn btn-primary" style="margin-bottom: 5px; width: 100%"
             (click)="showUdpCommando = !showUdpCommando">
       <span [hidden]="!showUdpCommando">Show</span>
       <span [hidden]="showUdpCommando">Hide</span>
@@ -22,7 +22,7 @@
     </button>
   </div>
   <div class="row justify-content-center">
-                <pre *ngIf="selectedVm?.udp_command" [hidden]="showUdpCommando">
+                <pre *ngIf="_selectedVirtualMachine?.udp_command" [hidden]="showUdpCommando">
             1. You need to install mosh on your virtual Machine.
                Connect with the ssh command above and run: <br>
                (On Ubuntu) sudo apt-get install mosh
@@ -32,20 +32,20 @@
                or on Ubuntu run: <br>
                sudo apt-get install mosh <br>
             3. Connect with mosh to your virtual Machine:
-                  {{selectedVm?.udp_command}}</pre>
+                  {{_selectedVirtualMachine?.udp_command}}</pre>
   </div>
 </div>
 
 <div *ngIf="playbook_run == 1">
   <div class="row justify-content-center">
-    <span *ngIf="logs['status'] == 0">
+    <span *ngIf="logs && logs['status'] == 0">
       Your automated setup is completed! <br>
-      If you want, take a look at the ansible-playbook logs below.
+      If you want, take a look at the ansible-playbook logs below. <br>
     </span>
-    <span *ngIf="logs['status'] != 0">
+    <span *ngIf="logs && logs['status'] != 0">
       Oh no, something went wrong! <br>
       Thus we can not provide a working virtual machine and consequently deleted it for you. <br>
-      Please take a look at the logs below, to see what went wrong.
+      Please take a look at the logs below, to see what went wrong. <br>
     </span>
   </div>
   <div class="row justify-content-center">
@@ -57,6 +57,8 @@
     </button>
   </div>
   <div class="row justify-content-center" [hidden]="showLogs">
-    <button class="btn btn-secondary" (click)="downloadFile()">Download as PDF</button>
+    <button class="btn btn-secondary" (click)="downloadFile('pdf')" style="margin: 5px">Download as PDF</button>
+    <br>
+    <button class="btn btn-secondary" (click)="downloadFile('txt')" style="margin: 5px">Download as txt</button>
   </div>
 </div>

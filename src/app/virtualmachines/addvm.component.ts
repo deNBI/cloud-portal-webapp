@@ -9,7 +9,7 @@ import {ApplicationsService} from '../api-connector/applications.service'
 import {Userinfo} from '../userinfo/userinfo.model';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {ClientService} from '../api-connector/client.service';
-import {Application} from '../applications/application.model';
+import {Application} from '../applications/application.model/application.model';
 import {KeyService} from '../api-connector/key.service';
 import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
@@ -59,13 +59,16 @@ export class VirtualMachineComponent implements OnInit {
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
-  logs: {[selector: string]: string | number} = {};
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
   client_checked: boolean = false;
   playbook_run: number = 0;
   timeout: number = 0;
   title: string = 'New Instance';
+
+  started_machine: boolean = false;
+
+  bioconda_img_path: string = `static/webapp/assets/img/bioconda_logo.svg`;
 
   /**
    * All image of a project.
@@ -221,7 +224,10 @@ export class VirtualMachineComponent implements OnInit {
    */
   getImages(project_id: number): void {
 
-    this.imageService.getImages(project_id).subscribe((images: Image[]) => this.images = images);
+    this.imageService.getImages(project_id).subscribe((images: Image[]) => {
+      this.images = images;
+      this.images.sort((x, y) => Number(x.is_snapshot) - Number(y.is_snapshot));
+    });
   }
 
   /**
@@ -297,23 +303,15 @@ export class VirtualMachineComponent implements OnInit {
       () => {
         this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => {
           if (newVm.status === this.ACTIVE) {
-            if (this.playbook_run === 1) {
-              this.virtualmachineservice.getLogs(id).subscribe(logs => {
-                this.logs = logs;
-              });
-            }
             this.resetProgressBar();
             this.newVm = newVm;
             this.loadProjectData();
 
           } else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) {
-            this.virtualmachineservice.getLogs(id).subscribe(logs => {
-              this.newVm.status = this.DELETED;
-              this.logs = logs;
-              this.resetProgressBar();
-              this.create_error = <IResponseTemplate><any>newVm;
-              this.loadProjectData();
-            });
+            this.newVm.status = this.DELETED;
+            this.resetProgressBar();
+            this.create_error = <IResponseTemplate><any>newVm;
+            this.loadProjectData();
           } else if (newVm.status) {
             if (newVm.status === this.PORT_CLOSED) {
               this.progress_bar_animated = '';
@@ -338,8 +336,8 @@ export class VirtualMachineComponent implements OnInit {
             this.check_status_loop(id)
           } else {
             this.resetProgressBar();
-            this.create_error = <IResponseTemplate><any>newVm;
             this.loadProjectData();
+            this.create_error = <IResponseTemplate><any>newVm;
           }
 
         })
@@ -359,6 +357,8 @@ export class VirtualMachineComponent implements OnInit {
     this.create_error = null;
     if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
+      this.started_machine = true;
+
       const re: RegExp = /\+/gi;
 
       const flavor_fixed: string = flavor.replace(re, '%2B');
@@ -377,32 +377,33 @@ export class VirtualMachineComponent implements OnInit {
         this.https_allowed, this.udp_allowed, this.volumeName,
         this.diskspace.toString(), this.biocondaComponent.getChosenTools(), play_information)
         .subscribe((newVm: VirtualMachine) => {
+          this.started_machine = false;
 
-        if (newVm.status === 'Build') {
-          this.progress_bar_status = this.BUILD_STATUS;
-          this.progress_bar_animated = '';
-          this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
-          if (this.hasTools) {
-            this.progress_bar_width = this.TWENTY_FIVE_PERCENT;
+          if (newVm.status === 'Build') {
+            this.progress_bar_status = this.BUILD_STATUS;
+            this.progress_bar_animated = '';
+            this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
+            if (this.hasTools) {
+              this.progress_bar_width = this.TWENTY_FIVE_PERCENT;
+            } else {
+              this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
+            }
+            this.check_status_loop(newVm.openstackid);
+
+          } else if (newVm.status) {
+            this.progress_bar_status = this.CREATING_STATUS;
+            this.newVm = newVm;
+            this.check_status_loop(newVm.openstackid);
           } else {
-            this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
+            this.progress_bar_status = this.CREATING_STATUS;
+            this.loadProjectData();
+            this.create_error = <IResponseTemplate><any>newVm;
           }
-          this.check_status_loop(newVm.openstackid);
 
-        } else if (newVm.status) {
-          this.progress_bar_status = this.CREATING_STATUS;
-          this.newVm = newVm;
-          this.check_status_loop(newVm.openstackid);
-        } else {
-          this.progress_bar_status = this.CREATING_STATUS;
-          this.create_error = <IResponseTemplate><any>newVm;
-        }
-
-      });
+        });
 
     } else {
       this.progress_bar_status = this.CREATING_STATUS;
-
       this.newVm = null;
 
     }
@@ -414,6 +415,7 @@ export class VirtualMachineComponent implements OnInit {
         [variable: string]: string
       }
     } = {};
+    this.timeout = 300;
     if (this.biocondaComponent.hasChosenTools()) {
       playbook_info['bioconda'] = {
         packages: this.biocondaComponent.getChosenTools()
@@ -563,5 +565,4 @@ export class VirtualMachineComponent implements OnInit {
   getTimeoutMinutes(): number {
     return Math.ceil(this.timeout / 60);
   }
-
 }
