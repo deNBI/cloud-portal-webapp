@@ -40,7 +40,7 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
    * Boolean indicating whether information selection accordion is open or not.
    * @type {boolean}
    */
-  public dissemination_information_open: boolean = false;
+  public dissemination_information_open: boolean = true;
 
   /**
    * Boolean indicating whether platform selection accordion is open or not
