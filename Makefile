@@ -13,16 +13,6 @@ new_env_and_node: clean_env clean_node_modules default ## Same as default, but r
 
 serve: default ng_serve ## Same as default, but serves the webapp in the end.
 
-is_line_in_hosts: # Checks if the 127.0.0.1 portal-dev.denbi.de is in /etc/hosts
-	@echo ---Checking your /etc/hosts file:
-ifeq ($(HOSTS), 127.0.0.1 portal-dev.denbi.de)
-	@echo 127.0.0.1 portal-dev.denbi.de is in /etc/hosts
-else
-	$(warning In /etc/hosts file is missing: 127.0.0.1 portal-dev.denbi.de)
-	$(warning Please insert manually!)
-	$(error Ending makefile.)
-endif
-
 check_nodeenv: # Checks if a version of nodeenv is installed by calling nodeenv --version and asserting that a version number exists
 	@echo ---Checking your Nodeenv version:
 ifeq ($(NODEENV_VERSION),)
@@ -35,7 +25,7 @@ else
 	fi
 endif
 
-env: is_line_in_hosts check_nodeenv .nodeenvrc # Creates an env folder if not already existing. Also removes and creates a new env folder if 
+env: check_nodeenv .nodeenvrc # Creates an env folder if not already existing. Also removes and creates a new env folder if 
 	@echo ---Checking for env folder and version:; \
 	if ! test -d env; \
 	then echo Env folder does not exist. Creating env folder.; \
@@ -80,7 +70,7 @@ ng_serve: # Activates the env environment and serves the angular webapp
 	. env/bin/activate && \
 	ng serve
 
-.PHONY: default new_environment new_node_modules new_env_and_node serve is_line_in_hosts check_nodeenv clean_env clean_node_modules ng_serve
+.PHONY: default new_environment new_node_modules new_env_and_node serve check_nodeenv clean_env clean_node_modules ng_serve
 
 help:
 	    @egrep '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-16s\033[0m %s\n", $$1, $$2}'
