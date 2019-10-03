@@ -37,7 +37,6 @@ import {Angulartics2Module} from 'angulartics2';
 import { ErrorHandler } from '@angular/core';
 import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler.service';
 import {CookieService} from 'ngx-cookie-service';
-
 /**
  * App module.
  */
@@ -88,7 +87,7 @@ import {CookieService} from 'ngx-cookie-service';
       },
         ApiSettings,
         UserService,
-        CookieService,
+        CookieService
     ],
     bootstrap: [AppComponent]
 })
