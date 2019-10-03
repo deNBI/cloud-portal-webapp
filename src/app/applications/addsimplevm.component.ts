@@ -34,6 +34,8 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
 
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
 
+  dissemination_platform_count: number = 0;
+
   /**
    * Boolean indicating whether information selection accordion is open or not.
    * @type {boolean}
@@ -288,5 +290,13 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
       this.notificationModalStay = true;
     })
 
+  }
+
+  count_platform(checked: boolean): void {
+    if (checked) {
+      this.dissemination_platform_count++;
+    } else {
+      this.dissemination_platform_count--;
+    }
   }
 }
