@@ -40,6 +40,7 @@ testem.log
 
 # e2e
 /e2e/*.map
+/e2e/environment.json
 
 # System Files
 .DS_Store
