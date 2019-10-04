@@ -1,25 +1,24 @@
 // spec.js
 import {browser, by, element, protractor} from 'protractor';
 import {LoginPage} from '../page_objects/login.po';
-import {FormularPage} from "../page_objects/application_formular.po";
-import {ApplicationOverviewPage} from "../page_objects/application_overview.po";
-import {Util} from "../util";
+import {FormularPage} from '../page_objects/application_formular.po';
+import {ApplicationOverviewPage} from '../page_objects/application_overview.po';
+import {Util} from '../util';
 
 describe('Simple Application Approval Test', function () {
 
-    beforeAll(async function () {
-        await browser.waitForAngularEnabled(false);
-        await LoginPage.login(browser.params.login.email_vo, browser.params.login.password_vo, browser.params.login.auth_vo, true);
-    });
+  beforeAll(async function () {
+    await browser.waitForAngularEnabled(false);
+    await LoginPage.login(browser.params.login.email_vo, browser.params.login.password_vo, browser.params.login.auth_vo, true);
+  });
 
-    it('should navigate to application overview', async function () {
-        console.log("Starting approve a simple vm application test!");
-        await ApplicationOverviewPage.navigateToApplicationOverview();
+  it('should navigate to application overview', async function () {
+    console.log('Starting approve a simple vm application test!');
+    await ApplicationOverviewPage.navigateToApplicationOverview();
 
+  });
 
-    });
-
-    it('should approve A SIMPLE VM APPLICATION', async function () {
-        await ApplicationOverviewPage.approveSimpleVm(Util.SIMPLE_VM_APPLICATION_NAME);
-    });
+  it('should approve A SIMPLE VM APPLICATION', async function () {
+    await ApplicationOverviewPage.approveSimpleVm(Util.SIMPLE_VM_APPLICATION_NAME);
+  });
 });

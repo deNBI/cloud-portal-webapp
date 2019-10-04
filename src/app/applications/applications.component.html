@@ -155,7 +155,7 @@
                         Approve
                         & Create
                       </button>
-                      <button
+                      <button [id]="'extension_approval_' + application.Shortname"
                         *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED"
                         style="margin: auto 2.5px"
                         (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
