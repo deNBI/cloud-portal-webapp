@@ -1,21 +1,21 @@
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***RouterModule, Routes***REMOVED*** from '@angular/router';
-import ***REMOVED***HelpComponent***REMOVED*** from '../help/help.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {HelpComponent} from '../help/help.component';
 
 const routes: Routes = [
-    ***REMOVED***
+    {
         path: '',
         component: HelpComponent,
-        data: ***REMOVED***
+        data: {
             title: 'Help'
-        ***REMOVED***
+        }
 
-    ***REMOVED***
+    }
 ];
 
-@NgModule(***REMOVED***
+@NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
-***REMOVED***)
-export class HelpRoutingModule ***REMOVED***
-***REMOVED***
+})
+export class HelpRoutingModule {
+}

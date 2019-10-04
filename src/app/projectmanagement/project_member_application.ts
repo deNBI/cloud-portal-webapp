@@ -1,47 +1,47 @@
-export class ProjectMemberApplication ***REMOVED***
+export class ProjectMemberApplication {
 
     private _Id: number;
     private _Name: string;
     private _DateCreated: string;
     private _UserIsVoMember: boolean;
 
-    constructor(Id: number, Name: string, DateCreated: string) ***REMOVED***
+    constructor(Id: number, Name: string, DateCreated: string) {
         this._Id = Id;
         this._Name = Name;
         this._DateCreated = DateCreated;
 
-    ***REMOVED***
+    }
 
-    get UserIsVoMember(): boolean ***REMOVED***
+    get UserIsVoMember(): boolean {
         return this._UserIsVoMember;
-    ***REMOVED***
+    }
 
-    set UserIsVoMember(value: boolean) ***REMOVED***
+    set UserIsVoMember(value: boolean) {
         this._UserIsVoMember = value;
-    ***REMOVED***
+    }
 
-    get Id(): number ***REMOVED***
+    get Id(): number {
         return this._Id;
-    ***REMOVED***
+    }
 
-    set Id(value: number) ***REMOVED***
+    set Id(value: number) {
         this._Id = value;
-    ***REMOVED***
+    }
 
-    get Name(): string ***REMOVED***
+    get Name(): string {
         return this._Name;
-    ***REMOVED***
+    }
 
-    set Name(value: string) ***REMOVED***
+    set Name(value: string) {
         this._Name = value;
-    ***REMOVED***
+    }
 
-    get DateCreated(): string ***REMOVED***
+    get DateCreated(): string {
         return this._DateCreated;
-    ***REMOVED***
+    }
 
-    set DateCreated(value: string) ***REMOVED***
+    set DateCreated(value: string) {
         this._DateCreated = value;
-    ***REMOVED***
+    }
 
-***REMOVED***
+}

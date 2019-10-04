@@ -1,4 +1,4 @@
-export interface ImageTag ***REMOVED***
+export interface ImageTag {
     name: string;
     description: string;
-***REMOVED***
+}

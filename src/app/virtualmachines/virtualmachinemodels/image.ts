@@ -1,7 +1,7 @@
 /**
  * Image class.
  */
-export class Image ***REMOVED***
+export class Image {
   id: string;
   name: string;
   status: string;
@@ -10,4 +10,4 @@ export class Image ***REMOVED***
   description: string;
   is_snapshot: boolean;
 
-***REMOVED***
+}

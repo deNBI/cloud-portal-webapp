@@ -1,75 +1,75 @@
-import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
-import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/client.model';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs';
-import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {ApiSettings} from './api-settings.service'
+import {Client} from '../virtualmachines/clients/client.model';
+import {Observable} from 'rxjs';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
-import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
-import ***REMOVED***IResponseTemplate***REMOVED*** from './response-template';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {IResponseTemplate} from './response-template';
 
-const header: HttpHeaders = new HttpHeaders(***REMOVED***
+const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
-***REMOVED***);
+});
 
 /**
  * Service which provides client methods.
  */
 @Injectable()
-export class ClientService ***REMOVED***
-    clientURL: string = `$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***clients/`;
+export class ClientService {
+    clientURL: string = `${ApiSettings.getApiBaseURL()}clients/`;
 
-    constructor(private http: HttpClient) ***REMOVED***
-    ***REMOVED***
+    constructor(private http: HttpClient) {
+    }
 
-    isClientAvaiable(): Observable<Client> ***REMOVED***
+    isClientAvaiable(): Observable<Client> {
 
-        return this.http.get<Client>(`$***REMOVED***this.clientURL***REMOVED***active/`, ***REMOVED***
+        return this.http.get<Client>(`${this.clientURL}active/`, {
             withCredentials: true
-        ***REMOVED***)
-    ***REMOVED***
+        })
+    }
 
-    getClientsChecked(): Observable<Client[]> ***REMOVED***
+    getClientsChecked(): Observable<Client[]> {
 
-        return this.http.get<Client[]>(this.clientURL, ***REMOVED***
+        return this.http.get<Client[]>(this.clientURL, {
             withCredentials: true
-        ***REMOVED***)
-    ***REMOVED***
+        })
+    }
 
-    checkClient(host: string, port: string): Observable<IResponseTemplate> ***REMOVED***
+    checkClient(host: string, port: string): Observable<IResponseTemplate> {
         const params: HttpParams = new HttpParams().set('host', host).set('port', port);
 
-        return this.http.post<IResponseTemplate>(`$***REMOVED***this.clientURL***REMOVED***checkClient/`, params, ***REMOVED***
+        return this.http.post<IResponseTemplate>(`${this.clientURL}checkClient/`, params, {
             withCredentials: true,
             headers: header
-        ***REMOVED***)
+        })
 
-    ***REMOVED***
+    }
 
-    postClient(host: string, port: string, location: string): Observable<Client> ***REMOVED***
+    postClient(host: string, port: string, location: string): Observable<Client> {
 
         const params: HttpParams = new HttpParams().set('host', host).set('port', port).set('location', location);
 
-        return this.http.post<Client>(this.clientURL, params, ***REMOVED***
+        return this.http.post<Client>(this.clientURL, params, {
             withCredentials: true,
             headers: header
-        ***REMOVED***)
-    ***REMOVED***
+        })
+    }
 
-    deleteClient(client_id: number): Observable<any> ***REMOVED***
-        return this.http.delete(`$***REMOVED***this.clientURL***REMOVED***$***REMOVED***client_id ***REMOVED***/`, ***REMOVED***
+    deleteClient(client_id: number): Observable<any> {
+        return this.http.delete(`${this.clientURL}${client_id }/`, {
             withCredentials: true,
             headers: header
-        ***REMOVED***)
+        })
 
-    ***REMOVED***
+    }
 
-    updateClient(client: Client): Observable<Client> ***REMOVED***
+    updateClient(client: Client): Observable<Client> {
         const params: HttpParams = new HttpParams().set('host', client.host).set('port', client.port).set('location', client.location);
 
-        return this.http.patch<Client>(`$***REMOVED***this.clientURL***REMOVED***$***REMOVED***client.id ***REMOVED***/`, params, ***REMOVED***
+        return this.http.patch<Client>(`${this.clientURL}${client.id }/`, params, {
             withCredentials: true,
             headers: header
-        ***REMOVED***)
+        })
 
-    ***REMOVED***
-***REMOVED***
+    }
+}

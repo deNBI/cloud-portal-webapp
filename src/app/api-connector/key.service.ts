@@ -1,39 +1,39 @@
-import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
-import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs';
-import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
-import ***REMOVED***IResponseTemplate***REMOVED*** from "./response-template";
+import {Injectable} from '@angular/core';
+import {ApiSettings} from './api-settings.service';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {IResponseTemplate} from "./response-template";
 
-const header: HttpHeaders = new HttpHeaders(***REMOVED***
+const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
-***REMOVED***);
+});
 
 /**
  * Service which provides public key methods.
  */
 @Injectable()
-export class KeyService ***REMOVED***
+export class KeyService {
 
-    constructor(private http: HttpClient) ***REMOVED***
-    ***REMOVED***
+    constructor(private http: HttpClient) {
+    }
 
-    getKey(): Observable<IResponseTemplate> ***REMOVED***
+    getKey(): Observable<IResponseTemplate> {
 
-        return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/public_key/`, ***REMOVED***
+        return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/`, {
             withCredentials: true
-        ***REMOVED***)
+        })
 
-    ***REMOVED***
+    }
 
-    postKey(public_key: string): Observable<IResponseTemplate> ***REMOVED***
+    postKey(public_key: string): Observable<IResponseTemplate> {
         public_key = public_key.replace(/\r?\n|\r/gi, '');
         const params: HttpParams = new HttpParams().set('public_key', public_key);
 
-        return this.http.put<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***users/current/public_key/`, params, ***REMOVED***
+        return this.http.put<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/`, params, {
             withCredentials: true,
             headers: header
-        ***REMOVED***)
-    ***REMOVED***
+        })
+    }
 
-***REMOVED***
+}

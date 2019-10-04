@@ -1,16 +1,16 @@
-enum Lifetime_States ***REMOVED***
+enum Lifetime_States {
   EXPIRED = 0,
   EXPIRES_SOON = 1,
   VALID_LIFETIME = 2
-***REMOVED***
+}
 
-enum Project_States ***REMOVED***
+enum Project_States {
   ACTIVE = 2,
   SUSPENDED = 9
 
-***REMOVED***
+}
 
-export enum Application_States ***REMOVED***
+export enum Application_States {
   SUBMITTED = 1,
   APPROVED = 2,
   DECLINED = 3,
@@ -21,9 +21,9 @@ export enum Application_States ***REMOVED***
   TERMINATED = 8,
   SUSPENDED = 9
 
-***REMOVED***
+}
 
-enum Vm_Statuses ***REMOVED***
+enum Vm_Statuses {
   ACTIVE = 1,
   SHUTOFF = 2,
   DELETED = 3,
@@ -31,19 +31,19 @@ enum Vm_Statuses ***REMOVED***
   'POWERING OFF' = 5,
   RESTARTING = 6,
   'NOT FOUND' = 7
-***REMOVED***
+}
 
-export abstract class AbstractBaseClasse ***REMOVED***
+export abstract class AbstractBaseClasse {
 
   /**
    * If the site is loaded with values.
-   * @type ***REMOVED***boolean***REMOVED***
+   * @type {boolean}
    */
   isLoaded: boolean = false;
 
   /**
    * If the user is a vo admin.
-   * @type ***REMOVED***boolean***REMOVED***
+   * @type {boolean}
    */
   is_vo_admin: boolean = false;
 
@@ -52,7 +52,7 @@ export abstract class AbstractBaseClasse ***REMOVED***
   application_states: typeof Application_States = Application_States;
   vm_statuses = Vm_Statuses;
 
-  collapse_status: ***REMOVED*** [id: string]: boolean ***REMOVED*** = ***REMOVED******REMOVED***;
+  collapse_status: { [id: string]: boolean } = {};
 
   // notification Modal variables
   public notificationModal;
@@ -63,77 +63,77 @@ export abstract class AbstractBaseClasse ***REMOVED***
   public notificationModalIsClosable = false;
   public notificationModalStay: boolean;
 
-  public resetNotificationModal() ***REMOVED***
+  public resetNotificationModal() {
     this.notificationModalTitle = 'Notification';
     this.notificationModalMessage = 'Please wait...';
     this.notificationModalIsClosable = false;
     this.notificationModalType = 'info';
-  ***REMOVED***
+  }
 
-  public updateNotificationModal(title: string, message: string, closable: true, type: string) ***REMOVED***
+  public updateNotificationModal(title: string, message: string, closable: true, type: string) {
     this.notificationModalTitle = title;
     this.notificationModalMessage = message;
     this.notificationModalIsClosable = closable;
     this.notificationModalType = type;
-  ***REMOVED***
+  }
 
-  public makeNotificationModalClosable(closable: boolean) ***REMOVED***
+  public makeNotificationModalClosable(closable: boolean) {
     this.notificationModalIsClosable = closable;
-  ***REMOVED***
+  }
 
-  public changeNotificationModalTitle(title: string) ***REMOVED***
+  public changeNotificationModalTitle(title: string) {
     this.notificationModalTitle = title;
-  ***REMOVED***
+  }
 
-  public changeNotificationModalMessage(message: string) ***REMOVED***
+  public changeNotificationModalMessage(message: string) {
     this.notificationModalMessage = message;
-  ***REMOVED***
+  }
 
-  public changeNotificationModalType(type: string) ***REMOVED***
+  public changeNotificationModalType(type: string) {
     this.notificationModalType = type;
-  ***REMOVED***
+  }
 
   /**
    * Get a collapse status.
-   * @param ***REMOVED***string***REMOVED*** id
-   * @returns ***REMOVED***boolean***REMOVED***
+   * @param {string} id
+   * @returns {boolean}
    */
-  public getCollapseStatus(id: string) ***REMOVED***
-    if (id in this.collapse_status) ***REMOVED***
+  public getCollapseStatus(id: string) {
+    if (id in this.collapse_status) {
       return this.collapse_status[id];
-    ***REMOVED*** else ***REMOVED***
+    } else {
       this.collapse_status[id] = true;
 
       return true;
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
-  public setCollapseStatus(id: string, status: boolean): void ***REMOVED***
+  public setCollapseStatus(id: string, status: boolean): void {
 
     this.collapse_status[id] = status;
 
-  ***REMOVED***
+  }
 
   /**
    * Switch status of collapse.
-   * @param ***REMOVED***string***REMOVED*** id
+   * @param {string} id
    */
-  public switchCollapseStatus(id: string) ***REMOVED***
+  public switchCollapseStatus(id: string) {
     this.collapse_status[id] = !this.getCollapseStatus(id);
-  ***REMOVED***
+  }
 
-  lifeTimeReached(lifetimeDays: number, running: number): Lifetime_States ***REMOVED***
-    if ((lifetimeDays - running) < 0) ***REMOVED***
+  lifeTimeReached(lifetimeDays: number, running: number): Lifetime_States {
+    if ((lifetimeDays - running) < 0) {
       // expired
       return this.lifetime_states.EXPIRED
-    ***REMOVED*** else if ((lifetimeDays - running) < 21) ***REMOVED***
+    } else if ((lifetimeDays - running) < 21) {
       // expires soon
       return this.lifetime_states.EXPIRES_SOON
-    ***REMOVED*** else ***REMOVED***
+    } else {
       // still valid
       return this.lifetime_states.VALID_LIFETIME
-    ***REMOVED***
+    }
 
-  ***REMOVED***
+  }
 
-***REMOVED***
+}

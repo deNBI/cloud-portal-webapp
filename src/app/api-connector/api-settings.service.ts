@@ -1,26 +1,26 @@
-import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
+import {Injectable} from '@angular/core';
+import {environment} from '../../environments/environment'
 
 /**
  * Class for getting base urls.
  */
 @Injectable()
-export class ApiSettings ***REMOVED***
+export class ApiSettings {
     /**
      *  Provides base URL with trailing slash for all Portal API calls.
-     * @returns ***REMOVED***string***REMOVED*** the connector api base url
+     * @returns {string} the connector api base url
      */
-    static getApiBaseURL(): string ***REMOVED***
+    static getApiBaseURL(): string {
         return environment.apiBaseUrl;
-    ***REMOVED***
+    }
 
     /**
      *  Returns the format of the API call.
-     * @returns ***REMOVED***string***REMOVED*** 'json'
+     * @returns {string} 'json'
      */
-    static getApiFormat(): string ***REMOVED***
+    static getApiFormat(): string {
         return 'json';
-    ***REMOVED***
-    constructor() ***REMOVED***
-    ***REMOVED***
-***REMOVED***
+    }
+    constructor() {
+    }
+}

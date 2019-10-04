@@ -1,33 +1,33 @@
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***RouterModule, Routes***REMOVED*** from '@angular/router';
-import ***REMOVED***VoOverviewComponent***REMOVED*** from './VoOverviewComponent';
-import ***REMOVED***VoGuardService***REMOVED*** from './vo-guard.service';
-import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {VoOverviewComponent} from './VoOverviewComponent';
+import {VoGuardService} from './vo-guard.service';
+import {ResourcesComponent} from './resources/resources.component';
 
 const routes: Routes = [
-    ***REMOVED***
+    {
         path: 'overview',
         component: VoOverviewComponent,
         canActivate: [VoGuardService],
-        data: ***REMOVED***
+        data: {
             title: 'Vo manager overview'
-        ***REMOVED***
-    ***REMOVED***
-    , ***REMOVED***
+        }
+    }
+    , {
         path: 'resources',
         component: ResourcesComponent,
         canActivate: [VoGuardService],
-        data: ***REMOVED***
+        data: {
             title: 'Vo Resources'
-        ***REMOVED***
+        }
 
-    ***REMOVED***
+    }
 
 ];
 
-@NgModule(***REMOVED***
+@NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
-***REMOVED***)
-export class VoManagerRoutingModule ***REMOVED***
-***REMOVED***
+})
+export class VoManagerRoutingModule {
+}

@@ -1,14 +1,14 @@
-import ***REMOVED***Component, Input, OnChanges, SimpleChange, SimpleChanges***REMOVED*** from '@angular/core';
-import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachinemodels/virtualmachine';
+import {Component, Input, OnChanges, SimpleChange, SimpleChanges} from '@angular/core';
+import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
 import * as JSPDF from 'jspdf';
-import ***REMOVED***VirtualmachineService***REMOVED*** from '../../api-connector/virtualmachine.service';
+import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
 
-@Component(***REMOVED***
+@Component({
   selector: 'app-how-to-connect',
   templateUrl: 'how-to-connect.component.html',
   providers: [VirtualmachineService]
-           ***REMOVED***)
-export class HowToConnectComponent implements OnChanges ***REMOVED***
+           })
+export class HowToConnectComponent implements OnChanges {
 
   showSshCommando: boolean = true;
   showUdpCommando: boolean = true;
@@ -18,24 +18,24 @@ export class HowToConnectComponent implements OnChanges ***REMOVED***
 
   @Input() playbook_run: number = 0;
 
-  logs?: ***REMOVED***[selector: string]: string | number***REMOVED***;
+  logs?: {[selector: string]: string | number};
 
   doc: JSPDF;
 
-  constructor(private virtualMachineService: VirtualmachineService) ***REMOVED***
-  ***REMOVED***
+  constructor(private virtualMachineService: VirtualmachineService) {
+  }
 
-  downloadFile(type: string): any ***REMOVED***
-    if (type === 'pdf') ***REMOVED***
+  downloadFile(type: string): any {
+    if (type === 'pdf') {
       this.createLogPDF();
       this.doc.save('Playbook-Logs.pdf');
-    ***REMOVED***
-    if (type === 'txt') ***REMOVED***
+    }
+    if (type === 'txt') {
       this.saveAsTxt();
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
-  createLogPDF(): void ***REMOVED***
+  createLogPDF(): void {
     const doc: JSPDF = new JSPDF('p', 'mm', 'a4');
     const lineWidth: number = doc.internal.pageSize.width;
     const margin: number = 10;
@@ -47,72 +47,72 @@ export class HowToConnectComponent implements OnChanges ***REMOVED***
     const stdout: string[] = doc.splitTextToSize(this.logs['stdout'], maxLineWidth);
     stdout.unshift('Log: ');
     let currentLine: number = 10;
-    for (const line of stdout) ***REMOVED***
-      if ((currentLine + margin) > pageHeight) ***REMOVED***
+    for (const line of stdout) {
+      if ((currentLine + margin) > pageHeight) {
         doc.addPage();
         currentLine = 10;
-      ***REMOVED***
+      }
       doc.text(line, margin * 2, currentLine + margin);
       currentLine += 10;
-    ***REMOVED***
+    }
     const stderr: string[] = doc.splitTextToSize(this.logs['stderr'], maxLineWidth);
     stderr.unshift('Errorlog:');
-    for (const line of stderr) ***REMOVED***
-      if ((currentLine + margin) > pageHeight) ***REMOVED***
+    for (const line of stderr) {
+      if ((currentLine + margin) > pageHeight) {
         doc.addPage();
         currentLine = 10;
-      ***REMOVED***
+      }
       doc.text(line, margin * 2, currentLine + margin);
       currentLine += 10;
-    ***REMOVED***
+    }
     this.doc = doc;
-  ***REMOVED***
+  }
 
-  saveAsTxt(): any ***REMOVED***
+  saveAsTxt(): any {
     const element: HTMLElement = document.createElement('a');
     const fileType: string = 'text/plain';
-    const status: string = `Statuscode: $***REMOVED***this.logs['status'].toString()***REMOVED***\n`;
-    const stdout: string = `Log: $***REMOVED***this.logs['stdout'].toString()***REMOVED***\n`;
-    const stderr: string = `Errorlog: $***REMOVED***this.logs['stderr'].toString()***REMOVED***\n`;
-    element.setAttribute('href', `data:$***REMOVED***fileType***REMOVED***;charset=utf-8,$***REMOVED***encodeURIComponent(status + stdout + stderr)***REMOVED***`);
+    const status: string = `Statuscode: ${this.logs['status'].toString()}\n`;
+    const stdout: string = `Log: ${this.logs['stdout'].toString()}\n`;
+    const stderr: string = `Errorlog: ${this.logs['stderr'].toString()}\n`;
+    element.setAttribute('href', `data:${fileType};charset=utf-8,${encodeURIComponent(status + stdout + stderr)}`);
     element.setAttribute('download', 'Playbook-logs.txt');
 
     const event: MouseEvent = new MouseEvent('click');
     element.dispatchEvent(event);
-  ***REMOVED***
+  }
 
-  get selectedVirtualMachine(): VirtualMachine ***REMOVED***
+  get selectedVirtualMachine(): VirtualMachine {
     return this._selectedVirtualMachine;
-  ***REMOVED***
+  }
 
-  @Input() set selectedVirtualMachine(vm: VirtualMachine) ***REMOVED***
+  @Input() set selectedVirtualMachine(vm: VirtualMachine) {
     this._selectedVirtualMachine = vm;
-  ***REMOVED***
+  }
 
-  ngOnChanges(changes: SimpleChanges): void ***REMOVED***
+  ngOnChanges(changes: SimpleChanges): void {
     const currentItem: SimpleChange = changes.selectedVirtualMachine;
     const current: null | VirtualMachine = currentItem.currentValue;
     const prev: null | VirtualMachine = currentItem.previousValue;
-    if (current === null) ***REMOVED***
+    if (current === null) {
       return;
-    ***REMOVED*** else if (prev === null) ***REMOVED***
+    } else if (prev === null) {
       this.virtualMachineService.getLogs(this._selectedVirtualMachine.openstackid)
-        .subscribe((logs: ***REMOVED***[selector: string]: string | number***REMOVED***) => ***REMOVED***
-        if (logs['status'] === null) ***REMOVED***
-        ***REMOVED*** else ***REMOVED***
+        .subscribe((logs: {[selector: string]: string | number}) => {
+        if (logs['status'] === null) {
+        } else {
           this.logs = logs;
           this.playbook_run = 1;
-        ***REMOVED***
-      ***REMOVED***)
-    ***REMOVED*** else if (current !== prev) ***REMOVED***
+        }
+      })
+    } else if (current !== prev) {
       this.virtualMachineService.getLogs(this._selectedVirtualMachine.openstackid)
-        .subscribe((logs: ***REMOVED***[selector: string]: string | number***REMOVED***) => ***REMOVED***
-        if (logs['status'] === null) ***REMOVED***
-        ***REMOVED*** else ***REMOVED***
+        .subscribe((logs: {[selector: string]: string | number}) => {
+        if (logs['status'] === null) {
+        } else {
           this.logs = logs;
           this.playbook_run = 1;
-        ***REMOVED***
-      ***REMOVED***)
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+        }
+      })
+    }
+  }
+}

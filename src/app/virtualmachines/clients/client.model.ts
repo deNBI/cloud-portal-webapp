@@ -1,7 +1,7 @@
 /**
  * Clientclass
  */
-export class Client ***REMOVED***
+export class Client {
   private _id: string;
   private _host: string;
   private _status: string;
@@ -19,138 +19,138 @@ export class Client ***REMOVED***
   private _newVms: number;
   private _newVolumeLimit: number;
 
-  constructor(host: string, port: string, location: string, id: string) ***REMOVED***
+  constructor(host: string, port: string, location: string, id: string) {
     this._host = host;
     this._port = port;
     this._location = location;
     this._id = id;
-  ***REMOVED***
+  }
 
-  get newVolumes(): number ***REMOVED***
+  get newVolumes(): number {
     return this._newVolumes;
-  ***REMOVED***
+  }
 
-  set newVolumes(value: number) ***REMOVED***
+  set newVolumes(value: number) {
     this._newVolumes = value;
-  ***REMOVED***
+  }
 
-  get newVms(): number ***REMOVED***
+  get newVms(): number {
     return this._newVms;
-  ***REMOVED***
+  }
 
-  set newVms(value: number) ***REMOVED***
+  set newVms(value: number) {
     this._newVms = value;
-  ***REMOVED***
+  }
 
-  get newVolumeLimit(): number ***REMOVED***
+  get newVolumeLimit(): number {
     return this._newVolumeLimit;
-  ***REMOVED***
+  }
 
-  set newVolumeLimit(value: number) ***REMOVED***
+  set newVolumeLimit(value: number) {
     this._newVolumeLimit = value;
-  ***REMOVED***
+  }
 
-  get id(): string ***REMOVED***
+  get id(): string {
     return this._id;
-  ***REMOVED***
+  }
 
-  set id(value: string) ***REMOVED***
+  set id(value: string) {
     this._id = value;
-  ***REMOVED***
+  }
 
-  get host(): string ***REMOVED***
+  get host(): string {
     return this._host;
-  ***REMOVED***
+  }
 
-  set host(value: string) ***REMOVED***
+  set host(value: string) {
     this._host = value;
-  ***REMOVED***
+  }
 
-  get status(): string ***REMOVED***
+  get status(): string {
     return this._status;
-  ***REMOVED***
+  }
 
-  set status(value: string) ***REMOVED***
+  set status(value: string) {
     this._status = value;
-  ***REMOVED***
+  }
 
-  get port(): string ***REMOVED***
+  get port(): string {
     return this._port;
-  ***REMOVED***
+  }
 
-  set port(value: string) ***REMOVED***
+  set port(value: string) {
     this._port = value;
-  ***REMOVED***
+  }
 
-  get version(): string ***REMOVED***
+  get version(): string {
     return this._version;
-  ***REMOVED***
+  }
 
-  set version(value: string) ***REMOVED***
+  set version(value: string) {
     this._version = value;
-  ***REMOVED***
+  }
 
-  get features(): string[] ***REMOVED***
+  get features(): string[] {
     return this._features;
-  ***REMOVED***
+  }
 
-  set features(value: string[]) ***REMOVED***
+  set features(value: string[]) {
     this._features = value;
-  ***REMOVED***
+  }
 
-  get maxVolumes(): number ***REMOVED***
+  get maxVolumes(): number {
     return this._maxVolumes;
-  ***REMOVED***
+  }
 
-  set maxVolumes(value: number) ***REMOVED***
+  set maxVolumes(value: number) {
     this._maxVolumes = value;
-  ***REMOVED***
+  }
 
-  get assignedVolumes(): number ***REMOVED***
+  get assignedVolumes(): number {
     return this._assignedVolumes;
-  ***REMOVED***
+  }
 
-  set assignedVolumes(value: number) ***REMOVED***
+  set assignedVolumes(value: number) {
     this._assignedVolumes = value;
-  ***REMOVED***
+  }
 
-  get maxVMs(): number ***REMOVED***
+  get maxVMs(): number {
     return this._maxVMs;
-  ***REMOVED***
+  }
 
-  set maxVMs(value: number) ***REMOVED***
+  set maxVMs(value: number) {
     this._maxVMs = value;
-  ***REMOVED***
+  }
 
-  get assignedVMs(): number ***REMOVED***
+  get assignedVMs(): number {
     return this._assignedVMs;
-  ***REMOVED***
+  }
 
-  set assignedVMs(value: number) ***REMOVED***
+  set assignedVMs(value: number) {
     this._assignedVMs = value;
-  ***REMOVED***
+  }
 
-  get location(): string ***REMOVED***
+  get location(): string {
     return this._location;
-  ***REMOVED***
+  }
 
-  set location(value: string) ***REMOVED***
+  set location(value: string) {
     this._location = value;
-  ***REMOVED***
+  }
 
-  get maxVolumeLimit(): number ***REMOVED***
+  get maxVolumeLimit(): number {
     return this._maxVolumeLimit;
-  ***REMOVED***
+  }
 
-  set maxVolumeLimit(value: number) ***REMOVED***
+  set maxVolumeLimit(value: number) {
     this._maxVolumeLimit = value;
-  ***REMOVED***
+  }
 
-  get assignedVolumesStorage(): number ***REMOVED***
+  get assignedVolumesStorage(): number {
     return this._assignedVolumesStorage;
-  ***REMOVED***
+  }
 
-  set assignedVolumesStorage(value: number) ***REMOVED***
+  set assignedVolumesStorage(value: number) {
     this._assignedVolumesStorage = value;
-  ***REMOVED***
-***REMOVED***
+  }
+}

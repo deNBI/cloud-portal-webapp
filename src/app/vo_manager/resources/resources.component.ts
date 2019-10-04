@@ -1,20 +1,20 @@
-import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***VoService***REMOVED*** from '../../api-connector/vo.service';
+import {Component, OnInit} from '@angular/core';
+import {VoService} from '../../api-connector/vo.service';
 import * as jspdf from 'jspdf';
-import ***REMOVED***Resources***REMOVED*** from './resources';
+import {Resources} from './resources';
 import html2canvas from 'html2canvas';
-import ***REMOVED***ExportAsConfig, ExportAsService***REMOVED*** from 'ngx-export-as'
+import {ExportAsConfig, ExportAsService} from 'ngx-export-as'
 
 /**
  * Resource component.
  */
-@Component(***REMOVED***
+@Component({
     selector: 'app-resources',
     templateUrl: './resources.component.html',
     styleUrls: ['./resources.component.scss'],
     providers: [VoService, ExportAsService]
-***REMOVED***)
-export class ResourcesComponent implements OnInit ***REMOVED***
+})
+export class ResourcesComponent implements OnInit {
 
     isLoaded: boolean = false;
     voResources: Resources[] = [];
@@ -22,32 +22,32 @@ export class ResourcesComponent implements OnInit ***REMOVED***
     tableId: string = 'resourcesTable';
     today: number = Date.now();
 
-    exportAsConfigCSV: ExportAsConfig = ***REMOVED***
+    exportAsConfigCSV: ExportAsConfig = {
         type: 'csv',
         elementId: this.tableId
-    ***REMOVED***;
+    };
 
-    constructor(private voservice: VoService, private exportAsService: ExportAsService) ***REMOVED***
+    constructor(private voservice: VoService, private exportAsService: ExportAsService) {
         this.getVoProjectResources()
 
-    ***REMOVED***
+    }
 
-    public tableToCSV(): void ***REMOVED***
+    public tableToCSV(): void {
         this.exportAsService.save(this.exportAsConfigCSV, this.fileName);
 
-    ***REMOVED***
+    }
 
-    public getVoProjectResources(): void ***REMOVED***
-        this.voservice.getVoProjectResources().subscribe((res: Resources[]) => ***REMOVED***
+    public getVoProjectResources(): void {
+        this.voservice.getVoProjectResources().subscribe((res: Resources[]) => {
             this.voResources = res;
             this.isLoaded = true;
-        ***REMOVED***)
+        })
 
-    ***REMOVED***
+    }
 
-    public tableToPDF(): void ***REMOVED***
+    public tableToPDF(): void {
         const data = document.getElementById(this.tableId);
-        html2canvas(data).then(canvas => ***REMOVED***
+        html2canvas(data).then(canvas => {
             // Few necessary setting options
             const imgWidth: number = 208;
             const pageHeight: number = 295;
@@ -59,10 +59,10 @@ export class ResourcesComponent implements OnInit ***REMOVED***
             const position: number = 0;
             pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
             pdf.save('VoResources.pdf'); // Generated PDF
-        ***REMOVED***);
-    ***REMOVED***
+        });
+    }
 
-    ngOnInit(): void ***REMOVED***
-    ***REMOVED***
+    ngOnInit(): void {
+    }
 
-***REMOVED***
+}

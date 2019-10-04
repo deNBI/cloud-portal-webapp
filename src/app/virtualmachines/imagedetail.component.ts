@@ -1,13 +1,13 @@
-import ***REMOVED***Component, EventEmitter, HostListener, Input, OnInit, Output***REMOVED*** from '@angular/core';
-import ***REMOVED***Image***REMOVED*** from './virtualmachinemodels/image'
-import ***REMOVED***OwlOptions, ResponsiveSettings***REMOVED*** from 'ngx-owl-carousel-o';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
+import {Image} from './virtualmachinemodels/image'
+import {OwlOptions, ResponsiveSettings} from 'ngx-owl-carousel-o';
 
-@Component(***REMOVED***
+@Component({
              selector: 'app-image-detail',
              templateUrl: 'imagedetail.component.html'
 
-           ***REMOVED***)
-export class ImageDetailComponent implements OnInit ***REMOVED***
+           })
+export class ImageDetailComponent implements OnInit {
   @Input() selectedImage: Image;
   @Input() images: Image[];
   @Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
@@ -18,7 +18,7 @@ export class ImageDetailComponent implements OnInit ***REMOVED***
   carousel_window_min_xl_8: number = 1380;
   carousel_window_min_xl6: number = 1200;
 
-  customOptions: OwlOptions = ***REMOVED***
+  customOptions: OwlOptions = {
     loop: false,
     mouseDrag: false,
     touchDrag: false,
@@ -27,52 +27,52 @@ export class ImageDetailComponent implements OnInit ***REMOVED***
     navSpeed: 700,
     navText: ['<i class=\'fa fa-chevron-left\'></i>',
       '<i class=\'fa fa-chevron-right\'></i>'],
-    responsive: ***REMOVED***
-      0: ***REMOVED***
+    responsive: {
+      0: {
         items: 1
-      ***REMOVED***,
-      550: ***REMOVED***
+      },
+      550: {
         items: 2
 
-      ***REMOVED***,
-      800: ***REMOVED***
+      },
+      800: {
         items: 3
-      ***REMOVED***,
-      1200: ***REMOVED***
+      },
+      1200: {
         items: 4
-      ***REMOVED***
-    ***REMOVED***,
+      }
+    },
     nav: true
-  ***REMOVED***;
+  };
 
-  ngOnInit(): void ***REMOVED***
+  ngOnInit(): void {
     this.window_size = window.innerWidth;
 
-  ***REMOVED***
+  }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event): void ***REMOVED***
+  onResize(event): void {
     this.window_size = window.innerWidth;
-  ***REMOVED***
+  }
 
   /**
    * Sets the selected Image.
    * If a selectedImage exist it will be added to the flavor list and the new selectedImage will be removed.
    * @param image Image which will become the selected Flavor.
    */
-  setSelectedImage(image: Image): void ***REMOVED***
+  setSelectedImage(image: Image): void {
 
     const indexNewSelectedImage: number = this.images.indexOf(image, 0);
 
-    if (this.selectedImage) ***REMOVED***
+    if (this.selectedImage) {
       this.images[indexNewSelectedImage] = this.selectedImage;
-    ***REMOVED*** else ***REMOVED***
+    } else {
       this.images.splice(indexNewSelectedImage, 1);
-    ***REMOVED***
+    }
 
     this.selectedImage = image;
 
     this.selectedImageChange.emit(this.selectedImage);
-  ***REMOVED***
+  }
 
-***REMOVED***
+}

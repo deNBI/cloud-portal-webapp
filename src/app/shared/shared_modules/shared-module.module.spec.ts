@@ -1,13 +1,13 @@
-import ***REMOVED*** SharedModuleModule ***REMOVED*** from './shared-module.module';
+import { SharedModuleModule } from './shared-module.module';
 
-describe('SharedModuleModule', () => ***REMOVED***
+describe('SharedModuleModule', () => {
   let sharedModuleModule: SharedModuleModule;
 
-  beforeEach(() => ***REMOVED***
+  beforeEach(() => {
     sharedModuleModule = new SharedModuleModule();
-  ***REMOVED***);
+  });
 
-  it('should create an instance', () => ***REMOVED***
+  it('should create an instance', () => {
     expect(sharedModuleModule).toBeTruthy();
-  ***REMOVED***);
-***REMOVED***);
+  });
+});

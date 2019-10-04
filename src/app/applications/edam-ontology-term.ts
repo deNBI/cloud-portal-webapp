@@ -1,37 +1,37 @@
-export class EdamOntologyTerm ***REMOVED***
+export class EdamOntologyTerm {
 
   private _name: string;
   private _term: string;
   private _uri: string;
 
-  constructor(storid: number, name: string, term: string, uri: string, is_a: number[]) ***REMOVED***
+  constructor(storid: number, name: string, term: string, uri: string, is_a: number[]) {
     this._name = name;
     this._term = term;
     this._uri = uri;
-  ***REMOVED***
+  }
 
-  get name(): string ***REMOVED***
+  get name(): string {
     return this._name;
-  ***REMOVED***
+  }
 
-  set name(value: string) ***REMOVED***
+  set name(value: string) {
     this._name = value;
-  ***REMOVED***
+  }
 
-  get term(): string ***REMOVED***
+  get term(): string {
     return this._term;
-  ***REMOVED***
+  }
 
-  set term(value: string) ***REMOVED***
+  set term(value: string) {
     this._term = value;
-  ***REMOVED***
+  }
 
-  get uri(): string ***REMOVED***
+  get uri(): string {
     return this._uri;
-  ***REMOVED***
+  }
 
-  set uri(value: string) ***REMOVED***
+  set uri(value: string) {
     this._uri = value;
-  ***REMOVED***
+  }
 
-***REMOVED***
+}

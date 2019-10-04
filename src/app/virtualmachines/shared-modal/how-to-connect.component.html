@@ -8,7 +8,7 @@
     </button>
   </div>
   <div class="row justify-content-center">
-    <pre [hidden]="showSshCommando" style="word-wrap: break-word;">***REMOVED******REMOVED***_selectedVirtualMachine?.ssh_command***REMOVED******REMOVED***</pre>
+    <pre [hidden]="showSshCommando" style="word-wrap: break-word;">{{_selectedVirtualMachine?.ssh_command}}</pre>
   </div>
 </div>
 
@@ -32,7 +32,7 @@
                or on Ubuntu run: <br>
                sudo apt-get install mosh <br>
             3. Connect with mosh to your virtual Machine:
-                  ***REMOVED******REMOVED***_selectedVirtualMachine?.udp_command***REMOVED******REMOVED***</pre>
+                  {{_selectedVirtualMachine?.udp_command}}</pre>
   </div>
 </div>
 

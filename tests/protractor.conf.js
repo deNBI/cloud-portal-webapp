@@ -1,18 +1,18 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
-const ***REMOVED***SpecReporter***REMOVED*** = require('jasmine-spec-reporter');
+const {SpecReporter} = require('jasmine-spec-reporter');
 const fs = require('fs');
 let rawdata = fs.readFileSync('e2e/environment.json');
 let credentials = JSON.parse(rawdata);
 
-exports.config = ***REMOVED***
+exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  params: ***REMOVED***
+  params: {
     timeout: credentials['timeout'],
 
     portal: credentials['portal'],
-    login: ***REMOVED***
+    login: {
       email_user: credentials['email_user'],
       password_user: credentials['password_user'],
       email_fm: credentials['email_fm'],
@@ -20,33 +20,33 @@ exports.config = ***REMOVED***
       email_vo: credentials['email_vo'],
       password_vo: credentials['password_vo'],
       auth: credentials['auth']
-    ***REMOVED***
-  ***REMOVED***,
+    }
+  },
   allScriptsTimeout: 11000,
   specs: [
     'login_test.ts', 'cloud_application_test.ts'
   ],
-  capabilities: ***REMOVED***
+  capabilities: {
     'browserName': 'chrome',
-    chromeOptions: ***REMOVED***
+    chromeOptions: {
       args: ["--incognito"]
-    ***REMOVED***
-  ***REMOVED***,
+    }
+  },
   directConnect: true,
   framework: 'jasmine',
-  jasmineNodeOpts: ***REMOVED***
+  jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 30000,
-    print: function () ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***,
-  beforeLaunch: function () ***REMOVED***
-    require('ts-node').register(***REMOVED***
+    print: function () {
+    }
+  },
+  beforeLaunch: function () {
+    require('ts-node').register({
       project: 'e2e/tsconfig.e2e.json'
-    ***REMOVED***);
-  ***REMOVED***,
-  onPrepare() ***REMOVED***
-    jasmine.getEnv().addReporter(new SpecReporter(***REMOVED***spec: ***REMOVED***displayStacktrace: true***REMOVED******REMOVED***));
+    });
+  },
+  onPrepare() {
+    jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: true}}));
     browser.manage().window().setSize(1920, 1080);
-  ***REMOVED***
-***REMOVED***;
+  }
+};

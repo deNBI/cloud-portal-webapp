@@ -2,14 +2,14 @@
   [asideMenuToggler]="false"
   [sidebarToggler]="false"
   [mobileAsideMenuToggler]="false"
-  [navbarBrand]="***REMOVED***src: 'static/webapp/assets/img/denbi_cloud_logo.svg', style: 'padding: 0.5rem 1rem',alt: 'test'***REMOVED***"
+  [navbarBrand]="{src: 'static/webapp/assets/img/denbi_cloud_logo.svg', style: 'padding: 0.5rem 1rem',alt: 'test'}"
   [navbarBrandRouterLink]="'/'"
 
 >
   <ul class="nav navbar-nav ml-md-auto">
     <li><strong class="text-muted" style="cursor: pointer;padding-right: 2pc" routerLinkActive="active"
                 [routerLink]="['/userinfo']"
-    >***REMOVED******REMOVED***login_name***REMOVED******REMOVED***</strong></li>
+    >{{login_name}}</strong></li>
 
   </ul>
 </app-header>
@@ -36,7 +36,7 @@
         </li>
         <li class="nav-item">
 
-          <a class="nav-link" *ngIf="is_vo_admin" [routerLinkActiveOptions]="***REMOVED***exact:true***REMOVED***"
+          <a class="nav-link" *ngIf="is_vo_admin" [routerLinkActiveOptions]="{exact:true}"
              routerLinkActive="active" [routerLink]="['/applications']"><i
             class="nav-icon icon-drawer"></i> Applications</a>
         </li>
@@ -64,7 +64,7 @@
               <i class="icon-simplevm"
                  style="color: #FFF;display: inline-block;;width: 1.09375rem; font-size: 0.875rem; "></i>
             </span>
-            ***REMOVED******REMOVED***application.project_name***REMOVED******REMOVED***
+            {{application.project_name}}
           </a>
         </li>
         <!--
@@ -201,5 +201,5 @@
 </div>
 
 <app-footer>
-  <a href="https://cloud.denbi.de">de.NBI</a> &copy; ***REMOVED******REMOVED*** year ***REMOVED******REMOVED***
+  <a href="https://cloud.denbi.de">de.NBI</a> &copy; {{ year }}
 </app-footer>

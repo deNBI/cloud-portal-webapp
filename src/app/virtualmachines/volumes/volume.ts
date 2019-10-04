@@ -1,10 +1,10 @@
-import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachinemodels/virtualmachine';
-import ***REMOVED***Client***REMOVED*** from '../clients/client.model';
+import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
+import {Client} from '../clients/client.model';
 
 /**
  * Volume class.
  */
-export class Volume ***REMOVED***
+export class Volume {
   volume_name: string;
   volume_project: string;
   volume_projectid: string;
@@ -13,4 +13,4 @@ export class Volume ***REMOVED***
   volume_virtualmachine: VirtualMachine;
   volume_client: Client;
   volume_created_by_user: boolean;
-***REMOVED***
+}

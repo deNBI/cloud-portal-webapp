@@ -1,7 +1,7 @@
 /**
  * ApplicationStatus class.
  */
-export class ApplicationStatus ***REMOVED***
+export class ApplicationStatus {
 
     /**
      * id of the status.
@@ -13,24 +13,24 @@ export class ApplicationStatus ***REMOVED***
      */
     private _application_status_name: string;
 
-    constructor(Id: number, Name: string) ***REMOVED***
+    constructor(Id: number, Name: string) {
         this._application_status_id = Id;
         this._application_status_name = Name;
-    ***REMOVED***
+    }
 
-    get application_status_id(): number ***REMOVED***
+    get application_status_id(): number {
         return this._application_status_id;
-    ***REMOVED***
+    }
 
-    set application_status_id(value: number) ***REMOVED***
+    set application_status_id(value: number) {
         this._application_status_id = value;
-    ***REMOVED***
+    }
 
-    get application_status_name(): string ***REMOVED***
+    get application_status_name(): string {
         return this._application_status_name;
-    ***REMOVED***
+    }
 
-    set application_status_name(value: string) ***REMOVED***
+    set application_status_name(value: string) {
         this._application_status_name = value;
-    ***REMOVED***
-***REMOVED***
+    }
+}

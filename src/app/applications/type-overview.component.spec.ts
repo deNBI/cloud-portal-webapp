@@ -1,25 +1,25 @@
-import ***REMOVED*** async, ComponentFixture, TestBed ***REMOVED*** from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import ***REMOVED*** TypeOverviewComponent ***REMOVED*** from './type-overview.component';
+import { TypeOverviewComponent } from './type-overview.component';
 
-describe('TypeOverviewComponent', () => ***REMOVED***
+describe('TypeOverviewComponent', () => {
   let component: TypeOverviewComponent;
   let fixture: ComponentFixture<TypeOverviewComponent>;
 
-  beforeEach(async(() => ***REMOVED***
-    TestBed.configureTestingModule(***REMOVED***
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
       declarations: [ TypeOverviewComponent ]
-    ***REMOVED***)
+    })
     .compileComponents();
-  ***REMOVED***));
+  }));
 
-  beforeEach(() => ***REMOVED***
+  beforeEach(() => {
     fixture = TestBed.createComponent(TypeOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  ***REMOVED***);
+  });
 
-  it('should create', () => ***REMOVED***
+  it('should create', () => {
     expect(component).toBeTruthy();
-  ***REMOVED***);
-***REMOVED***);
+  });
+});

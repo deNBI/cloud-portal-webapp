@@ -1,9 +1,9 @@
 /**
  * FlavorType class.
  */
-export class FlavorType ***REMOVED***
+export class FlavorType {
     shortcut: string;
     long_name: string;
     descirption: string;
 
-***REMOVED***
+}

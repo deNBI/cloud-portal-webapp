@@ -1,7 +1,7 @@
 /**
  * Resource class.
  */
-export class Resources ***REMOVED***
+export class Resources {
 
     private _resource_name: string;
     private _totalRam: number = 0;
@@ -13,7 +13,7 @@ export class Resources ***REMOVED***
     private _totalGPU: number = 0;
 
     constructor(resource_name: string, totalRam: number, totalCores: number, totalVms: number, totalVolumeLimit: number,
-                totalVolumeCounter: number, totalObjectStorage: number,  totalGPU: number) ***REMOVED***
+                totalVolumeCounter: number, totalObjectStorage: number,  totalGPU: number) {
         this._resource_name = resource_name;
         this._totalRam = totalRam;
         this._totalCores = totalCores;
@@ -22,70 +22,70 @@ export class Resources ***REMOVED***
         this._totalVolumeCounter = totalVolumeCounter;
         this._totalObjectStorage = totalObjectStorage;
         this._totalGPU = totalGPU;
-    ***REMOVED***
+    }
 
-    get resource_name(): string ***REMOVED***
+    get resource_name(): string {
         return this._resource_name;
-    ***REMOVED***
+    }
 
-    set resource_name(value: string) ***REMOVED***
+    set resource_name(value: string) {
         this._resource_name = value;
-    ***REMOVED***
+    }
 
-    get totalRam(): number ***REMOVED***
+    get totalRam(): number {
         return this._totalRam;
-    ***REMOVED***
+    }
 
-    set totalRam(value: number) ***REMOVED***
+    set totalRam(value: number) {
         this._totalRam = value;
-    ***REMOVED***
+    }
 
-    get totalCores(): number ***REMOVED***
+    get totalCores(): number {
         return this._totalCores;
-    ***REMOVED***
+    }
 
-    set totalCores(value: number) ***REMOVED***
+    set totalCores(value: number) {
         this._totalCores = value;
-    ***REMOVED***
+    }
 
-    get totalVms(): number ***REMOVED***
+    get totalVms(): number {
         return this._totalVms;
-    ***REMOVED***
+    }
 
-    set totalVms(value: number) ***REMOVED***
+    set totalVms(value: number) {
         this._totalVms = value;
-    ***REMOVED***
+    }
 
-    get totalVolumeLimit(): number ***REMOVED***
+    get totalVolumeLimit(): number {
         return this._totalVolumeLimit;
-    ***REMOVED***
+    }
 
-    set totalVolumeLimit(value: number) ***REMOVED***
+    set totalVolumeLimit(value: number) {
         this._totalVolumeLimit = value;
-    ***REMOVED***
+    }
 
-    get totalVolumeCounter(): number ***REMOVED***
+    get totalVolumeCounter(): number {
         return this._totalVolumeCounter;
-    ***REMOVED***
+    }
 
-    set totalVolumeCounter(value: number) ***REMOVED***
+    set totalVolumeCounter(value: number) {
         this._totalVolumeCounter = value;
-    ***REMOVED***
+    }
 
-    get totalObjectStorage(): number ***REMOVED***
+    get totalObjectStorage(): number {
         return this._totalObjectStorage;
-    ***REMOVED***
+    }
 
-    set totalObjectStorage(value: number) ***REMOVED***
+    set totalObjectStorage(value: number) {
         this._totalObjectStorage = value;
-    ***REMOVED***
+    }
 
-    get totalGPU(): number ***REMOVED***
+    get totalGPU(): number {
         return this._totalGPU;
-    ***REMOVED***
+    }
 
-    set totalGPU(value: number) ***REMOVED***
+    set totalGPU(value: number) {
         this._totalGPU = value;
-    ***REMOVED***
+    }
 
-***REMOVED***
+}

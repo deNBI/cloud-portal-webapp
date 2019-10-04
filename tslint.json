@@ -1,4 +1,4 @@
-***REMOVED***
+{
   "rulesDirectory": [
     "node_modules/codelyzer",
     "node_modules/tslint-eslint-rules/dist/rules"
@@ -6,7 +6,7 @@
    "extends": [
     "tslint-clean-code"
   ],
-  "rules": ***REMOVED***
+  "rules": {
     "callable-types": true,
     "no-constant-condition": true,
     "no-control-regex":true,
@@ -127,7 +127,7 @@
         "max-file-line-count": true,
         "max-line-length": [true, 140],
         "member-access": true,
-        "member-ordering": [true, ***REMOVED*** "order": "fields-first" ***REMOVED***],
+        "member-ordering": [true, { "order": "fields-first" }],
         "new-parens": true,
         "no-commented-out-code": true,
         "no-complex-conditionals": true,
@@ -168,7 +168,7 @@
         "one-line": [true, "check-open-brace", "check-catch", "check-else", "check-whitespace"],
         "quotemark": [true, "single"],
         "semicolon": [true, "always"],
-        "trailing-comma": [true, ***REMOVED***"singleline": "never", "multiline": "never"***REMOVED***], // forcing trailing commas for multi-line
+        "trailing-comma": [true, {"singleline": "never", "multiline": "never"}], // forcing trailing commas for multi-line
                     // lists results in lists that are easier to reorder and version control diffs that are more clear.
                     // Many teams like to have multiline be 'always'. There is no clear consensus on this rule but the
                     // internal MS JavaScript coding standard does discourage it.
@@ -248,13 +248,13 @@
     ],
     "typedef-whitespace": [
       true,
-      ***REMOVED***
+      {
         "call-signature": "nospace",
         "index-signature": "nospace",
         "parameter": "nospace",
         "property-declaration": "nospace",
         "variable-declaration": "nospace"
-      ***REMOVED***
+      }
     ],
     "unified-signatures": true,
     "variable-name": false,
@@ -280,5 +280,5 @@
     "directive-class-suffix": true
 
 
-  ***REMOVED***
-***REMOVED***
+  }
+}

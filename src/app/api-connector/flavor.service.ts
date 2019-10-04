@@ -1,36 +1,36 @@
-import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
-import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs';
-import ***REMOVED***HttpClient***REMOVED*** from '@angular/common/http';
-import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
+import {Injectable} from '@angular/core';
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {ApiSettings} from './api-settings.service';
+import {Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 
 /**
  * Service which provides methods for Flavors.
  */
 @Injectable()
-export class FlavorService ***REMOVED***
+export class FlavorService {
 
-    constructor(private http: HttpClient) ***REMOVED***
-    ***REMOVED***
+    constructor(private http: HttpClient) {
+    }
 
-    getFlavors(project_id: number): Observable<Flavor[]> ***REMOVED***
-        return this.http.get<Flavor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***projects/$***REMOVED***project_id***REMOVED***/flavors/`, ***REMOVED***
+    getFlavors(project_id: number): Observable<Flavor[]> {
+        return this.http.get<Flavor[]>(`${ApiSettings.getApiBaseURL()}projects/${project_id}/flavors/`, {
             withCredentials: true
 
-        ***REMOVED***)
-    ***REMOVED***
+        })
+    }
 
-    getListOfTypesAvailable(): Observable<FlavorType[]> ***REMOVED***
-        return this.http.get<FlavorType[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/flavorTypes/`, ***REMOVED***
+    getListOfTypesAvailable(): Observable<FlavorType[]> {
+        return this.http.get<FlavorType[]>(`${ApiSettings.getApiBaseURL()}project_applications/flavorTypes/`, {
             withCredentials: true
-        ***REMOVED***)
-    ***REMOVED***
+        })
+    }
 
-    getListOfFlavorsAvailable(): Observable<Flavor[]> ***REMOVED***
-        return this.http.get<Flavor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/flavors/`, ***REMOVED***
+    getListOfFlavorsAvailable(): Observable<Flavor[]> {
+        return this.http.get<Flavor[]>(`${ApiSettings.getApiBaseURL()}project_applications/flavors/`, {
             withCredentials: true
-        ***REMOVED***)
-    ***REMOVED***
+        })
+    }
 
-***REMOVED***
+}

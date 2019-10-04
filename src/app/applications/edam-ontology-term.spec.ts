@@ -1,7 +1,7 @@
-import ***REMOVED*** EdamOntologyTerm ***REMOVED*** from './edam-ontology-term';
+import { EdamOntologyTerm } from './edam-ontology-term';
 
-describe('EdamOntologyTerm', () => ***REMOVED***
-  it('should create an instance', () => ***REMOVED***
+describe('EdamOntologyTerm', () => {
+  it('should create an instance', () => {
     expect(new EdamOntologyTerm()).toBeTruthy();
-  ***REMOVED***);
-***REMOVED***);
+  });
+});

@@ -21,8 +21,8 @@
                             </tr>
 
                             <tr *ngFor="let imageTag of imageTags">
-                                <td>***REMOVED******REMOVED***imageTag['name']***REMOVED******REMOVED***</td>
-                                <td>***REMOVED******REMOVED***imageTag['description']***REMOVED******REMOVED***</td>
+                                <td>{{imageTag['name']}}</td>
+                                <td>{{imageTag['description']}}</td>
                                 <td>
                                     <button type="button" class="btn btn-primary"
                                             (click)="deleteTag(imageTag['name']);">Delete Tag

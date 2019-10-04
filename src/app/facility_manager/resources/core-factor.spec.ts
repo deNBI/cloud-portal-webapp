@@ -1,7 +1,7 @@
-import ***REMOVED*** CoreFactor ***REMOVED*** from './core-factor';
+import { CoreFactor } from './core-factor';
 
-describe('CoreFactor', () => ***REMOVED***
-  it('should create an instance', () => ***REMOVED***
+describe('CoreFactor', () => {
+  it('should create an instance', () => {
     expect(new CoreFactor()).toBeTruthy();
-  ***REMOVED***);
-***REMOVED***);
+  });
+});

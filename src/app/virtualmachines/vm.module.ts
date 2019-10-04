@@ -1,29 +1,29 @@
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***CarouselModule***REMOVED*** from 'ngx-owl-carousel-o';
-import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
-import ***REMOVED***VmRoutingModule***REMOVED*** from './vm_routing.module';
-import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap/modal';
-import ***REMOVED***ImageDetailComponent***REMOVED*** from '../virtualmachines/imagedetail.component';
-import ***REMOVED***VirtualMachineComponent***REMOVED*** from '../virtualmachines/addvm.component';
-import ***REMOVED***FlavorDetailComponent***REMOVED*** from '../virtualmachines/flavordetail.component';
-import ***REMOVED***ClientOverviewComponent***REMOVED*** from './clients/clientOverview.component';
-import ***REMOVED***VmOverviewComponent***REMOVED*** from '../virtualmachines/vmOverview.component';
-import ***REMOVED***VolumeOverviewComponent***REMOVED*** from './volumes/volumeOverview.component';
-import ***REMOVED***SnapshotOverviewComponent***REMOVED*** from './snapshots/snapshotOverview.component';
-import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination'
-import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared/shared_modules/public-key/public-key.module';
-import ***REMOVED***ClickOutsideModule***REMOVED*** from 'ng4-click-outside';
-import ***REMOVED***AccordionModule, BsDropdownModule***REMOVED*** from 'ngx-bootstrap';
-import ***REMOVED***BiocondaComponent***REMOVED*** from './conda/bioconda.component';
-import ***REMOVED***HowToConnectComponent***REMOVED*** from './shared-modal/how-to-connect.component';
-import ***REMOVED***PopoverModule***REMOVED*** from 'ngx-smart-popover';
+import {NgModule} from '@angular/core';
+import {CarouselModule} from 'ngx-owl-carousel-o';
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {VmRoutingModule} from './vm_routing.module';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {ImageDetailComponent} from '../virtualmachines/imagedetail.component';
+import {VirtualMachineComponent} from '../virtualmachines/addvm.component';
+import {FlavorDetailComponent} from '../virtualmachines/flavordetail.component';
+import {ClientOverviewComponent} from './clients/clientOverview.component';
+import {VmOverviewComponent} from '../virtualmachines/vmOverview.component';
+import {VolumeOverviewComponent} from './volumes/volumeOverview.component';
+import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component';
+import {PaginationModule} from 'ngx-bootstrap/pagination'
+import {PublicKeyModule} from '../shared/shared_modules/public-key/public-key.module';
+import {ClickOutsideModule} from 'ng4-click-outside';
+import {AccordionModule, BsDropdownModule} from 'ngx-bootstrap';
+import {BiocondaComponent} from './conda/bioconda.component';
+import {HowToConnectComponent} from './shared-modal/how-to-connect.component';
+import {PopoverModule} from 'ngx-smart-popover';
 
 /**
  * VM module.
  */
-@NgModule(***REMOVED***
+@NgModule({
             imports: [
               ClickOutsideModule,
               PublicKeyModule,
@@ -50,6 +50,6 @@ import ***REMOVED***PopoverModule***REMOVED*** from 'ngx-smart-popover';
               HowToConnectComponent,
               BiocondaComponent
             ]
-          ***REMOVED***)
-export class VmModule ***REMOVED***
-***REMOVED***
+          })
+export class VmModule {
+}

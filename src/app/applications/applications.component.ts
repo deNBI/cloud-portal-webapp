@@ -1,33 +1,33 @@
-import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
-import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service'
-import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
-import ***REMOVED***Application***REMOVED*** from './application.model/application.model';
-import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
-import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
-import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
-import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
-import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
-import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
-import ***REMOVED***Client***REMOVED*** from '../virtualmachines/clients/client.model';
-import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
-import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
-import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
-import ***REMOVED***forkJoin***REMOVED*** from 'rxjs/index';
+import {Component, OnInit} from '@angular/core';
+import {ApplicationsService} from '../api-connector/applications.service'
+import {ApplicationStatusService} from '../api-connector/application-status.service'
+import {ApiSettings} from '../api-connector/api-settings.service'
+import {Application} from './application.model/application.model';
+import {GroupService} from '../api-connector/group.service';
+import {UserService} from '../api-connector/user.service';
+import {VoService} from '../api-connector/vo.service';
+import {FacilityService} from '../api-connector/facility.service';
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {FlavorService} from '../api-connector/flavor.service';
+import {Client} from '../virtualmachines/clients/client.model';
+import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
+import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
+import {IResponseTemplate} from '../api-connector/response-template';
+import {forkJoin} from 'rxjs/index';
 
 /**
  * Application Overview component.
  */
-@Component(***REMOVED***
+@Component({
              templateUrl: 'applications.component.html',
              providers: [FacilityService, VoService, UserService, GroupService, ApplicationStatusService,
                ApplicationsService, ApiSettings, FlavorService]
-           ***REMOVED***)
-export class ApplicationsComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
+           })
+export class ApplicationsComponent extends ApplicationBaseClass implements OnInit {
 
   /**
    * All Applications, just visibile for a vo admin.
-   * @type ***REMOVED***Array***REMOVED***
+   * @type {Array}
    */
   all_applications: Application[] = [];
 
@@ -38,7 +38,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
   /**
    * id of the extension status.
-   * @type ***REMOVED***number***REMOVED***
+   * @type {number}
    */
   extension_status: number = 0;
   /**
@@ -50,13 +50,13 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
   /**
    * Constructor.
    * Loads all Applications if user is vo admin and all user_applications.
-   * @param ***REMOVED***ApplicationsService***REMOVED*** applicationsservice
-   * @param ***REMOVED***ApplicationStatusService***REMOVED*** applicationstatusservice
-   * @param ***REMOVED***UserService***REMOVED*** userservice
-   * @param ***REMOVED***GroupService***REMOVED*** groupservice
-   * @param ***REMOVED***VoService***REMOVED*** voService
-   * @param ***REMOVED***FacilityService***REMOVED*** facilityService
-   * @param ***REMOVED***FlavorService***REMOVED*** flavorService
+   * @param {ApplicationsService} applicationsservice
+   * @param {ApplicationStatusService} applicationstatusservice
+   * @param {UserService} userservice
+   * @param {GroupService} groupservice
+   * @param {VoService} voService
+   * @param {FacilityService} facilityService
+   * @param {FlavorService} flavorService
    */
   constructor(applicationsservice: ApplicationsService,
               applicationstatusservice: ApplicationStatusService,
@@ -64,119 +64,119 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
               private groupservice: GroupService,
               private voService: VoService,
               facilityService: FacilityService,
-              private flavorService: FlavorService) ***REMOVED***
+              private flavorService: FlavorService) {
 
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
 
-  ***REMOVED***
+  }
 
-  ngOnInit(): void ***REMOVED***
-    this.voService.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
+  ngOnInit(): void {
+    this.voService.isVo().subscribe((result: IResponseTemplate) => {
       this.is_vo_admin = <boolean><Boolean>result.value;
       this.getApplicationStatus();
-      if (this.is_vo_admin) ***REMOVED***
+      if (this.is_vo_admin) {
         this.getAllApplications();
         this.getComputeCenters();
 
-      ***REMOVED*** else ***REMOVED***
+      } else {
         this.isLoaded_AllApplication = true;
 
-      ***REMOVED***
+      }
 
-    ***REMOVED***);
+    });
 
-  ***REMOVED***
+  }
 
   /**
    * Checks if the key given represents a flavor and if so returns the respective Flavor
    * @param key the key which is checked
    */
-  isKeyFlavor(key: string): Flavor ***REMOVED***
-    for (const fkey in this.flavorList) ***REMOVED***
-      if (fkey in this.flavorList) ***REMOVED***
-        if (this.flavorList[fkey].name === key.substring(20)) ***REMOVED***
+  isKeyFlavor(key: string): Flavor {
+    for (const fkey in this.flavorList) {
+      if (fkey in this.flavorList) {
+        if (this.flavorList[fkey].name === key.substring(20)) {
           return this.flavorList[fkey];
-        ***REMOVED***
-      ***REMOVED***
-    ***REMOVED***
+        }
+      }
+    }
 
     return null;
 
-  ***REMOVED***
+  }
 
   /**
    * Get the facility of an application.
-   * @param ***REMOVED***Application***REMOVED*** app
+   * @param {Application} app
    */
-  getFacilityProject(app: Application): void ***REMOVED***
+  getFacilityProject(app: Application): void {
 
-    if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED && app.Status !== this.application_states.TERMINATED) ***REMOVED***
-      this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => ***REMOVED***
+    if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED && app.Status !== this.application_states.TERMINATED) {
+      this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => {
 
         const login: string = res['Login'];
         const suport: string = res['Support'];
         const facilityname: string = res['Facility'];
         const facilityId: number = res['FacilityId'];
-        if (facilityId) ***REMOVED***
+        if (facilityId) {
           app.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
-        ***REMOVED***
+        }
 
-      ***REMOVED***)
-    ***REMOVED***
+      })
+    }
 
-  ***REMOVED***
+  }
 
   /**
    * Get all Applications if user is admin.
    */
-  getAllApplications(): void ***REMOVED***
+  getAllApplications(): void {
     // todo check if user is VO Admin
 
-    if (this.is_vo_admin) ***REMOVED***
+    if (this.is_vo_admin) {
 
-      this.applicationsservice.getAllApplications().subscribe(res => ***REMOVED***
-        if (Object.keys(res).length === 0) ***REMOVED***
+      this.applicationsservice.getAllApplications().subscribe(res => {
+        if (Object.keys(res).length === 0) {
           this.isLoaded_userApplication = true;
-        ***REMOVED***
+        }
         const newApps: Application [] = this.setNewApplications(res);
         this.all_applications.push.apply(this.all_applications, newApps);
 
         this.isLoaded_AllApplication = true;
-        for (const app of this.all_applications) ***REMOVED***
+        for (const app of this.all_applications) {
           if (app.Status === this.application_states.WAIT_FOR_CONFIRMATION ||
-            app.Status === this.application_states.MODIFICATION_REQUESTED) ***REMOVED***
+            app.Status === this.application_states.MODIFICATION_REQUESTED) {
             this.getFacilityProject(app);
-          ***REMOVED***
-        ***REMOVED***
+          }
+        }
 
-      ***REMOVED***)
-    ***REMOVED***
-  ***REMOVED***
+      })
+    }
+  }
 
   /**
    * Updates an application with the actual values.
-   * @param ***REMOVED***Application***REMOVED*** application
+   * @param {Application} application
    */
-  public getApplication(application: Application): void ***REMOVED***
+  public getApplication(application: Application): void {
     const index: number = this.all_applications.indexOf(application);
 
-    this.applicationsservice.getApplication(application.Id.toString()).subscribe((aj: object) => ***REMOVED***
+    this.applicationsservice.getApplication(application.Id.toString()).subscribe((aj: object) => {
       const newApp: Application = this.setNewApplication(aj);
       this.all_applications[index] = newApp;
       this.getFacilityProject(newApp);
-    ***REMOVED***);
+    });
 
-  ***REMOVED***
+  }
 
-  public approveExtension(app: Application): void ***REMOVED***
+  public approveExtension(app: Application): void {
 
-    if (app.OpenStackProject) ***REMOVED***
-      if (!app.ComputeCenter) ***REMOVED***
-        this.applicationsservice.approveRenewal(app.Id.toString()).subscribe(result => ***REMOVED***
-          if (result['Error']) ***REMOVED***
+    if (app.OpenStackProject) {
+      if (!app.ComputeCenter) {
+        this.applicationsservice.approveRenewal(app.Id.toString()).subscribe(result => {
+          if (result['Error']) {
             this.extension_status = 2;
             this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
-          ***REMOVED*** else ***REMOVED***
+          } else {
             this.extension_status = 3;
 
             this.updateNotificationModal('Success', 'Successfully approved the application modification.', true, 'success');
@@ -184,62 +184,62 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
             this.user_applications = [];
             this.getAllApplications();
 
-          ***REMOVED***
-        ***REMOVED***);
-      ***REMOVED*** else ***REMOVED***
+          }
+        });
+      } else {
         this.applicationstatusservice.setApplicationStatus(
           app.Id.toString(),
-          this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe(() => ***REMOVED***
+          this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe(() => {
           this.extension_status = 5;
           this.getApplication(app);
 
-          for (const appl of this.user_applications) ***REMOVED***
-            if (this.selectedApplication.Id.toString() === appl.Id.toString()) ***REMOVED***
+          for (const appl of this.user_applications) {
+            if (this.selectedApplication.Id.toString() === appl.Id.toString()) {
               break;
-            ***REMOVED***
+            }
 
-          ***REMOVED***
-        ***REMOVED***)
-      ***REMOVED***
-    ***REMOVED*** else ***REMOVED***
-      this.applicationsservice.approveRenewal(app.Id).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
-        if (result['Error']) ***REMOVED***
+          }
+        })
+      }
+    } else {
+      this.applicationsservice.approveRenewal(app.Id).subscribe((result: { [key: string]: string }) => {
+        if (result['Error']) {
           this.extension_status = 2
-        ***REMOVED*** else ***REMOVED***
+        } else {
           this.extension_status = 3;
-        ***REMOVED***
+        }
         this.getApplication(this.selectedApplication);
 
-      ***REMOVED***)
-    ***REMOVED***
-  ***REMOVED***
+      })
+    }
+  }
 
   /**
    * Decline an extension request.
-   * @param ***REMOVED***number***REMOVED*** application_id
+   * @param {number} application_id
    */
-  public declineExtension(application_id: number): void ***REMOVED***
-    this.applicationsservice.declineRenewal(application_id).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
-      if (result != null) ***REMOVED***
+  public declineExtension(application_id: number): void {
+    this.applicationsservice.declineRenewal(application_id).subscribe((result: { [key: string]: string }) => {
+      if (result != null) {
         this.extension_status = 2
-      ***REMOVED*** else ***REMOVED***
+      } else {
         this.extension_status = 4;
-      ***REMOVED***
+      }
       this.getApplication(this.selectedApplication);
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Remove Application from facility , where it is for confirmation
-   * @param ***REMOVED***Application***REMOVED*** application the application
+   * @param {Application} application the application
    */
-  removeApplicationFromFacilityConfirmation(application: Application): void ***REMOVED***
-    this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe(() => ***REMOVED***
+  removeApplicationFromFacilityConfirmation(application: Application): void {
+    this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe(() => {
       this.getApplication(application)
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
   /**
    * Create a new Group in perun with the specific attributes.
@@ -250,52 +250,52 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
    * @param compute_center
    */
   public createOpenStackProjectGroup(application: Application,
-                                     compute_center: string): void ***REMOVED***
+                                     compute_center: string): void {
     this.groupservice.createGroupOpenStack(
       application.Id, compute_center)
-      .subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
-                   if (result['Error']) ***REMOVED***
+      .subscribe((result: { [key: string]: string }) => {
+                   if (result['Error']) {
                      this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
-                   ***REMOVED*** else ***REMOVED***
+                   } else {
                      this.updateNotificationModal('Success', 'The new project was created', true, 'success');
-                   ***REMOVED***
+                   }
                    this.getApplication(application);
-                 ***REMOVED***,
-                 () => ***REMOVED***
+                 },
+                 () => {
                    this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-                 ***REMOVED***)
+                 })
 
-  ***REMOVED***
+  }
 
-  public resetNotificationModal(): void ***REMOVED***
+  public resetNotificationModal(): void {
     this.notificationModalTitle = 'Notification';
     this.notificationModalMessage = 'Please wait...';
     this.notificationModalIsClosable = false;
     this.notificationModalType = 'info';
     this.notificationClientInfo = [];
-  ***REMOVED***
+  }
 
   /**
    * Bugfix not scrollable site after closing modal
    */
-  removeModalOpen(): void ***REMOVED***
+  removeModalOpen(): void {
     document.body.classList.remove('modal-open');
-  ***REMOVED***
+  }
 
   /**
    * Create a new Group in perun with the specific attributes.
    * @param app
    */
-  public createSimpleVmProjectGroup(app: Application): void ***REMOVED***
+  public createSimpleVmProjectGroup(app: Application): void {
 
     const application_id: string = <string>app.Id;
     this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
-      (res: Client) => ***REMOVED***
-        if (!res['client_available']) ***REMOVED***
+      (res: Client) => {
+        if (!res['client_available']) {
           // tslint:disable-next-line:forin
           console.log(res['clients']);
-          for (const client of res['clients']) ***REMOVED***
+          for (const client of res['clients']) {
             console.log(client);
             const newClient: Client = new Client(null, null, client['client_location'], null);
             newClient.maxVolumeLimit = client['max_volume_gb'];
@@ -310,14 +310,14 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
             this.notificationClientInfo.push(newClient);
             console.log(this.notificationClientInfo)
 
-          ***REMOVED***
+          }
           this.updateNotificationModal('Failed', 'No client with the necessary resources online!', true, 'danger');
 
-        ***REMOVED*** else ***REMOVED***
+        } else {
 
-          this.groupservice.createGroupByApplication(application_id).subscribe(() => ***REMOVED***
+          this.groupservice.createGroupByApplication(application_id).subscribe(() => {
             this.applicationsservice.getApplicationClient(
-              application_id).subscribe((client: object) => ***REMOVED***
+              application_id).subscribe((client: object) => {
               const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
               newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
               newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
@@ -327,78 +327,78 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
               newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
               this.notificationClientInfo.push(newClient);
               this.updateNotificationModal(
-                'Success', `The new project was created and assigned to $***REMOVED***newClient.location***REMOVED***.`,
+                'Success', `The new project was created and assigned to ${newClient.location}.`,
                 true,
                 'success');
 
-            ***REMOVED***);
+            });
 
-            for (const app of this.all_applications) ***REMOVED***
-              if (app.Id.toString() === application_id.toString()) ***REMOVED***
+            for (const app of this.all_applications) {
+              if (app.Id.toString() === application_id.toString()) {
                 this.getApplication(app);
                 break;
 
-              ***REMOVED***
-            ***REMOVED***
+              }
+            }
 
-          ***REMOVED***);
+          });
 
-        ***REMOVED***
+        }
 
-      ***REMOVED***,
-      (error: object) => ***REMOVED***
+      },
+      (error: object) => {
         console.log(error);
         this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-      ***REMOVED***)
+      })
 
-  ***REMOVED***
+  }
 
-  assignGroupToFacility(group_id: string, application_id: string, compute_center: string): void ***REMOVED***
-    if (compute_center !== 'undefined') ***REMOVED***
+  assignGroupToFacility(group_id: string, application_id: string, compute_center: string): void {
+    if (compute_center !== 'undefined') {
       this.groupservice.assignGroupToResource(group_id, compute_center).subscribe(
-        () => ***REMOVED***
+        () => {
           this.applicationstatusservice.setApplicationStatus(
             application_id,
             this.application_states.WAIT_FOR_CONFIRMATION.toString())
-            .subscribe(() => ***REMOVED***
-              for (const app of this.all_applications) ***REMOVED***
-                if (app.Id.toString() === application_id) ***REMOVED***
+            .subscribe(() => {
+              for (const app of this.all_applications) {
+                if (app.Id.toString() === application_id) {
                   this.getApplication(app);
 
                   break;
 
-                ***REMOVED***
-              ***REMOVED***
+                }
+              }
               this.updateNotificationModal('Success', 'The  project was assigned to the facility.', true, 'success');
 
-            ***REMOVED***)
+            })
 
-        ***REMOVED***,
-        (error: object) => ***REMOVED***
+        },
+        (error: object) => {
           console.log(error);
           this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-        ***REMOVED***);
-    ***REMOVED*** else ***REMOVED***
+        });
+    } else {
       this.updateNotificationModal('Failed', 'You need to select an compute center!', true, 'danger');
-    ***REMOVED***
+    }
 
-  ***REMOVED***
+  }
 
   /**
    * Decline an application.
    * @param application_id
    */
-  public declineApplication(application_id: string): void ***REMOVED***
+  public declineApplication(application_id: string): void {
     this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus('declined').toString()).toPromise()
-      .then(() => ***REMOVED***
+      .then(() => {
         this.all_applications = [];
         this.user_applications = [];
         this.getAllApplications();
         this.updateNotificationModal('Success', 'The Application was declined', true, 'success');
-      ***REMOVED***)
-      .catch(() => ***REMOVED***
+      })
+      .catch(() => {
         this.updateNotificationModal('Failed', 'Application could be declined!', true, 'danger');
-      ***REMOVED***);
-  ***REMOVED***
+      });
+  }
 
-***REMOVED***
+}

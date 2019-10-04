@@ -1,13 +1,13 @@
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
-import ***REMOVED***HelpComponent***REMOVED*** from '../help/help.component';
-import ***REMOVED***HelpRoutingModule***REMOVED*** from './help-routing.module';
-import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap/modal';
-import ***REMOVED***AlertModule***REMOVED*** from 'ngx-bootstrap';
+import {NgModule} from '@angular/core';
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {HelpComponent} from '../help/help.component';
+import {HelpRoutingModule} from './help-routing.module';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {AlertModule} from 'ngx-bootstrap';
 
-@NgModule(***REMOVED***
+@NgModule({
     imports: [
         HelpRoutingModule,
         TabsModule,
@@ -19,6 +19,6 @@ import ***REMOVED***AlertModule***REMOVED*** from 'ngx-bootstrap';
     declarations: [
         HelpComponent
     ]
-***REMOVED***)
-export class HelpModule ***REMOVED***
-***REMOVED***
+})
+export class HelpModule {
+}

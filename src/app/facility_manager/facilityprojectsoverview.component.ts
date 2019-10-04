@@ -1,25 +1,25 @@
-import ***REMOVED***Component, Input, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***Project***REMOVED*** from '../projectmanagement/project.model';
-import ***REMOVED***ProjectMember***REMOVED*** from '../projectmanagement/project_member.model'
-import ***REMOVED***environment***REMOVED*** from '../../environments/environment'
-import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
-import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
-import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
-import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {Project} from '../projectmanagement/project.model';
+import {ProjectMember} from '../projectmanagement/project_member.model'
+import {environment} from '../../environments/environment'
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {GroupService} from '../api-connector/group.service';
+import {UserService} from '../api-connector/user.service';
+import {FacilityService} from '../api-connector/facility.service';
 
 import * as moment from 'moment';
-import ***REMOVED***ComputecenterComponent***REMOVED*** from '../projectmanagement/computecenter.component';
-import ***REMOVED***FilterBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/filter-base-class';
-import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
+import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
+import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
+import {IResponseTemplate} from '../api-connector/response-template';
 
 /**
  * Facility Project overview component.
  */
-@Component(***REMOVED***
+@Component({
              templateUrl: 'facilityprojectsoverview.component.html',
              providers: [FacilityService, UserService, GroupService, ApiSettings]
-           ***REMOVED***)
-export class FacilityProjectsOverviewComponent extends FilterBaseClass implements OnInit ***REMOVED***
+           })
+export class FacilityProjectsOverviewComponent extends FilterBaseClass implements OnInit {
 
   debug_module: boolean = false;
 
@@ -31,7 +31,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   details_loaded: boolean = false;
   /**
    * Approved group status.
-   * @type ***REMOVED***number***REMOVED***
+   * @type {number}
    */
   STATUS_APPROVED: number = 2;
 
@@ -53,90 +53,90 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   projects_filtered: Project[] = [];
 
   constructor(private groupservice: GroupService,
-              private facilityservice: FacilityService) ***REMOVED***
+              private facilityservice: FacilityService) {
     super();
-  ***REMOVED***
+  }
 
-  ngOnInit(): void ***REMOVED***
-    this.facilityservice.getManagerFacilities().subscribe(result => ***REMOVED***
+  ngOnInit(): void {
+    this.facilityservice.getManagerFacilities().subscribe(result => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
-      this.emailSubject = `[$***REMOVED***this.selectedFacility['Facility']***REMOVED***]`;
+      this.emailSubject = `[${this.selectedFacility['Facility']}]`;
 
       this.getFacilityProjects(this.managerFacilities[0]['FacilityId'])
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  applyFilter(): void ***REMOVED***
+  applyFilter(): void {
     this.projects_filtered = this.projects.filter(vm => this.checkFilter(vm));
-  ***REMOVED***
+  }
 
-  checkFilter(project: Project): boolean ***REMOVED***
+  checkFilter(project: Project): boolean {
     return this.isFilterLongProjectName(project.RealName) && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
       && this.isFilterProjectName(project.Name) && this.isFilterProjectId(project.Id)
-  ***REMOVED***
+  }
 
   /**
    * Gets projects and sets email subject prefix when selected facility changes.
    */
-  onChangeSelectedFacility(): void ***REMOVED***
+  onChangeSelectedFacility(): void {
     this.getFacilityProjects(this.selectedFacility['FacilityId']);
-    this.emailSubject = `[$***REMOVED***this.selectedFacility['Facility']***REMOVED***`
-  ***REMOVED***
+    this.emailSubject = `[${this.selectedFacility['Facility']}`
+  }
 
-  getProjectLifetime(project: Project): void ***REMOVED***
+  getProjectLifetime(project: Project): void {
     this.details_loaded = false;
-    if (!project.Lifetime) ***REMOVED***
-      this.groupservice.getLifetime(project.Id).subscribe((time: IResponseTemplate) => ***REMOVED***
+    if (!project.Lifetime) {
+      this.groupservice.getLifetime(project.Id).subscribe((time: IResponseTemplate) => {
         const lifetime: number = <number>time.value;
         const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
 
-        if (lifetime !== -1) ***REMOVED***
+        if (lifetime !== -1) {
           const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
           const lifetimeDays: number = Math.abs(
             moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'));
 
           project.LifetimeDays = lifetimeDays;
           project.DateEnd = expirationDate;
-        ***REMOVED***
+        }
         project.Lifetime = lifetime;
         this.details_loaded = true;
 
-      ***REMOVED***)
-    ***REMOVED*** else ***REMOVED***
+      })
+    } else {
       this.details_loaded = true;
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
   /**
    * Returns the name of the project with the id of the selectedProjectType
    */
-  getProjectNameBySelectedProjectTypeAsId(): string ***REMOVED***
+  getProjectNameBySelectedProjectTypeAsId(): string {
     const id: string = this.selectedProjectType;
-    if (!id) ***REMOVED***
+    if (!id) {
       return 'NOT_FOUND';
-    ***REMOVED***
-    const project: Project = this.projects.find(function (element: Project): boolean ***REMOVED***
+    }
+    const project: Project = this.projects.find(function (element: Project): boolean {
 
       return element.Id.toString() === id.toString();
 
-    ***REMOVED***);
-    if (project) ***REMOVED***
+    });
+    if (project) {
       return project.Name
-    ***REMOVED***
+    }
 
     return 'NOT_FOUND';
-  ***REMOVED***
+  }
 
-  getFacilityProjects(facility: string): void ***REMOVED***
+  getFacilityProjects(facility: string): void {
     this.projects = [];
 
-    this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe(result => ***REMOVED***
+    this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe(result => {
       const facility_projects = result;
       const is_pi: boolean = false;
       const is_admin: boolean = false;
-      for (const group of facility_projects) ***REMOVED***
+      for (const group of facility_projects) {
         const dateCreated: moment.Moment = moment.unix(group['createdAt']);
         const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
         const groupid: string = group['id'];
@@ -145,29 +145,29 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
         let compute_center: ComputecenterComponent = null;
         const lifetime: number = group['lifetime'];
 
-        if (!shortname) ***REMOVED***
+        if (!shortname) {
           shortname = group['name']
-        ***REMOVED***
-        if (tmp_facility) ***REMOVED***
+        }
+        if (tmp_facility) {
           compute_center = new ComputecenterComponent(
             tmp_facility['compute_center_facility_id'],
             tmp_facility['compute_center_name'],
             tmp_facility['compute_center_login'],
             tmp_facility['compute_center_support_mail']);
-        ***REMOVED***
+        }
 
         const newProject: Project = new Project(
           Number(groupid),
           shortname,
           group['description'],
-          `$***REMOVED***dateCreated.date()***REMOVED***.$***REMOVED***(dateCreated.month() + 1)***REMOVED***.$***REMOVED***dateCreated.year()***REMOVED***`,
+          `${dateCreated.date()}.${(dateCreated.month() + 1)}.${dateCreated.year()}`,
           dateDayDifference,
           is_pi,
           is_admin,
           compute_center);
         newProject.Status = group['status'];
 
-        if (lifetime !== -1) ***REMOVED***
+        if (lifetime !== -1) {
           const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
           const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY')
                                                          .toDate()).diff(moment(dateCreated), 'days'));
@@ -176,76 +176,76 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
           newProject.DateEnd = expirationDate;
           newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
 
-        ***REMOVED***
+        }
         newProject.RealName = group['name'];
         newProject.Lifetime = lifetime;
         newProject.OpenStackProject = group['openstack_project'];
 
         this.projects.push(newProject);
-      ***REMOVED***
+      }
       this.applyFilter();
       this.isLoaded = true;
 
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  sendMailToFacility(facility: string, subject: string, message: string, reply?: string): void ***REMOVED***
+  sendMailToFacility(facility: string, subject: string, message: string, reply?: string): void {
     this.facilityservice.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
       encodeURIComponent(reply)).subscribe(
-      result => ***REMOVED***
+      result => {
         this.selectedProjectType = 'ALL';
 
-        if (result.status === 201) ***REMOVED***
+        if (result.status === 201) {
           this.emailStatus = 1;
-        ***REMOVED*** else ***REMOVED***
+        } else {
           this.emailStatus = 2;
-        ***REMOVED***
-      ***REMOVED***,
-      error => ***REMOVED***
+        }
+      },
+      error => {
         this.selectedProjectType = 'ALL';
 
         this.emailStatus = 2;
-      ***REMOVED***)
+      })
 
-  ***REMOVED***
+  }
 
-  getMembesOfTheProject(projectid: number, projectname: string): void ***REMOVED***
+  getMembesOfTheProject(projectid: number, projectname: string): void {
     this.facilityservice.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId'])
-      .subscribe(members => ***REMOVED***
+      .subscribe(members => {
                    this.usersModalProjectID = projectid;
                    this.usersModalProjectName = projectname;
                    this.usersModalProjectMembers = [];
-                   for (const member of members) ***REMOVED***
+                   for (const member of members) {
                      const member_id: string = member['id'];
                      const user_id: string = member['userId'];
-                     const fullName: string = `$***REMOVED***member['firstName']***REMOVED*** $***REMOVED***member['lastName']***REMOVED***`;
+                     const fullName: string = `${member['firstName']} ${member['lastName']}`;
                      const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
                      newMember.ElixirId = member  ['elixirId'];
                      newMember.Email = member['email'];
                      this.usersModalProjectMembers.push(newMember);
-                   ***REMOVED***
+                   }
 
-                 ***REMOVED***
+                 }
       )
-  ***REMOVED***
+  }
 
-  public showMembersOfTheProject(project_id: number, projectname: string): void ***REMOVED***
+  public showMembersOfTheProject(project_id: number, projectname: string): void {
     this.getMembesOfTheProject(project_id, projectname);
 
-  ***REMOVED***
+  }
 
-  public resetEmailModal(): void ***REMOVED***
+  public resetEmailModal(): void {
 
     this.emailSubject = null;
     this.emailText = null;
     this.emailReply = null;
     this.emailStatus = 0;
 
-  ***REMOVED***
+  }
 
-  public comingSoon(): void ***REMOVED***
+  public comingSoon(): void {
     alert('This function will be implemented soon.')
-  ***REMOVED***
-***REMOVED***
+  }
+}

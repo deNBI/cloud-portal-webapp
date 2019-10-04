@@ -107,7 +107,7 @@ Example:
    * Uses the data from the application form to fill the confirmation-modal with information.
    * @param f the application form with corresponding data
    */
-  filterEnteredData(f: NgForm) ***REMOVED***
+  filterEnteredData(f: NgForm) {
   ...
 ```
 

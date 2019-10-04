@@ -1,47 +1,47 @@
-import ***REMOVED***HashLocationStrategy, LocationStrategy***REMOVED*** from '@angular/common';
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***BrowserModule***REMOVED*** from '@angular/platform-browser';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import ***REMOVED***BsDropdownModule***REMOVED*** from 'ngx-bootstrap/dropdown';
-import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
-import ***REMOVED***AppComponent***REMOVED*** from './app.component';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {AppComponent} from './app.component';
 
-import ***REMOVED***HttpClientModule***REMOVED*** from '@angular/common/http';
-import ***REMOVED***ChartsModule***REMOVED*** from 'ng2-charts/ng2-charts';
-import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap';
-import ***REMOVED***PaginationModule***REMOVED*** from 'ngx-bootstrap/pagination';
-import ***REMOVED***ExportAsModule***REMOVED*** from 'ngx-export-as';
-import ***REMOVED***PopoverModule***REMOVED*** from 'ngx-popover';
-import ***REMOVED***ApiSettings***REMOVED*** from './api-connector/api-settings.service';
-import ***REMOVED***UserService***REMOVED*** from './api-connector/user.service';
+import {HttpClientModule} from '@angular/common/http';
+import {ChartsModule} from 'ng2-charts/ng2-charts';
+import {ModalModule} from 'ngx-bootstrap';
+import {PaginationModule} from 'ngx-bootstrap/pagination';
+import {ExportAsModule} from 'ngx-export-as';
+import {PopoverModule} from 'ngx-popover';
+import {ApiSettings} from './api-connector/api-settings.service';
+import {UserService} from './api-connector/user.service';
 // Routing Module
-import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
-import ***REMOVED***ConsentInfoComponent***REMOVED*** from './consent-info.component';
+import {AppRoutingModule} from './app.routing';
+import {ConsentInfoComponent} from './consent-info.component';
 // Layouts
-import ***REMOVED***AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule***REMOVED*** from '@coreui/angular';
-import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout.component';
-import ***REMOVED***RegistrationInfoComponent***REMOVED*** from './registration-info.component';
-import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.directive';
-import ***REMOVED***SharedModuleModule***REMOVED*** from "./shared/shared_modules/shared-module.module";
-import ***REMOVED***PerfectScrollbarModule***REMOVED*** from 'ngx-perfect-scrollbar';
-import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
-import ***REMOVED***
+import {AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule} from '@coreui/angular';
+import {FullLayoutComponent} from './layouts/full-layout.component';
+import {RegistrationInfoComponent} from './registration-info.component';
+import {AsideToggleDirective} from './shared/aside.directive';
+import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
+import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
+import {BreadcrumbsComponent} from './shared/breadcrumb.component';
+import {
     MobileSidebarToggleDirective,
     SidebarMinimizeDirective,
     SidebarOffCanvasCloseDirective,
     SidebarToggleDirective
-***REMOVED*** from "./shared/sidebar.directive";
-import ***REMOVED***BrowserAnimationsModule***REMOVED*** from '@angular/platform-browser/animations';
-import ***REMOVED***MatSnackBarModule***REMOVED*** from "@angular/material";
-import ***REMOVED***Angulartics2Module***REMOVED*** from 'angulartics2';
-import ***REMOVED*** ErrorHandler ***REMOVED*** from '@angular/core';
-import ***REMOVED***UncaughtExceptionHandler***REMOVED*** from './error-handler/UncaughtExceptionHandler.service';
-import ***REMOVED***CookieService***REMOVED*** from 'ngx-cookie-service';
+} from "./shared/sidebar.directive";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatSnackBarModule} from "@angular/material";
+import {Angulartics2Module} from 'angulartics2';
+import { ErrorHandler } from '@angular/core';
+import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler.service';
+import {CookieService} from 'ngx-cookie-service';
 
 /**
  * App module.
  */
-@NgModule(***REMOVED***
+@NgModule({
 
     imports: [
         AppAsideModule,
@@ -78,19 +78,19 @@ import ***REMOVED***CookieService***REMOVED*** from 'ngx-cookie-service';
         SidebarOffCanvasCloseDirective
     ],
     providers: [
-      ***REMOVED***
+      {
         provide: LocationStrategy,
         useClass: HashLocationStrategy
-      ***REMOVED***,
-      ***REMOVED***
+      },
+      {
         provide: ErrorHandler,
         useClass: UncaughtExceptionHandler
-      ***REMOVED***,
+      },
         ApiSettings,
         UserService,
         CookieService,
     ],
     bootstrap: [AppComponent]
-***REMOVED***)
-export class AppModule ***REMOVED***
-***REMOVED***
+})
+export class AppModule {
+}

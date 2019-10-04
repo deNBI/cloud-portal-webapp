@@ -1,27 +1,27 @@
-import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot***REMOVED*** from '@angular/router';
-import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs';
-import ***REMOVED***IResponseTemplate***REMOVED*** from "../api-connector/response-template";
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
+import {VoService} from '../api-connector/vo.service';
+import {Observable} from 'rxjs';
+import {IResponseTemplate} from "../api-connector/response-template";
 
 @Injectable()
-export class VoGuardService implements CanActivate ***REMOVED***
+export class VoGuardService implements CanActivate {
 
-    constructor(private router: Router, private voservice: VoService) ***REMOVED***
-    ***REMOVED***
+    constructor(private router: Router, private voservice: VoService) {
+    }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean ***REMOVED***
-        return new Promise((resolve, reject) => ***REMOVED***
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        return new Promise((resolve, reject) => {
             this.voservice.isVo().subscribe(
-                (result: IResponseTemplate) => ***REMOVED***
-                    if (<boolean><Boolean>result.value) ***REMOVED***
+                (result: IResponseTemplate) => {
+                    if (<boolean><Boolean>result.value) {
                         return resolve(true)
-                    ***REMOVED*** else ***REMOVED***
+                    } else {
                         return resolve(false)
-                    ***REMOVED***
-                ***REMOVED***)
-        ***REMOVED***);
+                    }
+                })
+        });
 
-    ***REMOVED***
-***REMOVED***
+    }
+}
 

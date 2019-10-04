@@ -1,27 +1,27 @@
-***REMOVED***
+{
   "index": "/index.html",
   "assetGroups": [
-    ***REMOVED***
+    {
       "name": "app",
       "installMode": "prefetch",
-      "resources": ***REMOVED***
+      "resources": {
         "files": [
           "/favicon.ico",
           "/index.html",
           "/*.css",
           "/*.js"
         ]
-      ***REMOVED***
-    ***REMOVED***, ***REMOVED***
+      }
+    }, {
       "name": "assets",
       "installMode": "lazy",
       "updateMode": "prefetch",
-      "resources": ***REMOVED***
+      "resources": {
         "files": [
           "/assets/**",
           "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
         ]
-      ***REMOVED***
-    ***REMOVED***
+      }
+    }
   ]
-***REMOVED***
+}

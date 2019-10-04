@@ -1,7 +1,7 @@
 /**
  * Application Extension class.
  */
-export class ApplicationExtension ***REMOVED***
+export class ApplicationExtension {
 
     private _Id: number;
     private _Lifetime: number;
@@ -17,32 +17,32 @@ export class ApplicationExtension ***REMOVED***
     private _OpenStackProject: boolean;
     private _TotalCores: number;
     private _TotalRAM: number;
-    private _RequestedFlavors: ***REMOVED***
-        [id: string]: ***REMOVED***
+    private _RequestedFlavors: {
+        [id: string]: {
             counter: number, tag: string, ram: number, rootdisk: number,
             vcpus: number, gpu: number, epheremal_disk: number
-        ***REMOVED***
-    ***REMOVED***;
+        }
+    };
 
-    constructor() ***REMOVED***
-        this._RequestedFlavors = ***REMOVED******REMOVED***;
+    constructor() {
+        this._RequestedFlavors = {};
 
-    ***REMOVED***
+    }
 
     /**
      * Add Flavor to requested flavor list.
-     * @param ***REMOVED***string***REMOVED*** name name of the flavor
-     * @param ***REMOVED***number***REMOVED*** counter how many flavors
-     * @param ***REMOVED***string***REMOVED*** tag tag of the flavor
-     * @param ***REMOVED***number***REMOVED*** ram ram of the flavor
-     * @param ***REMOVED***number***REMOVED*** rootdisk rootdisk of the flavor
-     * @param ***REMOVED***number***REMOVED*** vcpus vcpus of the flavor
-     * @param ***REMOVED***number***REMOVED*** gpu gpu of the flavors
-     * @param ***REMOVED***number***REMOVED*** epheremal_disk epheremal_disk of the flavor
+     * @param {string} name name of the flavor
+     * @param {number} counter how many flavors
+     * @param {string} tag tag of the flavor
+     * @param {number} ram ram of the flavor
+     * @param {number} rootdisk rootdisk of the flavor
+     * @param {number} vcpus vcpus of the flavor
+     * @param {number} gpu gpu of the flavors
+     * @param {number} epheremal_disk epheremal_disk of the flavor
      */
     public addFlavorToRequested(name: string, counter: number, tag: string, ram: number, rootdisk: number,
-                                vcpus: number, gpu: number, epheremal_disk: number): void ***REMOVED***
-        this._RequestedFlavors[name] = ***REMOVED***
+                                vcpus: number, gpu: number, epheremal_disk: number): void {
+        this._RequestedFlavors[name] = {
             counter: counter,
             tag: tag,
             ram: ram,
@@ -50,137 +50,137 @@ export class ApplicationExtension ***REMOVED***
             vcpus: vcpus,
             gpu: gpu,
             epheremal_disk: epheremal_disk
-        ***REMOVED***;
-    ***REMOVED***
+        };
+    }
 
-    get RequestedFlavors(): ***REMOVED***
-        [id: string]: ***REMOVED***
+    get RequestedFlavors(): {
+        [id: string]: {
             counter: number, tag: string, ram: number, rootdisk: number,
             vcpus: number, gpu: number, epheremal_disk: number
-        ***REMOVED***
-    ***REMOVED*** ***REMOVED***
+        }
+    } {
         return this._RequestedFlavors
-    ***REMOVED***
+    }
 
-    set RequestedFlavors(value: ***REMOVED***
-        [id: string]: ***REMOVED***
+    set RequestedFlavors(value: {
+        [id: string]: {
             counter: number, tag: string, ram: number, rootdisk: number,
             vcpus: number, gpu: number, epheremal_disk: number
-        ***REMOVED***
-    ***REMOVED***) ***REMOVED***
+        }
+    }) {
         this._RequestedFlavors = value;
-    ***REMOVED***
+    }
 
-    get TotalCores(): number ***REMOVED***
+    get TotalCores(): number {
         return this._TotalCores;
-    ***REMOVED***
+    }
 
-    set TotalCores(value: number) ***REMOVED***
+    set TotalCores(value: number) {
         this._TotalCores = value;
-    ***REMOVED***
+    }
 
-    get TotalRAM(): number ***REMOVED***
+    get TotalRAM(): number {
         return this._TotalRAM;
-    ***REMOVED***
+    }
 
-    set TotalRAM(value: number) ***REMOVED***
+    set TotalRAM(value: number) {
         this._TotalRAM = value;
-    ***REMOVED***
+    }
 
-    get Lifetime(): number ***REMOVED***
+    get Lifetime(): number {
         return this._Lifetime;
-    ***REMOVED***
+    }
 
-    set Lifetime(value: number) ***REMOVED***
+    set Lifetime(value: number) {
         this._Lifetime = value;
-    ***REMOVED***
+    }
 
-    get OpenStackProject(): boolean ***REMOVED***
+    get OpenStackProject(): boolean {
         return this._OpenStackProject
-    ***REMOVED***
+    }
 
-    set OpenStackProject(value: boolean) ***REMOVED***
+    set OpenStackProject(value: boolean) {
         this._OpenStackProject = value;
-    ***REMOVED***
+    }
 
-    get Id(): number ***REMOVED***
+    get Id(): number {
         return this._Id;
-    ***REMOVED***
+    }
 
-    set Id(value: number) ***REMOVED***
+    set Id(value: number) {
         this._Id = value;
-    ***REMOVED***
+    }
 
-    set Comment(value: string) ***REMOVED***
+    set Comment(value: string) {
         this._Comment = value;
-    ***REMOVED***
+    }
 
-    get Comment(): string ***REMOVED***
+    get Comment(): string {
         return this._Comment;
-    ***REMOVED***
+    }
 
-    get VMsRequested(): number ***REMOVED***
+    get VMsRequested(): number {
         return this._VMsRequested;
-    ***REMOVED***
+    }
 
-    set VMsRequested(value: number) ***REMOVED***
+    set VMsRequested(value: number) {
         this._VMsRequested = value;
-    ***REMOVED***
+    }
 
-    get CoresPerVM(): number ***REMOVED***
+    get CoresPerVM(): number {
         return this._CoresPerVM;
-    ***REMOVED***
+    }
 
-    set CoresPerVM(value: number) ***REMOVED***
+    set CoresPerVM(value: number) {
         this._CoresPerVM = value;
-    ***REMOVED***
+    }
 
-    get RamPerVM(): number ***REMOVED***
+    get RamPerVM(): number {
         return this._RamPerVM;
-    ***REMOVED***
+    }
 
-    set RamPerVM(value: number) ***REMOVED***
+    set RamPerVM(value: number) {
         this._RamPerVM = value;
-    ***REMOVED***
+    }
 
-    get VolumeLimit(): number ***REMOVED***
+    get VolumeLimit(): number {
         return this._VolumeLimit;
-    ***REMOVED***
+    }
 
-    set VolumeLimit(value: number) ***REMOVED***
+    set VolumeLimit(value: number) {
         this._VolumeLimit = value;
-    ***REMOVED***
+    }
 
-    get VolumeCounter(): number ***REMOVED***
+    get VolumeCounter(): number {
         return this._VolumeCounter;
-    ***REMOVED***
+    }
 
-    set VolumeCounter(value: number) ***REMOVED***
+    set VolumeCounter(value: number) {
         this._VolumeCounter = value;
-    ***REMOVED***
+    }
 
-    get ObjectStorage(): number ***REMOVED***
+    get ObjectStorage(): number {
         return this._ObjectStorage;
-    ***REMOVED***
+    }
 
-    set ObjectStorage(value: number) ***REMOVED***
+    set ObjectStorage(value: number) {
         this._ObjectStorage = value;
-    ***REMOVED***
+    }
 
-    get SpecialHardware(): string[] ***REMOVED***
+    get SpecialHardware(): string[] {
         return this._SpecialHardware;
-    ***REMOVED***
+    }
 
-    set SpecialHardware(value: string[]) ***REMOVED***
+    set SpecialHardware(value: string[]) {
         this._SpecialHardware = value;
-    ***REMOVED***
+    }
 
-    get DateSubmitted(): string ***REMOVED***
+    get DateSubmitted(): string {
         return this._DateSubmitted;
-    ***REMOVED***
+    }
 
-    set DateSubmitted(value: string) ***REMOVED***
+    set DateSubmitted(value: string) {
         this._DateSubmitted = value;
-    ***REMOVED***
+    }
 
-***REMOVED***
+}

@@ -1,7 +1,7 @@
-import ***REMOVED*** ApplicationDissemination ***REMOVED*** from './application-dissemination';
+import { ApplicationDissemination } from './application-dissemination';
 
-describe('ApplicationDissemination', () => ***REMOVED***
-  it('should create an instance', () => ***REMOVED***
+describe('ApplicationDissemination', () => {
+  it('should create an instance', () => {
     expect(new ApplicationDissemination()).toBeTruthy();
-  ***REMOVED***);
-***REMOVED***);
+  });
+});

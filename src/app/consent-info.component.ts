@@ -1,14 +1,14 @@
-import ***REMOVED***Component***REMOVED*** from '@angular/core';
-import ***REMOVED***environment***REMOVED*** from '../environments/environment';
+import {Component} from '@angular/core';
+import {environment} from '../environments/environment';
 
 /**
  * Consent info component.
  */
-@Component(***REMOVED***
+@Component({
     selector: 'app-consent-info',
     templateUrl: 'consent-info.component.html'
 
-***REMOVED***)
-export class ConsentInfoComponent ***REMOVED***
+})
+export class ConsentInfoComponent {
     voLoginLink: string = environment.login
-***REMOVED***
+}

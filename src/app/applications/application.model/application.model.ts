@@ -1,10 +1,10 @@
-import ***REMOVED***ApplicationExtension***REMOVED*** from '../application_extension.model';
-import ***REMOVED***ComputecenterComponent***REMOVED*** from '../../projectmanagement/computecenter.component';
+import {ApplicationExtension} from '../application_extension.model';
+import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
 
 /**
  * Application class.
  */
-export class Application ***REMOVED***
+export class Application {
 
   private _Id: number | string;
   private _Name: string;
@@ -46,20 +46,20 @@ export class Application ***REMOVED***
   private _PI: string;
   private _PIElixir: string;
   private _PIEmail: string;
-  private _CurrentFlavors: ***REMOVED***
-    [id: string]: ***REMOVED***
+  private _CurrentFlavors: {
+    [id: string]: {
       counter: number, tag: string, ram: number, rootdisk: number,
       vcpus: number, gpu: number, epheremal_disk: number
-    ***REMOVED***
-  ***REMOVED***;
+    }
+  };
 
-  constructor() ***REMOVED***
-    this._CurrentFlavors = ***REMOVED******REMOVED***;
-  ***REMOVED***
+  constructor() {
+    this._CurrentFlavors = {};
+  }
 
   public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number,
-                            vcpus: number, gpu: number, epheremal_disk: number): void ***REMOVED***
-    this._CurrentFlavors[name] = ***REMOVED***
+                            vcpus: number, gpu: number, epheremal_disk: number): void {
+    this._CurrentFlavors[name] = {
       counter: counter,
       tag: tag,
       ram: ram,
@@ -67,336 +67,336 @@ export class Application ***REMOVED***
       vcpus: vcpus,
       gpu: gpu,
       epheremal_disk: epheremal_disk
-    ***REMOVED***;
-  ***REMOVED***
+    };
+  }
 
-  get PiAffiliations(): string[] ***REMOVED***
+  get PiAffiliations(): string[] {
     return this._PiAffiliations;
-  ***REMOVED***
+  }
 
-  set PiAffiliations(value: string[]) ***REMOVED***
+  set PiAffiliations(value: string[]) {
     this._PiAffiliations = value;
-  ***REMOVED***
+  }
 
-  get EdamTopics(): string[] ***REMOVED***
+  get EdamTopics(): string[] {
     return this._EdamTopics;
-  ***REMOVED***
+  }
 
-  set EdamTopics(value: string[]) ***REMOVED***
+  set EdamTopics(value: string[]) {
     this._EdamTopics = value;
-  ***REMOVED***
+  }
 
-  get PIElixir(): string ***REMOVED***
+  get PIElixir(): string {
     return this._PIElixir;
-  ***REMOVED***
+  }
 
-  set PIElixir(value: string) ***REMOVED***
+  set PIElixir(value: string) {
     this._PIElixir = value;
-  ***REMOVED***
+  }
 
-  get Dissemination(): boolean ***REMOVED***
+  get Dissemination(): boolean {
     return this._Dissemination;
-  ***REMOVED***
+  }
 
-  set Dissemination(value: boolean) ***REMOVED***
+  set Dissemination(value: boolean) {
     this._Dissemination = value;
-  ***REMOVED***
+  }
 
-  get PIApproved(): boolean ***REMOVED***
+  get PIApproved(): boolean {
     return this._PIApproved;
-  ***REMOVED***
+  }
 
-  set PIApproved(value: boolean) ***REMOVED***
+  set PIApproved(value: boolean) {
     this._PIApproved = value;
-  ***REMOVED***
+  }
 
-  get CurrentFlavors(): ***REMOVED***
-    [id: string]: ***REMOVED***
+  get CurrentFlavors(): {
+    [id: string]: {
       counter: number, tag: string, ram: number, rootdisk: number,
       vcpus: number, gpu: number, epheremal_disk: number
-    ***REMOVED***
-  ***REMOVED*** ***REMOVED***
+    }
+  } {
     return this._CurrentFlavors
-  ***REMOVED***
+  }
 
-  set CurrentFlavors(value: ***REMOVED***
-    [id: string]: ***REMOVED***
+  set CurrentFlavors(value: {
+    [id: string]: {
       counter: number, tag: string, ram: number, rootdisk: number,
       vcpus: number, gpu: number, epheremal_disk: number
-    ***REMOVED***
-  ***REMOVED***) ***REMOVED***
+    }
+  }) {
     this._CurrentFlavors = value;
-  ***REMOVED***
+  }
 
-  get DateApproved(): string ***REMOVED***
+  get DateApproved(): string {
     return this._DateApproved;
-  ***REMOVED***
+  }
 
-  set DateApproved(value: string) ***REMOVED***
+  set DateApproved(value: string) {
     this._DateApproved = value;
-  ***REMOVED***
+  }
 
-  get TotalCores(): number ***REMOVED***
+  get TotalCores(): number {
     return this._TotalCores;
-  ***REMOVED***
+  }
 
-  set TotalCores(value: number) ***REMOVED***
+  set TotalCores(value: number) {
     this._TotalCores = value;
-  ***REMOVED***
+  }
 
-  get TotalRam(): number ***REMOVED***
+  get TotalRam(): number {
     return this._TotalRam;
-  ***REMOVED***
+  }
 
-  set TotalRam(value: number) ***REMOVED***
+  set TotalRam(value: number) {
     this._TotalRam = value;
-  ***REMOVED***
+  }
 
-  get UserAffiliations(): string[] ***REMOVED***
+  get UserAffiliations(): string[] {
     return this._UserAffiliations
-  ***REMOVED***
+  }
 
-  set UserAffiliations(value: string[]) ***REMOVED***
+  set UserAffiliations(value: string[]) {
     this._UserAffiliations = value;
-  ***REMOVED***
+  }
 
-  get ApplicationExtension(): ApplicationExtension ***REMOVED***
+  get ApplicationExtension(): ApplicationExtension {
     return this._ApplicationExtension;
-  ***REMOVED***
+  }
 
-  set ApplicationExtension(value: ApplicationExtension) ***REMOVED***
+  set ApplicationExtension(value: ApplicationExtension) {
     this._ApplicationExtension = value;
-  ***REMOVED***
+  }
 
-  get DaysRunning(): number ***REMOVED***
+  get DaysRunning(): number {
     return this._DaysRunning;
-  ***REMOVED***
+  }
 
-  set DaysRunning(value: number) ***REMOVED***
+  set DaysRunning(value: number) {
     this._DaysRunning = value;
-  ***REMOVED***
+  }
 
-  get OpenStackProject(): boolean ***REMOVED***
+  get OpenStackProject(): boolean {
     return this._OpenStackProject
-  ***REMOVED***
+  }
 
-  set OpenStackProject(value: boolean) ***REMOVED***
+  set OpenStackProject(value: boolean) {
     this._OpenStackProject = value;
-  ***REMOVED***
+  }
 
-  get ComputeCenter(): ComputecenterComponent ***REMOVED***
+  get ComputeCenter(): ComputecenterComponent {
     return this._ComputeCenter
-  ***REMOVED***
+  }
 
-  set ComputeCenter(value: ComputecenterComponent) ***REMOVED***
+  set ComputeCenter(value: ComputecenterComponent) {
     this._ComputeCenter = value;
-  ***REMOVED***
+  }
 
-  get Id(): number | string ***REMOVED***
+  get Id(): number | string {
     return this._Id;
-  ***REMOVED***
+  }
 
-  set Id(value: number | string) ***REMOVED***
+  set Id(value: number | string) {
     this._Id = value;
-  ***REMOVED***
+  }
 
-  get Name(): string ***REMOVED***
+  get Name(): string {
     return this._Name;
-  ***REMOVED***
+  }
 
-  set Name(value: string) ***REMOVED***
+  set Name(value: string) {
     this._Name = value;
-  ***REMOVED***
+  }
 
-  set Comment(value: string) ***REMOVED***
+  set Comment(value: string) {
     this._Comment = value;
-  ***REMOVED***
+  }
 
-  get Comment(): string ***REMOVED***
+  get Comment(): string {
     return this._Comment;
-  ***REMOVED***
+  }
 
-  get Shortname(): string ***REMOVED***
+  get Shortname(): string {
     return this._Shortname;
-  ***REMOVED***
+  }
 
-  set Shortname(value: string) ***REMOVED***
+  set Shortname(value: string) {
     this._Shortname = value;
-  ***REMOVED***
+  }
 
-  get Institute(): string ***REMOVED***
+  get Institute(): string {
     return this._Institute;
-  ***REMOVED***
+  }
 
-  set Institute(value: string) ***REMOVED***
+  set Institute(value: string) {
     this._Institute = value;
-  ***REMOVED***
+  }
 
-  get Workgroup(): string ***REMOVED***
+  get Workgroup(): string {
     return this._Workgroup;
-  ***REMOVED***
+  }
 
-  set Workgroup(value: string) ***REMOVED***
+  set Workgroup(value: string) {
     this._Workgroup = value;
-  ***REMOVED***
+  }
 
-  get Lifetime(): number ***REMOVED***
+  get Lifetime(): number {
     return this._Lifetime;
-  ***REMOVED***
+  }
 
-  set Lifetime(value: number) ***REMOVED***
+  set Lifetime(value: number) {
     this._Lifetime = value;
-  ***REMOVED***
+  }
 
-  get VMsRequested(): number ***REMOVED***
+  get VMsRequested(): number {
     return this._VMsRequested;
-  ***REMOVED***
+  }
 
-  set VMsRequested(value: number) ***REMOVED***
+  set VMsRequested(value: number) {
     this._VMsRequested = value;
-  ***REMOVED***
+  }
 
-  get CoresPerVM(): number ***REMOVED***
+  get CoresPerVM(): number {
     return this._CoresPerVM;
-  ***REMOVED***
+  }
 
-  set CoresPerVM(value: number) ***REMOVED***
+  set CoresPerVM(value: number) {
     this._CoresPerVM = value;
-  ***REMOVED***
+  }
 
-  get RamPerVM(): number ***REMOVED***
+  get RamPerVM(): number {
     return this._RamPerVM;
-  ***REMOVED***
+  }
 
-  set RamPerVM(value: number) ***REMOVED***
+  set RamPerVM(value: number) {
     this._RamPerVM = value;
-  ***REMOVED***
+  }
 
-  get VolumeLimit(): number ***REMOVED***
+  get VolumeLimit(): number {
     return this._VolumeLimit;
-  ***REMOVED***
+  }
 
-  set VolumeLimit(value: number) ***REMOVED***
+  set VolumeLimit(value: number) {
     this._VolumeLimit = value;
-  ***REMOVED***
+  }
 
-  get VolumeCounter(): number ***REMOVED***
+  get VolumeCounter(): number {
     return this._VolumeCounter;
-  ***REMOVED***
+  }
 
-  set VolumeCounter(value: number) ***REMOVED***
+  set VolumeCounter(value: number) {
     this._VolumeCounter = value;
-  ***REMOVED***
+  }
 
-  get ObjectStorage(): number ***REMOVED***
+  get ObjectStorage(): number {
     return this._ObjectStorage;
-  ***REMOVED***
+  }
 
-  set ObjectStorage(value: number) ***REMOVED***
+  set ObjectStorage(value: number) {
     this._ObjectStorage = value;
-  ***REMOVED***
+  }
 
-  get SpecialHardware(): number ***REMOVED***
+  get SpecialHardware(): number {
     return this._SpecialHardware;
-  ***REMOVED***
+  }
 
-  set SpecialHardware(value: number) ***REMOVED***
+  set SpecialHardware(value: number) {
     this._SpecialHardware = value;
-  ***REMOVED***
+  }
 
-  get Description(): string ***REMOVED***
+  get Description(): string {
     return this._Description;
-  ***REMOVED***
+  }
 
-  set Description(value: string) ***REMOVED***
+  set Description(value: string) {
     this._Description = value;
-  ***REMOVED***
+  }
 
-  get DateSubmitted(): string ***REMOVED***
+  get DateSubmitted(): string {
     return this._DateSubmitted;
-  ***REMOVED***
+  }
 
-  set DateSubmitted(value: string) ***REMOVED***
+  set DateSubmitted(value: string) {
     this._DateSubmitted = value;
-  ***REMOVED***
+  }
 
-  get DateStatusChanged(): string ***REMOVED***
+  get DateStatusChanged(): string {
     return this._DateStatusChanged;
-  ***REMOVED***
+  }
 
-  set DateStatusChanged(value: string) ***REMOVED***
+  set DateStatusChanged(value: string) {
     this._DateStatusChanged = value;
-  ***REMOVED***
+  }
 
-  get User(): string ***REMOVED***
+  get User(): string {
     return this._User;
-  ***REMOVED***
+  }
 
-  set User(value: string) ***REMOVED***
+  set User(value: string) {
     this._User = value;
-  ***REMOVED***
+  }
 
-  get Status(): number ***REMOVED***
+  get Status(): number {
     return this._Status;
-  ***REMOVED***
+  }
 
-  set Status(value: number) ***REMOVED***
+  set Status(value: number) {
     this._Status = value;
-  ***REMOVED***
+  }
 
-  get UserEmail(): string ***REMOVED***
+  get UserEmail(): string {
     return this._UserEmail;
-  ***REMOVED***
+  }
 
-  set UserEmail(value: string) ***REMOVED***
+  set UserEmail(value: string) {
     this._UserEmail = value;
-  ***REMOVED***
+  }
 
-  get PerunId(): number | string ***REMOVED***
+  get PerunId(): number | string {
     return this._PerunId;
-  ***REMOVED***
+  }
 
-  set PerunId(value: number | string) ***REMOVED***
+  set PerunId(value: number | string) {
     this._PerunId = value;
-  ***REMOVED***
+  }
 
-  get BMBFProject(): string ***REMOVED***
+  get BMBFProject(): string {
     return this._BMBFProject;
-  ***REMOVED***
+  }
 
-  set BMBFProject(value: string) ***REMOVED***
+  set BMBFProject(value: string) {
     this._BMBFProject = value;
-  ***REMOVED***
+  }
 
-  get Horizon2020(): string ***REMOVED***
+  get Horizon2020(): string {
     return this._Horizon2020;
-  ***REMOVED***
+  }
 
-  set Horizon2020(value: string) ***REMOVED***
+  set Horizon2020(value: string) {
     this._Horizon2020 = value;
-  ***REMOVED***
+  }
 
-  get ElixirProject(): string ***REMOVED***
+  get ElixirProject(): string {
     return this._ElixirProject;
-  ***REMOVED***
+  }
 
-  set ElixirProject(value: string) ***REMOVED***
+  set ElixirProject(value: string) {
     this._ElixirProject = value;
-  ***REMOVED***
+  }
 
-  get PI(): string ***REMOVED***
+  get PI(): string {
     return this._PI;
-  ***REMOVED***
+  }
 
-  set PI(value: string) ***REMOVED***
+  set PI(value: string) {
     this._PI = value;
-  ***REMOVED***
+  }
 
-  get PIEmail(): string ***REMOVED***
+  get PIEmail(): string {
     return this._PIEmail;
-  ***REMOVED***
+  }
 
-  set PIEmail(value: string) ***REMOVED***
+  set PIEmail(value: string) {
     this._PIEmail = value;
-  ***REMOVED***
-***REMOVED***
+  }
+}

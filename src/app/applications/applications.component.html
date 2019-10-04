@@ -79,15 +79,15 @@
                                     </span>
                                   </span>
                   </td>
-                  <td>***REMOVED******REMOVED*** application?.Name ***REMOVED******REMOVED***
+                  <td>{{ application?.Name }}
                   </td>
-                  <td>***REMOVED******REMOVED***application?.Shortname***REMOVED******REMOVED***</td>
-                  <td>***REMOVED******REMOVED*** application?.DateSubmitted ***REMOVED******REMOVED***
+                  <td>{{application?.Shortname}}</td>
+                  <td>{{ application?.DateSubmitted }}
                   </td>
                   <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
-                    ***REMOVED******REMOVED*** application?.User ***REMOVED******REMOVED***
+                    {{ application?.User }}
                   </td>
-                  <td>***REMOVED******REMOVED***application?.Institute***REMOVED******REMOVED***</td>
+                  <td>{{application?.Institute}}</td>
 
 
                   <td>
@@ -99,12 +99,12 @@
                       <option value="undefined" selected> no center
                       </option>
                       <option *ngFor="let computeCenter of computeCenters"
-                              value="***REMOVED******REMOVED***computeCenter.FacilityId***REMOVED******REMOVED***">
-                        ***REMOVED******REMOVED***computeCenter.Name***REMOVED******REMOVED***
+                              value="{{computeCenter.FacilityId}}">
+                        {{computeCenter.Name}}
                       </option>
                     </select>
                     <span
-                      *ngIf="application?.Status != application_states.SUBMITTED">***REMOVED******REMOVED***application?.ComputeCenter?.Name***REMOVED******REMOVED***</span>
+                      *ngIf="application?.Status != application_states.SUBMITTED">{{application?.ComputeCenter?.Name}}</span>
                   </td>
 
 
@@ -155,7 +155,7 @@
                         Approve
                         & Create
                       </button>
-                      <button
+                      <button [id]="'extension_approval_' + application.Shortname"
                         *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED"
                         style="margin: auto 2.5px"
                         (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
@@ -230,21 +230,21 @@
        [ngClass]="notificationClientInfo.length > 0 ? 'modal-lg':''">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="notificationModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***"
+        <div class="alert alert-{{ notificationModalType }}"
              role="alert" id="notification_message">
-          ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
+          {{ notificationModalMessage }}
         </div>
         <div *ngIf="notificationClientInfo.length > 0">
           <div *ngFor="let c of notificationClientInfo" class="table-responsive">
             <br>
-            <p>Client: ***REMOVED******REMOVED***c.location***REMOVED******REMOVED***</p>
+            <p>Client: {{c.location}}</p>
             <table class="table table-striped">
               <thead>
               <tr>
@@ -256,24 +256,24 @@
               <tbody>
               <tr>
                 <td>VMs</td>
-                <td>***REMOVED******REMOVED***c.assignedVMs***REMOVED******REMOVED***<span *ngIf="c.newVms"
-                                           [ngStyle]="***REMOVED***'color':c.assignedVMs + c.newVms <= c.maxVMs? 'green':'red'***REMOVED***"> + ***REMOVED******REMOVED***c.newVms***REMOVED******REMOVED***</span>
+                <td>{{c.assignedVMs}}<span *ngIf="c.newVms"
+                                           [ngStyle]="{'color':c.assignedVMs + c.newVms <= c.maxVMs? 'green':'red'}"> + {{c.newVms}}</span>
                 </td>
-                <td>***REMOVED******REMOVED***c.maxVMs***REMOVED******REMOVED*** </td>
+                <td>{{c.maxVMs}} </td>
               </tr>
               <tr>
                 <td>Volumes</td>
-                <td>***REMOVED******REMOVED***c.assignedVolumes***REMOVED******REMOVED*** <span *ngIf="c.newVolumes"
-                                                [ngStyle]="***REMOVED***'color':c.assignedVolumes + c.newVolumes <= c.maxVolumes? 'green':'red'***REMOVED***"> + ***REMOVED******REMOVED***c.newVolumes***REMOVED******REMOVED***</span>
+                <td>{{c.assignedVolumes}} <span *ngIf="c.newVolumes"
+                                                [ngStyle]="{'color':c.assignedVolumes + c.newVolumes <= c.maxVolumes? 'green':'red'}"> + {{c.newVolumes}}</span>
                 </td>
-                <td>***REMOVED******REMOVED***c.maxVolumes***REMOVED******REMOVED***</td>
+                <td>{{c.maxVolumes}}</td>
               </tr>
               <tr>
                 <td>Volume Storage</td>
-                <td>***REMOVED******REMOVED***c.assignedVolumesStorage***REMOVED******REMOVED*** <span *ngIf="c.newVolumeLimit"
-                                                       [ngStyle]="***REMOVED***'color':c.assignedVolumesStorage + c.newVolumeLimit <= c.maxVolumeLimit? 'green':'red'***REMOVED***"> + ***REMOVED******REMOVED***c.newVolumeLimit***REMOVED******REMOVED***</span>
+                <td>{{c.assignedVolumesStorage}} <span *ngIf="c.newVolumeLimit"
+                                                       [ngStyle]="{'color':c.assignedVolumesStorage + c.newVolumeLimit <= c.maxVolumeLimit? 'green':'red'}"> + {{c.newVolumeLimit}}</span>
                 </td>
-                <td>***REMOVED******REMOVED***c.maxVolumeLimit***REMOVED******REMOVED***</td>
+                <td>{{c.maxVolumeLimit}}</td>
               </tr>
               </tbody>
             </table>

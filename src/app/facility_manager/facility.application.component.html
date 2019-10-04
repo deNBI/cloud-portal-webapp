@@ -4,13 +4,13 @@
   <div><h4 *ngIf="selectedFacility">
 
     Applications Overview:
-    ***REMOVED******REMOVED***selectedFacility['Facility']***REMOVED******REMOVED***</h4></div>
+    {{selectedFacility['Facility']}}</h4></div>
   <div style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
                                            (ngModelChange)="onChangeSelectedFacility($event)"
                                            class="form-control " name="selectedFacility">
     <option *ngFor="  let facility of managerFacilities"
             [ngValue]="facility">
-      ***REMOVED******REMOVED***facility['Facility']***REMOVED******REMOVED***
+      {{facility['Facility']}}
     </option>
 
   </select></div>
@@ -63,13 +63,13 @@
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                 </td>
-                <td>***REMOVED******REMOVED*** application?.Name ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED***application?.Shortname***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** application?.DateSubmitted ***REMOVED******REMOVED***</td>
+                <td>{{ application?.Name }}</td>
+                <td>{{application?.Shortname}}</td>
+                <td>{{ application?.DateSubmitted }}</td>
                 <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
-                  ***REMOVED******REMOVED*** application?.User ***REMOVED******REMOVED***
+                  {{ application?.User }}
                 </td>
-                <td>***REMOVED******REMOVED***application?.Institute***REMOVED******REMOVED***</td>
+                <td>{{application?.Institute}}</td>
 
                 <td>
                   <div class="btn-group">
@@ -168,13 +168,13 @@
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                 </td>
-                <td>***REMOVED******REMOVED*** app.Name ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED***app.Shortname***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** app.DateSubmitted ***REMOVED******REMOVED***</td>
+                <td>{{ app.Name }}</td>
+                <td>{{app.Shortname}}</td>
+                <td>{{ app.DateSubmitted }}</td>
                 <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
-                  ***REMOVED******REMOVED*** app.User ***REMOVED******REMOVED***
+                  {{ app.User }}
                 </td>
-                <td>***REMOVED******REMOVED***app.Institute***REMOVED******REMOVED***</td>
+                <td>{{app.Institute}}</td>
 
                 <td>
                   <div class="btn-group">
@@ -270,15 +270,15 @@
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                 </td>
-                <td>***REMOVED******REMOVED*** application?.Name ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED***application?.Shortname***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** application?.DateSubmitted ***REMOVED******REMOVED***
+                <td>{{ application?.Name }}</td>
+                <td>{{application?.Shortname}}</td>
+                <td>{{ application?.DateSubmitted }}
                 </td>
-                <td>***REMOVED******REMOVED*** application?.User ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** application?.Institute ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED***
+                <td>{{ application?.User }}</td>
+                <td>{{ application?.Institute }}</td>
+                <td>{{
                   getStatusById(application?.Status)
-                  ***REMOVED******REMOVED***
+                  }}
                 </td>
                 <td>
                   <button (click)="switchCollapseStatus('application_history-' + application?.Id);"
@@ -326,15 +326,15 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="notificationModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
-          ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
+        <div class="alert alert-{{ notificationModalType }}" role="alert">
+          {{ notificationModalMessage }}
         </div>
       </div>
       <div class="modal-footer">

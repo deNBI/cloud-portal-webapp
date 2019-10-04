@@ -12,7 +12,7 @@
               class="btn btn-outline-primary"
               style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i
         class="icon-envelope-letter"></i>
-        Send newsletter (***REMOVED******REMOVED***newsletterSubscriptionCounter***REMOVED******REMOVED***)
+        Send newsletter ({{newsletterSubscriptionCounter}})
       </button>
 
       <button (click)="setEmailType(0);emailModal.show();" type="button "
@@ -74,7 +74,7 @@
                              (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
                              checked/>
                       <span style="margin-left: 5px"
-                            class="badge badge-success">***REMOVED******REMOVED***project_states[project_states.ACTIVE]***REMOVED******REMOVED*** </span>
+                            class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
 
                     </label>
                   </div>
@@ -84,7 +84,7 @@
                              (change)="changeFilterStatus(project_states[project_states.SUSPENDED]);applyFilter();"
                              checked/>
                       <span style="margin-left: 5px"
-                            class="badge badge-warning">***REMOVED******REMOVED***project_states[project_states.SUSPENDED]***REMOVED******REMOVED*** </span>
+                            class="badge badge-warning">{{project_states[project_states.SUSPENDED]}} </span>
                     </label>
                   </div>
                 </div>
@@ -95,7 +95,7 @@
                              (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
                       />
                       <span style="margin-left: 5px"
-                            class="badge badge-danger">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRED]***REMOVED******REMOVED***</span>
+                            class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
 
                     </label>
                   </div>
@@ -105,7 +105,7 @@
                              (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
                       />
                       <span style="margin-left: 5px"
-                            class="badge badge-warning">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRES_SOON]***REMOVED******REMOVED***</span>
+                            class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                     </label>
                   </div>
                 </div>
@@ -127,9 +127,9 @@
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                 </td>
-                <td>***REMOVED******REMOVED***project?.ComputeCenter?.Name***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***
+                <td>{{project?.ComputeCenter?.Name}}</td>
+                <td>{{ project.Id }}</td>
+                <td>{{ project.Name }}
                 </td>
 
                 <td>
@@ -140,16 +140,16 @@
                 </td>
                 <td>  <span *ngIf="project?.Status ==  project_states.ACTIVE"
                             style="margin-left: 5px"
-                            class="badge badge-success">***REMOVED******REMOVED***project_states[project_states.ACTIVE]***REMOVED******REMOVED*** </span>
+                            class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
                   <span *ngIf="project?.LifetimeReached==lifetime_states.EXPIRED"
                         style="margin-left: 5px"
-                        class="badge badge-danger">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRED]***REMOVED******REMOVED*** </span>
+                        class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
                   <span *ngIf="project?.LifetimeReached == lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
-                        class="badge badge-warning">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRES_SOON]***REMOVED******REMOVED***</span>
+                        class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                   <span *ngIf="project?.Status == project_states.SUSPENDED"
                         style="margin-left: 5px"
-                        class="badge badge-warning">***REMOVED******REMOVED***project_states[project_states.SUSPENDED]***REMOVED******REMOVED*** </span>
+                        class="badge badge-warning">{{project_states[project_states.SUSPENDED]}} </span>
                   <span
                     *ngIf="project?.Status !=  project_states.SUSPENDED && project?.Status !=  project_states.ACTIVE"
                     style="margin-left: 5px"
@@ -211,8 +211,8 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Members of the Project ***REMOVED******REMOVED*** usersModalProjectID ***REMOVED******REMOVED***
-          (***REMOVED******REMOVED*** usersModalProjectName ***REMOVED******REMOVED***)</h4>
+        <h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
+          ({{ usersModalProjectName }})</h4>
         <button type="button" class="close" style="cursor: pointer"
                 (click)="usersModal.hide()"
                 aria-label="Close">
@@ -234,11 +234,11 @@
             </thead>
             <tbody>
             <tr *ngFor="let member of usersModalProjectMembers">
-              <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED*** member.ElixirId***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED***member.Email***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
+              <td>{{ member.Id }}</td>
+              <td>{{ member.MemberId }}</td>
+              <td>{{ member.ElixirId}}</td>
+              <td>{{member.Email}}</td>
+              <td>{{ member.Username }}</td>
             </tr>
 
             </tbody>
@@ -260,7 +260,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title"> ***REMOVED******REMOVED***emailHeader***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title"> {{emailHeader}}</h4>
         <button type="button" class="close" style="cursor: pointer;"
                 (click)="emailModal.hide()"
                 aria-label="Close">
@@ -279,7 +279,7 @@
                       name="selectedFacility" id="selectedFacility">
                 <option value="ALL"> All
                 <option *ngFor="let cc of computecenters" [ngValue]="cc.FacilityId">
-                  ***REMOVED******REMOVED***cc.Name***REMOVED******REMOVED***
+                  {{cc.Name}}
                 </option>
 
               </select></div>
@@ -303,9 +303,9 @@
               </select></div>
           </div>
           <div class="form-group row"
-               [ngClass]="***REMOVED***'has-danger':emailSub.invalid && (emailSub.dirty || emailSub.touched),
+               [ngClass]="{'has-danger':emailSub.invalid && (emailSub.dirty || emailSub.touched),
                     'has-success':emailSub.valid && (emailSub.dirty || emailSub.touched)
-                    ***REMOVED***">
+                    }">
             <label class="col-md-12 control-label"><strong>Email
               subject*</strong></label>
             <div class="col-md-12">
@@ -313,9 +313,9 @@
                      class="form-control"
                      type="text" [(ngModel)]="emailSubject" minlength="1"
                      #emailSub="ngModel"
-                     [ngClass]="***REMOVED***'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
+                     [ngClass]="{'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
                     'is-valid':emailSub.valid && (emailSub.dirty || emailSub.touched)
-                    ***REMOVED***">
+                    }">
 
             </div>
           </div>
@@ -326,10 +326,10 @@
               <input id="Reply to" name="emailReply" placeholder=""
                      class="form-control"
                      type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
-                     pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.***REMOVED***2,***REMOVED***.*)|^.***REMOVED***254***REMOVED***.)([a-zA-Z0-9!#$%&'*+\/=?^_`***REMOVED***|***REMOVED***~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]***REMOVED***1,63***REMOVED***\.)+[a-zA-Z]***REMOVED***2,15***REMOVED***"
-                     [ngClass]="***REMOVED***'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
+                     pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                     [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
                     'is-valid':emailRep.valid && (emailRep.dirty || emailRep.touched)
-                    ***REMOVED***">
+                    }">
 
             </div>
           </div>
@@ -341,9 +341,9 @@
                                       name="emailText"
                                       [(ngModel)]="emailText"
                                       type="text" #emailT="ngModel"
-                                      [ngClass]="***REMOVED***'is-invalid':emailT.invalid && (emailT.dirty || emailT.touched),
+                                      [ngClass]="{'is-invalid':emailT.invalid && (emailT.dirty || emailT.touched),
                     'is-valid':emailT.valid && (emailT.dirty || emailT.touched)
-                    ***REMOVED***"></textarea>
+                    }"></textarea>
             </div>
           </div>
         </form>
@@ -376,7 +376,7 @@
       <div class="modal-body">
 
         <div class="alert alert-warning" role="alert">
-          ***REMOVED******REMOVED***emailVerify***REMOVED******REMOVED***
+          {{emailVerify}}
         </div>
 
       </div>
@@ -399,7 +399,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Suspend Project ***REMOVED******REMOVED***selectedProject?.Name***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title">Suspend Project {{selectedProject?.Name}}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="suspendModal.hide()"
                 aria-label="Close">
@@ -408,7 +408,7 @@
       </div>
       <div class="modal-body">
 
-        Are you sure you want to suspend ***REMOVED******REMOVED***selectedProject?.Name***REMOVED******REMOVED*** ?
+        Are you sure you want to suspend {{selectedProject?.Name}} ?
 
       </div>
       <div class="modal-footer">
@@ -431,7 +431,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Resume Project ***REMOVED******REMOVED***selectedProject?.Name***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title">Resume Project {{selectedProject?.Name}}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="resumeModal.hide()"
                 aria-label="Close">
@@ -440,7 +440,7 @@
       </div>
       <div class="modal-body">
 
-        Are you sure you want to resume ***REMOVED******REMOVED***selectedProject?.Name***REMOVED******REMOVED*** ?
+        Are you sure you want to resume {{selectedProject?.Name}} ?
 
       </div>
       <div class="modal-footer">
@@ -510,7 +510,7 @@
       </div>
 
       <div class="modal-body">
-        <p>***REMOVED******REMOVED*** selectedProject?.Description ***REMOVED******REMOVED***</p>
+        <p>{{ selectedProject?.Description }}</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary"
@@ -557,10 +557,10 @@
               </button>
             </td>
 
-            <td>***REMOVED******REMOVED*** selectedProject?.DateCreated ***REMOVED******REMOVED***</td>
-            <td>***REMOVED******REMOVED***selectedProject?.DateEnd***REMOVED******REMOVED***</td>
-            <td>***REMOVED******REMOVED*** selectedProject?.DaysRunning ***REMOVED******REMOVED***</td>
-            <td>***REMOVED******REMOVED***selectedProject?.LifetimeDays***REMOVED******REMOVED***</td>
+            <td>{{ selectedProject?.DateCreated }}</td>
+            <td>{{selectedProject?.DateEnd}}</td>
+            <td>{{ selectedProject?.DaysRunning }}</td>
+            <td>{{selectedProject?.LifetimeDays}}</td>
 
             </tbody>
           </table>
@@ -607,8 +607,8 @@
               <th>Name</th>
             </tr>
             <tr *ngFor="let vm of selectedProjectVms">
-              <td>***REMOVED******REMOVED***vm?.openstackid***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED***vm?.name***REMOVED******REMOVED***</td>
+              <td>{{vm?.openstackid}}</td>
+              <td>{{vm?.name}}</td>
 
             </tr>
             </tbody>
@@ -626,8 +626,8 @@
               <th>Name</th>
             </tr>
             <tr *ngFor="let volume of selectedProjectVolumes">
-              <td>***REMOVED******REMOVED***volume?.volume_openstackid***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED***volume?.volume_name***REMOVED******REMOVED***</td>
+              <td>{{volume?.volume_openstackid}}</td>
+              <td>{{volume?.volume_name}}</td>
 
             </tr>
 
@@ -646,8 +646,8 @@
               <th>Name</th>
             </tr>
             <tr *ngFor="let snapshot of selectedProjectSnapshots">
-              <td>***REMOVED******REMOVED***snapshot?.snapshot_openstackid***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED***snapshot?.snapshot_name***REMOVED******REMOVED***</td>
+              <td>{{snapshot?.snapshot_openstackid}}</td>
+              <td>{{snapshot?.snapshot_name}}</td>
 
             </tr>
 
@@ -676,7 +676,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="notificationModal.hide()"
                 aria-label="Close">
@@ -684,8 +684,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
-          ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
+        <div class="alert alert-{{ notificationModalType }}" role="alert">
+          {{ notificationModalMessage }}
 
         </div>
       </div>

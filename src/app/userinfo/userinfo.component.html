@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-8">
             <!--/.col-->
-            <h1>Welcome ***REMOVED******REMOVED*** userInfo.FirstName ***REMOVED******REMOVED*** ***REMOVED******REMOVED*** userInfo.LastName ***REMOVED******REMOVED***</h1></div>
+            <h1>Welcome {{ userInfo.FirstName }} {{ userInfo.LastName }}</h1></div>
         <div class="col-md-4">
             <button *ngIf="freemiumActive && !isProjectMember" class="btn btn-primary btn-lg"
                     (click)="freemiummodal.show();">Join Freemium!
@@ -21,21 +21,21 @@
 
                     <tr>
                         <th>Elixir Login</th>
-                        <td class="col-md-8">***REMOVED******REMOVED*** userInfo?.UserLogin ***REMOVED******REMOVED***</td>
+                        <td class="col-md-8">{{ userInfo?.UserLogin }}</td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Elixir ID</th>
-                        <td class="col-md-8">***REMOVED******REMOVED***userInfo?.ElxirId***REMOVED******REMOVED***</td>
+                        <td class="col-md-8">{{userInfo?.ElxirId}}</td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>Preferred Email</th>
-                        <td class="col-md-8">***REMOVED******REMOVED***userInfo?.Email***REMOVED******REMOVED***
+                        <td class="col-md-8">{{userInfo?.Email}}
 
                           <div style="color: red" *ngFor="  let pendingEmail of userInfo?.PendingEmails">You
                                 have pending change
-                                request. Please check inbox of: ***REMOVED******REMOVED***pendingEmail***REMOVED******REMOVED*** for validation email.
+                                request. Please check inbox of: {{pendingEmail}} for validation email.
                             </div>
                         </td>
                         <td>
@@ -183,10 +183,10 @@
                         <div class="col-md-12">
                             <input required id="emailChange" name="emailChang" placeholder="" class="form-control"
                                    type="text" [(ngModel)]="emailChange" #emailChang="ngModel"
-                                   pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.***REMOVED***2,***REMOVED***.*)|^.***REMOVED***254***REMOVED***.)([a-zA-Z0-9!#$%&'*+\/=?^_`***REMOVED***|***REMOVED***~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]***REMOVED***1,63***REMOVED***\.)+[a-zA-Z]***REMOVED***2,15***REMOVED***"
-                                   [ngClass]="***REMOVED***'is-invalid':emailChang.invalid && (emailChang.dirty || emailChang.touched),
+                                   pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                                   [ngClass]="{'is-invalid':emailChang.invalid && (emailChang.dirty || emailChang.touched),
                     'is-valid':emailChang.valid && (emailChang.dirty || emailChang.touched)
-                    ***REMOVED***">
+                    }">
 
                         </div>
                     </div>

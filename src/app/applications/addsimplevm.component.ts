@@ -1,26 +1,26 @@
-import ***REMOVED***Component, OnInit, ViewChild***REMOVED*** from '@angular/core';
-import ***REMOVED***NgForm***REMOVED*** from '@angular/forms';
-import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
-import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
-import ***REMOVED***Flavor***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavor';
-import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
-import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
-import ***REMOVED***FlavorType***REMOVED*** from '../virtualmachines/virtualmachinemodels/flavorType';
-import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
-import ***REMOVED***ApplicationDissemination***REMOVED*** from './application-dissemination';
-import ***REMOVED***EdamOntologyTerm***REMOVED*** from './edam-ontology-term';
-import ***REMOVED***AutocompleteComponent***REMOVED*** from 'angular-ng-autocomplete';
-import ***REMOVED***FullLayoutComponent***REMOVED*** from '../layouts/full-layout.component';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {NgForm} from '@angular/forms';
+import {ApiSettings} from '../api-connector/api-settings.service'
+import {ApplicationsService} from '../api-connector/applications.service'
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {FlavorService} from '../api-connector/flavor.service';
+import {environment} from '../../environments/environment';
+import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
+import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationDissemination} from './application-dissemination';
+import {EdamOntologyTerm} from './edam-ontology-term';
+import {AutocompleteComponent} from 'angular-ng-autocomplete';
+import {FullLayoutComponent} from '../layouts/full-layout.component';
 
 /**
  * Component to create single vm applications.
  */
-@Component(***REMOVED***
+@Component({
              selector: 'app-addsimplevm',
              templateUrl: 'addsimplevm.component.html',
              providers: [FlavorService, ApiSettings, ApplicationsService]
-           ***REMOVED***)
-export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
+           })
+export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit {
 
   public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
@@ -36,13 +36,13 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
 
   /**
    * Boolean indicating whether information selection accordion is open or not.
-   * @type ***REMOVED***boolean***REMOVED***
+   * @type {boolean}
    */
   public dissemination_information_open: boolean = false;
 
   /**
    * Boolean indicating whether platform selection accordion is open or not
-   * @type ***REMOVED***boolean***REMOVED***
+   * @type {boolean}
    */
   public dissemination_platforms_open: boolean = false;
 
@@ -61,7 +61,7 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
 
   /**
    * Check if the shortname provided is valid.
-   * @type ***REMOVED***boolean***REMOVED***
+   * @type {boolean}
    */
   public wronginput: boolean = false;
 
@@ -69,7 +69,7 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
 
   /**
    * If at least 1 flavor is selected.
-   * @type ***REMOVED***boolean***REMOVED***
+   * @type {boolean}
    */
   public min_vm: boolean = false;
 
@@ -86,123 +86,123 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
   public acknowledgeModalTitle: string = 'Acknowledge';
   public acknowledgeModalType: string = 'info';
 
-  constructor(applicationsservice: ApplicationsService, private flavorService: FlavorService, private fullLayout: FullLayoutComponent) ***REMOVED***
+  constructor(applicationsservice: ApplicationsService, private flavorService: FlavorService, private fullLayout: FullLayoutComponent) {
     super(null, null, applicationsservice, null);
-  ***REMOVED***
+  }
 
-  ngOnInit(): void ***REMOVED***
+  ngOnInit(): void {
     this.getListOfFlavors();
     this.getListOfTypes();
-    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => ***REMOVED***
+    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
       this.edam_ontology_terms = terms;
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  selectEvent(item) ***REMOVED***
-    if (this.selected_ontology_terms.indexOf(item) === -1) ***REMOVED***
+  selectEvent(item) {
+    if (this.selected_ontology_terms.indexOf(item) === -1) {
       this.selected_ontology_terms.push(item);
-    ***REMOVED***
+    }
     this.edam_ontology.clear();
-  ***REMOVED***
+  }
 
-  removeEDAMterm(term: EdamOntologyTerm): void ***REMOVED***
+  removeEDAMterm(term: EdamOntologyTerm): void {
     const indexOf: number = this.selected_ontology_terms.indexOf(term);
     this.selected_ontology_terms.splice(indexOf, 1);
 
-  ***REMOVED***
+  }
 
   /**
    * Gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
    */
-  getListOfTypes(): void ***REMOVED***
+  getListOfTypes(): void {
     this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
-  ***REMOVED***
+  }
 
   /**
    * Uses the param types to safe the available FlavorTypes to the array typeList.
    * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
    * @param types array of all available FlavorTypes
    */
-  setListOfTypes(types: FlavorType[]): void ***REMOVED***
+  setListOfTypes(types: FlavorType[]): void {
     this.typeList = types;
     this.collapseList = new Array(types.length) as boolean[];
-    for (const type of types) ***REMOVED***
+    for (const type of types) {
 
       this.collapseList.push(false); // AS FIX
-      if (type.long_name === 'Standart Flavor') ***REMOVED***
+      if (type.long_name === 'Standart Flavor') {
         this.collapseList[this.typeList.indexOf(type)] = true;
-      ***REMOVED***
-    ***REMOVED***
+      }
+    }
 
-  ***REMOVED***
+  }
 
-  checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean ***REMOVED***
-    for (const flav of this.flavorList) ***REMOVED***
-      if (flav.type.shortcut === type.shortcut && flav.simple_vm) ***REMOVED***
+  checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
+    for (const flav of this.flavorList) {
+      if (flav.type.shortcut === type.shortcut && flav.simple_vm) {
         return true
-      ***REMOVED***
+      }
 
-    ***REMOVED***
+    }
 
     return false
 
-  ***REMOVED***
+  }
 
-  onChangeFlavor(value: number): void ***REMOVED***
+  onChangeFlavor(value: number): void {
 
     this.checkIfMinVmIsSelected();
-  ***REMOVED***
+  }
 
-  checkIfMinVmIsSelected(): void ***REMOVED***
-    for (const fl of this.flavorList) ***REMOVED***
-      const control: string = `project_application_$***REMOVED***fl.name***REMOVED***`;
-      if (control in this.simpleVmForm.controls) ***REMOVED***
-        if (this.simpleVmForm.controls[control].value > 0) ***REMOVED***
+  checkIfMinVmIsSelected(): void {
+    for (const fl of this.flavorList) {
+      const control: string = `project_application_${fl.name}`;
+      if (control in this.simpleVmForm.controls) {
+        if (this.simpleVmForm.controls[control].value > 0) {
           this.min_vm = true;
 
           return;
-        ***REMOVED***
-      ***REMOVED***
-    ***REMOVED***
+        }
+      }
+    }
 
     this.min_vm = false;
 
     return;
-  ***REMOVED***
+  }
 
   /**
    * Submit simple vm application.
-   * @param ***REMOVED***NgForm***REMOVED*** form
+   * @param {NgForm} form
    */
-  onSubmit(form: NgForm): void ***REMOVED***
+  onSubmit(form: NgForm): void {
     this.error = null;
-    if (this.wronginput) ***REMOVED***
+    if (this.wronginput) {
       this.updateNotificationModal(
         'Failed',
         'The application was not submitted, please check the required fields and try again.',
         true,
         'danger');
       this.notificationModalStay = true;
-    ***REMOVED*** else ***REMOVED***
-      const values: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED*** = ***REMOVED******REMOVED***;
-      for (const value in form.controls) ***REMOVED***
-        if (form.controls[value].disabled) ***REMOVED***
+    } else {
+      const values: { [key: string]: string | number | boolean } = {};
+      for (const value in form.controls) {
+        if (form.controls[value].disabled) {
           continue;
-        ***REMOVED***
-        if (form.controls[value].value) ***REMOVED***
+        }
+        if (form.controls[value].value) {
           values[value] = form.controls[value].value;
-        ***REMOVED***
-      ***REMOVED***
+        }
+      }
 
       this.applicationsservice.addNewApplication(values).toPromise()
-        .then(application => ***REMOVED***
+        .then(application => {
           this.new_application_id = application['project_application_id'];
 
-          if (this.project_application_report_allowed) ***REMOVED***
+          if (this.project_application_report_allowed) {
             this.applicationsservice.setApplicationDissemination(this.new_application_id, this.application_dissemination).subscribe()
 
-          ***REMOVED***
+          }
           this.applicationsservice.addEdamOntologyTerms(this.new_application_id,
                                                         this.selected_ontology_terms
           ).subscribe();
@@ -211,13 +211,13 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
           this.fullLayout.getGroupsEnumeration();
 
           this.notificationModalStay = false;
-        ***REMOVED***).catch((error: object) => ***REMOVED***
+        }).catch((error: object) => {
         const error_json: object = error;
         this.error = [];
-        for (const key of Object.keys(error_json)) ***REMOVED***
+        for (const key of Object.keys(error_json)) {
           this.error.push(key.split('_')[2])
 
-        ***REMOVED***
+        }
 
         this.updateNotificationModal(
           'Failed',
@@ -225,31 +225,31 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
           true,
           'danger');
         this.notificationModalStay = true;
-      ***REMOVED***)
-    ***REMOVED***
-  ***REMOVED***
+      })
+    }
+  }
 
   /**
    * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
    */
-  getListOfFlavors(): void ***REMOVED***
+  getListOfFlavors(): void {
     this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
-  ***REMOVED***
+  }
 
   /**
    * Check if shortname is valid.
-   * @param ***REMOVED***string***REMOVED*** shortname
+   * @param {string} shortname
    */
-  public checkShortname(shortname: string): void ***REMOVED***
+  public checkShortname(shortname: string): void {
     this.wronginput = !/^[a-zA-Z0-9\s]*$/.test(shortname);
-  ***REMOVED***
+  }
 
   /**
    * Creates a test application
    * @param name of the new test application
    */
-  sendTestApplication(name: string): void ***REMOVED***
-    const values: ***REMOVED*** [key: string]: string | number | boolean ***REMOVED*** = ***REMOVED******REMOVED***;
+  sendTestApplication(name: string): void {
+    const values: { [key: string]: string | number | boolean } = {};
 
     values['project_application_bmbf_project'] = 'BMBF';
     values['project_application_horizon2020'] = 'horizon';
@@ -269,16 +269,16 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
     values['project_application_workgroup'] = 'TestApplication';
 
     this.applicationsservice.addNewApplication(values).toPromise()
-      .then(() => ***REMOVED***
+      .then(() => {
         this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
         this.notificationModalStay = false;
-      ***REMOVED***).catch((error: object) => ***REMOVED***
+      }).catch((error: object) => {
       const error_json: object = error;
       this.error = [];
-      for (const key of Object.keys(error_json)) ***REMOVED***
+      for (const key of Object.keys(error_json)) {
         this.error.push(key.split('_')[2])
 
-      ***REMOVED***
+      }
 
       this.updateNotificationModal(
         'Failed',
@@ -286,7 +286,7 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
         true,
         'danger');
       this.notificationModalStay = true;
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
-***REMOVED***
+  }
+}

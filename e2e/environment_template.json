@@ -1,4 +1,4 @@
-***REMOVED***
+{
   "password_user": "",
   "email_user": "",
   "password_fm": "",
@@ -7,10 +7,10 @@
   "email_vo": "",
   "portal": "",
   "angular":"",
-***REMOVED***
+  "auth_user": "",
   "auth_fm": "",
   "auth_vo": "",
-***REMOVED***
+  "timeout": 30000,
   "browser_h": 1080,
   "browser_w": 1920
-***REMOVED***
+}

@@ -4,7 +4,7 @@
   <div class="row">
     <!--/.col-->
 
-    <div class="col-md-8"><h1 *ngIf="selectedFacility">Projects Overview: ***REMOVED******REMOVED***selectedFacility['Facility']***REMOVED******REMOVED***</h1></div>
+    <div class="col-md-8"><h1 *ngIf="selectedFacility">Projects Overview: {{selectedFacility['Facility']}}</h1></div>
 
     <div class="col-lg-12">
       <button (click)="emailModal.show()" type="button " class="btn btn-outline-primary"
@@ -17,7 +17,7 @@
                                                (ngModelChange)="onChangeSelectedFacility($event)"
                                                class="form-control" name="selectedFacility">
         <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
-          ***REMOVED******REMOVED***facility['Facility']***REMOVED******REMOVED***
+          {{facility['Facility']}}
         </option>
 
       </select></div>
@@ -66,7 +66,7 @@
                              (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
                              checked/>
                       <span style="margin-left: 5px"
-                            class="badge badge-success">***REMOVED******REMOVED***project_states[project_states.ACTIVE]***REMOVED******REMOVED*** </span>
+                            class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
 
                     </label>
                   </div>
@@ -76,7 +76,7 @@
                              (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
                       />
                       <span style="margin-left: 5px"
-                            class="badge badge-danger">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRED]***REMOVED******REMOVED***</span>
+                            class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
 
                     </label>
                   </div>
@@ -86,7 +86,7 @@
                              (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
                       />
                       <span style="margin-left: 5px"
-                            class="badge badge-warning">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRES_SOON]***REMOVED******REMOVED***</span>
+                            class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                     </label>
                   </div>
                 </div>
@@ -109,20 +109,20 @@
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                 </td>
-                <td>***REMOVED******REMOVED*** project.Id ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** project.Name ***REMOVED******REMOVED***
+                <td>{{ project.Id }}</td>
+                <td>{{ project.Name }}
                 </td>
-                <td width="20%"><span style="word-break: break-all">***REMOVED******REMOVED*** project.RealName***REMOVED******REMOVED***</span>
+                <td width="20%"><span style="word-break: break-all">{{ project.RealName}}</span>
                 </td>
                 <td>  <span *ngIf="project?.Status ==  project_states.ACTIVE"
                             style="margin-left: 5px"
-                            class="badge badge-success">***REMOVED******REMOVED***project_states[project_states.ACTIVE]***REMOVED******REMOVED*** </span>
+                            class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
                   <span *ngIf="project?.LifetimeReached==lifetime_states.EXPIRED"
                         style="margin-left: 5px"
-                        class="badge badge-danger">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRED]***REMOVED******REMOVED*** </span>
+                        class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
                   <span *ngIf="project?.LifetimeReached == lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
-                        class="badge badge-warning">***REMOVED******REMOVED***lifetime_states[lifetime_states.EXPIRES_SOON]***REMOVED******REMOVED***</span>
+                        class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                 <td>
                   <button class="btn btn-secondary"
                           (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
@@ -131,10 +131,10 @@
                 </td>
 
 
-                <!--td>***REMOVED******REMOVED*** project.DateCreated ***REMOVED******REMOVED***</td>
-                <!--td>***REMOVED******REMOVED***project.DateEnd***REMOVED******REMOVED***</td-->
-                <!--td>***REMOVED******REMOVED*** project.DaysRunning ***REMOVED******REMOVED***</td>
-                <!--td>***REMOVED******REMOVED***project.LifetimeDays***REMOVED******REMOVED***</td-->
+                <!--td>{{ project.DateCreated }}</td>
+                <!--td>{{project.DateEnd}}</td-->
+                <!--td>{{ project.DaysRunning }}</td>
+                <!--td>{{project.LifetimeDays}}</td-->
                 <td>
                   <button type="button" class="btn btn-secondary"
                           data-toggle="modal"
@@ -162,8 +162,8 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Members of the Project ***REMOVED******REMOVED*** usersModalProjectID ***REMOVED******REMOVED***
-          (***REMOVED******REMOVED*** usersModalProjectName ***REMOVED******REMOVED***)</h4>
+        <h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
+          ({{ usersModalProjectName }})</h4>
         <button type="button" class="close" style="cursor: pointer"
                 (click)="usersModal.hide()"
                 aria-label="Close">
@@ -186,11 +186,11 @@
             </thead>
             <tbody>
             <tr *ngFor="let member of usersModalProjectMembers">
-              <td>***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED*** member.ElixirId***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED***member.Email***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
+              <td>{{ member.Id }}</td>
+              <td>{{ member.MemberId }}</td>
+              <td>{{ member.ElixirId}}</td>
+              <td>{{member.Email}}</td>
+              <td>{{ member.Username }}</td>
             </tr>
 
             </tbody>
@@ -213,7 +213,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" *ngIf="selectedFacility"> Send email to members of
-          ***REMOVED******REMOVED***selectedFacility['Facility']***REMOVED******REMOVED***</h4>
+          {{selectedFacility['Facility']}}</h4>
         <button type="button" class="close" style="cursor: pointer"
                 (click)="emailModal.hide()"
                 aria-label="Close">
@@ -238,8 +238,8 @@
                   <option value="OVP">
                     OpenStack
                   </option>
-                  <option *ngFor="let project of projects " value="***REMOVED******REMOVED***project?.Id***REMOVED******REMOVED***">
-                    ***REMOVED******REMOVED***project?.Name***REMOVED******REMOVED***
+                  <option *ngFor="let project of projects " value="{{project?.Id}}">
+                    {{project?.Name}}
                   </option>
 
 
@@ -254,9 +254,9 @@
                        class="form-control"
                        type="text" [(ngModel)]="emailSubject" minlength="1"
                        #emailSub="ngModel"
-                       [ngClass]="***REMOVED***'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
+                       [ngClass]="{'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
                     'is-valid':emailSub.valid && (emailSub.dirty || emailSub.touched)
-                    ***REMOVED***">
+                    }">
 
               </div>
             </div>
@@ -268,10 +268,10 @@
                 <input id="Reply to" name="emailReply" placeholder=""
                        class="form-control"
                        type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
-                       pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.***REMOVED***2,***REMOVED***.*)|^.***REMOVED***254***REMOVED***.)([a-zA-Z0-9!#$%&'*+\/=?^_`***REMOVED***|***REMOVED***~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]***REMOVED***1,63***REMOVED***\.)+[a-zA-Z]***REMOVED***2,15***REMOVED***"
-                       [ngClass]="***REMOVED***'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
+                       pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                       [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
                     'is-valid':emailRep.valid && (emailRep.dirty || emailRep.touched)
-                    ***REMOVED***">
+                    }">
 
               </div>
             </div>
@@ -284,9 +284,9 @@
                                       name="emailText"
                                       [(ngModel)]="emailText"
                                       type="text" #emailT="ngModel"
-                                      [ngClass]="***REMOVED***'is-invalid':emailT.invalid && (emailT.dirty || emailT.touched),
+                                      [ngClass]="{'is-invalid':emailT.invalid && (emailT.dirty || emailT.touched),
                     'is-valid':emailT.valid && (emailT.dirty || emailT.touched)
-                    ***REMOVED***"></textarea>
+                    }"></textarea>
               </div>
             </div>
           </form>
@@ -323,13 +323,13 @@
           Are you sure you want to send this email to <span *ngIf="selectedProjectType == 'ALL'">all</span> <span
           *ngIf="selectedProjectType == 'SVP'">the Simple Vm  members of
           the
-          ***REMOVED******REMOVED***selectedFacility['Facility']***REMOVED******REMOVED***?</span> <span *ngIf="selectedProjectType == 'OVP'"> the OpenStack Project  members of
+          {{selectedFacility['Facility']}}?</span> <span *ngIf="selectedProjectType == 'OVP'"> the OpenStack Project  members of
           the
-          ***REMOVED******REMOVED***selectedFacility['Facility']***REMOVED******REMOVED***?</span><span
+          {{selectedFacility['Facility']}}?</span><span
           *ngIf="selectedProjectType != 'ALL' && selectedProjectType != 'SVP' && selectedProjectType != 'OVP'">
           the members of the
-          ***REMOVED******REMOVED***getProjectNameBySelectedProjectTypeAsId()
-          ***REMOVED******REMOVED*** project?
+          {{getProjectNameBySelectedProjectTypeAsId()
+          }} project?
         </span>
 
         </div>
@@ -402,7 +402,7 @@
       </div>
 
       <div class="modal-body">
-        <p>***REMOVED******REMOVED*** selectedProject?.Description ***REMOVED******REMOVED***</p>
+        <p>{{ selectedProject?.Description }}</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary"
@@ -449,10 +449,10 @@
               </button>
             </td>
 
-            <td>***REMOVED******REMOVED*** selectedProject?.DateCreated ***REMOVED******REMOVED***</td>
-            <td>***REMOVED******REMOVED***selectedProject?.DateEnd***REMOVED******REMOVED***</td>
-            <td>***REMOVED******REMOVED*** selectedProject?.DaysRunning ***REMOVED******REMOVED***</td>
-            <td>***REMOVED******REMOVED***selectedProject?.LifetimeDays***REMOVED******REMOVED***</td>
+            <td>{{ selectedProject?.DateCreated }}</td>
+            <td>{{selectedProject?.DateEnd}}</td>
+            <td>{{ selectedProject?.DaysRunning }}</td>
+            <td>{{selectedProject?.LifetimeDays}}</td>
             <td>
             </tbody>
           </table>

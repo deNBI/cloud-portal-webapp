@@ -1,35 +1,35 @@
-import ***REMOVED***Component, OnInit, ViewChild***REMOVED*** from '@angular/core';
-import ***REMOVED***Image***REMOVED*** from './virtualmachinemodels/image';
-import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor';
-import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
-import ***REMOVED***FlavorService***REMOVED*** from '../api-connector/flavor.service';
-import ***REMOVED***forkJoin, of***REMOVED*** from 'rxjs';
-import ***REMOVED***VirtualmachineService***REMOVED*** from '../api-connector/virtualmachine.service';
-import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service'
-import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
-import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
-import ***REMOVED***ClientService***REMOVED*** from '../api-connector/client.service';
-import ***REMOVED***Application***REMOVED*** from '../applications/application.model/application.model';
-import ***REMOVED***KeyService***REMOVED*** from '../api-connector/key.service';
-import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
-import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
-import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
-import ***REMOVED***Client***REMOVED*** from './clients/client.model';
-import ***REMOVED***VirtualMachine***REMOVED*** from './virtualmachinemodels/virtualmachine';
-import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
-import ***REMOVED***VoService***REMOVED*** from '../api-connector/vo.service';
-import ***REMOVED***BiocondaComponent***REMOVED*** from './conda/bioconda.component';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Image} from './virtualmachinemodels/image';
+import {Flavor} from './virtualmachinemodels/flavor';
+import {ImageService} from '../api-connector/image.service';
+import {FlavorService} from '../api-connector/flavor.service';
+import {forkJoin, of} from 'rxjs';
+import {VirtualmachineService} from '../api-connector/virtualmachine.service';
+import {ApplicationsService} from '../api-connector/applications.service'
+import {Userinfo} from '../userinfo/userinfo.model';
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {ClientService} from '../api-connector/client.service';
+import {Application} from '../applications/application.model/application.model';
+import {KeyService} from '../api-connector/key.service';
+import {GroupService} from '../api-connector/group.service';
+import {environment} from '../../environments/environment';
+import {IResponseTemplate} from '../api-connector/response-template';
+import {Client} from './clients/client.model';
+import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
+import {UserService} from '../api-connector/user.service';
+import {VoService} from '../api-connector/vo.service';
+import {BiocondaComponent} from './conda/bioconda.component';
 
 /**
  * Start virtualmachine component.
  */
-@Component(***REMOVED***
+@Component({
              selector: 'app-new-vm',
              templateUrl: 'addvm.component.html',
              providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
                Application, ApiSettings, KeyService, ClientService, UserService, VoService]
-           ***REMOVED***)
-export class VirtualMachineComponent implements OnInit ***REMOVED***
+           })
+export class VirtualMachineComponent implements OnInit {
 
   TWENTY_FIVE_PERCENT: number = 25;
   FIFTY_PERCENT: number = 50;
@@ -161,13 +161,13 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
   /**
    * Default volume name.
-   * @type ***REMOVED***string***REMOVED***
+   * @type {string}
    */
   volumeName: string = '';
 
   /**
    * If optional params are shown.
-   * @type ***REMOVED***boolean***REMOVED***
+   * @type {boolean}
    */
   optional_params: boolean = false;
 
@@ -175,37 +175,37 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
   /**
    * Default diskspace.
-   * @type ***REMOVED***number***REMOVED***
+   * @type {number}
    */
   diskspace: number = 0;
 
   /**
    * If the data for the site is initialized.
-   * @type ***REMOVED***boolean***REMOVED***
+   * @type {boolean}
    */
   isLoaded: boolean = false;
 
   /**
    * All projects of the user.
-   * @type ***REMOVED***any[]***REMOVED***
+   * @type {any[]}
    */
   projects: string[] = new Array();
 
   /**
    * If all project data is loaded.
-   * @type ***REMOVED***boolean***REMOVED***
+   * @type {boolean}
    */
   projectDataLoaded: boolean = false;
 
   /**
    * id of the freemium project.
-   * @type ***REMOVED***number***REMOVED***
+   * @type {number}
    */
   FREEMIUM_ID: number = environment.freemium_project_id;
 
   /**
    * Time for the check status loop.
-   * @type ***REMOVED***number***REMOVED***
+   * @type {number}
    */
   private checkStatusTimeout: number = 5000;
 
@@ -214,277 +214,277 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
               private keyservice: KeyService, private userservice: UserService,
-              private voService: VoService) ***REMOVED***
-  ***REMOVED***
+              private voService: VoService) {
+  }
 
   /**
    * Get images for the project.
-   * @param ***REMOVED***number***REMOVED*** project_id
+   * @param {number} project_id
    */
-  getImages(project_id: number): void ***REMOVED***
+  getImages(project_id: number): void {
 
-    this.imageService.getImages(project_id).subscribe((images: Image[]) => ***REMOVED***
+    this.imageService.getImages(project_id).subscribe((images: Image[]) => {
       this.images = images;
       this.images.sort((x, y) => Number(x.is_snapshot) - Number(y.is_snapshot));
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
   /**
    * Get flavors for the project.
-   * @param ***REMOVED***number***REMOVED*** project_id
+   * @param {number} project_id
    */
-  getFlavors(project_id: number): void ***REMOVED***
-    this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => ***REMOVED***
+  getFlavors(project_id: number): void {
+    this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => {
       this.flavors = flavors;
       this.flavors_loaded = true;
-    ***REMOVED***);
+    });
 
-  ***REMOVED***
+  }
 
   /**
    * Validate the public key of the user.
    */
-  validatePublicKey(): boolean ***REMOVED***
+  validatePublicKey(): boolean {
 
-    return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]***REMOVED***0,3***REMOVED***( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)
+    return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)
 
-  ***REMOVED***
+  }
 
   /**
    * Get the public key of the user.
    */
-  getUserPublicKey(): void ***REMOVED***
-    this.keyservice.getKey().subscribe((key: IResponseTemplate) => ***REMOVED***
+  getUserPublicKey(): void {
+    this.keyservice.getKey().subscribe((key: IResponseTemplate) => {
       this.userinfo.PublicKey = <string>key.value;
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Toggle information button 1.
    */
-  toggleInformationButton(): void ***REMOVED***
-    if (this.informationButton === 'Show Details') ***REMOVED***
+  toggleInformationButton(): void {
+    if (this.informationButton === 'Show Details') {
       this.informationButton = 'Hide Details';
-    ***REMOVED*** else ***REMOVED***
+    } else {
       this.informationButton = 'Show Details';
-    ***REMOVED***
+    }
 
-  ***REMOVED***
+  }
 
   /**
    * Toggle information button 2.
    */
-  toggleInformationButton2(): void ***REMOVED***
-    if (this.informationButton2 === 'Show Details') ***REMOVED***
+  toggleInformationButton2(): void {
+    if (this.informationButton2 === 'Show Details') {
       this.informationButton2 = 'Hide Details';
-    ***REMOVED*** else ***REMOVED***
+    } else {
       this.informationButton2 = 'Show Details';
-    ***REMOVED***
+    }
 
-  ***REMOVED***
+  }
 
   /**
    * Reset the progress bar.
    */
-  resetProgressBar(): void ***REMOVED***
+  resetProgressBar(): void {
     this.progress_bar_status = this.CREATING_STATUS;
     this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
     this.progress_bar_width = 0;
-  ***REMOVED***
+  }
 
   /**
    * Check the status of the started vm in a loop.
-   * @param ***REMOVED***string***REMOVED*** id
+   * @param {string} id
    */
-  check_status_loop(id: string): void ***REMOVED***
+  check_status_loop(id: string): void {
 
     setTimeout(
-      () => ***REMOVED***
-        this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => ***REMOVED***
-          if (newVm.status === this.ACTIVE) ***REMOVED***
+      () => {
+        this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => {
+          if (newVm.status === this.ACTIVE) {
             this.resetProgressBar();
             this.newVm = newVm;
             this.loadProjectData();
 
-          ***REMOVED*** else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) ***REMOVED***
+          } else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) {
             this.newVm.status = this.DELETED;
             this.resetProgressBar();
             this.create_error = <IResponseTemplate><any>newVm;
             this.loadProjectData();
-          ***REMOVED*** else if (newVm.status) ***REMOVED***
-            if (newVm.status === this.PORT_CLOSED) ***REMOVED***
+          } else if (newVm.status) {
+            if (newVm.status === this.PORT_CLOSED) {
               this.progress_bar_animated = '';
               this.progress_bar_status = this.CHECKING_PORT_STATUS;
-              if (this.hasTools) ***REMOVED***
+              if (this.hasTools) {
                 this.progress_bar_width = this.FIFTY_PERCENT;
-              ***REMOVED*** else ***REMOVED***
+              } else {
                 this.progress_bar_width = this.SIXTY_SIX_PERCENT;
-              ***REMOVED***
+              }
 
-            ***REMOVED*** else if (newVm.status === this.PREPARE_PLAYBOOK_BUILD) ***REMOVED***
+            } else if (newVm.status === this.PREPARE_PLAYBOOK_BUILD) {
               this.progress_bar_animated = '';
               this.progress_bar_status = this.PREPARE_PLAYBOOK_STATUS;
               this.progress_bar_width = this.SIXTY_SIX_PERCENT;
 
-            ***REMOVED*** else if (newVm.status === this.BUILD_PLAYBOOK) ***REMOVED***
+            } else if (newVm.status === this.BUILD_PLAYBOOK) {
               this.progress_bar_animated = '';
               this.progress_bar_status = this.BUIDLING_PLAYBOOK_STATUS;
               this.progress_bar_width = this.SEVENTY_FIVE;
-            ***REMOVED***
+            }
 
             this.check_status_loop(id)
-          ***REMOVED*** else ***REMOVED***
+          } else {
             this.resetProgressBar();
             this.loadProjectData();
             this.create_error = <IResponseTemplate><any>newVm;
-          ***REMOVED***
+          }
 
-        ***REMOVED***)
-      ***REMOVED***,
+        })
+      },
       this.checkStatusTimeout);
-  ***REMOVED***
+  }
 
   /**
    * Start a virtual machine with specific params.
-   * @param ***REMOVED***string***REMOVED*** flavor
-   * @param ***REMOVED***string***REMOVED*** image
-   * @param ***REMOVED***string***REMOVED*** servername
-   * @param ***REMOVED***string***REMOVED*** project
-   * @param ***REMOVED***string***REMOVED*** projectid
+   * @param {string} flavor
+   * @param {string} image
+   * @param {string} servername
+   * @param {string} project
+   * @param {string} projectid
    */
-  startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void ***REMOVED***
+  startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
-    if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) ***REMOVED***
+    if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       this.started_machine = true;
 
       const re: RegExp = /\+/gi;
 
       const flavor_fixed: string = flavor.replace(re, '%2B');
-      if (this.hasTools) ***REMOVED***
+      if (this.hasTools) {
         this.progress_bar_width = this.TWENTY_FIVE_PERCENT;
-      ***REMOVED*** else ***REMOVED***
+      } else {
         this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
-      ***REMOVED***
+      }
       const play_information: string = this.getPlaybookInformation();
-      if (play_information !== '***REMOVED******REMOVED***') ***REMOVED***
+      if (play_information !== '{}') {
         this.playbook_run = 1;
-      ***REMOVED***
+      }
       this.virtualmachineservice.startVM(
         flavor_fixed, image, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
         this.diskspace.toString(), this.biocondaComponent.getChosenTools(), play_information)
-        .subscribe((newVm: VirtualMachine) => ***REMOVED***
+        .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 
-          if (newVm.status === 'Build') ***REMOVED***
+          if (newVm.status === 'Build') {
             this.progress_bar_status = this.BUILD_STATUS;
             this.progress_bar_animated = '';
             this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
-            if (this.hasTools) ***REMOVED***
+            if (this.hasTools) {
               this.progress_bar_width = this.TWENTY_FIVE_PERCENT;
-            ***REMOVED*** else ***REMOVED***
+            } else {
               this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
-            ***REMOVED***
+            }
             this.check_status_loop(newVm.openstackid);
 
-          ***REMOVED*** else if (newVm.status) ***REMOVED***
+          } else if (newVm.status) {
             this.progress_bar_status = this.CREATING_STATUS;
             this.newVm = newVm;
             this.check_status_loop(newVm.openstackid);
-          ***REMOVED*** else ***REMOVED***
+          } else {
             this.progress_bar_status = this.CREATING_STATUS;
             this.loadProjectData();
             this.create_error = <IResponseTemplate><any>newVm;
-          ***REMOVED***
+          }
 
-        ***REMOVED***);
+        });
 
-    ***REMOVED*** else ***REMOVED***
+    } else {
       this.progress_bar_status = this.CREATING_STATUS;
       this.newVm = null;
 
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
-  getPlaybookInformation(): string ***REMOVED***
-    const playbook_info: ***REMOVED***
-      [name: string]: ***REMOVED***
+  getPlaybookInformation(): string {
+    const playbook_info: {
+      [name: string]: {
         [variable: string]: string
-      ***REMOVED***
-    ***REMOVED*** = ***REMOVED******REMOVED***;
+      }
+    } = {};
     this.timeout = 300;
-    if (this.biocondaComponent.hasChosenTools()) ***REMOVED***
-      playbook_info['bioconda'] = ***REMOVED***
+    if (this.biocondaComponent.hasChosenTools()) {
+      playbook_info['bioconda'] = {
         packages: this.biocondaComponent.getChosenTools()
-      ***REMOVED***;
+      };
       this.timeout += this.biocondaComponent.getTimeout();
-    ***REMOVED***
+    }
 
     return JSON.stringify(playbook_info);
-  ***REMOVED***
+  }
 
   /**
    * Get the client from the selected project.
    * If connected geht vm,volumes etc.
-   * @param ***REMOVED***number***REMOVED*** groupid
+   * @param {number} groupid
    */
-  getSelectedProjectClient(): void ***REMOVED***
+  getSelectedProjectClient(): void {
     this.client_checked = false;
     this.projectDataLoaded = false;
 
-    this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client) => ***REMOVED***
-      if (client.status && client.status === 'Connected') ***REMOVED***
+    this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client) => {
+      if (client.status && client.status === 'Connected') {
         this.client_avaiable = true;
 
         this.loadProjectData();
         this.client_checked = true;
-      ***REMOVED*** else ***REMOVED***
+      } else {
         this.client_avaiable = false;
         this.client_checked = true;
 
-      ***REMOVED***
+      }
       this.selectedProjectClient = client;
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Reset the data attribute.
    */
-  resetData(): void ***REMOVED***
-    if (this.newVm === null) ***REMOVED***
+  resetData(): void {
+    if (this.newVm === null) {
       return;
-    ***REMOVED***
+    }
     this.newVm = null;
-  ***REMOVED***
+  }
 
   /**
    * Initializes the data.
    * Gets all groups of the user and his key.
    */
-  initializeData(): void ***REMOVED***
-    forkJoin(this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()).subscribe(result => ***REMOVED***
+  initializeData(): void {
+    forkJoin(this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()).subscribe(result => {
       this.userinfo = new Userinfo(result[1]);
       this.validatePublicKey();
       const membergroups = result[0];
-      for (const project of membergroups) ***REMOVED***
+      for (const project of membergroups) {
         this.projects.push(project);
 
-      ***REMOVED***
+      }
       this.isLoaded = true;
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  loadProjectData(): void ***REMOVED***
+  loadProjectData(): void {
     this.projectDataLoaded = false;
     this.flavors = [];
     this.flavors_loaded = false;
     this.images = [];
     this.selectedImage = undefined;
     this.selectedFlavor = undefined;
-    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe(res => ***REMOVED***
+    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe(res => {
       this.selectedProjectVmsMax = res['number_vms'];
       this.selectedProjectVmsUsed = res['used_vms'];
       this.selectedProjectDiskspaceMax = res['max_volume_storage'];
@@ -499,69 +499,69 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       this.selectedProjectGPUsUsed = res['gpus_used'];
       this.projectDataLoaded = true;
 
-    ***REMOVED***);
+    });
 
     this.getImages(this.selectedProject[1]);
     this.getFlavors(this.selectedProject[1]);
 
-  ***REMOVED***
+  }
 
   /**
    * Get vms diskpace and used from the selected project.
    */
-  getSelectedProjectDiskspace(): void ***REMOVED***
+  getSelectedProjectDiskspace(): void {
     forkJoin(
       this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()),
-      this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => ***REMOVED***
+      this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => {
       this.selectedProjectDiskspaceMax = <number>res[0].value;
       this.selectedProjectDiskspaceUsed = <number>res[1].value;
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Get volumes max and used from the selected project.
    */
-  getSelectedProjectVolumes(): void ***REMOVED***
+  getSelectedProjectVolumes(): void {
     forkJoin(
       this.groupService.getVolumeCounter(this.selectedProject[1].toString()),
-      this.groupService.getVolumesUsed(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => ***REMOVED***
+      this.groupService.getVolumesUsed(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => {
       this.selectedProjectVolumesMax = <number>res[0].value;
       this.selectedProjectVolumesUsed = <number>res[1].value;
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Get vms max and used from the selected project.
    */
-  getSelectedProjectVms(): void ***REMOVED***
+  getSelectedProjectVms(): void {
     forkJoin(
       this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()),
-      this.groupService.getGroupUsedVms(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => ***REMOVED***
+      this.groupService.getGroupUsedVms(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => {
       this.selectedProjectVmsMax = <number>res[0].value;
       this.selectedProjectVmsUsed = <number>res[1].value
 
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  ngOnInit(): void ***REMOVED***
+  ngOnInit(): void {
     this.initializeData();
-    this.voService.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
+    this.voService.isVo().subscribe((result: IResponseTemplate) => {
       this.is_vo = <boolean><Boolean>result.value;
-    ***REMOVED***);
+    });
 
-  ***REMOVED***
+  }
 
-  hasChosenTools(hasSomeTools: boolean): void ***REMOVED***
+  hasChosenTools(hasSomeTools: boolean): void {
     this.hasTools = hasSomeTools;
-  ***REMOVED***
+  }
 
-  setGaveOkay(checked: boolean): void ***REMOVED***
+  setGaveOkay(checked: boolean): void {
     this.gaveOkay = checked;
-  ***REMOVED***
+  }
 
-  getTimeoutMinutes(): number ***REMOVED***
+  getTimeoutMinutes(): number {
     return Math.ceil(this.timeout / 60);
-  ***REMOVED***
-***REMOVED***
+  }
+}

@@ -1,19 +1,19 @@
-import ***REMOVED***Component, Input, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***Application***REMOVED*** from '../application.model/application.model';
-import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../../shared/shared_modules/baseClass/application-base-class';
-import ***REMOVED***ApplicationsService***REMOVED*** from '../../api-connector/applications.service';
-import ***REMOVED***ApplicationStatusService***REMOVED*** from '../../api-connector/application-status.service';
-import ***REMOVED***UserService***REMOVED*** from '../../api-connector/user.service';
-import ***REMOVED***FacilityService***REMOVED*** from '../../api-connector/facility.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {Application} from '../application.model/application.model';
+import {ApplicationBaseClass} from '../../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationsService} from '../../api-connector/applications.service';
+import {ApplicationStatusService} from '../../api-connector/application-status.service';
+import {UserService} from '../../api-connector/user.service';
+import {FacilityService} from '../../api-connector/facility.service';
 
-@Component(***REMOVED***
+@Component({
              selector: 'app-application-detail',
              templateUrl: './application-detail.component.html',
              styleUrls: ['./application-detail.component.scss'],
              providers: [FacilityService, UserService, ApplicationStatusService,
                ApplicationsService]
-           ***REMOVED***)
-export class ApplicationDetailComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
+           })
+export class ApplicationDetailComponent extends ApplicationBaseClass implements OnInit {
   @Input() application: Application;
   @Input() isModification: boolean = false;
 
@@ -21,14 +21,14 @@ export class ApplicationDetailComponent extends ApplicationBaseClass implements 
               applicationstatusservice: ApplicationStatusService,
               userservice: UserService,
               facilityService: FacilityService
-  ) ***REMOVED***
+  ) {
 
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
 
-  ***REMOVED***
+  }
 
-  ngOnInit(): void ***REMOVED***
+  ngOnInit(): void {
     this.getMemberDetailsByElixirId(this.application.User);
-  ***REMOVED***
+  }
 
-***REMOVED***
+}

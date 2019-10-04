@@ -58,10 +58,10 @@
                        class="form-control" maxlength="128"
                        placeholder="e.g. Assembler benchmarking based on A. thaliana genome"
                        ngModel
-                       [ngClass]="***REMOVED***
+                       [ngClass]="{
                                 'is-invalid': f.controls.project_application_name?.invalid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched),
                                 'is-valid': f.controls.project_application_name?.valid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched)
-                                ***REMOVED***">
+                                }">
                 <span class="help-block">Name your project.</span>
               </div>
             </div>
@@ -86,10 +86,10 @@
                        class="form-control" maxlength="15"
                        placeholder="e.g. ThalianaBench" ngModel minlength="5"
                        pattern="[a-zA-Z0-9]+"
-                       [ngClass]="***REMOVED***
+                       [ngClass]="{
                                 'is-invalid': f.controls.project_application_shortname?.invalid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched),
                                 'is-valid': f.controls.project_application_shortname?.valid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched)
-                                ***REMOVED***">
+                                }">
 
 
                 <span class="help-block">Enter a short name (between 5 and 15 characters).</span>
@@ -109,10 +109,10 @@
                                           class="form-control" maxlength="8192"
                                           placeholder="Full description. Consider to name tools you want to use."
                                           ngModel
-                                          [ngClass]="***REMOVED***
+                                          [ngClass]="{
                                 'is-invalid': f.controls.project_application_description?.invalid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched),
                                 'is-valid': f.controls.project_application_description?.valid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched)
-                                ***REMOVED***"></textarea>
+                                }"></textarea>
                 <span class="help-block">Describe what would you want to do in your project.</span>
                 <div class="alert alert-info">
                   As more resources are requested we require a more detailed description of your project, data and used
@@ -138,10 +138,10 @@
 
                          type="number" min="1" max="12" step="1" ngModel required
                          appMinAmount="1" appMaxAmount="12" appInteger
-                         [ngClass]="***REMOVED***
+                         [ngClass]="{
                                 'is-invalid': f.controls.project_application_lifetime?.invalid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched),
                                 'is-valid': f.controls.project_application_lifetime?.valid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched)
-                                ***REMOVED***">
+                                }">
 
                   <div class="input-group-append"><span class="input-group-text"> months</span></div>
                 </div>
@@ -165,9 +165,9 @@
             <accordion>
               <accordion-group *ngFor="let t of typeList, first as isFirst" [isOpen]="isFirst" #groupval>
                 <div accordion-heading style="width: 100%; cursor: pointer">
-                  ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
-                  <i class="pull-right float-right" style="font-size: 25px" [ngClass]="***REMOVED***
-                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen***REMOVED***"></i>
+                  {{t.long_name}}
+                  <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
                 </div>
                 <div *ngIf="isFirst" class="alert alert-info"> You will have default access to all flavors in the
                   standard category.<br>
@@ -177,28 +177,28 @@
                 <div *ngFor="let f of flavorList">
                   <div *ngIf="f.type.shortcut == t.shortcut"
                        class="form-group row">
-                    <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***f.name***REMOVED******REMOVED***</strong><br>
-                      Number of cores: ***REMOVED******REMOVED***f.vcpus***REMOVED******REMOVED***<br>
-                      RAM: ***REMOVED******REMOVED***f.ram***REMOVED******REMOVED*** GB <br>
+                    <label class="col-md-4 form-control-label"><strong>{{f.name}}</strong><br>
+                      Number of cores: {{f.vcpus}}<br>
+                      RAM: {{f.ram}} GB <br>
 
                       <span *ngIf="f.type.shortcut == 'GPU'">
-                                                GPU: ***REMOVED******REMOVED***f.gpu***REMOVED******REMOVED***
+                                                GPU: {{f.gpu}}
                                             </span></label>
                     <div class="col-md-8">
 
                       <div class="input-group">
                         <input class="form-control"
-                               id="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
-                               name="project_application_***REMOVED******REMOVED***f.name***REMOVED******REMOVED***"
+                               id="project_application_{{f.name}}"
+                               name="project_application_{{f.name}}"
                                type="number" min="0" step="1"
                                placeholder="0"
                                [ngModel]="0"
                                #name="ngModel"
                                appMinAmount="0" appInteger
-                               [ngClass]="***REMOVED***
+                               [ngClass]="{
                                 'is-invalid': name?.invalid,
                                 'is-valid': name?.valid
-                                ***REMOVED***">
+                                }">
                         <div class="input-group-append"><span class="input-group-text">VMs</span></div>
                       </div>
                       <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
@@ -227,10 +227,10 @@
                          type="number" min="0" step="1"
                          appInteger appMinAmount="0"
                          [ngModel]="project_application_vms_requested"
-                         [ngClass]="***REMOVED***
+                         [ngClass]="{
                                 'is-invalid': f.controls.project_application_volume_counter?.invalid,
                                 'is-valid': f.controls.project_application_volume_counter?.valid
-                                ***REMOVED***">
+                                }">
                 </div>
                 <span class="help-block">How many storage volumes do you want to use?</span>
               </div>
@@ -250,10 +250,10 @@
                          name="project_application_volume_limit"
                          placeholder="e.g. 20"
                          type="number" appMinAmount="1" min="1" step="1" [ngModel]="20" appInteger
-                         [ngClass]="***REMOVED***
+                         [ngClass]="{
                                 'is-invalid': f.controls.project_application_volume_limit?.invalid,
                                 'is-valid': f.controls.project_application_volume_limit?.valid
-                                ***REMOVED***"
+                                }"
                          [disabled]="f.controls.project_application_volume_counter?.value == 0">
                   <div class="input-group-append"><span class="input-group-text"> GB </span></div>
                 </div>
@@ -275,10 +275,10 @@
                          placeholder="e.g. 8"
                          type="number" min="0" step="1" [ngModel]="0"
                          appInteger appMinAmount="0"
-                         [ngClass]="***REMOVED***
+                         [ngClass]="{
                                 'is-invalid': f.controls.project_application_object_storage?.invalid ,
                                 'is-valid': f.controls.project_application_object_storage?.valid
-                                ***REMOVED***">
+                                }">
                   <div class="input-group-append"><span class="input-group-text"> GB </span></div>
                 </div>
                 <span class="help-block">How much object storage would you need?</span>
@@ -320,10 +320,10 @@
                        name="project_application_institute" class="form-control"
                        placeholder="e.g. Center for Biotechnology, Bielefeld"
                        ngModel
-                       [ngClass]="***REMOVED***
+                       [ngClass]="{
                                 'is-invalid': f.controls.project_application_institute?.invalid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched),
                                 'is-valid': f.controls.project_application_institute?.valid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched)
-                                ***REMOVED***">
+                                }">
                 <span class="help-block">To which institute do you belong?</span>
               </div>
             </div>
@@ -338,10 +338,10 @@
                 <input required type="text" id="id_project_application_workgroup"
                        name="project_application_workgroup" class="form-control"
                        placeholder="e.g. Computational Metagenomics" ngModel
-                       [ngClass]="***REMOVED***
+                       [ngClass]="{
                                 'is-invalid': f.controls.project_application_workgroup?.invalid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched),
                                 'is-valid': f.controls.project_application_workgroup?.valid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched)
-                                ***REMOVED***">
+                                }">
                 <span class="help-block">To which workgroup do you belong?</span>
               </div>
 
@@ -375,7 +375,7 @@
                 <div>
                   <h5><span *ngFor="let term of selected_ontology_terms"
                             style="margin-left: 5px; "
-                            class="badge badge-info">***REMOVED******REMOVED***term.term***REMOVED******REMOVED***
+                            class="badge badge-info">{{term.term}}
                     <span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
  </span>
 
@@ -448,8 +448,8 @@
                 <accordion-group [isOpen]="dissemination_information_open" id="dissemination_information_accordion" #dissemination_information_accordion>
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     Dissemination Options
-                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="***REMOVED***
-                            'icon-arrow-up': dissemination_information_accordion.isOpen, 'icon-arrow-down': !dissemination_information_accordion.isOpen***REMOVED***"></i>
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': dissemination_information_accordion.isOpen, 'icon-arrow-down': !dissemination_information_accordion.isOpen}"></i>
                   </div>
 
                   <div class="form-group row">
@@ -707,11 +707,11 @@
                        class="form-control" maxlength="256"
                        placeholder="example@domain.com"
                        ngModel
-                       pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.***REMOVED***2,***REMOVED***.*)|^.***REMOVED***254***REMOVED***.)([a-zA-Z0-9!#$%&'*+\/=?^_`***REMOVED***|***REMOVED***~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]***REMOVED***1,63***REMOVED***\.)+[a-zA-Z]***REMOVED***2,15***REMOVED***"
-                       [ngClass]="***REMOVED***
+                       pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                       [ngClass]="{
                                 'is-invalid': f.controls.project_application_pi_email?.invalid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched),
                                 'is-valid': f.controls.project_application_pi_email?.valid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched)
-                                ***REMOVED***">
+                                }">
                 <p *ngIf="!project_application_pi_approved"> Please insert the email of your principal investigator.
                   He will get an email with further information how to verify the application.</p></div>
             </div>
@@ -720,10 +720,10 @@
                 <strong>Confirmation of Responsibility*</strong>
               </label>
               <div class="col-md-8"
-                   [ngClass]="***REMOVED***
+                   [ngClass]="{
                                 'alert-danger': !respCheck.checked,
                                 'alert-success': respCheck.checked
-                                ***REMOVED***">
+                                }">
                 <div class="form-check">
                   <input class="form-check-input"
                          name="project_application_responsibility"
@@ -773,7 +773,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="notificationModal.hide()"
                 aria-label="Close">
@@ -781,8 +781,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
-          ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
+        <div class="alert alert-{{ notificationModalType }}" role="alert">
+          {{ notificationModalMessage }}
 
         </div>
       </div>
@@ -810,7 +810,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title"> ***REMOVED******REMOVED***acknowledgeModalTitle***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title"> {{acknowledgeModalTitle}}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="acknowledgemodal.hide()"
                 aria-label="Close">
@@ -818,7 +818,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-***REMOVED******REMOVED*** acknowledgeModalType ***REMOVED******REMOVED***" role="alert">
+        <div class="alert alert-{{ acknowledgeModalType }}" role="alert">
           The development and support of the cloud is possible above all through the funding of the cloud infrastructure
           by the
           Federal Ministry of Education and Research (BMBF)!
@@ -851,7 +851,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">***REMOVED******REMOVED***projectName***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title">{{projectName}}</h4>
         <button type="button" class="close" style="cursor: pointer;"
                 (click)="submitModal.hide()"
                 data-dismiss="modal" aria-label="Close">
@@ -869,14 +869,14 @@
         <div class="table-responsive">
           <table class="table table-striped">
             <tr *ngFor="let str of valuesToConfirm">
-              <td>***REMOVED******REMOVED***str***REMOVED******REMOVED***</td>
+              <td>{{str}}</td>
             </tr>
             <tr>
               <td><strong>Number of cores in total:
-                ***REMOVED******REMOVED***totalNumberOfCores.toString()***REMOVED******REMOVED***</strong></td>
+                {{totalNumberOfCores.toString()}}</strong></td>
             </tr>
             <tr>
-              <td><strong>Value of RAM in total: ***REMOVED******REMOVED***totalRAM.toString()***REMOVED******REMOVED*** GBs</strong>
+              <td><strong>Value of RAM in total: {{totalRAM.toString()}} GBs</strong>
               </td>
             </tr>
           </table>

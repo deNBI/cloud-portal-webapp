@@ -1,21 +1,21 @@
-import ***REMOVED***Component, ElementRef, EventEmitter, OnInit, Output, ViewChild***REMOVED*** from '@angular/core';
-import ***REMOVED***BiocondaService***REMOVED*** from '../../api-connector/bioconda.service';
-import ***REMOVED***Subject***REMOVED*** from 'rxjs';
-import ***REMOVED***debounceTime, distinctUntilChanged***REMOVED*** from 'rxjs/operators';
-import ***REMOVED***PaginationComponent***REMOVED*** from 'ngx-bootstrap';
+import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {BiocondaService} from '../../api-connector/bioconda.service';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {PaginationComponent} from 'ngx-bootstrap';
 
-export interface IBiocondaTool ***REMOVED***
+export interface IBiocondaTool {
   name: string,
   version: string,
   build: string
-***REMOVED***
+}
 
-@Component(***REMOVED***
+@Component({
              selector: 'app-bioconda',
              templateUrl: 'bioconda.component.html',
              providers: [BiocondaService]
-           ***REMOVED***)
-export class BiocondaComponent implements OnInit ***REMOVED***
+           })
+export class BiocondaComponent implements OnInit {
   FIRST_PAGE: number = 1;
   DEBOUNCE_TIME: number = 300;
 
@@ -49,61 +49,61 @@ export class BiocondaComponent implements OnInit ***REMOVED***
   @ViewChild('pagination') pagination: PaginationComponent;
   @ViewChild('chosenTable') chosenTable: ElementRef;
 
-  constructor(private condaService: BiocondaService) ***REMOVED***
-  ***REMOVED***
+  constructor(private condaService: BiocondaService) {
+  }
 
-  pageChanged(event): void ***REMOVED***
+  pageChanged(event): void {
     this.getAllTools(event.page);
-  ***REMOVED***
+  }
 
-  ngOnInit(): void ***REMOVED***
+  ngOnInit(): void {
     this.getAllTools(this.FIRST_PAGE);
 
     this.filternameChanged
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
         distinctUntilChanged())
-      .subscribe((filterName: string) => ***REMOVED***
+      .subscribe((filterName: string) => {
         this.filterToolName = filterName;
         this.getAllTools(this.FIRST_PAGE)
 
-      ***REMOVED***);
+      });
 
     this.filterVersionChanged
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
         distinctUntilChanged())
-      .subscribe((filterVersion: string) => ***REMOVED***
+      .subscribe((filterVersion: string) => {
         this.filterToolVersion = filterVersion;
         this.getAllTools(this.FIRST_PAGE)
 
-      ***REMOVED***);
+      });
 
     this.filterBuildChanged
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
         distinctUntilChanged())
-      .subscribe((filterBuild: string) => ***REMOVED***
+      .subscribe((filterBuild: string) => {
         this.filterToolBuild = filterBuild;
         this.getAllTools(this.FIRST_PAGE)
 
-      ***REMOVED***);
+      });
 
-  ***REMOVED***
+  }
 
-  getAllTools(page: number): void ***REMOVED***
+  getAllTools(page: number): void {
     this.isSearching = true;
     this.condaService.getAllTools(page, this.filterToolName, this.filterToolVersion, this.filterToolBuild).subscribe(
-      res => ***REMOVED***
+      res => {
         this.all_tools = [];
 
-        for (const line of res['packages']) ***REMOVED***
-          this.all_tools.push(***REMOVED***
+        for (const line of res['packages']) {
+          this.all_tools.push({
                                 name: line['name'],
                                 version: line['version'],
                                 build: line['build']
-                              ***REMOVED***)
-        ***REMOVED***
+                              })
+        }
         this.toolsPerPage = res['items_per_page'];
         this.total_pages = res['total_items'];
         this.toolsStart = 0;
@@ -112,62 +112,62 @@ export class BiocondaComponent implements OnInit ***REMOVED***
         this.currentPage = page;
         this.pagination.selectPage(this.currentPage);
         this.isSearching = false;
-      ***REMOVED***);
-  ***REMOVED***
+      });
+  }
 
-  changedNameFilter(text: string): void ***REMOVED***
+  changedNameFilter(text: string): void {
     this.filternameChanged.next(text);
 
-  ***REMOVED***
+  }
 
-  changedVersionFilter(text: string): void ***REMOVED***
+  changedVersionFilter(text: string): void {
     this.filterVersionChanged.next(text);
 
-  ***REMOVED***
+  }
 
-  changedBuildFilter(text: string): void ***REMOVED***
+  changedBuildFilter(text: string): void {
     this.filterBuildChanged.next(text);
 
-  ***REMOVED***
+  }
 
-  add_or_remove(tool: IBiocondaTool): void ***REMOVED***
+  add_or_remove(tool: IBiocondaTool): void {
     let deleted: boolean = false;
-    this.chosen_tools.forEach((item: IBiocondaTool, index: number) => ***REMOVED***
-      if (tool.name === item.name && tool.version === item.version && tool.build === item.build) ***REMOVED***
+    this.chosen_tools.forEach((item: IBiocondaTool, index: number) => {
+      if (tool.name === item.name && tool.version === item.version && tool.build === item.build) {
         this.chosen_tools.splice(index, 1);
         deleted = true;
-      ***REMOVED*** else if (tool.name === item.name && (tool.version !== item.version || tool.build !== item.build)) ***REMOVED***
+      } else if (tool.name === item.name && (tool.version !== item.version || tool.build !== item.build)) {
         this.chosen_tools.splice(index, 1);
         deleted = true;
         this.chosen_tools.push(tool);
-      ***REMOVED***
-    ***REMOVED***);
-    if (!deleted) ***REMOVED***
+      }
+    });
+    if (!deleted) {
       this.chosen_tools.push(tool);
-    ***REMOVED***
+    }
     this.hasTools.emit(this.hasChosenTools());
-  ***REMOVED***
+  }
 
-  is_added(tool: IBiocondaTool): boolean ***REMOVED***
+  is_added(tool: IBiocondaTool): boolean {
     let found: boolean = false;
-    this.chosen_tools.forEach((item: IBiocondaTool) => ***REMOVED***
-      if (tool.name === item.name && tool.version === item.version && tool.build === item.build) ***REMOVED***
+    this.chosen_tools.forEach((item: IBiocondaTool) => {
+      if (tool.name === item.name && tool.version === item.version && tool.build === item.build) {
         found = true;
-      ***REMOVED***
-    ***REMOVED***);
+      }
+    });
 
     return found;
-  ***REMOVED***
+  }
 
-  getChosenTools(): string ***REMOVED***
+  getChosenTools(): string {
     return JSON.stringify(this.chosen_tools);
-  ***REMOVED***
+  }
 
-  getTimeout(): number ***REMOVED***
+  getTimeout(): number {
     return ((this.chosen_tools.length) * 300) + 840;
-  ***REMOVED***
+  }
 
-  hasChosenTools(): boolean ***REMOVED***
+  hasChosenTools(): boolean {
     return this.chosen_tools.length > 0;
-  ***REMOVED***
-***REMOVED***
+  }
+}

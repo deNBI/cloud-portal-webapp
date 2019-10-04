@@ -1,13 +1,13 @@
-import ***REMOVED***Component, EventEmitter, HostListener, Input, OnInit, Output***REMOVED*** from '@angular/core';
-import ***REMOVED***Flavor***REMOVED*** from './virtualmachinemodels/flavor'
-import ***REMOVED***OwlOptions, ResponsiveSettings***REMOVED*** from 'ngx-owl-carousel-o';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
+import {Flavor} from './virtualmachinemodels/flavor'
+import {OwlOptions, ResponsiveSettings} from 'ngx-owl-carousel-o';
 
-@Component(***REMOVED***
+@Component({
              selector: 'app-flavor-detail',
              templateUrl: 'flavordetail.component.html'
 
-           ***REMOVED***)
-export class FlavorDetailComponent implements OnInit ***REMOVED***
+           })
+export class FlavorDetailComponent implements OnInit {
   @Input() selectedFlavor: Flavor;
   @Input() flavors: Flavor[];
   @Output() readonly selectedFlavorChange: EventEmitter<Flavor> = new EventEmitter();
@@ -28,7 +28,7 @@ export class FlavorDetailComponent implements OnInit ***REMOVED***
   STORAGE_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/storage_icon.svg';
   GPU_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/gpu_icon.svg';
 
-  customOptions: OwlOptions = ***REMOVED***
+  customOptions: OwlOptions = {
     loop: false,
     mouseDrag: false,
     touchDrag: false,
@@ -37,60 +37,60 @@ export class FlavorDetailComponent implements OnInit ***REMOVED***
     navSpeed: 700,
     navText: ['<i class=\'fa fa-chevron-left\'></i>',
       '<i class=\'fa fa-chevron-right\'></i>'],
-    responsive: ***REMOVED***
-      0: ***REMOVED***
+    responsive: {
+      0: {
         items: 1
-      ***REMOVED***,
-      550: ***REMOVED***
+      },
+      550: {
         items: 2
 
-      ***REMOVED***,
-      800: ***REMOVED***
+      },
+      800: {
         items: 3
-      ***REMOVED***,
-      1200: ***REMOVED***
+      },
+      1200: {
         items: 4
-      ***REMOVED***
-    ***REMOVED***,
+      }
+    },
     nav: true
-  ***REMOVED***;
+  };
 
-  ngOnInit(): void ***REMOVED***
+  ngOnInit(): void {
     this.window_size = window.innerWidth;
 
-  ***REMOVED***
+  }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event): void ***REMOVED***
+  onResize(event): void {
     this.window_size = window.innerWidth;
-  ***REMOVED***
+  }
 
   /**
    * Sets the selected Flavor.
    * If a selectedFlavor exist it will be added to the flavor list and the new selectedFlavor will be removed.
    * @param flavor Flavor which will become the selected Flavor.
    */
-  setSelectedFlavor(flavor: Flavor): void ***REMOVED***
+  setSelectedFlavor(flavor: Flavor): void {
 
     const indexNewSelectedFlavor: number = this.flavors.indexOf(flavor, 0);
 
-    if (this.selectedFlavor) ***REMOVED***
+    if (this.selectedFlavor) {
       this.flavors[indexNewSelectedFlavor] = this.selectedFlavor;
-    ***REMOVED*** else ***REMOVED***
+    } else {
       this.flavors.splice(indexNewSelectedFlavor, 1);
-    ***REMOVED***
+    }
 
     this.selectedFlavor = flavor;
 
     this.selectedFlavorChange.emit(this.selectedFlavor);
 
-  ***REMOVED***
+  }
 
   /**
    * Converts MB to GB
    * @param input MB number
    */
-  convertMbToGb(input: number): number ***REMOVED***
+  convertMbToGb(input: number): number {
     return Math.floor(input / 1024)
-  ***REMOVED***
-***REMOVED***
+  }
+}

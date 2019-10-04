@@ -1,48 +1,48 @@
-import ***REMOVED***ImageService***REMOVED*** from '../api-connector/image.service';
-import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***ImageTag***REMOVED*** from './image-tag';
+import {ImageService} from '../api-connector/image.service';
+import {Component, OnInit} from '@angular/core';
+import {ImageTag} from './image-tag';
 
 /**
  * ImageTag component.
  */
-@Component(***REMOVED***
+@Component({
              templateUrl: 'imageTag.component.html',
              providers: [ImageService]
-           ***REMOVED***)
-export class ImageTagComponent implements OnInit ***REMOVED***
+           })
+export class ImageTagComponent implements OnInit {
   isLoaded: boolean = false;
   alertRed: boolean = false;
   imageTags: ImageTag[];
 
-  constructor(private imageService: ImageService) ***REMOVED***
+  constructor(private imageService: ImageService) {
 
-  ***REMOVED***
+  }
 
-  ngOnInit(): void ***REMOVED***
-    this.imageService.getImageTags().subscribe((tags: ImageTag[]) => ***REMOVED***
+  ngOnInit(): void {
+    this.imageService.getImageTags().subscribe((tags: ImageTag[]) => {
       this.imageTags = tags;
       this.isLoaded = true;
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  addTag(tag: string, description: string, input: HTMLInputElement): void ***REMOVED***
-    if (input.validity.valid) ***REMOVED***
-    this.imageService.addImageTags(tag.trim(), description).subscribe((newTag: ImageTag) => ***REMOVED***
+  addTag(tag: string, description: string, input: HTMLInputElement): void {
+    if (input.validity.valid) {
+    this.imageService.addImageTags(tag.trim(), description).subscribe((newTag: ImageTag) => {
       this.imageTags.push(newTag)
 
-    ***REMOVED***)
+    })
     this.alertRed = false;
-    ***REMOVED*** else ***REMOVED***
+    } else {
       this.alertRed = true;
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
-  deleteTag(tag: string): void ***REMOVED***
-    this.imageService.deleteImageTag(tag).subscribe(() => ***REMOVED***
-      this.imageService.getImageTags().subscribe((tags: ImageTag[]) => ***REMOVED***
+  deleteTag(tag: string): void {
+    this.imageService.deleteImageTag(tag).subscribe(() => {
+      this.imageService.getImageTags().subscribe((tags: ImageTag[]) => {
         this.imageTags = tags;
-      ***REMOVED***)
-    ***REMOVED***)
-  ***REMOVED***
+      })
+    })
+  }
 
-***REMOVED***
+}

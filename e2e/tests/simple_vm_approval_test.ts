@@ -1,25 +1,24 @@
 // spec.js
-import ***REMOVED***browser, by, element, protractor***REMOVED*** from 'protractor';
-import ***REMOVED***LoginPage***REMOVED*** from '../page_objects/login.po';
-import ***REMOVED***FormularPage***REMOVED*** from "../page_objects/application_formular.po";
-import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "../page_objects/application_overview.po";
-import ***REMOVED***Util***REMOVED*** from "../util";
+import {browser, by, element, protractor} from 'protractor';
+import {LoginPage} from '../page_objects/login.po';
+import {FormularPage} from '../page_objects/application_formular.po';
+import {ApplicationOverviewPage} from '../page_objects/application_overview.po';
+import {Util} from '../util';
 
-describe('Simple Application Approval Test', function () ***REMOVED***
+describe('Simple Application Approval Test', function () {
 
-    beforeAll(async function () ***REMOVED***
-        await browser.waitForAngularEnabled(false);
-        await LoginPage.login(browser.params.login.email_vo, browser.params.login.password_vo, browser.params.login.auth_vo, true);
-    ***REMOVED***);
+  beforeAll(async function () {
+    await browser.waitForAngularEnabled(false);
+    await LoginPage.login(browser.params.login.email_vo, browser.params.login.password_vo, browser.params.login.auth_vo, true);
+  });
 
-    it('should navigate to application overview', async function () ***REMOVED***
-        console.log("Starting approve a simple vm application test!");
-        await ApplicationOverviewPage.navigateToApplicationOverview();
+  it('should navigate to application overview', async function () {
+    console.log('Starting approve a simple vm application test!');
+    await ApplicationOverviewPage.navigateToApplicationOverview();
 
+  });
 
-    ***REMOVED***);
-
-    it('should approve A SIMPLE VM APPLICATION', async function () ***REMOVED***
-        await ApplicationOverviewPage.approveSimpleVm(Util.SIMPLE_VM_APPLICATION_NAME);
-    ***REMOVED***);
-***REMOVED***);
+  it('should approve A SIMPLE VM APPLICATION', async function () {
+    await ApplicationOverviewPage.approveSimpleVm(Util.SIMPLE_VM_APPLICATION_NAME);
+  });
+});

@@ -1,25 +1,25 @@
-import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***Volume***REMOVED*** from './volume';
-import ***REMOVED***VirtualmachineService***REMOVED*** from '../../api-connector/virtualmachine.service';
-import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachinemodels/virtualmachine';
-import ***REMOVED***GroupService***REMOVED*** from '../../api-connector/group.service';
-import ***REMOVED***AbstractBaseClasse***REMOVED*** from '../../shared/shared_modules/baseClass/abstract-base-class';
-import ***REMOVED***VolumeActionStates***REMOVED*** from './volume-action-states.enum';
-import ***REMOVED***VolumeRequestStates***REMOVED*** from './volume-request-states.enum';
-import ***REMOVED***IResponseTemplate***REMOVED*** from '../../api-connector/response-template';
-import ***REMOVED***FacilityService***REMOVED*** from '../../api-connector/facility.service';
+import {Component, OnInit} from '@angular/core';
+import {Volume} from './volume';
+import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
+import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
+import {GroupService} from '../../api-connector/group.service';
+import {AbstractBaseClasse} from '../../shared/shared_modules/baseClass/abstract-base-class';
+import {VolumeActionStates} from './volume-action-states.enum';
+import {VolumeRequestStates} from './volume-request-states.enum';
+import {IResponseTemplate} from '../../api-connector/response-template';
+import {FacilityService} from '../../api-connector/facility.service';
 
 /**
  * Volume overview component.
  */
-@Component(***REMOVED***
+@Component({
 
              selector: 'app-volume-overview',
              templateUrl: 'volumeOverview.component.html',
              providers: [FacilityService, GroupService, VirtualmachineService]
-           ***REMOVED***)
+           })
 
-export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit ***REMOVED***
+export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit {
   /**
    * Enum of all volume action states.
    */
@@ -29,7 +29,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Enum of all request states.
-   * @type ***REMOVED***VolumeRequestStates***REMOVED***
+   * @type {VolumeRequestStates}
    */
   volumeRequestStates: typeof VolumeRequestStates = VolumeRequestStates;
 
@@ -56,7 +56,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   selected_vm: VirtualMachine;
   /**
    * If the site is loaded.
-   * @type ***REMOVED***boolean***REMOVED***
+   * @type {boolean}
    */
   isLoaded: boolean = false;
   /**
@@ -89,17 +89,17 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   selectedProject: [string, number];
   /**
    * List of all projects from the user.
-   * @type ***REMOVED***any[]***REMOVED***
+   * @type {any[]}
    */
   projects: string[] = [];
   /**
    * Default diskspace.
-   * @type ***REMOVED***number***REMOVED***
+   * @type {number}
    */
   diskspace: number = 1;
   /**
    * Default volumename.
-   * @type ***REMOVED***string***REMOVED***
+   * @type {string}
    */
   volumeName: string = '';
   /**
@@ -112,293 +112,293 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   request_status: number;
 
-  constructor(private facilityService: FacilityService, private groupService: GroupService, private vmService: VirtualmachineService) ***REMOVED***
+  constructor(private facilityService: FacilityService, private groupService: GroupService, private vmService: VirtualmachineService) {
     super();
 
-  ***REMOVED***
+  }
 
-  ngOnInit(): void ***REMOVED***
+  ngOnInit(): void {
     this.getVolumes();
     this.getUserApprovedProjects();
-    this.facilityService.getManagerFacilities().subscribe(result => ***REMOVED***
+    this.facilityService.getManagerFacilities().subscribe(result => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
-    ***REMOVED***);
+    });
 
-  ***REMOVED***
+  }
 
   /**
    * Attach a volume to an instance.
-   * @param ***REMOVED***string***REMOVED*** volume_id openstack_id of the volume
-   * @param ***REMOVED***string***REMOVED*** instance_id openstack_id of the instance
-   * @returns ***REMOVED***void***REMOVED***
+   * @param {string} volume_id openstack_id of the volume
+   * @param {string} instance_id openstack_id of the instance
+   * @returns {void}
    */
-  attachVolume(volume_id: string, instance_id: string): void ***REMOVED***
+  attachVolume(volume_id: string, instance_id: string): void {
     this.volume_action_status = this.volumeActionStates.ATTACHING;
 
-    this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe((result: IResponseTemplate) => ***REMOVED***
+    this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe((result: IResponseTemplate) => {
 
-      if (result.value === 'attached') ***REMOVED***
+      if (result.value === 'attached') {
         this.volume_action_status = this.volumeActionStates.ATTACHING_SUCCESSFULL;
-      ***REMOVED*** else ***REMOVED***
+      } else {
         this.volume_action_status = this.volumeActionStates.ERROR;
-      ***REMOVED***
+      }
       this.getVolumes();
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  getFacilityVolumes(): void ***REMOVED***
+  getFacilityVolumes(): void {
     this.volumes = [];
 
-    this.facilityService.getFacilityVolumes(this.selectedFacility['FacilityId']).subscribe(res => ***REMOVED***
+    this.facilityService.getFacilityVolumes(this.selectedFacility['FacilityId']).subscribe(res => {
       this.volumes = res;
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Create an volume and attach to an instance.
-   * @param ***REMOVED***string***REMOVED*** volume_name name of the volume
-   * @param ***REMOVED***number***REMOVED*** diskspace diskspace of the volume
-   * @param ***REMOVED***string***REMOVED*** instance_id opentack_id of the instance
-   * @returns ***REMOVED***void***REMOVED***
+   * @param {string} volume_name name of the volume
+   * @param {number} diskspace diskspace of the volume
+   * @param {string} instance_id opentack_id of the instance
+   * @returns {void}
    */
-  createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string): void ***REMOVED***
+  createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string): void {
     this.volume_action_status = 7;
-    this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe((newVolume: Volume) => ***REMOVED***
-      if (newVolume.volume_openstackid) ***REMOVED***
+    this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe((newVolume: Volume) => {
+      if (newVolume.volume_openstackid) {
         this.volume_action_status = this.volumeActionStates.ATTACHING;
-        this.vmService.attachVolumetoServer(newVolume.volume_openstackid, instance_id).subscribe((res: IResponseTemplate) => ***REMOVED***
+        this.vmService.attachVolumetoServer(newVolume.volume_openstackid, instance_id).subscribe((res: IResponseTemplate) => {
 
-          if (res.value === 'attached') ***REMOVED***
+          if (res.value === 'attached') {
             this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED;
-          ***REMOVED*** else ***REMOVED***
+          } else {
             this.volume_action_status = this.volumeActionStates.ERROR;
-          ***REMOVED***
+          }
           this.getVolumes();
-        ***REMOVED***)
-      ***REMOVED*** else ***REMOVED***
+        })
+      } else {
         this.volume_action_status = this.volumeActionStates.ERROR;
-      ***REMOVED***
+      }
       this.getVolumes();
 
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
   /**
    * Create an volume.
-   * @param ***REMOVED***string***REMOVED*** volume_name name of the volume.
-   * @param ***REMOVED***number***REMOVED*** diskspace diskspace of the new volume
-   * @param ***REMOVED***string***REMOVED*** instance_id openstack_id of instance.
-   * @returns ***REMOVED***void***REMOVED***
+   * @param {string} volume_name name of the volume.
+   * @param {number} diskspace diskspace of the new volume
+   * @param {string} instance_id openstack_id of instance.
+   * @returns {void}
    */
-  createVolume(volume_name: string, diskspace: number, instance_id: string): void ***REMOVED***
+  createVolume(volume_name: string, diskspace: number, instance_id: string): void {
     this.volume_action_status = this.volumeActionStates.WAITING;
-    this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe((newVolume: Volume) => ***REMOVED***
-      if (newVolume.volume_openstackid) ***REMOVED***
+    this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe((newVolume: Volume) => {
+      if (newVolume.volume_openstackid) {
         this.volume_action_status = this.volumeActionStates.WAIT_CREATION;
         this.volumes.push(newVolume)
-      ***REMOVED*** else ***REMOVED***
+      } else {
         this.volume_action_status = this.volumeActionStates.ERROR;
-      ***REMOVED***
-    ***REMOVED***)
-  ***REMOVED***
+      }
+    })
+  }
 
   /**
    * Delete Volume (detach first if attached).
-   * @param ***REMOVED***string***REMOVED*** volume_id openstack_id of volume
-   * @param ***REMOVED***string***REMOVED*** instance_id oopenstack_id of instance
-   * @returns ***REMOVED***void***REMOVED***
+   * @param {string} volume_id openstack_id of volume
+   * @param {string} instance_id oopenstack_id of instance
+   * @returns {void}
    */
-  deleteVolume(volume_id: string, instance_id?: string): void ***REMOVED***
+  deleteVolume(volume_id: string, instance_id?: string): void {
     this.volume_action_status = this.volumeActionStates.WAITING;
 
-    if (instance_id) ***REMOVED***
+    if (instance_id) {
       this.volume_action_status = this.volumeActionStates.DETACHING_VOLUME;
-      this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe((res: IResponseTemplate) => ***REMOVED***
-        if (res.value === 'deleted') ***REMOVED***
+      this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe((res: IResponseTemplate) => {
+        if (res.value === 'deleted') {
           this.volume_action_status = this.volumeActionStates.WAITING;
-        ***REMOVED***
+        }
 
-        this.vmService.deleteVolume(volume_id).subscribe((result: IResponseTemplate) => ***REMOVED***
-          if (result.value === 'deleted') ***REMOVED***
+        this.vmService.deleteVolume(volume_id).subscribe((result: IResponseTemplate) => {
+          if (result.value === 'deleted') {
             this.volume_action_status = this.volumeActionStates.SUCCESS;
-          ***REMOVED*** else ***REMOVED***
+          } else {
             this.volume_action_status = this.volumeActionStates.ERROR;
-          ***REMOVED***
+          }
           this.getVolumes();
-        ***REMOVED***)
-      ***REMOVED***)
+        })
+      })
 
-    ***REMOVED*** else ***REMOVED***
-      this.vmService.deleteVolume(volume_id).subscribe((result: IResponseTemplate) => ***REMOVED***
-        if (result.value === 'deleted') ***REMOVED***
+    } else {
+      this.vmService.deleteVolume(volume_id).subscribe((result: IResponseTemplate) => {
+        if (result.value === 'deleted') {
           this.volume_action_status = this.volumeActionStates.SUCCESS;
-        ***REMOVED*** else ***REMOVED***
+        } else {
           this.volume_action_status = this.volumeActionStates.ERROR;
-        ***REMOVED***
+        }
         this.getVolumes();
 
-      ***REMOVED***)
-    ***REMOVED***
-  ***REMOVED***
+      })
+    }
+  }
 
   /**
    * Detach volume from instance.
-   * @param ***REMOVED***string***REMOVED*** volume_id openstack_id of the volume
-   * @param ***REMOVED***string***REMOVED*** instance_id openstack_id of the  instance
-   * @returns ***REMOVED***void***REMOVED***
+   * @param {string} volume_id openstack_id of the volume
+   * @param {string} instance_id openstack_id of the  instance
+   * @returns {void}
    */
-  detachVolume(volume_id: string, instance_id: string): void ***REMOVED***
+  detachVolume(volume_id: string, instance_id: string): void {
     this.volume_action_status = this.volumeActionStates.DETACHING_VOLUME;
-    this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => ***REMOVED***
-      if (result.value === 'deleted') ***REMOVED***
+    this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
+      if (result.value === 'deleted') {
         this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME;
-      ***REMOVED*** else ***REMOVED***
+      } else {
         this.volume_action_status = this.volumeActionStates.ERROR;
-      ***REMOVED***
+      }
       this.getVolumes();
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Rename a volume ( just in Django DB not in OpenStack).
-   * @param ***REMOVED***string***REMOVED*** volume_id openstack_id of volume
-   * @param ***REMOVED***string***REMOVED*** new_volume_name the new name
-   * @returns ***REMOVED***void***REMOVED***
+   * @param {string} volume_id openstack_id of volume
+   * @param {string} new_volume_name the new name
+   * @returns {void}
    */
-  renameVolume(volume: Volume, new_volume_name: string): void ***REMOVED***
+  renameVolume(volume: Volume, new_volume_name: string): void {
     this.volume_action_status = this.volumeActionStates.CHANGING_NAME;
     this.vmService.renameVolume(volume.volume_openstackid, new_volume_name)
-      .subscribe((changed_volume: Volume) => ***REMOVED***
-                   if (changed_volume.volume_name === new_volume_name) ***REMOVED***
+      .subscribe((changed_volume: Volume) => {
+                   if (changed_volume.volume_name === new_volume_name) {
                      this.volume_action_status = this.volumeActionStates.CHANGING_NAME_SUCESSFULL;
-                   ***REMOVED*** else ***REMOVED***
+                   } else {
                      this.volume_action_status = this.volumeActionStates.ERROR;
-                   ***REMOVED***
+                   }
                    this.volumes[this.volumes.indexOf(volume)] = changed_volume;
 
-                 ***REMOVED***
+                 }
       )
 
-  ***REMOVED***
+  }
 
   /**
    * Get all volumes from user.
-   * @returns ***REMOVED***void***REMOVED***
+   * @returns {void}
    */
-  getVolumes(): void ***REMOVED***
+  getVolumes(): void {
     this.volumes = [];
-    this.vmService.getVolumesByUser().subscribe(result => ***REMOVED***
+    this.vmService.getVolumesByUser().subscribe(result => {
       this.volumes = result;
-      for (const volume of this.volumes) ***REMOVED***
+      for (const volume of this.volumes) {
         this.setCollapseStatus(volume.volume_openstackid, false);
-      ***REMOVED***
+      }
 
       this.isLoaded = true;
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Get all approved projects from the user.
-   * @returns ***REMOVED***void***REMOVED***
+   * @returns {void}
    */
-  getUserApprovedProjects(): void ***REMOVED***
-    this.groupService.getSimpleVmByUser().subscribe(membergroups => ***REMOVED***
-      for (const project of membergroups) ***REMOVED***
+  getUserApprovedProjects(): void {
+    this.groupService.getSimpleVmByUser().subscribe(membergroups => {
+      for (const project of membergroups) {
         this.projects.push(project);
 
-      ***REMOVED***
-    ***REMOVED***);
-  ***REMOVED***
+      }
+    });
+  }
 
   /**
    * Set request status.
-   * @param ***REMOVED***number***REMOVED*** status
-   * @returns ***REMOVED***void***REMOVED***
+   * @param {number} status
+   * @returns {void}
    */
-  setRequestStatus(status: number): void ***REMOVED***
+  setRequestStatus(status: number): void {
     this.request_status = status;
-  ***REMOVED***
+  }
 
   /**
    * Set selected volume.
-   * @param ***REMOVED***Volume***REMOVED*** volume
-   * @returns ***REMOVED***void***REMOVED***
+   * @param {Volume} volume
+   * @returns {void}
    */
-  setSelectedVolume(volume: Volume): void ***REMOVED***
+  setSelectedVolume(volume: Volume): void {
     this.selected_volume = volume;
-  ***REMOVED***
+  }
 
   /**
    * Calc diskspace sum of selected project diskspace and additional diskspace of new volume.
    */
-  calcDiskSpaceSum(): void ***REMOVED***
+  calcDiskSpaceSum(): void {
     this.selectedProjectDiskSpaceSum = parseInt(this.diskspace.toString(), 10)
       + parseInt(this.selectedProjectDiskspaceUsed.toString(), 10);
-  ***REMOVED***
+  }
 
   /**
    * Get diskspace of selected project.
-   * @returns ***REMOVED***void***REMOVED***
+   * @returns {void}
    */
-  getSelectedProjectDiskspace(): void ***REMOVED***
-    this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => ***REMOVED***
-      if (result.value) ***REMOVED***
+  getSelectedProjectDiskspace(): void {
+    this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => {
+      if (result.value) {
 
         this.selectedProjectDiskspaceMax = <number>result.value;
 
-      ***REMOVED*** else ***REMOVED***
+      } else {
         this.selectedProjectDiskspaceMax = 0;
-      ***REMOVED***
+      }
 
-    ***REMOVED***);
-    this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => ***REMOVED***
-      if (result.value) ***REMOVED***
+    });
+    this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => {
+      if (result.value) {
 
         this.selectedProjectDiskspaceUsed = <number>result.value;
-      ***REMOVED*** else ***REMOVED***
+      } else {
         this.selectedProjectDiskspaceUsed = 0;
-      ***REMOVED***
+      }
 
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
   /**
    * Get volumes of selected project.
-   * @returns ***REMOVED***void***REMOVED***
+   * @returns {void}
    */
-  getSelectedProjectVolumes(): void ***REMOVED***
-    this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => ***REMOVED***
-      if (result.value) ***REMOVED***
+  getSelectedProjectVolumes(): void {
+    this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => {
+      if (result.value) {
         this.selectedProjectVolumesMax = <number>result.value;
-      ***REMOVED*** else ***REMOVED***
+      } else {
         this.selectedProjectVolumesMax = 0;
-      ***REMOVED***
-    ***REMOVED***);
-    this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => ***REMOVED***
-      if (result.value) ***REMOVED***
+      }
+    });
+    this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => {
+      if (result.value) {
         this.selectedProjectVolumesUsed = <number>result.value;
-      ***REMOVED*** else ***REMOVED***
+      } else {
 
         this.selectedProjectVolumesUsed = 0;
-      ***REMOVED***
+      }
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Get all active vms from a project.
-   * @param ***REMOVED***number***REMOVED*** groupid id of the perun group from the project.
-   * @returns ***REMOVED***void***REMOVED***
+   * @param {number} groupid id of the perun group from the project.
+   * @returns {void}
    */
-  getActiveVmsByProject(groupid: number): void ***REMOVED***
-    this.vmService.getActiveVmsByProject(groupid.toString()).subscribe(result => ***REMOVED***
+  getActiveVmsByProject(groupid: number): void {
+    this.vmService.getActiveVmsByProject(groupid.toString()).subscribe(result => {
 
       this.project_vms = result;
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-***REMOVED***
+}
