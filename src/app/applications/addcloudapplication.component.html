@@ -753,7 +753,7 @@
               cloud
               usage policy.</p>
           </div>
-          <button type="button" (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
+          <button id="submit_btn"  type="button" (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
                   class="btn btn-sm btn-success" [disabled]="f.invalid">
             <i class="fa fa-dot-circle-o"></i>
             Submit Application
@@ -781,7 +781,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-{{ notificationModalType }}" role="alert">
+        <div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
           {{ notificationModalMessage }}
 
         </div>
@@ -830,7 +830,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
+        <button id="acknowledge_approve_btn"  type="button" (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
                 class="btn  btn-success" name="_save" form="application_form">
           Accept
         </button>
