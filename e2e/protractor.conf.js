@@ -28,13 +28,12 @@ exports.config = {
     },
     allScriptsTimeout: 11000,
     specs: [
-        'tests/login_test.ts',
-
+         /*'tests/login_test.ts',
         'tests/simple_vm_application_test.ts',
+        'tests/simple_vm_approval_test.ts',*/
 
-        'tests/simple_vm_approval_test.ts',
-       /*
-        'tests_ts/member_test.ts',
+        'tests/member_test.ts',
+        /*
         'tests_ts/simple_vm_modification_test.ts',
         'tests_ts/simple_vm_application_modification_approval.ts',
         'tests_ts/cloud_application_test.ts',

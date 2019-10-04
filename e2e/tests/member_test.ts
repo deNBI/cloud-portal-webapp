@@ -15,7 +15,7 @@ describe('Member Test', function () {
     });
 
     it('should navigate to project overview', async function () {
-        await ProjectOverview.navigateToProjectverview();
+        await ProjectOverview.navigateToSimpleProjectverview();
     });
 
     it('should add member', async function () {
