@@ -776,20 +776,20 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-{{ notificationModalType }}" role="alert">
+        <div class="alert alert-{{ notificationModalType }}"  id="notification_message" role="alert">
           {{ notificationModalMessage }}
 
         </div>
       </div>
       <div class="modal-footer">
-        <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
-                type="button" id="notification_btn_redirect"
+        <button  id="notification_btn_redirect" *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
+                type="button"
                 (click)="notificationModal.hide();resetNotificationModal()"
                 class="btn  btn-secondary"> Close
         </button>
         <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
            [routerLink]="['/project-management/' + new_application_id]">
-          <button type="button"
+          <button type="button" id="notification_btn_redirect"
                   (click)="notificationModal.hide();resetNotificationModal()" type="reset"
                   class="btn  btn-secondary"> Close
           </button>
@@ -825,7 +825,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
+        <button id="acknowledge_approve_btn" type="button" (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
                 class="btn  btn-success" name="_save" form="application_form">
           Accept
         </button>
