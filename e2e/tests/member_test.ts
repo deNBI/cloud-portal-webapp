@@ -15,7 +15,7 @@ describe('Member Test', function () ***REMOVED***
     ***REMOVED***);
 
     it('should navigate to project overview', async function () ***REMOVED***
-        await ProjectOverview.navigateToProjectverview();
+        await ProjectOverview.navigateToSimpleProjectverview();
     ***REMOVED***);
 
     it('should add member', async function () ***REMOVED***
