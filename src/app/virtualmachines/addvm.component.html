@@ -256,11 +256,11 @@
                   <div
                     *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax">
                     <div class="form-group row" *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
-                      <label *ngIf="diskspace <= 0" class="col-md-2 form-control-label">Volume name</label>
-                      <label *ngIf="diskspace > 0 " class="col-md-2 form-control-label"><strong>Volume
+                      <label *ngIf="diskspace <= 0" class="col-md col-sm col-lg-2 col-xl-2 form-control-label">Volume name</label>
+                      <label *ngIf="diskspace > 0 " class="col-md col-sm col-lg-2 col-xl-2 form-control-label"><strong>Volume
                         name*</strong></label>
 
-                      <div class="col-6">
+                      <div class="col-xl-6 col-sm-12 col-md-8">
                         <input type="text" placeholder="Volume name"
                                [value]="volumeName"
                                (input)="volumeName = $event.target.value"
@@ -275,11 +275,11 @@
 
                     class="form-group row">
 
-                    <label class="col-2 form-control-label">Storage</label>
+                    <label class="col-lg-2 col-sm form-control-label">Storage</label>
 
-                    <div class="col-6">
+                    <div class="col-xl-6 col-md-8 col-sm-12">
                       <div class="row">
-                        <div class="input-group col-10" style="width: 100%">
+                        <div class="input-group col-lg-10 text-lg-right col-sm-12" style="width: 100%">
                           <input min="0" step="1" [value]="diskspace"
                                  style="height: auto"
                                  id="id_vm_volume_storage" name="vm_volume_storage"
@@ -297,9 +297,9 @@
                                     </span></div>
                         </div>
 
-                        <div class="col-2" style="text-align:right;">
+                        <div class="col-lg-2 text-lg-right col-sm-12 text-sm-left">
                           <p><strong
-                            style="position: relative;top: 8px; text-align: right;"> {{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}
+                            style="position: relative;top: 8px"> {{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}
                             GB available
                           </strong></p>
                         </div>
