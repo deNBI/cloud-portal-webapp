@@ -164,7 +164,7 @@ export class BiocondaComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
   getTimeout(): number ***REMOVED***
-    return ((this.chosen_tools.length) * 300) + 600;
+    return ((this.chosen_tools.length) * 300) + 840;
   ***REMOVED***
 
   hasChosenTools(): boolean ***REMOVED***

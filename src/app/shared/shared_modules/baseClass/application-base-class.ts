@@ -1,6 +1,6 @@
 import ***REMOVED***AbstractBaseClasse***REMOVED*** from './abstract-base-class';
 import ***REMOVED***ApplicationStatus***REMOVED*** from '../../../applications/application_status.model';
-import ***REMOVED***Application***REMOVED*** from '../../../applications/application.model';
+import ***REMOVED***Application***REMOVED*** from '../../../applications/application.model/application.model';
 import ***REMOVED***Flavor***REMOVED*** from '../../../virtualmachines/virtualmachinemodels/flavor';
 import ***REMOVED***ApplicationExtension***REMOVED*** from '../../../applications/application_extension.model';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../../../api-connector/applications.service';
@@ -45,7 +45,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
    */
   application_status: ApplicationStatus[] = [];
 
-  /**
+  /**application_user
    * User which requested the Application ***REMOVED***id: Elixir id of user : ***REMOVED***name and email***REMOVED******REMOVED***.
    * @type ***REMOVED******REMOVED******REMOVED******REMOVED***
    */
@@ -127,6 +127,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
    */
   getIdByStatus(name: string): number ***REMOVED***
     const s: number = -1;
+
     for (const status of this.application_status) ***REMOVED***
       if (status.application_status_name === name) ***REMOVED***
         return status.application_status_id;
@@ -177,6 +178,9 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
     newApp.Shortname = aj['project_application_shortname'];
     newApp.Description = aj['project_application_description'];
     newApp.Lifetime = aj['project_application_lifetime'];
+    newApp.EdamTopics = aj['project_application_edam_terms'];
+            newApp.PiAffiliations = aj['pi_affiliations'];
+
 
     newApp.VMsRequested = aj['project_application_vms_requested'];
     newApp.RamPerVM = aj['project_application_ram_per_vm'];
@@ -202,6 +206,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
     newApp.Status = aj['project_application_status'];
     newApp.Dissemination = aj['project_application_report_allowed'];
     newApp.Horizon2020 = aj['project_application_horizon2020'];
+    newApp.BMBFProject = aj['project_application_bmbf_project'];
     newApp.ElixirProject = aj['project_application_elixir_project'];
     newApp.Comment = aj['project_application_comment'];
     newApp.PerunId = aj['project_application_perun_id'];
@@ -272,6 +277,8 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
         newApp.Description = aj['project_application_description'];
         newApp.Lifetime = aj['project_application_lifetime'];
         newApp.VMsRequested = aj['project_application_vms_requested'];
+        newApp.EdamTopics = aj['project_application_edam_terms'];
+        newApp.PiAffiliations = aj['pi_affiliations'];
         newApp.RamPerVM = aj['project_application_ram_per_vm'];
         newApp.TotalRam = aj['project_application_total_ram'];
         newApp.TotalCores = aj['project_application_total_cores'];
@@ -385,6 +392,24 @@ export class ApplicationBaseClass extends AbstractBaseClasse ***REMOVED***
           this.application_user[elixir_id] = appuser;
         ***REMOVED***)
       ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+
+  /**
+   * Get details of member like name and email by elixir.
+   * @param ***REMOVED***string***REMOVED*** elixir_id
+   * @param ***REMOVED***string***REMOVED*** collapse_id
+   */
+  public getMemberDetailsByElixirId(elixir_id: string): void ***REMOVED***
+    if (!(elixir_id in this.application_user)) ***REMOVED***
+      this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe((result: ***REMOVED*** [key: string]: string ***REMOVED***) => ***REMOVED***
+
+        const name: string = `$***REMOVED***result['firstName']***REMOVED*** $***REMOVED***result['lastName']***REMOVED***`;
+        const appuser: ***REMOVED*** [id: string]: string ***REMOVED*** = ***REMOVED******REMOVED***;
+        appuser['name'] = name;
+        appuser['email'] = result['email'];
+        this.application_user[elixir_id] = appuser;
+      ***REMOVED***)
     ***REMOVED***
   ***REMOVED***
 

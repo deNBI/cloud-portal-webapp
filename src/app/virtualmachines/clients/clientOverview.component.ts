@@ -7,145 +7,145 @@ import ***REMOVED***UserService***REMOVED*** from '../../api-connector/user.serv
 import ***REMOVED***ComputecenterComponent***REMOVED*** from '../../projectmanagement/computecenter.component';
 import ***REMOVED***FacilityService***REMOVED*** from '../../api-connector/facility.service';
 import ***REMOVED***VoService***REMOVED*** from '../../api-connector/vo.service';
-import ***REMOVED***IResponseTemplate***REMOVED*** from "../../api-connector/response-template";
+import ***REMOVED***IResponseTemplate***REMOVED*** from '../../api-connector/response-template';
 
 /**
  * Client component.
  */
 @Component(***REMOVED***
-    selector: 'app-client-overview',
-    templateUrl: 'clientOverview.html',
-    providers: [FacilityService, VoService, UserService, GroupService, ClientService, ApiSettings]
-***REMOVED***)
+             selector: 'app-client-overview',
+             templateUrl: 'clientOverview.html',
+             providers: [FacilityService, VoService, UserService, GroupService, ClientService, ApiSettings]
+           ***REMOVED***)
 
 export class ClientOverviewComponent implements OnInit ***REMOVED***
 
-    /**
-     * All clients.
-     */
-    clients: Client[];
+  /**
+   * All clients.
+   */
+  clients: Client[];
 
-    /**
-     * Selected Client;
-     */
-    selectedClient: Client;
-    /**
-     * If user is vo.
-     * @type ***REMOVED***boolean***REMOVED***
-     */
-    is_vo_admin: boolean = false;
-    /**
-     * Default status not added client.
-     * @type ***REMOVED***string***REMOVED***
-     */
-    checkStatus: string = 'Not checked';
-    /**
-     * All computecenters.
-     * @type ***REMOVED***Array***REMOVED***
-     */
-    computeCenters: ComputecenterComponent[] = [];
-    /**
-     * Selected computecenter.
-     */
-    selectedComputeCenter: ComputecenterComponent;
-    /**
-     * If site is initialized with data.
-     * @type ***REMOVED***boolean***REMOVED***
-     */
-    isLoaded: boolean = false;
+  /**
+   * Selected Client;
+   */
+  selectedClient: Client;
+  /**
+   * If user is vo.
+   * @type ***REMOVED***boolean***REMOVED***
+   */
+  is_vo_admin: boolean = false;
+  /**
+   * Default status not added client.
+   * @type ***REMOVED***string***REMOVED***
+   */
+  checkStatus: string = 'Not checked';
+  /**
+   * All computecenters.
+   * @type ***REMOVED***Array***REMOVED***
+   */
+  computeCenters: ComputecenterComponent[] = [];
+  /**
+   * Selected computecenter.
+   */
+  selectedComputeCenter: ComputecenterComponent;
+  /**
+   * If site is initialized with data.
+   * @type ***REMOVED***boolean***REMOVED***
+   */
+  isLoaded: boolean = false;
 
-    constructor(private facilityService: FacilityService, private userservice: UserService,
-                private clientservice: ClientService, private voservice: VoService) ***REMOVED***
+  constructor(private facilityService: FacilityService, private userservice: UserService,
+              private clientservice: ClientService, private voservice: VoService) ***REMOVED***
 
-    ***REMOVED***
+  ***REMOVED***
 
-    /**
-     * Check vm status.
-     * @param ***REMOVED***UserService***REMOVED*** userservice
-     */
-    checkVOstatus(): void ***REMOVED***
-        this.voservice.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
-            this.is_vo_admin = <boolean><Boolean>result.value;
-        ***REMOVED***)
+  /**
+   * Check vm status.
+   * @param ***REMOVED***UserService***REMOVED*** userservice
+   */
+  checkVOstatus(): void ***REMOVED***
+    this.voservice.isVo().subscribe((result: IResponseTemplate) => ***REMOVED***
+      this.is_vo_admin = <boolean><Boolean>result.value;
+    ***REMOVED***)
 
-    ***REMOVED***
+  ***REMOVED***
 
-    /**
-     * Get all clients status checked.
-     */
-    getClientsChecked(): void ***REMOVED***
-        this.clientservice.getClientsChecked().subscribe((clients: Client[]) => ***REMOVED***
-            this.clients = clients;
-            this.isLoaded = true;
-        ***REMOVED***);
+  /**
+   * Get all clients status checked.
+   */
+  getClientsChecked(): void ***REMOVED***
+    this.clientservice.getClientsChecked().subscribe((clients: Client[]) => ***REMOVED***
+      this.clients = clients;
+      this.isLoaded = true;
+    ***REMOVED***);
 
-    ***REMOVED***
+  ***REMOVED***
 
-    /**
-     * Get all computecenters.
-     */
-    getComputeCenters(): void ***REMOVED***
-        this.facilityService.getComputeCenters().subscribe(result => ***REMOVED***
-            for (const cc of result) ***REMOVED***
-                const compute_center: ComputecenterComponent = new ComputecenterComponent(
-                    cc['compute_center_facility_id'], cc['compute_center_name'],
-                    cc['compute_center_login'], cc['compute_center_support_mail'])
-                this.computeCenters.push(compute_center)
-            ***REMOVED***
+  /**
+   * Get all computecenters.
+   */
+  getComputeCenters(): void ***REMOVED***
+    this.facilityService.getComputeCenters().subscribe(result => ***REMOVED***
+      for (const cc of result) ***REMOVED***
+        const compute_center: ComputecenterComponent = new ComputecenterComponent(
+          cc['compute_center_facility_id'], cc['compute_center_name'],
+          cc['compute_center_login'], cc['compute_center_support_mail'])
+        this.computeCenters.push(compute_center)
+      ***REMOVED***
 
-        ***REMOVED***)
-    ***REMOVED***
+    ***REMOVED***)
+  ***REMOVED***
 
-    /**
-     * Check status of client.
-     * @param ***REMOVED***string***REMOVED*** host of client
-     * @param ***REMOVED***string***REMOVED*** port of client
-     */
-    checkClient(host: string, port: string): void ***REMOVED***
-        if (host && port) ***REMOVED***
-            this.clientservice.checkClient(host, port).subscribe((data: IResponseTemplate) => ***REMOVED***
+  /**
+   * Check status of client.
+   * @param ***REMOVED***string***REMOVED*** host of client
+   * @param ***REMOVED***string***REMOVED*** port of client
+   */
+  checkClient(host: string, port: string): void ***REMOVED***
+    if (host && port) ***REMOVED***
+      this.clientservice.checkClient(host, port).subscribe((data: IResponseTemplate) => ***REMOVED***
 
-                if (!data.value) ***REMOVED***
-                    this.checkStatus = 'No Connection';
-                ***REMOVED*** else if (data.value) ***REMOVED***
-                    this.checkStatus = 'Connected';
-                ***REMOVED*** else ***REMOVED***
-                    this.checkStatus = 'check failed';
+        if (!data.value) ***REMOVED***
+          this.checkStatus = 'No Connection';
+        ***REMOVED*** else if (data.value) ***REMOVED***
+          this.checkStatus = 'Connected';
+        ***REMOVED*** else ***REMOVED***
+          this.checkStatus = 'check failed';
 
-                ***REMOVED***
-
-            ***REMOVED***);
         ***REMOVED***
+
+      ***REMOVED***);
     ***REMOVED***
+  ***REMOVED***
 
-    /**
-     * Add a new client.
-     * @param ***REMOVED***string***REMOVED*** host
-     * @param ***REMOVED***string***REMOVED*** port
-     * @param ***REMOVED***string***REMOVED*** location
-     */
-    postClient(host: string, port: string, location: string): void ***REMOVED***
+  /**
+   * Add a new client.
+   * @param ***REMOVED***string***REMOVED*** host
+   * @param ***REMOVED***string***REMOVED*** port
+   * @param ***REMOVED***string***REMOVED*** location
+   */
+  postClient(host: string, port: string, location: string): void ***REMOVED***
 
-        if (host && port && location) ***REMOVED***
-            this.clientservice.postClient(host, port, location).subscribe((newClient: Client) => ***REMOVED***
-                this.clients.push(newClient);
-            ***REMOVED***);
-        ***REMOVED***
+    if (host && port && location) ***REMOVED***
+      this.clientservice.postClient(host, port, location).subscribe((newClient: Client) => ***REMOVED***
+        this.clients.push(newClient);
+      ***REMOVED***);
     ***REMOVED***
+  ***REMOVED***
 
+  updateClient(host: string, port: string, location: string, id: string): void ***REMOVED***
+    this.clientservice.updateClient(new Client(host, port, location, id)).subscribe((res: Client) => ***REMOVED***
+      this.clients[this.clients.indexOf(this.selectedClient)] = res;
+      this.selectedClient = null;
+      this.getClientsChecked();
+    ***REMOVED***)
 
-    updateClient(host: string, port: string, location: string, id: string): void ***REMOVED***
-        this.clientservice.updateClient(new Client(host, port, location, id)).subscribe((res: Client) => ***REMOVED***
-            this.clients[this.clients.indexOf(this.selectedClient)] = res;
-            this.selectedClient = null;
-        ***REMOVED***)
+  ***REMOVED***
 
-    ***REMOVED***
-
-    ngOnInit(): void ***REMOVED***
-        this.checkVOstatus();
-        this.getClientsChecked();
-        this.getComputeCenters();
-    ***REMOVED***
+  ngOnInit(): void ***REMOVED***
+    this.checkVOstatus();
+    this.getClientsChecked();
+    this.getComputeCenters();
+  ***REMOVED***
 
 ***REMOVED***

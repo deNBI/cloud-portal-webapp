@@ -3,7 +3,7 @@ import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility
 import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
-import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
+import ***REMOVED***Application***REMOVED*** from '../applications/application.model/application.model';
 import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service';
 import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service';
 import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';

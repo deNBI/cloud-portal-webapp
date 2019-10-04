@@ -1,0 +1,258 @@
+<div class="table-responsive">
+  <table class="table table-striped">
+
+
+    <tr *ngIf="application?.PIApproved">
+      <td>
+        PI Name
+      </td>
+      <td>
+        ***REMOVED******REMOVED***application?.PI***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr *ngIf="application?.PIApproved">
+      <td>
+        PI Email
+      </td>
+      <td>
+        ***REMOVED******REMOVED***application?.PIEmail***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr *ngIf="application?.PIApproved">
+      <td>
+        PI Affiliations
+      </td>
+      <td>
+        ***REMOVED******REMOVED***application?.PiAffiliations***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>User
+        Affiliations
+      </td>
+      <td>***REMOVED******REMOVED***
+          application?.UserAffiliations***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>User Name</td>
+      <td>
+        ***REMOVED******REMOVED***application_user[application?.User]?.name***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>User Email</td>
+      <td>
+        ***REMOVED******REMOVED***application_user[application?.User]?.email***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>Research Topics</td>
+      <td><h5><span *ngFor="let term of application?.EdamTopics"
+                    style="margin-left: 5px; "
+                    class="badge badge-info">***REMOVED******REMOVED***term***REMOVED******REMOVED***
+ </span>
+
+      </h5></td>
+    </tr>
+    <tr>
+      <td>Description
+      </td>
+      <td>***REMOVED******REMOVED***
+          application?.Description
+        ***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>Horizon 2020</td>
+      <td>
+        ***REMOVED******REMOVED***application?.Horizon2020***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>Elixir Project</td>
+      <td>
+        ***REMOVED******REMOVED***application?.ElixirProject***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>BMBF Project</td>
+      <td>
+        ***REMOVED******REMOVED***application?.BMBFProject***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>Dissemination allowed</td>
+      <td>
+        ***REMOVED******REMOVED***application?.Dissemination***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+
+    <tr>
+      <td>Workgroup</td>
+      <td>***REMOVED******REMOVED***
+          application?.Workgroup
+        ***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+
+    <tr>
+      <td>Comment</td>
+      <td>***REMOVED******REMOVED***
+          application?.Comment
+        ***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        ***REMOVED******REMOVED***application?.ApplicationExtension?.Comment***REMOVED******REMOVED***
+      </td>
+
+    </tr>
+    <tr>
+      <td>Lifetime</td>
+      <td>***REMOVED******REMOVED***
+          application?.Lifetime
+        ***REMOVED******REMOVED*** months
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        ***REMOVED******REMOVED***
+          application?.ApplicationExtension?.Lifetime***REMOVED******REMOVED***
+      </td>
+    </tr>
+    <tr>
+      <td><b>VMs</b>
+      </td>
+
+      <td>
+        <span>Current:</span>
+        ***REMOVED******REMOVED***application?.VMsRequested***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        Requested:
+        ***REMOVED******REMOVED***application?.ApplicationExtension?.VMsRequested***REMOVED******REMOVED***
+      </td>
+
+    </tr>
+
+    <tr *ngFor="let item of application?.CurrentFlavors | keyvalue">
+      <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
+      <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED  || isModification">
+                                                            <span
+                                                              *ngIf="application?.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                                ***REMOVED******REMOVED***application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
+        <span *ngIf="!application?.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                               0</span></td>
+    </tr>
+    <ng-container
+      *ngFor="let item of application?.ApplicationExtension?.RequestedFlavors| keyvalue ">
+      <tr *ngIf="!application?.CurrentFlavors[item.key]">
+        <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
+        <td>0</td>
+        <td>
+          ***REMOVED******REMOVED***application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***
+
+
+        </td>
+
+
+      </tr>
+    </ng-container>
+
+    <tr>
+      <td>Total Cores</td>
+      <td>***REMOVED******REMOVED***
+          application?.TotalCores
+        ***REMOVED******REMOVED***
+
+
+      </td>
+
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        ***REMOVED******REMOVED***application?.ApplicationExtension?.TotalCores***REMOVED******REMOVED***
+      </td>
+    </tr>
+
+    <tr>
+      <td>Total RAM</td>
+      <td>***REMOVED******REMOVED***
+          application?.TotalRam***REMOVED******REMOVED*** GB
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        ***REMOVED******REMOVED***application?.ApplicationExtension?.TotalRAM***REMOVED******REMOVED***
+      </td>
+    </tr>
+    <tr>
+      <td>Storage Limit
+      </td>
+      <td>***REMOVED******REMOVED***
+          application?.VolumeLimit
+        ***REMOVED******REMOVED*** GB
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        ***REMOVED******REMOVED***application?.ApplicationExtension?.VolumeLimit***REMOVED******REMOVED***
+        GB
+      </td>
+    </tr>
+    <tr>
+      <td>Volume
+        Counter
+      </td>
+      <td>***REMOVED******REMOVED***
+          application?.VolumeCounter
+        ***REMOVED******REMOVED*** volumes
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        ***REMOVED******REMOVED***application?.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED*** volumes
+      </td>
+    </tr>
+    <tr *ngIf="application?.OpenStackProject">
+      <td>ObjectStorage
+      </td>
+      <td>***REMOVED******REMOVED***
+          application?.ObjectStorage
+        ***REMOVED******REMOVED*** GB
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification ">
+        ***REMOVED******REMOVED***application?.ApplicationExtension?.ObjectStorage***REMOVED******REMOVED***
+        GB
+      </td>
+    </tr>
+    <tr>
+      <td>Last status
+        changed
+      </td>
+      <td>***REMOVED******REMOVED***
+          application?.DateStatusChanged
+        ***REMOVED******REMOVED***
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+
+
+  </table>
+</div>

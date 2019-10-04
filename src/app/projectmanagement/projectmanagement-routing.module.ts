@@ -3,20 +3,27 @@ import ***REMOVED***RouterModule, Routes***REMOVED*** from '@angular/router';
 import ***REMOVED***OverviewComponent***REMOVED*** from './overview.component';
 
 const routes: Routes = [
+  ***REMOVED***
+    path: '',
+    component: OverviewComponent,
+    data: ***REMOVED***
+      title: 'Project overview'
     ***REMOVED***
-        path: '',
-        component: OverviewComponent,
-        data: ***REMOVED***
-            title: 'Project overview'
-        ***REMOVED***
 
+  ***REMOVED***
+  , ***REMOVED***
+    path: ':id',
+    component: OverviewComponent,
+    data: ***REMOVED***
+      title: 'Project Overview'
     ***REMOVED***
+  ***REMOVED***
 
 ];
 
 @NgModule(***REMOVED***
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
-***REMOVED***)
+            imports: [RouterModule.forChild(routes)],
+            exports: [RouterModule]
+          ***REMOVED***)
 export class ProjectManagementRoutingModule ***REMOVED***
 ***REMOVED***

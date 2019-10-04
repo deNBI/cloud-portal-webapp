@@ -11,7 +11,7 @@ import ***REMOVED***ImageTag***REMOVED*** from './image-tag';
            ***REMOVED***)
 export class ImageTagComponent implements OnInit ***REMOVED***
   isLoaded: boolean = false;
-
+  alertRed: boolean = false;
   imageTags: ImageTag[];
 
   constructor(private imageService: ImageService) ***REMOVED***
@@ -25,11 +25,16 @@ export class ImageTagComponent implements OnInit ***REMOVED***
     ***REMOVED***)
   ***REMOVED***
 
-  addTag(tag: string, description: string): void ***REMOVED***
-    this.imageService.addImageTags(tag, description).subscribe((newTag: ImageTag) => ***REMOVED***
+  addTag(tag: string, description: string, input: HTMLInputElement): void ***REMOVED***
+    if (input.validity.valid) ***REMOVED***
+    this.imageService.addImageTags(tag.trim(), description).subscribe((newTag: ImageTag) => ***REMOVED***
       this.imageTags.push(newTag)
 
     ***REMOVED***)
+    this.alertRed = false;
+    ***REMOVED*** else ***REMOVED***
+      this.alertRed = true;
+    ***REMOVED***
   ***REMOVED***
 
   deleteTag(tag: string): void ***REMOVED***

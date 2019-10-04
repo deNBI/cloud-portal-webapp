@@ -9,7 +9,7 @@ import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/appl
 import ***REMOVED***Userinfo***REMOVED*** from '../userinfo/userinfo.model';
 import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
 import ***REMOVED***ClientService***REMOVED*** from '../api-connector/client.service';
-import ***REMOVED***Application***REMOVED*** from '../applications/application.model';
+import ***REMOVED***Application***REMOVED*** from '../applications/application.model/application.model';
 import ***REMOVED***KeyService***REMOVED*** from '../api-connector/key.service';
 import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
 import ***REMOVED***environment***REMOVED*** from '../../environments/environment';
@@ -59,12 +59,15 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
-  logs: ***REMOVED*** [selector: string]: string | number ***REMOVED*** = ***REMOVED******REMOVED***;
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
   client_checked: boolean = false;
   playbook_run: number = 0;
   timeout: number = 0;
+
+  started_machine: boolean = false;
+
+  bioconda_img_path: string = `static/webapp/assets/img/bioconda_logo.svg`;
 
   /**
    * All image of a project.
@@ -299,23 +302,15 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
       () => ***REMOVED***
         this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => ***REMOVED***
           if (newVm.status === this.ACTIVE) ***REMOVED***
-            if (this.playbook_run === 1) ***REMOVED***
-              this.virtualmachineservice.getLogs(id).subscribe(logs => ***REMOVED***
-                this.logs = logs;
-              ***REMOVED***);
-            ***REMOVED***
             this.resetProgressBar();
             this.newVm = newVm;
             this.loadProjectData();
 
           ***REMOVED*** else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) ***REMOVED***
-            this.virtualmachineservice.getLogs(id).subscribe(logs => ***REMOVED***
-              this.newVm.status = this.DELETED;
-              this.logs = logs;
-              this.resetProgressBar();
-              this.create_error = <IResponseTemplate><any>newVm;
-              this.loadProjectData();
-            ***REMOVED***);
+            this.newVm.status = this.DELETED;
+            this.resetProgressBar();
+            this.create_error = <IResponseTemplate><any>newVm;
+            this.loadProjectData();
           ***REMOVED*** else if (newVm.status) ***REMOVED***
             if (newVm.status === this.PORT_CLOSED) ***REMOVED***
               this.progress_bar_animated = '';
@@ -340,8 +335,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
             this.check_status_loop(id)
           ***REMOVED*** else ***REMOVED***
             this.resetProgressBar();
-            this.create_error = <IResponseTemplate><any>newVm;
             this.loadProjectData();
+            this.create_error = <IResponseTemplate><any>newVm;
           ***REMOVED***
 
         ***REMOVED***)
@@ -361,6 +356,8 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
     this.create_error = null;
     if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) ***REMOVED***
       this.create_error = null;
+      this.started_machine = true;
+
       const re: RegExp = /\+/gi;
 
       const flavor_fixed: string = flavor.replace(re, '%2B');
@@ -379,6 +376,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
         this.https_allowed, this.udp_allowed, this.volumeName,
         this.diskspace.toString(), this.biocondaComponent.getChosenTools(), play_information)
         .subscribe((newVm: VirtualMachine) => ***REMOVED***
+          this.started_machine = false;
 
           if (newVm.status === 'Build') ***REMOVED***
             this.progress_bar_status = this.BUILD_STATUS;
@@ -397,6 +395,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
             this.check_status_loop(newVm.openstackid);
           ***REMOVED*** else ***REMOVED***
             this.progress_bar_status = this.CREATING_STATUS;
+            this.loadProjectData();
             this.create_error = <IResponseTemplate><any>newVm;
           ***REMOVED***
 
@@ -404,7 +403,6 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
 
     ***REMOVED*** else ***REMOVED***
       this.progress_bar_status = this.CREATING_STATUS;
-
       this.newVm = null;
 
     ***REMOVED***
@@ -416,6 +414,7 @@ export class VirtualMachineComponent implements OnInit ***REMOVED***
         [variable: string]: string
       ***REMOVED***
     ***REMOVED*** = ***REMOVED******REMOVED***;
+    this.timeout = 300;
     if (this.biocondaComponent.hasChosenTools()) ***REMOVED***
       playbook_info['bioconda'] = ***REMOVED***
         packages: this.biocondaComponent.getChosenTools()

@@ -3,6 +3,8 @@ import ***REMOVED***ImageService***REMOVED*** from '../../api-connector/image.se
 import ***REMOVED***SnapshotModel***REMOVED*** from './snapshot.model';
 import ***REMOVED***forkJoin, Observable***REMOVED*** from 'rxjs';
 import ***REMOVED***IResponseTemplate***REMOVED*** from '../../api-connector/response-template';
+import ***REMOVED***VolumeRequestStates***REMOVED*** from '../volumes/volume-request-states.enum';
+import ***REMOVED***FacilityService***REMOVED*** from '../../api-connector/facility.service';
 
 enum Snapshot_Delete_Statuses ***REMOVED***
   WAITING = 0,
@@ -13,10 +15,21 @@ enum Snapshot_Delete_Statuses ***REMOVED***
 @Component(***REMOVED***
              selector: 'app-snapshot-overview',
              templateUrl: 'snapshotOverview.component.html',
-             providers: [ImageService]
+             providers: [FacilityService, ImageService]
            ***REMOVED***)
 
 export class SnapshotOverviewComponent implements OnInit ***REMOVED***
+
+  showFacilities: boolean = false;
+
+  /**
+   * Facilitties where the user is manager ['name',id].
+   */
+  managerFacilities: [string, number][];
+  /**
+   * Chosen facility.
+   */
+  selectedFacility: [string, number];
   /**
    * All snapshots.
    * @type ***REMOVED***Array***REMOVED***
@@ -44,7 +57,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
 
   private checkStatusTimeout: number = 5000;
 
-  constructor(private imageService: ImageService) ***REMOVED***
+  constructor(private facilityService: FacilityService, private imageService: ImageService) ***REMOVED***
 
   ***REMOVED***
 
@@ -60,6 +73,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
    * Get snapshots by user.
    */
   getSnapshots(): void ***REMOVED***
+    this.snapshots = [];
     this.imageService.getSnapshotsByUser().subscribe(result => ***REMOVED***
       this.snapshots = result;
       this.isLoaded = true;
@@ -99,6 +113,13 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
 
   ***REMOVED***
 
+  getFacilitySnapshots(): void ***REMOVED***
+    this.snapshots = [];
+    this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId']).subscribe(res => ***REMOVED***
+      this.snapshots = res;
+    ***REMOVED***)
+  ***REMOVED***
+
   /**
    * Delete snapshot.
    * @param ***REMOVED***string***REMOVED*** snapshot_id
@@ -123,7 +144,11 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
   ***REMOVED***
 
   ngOnInit(): void ***REMOVED***
-    this.getSnapshots()
+    this.getSnapshots();
+    this.facilityService.getManagerFacilities().subscribe(result => ***REMOVED***
+      this.managerFacilities = result;
+      this.selectedFacility = this.managerFacilities[0];
+    ***REMOVED***);
 
   ***REMOVED***
 

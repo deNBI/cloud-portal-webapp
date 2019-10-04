@@ -20,12 +20,13 @@
             </a>
           </div>
           <div *ngIf="!production">
-            <button (click)="sendTestApplication(test_name.value);notificationModal.show();">Test
+            <button type="button" (click)="sendTestApplication(test_name.value);notificationModal.show();">Test
               Application
             </button>
             <input name="test_name" placeholder="TestAppName" #test_name>
           </div>
-          <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+
+          <form id="application_form" #f="ngForm"
                 class="form-horizontal">
             <div class="form-group row">
               <h5 class="col-md-6 form-control-label">General Information</h5>
@@ -168,6 +169,11 @@
                   <i class="pull-right float-right" style="font-size: 25px" [ngClass]="***REMOVED***
                             'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen***REMOVED***"></i>
                 </div>
+                <div *ngIf="isFirst" class="alert alert-info"> You will have default access to all flavors in the
+                  standard category.<br>
+                  However, your selection will determine how many machines, how many cores and how much RAM will be
+                  available for your project.
+                </div>
                 <div *ngFor="let f of flavorList">
                   <div *ngIf="f.type.shortcut == t.shortcut"
                        class="form-group row">
@@ -292,9 +298,9 @@
               <label class="col-md-4"></label>
               <div class="col-md-8">
                 <div class="alert alert-primary" role="alert">
-                  In case you need additional and/or special resources, which are not available in the flavour
-                  selection, use the comment field to state so. The same applies to unusually large amounts of
-                  resources.
+                  In case you need <strong>additional and/or special resources, which are not available in the flavour
+                  selection, use the comment field to state so.</strong> The same applies to <strong>unusually large amounts of
+                  resources as well as the necessity of SSDs.</strong>
                 </div>
               </div>
             </div>
@@ -344,15 +350,15 @@
               <h5 class="col-md-6 form-control-label">Additional Information</h5>
             </div>
             <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>EDAM ontology
-                Terms </strong></label>
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Research Topics
+              </strong></label>
               <div class="col-md-8 ">
                 <div class="ng-autocomplete col-md-8">
                   <ng-autocomplete #edam_ontology
                                    [data]="edam_ontology_terms"
                                    [searchKeyword]="ontology_search_keyword"
                                    (selected)='selectEvent($event)'
-                                   placeHolder="Add your EDAM ontology terms"
+                                   placeHolder="Please add you research topics"
 
                                    [itemTemplate]="itemTemplate"
                                    [notFoundTemplate]="notFoundTemplate">
@@ -747,7 +753,7 @@
               cloud
               usage policy.</p>
           </div>
-          <button id="submit_btn" (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
+          <button type="button" (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
                   class="btn btn-sm btn-success" [disabled]="f.invalid">
             <i class="fa fa-dot-circle-o"></i>
             Submit Application
@@ -787,8 +793,8 @@
                 class="btn  btn-secondary"> Close
         </button>
         <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
-           [routerLink]="['/applications']">
-          <button id="notification_btn_redirect"
+           [routerLink]="['/project-management/' + new_application_id]">
+          <button type="button"
                   (click)="notificationModal.hide();resetNotificationModal()" type="reset"
                   class="btn  btn-secondary"> Close
           </button>
@@ -824,8 +830,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="acknowledge_approve_btn" (click)="acknowledgemodal.hide(); notificationModal.show();"
-                class="btn  btn-success" type="submit" name="_save" form="application_form">
+        <button type="button" (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
+                class="btn  btn-success" name="_save" form="application_form">
           Accept
         </button>
 
@@ -884,7 +890,7 @@
         <button class="btn btn-success col-md4" type="button" id="verification_btn"
                 (click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
         </button>
-        <button class="btn  btn-warning col-md-4" type="reset"
+        <button type="button" class="btn  btn-warning col-md-4" type="reset"
                 (click)="submitModal.hide();">Cancel
         </button>
 
@@ -892,4 +898,7 @@
     </div><!-- /.modal-content -->L
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+
 

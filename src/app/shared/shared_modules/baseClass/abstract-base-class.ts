@@ -6,11 +6,11 @@ enum Lifetime_States ***REMOVED***
 
 enum Project_States ***REMOVED***
   ACTIVE = 2,
-  SUSPENDED = 4
+  SUSPENDED = 9
 
 ***REMOVED***
 
-enum Application_States ***REMOVED***
+export enum Application_States ***REMOVED***
   SUBMITTED = 1,
   APPROVED = 2,
   DECLINED = 3,
@@ -18,7 +18,8 @@ enum Application_States ***REMOVED***
   MODIFICATION_DECLINED = 5,
   WAIT_FOR_CONFIRMATION = 6,
   CONFIRMATION_DENIED = 7,
-  TERMINATED = 8
+  TERMINATED = 8,
+  SUSPENDED = 9
 
 ***REMOVED***
 
@@ -28,7 +29,8 @@ enum Vm_Statuses ***REMOVED***
   DELETED = 3,
   CLIENT_OFFLINE = 4,
   'POWERING OFF' = 5,
-  RESTARTING = 6
+  RESTARTING = 6,
+  'NOT FOUND' = 7
 ***REMOVED***
 
 export abstract class AbstractBaseClasse ***REMOVED***

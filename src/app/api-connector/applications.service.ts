@@ -65,6 +65,13 @@ export class ApplicationsService ***REMOVED***
     ***REMOVED***)
   ***REMOVED***
 
+  getApplicationPerunId(app_id: string): Observable<any> ***REMOVED***
+    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***app_id***REMOVED***/perun/`, ***REMOVED***
+      headers: header,
+      withCredentials: true
+    ***REMOVED***)
+  ***REMOVED***
+
   getApplicationClient(app_id: string): Observable<any> ***REMOVED***
     return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***app_id***REMOVED***/client/`, ***REMOVED***
       headers: header,
