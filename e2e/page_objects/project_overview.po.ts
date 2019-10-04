@@ -3,17 +3,20 @@ import {browser, by, element, protractor} from 'protractor';
 
 export class ProjectOverview {
 
-  private static PROJECT_OVERVIEW_URL: string = 'project-management';
   private static ADD_MEMBER_BTN_MODAL: string = 'add_member_btn_modal';
   private static SEARCH_MEMBER: string = 'add_member_input';
   private static DEFAULT_MEMBER: string = 'Test User';
   private static ADD_MEMBER_BTN: string = 'add_member_btn';
   private static SEARCH_MEMBER_BTN: string = 'search_member_btn';
   private static SUCCESS: string = 'Success';
-  private static ALL_MEMBERS_BTN: string = 'all_members_';
   private static REMOVE_MEMBER_PREFIX: string = 'remove_member_';
   private static NOTIFICATION_TITLE: string = 'notification_title';
   private static NOTIFICATION_CLOSE: string = 'close_notification';
+  private static SUBMIT_MODEL_BTN: string = 'submit_modal_btn';
+  private static SUBMIT_RENEWAL_BTN: string = 'submit_renewal_btn';
+  private static EXTENSION_RESULT: string = 'extension result';
+  private static EXTENSION_SUCCESSFULLY_SUBMITTED: string = 'Modify request successfully submitted!';
+  private static EXTENSION_REQUEST_BTN: string = 'show_extension_modal';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
     console.log('Navigating to simple project overview');
@@ -43,9 +46,26 @@ export class ProjectOverview {
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_TITLE, this.SUCCESS);
     console.log('Close Modal');
 
-    await Util.clickElementById(this.NOTIFICATION_CLOSE)
+    await Util.clickElementById(this.NOTIFICATION_CLOSE);
     browser.sleep(1000);
 
+  }
+
+  static async sendModificationRequest(application_name: string): Promise<any> {
+    await Util.clickElementById(this.EXTENSION_REQUEST_BTN);
+    await Util.waitForVisibilityOfElementById('id_project_application_renewal_lifetime');
+    await this.fillModificationRequest();
+    await Util.clickElementById(this.SUBMIT_RENEWAL_BTN);
+    await Util.clickElementById(this.SUBMIT_MODEL_BTN);
+    await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SUCCESSFULLY_SUBMITTED);
+  }
+
+  static async fillModificationRequest(): Promise<any> {
+    await Util.sendTextToElementById('id_project_application_renewal_lifetime', '1');
+    await Util.sendTextToElementById('id_project_application_renewal_de.NBI default', '2');
+    await Util.sendTextToElementById('id_project_application_renewal_volume_counter', '1');
+    await Util.sendTextToElementById('id_project_application_renewal_volume_limit', '1');
+    await Util.sendTextToElementById('id_project_application_renewal_comment', 'This is a Protrector test modificatioN!');
   }
 
 }

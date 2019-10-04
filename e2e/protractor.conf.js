@@ -30,12 +30,11 @@ exports.config = {
     specs: [
          /*'tests/login_test.ts',
         'tests/simple_vm_application_test.ts',
-        'tests/simple_vm_approval_test.ts',*/
-
+        'tests/simple_vm_approval_test.ts',
         'tests/member_test.ts',
-        /*
-        'tests_ts/simple_vm_modification_test.ts',
-        'tests_ts/simple_vm_application_modification_approval.ts',
+
+        'tests/simple_vm_modification_test.ts',*/
+        'tests/simple_vm_application_modification_approval.ts',  /*
         'tests_ts/cloud_application_test.ts',
         'tests_ts/cloud_application_approval_test.ts',
         'tests_ts/cloud_application_modification_test.ts',
