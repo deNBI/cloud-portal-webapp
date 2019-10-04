@@ -299,7 +299,8 @@
               <div class="col-md-8">
                 <div class="alert alert-primary" role="alert">
                   In case you need <strong>additional and/or special resources, which are not available in the flavour
-                  selection, use the comment field to state so.</strong> The same applies to <strong>unusually large amounts of
+                  selection, use the comment field to state so.</strong> The same applies to <strong>unusually large
+                  amounts of
                   resources as well as the necessity of SSDs.</strong>
                 </div>
               </div>
@@ -420,8 +421,8 @@
               <div class="col-md-8">
 
 
-                <label  id="id_project_application_report_allowed"
-                  class="switch switch-label switch-outline-primary-alt">
+                <label id="id_project_application_report_allowed"
+                       class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input"
                          name="project_application_report_allowed"
                          [(ngModel)]="project_application_report_allowed"
@@ -445,7 +446,8 @@
               </div>
 
               <accordion>
-                <accordion-group [isOpen]="dissemination_information_open" id="dissemination_information_accordion" #dissemination_information_accordion>
+                <accordion-group [isOpen]="dissemination_information_open" id="dissemination_information_accordion"
+                                 #dissemination_information_accordion>
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     Dissemination Options
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
@@ -487,7 +489,7 @@
                       </label>
                     </div>
                     <div *ngIf="application_dissemination.information_description_allowed" class="col-md-6">
-                    <textarea type="text"  class="form-control" maxlength="8192"
+                    <textarea type="text" class="form-control" maxlength="8192"
                               placeholder="Enter public description. Leave blank for existing description."
                               name="information_description"
 
@@ -495,7 +497,7 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label" >Resources</label>
+                    <label class="col-md-4 form-control-label">Resources</label>
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt" id="information_resources_checkbox">
                         <input type="checkbox" class="switch-input" name="information_resources"
@@ -520,9 +522,10 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label" >Project Type</label>
+                    <label class="col-md-4 form-control-label">Project Type</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt" id="information_project_type_checkbox">
+                      <label class="switch switch-label switch-outline-primary-alt"
+                             id="information_project_type_checkbox">
                         <input type="checkbox" class="switch-input" name="information_project_type"
                                [(ngModel)]="application_dissemination.information_project_type"
 
@@ -534,7 +537,7 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label" >Name of PI</label>
+                    <label class="col-md-4 form-control-label">Name of PI</label>
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt" id="information_pi_name_checkbox">
                         <input type="checkbox" class="switch-input" name="information_pi_name"
@@ -549,7 +552,8 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Institution</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt"  id="information_institution_checkbox">
+                      <label class="switch switch-label switch-outline-primary-alt"
+                             id="information_institution_checkbox">
                         <input type="checkbox" class="switch-input" name="information_institution"
                                [(ngModel)]="application_dissemination.information_institution"
 
@@ -562,7 +566,7 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label" >Workgroup</label>
+                    <label class="col-md-4 form-control-label">Workgroup</label>
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt" id="information_workgroup_checkbox">
                         <input type="checkbox" class="switch-input" name="information_workgroup"
@@ -577,9 +581,10 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label" >Project Affiliation</label>
+                    <label class="col-md-4 form-control-label">Project Affiliation</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt" id="information_project_affiliation_checkbox">
+                      <label class="switch switch-label switch-outline-primary-alt"
+                             id="information_project_affiliation_checkbox">
                         <input type="checkbox" class="switch-input" name="information_project_affiliation"
                                [(ngModel)]="application_dissemination.information_project_affiliation"
 
@@ -605,7 +610,7 @@
                       <label class="switch switch-label switch-outline-primary-alt" id="platform_newsletter_checkbox">
                         <input type="checkbox" class="switch-input" name="platform_newsletter"
                                [(ngModel)]="application_dissemination.platform_newsletter"
-                             >
+                        >
 
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
@@ -716,7 +721,8 @@
                   He will get an email with further information how to verify the application.</p></div>
             </div>
             <div *ngIf="project_application_pi_approved" class="form-group row">
-              <label class="col-md-4 form-control-label" for="project_application_responsibility" id="project_application_responsibility_checkbox">
+              <label class="col-md-4 form-control-label" for="project_application_responsibility"
+                     id="project_application_responsibility_checkbox">
                 <strong>Confirmation of Responsibility*</strong>
               </label>
               <div class="col-md-8"
@@ -753,8 +759,10 @@
               cloud
               usage policy.</p>
           </div>
-          <button id="submit_btn"  type="button" (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
-                  class="btn btn-sm btn-success" [disabled]="f.invalid">
+          <button id="submit_btn" type="button"
+                  (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
+
+            class="btn btn-sm btn-success" [disabled]="f.invalid">
             <i class="fa fa-dot-circle-o"></i>
             Submit Application
           </button>
@@ -782,6 +790,7 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
+
           {{ notificationModalMessage }}
 
         </div>
@@ -830,8 +839,9 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="acknowledge_approve_btn"  type="button" (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
-                class="btn  btn-success" name="_save" form="application_form">
+        <button id="acknowledge_approve_btn" type="button"
+                (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
+          class="btn btn-success" name="_save" form="application_form">
           Accept
         </button>
 
