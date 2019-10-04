@@ -1,20 +1,20 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
-const ***REMOVED***SpecReporter***REMOVED*** = require('jasmine-spec-reporter');
+const {SpecReporter} = require('jasmine-spec-reporter');
 const fs = require('fs');
 let rawdata = fs.readFileSync('e2e/environment.json');
 let credentials = JSON.parse(rawdata);
 
-exports.config = ***REMOVED***
+exports.config = {
     seleniumAddress: 'http://localhost:4444/wd/hub',
-    params: ***REMOVED***
+    params: {
         timeout: credentials['timeout'],
         portal: credentials['portal'],
         angular: credentials['angular'],
         width: credentials["browser_w"],
         height: credentials["browser_h"],
-        login: ***REMOVED***
+        login: {
             email_user: credentials['email_user'],
             password_user: credentials['password_user'],
             email_fm: credentials['email_fm'],
@@ -24,18 +24,17 @@ exports.config = ***REMOVED***
             auth_user: credentials['auth_user'],
             auth_fm: credentials['auth_fm'],
             auth_vo: credentials['auth_vo']
-        ***REMOVED***
-    ***REMOVED***,
+        }
+    },
     allScriptsTimeout: 11000,
     specs: [
          /*'tests/login_test.ts',
         'tests/simple_vm_application_test.ts',
-        'tests/simple_vm_approval_test.ts',*/
-
+        'tests/simple_vm_approval_test.ts',
         'tests/member_test.ts',
-        /*
-        'tests_ts/simple_vm_modification_test.ts',
-        'tests_ts/simple_vm_application_modification_approval.ts',
+
+        'tests/simple_vm_modification_test.ts',*/
+        'tests/simple_vm_application_modification_approval.ts',  /*
         'tests_ts/cloud_application_test.ts',
         'tests_ts/cloud_application_approval_test.ts',
         'tests_ts/cloud_application_modification_test.ts',
@@ -43,27 +42,27 @@ exports.config = ***REMOVED***
        */
         'tests_ts/virtual_machine_tests.ts'
     ],
-    capabilities: ***REMOVED***
+    capabilities: {
         'browserName': 'chrome',
-        chromeOptions: ***REMOVED***
+        chromeOptions: {
             args: ["--incognito"]
-        ***REMOVED***
-    ***REMOVED***,
+        }
+    },
     directConnect: true,
     framework: 'jasmine',
-    jasmineNodeOpts: ***REMOVED***
+    jasmineNodeOpts: {
         showColors: true,
         defaultTimeoutInterval: 900000,
-        print: function () ***REMOVED***
-        ***REMOVED***
-    ***REMOVED***,
-    beforeLaunch: function () ***REMOVED***
-        require('ts-node').register(***REMOVED***
+        print: function () {
+        }
+    },
+    beforeLaunch: function () {
+        require('ts-node').register({
             project: 'e2e/tsconfig.e2e.json'
-        ***REMOVED***);
-    ***REMOVED***,
-    onPrepare() ***REMOVED***
-        jasmine.getEnv().addReporter(new SpecReporter(***REMOVED***spec: ***REMOVED***displayStacktrace: true***REMOVED******REMOVED***));
+        });
+    },
+    onPrepare() {
+        jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: true}}));
         browser.manage().window().setSize(parseInt(credentials["browser_w"]), parseInt(credentials["browser_h"]));
-    ***REMOVED***
-***REMOVED***;
+    }
+};

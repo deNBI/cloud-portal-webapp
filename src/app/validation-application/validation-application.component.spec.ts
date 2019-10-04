@@ -1,25 +1,25 @@
-import ***REMOVED*** async, ComponentFixture, TestBed ***REMOVED*** from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import ***REMOVED*** ValidationApplicationComponent ***REMOVED*** from './validation-application.component';
+import { ValidationApplicationComponent } from './validation-application.component';
 
-describe('ValidationApplicationComponent', () => ***REMOVED***
+describe('ValidationApplicationComponent', () => {
   let component: ValidationApplicationComponent;
   let fixture: ComponentFixture<ValidationApplicationComponent>;
 
-  beforeEach(async(() => ***REMOVED***
-    TestBed.configureTestingModule(***REMOVED***
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
       declarations: [ ValidationApplicationComponent ]
-    ***REMOVED***)
+    })
     .compileComponents();
-  ***REMOVED***));
+  }));
 
-  beforeEach(() => ***REMOVED***
+  beforeEach(() => {
     fixture = TestBed.createComponent(ValidationApplicationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  ***REMOVED***);
+  });
 
-  it('should create', () => ***REMOVED***
+  it('should create', () => {
     expect(component).toBeTruthy();
-  ***REMOVED***);
-***REMOVED***);
+  });
+});

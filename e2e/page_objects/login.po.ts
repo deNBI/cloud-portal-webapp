@@ -1,10 +1,10 @@
-import ***REMOVED***browser, by, element***REMOVED*** from 'protractor';
-import ***REMOVED***Util***REMOVED*** from '../util';
+import {browser, by, element} from 'protractor';
+import {Util} from '../util';
 
-export class LoginPage ***REMOVED***
+export class LoginPage {
     private static timeout: number = browser.params.timeout;
 
-    static async login(email: string, psw: string, auth: string, relog: boolean = false): Promise<any> ***REMOVED***
+    static async login(email: string, psw: string, auth: string, relog: boolean = false): Promise<any> {
 
         await browser.driver.get(browser.params.portal);
 
@@ -12,23 +12,23 @@ export class LoginPage ***REMOVED***
 
         const current_url = await browser.driver.getCurrentUrl();
         console.log(current_url);
-        if (relog && current_url.includes('userinfo')) ***REMOVED***
+        if (relog && current_url.includes('userinfo')) {
             console.log('Need to relog');
             await this.logOut();
             await browser.waitForAngularEnabled(false);
             await LoginPage.login(email, psw, auth)
-        ***REMOVED*** else if (auth === 'google') ***REMOVED***
+        } else if (auth === 'google') {
             console.log('Login with Google');
             await this.useGoogle(email, psw);
-        ***REMOVED*** else ***REMOVED***
+        } else {
             console.log('Login with University of Bielefeld');
             await this.useUni(email, psw);
-        ***REMOVED***
+        }
         console.log('Checking login success.');
         await Util.waitForPage('userinfo');
-    ***REMOVED***
+    }
 
-    static async useGoogle(email: string, psw: string): Promise<any> ***REMOVED***
+    static async useGoogle(email: string, psw: string): Promise<any> {
         await element(by.className('metalist list-group')).click();
         // Input Email
         await Util.waitForPage('accounts.google.com/signin/oauth/');
@@ -42,9 +42,9 @@ export class LoginPage ***REMOVED***
         await Util.clickElementById('passwordNext');
         await Util.waitForPage('userinfo');
 
-    ***REMOVED***
+    }
 
-    static async useUni(email: string, psw: string): Promise<any> ***REMOVED***
+    static async useUni(email: string, psw: string): Promise<any> {
         await Util.waitForPresenceOfElementById('query');
         await Util.sendTextToElementById('query', 'Bielefeld');
         await element(by.linkText('University of Bielefeld')).click();
@@ -55,12 +55,12 @@ export class LoginPage ***REMOVED***
         await Util.waitForPage('execution=e1s2');
         await Util.clickElementByName('_eventId_proceed');
         await Util.waitForPage('userinfo');
-    ***REMOVED***
+    }
 
-    static async logOut(): Promise<any> ***REMOVED***
+    static async logOut(): Promise<any> {
         console.log('Restarting browser');
         await browser.restart();
         await browser.waitForAngularEnabled(false);
         await browser.manage().window().setSize(browser.params.width, browser.params.height);
-    ***REMOVED***
-***REMOVED***
+    }
+}

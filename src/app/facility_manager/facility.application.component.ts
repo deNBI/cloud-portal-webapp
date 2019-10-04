@@ -1,29 +1,29 @@
-import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***FacilityService***REMOVED*** from '../api-connector/facility.service';
-import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
-import ***REMOVED***GroupService***REMOVED*** from '../api-connector/group.service';
-import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service';
-import ***REMOVED***Application***REMOVED*** from '../applications/application.model/application.model';
-import ***REMOVED***ApplicationStatusService***REMOVED*** from '../api-connector/application-status.service';
-import ***REMOVED***ApplicationsService***REMOVED*** from '../api-connector/applications.service';
-import ***REMOVED***ApplicationBaseClass***REMOVED*** from '../shared/shared_modules/baseClass/application-base-class';
+import {Component, OnInit} from '@angular/core';
+import {FacilityService} from '../api-connector/facility.service';
+import {UserService} from '../api-connector/user.service';
+import {GroupService} from '../api-connector/group.service';
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {Application} from '../applications/application.model/application.model';
+import {ApplicationStatusService} from '../api-connector/application-status.service';
+import {ApplicationsService} from '../api-connector/applications.service';
+import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
 
 /**
  * Application component
  */
-@Component(***REMOVED***
+@Component({
              selector: 'app-facility.application',
              templateUrl: 'facility.application.component.html',
              styleUrls: ['facility.application.component.scss'],
              providers: [FacilityService, UserService, GroupService, ApplicationStatusService,
                ApplicationsService, ApiSettings]
 
-           ***REMOVED***)
-export class FacilityApplicationComponent extends ApplicationBaseClass implements OnInit ***REMOVED***
+           })
+export class FacilityApplicationComponent extends ApplicationBaseClass implements OnInit {
 
   /**
    * All Applications waiting for confirmation for the selected facility.
-   * @type ***REMOVED***Array***REMOVED***
+   * @type {Array}
    */
   all_applications_wfc: Application[] = [];
 
@@ -38,7 +38,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClass implement
 
   /**
    * List of all application modifications.
-   * @type ***REMOVED***Array***REMOVED***
+   * @type {Array}
    */
   all_application_modifications: Application [] = [];
 
@@ -46,156 +46,156 @@ export class FacilityApplicationComponent extends ApplicationBaseClass implement
 
   constructor(userservice: UserService,
               applicationstatusservice: ApplicationStatusService,
-              facilityService: FacilityService, applicationsservice: ApplicationsService) ***REMOVED***
+              facilityService: FacilityService, applicationsservice: ApplicationsService) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
 
-  ***REMOVED***
+  }
 
   /**
    * Approve an application extension.
-   * @param ***REMOVED***Application***REMOVED*** app the application
-   * @returns ***REMOVED***void***REMOVED***
+   * @param {Application} app the application
+   * @returns {void}
    */
-  public approveExtension(app: Application): void ***REMOVED***
+  public approveExtension(app: Application): void {
 
-    this.applicationsservice.approveRenewal(app.Id).subscribe(result => ***REMOVED***
-      if (result['Error']) ***REMOVED***
+    this.applicationsservice.approveRenewal(app.Id).subscribe(result => {
+      if (result['Error']) {
         this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
-      ***REMOVED*** else ***REMOVED***
+      } else {
         this.updateNotificationModal('Success', 'Successfully approved the application modification.', true, 'success');
         this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
         this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
-      ***REMOVED***
-    ***REMOVED***)
-  ***REMOVED***
+      }
+    })
+  }
 
   /**
    * Get all application modification requests.
-   * @param ***REMOVED***number***REMOVED*** facility id of the facility
+   * @param {number} facility id of the facility
    */
-  getAllApplicationsModifications(facility: number): void ***REMOVED***
+  getAllApplicationsModifications(facility: number): void {
     this.isLoaded = false;
-    this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility).subscribe(res => ***REMOVED***
-      if (Object.keys(res).length === 0) ***REMOVED***
+    this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility).subscribe(res => {
+      if (Object.keys(res).length === 0) {
         this.isLoaded = true;
-      ***REMOVED***
+      }
 
       const newApps: Application [] = this.setNewApplications(res);
       this.all_application_modifications.push.apply(this.all_application_modifications, newApps);
       this.isLoaded = true;
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Get all application ( with all stati) for a facility.
-   * @param ***REMOVED***number***REMOVED*** facility id of the facility
+   * @param {number} facility id of the facility
    */
-  getAllApplicationsHistory(facility: number): void ***REMOVED***
+  getAllApplicationsHistory(facility: number): void {
     this.isLoaded = false;
     this.applications_history = [];
 
     // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsHistory(facility).subscribe(res => ***REMOVED***
-      if (Object.keys(res).length === 0) ***REMOVED***
+    this.facilityService.getFacilityApplicationsHistory(facility).subscribe(res => {
+      if (Object.keys(res).length === 0) {
         this.isLoaded = true;
-      ***REMOVED***
+      }
       const newApps: Application [] = this.setNewApplications(res);
       this.applications_history.push.apply(this.applications_history, newApps);
       this.isLoaded = true;
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
   /**
    * Gets all applications for the facility.
-   * @param ***REMOVED***number***REMOVED*** facility
+   * @param {number} facility
    */
-  getAllApplicationsWFC(facility: number): void ***REMOVED***
+  getAllApplicationsWFC(facility: number): void {
 
     // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe(res => ***REMOVED***
-      if (Object.keys(res).length === 0) ***REMOVED***
+    this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe(res => {
+      if (Object.keys(res).length === 0) {
         this.isLoaded = true;
-      ***REMOVED***
+      }
       const newApps: Application [] = this.setNewApplications(res);
       this.all_applications_wfc.push.apply(this.all_applications_wfc, newApps);
 
-    ***REMOVED***);
+    });
     this.isLoaded = true;
-  ***REMOVED***
+  }
 
   /**
    * Approves an  application.
-   * @param ***REMOVED***number***REMOVED*** application_id
+   * @param {number} application_id
    */
-  approveApplication(application_id: number): void ***REMOVED***
+  approveApplication(application_id: number): void {
 
     this.updateNotificationModal('Approving Application', 'Waiting..', true, 'info');
     this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'], application_id).subscribe(
-      () => ***REMOVED***
+      () => {
         this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
 
         this.all_applications_wfc = [];
         this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
         this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
-      ***REMOVED***,
-      () => ***REMOVED***
+      },
+      () => {
         this.updateNotificationModal('Failed', 'Failed to approve the application.', true, 'danger');
 
-      ***REMOVED***)
-  ***REMOVED***
+      })
+  }
 
   /**
    * Decline an extension request.
-   * @param ***REMOVED***number***REMOVED*** application_id
+   * @param {number} application_id
    */
-  public declineExtension(app: Application): void ***REMOVED***
+  public declineExtension(app: Application): void {
     const modificaton_requested: number = 4;
-    this.applicationstatusservice.setApplicationStatus(app.Id, modificaton_requested).subscribe(() => ***REMOVED***
+    this.applicationstatusservice.setApplicationStatus(app.Id, modificaton_requested).subscribe(() => {
       this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
       this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
   /**
    * Declines an Application.
-   * @param ***REMOVED***number***REMOVED*** application_id
+   * @param {number} application_id
    */
-  declineApplication(application_id: number): void ***REMOVED***
+  declineApplication(application_id: number): void {
     this.updateNotificationModal('Decline Application', 'Waiting..', true, 'info');
 
     this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'], application_id).subscribe(
-      () => ***REMOVED***
+      () => {
         this.updateNotificationModal('Success', 'Successfully declined the application.', true, 'success');
 
         this.all_applications_wfc = [];
         this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
-      ***REMOVED***,
-      () => ***REMOVED***
+      },
+      () => {
         this.updateNotificationModal('Failed', 'Failed to decline the application.', true, 'danger');
 
-      ***REMOVED***)
-  ***REMOVED***
+      })
+  }
 
   /**
    * If the selected facility changes, reload the applicatins.
    * @param value
    */
-  onChangeSelectedFacility(): void ***REMOVED***
+  onChangeSelectedFacility(): void {
     this.all_applications_wfc = [];
     this.all_application_modifications = [];
     this.applications_history = [];
     this.getAllApplicationsWFC(this.selectedFacility['FacilityId']);
     this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
     this.getAllApplicationsModifications(this.selectedFacility['FacilityId']);
-  ***REMOVED***
+  }
 
-  ngOnInit(): void ***REMOVED***
-    this.facilityService.getManagerFacilities().subscribe(result => ***REMOVED***
+  ngOnInit(): void {
+    this.facilityService.getManagerFacilities().subscribe(result => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
       this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe();
@@ -204,7 +204,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClass implement
       this.getAllApplicationsModifications(this.selectedFacility ['FacilityId']);
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-***REMOVED***
+}

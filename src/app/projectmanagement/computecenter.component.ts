@@ -1,50 +1,50 @@
 /**
  * ComputeCenter component.
  */
-export class ComputecenterComponent ***REMOVED***
+export class ComputecenterComponent {
 
     private _FacilityId: string;
     private _Name: string;
     private _Login: string;
     private _Support: string;
 
-    constructor(FacilityId: string, Name: string, Login: string, Support: string) ***REMOVED***
+    constructor(FacilityId: string, Name: string, Login: string, Support: string) {
         this._FacilityId = FacilityId;
         this._Name = Name;
         this._Login = Login;
         this._Support = Support
 
-    ***REMOVED***
+    }
 
-    get FacilityId(): string ***REMOVED***
+    get FacilityId(): string {
         return this._FacilityId
-    ***REMOVED***
+    }
 
-    set FacilityId(value: string) ***REMOVED***
+    set FacilityId(value: string) {
         this._FacilityId = value;
-    ***REMOVED***
+    }
 
-    get Name(): string ***REMOVED***
+    get Name(): string {
         return this._Name
-    ***REMOVED***
+    }
 
-    set Name(value: string) ***REMOVED***
+    set Name(value: string) {
         this._Name = value;
-    ***REMOVED***
+    }
 
-    get Login(): string ***REMOVED***
+    get Login(): string {
         return this._Login
-    ***REMOVED***
+    }
 
-    set Login(value: string) ***REMOVED***
+    set Login(value: string) {
         this._Login = value;
-    ***REMOVED***
+    }
 
-    get Support(): string ***REMOVED***
+    get Support(): string {
         return this._Support;
-    ***REMOVED***
+    }
 
-    set Support(value: string) ***REMOVED***
+    set Support(value: string) {
         this._Support = value;
-    ***REMOVED***
-***REMOVED***
+    }
+}

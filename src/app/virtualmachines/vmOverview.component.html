@@ -34,7 +34,7 @@
                                                                    class="form-control " name="selectedFacility">
     <option *ngFor="  let facility of managerFacilities"
             [ngValue]="facility">
-      ***REMOVED******REMOVED***facility['Facility']***REMOVED******REMOVED***
+      {{facility['Facility']}}
     </option>
 
   </select></div>
@@ -75,7 +75,7 @@
                    (change)="changeFilterStatus(vm_statuses[vm_statuses.ACTIVE]);applyFilter();"
                    checked/>
             <span style="margin-left: 5px"
-                  class="badge badge-success">***REMOVED******REMOVED***vm_statuses[vm_statuses.ACTIVE]***REMOVED******REMOVED***  </span>
+                  class="badge badge-success">{{vm_statuses[vm_statuses.ACTIVE]}}  </span>
 
           </label>
         </div>
@@ -85,7 +85,7 @@
                    (change)="changeFilterStatus(vm_statuses[vm_statuses.SHUTOFF]);applyFilter();"
                    checked/>
             <span style="margin-left: 5px"
-                  class="badge badge-warning">***REMOVED******REMOVED***vm_statuses[vm_statuses.SHUTOFF]***REMOVED******REMOVED***</span>
+                  class="badge badge-warning">{{vm_statuses[vm_statuses.SHUTOFF]}}</span>
           </label>
         </div>
         <div class="checkbox">
@@ -94,7 +94,7 @@
                    (change)="changeFilterStatus(vm_statuses[vm_statuses.DELETED]);applyFilter();"
             id="checkbox_deleted"/>
             <span style="margin-left: 5px"
-                  class="badge badge-danger">***REMOVED******REMOVED***vm_statuses[vm_statuses.DELETED]***REMOVED******REMOVED***</span>
+                  class="badge badge-danger">{{vm_statuses[vm_statuses.DELETED]}}</span>
           </label>
         </div>
       </td>
@@ -127,19 +127,19 @@
               <table class="table-bordered">
                 <tr>
                   <td>ID</td>
-                  <td>***REMOVED******REMOVED***vm?.openstackid***REMOVED******REMOVED***</td>
+                  <td>{{vm?.openstackid}}</td>
                 </tr>
               </table>
             </popover-content>
 
-            <strong style="color: #005AA9;">***REMOVED******REMOVED***vm?.name***REMOVED******REMOVED***            </strong>
+            <strong style="color: #005AA9;">{{vm?.name}}            </strong>
 
 
           </td>
 
 
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-            ***REMOVED******REMOVED***vm.project***REMOVED******REMOVED***
+            {{vm.project}}
           </td>
           <td [popover]="flavorPopover">
             <popover-content #flavorPopover
@@ -153,60 +153,60 @@
                 <div class="col">
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="***REMOVED******REMOVED***RAM_ICON_PATH***REMOVED******REMOVED***" alt="">
+                      <img src="{{RAM_ICON_PATH}}" alt="">
                     </figure>
-                    ***REMOVED******REMOVED***vm?.flavor?.ram***REMOVED******REMOVED*** GB Ram
+                    {{vm?.flavor?.ram}} GB Ram
                   </div>
                 </div>
                 <div class="col"
                 >
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="***REMOVED******REMOVED***CPU_ICON_PATH***REMOVED******REMOVED***" alt="">
+                      <img src="{{CPU_ICON_PATH}}" alt="">
                     </figure>
-                    ***REMOVED******REMOVED***vm?.flavor?.vcpus***REMOVED******REMOVED*** Cores
+                    {{vm?.flavor?.vcpus}} Cores
                   </div>
                 </div>
                 <div class="col"
                 >
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="***REMOVED******REMOVED***STORAGE_ICON_PATH***REMOVED******REMOVED***" alt="">
+                      <img src="{{STORAGE_ICON_PATH}}" alt="">
                     </figure>
-                    ***REMOVED******REMOVED*** vm?.flavor?.rootdisk***REMOVED******REMOVED*** GB root disk
+                    {{ vm?.flavor?.rootdisk}} GB root disk
                   </div>
                 </div>
                 <div class="col" *ngIf="vm?.flavor?.gpu  > 0">
                   <div class="row">
                     <figure class="flavor-card-icons">
-                      <img src="***REMOVED******REMOVED***GPU_ICON_PATH***REMOVED******REMOVED***" alt="">
+                      <img src="{{GPU_ICON_PATH}}" alt="">
                     </figure>
-                    ***REMOVED******REMOVED***vm?.flavor?.gpu***REMOVED******REMOVED*** <span *ngIf="vm?.flavor?.gpu == 1"> GPU</span><span *ngIf="vm?.flavor?.gpu > 1"> GPUs</span>
+                    {{vm?.flavor?.gpu}} <span *ngIf="vm?.flavor?.gpu == 1"> GPU</span><span *ngIf="vm?.flavor?.gpu > 1"> GPUs</span>
                   </div>
                 </div>
               </div>
             </popover-content>
 
-            <strong style="color: #005AA9;">***REMOVED******REMOVED***vm?.flavor?.name***REMOVED******REMOVED***</strong>
+            <strong style="color: #005AA9;">{{vm?.flavor?.name}}</strong>
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
                          <span *ngIf="vm.status == vm_statuses[vm_statuses.DELETED]"
                                style="margin-left: 5px"
                                class="badge badge-danger"
-                               id="delete_badge"> ***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</span>
+                               id="delete_badge"> {{vm.status}}</span>
             <span *ngIf="vm.status == vm_statuses[vm_statuses.ACTIVE]"
                   style="margin-left: 5px"
                   class="badge badge-success"
-                  id="active_badge"> ***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</span>
+                  id="active_badge"> {{vm.status}}</span>
             <span *ngIf="vm.status == vm_statuses[vm_statuses.SHUTOFF]"
                   style="margin-left: 5px"
                   class="badge badge-warning"
-                  id="shutoff_badge"> ***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</span>
+                  id="shutoff_badge"> {{vm.status}}</span>
             <span class="badge badge-info"
-                  *ngIf="vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.SHUTOFF]">***REMOVED******REMOVED***vm.status***REMOVED******REMOVED***</span>
+                  *ngIf="vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.SHUTOFF]">{{vm.status}}</span>
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-            ***REMOVED******REMOVED***vm.created_at***REMOVED******REMOVED***
+            {{vm.created_at}}
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
             <button type="button" class="btn btn-info btn-block"
@@ -217,10 +217,10 @@
           </td>
           <td
             style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
-            ***REMOVED******REMOVED***vm.elixir_id***REMOVED******REMOVED***
+            {{vm.elixir_id}}
           </td>
           <td>
-            ***REMOVED******REMOVED***vm.stopped_at***REMOVED******REMOVED***
+            {{vm.stopped_at}}
           </td>
 
           <td>
@@ -327,16 +327,16 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-info" role="alert" *ngIf="status_changed == 0 &&  selectedVm?.status != 'SHUTOFF'">
-          Stopping ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
+          Stopping {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
         </div>
         <div class="alert alert-success" role="alert" *ngIf="status_changed == 1 || selectedVm?.status == 'SHUTOFF'"
         id="stop_success_div">
-          ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED*** was successfully stopped.
+          {{selectedVm?.name}} was successfully stopped.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When stopping ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED*** an error occurred.
+        When stopping {{selectedVm?.name}} an error occurred.
       </div>
 
 
@@ -357,8 +357,8 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title"><strong>***REMOVED******REMOVED***reboot_type***REMOVED******REMOVED***</strong> reboot
-          ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED*** </h4>
+        <h4 class="modal-title"><strong>{{reboot_type}}</strong> reboot
+          {{selectedVm?.name}} </h4>
 
         <button type="button" class="close" style="cursor:pointer"
                 (click)="rebootModal.hide()"
@@ -370,7 +370,7 @@
         <div class="alert alert-warning" role="alert">
 
           Restarted instances will lose any data not saved in persistent storage.
-          Are you sure to <strong>***REMOVED******REMOVED***reboot_type***REMOVED******REMOVED***</strong> reboot ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED***?
+          Are you sure to <strong>{{reboot_type}}</strong> reboot {{selectedVm?.name}}?
         </div>
       </div>
       <div class="modal-footer">
@@ -394,8 +394,8 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title"><strong>***REMOVED******REMOVED***reboot_type***REMOVED******REMOVED***</strong> reboot
-          ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED*** </h4>
+        <h4 class="modal-title"><strong>{{reboot_type}}</strong> reboot
+          {{selectedVm?.name}} </h4>
 
         <button type="button" class="close" style="cursor:pointer"
                 (click)="rebootResultModal.hide()"
@@ -413,13 +413,13 @@
         <div *ngIf="reboot_done">
           <div class="alert alert-success" role="alert">
 
-            Successfully ***REMOVED******REMOVED***reboot_type***REMOVED******REMOVED*** rebooted ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED***.
+            Successfully {{reboot_type}} rebooted {{selectedVm?.name}}.
           </div>
         </div>
         <div *ngIf="status_check_error">
           <div class="alert alert-warning" role="alert">
 
-            An error occurred when checking the status of ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED***.
+            An error occurred when checking the status of {{selectedVm?.name}}.
           </div>
         </div>
       </div>
@@ -453,16 +453,16 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-info" role="alert" *ngIf="status_changed == 0  && selectedVm?.status !== 'ACTIVE'">
-          Starting ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
+          Starting {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
         </div>
         <div class="alert alert-success" role="alert" *ngIf="status_changed == 1  || selectedVm?.status == 'ACTIVE'"
         id="resume_success_div">
-          ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED*** was successfully started.
+          {{selectedVm?.name}} was successfully started.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When starting ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED*** an error occurred.
+        When starting {{selectedVm?.name}} an error occurred.
       </div>
 
 
@@ -494,16 +494,16 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-          Deleting ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
+          Deleting {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
         </div>
         <div class="alert alert-success" role="alert" *ngIf="status_changed == 1"
         id="delete_success_div">
-          ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED*** was succesfully deleted.
+          {{selectedVm?.name}} was succesfully deleted.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When deleting ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED*** an error occured.
+        When deleting {{selectedVm?.name}} an error occured.
       </div>
 
 
@@ -535,7 +535,7 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-warning" role="alert">
-          Are you sure you want to delete ***REMOVED******REMOVED***selectedVm?.name***REMOVED******REMOVED***?
+          Are you sure you want to delete {{selectedVm?.name}}?
         </div>
 
       </div>
@@ -639,7 +639,7 @@
              *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
           An error occured when creating the snapshot.
 
-          <pre>***REMOVED******REMOVED***snapshotDone***REMOVED******REMOVED***</pre>
+          <pre>{{snapshotDone}}</pre>
         </div>
 
 

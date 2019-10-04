@@ -1,60 +1,60 @@
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***RouterModule, Routes***REMOVED*** from '@angular/router';
-import ***REMOVED***VirtualMachineComponent***REMOVED*** from '../virtualmachines/addvm.component';
-import ***REMOVED***ClientOverviewComponent***REMOVED*** from './clients/clientOverview.component';
-import ***REMOVED***VmOverviewComponent***REMOVED*** from '../virtualmachines/vmOverview.component';
-import ***REMOVED***VolumeOverviewComponent***REMOVED*** from './volumes/volumeOverview.component';
-import ***REMOVED***SnapshotOverviewComponent***REMOVED*** from './snapshots/snapshotOverview.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {VirtualMachineComponent} from '../virtualmachines/addvm.component';
+import {ClientOverviewComponent} from './clients/clientOverview.component';
+import {VmOverviewComponent} from '../virtualmachines/vmOverview.component';
+import {VolumeOverviewComponent} from './volumes/volumeOverview.component';
+import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component';
 
 const routes: Routes = [
-    ***REMOVED***
+    {
         path: 'newVM',
         component: VirtualMachineComponent,
-        data: ***REMOVED***
+        data: {
             title: 'New Instance'
-        ***REMOVED***
+        }
 
-    ***REMOVED***,
-    ***REMOVED***
+    },
+    {
         path: 'clientOverview',
         component: ClientOverviewComponent,
-        data: ***REMOVED***
+        data: {
             title: 'Client Overview'
-        ***REMOVED***
+        }
 
-    ***REMOVED***,
-    ***REMOVED***
+    },
+    {
         path: 'vmOverview',
         component: VmOverviewComponent,
-        data: ***REMOVED***
+        data: {
             title: 'VM Overview'
-        ***REMOVED***
+        }
 
-    ***REMOVED***,
-    ***REMOVED***
+    },
+    {
         path: 'volumeOverview',
         component: VolumeOverviewComponent,
-        data: ***REMOVED***
+        data: {
             title: 'Volumes Overview'
-        ***REMOVED***
+        }
 
-    ***REMOVED***,
-    ***REMOVED***
+    },
+    {
         path: 'snapshotOverview',
         component: SnapshotOverviewComponent,
-        data: ***REMOVED***
+        data: {
             title: 'Snapshots Overview'
-        ***REMOVED***
+        }
 
-    ***REMOVED***
+    }
 ];
 
 /**
  * Vm routing module.
  */
-@NgModule(***REMOVED***
+@NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
-***REMOVED***)
-export class VmRoutingModule ***REMOVED***
-***REMOVED***
+})
+export class VmRoutingModule {
+}

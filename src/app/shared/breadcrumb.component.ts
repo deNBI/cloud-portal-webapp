@@ -1,47 +1,47 @@
-import ***REMOVED*** Component, OnInit ***REMOVED*** from '@angular/core';
-import ***REMOVED*** Router, ActivatedRoute, NavigationEnd ***REMOVED*** from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
-import ***REMOVED*** filter ***REMOVED*** from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
-@Component(***REMOVED***
+@Component({
     selector: 'app-breadcrumbs',
     template: `
   <ng-template ngFor let-breadcrumb [ngForOf]="breadcrumbs" let-last = last>
     <li class="breadcrumb-item"
         *ngIf="breadcrumb.label.title&&breadcrumb.url.substring(breadcrumb.url.length-1) == '/'||breadcrumb.label.title&&last"
-        [ngClass]="***REMOVED***active: last***REMOVED***">
-      <a *ngIf="!last" [routerLink]="breadcrumb.url">***REMOVED******REMOVED***breadcrumb.label.title***REMOVED******REMOVED***</a>
-      <span *ngIf="last" [routerLink]="breadcrumb.url">***REMOVED******REMOVED***breadcrumb.label.title***REMOVED******REMOVED***</span>
+        [ngClass]="{active: last}">
+      <a *ngIf="!last" [routerLink]="breadcrumb.url">{{breadcrumb.label.title}}</a>
+      <span *ngIf="last" [routerLink]="breadcrumb.url">{{breadcrumb.label.title}}</span>
     </li>
   </ng-template>`
-***REMOVED***)
-export class BreadcrumbsComponent implements OnInit ***REMOVED***
+})
+export class BreadcrumbsComponent implements OnInit {
     breadcrumbs: Object[];
 
-    constructor(private router: Router, private route: ActivatedRoute) ***REMOVED***
-    ***REMOVED***
+    constructor(private router: Router, private route: ActivatedRoute) {
+    }
 
-    ngOnInit(): void ***REMOVED***
+    ngOnInit(): void {
         this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-            .subscribe(event => ***REMOVED***
+            .subscribe(event => {
             this.breadcrumbs = [];
             let currentRoute = this.route.root,
                 url = '';
-            do ***REMOVED***
+            do {
                 const childrenRoutes = currentRoute.children;
                 currentRoute = null;
-                childrenRoutes.forEach(route => ***REMOVED***
-                    if (route.outlet === 'primary') ***REMOVED***
+                childrenRoutes.forEach(route => {
+                    if (route.outlet === 'primary') {
                         const routeSnapshot = route.snapshot;
                         url += '/' + routeSnapshot.url.map(segment => segment.path).join('/');
-                        this.breadcrumbs.push(***REMOVED***
+                        this.breadcrumbs.push({
                             label: route.snapshot.data,
                             url: url
-                        ***REMOVED***);
+                        });
                         currentRoute = route;
-                    ***REMOVED***
-                ***REMOVED***);
-            ***REMOVED*** while (currentRoute);
-        ***REMOVED***);
-    ***REMOVED***
-***REMOVED***
+                    }
+                });
+            } while (currentRoute);
+        });
+    }
+}

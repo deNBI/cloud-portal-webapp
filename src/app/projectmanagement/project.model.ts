@@ -1,14 +1,14 @@
-import ***REMOVED***ProjectMemberApplication***REMOVED*** from './project_member_application';
-import ***REMOVED***ComputecenterComponent***REMOVED*** from './computecenter.component';
+import {ProjectMemberApplication} from './project_member_application';
+import {ComputecenterComponent} from './computecenter.component';
 
-export class Project ***REMOVED***
-    get UserIsAdmin(): boolean ***REMOVED***
+export class Project {
+    get UserIsAdmin(): boolean {
         return this._UserIsAdmin;
-    ***REMOVED***
+    }
 
-    set UserIsAdmin(value: boolean) ***REMOVED***
+    set UserIsAdmin(value: boolean) {
         this._UserIsAdmin = value;
-    ***REMOVED***
+    }
 
     private _Id: number | string;
     private _Name: string;
@@ -29,7 +29,7 @@ export class Project ***REMOVED***
     private _LifetimeReached: number;
 
     constructor(Id: number | string, Name: string, Description: string, DateCreated: string, DaysRunning: number,
-                UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) ***REMOVED***
+                UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) {
         this._Id = Id;
         this._Name = Name;
         this._Description = Description;
@@ -39,142 +39,142 @@ export class Project ***REMOVED***
         this._UserIsPi = UserIsPi;
         this._ComputeCenter = ComputeCenter;
 
-    ***REMOVED***
+    }
 
 // todo exdend with additional information
 
 
 
 
-    get LifetimeReached(): number ***REMOVED***
+    get LifetimeReached(): number {
         return this._LifetimeReached
-    ***REMOVED***
+    }
 
-    set LifetimeReached(value: number) ***REMOVED***
+    set LifetimeReached(value: number) {
         this._LifetimeReached = value;
-    ***REMOVED***
+    }
 
-    get RealName(): string ***REMOVED***
+    get RealName(): string {
 
         return this._RealName
-    ***REMOVED***
+    }
 
-    set RealName(value: string) ***REMOVED***
+    set RealName(value: string) {
         this._RealName = value;
-    ***REMOVED***
+    }
 
-    get Status(): number ***REMOVED***
+    get Status(): number {
         return this._Status;
-    ***REMOVED***
+    }
 
-    set Status(value: number) ***REMOVED***
+    set Status(value: number) {
         this._Status = value;
 
-    ***REMOVED***
+    }
 
 
-    get ProjectMemberApplications(): ProjectMemberApplication[] ***REMOVED***
+    get ProjectMemberApplications(): ProjectMemberApplication[] {
         return this._ProjectMemberApplications;
-    ***REMOVED***
+    }
 
-    set ProjectMemberApplications(value: ProjectMemberApplication[]) ***REMOVED***
+    set ProjectMemberApplications(value: ProjectMemberApplication[]) {
         this._ProjectMemberApplications = value;
-    ***REMOVED***
+    }
 
-    get LifetimeDays(): number ***REMOVED***
+    get LifetimeDays(): number {
         return this._LifetimeDays
-    ***REMOVED***
+    }
 
-    set LifetimeDays(value: number) ***REMOVED***
+    set LifetimeDays(value: number) {
         this._LifetimeDays = value;
-    ***REMOVED***
+    }
 
-    get OpenStackProject(): boolean ***REMOVED***
+    get OpenStackProject(): boolean {
         return this._OpenStackProject
-    ***REMOVED***
+    }
 
-    set OpenStackProject(value: boolean) ***REMOVED***
+    set OpenStackProject(value: boolean) {
         this._OpenStackProject = value;
-    ***REMOVED***
+    }
 
-    set Lifetime(value: number | string) ***REMOVED***
+    set Lifetime(value: number | string) {
         this._Lifetime = value;
-    ***REMOVED***
+    }
 
-    get Lifetime(): number | string ***REMOVED***
+    get Lifetime(): number | string {
         return this._Lifetime;
-    ***REMOVED***
+    }
 
-    get ComputeCenter(): ComputecenterComponent ***REMOVED***
+    get ComputeCenter(): ComputecenterComponent {
         return this._ComputeCenter
-    ***REMOVED***
+    }
 
-    set ComputeCenter(value: ComputecenterComponent) ***REMOVED***
+    set ComputeCenter(value: ComputecenterComponent) {
         this._ComputeCenter = value;
-    ***REMOVED***
+    }
 
-    get PerunId(): number ***REMOVED***
+    get PerunId(): number {
         return this._PerunId;
-    ***REMOVED***
+    }
 
-    set PerunId(value: number) ***REMOVED***
+    set PerunId(value: number) {
         this._PerunId = value;
-    ***REMOVED***
+    }
 
-    set Id(value: number | string) ***REMOVED***
+    set Id(value: number | string) {
         this._Id = value;
-    ***REMOVED***
+    }
 
-    get Id(): number | string ***REMOVED***
+    get Id(): number | string {
         return this._Id;
-    ***REMOVED***
+    }
 
-    get Name(): string ***REMOVED***
+    get Name(): string {
         return this._Name;
-    ***REMOVED***
+    }
 
-    set Name(value: string) ***REMOVED***
+    set Name(value: string) {
         this._Name = value;
-    ***REMOVED***
+    }
 
-    get Description(): string ***REMOVED***
+    get Description(): string {
         return this._Description;
-    ***REMOVED***
+    }
 
-    set Description(value: string) ***REMOVED***
+    set Description(value: string) {
         this._Description = value;
-    ***REMOVED***
+    }
 
-    get DateCreated(): string ***REMOVED***
+    get DateCreated(): string {
         return this._DateCreated;
-    ***REMOVED***
+    }
 
-    set DateCreated(value: string) ***REMOVED***
+    set DateCreated(value: string) {
         this._DateCreated = value;
-    ***REMOVED***
+    }
 
-    get DateEnd(): string ***REMOVED***
+    get DateEnd(): string {
         return this._DateEnd;
-    ***REMOVED***
+    }
 
-    set DateEnd(value: string) ***REMOVED***
+    set DateEnd(value: string) {
         this._DateEnd = value;
-    ***REMOVED***
+    }
 
-    get DaysRunning(): number ***REMOVED***
+    get DaysRunning(): number {
         return this._DaysRunning;
-    ***REMOVED***
+    }
 
-    set DaysRunning(value: number) ***REMOVED***
+    set DaysRunning(value: number) {
         this._DaysRunning = value;
-    ***REMOVED***
+    }
 
-    get UserIsPi(): boolean ***REMOVED***
+    get UserIsPi(): boolean {
         return this._UserIsPi;
-    ***REMOVED***
+    }
 
-    set UserIsPi(value: boolean) ***REMOVED***
+    set UserIsPi(value: boolean) {
         this._UserIsPi = value;
-    ***REMOVED***
+    }
 
-***REMOVED***
+}

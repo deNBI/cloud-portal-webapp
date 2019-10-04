@@ -1,4 +1,4 @@
-.loader ***REMOVED***
+.loader {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -10,15 +10,15 @@
   height: 120px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
-***REMOVED***
+}
 
 /* Safari */
-@-webkit-keyframes spin ***REMOVED***
-  0% ***REMOVED*** -webkit-transform: rotate(0deg); ***REMOVED***
-  100% ***REMOVED*** -webkit-transform: rotate(360deg); ***REMOVED***
-***REMOVED***
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
 
-@keyframes spin ***REMOVED***
-  0% ***REMOVED*** transform: rotate(0deg); ***REMOVED***
-  100% ***REMOVED*** transform: rotate(360deg); ***REMOVED***
-***REMOVED***
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

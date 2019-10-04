@@ -1,9 +1,9 @@
-import ***REMOVED***FlavorType***REMOVED*** from './flavorType';
+import {FlavorType} from './flavorType';
 
 /**
  * Flavor Class.
  */
-export class Flavor ***REMOVED***
+export class Flavor {
     private _id: string;
     private _name: string;
     private _vcpus: number;
@@ -14,76 +14,76 @@ export class Flavor ***REMOVED***
     private _type: FlavorType;
     private _simple_vm: boolean;
 
-    get id(): string ***REMOVED***
+    get id(): string {
         return this._id;
-    ***REMOVED***
+    }
 
-    set id(value: string) ***REMOVED***
+    set id(value: string) {
         this._id = value;
-    ***REMOVED***
+    }
 
-    get name(): string ***REMOVED***
+    get name(): string {
         return this._name;
-    ***REMOVED***
+    }
 
-    set name(value: string) ***REMOVED***
+    set name(value: string) {
         this._name = value;
-    ***REMOVED***
+    }
 
-    get vcpus(): number ***REMOVED***
+    get vcpus(): number {
         return this._vcpus;
-    ***REMOVED***
+    }
 
-    set vcpus(value: number) ***REMOVED***
+    set vcpus(value: number) {
         this._vcpus = value;
-    ***REMOVED***
+    }
 
-    get ram(): number ***REMOVED***
+    get ram(): number {
         return this._ram;
-    ***REMOVED***
+    }
 
-    set ram(value: number) ***REMOVED***
+    set ram(value: number) {
         this._ram = value;
-    ***REMOVED***
+    }
 
-    get rootdisk(): number ***REMOVED***
+    get rootdisk(): number {
         return this._rootdisk;
-    ***REMOVED***
+    }
 
-    set rootdisk(value: number) ***REMOVED***
+    set rootdisk(value: number) {
         this._rootdisk = value;
-    ***REMOVED***
+    }
 
-    get gpu(): number ***REMOVED***
+    get gpu(): number {
         return this._gpu;
-    ***REMOVED***
+    }
 
-    set gpu(value: number) ***REMOVED***
+    set gpu(value: number) {
         this._gpu = value;
-    ***REMOVED***
+    }
 
-    get epheremal_disk(): number ***REMOVED***
+    get epheremal_disk(): number {
         return this._epheremal_disk;
-    ***REMOVED***
+    }
 
-    set epheremal_disk(value: number) ***REMOVED***
+    set epheremal_disk(value: number) {
         this._epheremal_disk = value;
-    ***REMOVED***
+    }
 
-    get type(): FlavorType ***REMOVED***
+    get type(): FlavorType {
         return this._type;
-    ***REMOVED***
+    }
 
-    set type(value: FlavorType) ***REMOVED***
+    set type(value: FlavorType) {
         this._type = value;
-    ***REMOVED***
+    }
 
-    get simple_vm(): boolean ***REMOVED***
+    get simple_vm(): boolean {
         return this._simple_vm;
-    ***REMOVED***
+    }
 
-    set simple_vm(value: boolean) ***REMOVED***
+    set simple_vm(value: boolean) {
         this._simple_vm = value;
-    ***REMOVED***
+    }
 
-***REMOVED***
+}

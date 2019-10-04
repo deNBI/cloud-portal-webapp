@@ -26,7 +26,7 @@
                                                                   class="form-control " name="selectedFacility">
     <option *ngFor="  let facility of managerFacilities"
             [ngValue]="facility">
-      ***REMOVED******REMOVED***facility['Facility']***REMOVED******REMOVED***
+      {{facility['Facility']}}
     </option>
 
   </select></div>
@@ -48,15 +48,15 @@
           </thead>
           <tbody id="volume_table_body">
           <tr *ngFor="let volume of volumes">
-            <td>***REMOVED******REMOVED***volume.volume_project***REMOVED******REMOVED***</td>
+            <td>{{volume.volume_project}}</td>
             <td *ngIf="volume.volume_virtualmachine"
-                id="cell_vm_id_***REMOVED******REMOVED***volume.volume_virtualmachine.name***REMOVED******REMOVED***">
-              ***REMOVED******REMOVED***volume.volume_virtualmachine.name***REMOVED******REMOVED***
+                id="cell_vm_id_{{volume.volume_virtualmachine.name}}">
+              {{volume.volume_virtualmachine.name}}
             </td>
             <td *ngIf="!volume.volume_virtualmachine"
             id="cell_vm_free_id"></td>
-            <td id="cell_name_id_***REMOVED******REMOVED***volume.volume_name***REMOVED******REMOVED***">***REMOVED******REMOVED***volume.volume_name***REMOVED******REMOVED***</td>
-            <td>***REMOVED******REMOVED***volume.volume_size ***REMOVED******REMOVED*** GB</td>
+            <td id="cell_name_id_{{volume.volume_name}}">{{volume.volume_name}}</td>
+            <td>{{volume.volume_size }} GB</td>
             <td>
               <div *ngIf="volume.volume_created_by_user || showFacilities" class="btn-group" dropdown>
                 <button class="btn btn-secondary"
@@ -89,7 +89,7 @@
 
             </td>
 
-            <!-- td>***REMOVED******REMOVED***volume.volume_client.host***REMOVED******REMOVED*** : ***REMOVED******REMOVED***volume.volume_client.port***REMOVED******REMOVED***</td-->
+            <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
 
           </tr>
 
@@ -138,18 +138,18 @@ id="result_modal">
                                 style="font-size:24px"></i>
         </div>
         <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.DETACHING_VOLUME">
-          Detaching ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
+          Detaching {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
                                                            style="font-size:24px"></i>
         </div>
 
         <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.ATTACHING">
-          Attaching Volume ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED*** to Virtualmachine
-          ***REMOVED******REMOVED***selected_vm.name***REMOVED******REMOVED***...
+          Attaching Volume {{selected_volume?.volume_name}} to Virtualmachine
+          {{selected_vm.name}}...
           <i class="fa fa-spinner fa-spin"
              style="font-size:24px"></i>
         </div>
         <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.WAITING">
-          Deleting ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED***... <i class="fa fa-spinner fa-spin"
+          Deleting {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
                                                           style="font-size:24px"></i>
         </div>
         <div id="successfully_created_attached_div"
@@ -165,15 +165,15 @@ id="result_modal">
         </div>
         <div class="alert alert-success" role="alert" *ngIf="volume_action_status == volumeActionStates.SUCCESS"
         id="successfully_deleted_div">
-          ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED*** was successfully deleted.
+          {{selected_volume?.volume_name}} was successfully deleted.
         </div>
         <div class="alert alert-success" role="alert"
              *ngIf="volume_action_status == volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME">
-          ***REMOVED******REMOVED***selected_volume?.volume_openstackid***REMOVED******REMOVED*** was successfully detached.
+          {{selected_volume?.volume_openstackid}} was successfully detached.
         </div>
         <div class="alert alert-success" role="alert"
              *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL">
-          ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED*** was successfully attached.
+          {{selected_volume?.volume_name}} was successfully attached.
         </div>
 
         <div
@@ -215,11 +215,11 @@ id="verify_modal">
       <div class="modal-body">
 
         <div *ngIf="request_status == volumeRequestStates.DELETE;" class="alert alert-warning" role="alert">
-          Are you sure you want to delete Volume ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED***?
+          Are you sure you want to delete Volume {{selected_volume?.volume_name}}?
         </div>
         <div *ngIf="request_status == volumeRequestStates.DETACH;" class="alert alert-warning" role="alert">
-          Are you sure you want to detach Volume ***REMOVED******REMOVED***selected_volume?.volume_name***REMOVED******REMOVED*** from
-          ***REMOVED******REMOVED***selected_volume?.volume_virtualmachine?.name***REMOVED******REMOVED***?
+          Are you sure you want to detach Volume {{selected_volume?.volume_name}} from
+          {{selected_volume?.volume_virtualmachine?.name}}?
         </div>
 
       </div>
@@ -262,7 +262,7 @@ id="verify_modal">
         <select class="form-control col-md-6" name="selected_vm"
                 [(ngModel)]="selected_vm">
           <option value="undefined" disabled selected hidden> Please Select</option>
-          <option *ngFor="let vm of project_vms" [ngValue]="vm"> ***REMOVED******REMOVED***vm.name***REMOVED******REMOVED***
+          <option *ngFor="let vm of project_vms" [ngValue]="vm"> {{vm.name}}
           </option>
 
         </select>
@@ -358,8 +358,8 @@ id="create_modal">
               <option value="undefined" disabled selected hidden> Please Select
               </option>
               <option *ngFor="let project of projects" [ngValue]="project"
-              id="project_option_***REMOVED******REMOVED***project[0]***REMOVED******REMOVED***">
-                ***REMOVED******REMOVED***project[0]***REMOVED******REMOVED***
+              id="project_option_{{project[0]}}">
+                {{project[0]}}
               </option>
 
             </select>
@@ -374,7 +374,7 @@ id="create_modal">
           <div class="col-md-6">
             <div class="col-md-6">
 
-              ***REMOVED******REMOVED***selectedProjectDiskspaceUsed***REMOVED******REMOVED*** / ***REMOVED******REMOVED***selectedProjectDiskspaceMax***REMOVED******REMOVED***
+              {{selectedProjectDiskspaceUsed}} / {{selectedProjectDiskspaceMax}}
               GB
             </div>
           </div>
@@ -385,7 +385,7 @@ id="create_modal">
 
           <div class="col-md-9">
             <div class="col-md-6">
-              <strong>***REMOVED******REMOVED***selectedProjectVolumesUsed***REMOVED******REMOVED*** / ***REMOVED******REMOVED***selectedProjectVolumesMax***REMOVED******REMOVED***
+              <strong>{{selectedProjectVolumesUsed}} / {{selectedProjectVolumesMax}}
               </strong>
             </div>
           </div>
@@ -417,7 +417,7 @@ id="create_modal">
               <option value="undefined" disabled selected hidden> Please Select
               </option>
               <option *ngFor="let vm of project_vms" [ngValue]="vm"
-              id="vm_option_***REMOVED******REMOVED***vm.name***REMOVED******REMOVED***"> ***REMOVED******REMOVED***vm.name***REMOVED******REMOVED***
+              id="vm_option_{{vm.name}}"> {{vm.name}}
               </option>
 
             </select></div>

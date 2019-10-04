@@ -1,14 +1,14 @@
-import ***REMOVED***Component***REMOVED*** from '@angular/core';
-import ***REMOVED***UserService***REMOVED*** from '../api-connector/user.service';
-import ***REMOVED***IResponseTemplate***REMOVED*** from '../api-connector/response-template';
+import {Component} from '@angular/core';
+import {UserService} from '../api-connector/user.service';
+import {IResponseTemplate} from '../api-connector/response-template';
 
-@Component(***REMOVED***
+@Component({
     templateUrl: './help.component.html',
     providers: [UserService]
 
-***REMOVED***)
+})
 
-export class HelpComponent ***REMOVED***
+export class HelpComponent {
 
     public emailSubject: string;
     public emailText: string;
@@ -16,29 +16,29 @@ export class HelpComponent ***REMOVED***
     public emailAdress: string;
     public emailReply: string = '';
 
-    constructor(private userService: UserService) ***REMOVED***
+    constructor(private userService: UserService) {
 
-    ***REMOVED***
+    }
 
-    sendEmail(subject: string, message: string, reply: string): void ***REMOVED***
+    sendEmail(subject: string, message: string, reply: string): void {
         this.userService.sendHelpMail(
             encodeURIComponent(subject), encodeURIComponent(message),
-            encodeURIComponent(reply)).subscribe((result: IResponseTemplate) => ***REMOVED***
-            if (<boolean><Boolean>result.value) ***REMOVED***
+            encodeURIComponent(reply)).subscribe((result: IResponseTemplate) => {
+            if (<boolean><Boolean>result.value) {
                 this.emailStatus = 1;
-            ***REMOVED*** else ***REMOVED***
+            } else {
                 this.emailStatus = 2;
-            ***REMOVED***
-        ***REMOVED***)
+            }
+        })
 
-    ***REMOVED***
+    }
 
-    resetEmail(): void ***REMOVED***
+    resetEmail(): void {
         this.emailStatus = 0;
         this.emailText = '';
         this.emailSubject = '';
         this.emailAdress = '';
         this.emailReply = '';
 
-    ***REMOVED***
-***REMOVED***
+    }
+}

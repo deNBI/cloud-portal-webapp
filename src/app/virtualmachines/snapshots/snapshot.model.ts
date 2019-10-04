@@ -1,9 +1,9 @@
-import ***REMOVED***Client***REMOVED*** from '../clients/client.model';
+import {Client} from '../clients/client.model';
 
 /**
  * Snapshot class.
  */
-export class SnapshotModel ***REMOVED***
+export class SnapshotModel {
 
     private _snapshot_openstackid: string;
     private _snapshot_client: Client;
@@ -13,51 +13,51 @@ export class SnapshotModel ***REMOVED***
     private _snapshot_project: string;
     private _snapshot_status: string;
 
-    get snapshot_openstackid(): string ***REMOVED***
+    get snapshot_openstackid(): string {
         return this._snapshot_openstackid;
-    ***REMOVED***
+    }
 
-    set snapshot_openstackid(value: string) ***REMOVED***
+    set snapshot_openstackid(value: string) {
         this._snapshot_openstackid = value;
-    ***REMOVED***
+    }
 
-    get snapshot_client(): Client ***REMOVED***
+    get snapshot_client(): Client {
         return this._snapshot_client;
-    ***REMOVED***
+    }
 
-    set snapshot_client(value: Client) ***REMOVED***
+    set snapshot_client(value: Client) {
         this._snapshot_client = value;
-    ***REMOVED***
+    }
 
-    get snapshot_name(): string ***REMOVED***
+    get snapshot_name(): string {
         return this._snapshot_name;
-    ***REMOVED***
+    }
 
-    set snapshot_name(value: string) ***REMOVED***
+    set snapshot_name(value: string) {
         this._snapshot_name = value;
-    ***REMOVED***
+    }
 
-    get snapshot_created(): boolean ***REMOVED***
+    get snapshot_created(): boolean {
         return this._snapshot_created;
-    ***REMOVED***
+    }
 
-    set snapshot_created(value: boolean) ***REMOVED***
+    set snapshot_created(value: boolean) {
         this._snapshot_created = value;
-    ***REMOVED***
+    }
 
-    get snapshot_project(): string ***REMOVED***
+    get snapshot_project(): string {
         return this._snapshot_project;
-    ***REMOVED***
+    }
 
-    set snapshot_project(value: string) ***REMOVED***
+    set snapshot_project(value: string) {
         this._snapshot_project = value;
-    ***REMOVED***
+    }
 
-    get snapshot_status(): string ***REMOVED***
+    get snapshot_status(): string {
         return this._snapshot_status;
-    ***REMOVED***
+    }
 
-    set snapshot_status(value: string) ***REMOVED***
+    set snapshot_status(value: string) {
         this._snapshot_status = value;
-    ***REMOVED***
-***REMOVED***
+    }
+}

@@ -1,38 +1,38 @@
 // spec.js
-import ***REMOVED***browser, by, element, protractor***REMOVED*** from 'protractor';
-import ***REMOVED***LoginPage***REMOVED*** from '../page_objects/login.po';
-import ***REMOVED***FormularPage***REMOVED*** from "../page_objects/application_formular.po";
-import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "../page_objects/application_overview.po";
-import ***REMOVED***Util***REMOVED*** from "../util";
+import {browser, by, element, protractor} from 'protractor';
+import {LoginPage} from '../page_objects/login.po';
+import {FormularPage} from "../page_objects/application_formular.po";
+import {ApplicationOverviewPage} from "../page_objects/application_overview.po";
+import {Util} from "../util";
 
-describe('Cloud Application Test', function () ***REMOVED***
+describe('Cloud Application Test', function () {
 
-    beforeAll(async function () ***REMOVED***
+    beforeAll(async function () {
         await browser.waitForAngularEnabled(false);
         await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
-    ***REMOVED***);
+    });
 
-    it('should navigate to cloud application form', async function () ***REMOVED***
+    it('should navigate to cloud application form', async function () {
         console.log("Starting send a cloud  application test!");
         await FormularPage.navigateToCloudApplication();
-    ***REMOVED***);
+    });
 
-    it('should fill cloud application form', async function () ***REMOVED***
+    it('should fill cloud application form', async function () {
 
         await FormularPage.fillApplicationFormular(Util.OPENSTACK_APPLICATION_NAME);
-    ***REMOVED***);
+    });
 
 
-    it('should submit cloud application ', async function () ***REMOVED***
+    it('should submit cloud application ', async function () {
 
         await FormularPage.submitApplication();
         let isPresent: boolean = await ApplicationOverviewPage.isApplicationRequestPresent(Util.OPENSTACK_APPLICATION_NAME);
         expect(isPresent).toBeTruthy();
-    ***REMOVED***);
+    });
 
-    it('should have a cloud vm application in the application overview', async function () ***REMOVED***
+    it('should have a cloud vm application in the application overview', async function () {
 
         let isPresent: boolean = await ApplicationOverviewPage.isApplicationRequestPresent(Util.OPENSTACK_APPLICATION_NAME);
         expect(isPresent).toBeTruthy();
-    ***REMOVED***);
-***REMOVED***);
+    });
+});

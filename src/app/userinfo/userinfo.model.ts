@@ -1,4 +1,4 @@
-export class Userinfo ***REMOVED***
+export class Userinfo {
 
   private _Id: number;
   private _FirstName: string;
@@ -11,7 +11,7 @@ export class Userinfo ***REMOVED***
   private _PendingEmails: string[];
 
 
-  constructor(userInfo: any) ***REMOVED***
+  constructor(userInfo: any) {
     this._Id = userInfo.Id;
     this._FirstName = userInfo.FirstName;
     this._LastName = userInfo.LastName;
@@ -21,79 +21,79 @@ export class Userinfo ***REMOVED***
     this._UserLogin = userInfo.UserLogin;
     this._Email = userInfo.Email;
     this._PendingEmails = userInfo.PendingEmails;
-  ***REMOVED***
+  }
 
-  get PendingEmails(): string[] ***REMOVED***
+  get PendingEmails(): string[] {
     return this._PendingEmails;
-  ***REMOVED***
+  }
 
-  set PendingEmails(value: string[]) ***REMOVED***
+  set PendingEmails(value: string[]) {
     this._PendingEmails = value;
-  ***REMOVED***
+  }
 
-  get Email(): string ***REMOVED***
+  get Email(): string {
     return this._Email;
-  ***REMOVED***
+  }
 
-  set Email(value: string) ***REMOVED***
+  set Email(value: string) {
     this._Email = value;
-  ***REMOVED***
+  }
 
-  get Id(): number ***REMOVED***
+  get Id(): number {
     return this._Id;
-  ***REMOVED***
+  }
 
-  set Id(value: number) ***REMOVED***
+  set Id(value: number) {
     this._Id = value;
-  ***REMOVED***
+  }
 
-  get FirstName(): string ***REMOVED***
+  get FirstName(): string {
     return this._FirstName;
-  ***REMOVED***
+  }
 
-  set FirstName(value: string) ***REMOVED***
+  set FirstName(value: string) {
     this._FirstName = value;
-  ***REMOVED***
+  }
 
-  get LastName(): string ***REMOVED***
+  get LastName(): string {
     return this._LastName;
-  ***REMOVED***
+  }
 
-  set LastName(value: string) ***REMOVED***
+  set LastName(value: string) {
     this._LastName = value;
-  ***REMOVED***
+  }
 
-  get MemberId(): number ***REMOVED***
+  get MemberId(): number {
     return this._MemberId;
-  ***REMOVED***
+  }
 
-  set MemberId(value: number) ***REMOVED***
+  set MemberId(value: number) {
     this._MemberId = value;
-  ***REMOVED***
+  }
 
-  set ElxirId(value: string) ***REMOVED***
+  set ElxirId(value: string) {
     this._ElixirId = value;
-  ***REMOVED***
+  }
 
-  get ElxirId() ***REMOVED***
+  get ElxirId() {
     return this._ElixirId
-  ***REMOVED***
+  }
 
-  set PublicKey(value: string) ***REMOVED***
+  set PublicKey(value: string) {
     this._PublicKey = value;
-  ***REMOVED***
+  }
 
-  get PublicKey() ***REMOVED***
+  get PublicKey() {
     return this._PublicKey
-  ***REMOVED***
+  }
 
-  set UserLogin(value: string) ***REMOVED***
+  set UserLogin(value: string) {
 
     this._UserLogin = value;
-  ***REMOVED***
+  }
 
-  get UserLogin() ***REMOVED***
+  get UserLogin() {
     return this._UserLogin
-  ***REMOVED***
+  }
 
-***REMOVED***
+}

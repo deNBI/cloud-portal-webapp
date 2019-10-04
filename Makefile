@@ -83,4 +83,4 @@ ng_serve: # Activates the env environment and serves the angular webapp
 .PHONY: default new_environment new_node_modules new_env_and_node serve is_line_in_hosts check_nodeenv clean_env clean_node_modules ng_serve
 
 help:
-	    @egrep '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN ***REMOVED***FS = ":.*?## "***REMOVED***; ***REMOVED***printf "\033[36m%-16s\033[0m %s\n", $$1, $$2***REMOVED***'
+	    @egrep '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-16s\033[0m %s\n", $$1, $$2}'

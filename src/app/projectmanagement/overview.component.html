@@ -20,7 +20,7 @@
                   title="This is a Simple VM project">
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
           </span>
-            ***REMOVED******REMOVED***project?.Name***REMOVED******REMOVED***</h3>
+            {{project?.Name}}</h3>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -39,8 +39,8 @@
               </thead>
               <tbody>
               <tr>
-                <!--[ngStyle]="***REMOVED***'color':lifeTimeReached(project?.LifetimeDays,project?.DaysRunning)***REMOVED***"-->
-                <td>***REMOVED******REMOVED*** project?.Name ***REMOVED******REMOVED***
+                <!--[ngStyle]="{'color':lifeTimeReached(project?.LifetimeDays,project?.DaysRunning)}"-->
+                <td>{{ project?.Name }}
                 </td>
 
                 <td>
@@ -50,18 +50,18 @@
                   </button>
                 </td>
 
-                <td>***REMOVED******REMOVED*** project?.DateCreated ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED***project?.DateEnd***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** project?.DaysRunning ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED***project?.LifetimeDays***REMOVED******REMOVED***</td>
+                <td>{{ project?.DateCreated }}</td>
+                <td>{{project?.DateEnd}}</td>
+                <td>{{ project?.DaysRunning }}</td>
+                <td>{{project?.LifetimeDays}}</td>
 
                 <td>
-                  <p *ngIf="project?.ComputeCenter?.Name">***REMOVED******REMOVED***project?.ComputeCenter.Name***REMOVED******REMOVED***</p>
+                  <p *ngIf="project?.ComputeCenter?.Name">{{project?.ComputeCenter.Name}}</p>
                   <ul *ngIf="project?.ComputeCenter?.Name">
                     <li *ngIf="project?.OpenStackProject"> Login: <a target="_blank"
-                                                                     href="***REMOVED******REMOVED***project?.ComputeCenter.Login***REMOVED******REMOVED***">
-                      ***REMOVED******REMOVED***project?.ComputeCenter.Login***REMOVED******REMOVED***</a></li>
-                    <li>Support: ***REMOVED******REMOVED***project?.ComputeCenter.Support***REMOVED******REMOVED***</li>
+                                                                     href="{{project?.ComputeCenter.Login}}">
+                      {{project?.ComputeCenter.Login}}</a></li>
+                    <li>Support: {{project?.ComputeCenter.Support}}</li>
 
                   </ul>
 
@@ -100,11 +100,11 @@
                     class="btn btn-danger">
               Remove Application
             </button>
-            <button
-              *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
-              (click)="calculateRamCores();extensionModal.show()"
-              class="btn btn-warning"
-              type="button" style="margin-bottom:5px;"
+            <button id="show_extension_modal"
+                    *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
+                    (click)="calculateRamCores();extensionModal.show()"
+                    class="btn btn-warning"
+                    type="button" style="margin-bottom:5px;"
             >
               Request Extension/Modification
             </button>
@@ -138,12 +138,12 @@
                           title="This is a Simple VM project">
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span></td>
-                  <td>***REMOVED******REMOVED*** project_application?.Name ***REMOVED******REMOVED***
+                  <td>{{ project_application?.Name }}
                   </td>
-                  <td>***REMOVED******REMOVED***project_application?.Shortname***REMOVED******REMOVED***</td>
-                  <td>***REMOVED******REMOVED*** project_application?.Lifetime ***REMOVED******REMOVED***</td>
-                  <td>***REMOVED******REMOVED*** project_application?.DateSubmitted ***REMOVED******REMOVED***</td>
-                  <td>***REMOVED******REMOVED*** getStatusById(project_application?.Status) ***REMOVED******REMOVED***</td>
+                  <td>{{project_application?.Shortname}}</td>
+                  <td>{{ project_application?.Lifetime }}</td>
+                  <td>{{ project_application?.DateSubmitted }}</td>
+                  <td>{{ getStatusById(project_application?.Status) }}</td>
                 </tr>
 
 
@@ -163,16 +163,16 @@
          *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)  && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
       <div class="card">
         <div class="card-header">
-          <i class="fa fa-align-justify"></i>Members of the Project ***REMOVED******REMOVED*** project?.Name ***REMOVED******REMOVED***
+          <i class="fa fa-align-justify"></i>Members of the Project {{ project?.Name }}
         </div>
 
         <div class="card-body">
           <div class="btn-group col-12">
             <button id="add_member_btn_modal"
-              (click)="setAddUserInvitationLink(); addUserModal.show();"
+                    (click)="setAddUserInvitationLink(); addUserModal.show();"
 
-              type="button" style="margin-bottom:5px;margin-right:5px"
-              class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Add Member
+                    type="button" style="margin-bottom:5px;margin-right:5px"
+                    class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Add Member
             </button>
 
             <button
@@ -205,16 +205,16 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let member of project_members" [ngStyle]="***REMOVED***'color':isPi(member)***REMOVED***">
-                <td><input *ngIf="userinfo?.MemberId != member.MemberId" type="checkbox" id="***REMOVED******REMOVED***member.Id***REMOVED******REMOVED***"
-                           name="***REMOVED******REMOVED***member.Id***REMOVED******REMOVED***"
+              <tr *ngFor="let member of project_members" [ngStyle]="{'color':isPi(member)}">
+                <td><input *ngIf="userinfo?.MemberId != member.MemberId" type="checkbox" id="{{member.Id}}"
+                           name="{{member.Id}}"
                            [checked]="isMemberChecked(member.MemberId)" (change)="checkUnCheckMember(member.MemberId);">
                 </td>
                 <td>
 
-                  ***REMOVED******REMOVED*** member.Id ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** member.MemberId ***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED*** member.Username ***REMOVED******REMOVED***</td>
+                  {{ member.Id }}</td>
+                <td>{{ member.MemberId }}</td>
+                <td>{{ member.Username }}</td>
                 <td>
                   <button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.Id,member.Username);
                                                 notificationModal.show();
@@ -226,7 +226,8 @@
                                                " class="btn btn-secondary" type="button" style="margin: 2px">
                     <i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
                   </button>
-                  <button [id]="'remove_member_' + member.Username" *ngIf=" userinfo?.MemberId != member.MemberId" (click)="removeMember(project?.Id,member.MemberId,member.Username);
+                  <button [id]="'remove_member_' + member.Username" *ngIf=" userinfo?.MemberId != member.MemberId"
+                          (click)="removeMember(project?.Id,member.MemberId,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-danger" type="button" style="margin: 2px">
 
@@ -251,7 +252,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content ">
       <div class="modal-header">
-        <h4 class="modal-title">Add member to the project ***REMOVED******REMOVED***project?.Name ***REMOVED******REMOVED***
+        <h4 class="modal-title">Add member to the project {{project?.Name }}
         </h4>
         <button type="button" class="close" style="cursor:pointer" (click)="addUserModal.hide()"
                 aria-label="Close">
@@ -286,7 +287,7 @@
               <ul style="list-style-type:none;">
 
                 <li>
-                  <pre [hidden]="showLink">***REMOVED******REMOVED***invitation_link***REMOVED******REMOVED***</pre>
+                  <pre [hidden]="showLink">{{invitation_link}}</pre>
                   <div class="btn-group-vertical">
                     <button class="btn btn-primary" style="margin-bottom: 5px" (click)="showLink = !showLink">
                       <span [hidden]="!showLink">Show</span>
@@ -300,7 +301,7 @@
               </ul>
               <br>
               After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
-              Read more about the process <a target="_blank" href="***REMOVED******REMOVED***wiki_group_invitation***REMOVED******REMOVED***">here</a>.
+              Read more about the process <a target="_blank" href="{{wiki_group_invitation}}">here</a>.
             </div>
           </div>
 
@@ -324,9 +325,9 @@
                         class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
                 </button>
               </td>
-              <td>***REMOVED******REMOVED***member['firstName']***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED***member['lastName']***REMOVED******REMOVED***</td>
-              <td>***REMOVED******REMOVED***member['mail']***REMOVED******REMOVED***</td>
+              <td>{{member['firstName']}}</td>
+              <td>{{member['lastName']}}</td>
+              <td>{{member['mail']}}</td>
               </tbody>
             </table>
           </div>
@@ -353,7 +354,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Applications for ***REMOVED******REMOVED***project?.Name***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title">Applications for {{project?.Name}}</h4>
         <button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()"
                 aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -375,8 +376,8 @@
             </thead>
             <tbody *ngFor="  let application of project?.ProjectMemberApplications">
 
-            <td>***REMOVED******REMOVED***application.Name***REMOVED******REMOVED***</td>
-            <td>***REMOVED******REMOVED***application.DateCreated***REMOVED******REMOVED***</td>
+            <td>{{application.Name}}</td>
+            <td>{{application.DateCreated}}</td>
             <td>
               <button
                 (click)="approveMemberApplication(project?.Id,application.Id,application.Name); "
@@ -396,13 +397,13 @@
       <div class="modal-footer">
 
         <p *ngIf="application_action_success && application_action_done" class="alert alert-success mr-auto">
-          <strong>Success:</strong> Succesfully ***REMOVED******REMOVED***application_action***REMOVED******REMOVED*** the application of
-          ***REMOVED******REMOVED***application_member_name***REMOVED******REMOVED***.
+          <strong>Success:</strong> Succesfully {{application_action}} the application of
+          {{application_member_name}}.
         </p>
         <p *ngIf="!application_action_success && application_action_done && !application_action_error_message"
            class="alert alert-danger mr-auto">
-          <strong>Failed:</strong> The application of ***REMOVED******REMOVED***application_member_name***REMOVED******REMOVED*** could not be
-          ***REMOVED******REMOVED***application_action***REMOVED******REMOVED*** .
+          <strong>Failed:</strong> The application of {{application_member_name}} could not be
+          {{application_action}} .
         </p>
         <p *ngIf="!application_action_success && application_action_done && application_action_error_message"
            class="alert alert-danger mr-auto">
@@ -428,15 +429,15 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="notification_title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title" id="notification_title">{{ notificationModalTitle }}</h4>
         <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()"
                 aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
-          ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
+        <div class="alert alert-{{ notificationModalType }}" role="alert">
+          {{ notificationModalMessage }}
         </div>
       </div>
       <div class="modal-footer">
@@ -483,10 +484,10 @@
               </button>
             </td>
 
-            <td>***REMOVED******REMOVED*** project?.DateCreated ***REMOVED******REMOVED***</td>
-            <td>***REMOVED******REMOVED***project?.DateEnd***REMOVED******REMOVED***</td>
-            <td>***REMOVED******REMOVED*** project?.DaysRunning ***REMOVED******REMOVED***</td>
-            <td>***REMOVED******REMOVED***project?.LifetimeDays***REMOVED******REMOVED***</td>
+            <td>{{ project?.DateCreated }}</td>
+            <td>{{project?.DateEnd}}</td>
+            <td>{{ project?.DaysRunning }}</td>
+            <td>{{project?.LifetimeDays}}</td>
             <td>
             </tbody>
           </table>
@@ -516,7 +517,7 @@
       </div>
 
       <div class="modal-body">
-        <p>***REMOVED******REMOVED*** project?.Description ***REMOVED******REMOVED***</p>
+        <p>{{ project?.Description }}</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary"
@@ -568,7 +569,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4>Modification/Extension request for ***REMOVED******REMOVED***project_application?.Shortname***REMOVED******REMOVED***</h4>
+        <h4>Modification/Extension request for {{project_application?.Shortname}}</h4>
         <button type="button" class="close" style="cursor: pointer"
                 (click)="extensionModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -608,7 +609,7 @@
               <div class="input-group">
                 <input class="form-control"
                        name="project_application_lifetime" placeholder="NA"
-                       type="text" value="***REMOVED******REMOVED***life_time_string***REMOVED******REMOVED***"
+                       type="text" value="{{life_time_string}}"
                        disabled>
 
               </div>
@@ -623,10 +624,10 @@
                        placeholder="e.g 3"
                        type="number" min="0" max="12" step="1" ngModel required
                        appInteger appMinAmount="0" appMaxAmount="12"
-                       [ngClass]="***REMOVED***
+                       [ngClass]="{
                                 'is-invalid': f.controls.project_application_renewal_lifetime?.invalid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched),
                                 'is-valid': f.controls.project_application_renewal_lifetime?.valid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched)
-                                ***REMOVED***">
+                                }">
                 <div class="input-group-append">
                   <span class="input-group-text"> months</span>
                 </div>
@@ -649,24 +650,24 @@
               <accordion-group *ngIf="project_application?.OpenStackProject || checkIfTypeGotSimpleVmFlavor(t)"
                                [isOpen]="isFirst" #groupval>
                 <div accordion-heading style="width: 100%; cursor: pointer">
-                  ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
-                  <i class="pull-right float-right" style="font-size: 25px" [ngClass]="***REMOVED***
-                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen***REMOVED***"></i>
+                  {{t.long_name}}
+                  <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
                 </div>
                 <div *ngFor="let fl of flavorList" class="form-group row">
                   <div
                     *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || project_application?.OpenStackProject)"
                     class="form-group row">
-                    <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***</strong><br>
-                      Number of cores: ***REMOVED******REMOVED***fl.vcpus***REMOVED******REMOVED***<br>
-                      RAM: ***REMOVED******REMOVED***fl.ram***REMOVED******REMOVED*** GB</label>
+                    <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
+                      Number of cores: {{fl.vcpus}}<br>
+                      RAM: {{fl.ram}} GB</label>
                     <div class="col">
                       <div class="input-group">
                         <input class="form-control"
-                               name="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***_old"
-                               type="text"
-                               value="***REMOVED******REMOVED***project_application?.CurrentFlavors[fl.name]?.counter***REMOVED******REMOVED***"
-                               placeholder="NA" disabled>
+                        name="project_application_{{fl.name}}_old"
+                        type="text"
+                        value="{{project_application?.CurrentFlavors[fl.name]?.counter}}"
+                        placeholder="0" disabled>
                         <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
                       </div>
                       <span class="help-block">Currently approved of this type </span>
@@ -675,17 +676,17 @@
                       <div class="input-group">
                         <input class="form-control"
                                (change)="valuesChanged(f)"
-                               id="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***"
-                               name="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***"
+                               id="id_project_application_renewal_{{fl.name}}"
+                               name="project_application_renewal_{{fl.name}}"
                                type="number" min="0" step="1"
                                placeholder="e.g 1"
                                [ngModel]="project_application?.CurrentFlavors[fl.name]?.counter"
                                #name="ngModel"
                                appMinAmount="0" appIntegerOrNull
-                               [ngClass]="***REMOVED***
+                               [ngClass]="{
                                 'is-invalid': name?.invalid,
                                 'is-valid': name?.valid
-                                ***REMOVED***">
+                                }">
                         <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
                       </div>
                       <span class="help-block">Number of VMs you would like to run in the future</span>
@@ -710,7 +711,7 @@
                 <input required class="form-control"
                        name="project_application_volume_counter"
                        placeholder="NA"
-                       value="***REMOVED******REMOVED***project_application?.VolumeCounter***REMOVED******REMOVED***"
+                       value="{{project_application?.VolumeCounter}}"
                        type="text" disabled>
               </div>
               <span class="help-block">Current number of storage volumes</span>
@@ -725,10 +726,10 @@
                        type="number" min="0" step="1"
                        [ngModel]="project_application?.VolumeCounter"
                        appMinAmount="0" appInteger
-                       [ngClass]="***REMOVED***
+                       [ngClass]="{
                                 'is-invalid': f.controls.project_application_renewal_volume_counter?.invalid,
                                 'is-valid': f.controls.project_application_renewal_volume_counter?.valid
-                                ***REMOVED***">
+                                }">
               </div>
               <span class="help-block">How many storage volumes do you need in the future?</span>
             </div>
@@ -745,7 +746,7 @@
               <div class="input-group">
                 <input class="form-control"
                        name="project_application_renewal_volume_limit"
-                       value="***REMOVED******REMOVED***project_application?.VolumeLimit***REMOVED******REMOVED***"
+                       value="{{project_application?.VolumeLimit}}"
                        placeholder="NA"
                        type="text" disabled>
                 <div class="input-group-append"><span class="input-group-text"> GB
@@ -761,10 +762,10 @@
                        placeholder="e.g. 20"
                        type="number" min="1" step="1" [ngModel]="project_application?.VolumeLimit"
                        appMinAmount="1" appInteger
-                       [ngClass]="***REMOVED***
+                       [ngClass]="{
                                 'is-invalid': f.controls.project_application_renewal_volume_limit?.invalid,
                                 'is-valid': f.controls.project_application_renewal_volume_limit?.valid
-                                ***REMOVED***"
+                                }"
                        [disabled]="f.controls.project_application_renewal_volume_counter?.value == 0">
                 <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
@@ -787,7 +788,7 @@
                 <input class="form-control"
                        name="project_application_object_storage"
                        placeholder="NA"
-                       value="***REMOVED******REMOVED***project_application?.ObjectStorage***REMOVED******REMOVED***"
+                       value="{{project_application?.ObjectStorage}}"
                        type="text" disabled>
                 <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
@@ -801,13 +802,13 @@
                        id="id_project_application_renewal_object_storage"
                        name="project_application_renewal_object_storage"
                        placeholder="e.g. 8"
-                       value="***REMOVED******REMOVED***project_application?.ObjectStorage***REMOVED******REMOVED***"
+                       value="{{project_application?.ObjectStorage}}"
                        type="number" min="0" step="1" [ngModel]="0"
                        appInteger appMinAmount="0" required
-                       [ngClass]="***REMOVED***
+                       [ngClass]="{
                                 'is-invalid': f.controls.project_application_renewal_object_storage?.invalid ,
                                 'is-valid': f.controls.project_application_renewal_object_storage?.valid
-                                ***REMOVED***">
+                                }">
                 <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
               </div>
@@ -839,11 +840,11 @@
           <strong>
             <div class="form-group row">
               <label #corenumbers id="corenumbers" class="col">Number of total
-                cores: ***REMOVED******REMOVED***totalNumberOfCores***REMOVED******REMOVED***</label>
+                cores: {{totalNumberOfCores}}</label>
             </div>
             <div class="form-group row">
               <label #ramnumbers id="ramnumbers" class="col">Amount of total
-                RAM: ***REMOVED******REMOVED***totalRAM***REMOVED******REMOVED*** </label>
+                RAM: {{totalRAM}} </label>
             </div>
           </strong>
 
@@ -861,7 +862,7 @@
             By submitting this application you agree to the cloud usage policy.
           </div>
           <button type="button" class="btn  btn-primary"
-                  form="application_form"
+                  form="application_form" id="submit_renewal_btn"
                   (click)="extension_request=true;filterEnteredData(f); submitModal.show();"
                   [disabled]="f.invalid"><i
             class="fa fa-dot-circle-o">
@@ -889,7 +890,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">***REMOVED******REMOVED***projectName***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title">{{projectName}}</h4>
         <button type="button" class="close" style="cursor: pointer;"
                 (click)="submitModal.hide()"
                 data-dismiss="modal" aria-label="Close">
@@ -907,14 +908,14 @@
         <div class="table-responsive">
           <table class="table table-striped">
             <tr *ngFor="let str of valuesToConfirm">
-              <td>***REMOVED******REMOVED***str***REMOVED******REMOVED***</td>
+              <td>{{str}}</td>
             </tr>
             <tr>
               <td><strong>Number of cores in total:
-                ***REMOVED******REMOVED***totalNumberOfCores.toString()***REMOVED******REMOVED***</strong></td>
+                {{totalNumberOfCores.toString()}}</strong></td>
             </tr>
             <tr>
-              <td><strong>Value of RAM in total: ***REMOVED******REMOVED***totalRAM.toString()***REMOVED******REMOVED*** GBs</strong>
+              <td><strong>Value of RAM in total: {{totalRAM.toString()}} GBs</strong>
               </td>
             </tr>
           </table>
@@ -925,7 +926,7 @@
       <div class="modal-footer">
 
 
-        <button class="btn btn-success col-md4" type="button"
+        <button id="submit_modal_btn" class="btn btn-success col-md4" type="button"
                 (click)="resultModal.show(); extensionModal.hide(); submitModal.hide();onSubmit(f);">Confirm Application
         </button>
         <button class="btn  btn-primary col-md-4" type="reset"
@@ -962,21 +963,21 @@
         </div>
 
 
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
+        <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 1">
 
           Modify request successfully submitted!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 3">
+        <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 3">
           Modify request successfully approved!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+        <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 4">
           Modify request successfully declined!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 5">
+        <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 5">
           Modify request successfully approved and forwarded to facility!
         </div>
 
-        <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
+        <div id="extension result" class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
           An error occured.
 
         </div>

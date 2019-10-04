@@ -1,15 +1,15 @@
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
-import ***REMOVED***UserInfoComponent***REMOVED*** from './userinfo.component';
-import ***REMOVED***UserInfoRoutingModule***REMOVED*** from './userinfo-routing.module';
-import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap/modal';
-import ***REMOVED***AlertModule***REMOVED*** from 'ngx-bootstrap';
-import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared/shared_modules/public-key/public-key.module';
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {UserInfoComponent} from './userinfo.component';
+import {UserInfoRoutingModule} from './userinfo-routing.module';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {AlertModule} from 'ngx-bootstrap';
+import {PublicKeyModule} from '../shared/shared_modules/public-key/public-key.module';
 
-@NgModule(***REMOVED***
+@NgModule({
     imports: [
         PublicKeyModule,
         UserInfoRoutingModule,
@@ -23,6 +23,6 @@ import ***REMOVED***PublicKeyModule***REMOVED*** from '../shared/shared_modules/
         UserInfoComponent
     ],
     exports: [UserInfoComponent, UserInfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
-***REMOVED***)
-export class UserinfoModule ***REMOVED***
-***REMOVED***
+})
+export class UserinfoModule {
+}

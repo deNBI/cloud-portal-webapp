@@ -1,39 +1,39 @@
 // spec.js
-import ***REMOVED***browser, by, element, protractor***REMOVED*** from 'protractor';
-import ***REMOVED***LoginPage***REMOVED*** from '../page_objects/login.po';
-import ***REMOVED***FormularPage***REMOVED*** from "../page_objects/application_formular.po";
-import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "../page_objects/application_overview.po";
-import ***REMOVED***Util***REMOVED*** from "../util";
-import ***REMOVED***FacilityOverviewPage***REMOVED*** from "../page_objects/facility_overview.po";
+import {browser, by, element, protractor} from 'protractor';
+import {LoginPage} from '../page_objects/login.po';
+import {FormularPage} from "../page_objects/application_formular.po";
+import {ApplicationOverviewPage} from "../page_objects/application_overview.po";
+import {Util} from "../util";
+import {FacilityOverviewPage} from "../page_objects/facility_overview.po";
 
-describe('Cloud Application Approval Test', function () ***REMOVED***
+describe('Cloud Application Approval Test', function () {
 
-    beforeAll(async function () ***REMOVED***
+    beforeAll(async function () {
         await browser.waitForAngularEnabled(false);
         await LoginPage.login(browser.params.login.email_vo, browser.params.login.password_vo, browser.params.login.auth_vo, true);
-    ***REMOVED***);
+    });
 
-    it('should navigate to application overview', async function () ***REMOVED***
+    it('should navigate to application overview', async function () {
         await ApplicationOverviewPage.navigateToApplicationOverview();
 
 
-    ***REMOVED***);
+    });
 
-    it('should approve cloud application with denbi default facility', async function () ***REMOVED***
+    it('should approve cloud application with denbi default facility', async function () {
         await ApplicationOverviewPage.approveCloudApplication(Util.OPENSTACK_APPLICATION_NAME);
-    ***REMOVED***);
+    });
 
-    it('should relog with facility manager', async function () ***REMOVED***
+    it('should relog with facility manager', async function () {
         await LoginPage.login(browser.params.login.email_fm, browser.params.login.password_fm, browser.params.login.auth_fm, true);
-    ***REMOVED***);
+    });
 
-    it('should navigate to facility overview', async function () ***REMOVED***
+    it('should navigate to facility overview', async function () {
         await FacilityOverviewPage.navigateToFacilityOverview();
-    ***REMOVED***);
+    });
 
-    it('should approve cloud application', async function () ***REMOVED***
+    it('should approve cloud application', async function () {
         await FacilityOverviewPage.approveApplication(Util.OPENSTACK_APPLICATION_NAME);
-    ***REMOVED***);
+    });
 
 
-***REMOVED***);
+});

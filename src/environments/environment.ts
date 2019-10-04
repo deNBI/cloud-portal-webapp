@@ -3,7 +3,7 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
-export const environment = ***REMOVED***
+export const environment = {
   production: false,
   vo: 3334,
   freemium_project_id: 10392,
@@ -18,4 +18,4 @@ export const environment = ***REMOVED***
   login: 'http://localhost:8000',
   matomoServer: ''
 
-***REMOVED***;
+};

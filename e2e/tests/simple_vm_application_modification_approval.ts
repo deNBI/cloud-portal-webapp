@@ -1,22 +1,22 @@
 // spec.js
-import ***REMOVED***browser, by, element, protractor***REMOVED*** from 'protractor';
-import ***REMOVED***LoginPage***REMOVED*** from '../page_objects/login.po';
-import ***REMOVED***FormularPage***REMOVED*** from "../page_objects/application_formular.po";
-import ***REMOVED***ApplicationOverviewPage***REMOVED*** from "../page_objects/application_overview.po";
-import ***REMOVED***Util***REMOVED*** from "../util";
+import {browser, by, element, protractor} from 'protractor';
+import {LoginPage} from '../page_objects/login.po';
+import {FormularPage} from "../page_objects/application_formular.po";
+import {ApplicationOverviewPage} from "../page_objects/application_overview.po";
+import {Util} from "../util";
 
-describe('Simple Application Modification Approval Test', function () ***REMOVED***
+describe('Simple Application Modification Approval Test', function () {
 
-    beforeAll(async function () ***REMOVED***
+    beforeAll(async function () {
         await browser.waitForAngularEnabled(false);
         await LoginPage.login(browser.params.login.email_vo, browser.params.login.password_vo, browser.params.login.auth_vo, true);
-    ***REMOVED***);
+    });
 
-     it('should navigate to application overview', async function () ***REMOVED***
+     it('should navigate to application overview', async function () {
         await ApplicationOverviewPage.navigateToApplicationOverview();
-    ***REMOVED***);
+    });
 
-    it('should approve a simple vm modification request', async function () ***REMOVED***
+    it('should approve a simple vm modification request', async function () {
         await ApplicationOverviewPage.approveSVModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
-    ***REMOVED***);
-***REMOVED***);
+    });
+});

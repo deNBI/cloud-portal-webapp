@@ -1,163 +1,163 @@
-import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs';
-import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {ApiSettings} from './api-settings.service';
+import {Observable} from 'rxjs';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
-import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
-import ***REMOVED***IResponseTemplate***REMOVED*** from './response-template';
-import ***REMOVED***Resources***REMOVED*** from '../vo_manager/resources/resources';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {IResponseTemplate} from './response-template';
+import {Resources} from '../vo_manager/resources/resources';
 
-const header: HttpHeaders = new HttpHeaders(***REMOVED***
+const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
-                                            ***REMOVED***);
+                                            });
 
 /**
  * Service which provides vo methods.
  */
 @Injectable()
-export class VoService ***REMOVED***
-  constructor(private http: HttpClient) ***REMOVED***
-  ***REMOVED***
+export class VoService {
+  constructor(private http: HttpClient) {
+  }
 
-  isVo(): Observable<IResponseTemplate> ***REMOVED***
+  isVo(): Observable<IResponseTemplate> {
 
-    return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***voManagers/current/status/`, ***REMOVED***
+    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/status/`, {
       withCredentials: true
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  getNewsletterSubscriptionCounter(): Observable<IResponseTemplate> ***REMOVED***
+  getNewsletterSubscriptionCounter(): Observable<IResponseTemplate> {
 
-    return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***newsletter/subscription/counter/`, ***REMOVED***
+    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/counter/`, {
       withCredentials: true
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  getAllVoGroups(): Observable<any> ***REMOVED***
+  getAllVoGroups(): Observable<any> {
 
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/`, ***REMOVED***
+    return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/`, {
       withCredentials: true
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  terminateProject(groupId: number | string): Observable<object> ***REMOVED***
-    return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupId***REMOVED***/`, ***REMOVED***
+  terminateProject(groupId: number | string): Observable<object> {
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupId}/`, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  getProjectDetails(groupId: number | string): Observable<object> ***REMOVED***
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupId***REMOVED***/details/`, ***REMOVED***
+  getProjectDetails(groupId: number | string): Observable<object> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/${groupId}/details/`, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  removeResourceFromGroup(groupid: number | string): Observable<object> ***REMOVED***
-    return this.http.delete(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/resource/`, ***REMOVED***
+  removeResourceFromGroup(groupid: number | string): Observable<object> {
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  resumeProject(groupid: number | string): Observable<object> ***REMOVED***
-    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/resource/`, null, ***REMOVED***
+  resumeProject(groupid: number | string): Observable<object> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, null, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  getAllGroupsWithDetails(): Observable<any> ***REMOVED***
+  getAllGroupsWithDetails(): Observable<any> {
 
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/details/`, ***REMOVED***
+    return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/details/`, {
       withCredentials: true
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  getProjectStatus(groupid: number | string): Observable<IResponseTemplate> ***REMOVED***
-    return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/status/`, ***REMOVED***
+  getProjectStatus(groupid: number | string): Observable<IResponseTemplate> {
+    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/status/`, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  getVoProjectResources(): Observable<Resources[]> ***REMOVED***
-    return this.http.get<Resources[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/resources/`, ***REMOVED***
+  getVoProjectResources(): Observable<Resources[]> {
+    return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/resources/`, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  getVoProjectResourcesTimeframes(): Observable<Resources[]> ***REMOVED***
-    return this.http.get<Resources[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/resources/timeFrames/`, ***REMOVED***
+  getVoProjectResourcesTimeframes(): Observable<Resources[]> {
+    return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/resources/timeFrames/`, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  getVoProjectDates(): Observable<Resources[]> ***REMOVED***
-    return this.http.get<Resources[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/dates/`, ***REMOVED***
+  getVoProjectDates(): Observable<Resources[]> {
+    return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/dates/`, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  getVoProjectCounter(): Observable<Resources[]> ***REMOVED***
-    return this.http.get<Resources[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/counter/`, ***REMOVED***
+  getVoProjectCounter(): Observable<Resources[]> {
+    return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/counter/`, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  setProjectStatus(groupid: number | string, status: number): Observable<any> ***REMOVED***
+  setProjectStatus(groupid: number | string, status: number): Observable<any> {
     const params: HttpParams = new HttpParams().set('status', status.toString());
 
-    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/status/`, params, ***REMOVED***
+    return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/status/`, params, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  sendNewsletterToVo(subject: string, message: string, reply?: string): Observable<IResponseTemplate> ***REMOVED***
+  sendNewsletterToVo(subject: string, message: string, reply?: string): Observable<IResponseTemplate> {
 
     const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-    return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***voManagers/current/newsletter/`, params, ***REMOVED***
+    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/newsletter/`, params, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): Observable<any> ***REMOVED***
+  sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('subject', subject).set('message', message)
       .set('reply', reply).set('facility', facility).set('type', type);
 
-    return this.http.post<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***voManagers/current/voMail/`, params, ***REMOVED***
+    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/`, params, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
   /**
    * Get members of a project with emails.
-   * @param ***REMOVED***number***REMOVED*** groupid id of the the group
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number} groupid id of the the group
+   * @returns {Observable<any>}
    */
-  getVoGroupRichMembers(groupid: number | string): Observable<any> ***REMOVED***
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***vo/projects/$***REMOVED***groupid***REMOVED***/members/`, ***REMOVED***
+  getVoGroupRichMembers(groupid: number | string): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/members/`, {
       withCredentials: true
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-***REMOVED***
+}

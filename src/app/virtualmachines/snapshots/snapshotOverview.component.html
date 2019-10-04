@@ -36,8 +36,8 @@
           </thead>
           <tbody>
           <tr *ngFor="let snapshot of snapshots">
-            <td>***REMOVED******REMOVED***snapshot?.snapshot_name***REMOVED******REMOVED***</td>
-            <td>***REMOVED******REMOVED***snapshot?.snapshot_project***REMOVED******REMOVED***</td>
+            <td>{{snapshot?.snapshot_name}}</td>
+            <td>{{snapshot?.snapshot_project}}</td>
             <td>
               <button *ngIf="snapshot.snapshot_created  || showFacilities"
                       (click)="setSelectedSnapshot(snapshot);verifyModal.show();"
@@ -48,13 +48,13 @@
             </td>
             <td> <span *ngIf="snapshot?.snapshot_status == 'active'"
                        style="margin-left: 5px"
-                       class="badge badge-success"> ***REMOVED******REMOVED***snapshot?.snapshot_status | uppercase***REMOVED******REMOVED*** </span>
+                       class="badge badge-success"> {{snapshot?.snapshot_status | uppercase}} </span>
               <span *ngIf="snapshot?.snapshot_status != 'active'"
                     style="margin-left: 5px"
-                    class="badge badge-info"> ***REMOVED******REMOVED***snapshot?.snapshot_status | uppercase***REMOVED******REMOVED*** </span>
+                    class="badge badge-info"> {{snapshot?.snapshot_status | uppercase}} </span>
             </td>
 
-            <!-- td>***REMOVED******REMOVED***volume.volume_client.host***REMOVED******REMOVED*** : ***REMOVED******REMOVED***volume.volume_client.port***REMOVED******REMOVED***</td-->
+            <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
 
           </tr>
 
@@ -89,18 +89,18 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-info" role="alert" *ngIf="delete_status == 0">
-          Deleting ***REMOVED******REMOVED***selected_snapshot?.snapshot_name***REMOVED******REMOVED***... <i
+          Deleting {{selected_snapshot?.snapshot_name}}... <i
           class="fa fa-spinner fa-spin" style="font-size:24px"></i>
         </div>
         <div class="alert alert-success" role="alert" *ngIf="delete_status == 1">
-          ***REMOVED******REMOVED***selected_snapshot?.snapshot_name***REMOVED******REMOVED*** was succesfully deleted.
+          {{selected_snapshot?.snapshot_name}} was succesfully deleted.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="delete_status == 2">
-        When deleting ***REMOVED******REMOVED***selected_snapshot?.snapshot_name***REMOVED******REMOVED*** an error occured.
+        When deleting {{selected_snapshot?.snapshot_name}} an error occured.
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="delete_status == 3">
-        Could not delete <strong>***REMOVED******REMOVED***selected_snapshot?.snapshot_name***REMOVED******REMOVED*** </strong> because the
+        Could not delete <strong>{{selected_snapshot?.snapshot_name}} </strong> because the
         Client is offline.
         Please contact cloud@denbi.de if you got any questions.
       </div>
@@ -131,7 +131,7 @@
       <div class="modal-body">
 
         <div class="alert alert-warning" role="alert">
-          Are you sure you want to delete ***REMOVED******REMOVED***selected_snapshot?.snapshot_name***REMOVED******REMOVED***?
+          Are you sure you want to delete {{selected_snapshot?.snapshot_name}}?
         </div>
 
       </div>

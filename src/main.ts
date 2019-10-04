@@ -1,12 +1,12 @@
-import ***REMOVED***enableProdMode***REMOVED*** from '@angular/core';
-import ***REMOVED***platformBrowserDynamic***REMOVED*** from '@angular/platform-browser-dynamic';
+import {enableProdMode} from '@angular/core';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
-import ***REMOVED***AppModule***REMOVED*** from './app/app.module';
-import ***REMOVED***environment***REMOVED*** from './environments/environment';
+import {AppModule} from './app/app.module';
+import {environment} from './environments/environment';
 
-if (environment.production) ***REMOVED***
+if (environment.production) {
   enableProdMode();
-***REMOVED***
+}
 
 // Constructing tracking code
 const matomoScript = document.createElement('script');
@@ -14,26 +14,26 @@ matomoScript.type = 'text/javascript';
 matomoScript.innerHTML =
   'var _paq = _paq || [];\n' +
   '  _paq.push([\'enableLinkTracking\']);\n' +
-  '  (function() ***REMOVED***\n' +
-  `    let u="$***REMOVED***environment.matomoServer***REMOVED***";\n` +
+  '  (function() {\n' +
+  `    let u="${environment.matomoServer}";\n` +
   '    _paq.push([\'setTrackerUrl\', u+\'matomo.php\']);\n' +
   '    _paq.push([\'setSiteId\', \'2\']);\n' +
   '    let d=document, g=d.createElement(\'script\'), s=d.getElementsByTagName(\'script\')[0];\n' +
   '    g.type=\'text/javascript\'; g.async=true; g.defer=true; g.src=u+\'matomo.js\'; s.parentNode.insertBefore(g,s);\n' +
-  '  ***REMOVED***)();';
+  '  })();';
 
 document.getElementsByTagName('head')[0].appendChild(matomoScript);
-platformBrowserDynamic().bootstrapModule(AppModule).then(() => ***REMOVED***
+platformBrowserDynamic().bootstrapModule(AppModule).then(() => {
 
-  if (navigator.serviceWorker && environment.production) ***REMOVED***
+  if (navigator.serviceWorker && environment.production) {
     navigator.serviceWorker.getRegistrations().then(
-      function (registrations) ***REMOVED***
+      function (registrations) {
 
-        for (const registration of registrations) ***REMOVED***
+        for (const registration of registrations) {
 
           registration.unregister()
 
-        ***REMOVED***
-      ***REMOVED***)
-  ***REMOVED***
-***REMOVED***);
+        }
+      })
+  }
+});

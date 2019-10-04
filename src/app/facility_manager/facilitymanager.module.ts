@@ -1,20 +1,20 @@
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***FacilityProjectsOverviewComponent***REMOVED*** from '../facility_manager/facilityprojectsoverview.component';
-import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
-import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
-import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap/modal';
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import ***REMOVED***ImageTagComponent***REMOVED*** from '../facility_manager/imagetags.component';
-import ***REMOVED***FacilitymanagerRoutingModule***REMOVED*** from './facilitymanager-routing.module';
-import ***REMOVED***FacilityApplicationComponent***REMOVED*** from './facility.application.component';
-import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.component';
-import ***REMOVED***ExportAsModule***REMOVED*** from 'ngx-export-as';
-import ***REMOVED***ApplicationsModule***REMOVED*** from '../applications/applications.module';
+import {NgModule} from '@angular/core';
+import {FacilityProjectsOverviewComponent} from '../facility_manager/facilityprojectsoverview.component';
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {CommonModule} from '@angular/common';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {FormsModule} from '@angular/forms';
+import {ImageTagComponent} from '../facility_manager/imagetags.component';
+import {FacilitymanagerRoutingModule} from './facilitymanager-routing.module';
+import {FacilityApplicationComponent} from './facility.application.component';
+import {ResourcesComponent} from './resources/resources.component';
+import {ExportAsModule} from 'ngx-export-as';
+import {ApplicationsModule} from '../applications/applications.module';
 
 /**
  * Facilitymanager module.
  */
-@NgModule(***REMOVED***
+@NgModule({
             imports: [
               FacilitymanagerRoutingModule,
               TabsModule,
@@ -31,6 +31,6 @@ import ***REMOVED***ApplicationsModule***REMOVED*** from '../applications/applic
               ResourcesComponent
 
             ]
-          ***REMOVED***)
-export class FacilitymanagerModule ***REMOVED***
-***REMOVED***
+          })
+export class FacilitymanagerModule {
+}

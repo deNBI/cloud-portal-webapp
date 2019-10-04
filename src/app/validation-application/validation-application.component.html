@@ -59,7 +59,7 @@
                   <input disabled type="text" id="id_project_application_name"
                          name="project_application_name"
                          class="form-control" maxlength="128"
-                         value="***REMOVED******REMOVED***application?.Name***REMOVED******REMOVED***">
+                         value="{{application?.Name}}">
                   <span class="help-block">Name of your project.</span>
 
                 </div>
@@ -78,7 +78,7 @@
                   <input disabled required type="text" id="id_project_application_shortname"
                          name="project_application_shortname" #shortname
                          class="form-control" maxlength="15"
-                         value="***REMOVED******REMOVED***application?.Shortname***REMOVED******REMOVED***">
+                         value="{{application?.Shortname}}">
                   <span class="help-block">Shortname of your project.</span>
 
                 </div>
@@ -96,7 +96,7 @@
                                 <textarea disabled id="id_project_application_description"
                                           name="project_application_description" rows="9"
                                           class="form-control" maxlength="8192"
-                                          value="***REMOVED******REMOVED***application?.Description***REMOVED******REMOVED***"
+                                          value="{{application?.Description}}"
                                 ></textarea>
                   <span class="help-block">Description of your project.</span>
 
@@ -117,7 +117,7 @@
                   <div class="input-group">
                     <input class="form-control" id="id_project_application_lifetime"
                            name="project_application_lifetime" disabled
-                           value="***REMOVED******REMOVED***application?.Lifetime***REMOVED******REMOVED***"
+                           value="{{application?.Lifetime}}"
 
                            type="number"
                     >
@@ -145,23 +145,23 @@
                       <accordion-group *ngIf="application?.OpenStackProject || checkIfTypeGotSimpleVmFlavor(t)"
                                        [isOpen]="true" #groupval>
                         <div accordion-heading style="width: 100%; cursor: pointer">
-                          ***REMOVED******REMOVED***t.long_name***REMOVED******REMOVED***
-                          <i class="pull-right float-right" style="font-size: 25px" [ngClass]="***REMOVED***
-                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen***REMOVED***"></i>
+                          {{t.long_name}}
+                          <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
                         </div>
                         <div *ngFor="let fl of flavorList">
                           <div
                             *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || application?.OpenStackProject)"
                             class="form-group row">
-                            <label class="col-md-4 form-control-label"><strong>***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***</strong><br>
-                              Number of cores: ***REMOVED******REMOVED***fl.vcpus***REMOVED******REMOVED***<br>
-                              RAM: ***REMOVED******REMOVED***fl.ram***REMOVED******REMOVED*** GB</label>
+                            <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
+                              Number of cores: {{fl.vcpus}}<br>
+                              RAM: {{fl.ram}} GB</label>
                             <div class="col-md-8">
                               <div class="input-group">
                                 <input class="form-control"
-                                       name="project_application_***REMOVED******REMOVED***fl.name***REMOVED******REMOVED***_old"
+                                       name="project_application_{{fl.name}}_old"
                                        type="text"
-                                       value="***REMOVED******REMOVED***application?.CurrentFlavors[fl.name]?.counter***REMOVED******REMOVED***"
+                                       value="{{application?.CurrentFlavors[fl.name]?.counter}}"
                                        placeholder="NDA" disabled>
                                 <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
                               </div>
@@ -175,11 +175,11 @@
                   <strong>
                     <div class="form-group row">
                       <label #corenumbers id="corenumbers" class="col">Number of total
-                        cores: ***REMOVED******REMOVED***totalNumberOfCores***REMOVED******REMOVED***</label>
+                        cores: {{totalNumberOfCores}}</label>
                     </div>
                     <div class="form-group row">
                       <label #ramnumbers id="ramnumbers" class="col">Amount of total
-                        RAM: ***REMOVED******REMOVED***totalRAM***REMOVED******REMOVED*** </label>
+                        RAM: {{totalRAM}} </label>
                     </div>
                   </strong>
                 </div>
@@ -199,7 +199,7 @@
                            id="id_project_application_volume_counter"
                            name="project_application_volume_counter"
                            type="number"
-                           value="***REMOVED******REMOVED***application?.VolumeCounter***REMOVED******REMOVED***"
+                           value="{{application?.VolumeCounter}}"
 
                     >
                   </div>
@@ -221,7 +221,7 @@
                            id="id_project_application_volume_limit"
                            name="project_application_volume_limit"
                            placeholder="e.g. 20"
-                           value="***REMOVED******REMOVED***application?.VolumeLimit***REMOVED******REMOVED***"
+                           value="{{application?.VolumeLimit}}"
 
                     >
                     <div class="input-group-append"><span class="input-group-text"> GB </span></div>
@@ -245,7 +245,7 @@
                            id="id_project_application_object_storage"
                            name="project_application_object_storage"
                            placeholder="e.g. 8"
-                           value="***REMOVED******REMOVED***application?.ObjectStorage***REMOVED******REMOVED***"
+                           value="{{application?.ObjectStorage}}"
 
                     >
                     <div class="input-group-append"><span class="input-group-text"> GB </span></div>
@@ -260,7 +260,7 @@
                 <div class="col-md-8">
                 <textarea disabled type="text" id="id_project_application_comment"
                           name="project_application_comment" class="form-control" maxlength="8192"
-                          value="***REMOVED******REMOVED***application?.Comment***REMOVED******REMOVED***"
+                          value="{{application?.Comment}}"
                 ></textarea>
                 </div>
               </div>
@@ -278,7 +278,7 @@
                 <div class="col-md-8">
                   <input disabled type="text" id="id_project_application_institute"
                          name="project_application_institute" class="form-control"
-                         value="***REMOVED******REMOVED***application?.Institute***REMOVED******REMOVED***"
+                         value="{{application?.Institute}}"
 
                   >
                 </div>
@@ -293,7 +293,7 @@
                 <div class="col-md-8">
                   <input disabled="" type="text" id="id_project_application_workgroup"
                          name="project_application_workgroup" class="form-control"
-                         value="***REMOVED******REMOVED***application?.Workgroup***REMOVED******REMOVED***"
+                         value="{{application?.Workgroup}}"
 
                   >
                   <span class="help-block">To which workgroup do you belong?</span>
@@ -311,7 +311,7 @@
                          name="project_application_horizon2020" class="form-control"
                          maxlength="2048"
                          disabled
-                         value="***REMOVED******REMOVED***application?.Horizon2020***REMOVED******REMOVED***"
+                         value="{{application?.Horizon2020}}"
                   >
                 </div>
               </div>
@@ -321,7 +321,7 @@
                   <input disabled type="text" id="id_project_application_elixir_project"
                          name="project_application_elixir_project" class="form-control"
                          maxlength="2048"
-                         value="***REMOVED******REMOVED***application?.ElixirProject***REMOVED******REMOVED***">
+                         value="{{application?.ElixirProject}}">
                 </div>
               </div>
               <div class="form-group row">
@@ -330,7 +330,7 @@
                   <input disabled type="text" id="id_project_application_bmbf_project"
                          name="project_application_bmbf_project" class="form-control"
                          maxlength="2048"
-                         value="***REMOVED******REMOVED***application?.BMBFProject***REMOVED******REMOVED***">
+                         value="{{application?.BMBFProject}}">
                 </div>
               </div>
               <div class="form-group row">
@@ -406,7 +406,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="notificationModal.hide()"
                 aria-label="Close">
@@ -414,8 +414,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
-          ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
+        <div class="alert alert-{{ notificationModalType }}" role="alert">
+          {{ notificationModalMessage }}
 
         </div>
       </div>

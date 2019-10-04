@@ -1,7 +1,7 @@
-import ***REMOVED***by, element***REMOVED*** from 'protractor';
-import ***REMOVED***Util***REMOVED*** from '../util';
+import {by, element} from 'protractor';
+import {Util} from '../util';
 
-export class VolumeOverviewPage ***REMOVED***
+export class VolumeOverviewPage {
 
   private static VOLUME_OVERVIEW_URL: string = 'virtualmachines/volumeOverview';
   private static CREATE_ATTACH_BUTTON: string = 'create_attach_button';
@@ -29,21 +29,21 @@ export class VolumeOverviewPage ***REMOVED***
   private static SPACE_INPUT_ID: string = 'space_input_id';
   private static VERIFY_CA_BUTTON: string = 'verify_create_attach_button';
 
-  static async navigateToVolumeOverview(): Promise<any> ***REMOVED***
+  static async navigateToVolumeOverview(): Promise<any> {
     console.log('Navigating to volume overview');
     await Util.navigateToAngularPage(this.VOLUME_OVERVIEW_URL);
-  ***REMOVED***
+  }
 
-  static async isVolumePresent(): Promise<boolean> ***REMOVED***
+  static async isVolumePresent(): Promise<boolean> {
     await Util.waitForPresenceByElement(element(by.id(this.TABLE_ID))
-                                          .element(by.id(`$***REMOVED***this.VOLUME_NAME_CELL_ID_PREFIX***REMOVED***$***REMOVED***Util.VOLUME_NAME***REMOVED***`)),
+                                          .element(by.id(`${this.VOLUME_NAME_CELL_ID_PREFIX}${Util.VOLUME_NAME}`)),
                                         Util.timeout,
                                         Util.VOLUME_NAME);
 
-    return await element(by.id(this.TABLE_ID)).element(by.id(`$***REMOVED***this.VOLUME_NAME_CELL_ID_PREFIX***REMOVED***$***REMOVED***Util.VOLUME_NAME***REMOVED***`)).isPresent();
-  ***REMOVED***
+    return await element(by.id(this.TABLE_ID)).element(by.id(`${this.VOLUME_NAME_CELL_ID_PREFIX}${Util.VOLUME_NAME}`)).isPresent();
+  }
 
-  static async deleteVolume(): Promise<any> ***REMOVED***
+  static async deleteVolume(): Promise<any> {
     console.log(' deleting volume');
     await Util.clickElementByElement(element(by.id(this.TABLE_ID)).element(by.id(this.DELETE_BUTTON)));
     await Util.waitForVisibilityOfElementById(this.VERIFY_MODAL);
@@ -51,14 +51,14 @@ export class VolumeOverviewPage ***REMOVED***
     await Util.waitForPresenceOfElementById(this.SUCCESS_DELETED_DIV);
     await Util.clickElementById(this.CLOSE_RESULT_MODAL);
     await Util.waitForInvisibilityOfElementById(this.RESULT_MODAL);
-  ***REMOVED***
+  }
 
-  static async createAndAttachVolumeToProjectVm(vm: string): Promise<any> ***REMOVED***
-    console.log(` creating and attach volume to project: $***REMOVED***Util.SIMPLE_VM_APPLICATION_NAME***REMOVED*** vm: $***REMOVED***vm***REMOVED***`);
+  static async createAndAttachVolumeToProjectVm(vm: string): Promise<any> {
+    console.log(` creating and attach volume to project: ${Util.SIMPLE_VM_APPLICATION_NAME} vm: ${vm}`);
     await Util.clickElementById(this.CREATE_ATTACH_BUTTON);
     await Util.waitForVisibilityOfElementById(this.CREATE_MODAL);
-    await Util.clickOptionOfSelect(`$***REMOVED***this.OPTION_PROJECT_PREFIX***REMOVED***$***REMOVED***Util.SIMPLE_VM_APPLICATION_NAME***REMOVED***`, this.PROJECT_SELECT_ID);
-    await Util.clickOptionOfSelect(`$***REMOVED***this.OPTION_VM_PREFIX***REMOVED***$***REMOVED***vm***REMOVED***`, this.VM_SELECT_ID);
+    await Util.clickOptionOfSelect(`${this.OPTION_PROJECT_PREFIX}${Util.SIMPLE_VM_APPLICATION_NAME}`, this.PROJECT_SELECT_ID);
+    await Util.clickOptionOfSelect(`${this.OPTION_VM_PREFIX}${vm}`, this.VM_SELECT_ID);
     await Util.sendTextToElementById(this.NAME_INPUT_ID, Util.VOLUME_NAME);
     await Util.sendTextToElementById(this.SPACE_INPUT_ID, Util.VOLUME_SPACE);
     await Util.clickElementById(this.VERIFY_CA_BUTTON);
@@ -68,25 +68,25 @@ export class VolumeOverviewPage ***REMOVED***
     console.log(' creating and attaching probably successful');
     await Util.clickElementById(this.CLOSE_RESULT_MODAL);
     await Util.waitForInvisibilityOfElementById(this.RESULT_MODAL);
-  ***REMOVED***
+  }
 
-  static async isVolumeDeleted(): Promise<boolean> ***REMOVED***
+  static async isVolumeDeleted(): Promise<boolean> {
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
 
-    return await Util.waitForAbsenceOfElementById(`$***REMOVED***this.VOLUME_NAME_CELL_ID_PREFIX***REMOVED***$***REMOVED***Util.VOLUME_NAME***REMOVED***`);
-  ***REMOVED***
+    return await Util.waitForAbsenceOfElementById(`${this.VOLUME_NAME_CELL_ID_PREFIX}${Util.VOLUME_NAME}`);
+  }
 
-  static async isVolumeAttachedToVM(name: string): Promise<boolean> ***REMOVED***
-    console.log(` checking if volume attached to $***REMOVED***name***REMOVED***`);
+  static async isVolumeAttachedToVM(name: string): Promise<boolean> {
+    console.log(` checking if volume attached to ${name}`);
     await Util.waitForPresenceByElement(element(by.id(this.TABLE_ID))
-                                          .element(by.id(`$***REMOVED***this.VM_NAME_CELL_ID_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`)),
+                                          .element(by.id(`${this.VM_NAME_CELL_ID_PREFIX}${name}`)),
                                         Util.timeout,
                                         name);
 
-    return await element(by.id(this.TABLE_ID)).element(by.id(`$***REMOVED***this.VM_NAME_CELL_ID_PREFIX***REMOVED***$***REMOVED***name***REMOVED***`)).isPresent();
-  ***REMOVED***
+    return await element(by.id(this.TABLE_ID)).element(by.id(`${this.VM_NAME_CELL_ID_PREFIX}${name}`)).isPresent();
+  }
 
-  static async isVolumeFree(): Promise<boolean> ***REMOVED***
+  static async isVolumeFree(): Promise<boolean> {
     console.log(` checking if volume is free`);
     await Util.waitForPresenceByElement(element(by.id(this.TABLE_ID))
                                           .element(by.id(this.VM_CELL_FREE_ID)),
@@ -94,5 +94,5 @@ export class VolumeOverviewPage ***REMOVED***
                                         this.VM_CELL_FREE_ID);
 
     return await element(by.id(this.TABLE_ID)).element(by.id(this.VM_CELL_FREE_ID)).isPresent();
-  ***REMOVED***
-***REMOVED***
+  }
+}

@@ -1,265 +1,265 @@
-import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs';
-import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
-import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
-import ***REMOVED***RamFactor***REMOVED*** from '../facility_manager/resources/ram-factor';
-import ***REMOVED***CoreFactor***REMOVED*** from '../facility_manager/resources/core-factor';
+import {Injectable} from '@angular/core';
+import {ApiSettings} from './api-settings.service';
+import {Observable} from 'rxjs';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {RamFactor} from '../facility_manager/resources/ram-factor';
+import {CoreFactor} from '../facility_manager/resources/core-factor';
 
-const header: HttpHeaders = new HttpHeaders(***REMOVED***
+const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
-                                            ***REMOVED***);
+                                            });
 
 /**
  * Service which provides methods for the facilities.
  */
 @Injectable()
-export class FacilityService ***REMOVED***
-  constructor(private http: HttpClient) ***REMOVED***
-  ***REMOVED***
+export class FacilityService {
+  constructor(private http: HttpClient) {
+  }
 
   /**
    * Get all available computecenters.
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @returns {Observable<any>}
    */
-  getComputeCenters(): Observable<any> ***REMOVED***
+  getComputeCenters(): Observable<any> {
 
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/`, ***REMOVED***
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/`, {
       withCredentials: true
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Get all facility, where the current user is manager.
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @returns {Observable<any>}
    */
-  getManagerFacilities(): Observable<any> ***REMOVED***
+  getManagerFacilities(): Observable<any> {
 
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***facilityManagers/current/facilities/`, ***REMOVED***
+    return this.http.get(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilities/`, {
       withCredentials: true
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
   /**
    * Get allowed groups from a facility with a specific status.
-   * @param ***REMOVED***number***REMOVED*** facility
-   * @param ***REMOVED***number***REMOVED*** status
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number} facility
+   * @param {number} status
+   * @returns {Observable<any>}
    */
-  getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<any> ***REMOVED***
+  getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<any> {
 
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/projects/`, ***REMOVED***
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
       withCredentials: true,
-      params: ***REMOVED***status: status.toString()***REMOVED***
+      params: {status: status.toString()}
 
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
   /**
    * Get all resources assigned to a facility.
-   * @param ***REMOVED***number***REMOVED*** facility id of the facility
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number} facility id of the facility
+   * @returns {Observable<any>}
    */
-  getFacilityResources(facility: number | string): Observable<any> ***REMOVED***
+  getFacilityResources(facility: number | string): Observable<any> {
 
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/projects/resources/`, ***REMOVED***
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/resources/`, {
       withCredentials: true
 
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
   /**
    * Gets all facility applications which are waiting for conirmation.
-   * @param ***REMOVED***number***REMOVED*** facility
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number} facility
+   * @returns {Observable<any>}
    */
-  getFacilityApplicationsWaitingForConfirmation(facility: number | string): Observable<any> ***REMOVED***
+  getFacilityApplicationsWaitingForConfirmation(facility: number | string): Observable<any> {
 
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications/`, ***REMOVED***
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/`, {
       withCredentials: true
 
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
   /**
    * Gets all facility applications history.
-   * @param ***REMOVED***number***REMOVED*** facility
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number} facility
+   * @returns {Observable<any>}
    */
-  getFacilityApplicationsHistory(facility: number | string): Observable<any> ***REMOVED***
+  getFacilityApplicationsHistory(facility: number | string): Observable<any> {
 
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications_history/`, ***REMOVED***
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`, {
       withCredentials: true
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
   /**
    * Gets all volumes from a specific facility.
-   * @param ***REMOVED***number***REMOVED*** facility
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number} facility
+   * @returns {Observable<any>}
    */
-  getFacilityVolumes(facility: number | string): Observable<any> ***REMOVED***
+  getFacilityVolumes(facility: number | string): Observable<any> {
 
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/volumes/`, ***REMOVED***
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/volumes/`, {
       withCredentials: true
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
   /**
    * Gets all volumes from a specific facility.
-   * @param ***REMOVED***number***REMOVED*** facility
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number} facility
+   * @returns {Observable<any>}
    */
-  getFacilitySnapshots(facility: number | string): Observable<any> ***REMOVED***
+  getFacilitySnapshots(facility: number | string): Observable<any> {
 
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/snapshots/`, ***REMOVED***
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
       withCredentials: true
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
   /**
    * Gets all facility modification applications which are waiting for conirmation.
-   * @param ***REMOVED***number***REMOVED*** facility
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number} facility
+   * @returns {Observable<any>}
    */
-  getFacilityModificationApplicationsWaitingForConfirmation(facility: number | string): Observable<any> ***REMOVED***
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/modification_applications/`, ***REMOVED***
+  getFacilityModificationApplicationsWaitingForConfirmation(facility: number | string): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/modification_applications/`, {
       withCredentials: true
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Approves an facility application.
-   * @param ***REMOVED***number***REMOVED*** facility
-   * @param ***REMOVED***number***REMOVED*** application_id
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number} facility
+   * @param {number} application_id
+   * @returns {Observable<any>}
    */
-  approveFacilityApplication(facility: number | string, application_id: number): Observable<any> ***REMOVED***
+  approveFacilityApplication(facility: number | string, application_id: number): Observable<any> {
     const params: HttpParams = new HttpParams().set('action', 'approve');
 
-    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications/$***REMOVED***application_id***REMOVED***/status/`, params, ***REMOVED***
+    return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`, params, {
       withCredentials: true,
       headers: header,
       observe: 'response'
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Add a new CoreFactor.
-   * @param ***REMOVED***number | string***REMOVED*** facility
-   * @param ***REMOVED***number | string***REMOVED*** cores
-   * @param ***REMOVED***number | string***REMOVED*** factor
-   * @param ***REMOVED***string***REMOVED*** description
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number | string} facility
+   * @param {number | string} cores
+   * @param {number | string} factor
+   * @param {string} description
+   * @returns {Observable<any>}
    */
-  addCoresFactor(facility: number | string, cores: number | string, factor: number | string, description: string): Observable<CoreFactor[]> ***REMOVED***
+  addCoresFactor(facility: number | string, cores: number | string, factor: number | string, description: string): Observable<CoreFactor[]> {
     const params: HttpParams = new HttpParams().set('type', 'cores').set('cores', cores.toString()).set('factor', factor.toString()).set('description', description);
 
-    return this.http.post<CoreFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/coreFactors/`, params, ***REMOVED***
+    return this.http.post<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/`, params, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Add a new RamFactor
-   * @param ***REMOVED***number | string***REMOVED*** facility
-   * @param ***REMOVED***number | string***REMOVED*** ram
-   * @param ***REMOVED***number | string***REMOVED*** factor
-   * @param ***REMOVED***string***REMOVED*** description
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number | string} facility
+   * @param {number | string} ram
+   * @param {number | string} factor
+   * @param {string} description
+   * @returns {Observable<any>}
    */
-  addRamFactor(facility: number | string, ram: number | string, factor: number | string, description: string): Observable<RamFactor[]> ***REMOVED***
+  addRamFactor(facility: number | string, ram: number | string, factor: number | string, description: string): Observable<RamFactor[]> {
     const params: HttpParams = new HttpParams().set('type', 'ram').set('ram', ram.toString()).set('factor', factor.toString()).set('description', description);
 
-    return this.http.post<RamFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/ramFactors/`, params, ***REMOVED***
+    return this.http.post<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/`, params, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Deletes an RamFactor.
-   * @param ***REMOVED***number | string***REMOVED*** facility
-   * @param ***REMOVED***number | string***REMOVED*** factor_id
-   * @returns ***REMOVED***Observable<RamFactor[]>***REMOVED***
+   * @param {number | string} facility
+   * @param {number | string} factor_id
+   * @returns {Observable<RamFactor[]>}
    */
-  deleteRamFactor(facility: number | string, factor_id: number | string): Observable<RamFactor[]> ***REMOVED***
+  deleteRamFactor(facility: number | string, factor_id: number | string): Observable<RamFactor[]> {
 
-    return this.http.delete<RamFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/ramFactors/$***REMOVED***factor_id***REMOVED***/`, ***REMOVED***
+    return this.http.delete<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor_id}/`, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Deletes an CoreFactor.
-   * @param ***REMOVED***number | string***REMOVED*** facility
-   * @param ***REMOVED***number | string***REMOVED*** factor_id
-   * @returns ***REMOVED***Observable<RamFactor[]>***REMOVED***
+   * @param {number | string} facility
+   * @param {number | string} factor_id
+   * @returns {Observable<RamFactor[]>}
    */
-  deleteCoreFactor(facility: number | string, factor_id: number | string): Observable<CoreFactor[]> ***REMOVED***
+  deleteCoreFactor(facility: number | string, factor_id: number | string): Observable<CoreFactor[]> {
 
-    return this.http.delete<CoreFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/coreFactors/$***REMOVED***factor_id***REMOVED***/`, ***REMOVED***
+    return this.http.delete<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/${factor_id}/`, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Get CoreFactors from a facility.
-   * @param ***REMOVED***number | string***REMOVED*** facility
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number | string} facility
+   * @returns {Observable<any>}
    */
-  getCoreFactor(facility: number | string): Observable<CoreFactor[]> ***REMOVED***
+  getCoreFactor(facility: number | string): Observable<CoreFactor[]> {
     const params: HttpParams = new HttpParams().set('type', 'cores');
 
-    return this.http.get<CoreFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/coreFactors/`, ***REMOVED***
+    return this.http.get<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/`, {
                                          withCredentials: true,
                                          params: params
-                                       ***REMOVED***
+                                       }
     )
-  ***REMOVED***
+  }
 
   /**
    * Get Ramactors from a facility.
-   * @param ***REMOVED***number | string***REMOVED*** facility
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number | string} facility
+   * @returns {Observable<any>}
    */
-  getRamFactor(facility: number | string): Observable<RamFactor[]> ***REMOVED***
+  getRamFactor(facility: number | string): Observable<RamFactor[]> {
     const params: HttpParams = new HttpParams().set('type', 'ram');
 
-    return this.http.get<RamFactor[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/resources/ramFactors/`, ***REMOVED***
+    return this.http.get<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/`, {
                                         withCredentials: true,
                                         params: params
-                                      ***REMOVED***
+                                      }
     )
-  ***REMOVED***
+  }
 
   /**
    * Declines an application for the facility
-   * @param ***REMOVED***number***REMOVED*** facility
-   * @param ***REMOVED***number***REMOVED*** application_id
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number} facility
+   * @param {number} application_id
+   * @returns {Observable<any>}
    */
-  declineFacilityApplication(facility: number, application_id: number): Observable<any> ***REMOVED***
+  declineFacilityApplication(facility: number, application_id: number): Observable<any> {
     const params: HttpParams = new HttpParams().set('action', 'decline');
 
-    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/applications/$***REMOVED***application_id***REMOVED***/status/`, params, ***REMOVED***
+    return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`, params, {
       withCredentials: true,
       headers: header,
       observe: 'response'
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Sends an email to all members of the facility.
@@ -267,31 +267,31 @@ export class FacilityService ***REMOVED***
    * @param subject email subject
    * @param message email message
    * @param reply reply address
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @returns {Observable<any>}
    */
-  sendMailToFacility(facility: string, subject: string, message: string, project_type: string, reply?: string): Observable<any> ***REMOVED***
+  sendMailToFacility(facility: string, subject: string, message: string, project_type: string, reply?: string): Observable<any> {
     const params: HttpParams = new HttpParams().set('subject', subject)
       .set('facility_id', facility).set('message', message).set('reply', reply).set('type', project_type);
 
-    return this.http.post(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***facilityManagers/current/facilityMail/`, params, ***REMOVED***
+    return this.http.post(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityMail/`, params, {
                             withCredentials: true,
                             headers: header,
                             observe: 'response'
-                          ***REMOVED***
+                          }
     )
-  ***REMOVED***
+  }
 
   /**
    * Get Members of a project with emails.
-   * @param ***REMOVED***number***REMOVED*** groupid id of the group
-   * @param ***REMOVED***number***REMOVED*** facility id of the facility
-   * @returns ***REMOVED***Observable<any>***REMOVED***
+   * @param {number} groupid id of the group
+   * @param {number} facility id of the facility
+   * @returns {Observable<any>}
    */
-  getFacilityGroupRichMembers(groupid: number, facility: number): Observable<any> ***REMOVED***
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***computecenters/$***REMOVED***facility***REMOVED***/projects/$***REMOVED***groupid***REMOVED***/members/`, ***REMOVED***
+  getFacilityGroupRichMembers(groupid: number, facility: number): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupid}/members/`, {
                            withCredentials: true
-                         ***REMOVED***
+                         }
     )
-  ***REMOVED***
+  }
 
-***REMOVED***
+}

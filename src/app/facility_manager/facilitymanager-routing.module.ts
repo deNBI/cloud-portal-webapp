@@ -1,48 +1,48 @@
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***RouterModule, Routes***REMOVED*** from '@angular/router';
-import ***REMOVED***FacilityProjectsOverviewComponent***REMOVED*** from '../facility_manager/facilityprojectsoverview.component';
-import ***REMOVED***ImageTagComponent***REMOVED*** from '../facility_manager/imagetags.component';
-import ***REMOVED***FacilityApplicationComponent***REMOVED*** from './facility.application.component';
-import ***REMOVED***ResourcesComponent***REMOVED*** from './resources/resources.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {FacilityProjectsOverviewComponent} from '../facility_manager/facilityprojectsoverview.component';
+import {ImageTagComponent} from '../facility_manager/imagetags.component';
+import {FacilityApplicationComponent} from './facility.application.component';
+import {ResourcesComponent} from './resources/resources.component';
 
 const routes: Routes = [
 
-    ***REMOVED***
+    {
         path: 'facilityProjects',
         component: FacilityProjectsOverviewComponent,
-        data: ***REMOVED***
+        data: {
             title: 'Facility Projects'
-        ***REMOVED***
+        }
 
-    ***REMOVED***, ***REMOVED***
+    }, {
         path: 'imageTags',
         component: ImageTagComponent,
-        data: ***REMOVED***
+        data: {
             title: 'Image Tags'
-        ***REMOVED***
-    ***REMOVED***, ***REMOVED***
+        }
+    }, {
         path: 'facilityApplications',
         component: FacilityApplicationComponent,
-        data: ***REMOVED***
+        data: {
             title: 'Facility Applications'
-        ***REMOVED***
-    ***REMOVED***,
-    ***REMOVED***
+        }
+    },
+    {
         path: 'facilityResources',
         component: ResourcesComponent,
-        data: ***REMOVED***
+        data: {
             title: 'Facility Resources'
-        ***REMOVED***
-    ***REMOVED***
+        }
+    }
 
 ];
 
 /**
  * Facilitymanager routing module.
  */
-@NgModule(***REMOVED***
+@NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
-***REMOVED***)
-export class FacilitymanagerRoutingModule ***REMOVED***
-***REMOVED***
+})
+export class FacilitymanagerRoutingModule {
+}

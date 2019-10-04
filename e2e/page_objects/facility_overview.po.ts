@@ -1,7 +1,7 @@
-import ***REMOVED***by, element***REMOVED*** from 'protractor';
-import ***REMOVED***Util***REMOVED*** from '../util';
+import {by, element} from 'protractor';
+import {Util} from '../util';
 
-export class FacilityOverviewPage ***REMOVED***
+export class FacilityOverviewPage {
 
     private static FACILITY_OVERVIEW_URL: string = 'facility-manager/facilityApplications';
     private static APPLICATION_APPROVAL_BTN_PREFIX: string = 'approval_';
@@ -11,20 +11,20 @@ export class FacilityOverviewPage ***REMOVED***
     private static EXTENSION_SUCCESSFULLY: string = 'Successfully approved the application modification.';
 
 
-    static async navigateToFacilityOverview(): Promise<any> ***REMOVED***
+    static async navigateToFacilityOverview(): Promise<any> {
         console.log('Navigating to facility overview');
         await Util.navigateToAngularPage(this.FACILITY_OVERVIEW_URL);
-    ***REMOVED***
+    }
 
-    static async approveApplication(application_name: string): Promise<any> ***REMOVED***
+    static async approveApplication(application_name: string): Promise<any> {
         await Util.clickElementById(this.APPLICATION_APPROVAL_BTN_PREFIX + application_name);
         await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULLY_APPROVED_APPL);
-    ***REMOVED***
+    }
 
-    static async approveApplicationExtension(application_name: string): Promise<any> ***REMOVED***
+    static async approveApplicationExtension(application_name: string): Promise<any> {
         await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
         await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.EXTENSION_SUCCESSFULLY);
-    ***REMOVED***
+    }
 
 
-***REMOVED***
+}

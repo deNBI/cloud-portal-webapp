@@ -1,59 +1,59 @@
-import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
-import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs';
-import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
-import ***REMOVED***IBiocondaTool***REMOVED*** from '../virtualmachines/conda/bioconda.component';
+import {Injectable} from '@angular/core';
+import {ApiSettings} from './api-settings.service'
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {IBiocondaTool} from '../virtualmachines/conda/bioconda.component';
 
-const header: HttpHeaders = new HttpHeaders(***REMOVED***
+const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
-                                            ***REMOVED***);
+                                            });
 
 @Injectable()
-export class BiocondaService ***REMOVED***
+export class BiocondaService {
 
-  constructor(private http: HttpClient) ***REMOVED***
-  ***REMOVED***
+  constructor(private http: HttpClient) {
+  }
 
-  getBiocondaTools(page: number, name?: string, version?: string, build?: string): Observable<any> ***REMOVED***
+  getBiocondaTools(page: number, name?: string, version?: string, build?: string): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('page', page.toString())
       .set('build', build)
       .set('version', version)
       .set('name', name);
 
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***conda/bioconda/`, ***REMOVED***
+    return this.http.get(`${ApiSettings.getApiBaseURL()}conda/bioconda/`, {
       headers: header,
       withCredentials: true,
       params: params
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  getAllTools(page: number, name?: string, version?: string, build?: string): Observable<any> ***REMOVED***
+  getAllTools(page: number, name?: string, version?: string, build?: string): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('page', page.toString())
       .set('build', build)
       .set('version', version)
       .set('name', name);
 
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***conda/all/`, ***REMOVED***
+    return this.http.get(`${ApiSettings.getApiBaseURL()}conda/all/`, {
       headers: header,
       withCredentials: true,
       params: params
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  getAnacondaTools(): Observable<any> ***REMOVED***
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***conda/anaconda/`, ***REMOVED***
+  getAnacondaTools(): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}conda/anaconda/`, {
       headers: header,
       withCredentials: true
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  getCondaforgeTools(): Observable<any> ***REMOVED***
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***conda/conda-forge/`, ***REMOVED***
+  getCondaforgeTools(): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}conda/conda-forge/`, {
       headers: header,
       withCredentials: true
-    ***REMOVED***)
-  ***REMOVED***
-***REMOVED***
+    })
+  }
+}

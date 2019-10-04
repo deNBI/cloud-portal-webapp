@@ -1,4 +1,4 @@
-export const environment = ***REMOVED***
+export const environment = {
   wiki_group_invitations: 'https://cloud.denbi.de/wiki/portal/project_overview/#inviting-members',
   vo: 3334,
   production: true,
@@ -12,4 +12,4 @@ export const environment = ***REMOVED***
   voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev',
   login: 'https://portal-dev.denbi.de/portal/',
   matomoServer: '//cloud.denbi.de/matomo/'
-***REMOVED***;
+};

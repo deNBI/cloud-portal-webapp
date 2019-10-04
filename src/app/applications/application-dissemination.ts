@@ -1,4 +1,4 @@
-export class ApplicationDissemination ***REMOVED***
+export class ApplicationDissemination {
 
   private _platform_newsletter: boolean = false;
   private _platform_twitter: boolean = false;
@@ -15,118 +15,118 @@ export class ApplicationDissemination ***REMOVED***
   private _information_workgroup: boolean = false;
   private _information_project_type: boolean = false;
 
-  constructor() ***REMOVED***
-  ***REMOVED***
+  constructor() {
+  }
 
-  get information_description_allowed(): boolean ***REMOVED***
+  get information_description_allowed(): boolean {
     return this._information_description_allowed;
-  ***REMOVED***
+  }
 
-  set information_description_allowed(value: boolean) ***REMOVED***
+  set information_description_allowed(value: boolean) {
     this._information_description_allowed = value;
-  ***REMOVED***
+  }
 
-  get platform_newsletter(): boolean ***REMOVED***
+  get platform_newsletter(): boolean {
     return this._platform_newsletter;
-  ***REMOVED***
+  }
 
-  set platform_newsletter(value: boolean) ***REMOVED***
+  set platform_newsletter(value: boolean) {
     this._platform_newsletter = value;
-  ***REMOVED***
+  }
 
-  get platform_twitter(): boolean ***REMOVED***
+  get platform_twitter(): boolean {
     return this._platform_twitter;
-  ***REMOVED***
+  }
 
-  set platform_twitter(value: boolean) ***REMOVED***
+  set platform_twitter(value: boolean) {
     this._platform_twitter = value;
-  ***REMOVED***
+  }
 
-  get platform_landing_page(): boolean ***REMOVED***
+  get platform_landing_page(): boolean {
     return this._platform_landing_page;
-  ***REMOVED***
+  }
 
-  set platform_landing_page(value: boolean) ***REMOVED***
+  set platform_landing_page(value: boolean) {
     this._platform_landing_page = value;
-  ***REMOVED***
+  }
 
-  get platform_portal_news(): boolean ***REMOVED***
+  get platform_portal_news(): boolean {
     return this._platform_portal_news;
-  ***REMOVED***
+  }
 
-  set platform_portal_news(value: boolean) ***REMOVED***
+  set platform_portal_news(value: boolean) {
     this._platform_portal_news = value;
-  ***REMOVED***
+  }
 
-  get information_title(): string ***REMOVED***
+  get information_title(): string {
     return this._information_title;
-  ***REMOVED***
+  }
 
-  set information_title(value: string) ***REMOVED***
+  set information_title(value: string) {
     this._information_title = value;
-  ***REMOVED***
+  }
 
-  get information_description(): string ***REMOVED***
+  get information_description(): string {
     return this._information_description;
-  ***REMOVED***
+  }
 
-  set information_description(value: string) ***REMOVED***
+  set information_description(value: string) {
     this._information_description = value;
-  ***REMOVED***
+  }
 
-  get information_resources(): boolean ***REMOVED***
+  get information_resources(): boolean {
     return this._information_resources;
-  ***REMOVED***
+  }
 
-  set information_resources(value: boolean) ***REMOVED***
+  set information_resources(value: boolean) {
     this._information_resources = value;
-  ***REMOVED***
+  }
 
-  get information_project_affiliation(): boolean ***REMOVED***
+  get information_project_affiliation(): boolean {
     return this._information_project_affiliation;
-  ***REMOVED***
+  }
 
-  set information_project_affiliation(value: boolean) ***REMOVED***
+  set information_project_affiliation(value: boolean) {
     this._information_project_affiliation = value;
-  ***REMOVED***
+  }
 
-  get information_lifetime(): boolean ***REMOVED***
+  get information_lifetime(): boolean {
     return this._information_lifetime;
-  ***REMOVED***
+  }
 
-  set information_lifetime(value: boolean) ***REMOVED***
+  set information_lifetime(value: boolean) {
     this._information_lifetime = value;
-  ***REMOVED***
+  }
 
-  get information_pi_name(): boolean ***REMOVED***
+  get information_pi_name(): boolean {
     return this._information_pi_name;
-  ***REMOVED***
+  }
 
-  set information_pi_name(value: boolean) ***REMOVED***
+  set information_pi_name(value: boolean) {
     this._information_pi_name = value;
-  ***REMOVED***
+  }
 
-  get information_institution(): boolean ***REMOVED***
+  get information_institution(): boolean {
     return this._information_institution;
-  ***REMOVED***
+  }
 
-  set information_institution(value: boolean) ***REMOVED***
+  set information_institution(value: boolean) {
     this._information_institution = value;
-  ***REMOVED***
+  }
 
-  get information_workgroup(): boolean ***REMOVED***
+  get information_workgroup(): boolean {
     return this._information_workgroup;
-  ***REMOVED***
+  }
 
-  set information_workgroup(value: boolean) ***REMOVED***
+  set information_workgroup(value: boolean) {
     this._information_workgroup = value;
-  ***REMOVED***
+  }
 
-  get information_project_type(): boolean ***REMOVED***
+  get information_project_type(): boolean {
     return this._information_project_type;
-  ***REMOVED***
+  }
 
-  set information_project_type(value: boolean) ***REMOVED***
+  set information_project_type(value: boolean) {
     this._information_project_type = value;
-  ***REMOVED***
-***REMOVED***
+  }
+}

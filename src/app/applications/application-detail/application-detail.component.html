@@ -7,7 +7,7 @@
         PI Name
       </td>
       <td>
-        ***REMOVED******REMOVED***application?.PI***REMOVED******REMOVED***
+        {{application?.PI}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -17,7 +17,7 @@
         PI Email
       </td>
       <td>
-        ***REMOVED******REMOVED***application?.PIEmail***REMOVED******REMOVED***
+        {{application?.PIEmail}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -27,7 +27,7 @@
         PI Affiliations
       </td>
       <td>
-        ***REMOVED******REMOVED***application?.PiAffiliations***REMOVED******REMOVED***
+        {{application?.PiAffiliations}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -36,8 +36,8 @@
       <td>User
         Affiliations
       </td>
-      <td>***REMOVED******REMOVED***
-          application?.UserAffiliations***REMOVED******REMOVED***
+      <td>{{
+          application?.UserAffiliations}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -45,7 +45,7 @@
     <tr>
       <td>User Name</td>
       <td>
-        ***REMOVED******REMOVED***application_user[application?.User]?.name***REMOVED******REMOVED***
+        {{application_user[application?.User]?.name}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -53,7 +53,7 @@
     <tr>
       <td>User Email</td>
       <td>
-        ***REMOVED******REMOVED***application_user[application?.User]?.email***REMOVED******REMOVED***
+        {{application_user[application?.User]?.email}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -62,7 +62,7 @@
       <td>Research Topics</td>
       <td><h5><span *ngFor="let term of application?.EdamTopics"
                     style="margin-left: 5px; "
-                    class="badge badge-info">***REMOVED******REMOVED***term***REMOVED******REMOVED***
+                    class="badge badge-info">{{term}}
  </span>
 
       </h5></td>
@@ -70,9 +70,9 @@
     <tr>
       <td>Description
       </td>
-      <td>***REMOVED******REMOVED***
+      <td>{{
           application?.Description
-        ***REMOVED******REMOVED***
+        }}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -80,7 +80,7 @@
     <tr>
       <td>Horizon 2020</td>
       <td>
-        ***REMOVED******REMOVED***application?.Horizon2020***REMOVED******REMOVED***
+        {{application?.Horizon2020}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -88,7 +88,7 @@
     <tr>
       <td>Elixir Project</td>
       <td>
-        ***REMOVED******REMOVED***application?.ElixirProject***REMOVED******REMOVED***
+        {{application?.ElixirProject}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -96,7 +96,7 @@
     <tr>
       <td>BMBF Project</td>
       <td>
-        ***REMOVED******REMOVED***application?.BMBFProject***REMOVED******REMOVED***
+        {{application?.BMBFProject}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -104,7 +104,7 @@
     <tr>
       <td>Dissemination allowed</td>
       <td>
-        ***REMOVED******REMOVED***application?.Dissemination***REMOVED******REMOVED***
+        {{application?.Dissemination}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -112,9 +112,9 @@
 
     <tr>
       <td>Workgroup</td>
-      <td>***REMOVED******REMOVED***
+      <td>{{
           application?.Workgroup
-        ***REMOVED******REMOVED***
+        }}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
@@ -122,24 +122,24 @@
 
     <tr>
       <td>Comment</td>
-      <td>***REMOVED******REMOVED***
+      <td>{{
           application?.Comment
-        ***REMOVED******REMOVED***
+        }}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
-        ***REMOVED******REMOVED***application?.ApplicationExtension?.Comment***REMOVED******REMOVED***
+        {{application?.ApplicationExtension?.Comment}}
       </td>
 
     </tr>
     <tr>
       <td>Lifetime</td>
-      <td>***REMOVED******REMOVED***
+      <td>{{
           application?.Lifetime
-        ***REMOVED******REMOVED*** months
+        }} months
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
-        ***REMOVED******REMOVED***
-          application?.ApplicationExtension?.Lifetime***REMOVED******REMOVED***
+        {{
+          application?.ApplicationExtension?.Lifetime}}
       </td>
     </tr>
     <tr>
@@ -148,32 +148,32 @@
 
       <td>
         <span>Current:</span>
-        ***REMOVED******REMOVED***application?.VMsRequested***REMOVED******REMOVED***
+        {{application?.VMsRequested}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         Requested:
-        ***REMOVED******REMOVED***application?.ApplicationExtension?.VMsRequested***REMOVED******REMOVED***
+        {{application?.ApplicationExtension?.VMsRequested}}
       </td>
 
     </tr>
 
     <tr *ngFor="let item of application?.CurrentFlavors | keyvalue">
-      <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
-      <td>***REMOVED******REMOVED***item.value.counter***REMOVED******REMOVED***</td>
+      <td>Flavor: {{item.key}}</td>
+      <td>{{item.value.counter}}</td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED  || isModification">
                                                             <span
                                                               *ngIf="application?.ApplicationExtension?.RequestedFlavors[item.key]">
-                                                                ***REMOVED******REMOVED***application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***</span>
+                                                                {{application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}</span>
         <span *ngIf="!application?.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                0</span></td>
     </tr>
     <ng-container
       *ngFor="let item of application?.ApplicationExtension?.RequestedFlavors| keyvalue ">
       <tr *ngIf="!application?.CurrentFlavors[item.key]">
-        <td>Flavor: ***REMOVED******REMOVED***item.key***REMOVED******REMOVED***</td>
+        <td>Flavor: {{item.key}}</td>
         <td>0</td>
         <td>
-          ***REMOVED******REMOVED***application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter***REMOVED******REMOVED***
+          {{application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}
 
 
         </td>
@@ -184,36 +184,36 @@
 
     <tr>
       <td>Total Cores</td>
-      <td>***REMOVED******REMOVED***
+      <td>{{
           application?.TotalCores
-        ***REMOVED******REMOVED***
+        }}
 
 
       </td>
 
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
-        ***REMOVED******REMOVED***application?.ApplicationExtension?.TotalCores***REMOVED******REMOVED***
+        {{application?.ApplicationExtension?.TotalCores}}
       </td>
     </tr>
 
     <tr>
       <td>Total RAM</td>
-      <td>***REMOVED******REMOVED***
-          application?.TotalRam***REMOVED******REMOVED*** GB
+      <td>{{
+          application?.TotalRam}} GB
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
-        ***REMOVED******REMOVED***application?.ApplicationExtension?.TotalRAM***REMOVED******REMOVED***
+        {{application?.ApplicationExtension?.TotalRAM}}
       </td>
     </tr>
     <tr>
       <td>Storage Limit
       </td>
-      <td>***REMOVED******REMOVED***
+      <td>{{
           application?.VolumeLimit
-        ***REMOVED******REMOVED*** GB
+        }} GB
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
-        ***REMOVED******REMOVED***application?.ApplicationExtension?.VolumeLimit***REMOVED******REMOVED***
+        {{application?.ApplicationExtension?.VolumeLimit}}
         GB
       </td>
     </tr>
@@ -221,23 +221,23 @@
       <td>Volume
         Counter
       </td>
-      <td>***REMOVED******REMOVED***
+      <td>{{
           application?.VolumeCounter
-        ***REMOVED******REMOVED*** volumes
+        }} volumes
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
-        ***REMOVED******REMOVED***application?.ApplicationExtension?.VolumeCounter***REMOVED******REMOVED*** volumes
+        {{application?.ApplicationExtension?.VolumeCounter}} volumes
       </td>
     </tr>
     <tr *ngIf="application?.OpenStackProject">
       <td>ObjectStorage
       </td>
-      <td>***REMOVED******REMOVED***
+      <td>{{
           application?.ObjectStorage
-        ***REMOVED******REMOVED*** GB
+        }} GB
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification ">
-        ***REMOVED******REMOVED***application?.ApplicationExtension?.ObjectStorage***REMOVED******REMOVED***
+        {{application?.ApplicationExtension?.ObjectStorage}}
         GB
       </td>
     </tr>
@@ -245,9 +245,9 @@
       <td>Last status
         changed
       </td>
-      <td>***REMOVED******REMOVED***
+      <td>{{
           application?.DateStatusChanged
-        ***REMOVED******REMOVED***
+        }}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>

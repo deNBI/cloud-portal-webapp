@@ -1,13 +1,13 @@
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
-import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap/modal';
-import ***REMOVED***AlertModule***REMOVED*** from 'ngx-bootstrap';
-import ***REMOVED***PublicKeyComponent***REMOVED*** from './public-key.component';
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {AlertModule} from 'ngx-bootstrap';
+import {PublicKeyComponent} from './public-key.component';
 
-@NgModule(***REMOVED***
+@NgModule({
     imports: [
         TabsModule,
         CommonModule,
@@ -19,6 +19,6 @@ import ***REMOVED***PublicKeyComponent***REMOVED*** from './public-key.component
         PublicKeyComponent
     ],
     exports: [PublicKeyComponent, AlertModule, FormsModule, ModalModule, CommonModule, TabsModule]
-***REMOVED***)
-export class PublicKeyModule ***REMOVED***
-***REMOVED***
+})
+export class PublicKeyModule {
+}

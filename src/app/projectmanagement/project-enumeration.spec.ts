@@ -1,7 +1,7 @@
-import ***REMOVED*** ProjectEnumeration ***REMOVED*** from './project-enumeration';
+import { ProjectEnumeration } from './project-enumeration';
 
-describe('ProjectEnumeration', () => ***REMOVED***
-  it('should create an instance', () => ***REMOVED***
+describe('ProjectEnumeration', () => {
+  it('should create an instance', () => {
     expect(new ProjectEnumeration()).toBeTruthy();
-  ***REMOVED***);
-***REMOVED***);
+  });
+});

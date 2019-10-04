@@ -22,10 +22,10 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let client of clients">
-                        <td>***REMOVED******REMOVED***client.location***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED***client.host***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED***client.port***REMOVED******REMOVED***</td>
-                        <td>***REMOVED******REMOVED***client.status***REMOVED******REMOVED***</td>
+                        <td>{{client.location}}</td>
+                        <td>{{client.host}}</td>
+                        <td>{{client.port}}</td>
+                        <td>{{client.status}}</td>
                         <td>
                             <button type="button" class="btn btn-primary" (click)="selectedClient=client;updateModal.show();">
                                 Update
@@ -40,13 +40,13 @@
                             <select class="form-control col-md-6" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
                                 <option value="undefined" disabled selected hidden> Please Select</option>
                                 <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter">
-                                    ***REMOVED******REMOVED***computecenter.Name***REMOVED******REMOVED***
+                                    {{computecenter.Name}}
                                 </option>
 
                             </select></td>
                         <td><input type="text" placeholder="Host" #hos></td>
                         <td><input type="text" placeholder="Port" #port></td>
-                        <td>***REMOVED******REMOVED***checkStatus***REMOVED******REMOVED***</td>
+                        <td>{{checkStatus}}</td>
 
                         <td>
                             <button type="button" style="padding-right: 5px;margin-right: 5px" class="btn btn-primary navbar-inverse"
@@ -114,7 +114,7 @@
                             <td>
                                 <select class="form-control col-md-6" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
                                     <option value="undefined" disabled selected hidden> Please Select</option>
-                                    <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter"> ***REMOVED******REMOVED***computecenter.Name***REMOVED******REMOVED***
+                                    <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter"> {{computecenter.Name}}
                                     </option>
 
                                 </select></td>

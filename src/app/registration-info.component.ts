@@ -1,11 +1,11 @@
-import ***REMOVED***Component***REMOVED*** from '@angular/core';
-import ***REMOVED***environment***REMOVED*** from '../environments/environment';
+import {Component} from '@angular/core';
+import {environment} from '../environments/environment';
 
-@Component(***REMOVED***
+@Component({
     selector: 'app-registration-info',
     templateUrl: 'registration-info.component.html'
 
-***REMOVED***)
-export class RegistrationInfoComponent ***REMOVED***
+})
+export class RegistrationInfoComponent {
     voRegistrationLink: string = environment.voRegistrationLink;
-***REMOVED***
+}

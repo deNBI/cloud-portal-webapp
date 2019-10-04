@@ -38,9 +38,9 @@
                             <input required id="emailSubject" name="emailSub" placeholder="Subject"
                                    class="form-control"
                                    type="text" [(ngModel)]="emailSubject" minlength="1" #emailSub="ngModel"
-                                   [ngClass]="***REMOVED***'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
+                                   [ngClass]="{'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
                     'is-valid':emailSub.valid && (emailSub.dirty || emailSub.touched)
-                    ***REMOVED***">
+                    }">
 
                         </div>
                     </div>
@@ -50,10 +50,10 @@
                         <div class="col-md-12">
                             <input required id="Reply to" name="emailReply" placeholder="" class="form-control"
                                    type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
-                                   pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.***REMOVED***2,***REMOVED***.*)|^.***REMOVED***254***REMOVED***.)([a-zA-Z0-9!#$%&'*+\/=?^_`***REMOVED***|***REMOVED***~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]***REMOVED***1,63***REMOVED***\.)+[a-zA-Z]***REMOVED***2,15***REMOVED***"
-                                   [ngClass]="***REMOVED***'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
+                                   pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                                   [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
                     'is-valid':emailRep.valid && (emailRep.dirty || emailRep.touched)
-                    ***REMOVED***">
+                    }">
 
                         </div>
                     </div>
@@ -65,9 +65,9 @@
                             <textarea minlength="1" required class="form-control" id="emailText" name="emailText"
                                       [(ngModel)]="emailText"
                                       type="text" #emailT="ngModel"
-                                      [ngClass]="***REMOVED***'is-invalid':emailT.invalid && (emailT.dirty || emailT.touched),
+                                      [ngClass]="{'is-invalid':emailT.invalid && (emailT.dirty || emailT.touched),
                     'is-valid':emailT.valid && (emailT.dirty || emailT.touched)
-                    ***REMOVED***"></textarea>
+                    }"></textarea>
                         </div>
                     </div>
                 </form>

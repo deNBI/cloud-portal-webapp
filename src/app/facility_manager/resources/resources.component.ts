@@ -1,24 +1,24 @@
-import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***FacilityService***REMOVED*** from '../../api-connector/facility.service';
-import ***REMOVED***Resources***REMOVED*** from '../../vo_manager/resources/resources';
+import {Component, OnInit} from '@angular/core';
+import {FacilityService} from '../../api-connector/facility.service';
+import {Resources} from '../../vo_manager/resources/resources';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
-import ***REMOVED***ExportAsConfig, ExportAsService***REMOVED*** from 'ngx-export-as'
-import ***REMOVED***CoreFactor***REMOVED*** from './core-factor';
-import ***REMOVED***RamFactor***REMOVED*** from './ram-factor';
-import ***REMOVED***forkJoin***REMOVED*** from 'rxjs';
+import {ExportAsConfig, ExportAsService} from 'ngx-export-as'
+import {CoreFactor} from './core-factor';
+import {RamFactor} from './ram-factor';
+import {forkJoin} from 'rxjs';
 
 /**
  * Facility resource component.
  */
-@Component(***REMOVED***
+@Component({
              selector: 'app-resources',
              templateUrl: './resources.component.html',
              styleUrls: ['./resources.component.scss'],
              providers: [FacilityService, ExportAsService]
 
-           ***REMOVED***)
-export class ResourcesComponent implements OnInit ***REMOVED***
+           })
+export class ResourcesComponent implements OnInit {
 
   public managerFacilities: [string, number][];
   /**
@@ -36,93 +36,93 @@ export class ResourcesComponent implements OnInit ***REMOVED***
   today: number = Date.now();
   coreFactors: CoreFactor[] = [];
   ramFactors: RamFactor[] = [];
-  exportAsConfigCSV: ExportAsConfig = ***REMOVED***
+  exportAsConfigCSV: ExportAsConfig = {
     type: 'csv',
     elementId: this.tableId
-  ***REMOVED***;
+  };
 
-  constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) ***REMOVED***
-  ***REMOVED***
+  constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
+  }
 
-  addCoreFactor(cores: string | number, factor: string | number, description: string): void ***REMOVED***
-    if (cores && factor) ***REMOVED***
+  addCoreFactor(cores: string | number, factor: string | number, description: string): void {
+    if (cores && factor) {
       const re: any = /\,/gi;
       factor = factor.toString().replace(re, '.');
       this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor, description)
-        .subscribe((res: CoreFactor[]) => ***REMOVED***
+        .subscribe((res: CoreFactor[]) => {
           this.coreFactors = res;
           this.getSelectedFacilityResources()
-        ***REMOVED***)
-    ***REMOVED***
-  ***REMOVED***
+        })
+    }
+  }
 
-  addRamFactor(ram: string | number, factor: string | number, description: string): void ***REMOVED***
-    if (ram && factor) ***REMOVED***
+  addRamFactor(ram: string | number, factor: string | number, description: string): void {
+    if (ram && factor) {
       const re: any = /\,/gi;
       factor = factor.toString().replace(re, '.');
-      this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor, description).subscribe((res: RamFactor[]) => ***REMOVED***
+      this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor, description).subscribe((res: RamFactor[]) => {
         this.ramFactors = res;
         this.getSelectedFacilityResources()
-      ***REMOVED***)
-    ***REMOVED***
-  ***REMOVED***
+      })
+    }
+  }
 
-  onChangeSelectedFacility(): void ***REMOVED***
+  onChangeSelectedFacility(): void {
     this.getSelectedFacilityResources()
-  ***REMOVED***
+  }
 
-  ngOnInit(): void ***REMOVED***
-    this.facilityService.getManagerFacilities().subscribe((result: [string, number][]) => ***REMOVED***
+  ngOnInit(): void {
+    this.facilityService.getManagerFacilities().subscribe((result: [string, number][]) => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
       this.getSelectedFacilityResources();
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  public deleteCoreFactor(id: string | number): void ***REMOVED***
-    this.facilityService.deleteCoreFactor(this.selectedFacility['FacilityId'], id).subscribe((res: CoreFactor[]) => ***REMOVED***
+  public deleteCoreFactor(id: string | number): void {
+    this.facilityService.deleteCoreFactor(this.selectedFacility['FacilityId'], id).subscribe((res: CoreFactor[]) => {
       this.coreFactors = res;
       this.getSelectedFacilityResources()
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  public deleteRamFactor(id: string | number): void ***REMOVED***
-    this.facilityService.deleteRamFactor(this.selectedFacility['FacilityId'], id).subscribe((res: RamFactor[]) => ***REMOVED***
+  public deleteRamFactor(id: string | number): void {
+    this.facilityService.deleteRamFactor(this.selectedFacility['FacilityId'], id).subscribe((res: RamFactor[]) => {
       this.ramFactors = res;
       this.getSelectedFacilityResources()
 
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  public getSelectedFacilityResources(): void ***REMOVED***
-    this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe((res: Resources[]) => ***REMOVED***
+  public getSelectedFacilityResources(): void {
+    this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe((res: Resources[]) => {
 
                                                                                                this.resources = res;
                                                                                                this.isLoaded = true;
-                                                                                             ***REMOVED***
+                                                                                             }
     )
 
-  ***REMOVED***
+  }
 
-  public getRamCoreFactors(): void ***REMOVED***
+  public getRamCoreFactors(): void {
     forkJoin(
       this.facilityService.getCoreFactor(this.selectedFacility['FacilityId']),
-      this.facilityService.getRamFactor(this.selectedFacility['FacilityId'])).subscribe((res: any) => ***REMOVED***
+      this.facilityService.getRamFactor(this.selectedFacility['FacilityId'])).subscribe((res: any) => {
       this.coreFactors = res[0];
       this.ramFactors = res[1];
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  public tableToCSV(): void ***REMOVED***
+  public tableToCSV(): void {
     this.exportAsService.save(this.exportAsConfigCSV, this.tableId);
 
-  ***REMOVED***
+  }
 
-  public tableToPDF(): void ***REMOVED***
+  public tableToPDF(): void {
     const data: object = document.getElementById(this.tableId);
-    html2canvas(data).then((canvas: any) => ***REMOVED***
+    html2canvas(data).then((canvas: any) => {
       // Few necessary setting options
       const imgWidth: number = 208;
       const pageHeight: number = 295;
@@ -133,8 +133,8 @@ export class ResourcesComponent implements OnInit ***REMOVED***
       const pdf: jspdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
       const position: number = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-      pdf.save(`$***REMOVED***this.selectedFacility['Facility']***REMOVED***.pdf`); // Generated PDF
-    ***REMOVED***);
-  ***REMOVED***
+      pdf.save(`${this.selectedFacility['Facility']}.pdf`); // Generated PDF
+    });
+  }
 
-***REMOVED***
+}

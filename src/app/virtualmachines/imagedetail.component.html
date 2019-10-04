@@ -1,42 +1,42 @@
 <div *ngIf="!carousel_activated || images.length <=images_per_row-1" class="row">
   <div *ngIf="selectedImage" class="col-xl-3 col-md-12" style="cursor: pointer;"
-       [ngClass]="***REMOVED***'col-xl-3':window_size >= carousel_window_min_xl_9,
+       [ngClass]="{'col-xl-3':window_size >= carousel_window_min_xl_9,
        'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
-       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8***REMOVED***">
+       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}">
     <div class="card border-success flavor-image-card"
     >
       <div
         class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
-        title="***REMOVED******REMOVED***selectedImage?.name***REMOVED******REMOVED***">
+        title="{{selectedImage?.name}}">
         <i
         *ngIf="selectedImage?.is_snapshot"
         class="fa fa-camera" aria-hidden="true"></i>
-        <strong>***REMOVED******REMOVED***selectedImage?.name***REMOVED******REMOVED***</strong></div>
+        <strong>{{selectedImage?.name}}</strong></div>
       <div class="card-body">
         <div class="scroll-image">
           <div class="col scroll-image">
-            ***REMOVED******REMOVED***selectedImage?.description***REMOVED******REMOVED***
+            {{selectedImage?.description}}
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div *ngFor="  let image of images" style="cursor: pointer;" class="col-md-12" [ngClass]="***REMOVED***'col-xl-3':window_size > carousel_window_min_xl_9,
+  <div *ngFor="  let image of images" style="cursor: pointer;" class="col-md-12" [ngClass]="{'col-xl-3':window_size > carousel_window_min_xl_9,
        'col-xl-6':window_size > carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
-       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>carousel_window_min_xl_8***REMOVED***">
-    <div (click)="setSelectedImage(image);" class="card flavor-image-card" id="id_image_owl_***REMOVED******REMOVED***image?.name***REMOVED******REMOVED***"
+       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>carousel_window_min_xl_8}">
+    <div (click)="setSelectedImage(image);" class="card flavor-image-card" id="id_image_owl_{{image?.name}}"
     >
       <div
-        [ngClass]="***REMOVED***'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot***REMOVED***"
+        [ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
 
-        class="card-header  text-truncate" data-toggle="tooltip" data-placement="top" title="***REMOVED******REMOVED***image?.name***REMOVED******REMOVED***"><i
+        class="card-header  text-truncate" data-toggle="tooltip" data-placement="top" title="{{image?.name}}"><i
         *ngIf="image?.is_snapshot"
         class="fa fa-camera" aria-hidden="true"></i>
-        <strong>***REMOVED******REMOVED***image.name***REMOVED******REMOVED***</strong></div>
+        <strong>{{image.name}}</strong></div>
       <div class="card-body">
         <div class="scroll-image">
           <div class="col">
-            ***REMOVED******REMOVED***image.description***REMOVED******REMOVED***
+            {{image.description}}
           </div>
         </div>
       </div>
@@ -47,22 +47,22 @@
 <div *ngIf="carousel_activated && images.length >=images_per_row" class="row"
 >
   <div [hidden]="!selectedImage" class="col-md-12" style="cursor: pointer; padding-top: 10px"
-       [ngClass]="***REMOVED***'col-xl-3':window_size >= carousel_window_min_xl_9,
+       [ngClass]="{'col-xl-3':window_size >= carousel_window_min_xl_9,
        'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
-       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8***REMOVED***">
+       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}">
     <div class="card border-success flavor-image-card"
     >
       <div
         class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
-        title="***REMOVED******REMOVED***selectedImage?.name***REMOVED******REMOVED***">
+        title="{{selectedImage?.name}}">
            <i
         *ngIf="selectedImage?.is_snapshot"
         class="fa fa-camera" aria-hidden="true"></i>
-        <strong>***REMOVED******REMOVED***selectedImage?.name***REMOVED******REMOVED***</strong></div>
+        <strong>{{selectedImage?.name}}</strong></div>
       <div class="card-body">
         <div class="scroll-image">
           <div class="col scroll-image">
-            ***REMOVED******REMOVED***selectedImage?.description***REMOVED******REMOVED***
+            {{selectedImage?.description}}
           </div>
         </div>
       </div>
@@ -73,19 +73,19 @@
     <owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
       <ng-container *ngFor="let image of images">
         <ng-template carouselSlide>
-          <div (click)="setSelectedImage(image);" class="card flavor-image-card" id="id_image_owl_***REMOVED******REMOVED***image?.name***REMOVED******REMOVED***"
+          <div (click)="setSelectedImage(image);" class="card flavor-image-card" id="id_image_owl_{{image?.name}}"
           >
             <div
-              [ngClass]="***REMOVED***'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot***REMOVED***"
+              [ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
 
               class="card-header text-truncate" data-toggle="tooltip" data-placement="top"
-              title="***REMOVED******REMOVED***image?.name***REMOVED******REMOVED***"><i *ngIf="image?.is_snapshot"
+              title="{{image?.name}}"><i *ngIf="image?.is_snapshot"
                                          class="fa fa-camera" aria-hidden="true"></i>
-              <strong>***REMOVED******REMOVED***image.name***REMOVED******REMOVED***</strong></div>
+              <strong>{{image.name}}</strong></div>
             <div class="card-body">
               <div class="scroll-image">
                 <div class="col">
-                  ***REMOVED******REMOVED***image.description***REMOVED******REMOVED***
+                  {{image.description}}
                 </div>
               </div>
             </div>
@@ -96,26 +96,26 @@
     </owl-carousel-o>
   </div>
   <div *ngIf="selectedImage" class="col-md-12 "
-       [ngClass]="***REMOVED***'col-xl-9':window_size >= carousel_window_min_xl_9,
+       [ngClass]="{'col-xl-9':window_size >= carousel_window_min_xl_9,
        'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
-       'col-xl-8':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8***REMOVED***"
+       'col-xl-8':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}"
        style="border-style: dashed; border-color: lightgray; padding-top: 10px">
     <owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
       <ng-container *ngFor="let image of images">
         <ng-template carouselSlide>
-          <div (click)="setSelectedImage(image);" class="card flavor-image-card" id="id_image_owl_***REMOVED******REMOVED***image?.name***REMOVED******REMOVED***"
+          <div (click)="setSelectedImage(image);" class="card flavor-image-card" id="id_image_owl_{{image?.name}}"
           >
             <div
-              [ngClass]="***REMOVED***'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot***REMOVED***"
+              [ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
 
               class="card-header  text-truncate" data-toggle="tooltip" data-placement="top"
-              title="***REMOVED******REMOVED***image?.name***REMOVED******REMOVED***"><i *ngIf="image?.is_snapshot"
+              title="{{image?.name}}"><i *ngIf="image?.is_snapshot"
                                          class="fa fa-camera" aria-hidden="true"></i>
-              <strong>***REMOVED******REMOVED***image.name***REMOVED******REMOVED***</strong></div>
+              <strong>{{image.name}}</strong></div>
             <div class="card-body">
               <div class="scroll-image">
                 <div class="col">
-                  ***REMOVED******REMOVED***image.description***REMOVED******REMOVED***
+                  {{image.description}}
                 </div>
               </div>
             </div>

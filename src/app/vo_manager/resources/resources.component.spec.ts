@@ -1,25 +1,25 @@
-import ***REMOVED*** async, ComponentFixture, TestBed ***REMOVED*** from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import ***REMOVED*** ResourcesComponent ***REMOVED*** from './resources.component';
+import { ResourcesComponent } from './resources.component';
 
-describe('ResourcesComponent', () => ***REMOVED***
+describe('ResourcesComponent', () => {
   let component: ResourcesComponent;
   let fixture: ComponentFixture<ResourcesComponent>;
 
-  beforeEach(async(() => ***REMOVED***
-    TestBed.configureTestingModule(***REMOVED***
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
       declarations: [ ResourcesComponent ]
-    ***REMOVED***)
+    })
     .compileComponents();
-  ***REMOVED***));
+  }));
 
-  beforeEach(() => ***REMOVED***
+  beforeEach(() => {
     fixture = TestBed.createComponent(ResourcesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  ***REMOVED***);
+  });
 
-  it('should create', () => ***REMOVED***
+  it('should create', () => {
     expect(component).toBeTruthy();
-  ***REMOVED***);
-***REMOVED***);
+  });
+});

@@ -1,25 +1,25 @@
-import ***REMOVED*** async, ComponentFixture, TestBed ***REMOVED*** from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import ***REMOVED*** ApplicationDetailComponent ***REMOVED*** from './application-detail.component';
+import { ApplicationDetailComponent } from './application-detail.component';
 
-describe('ApplicationDetailComponent', () => ***REMOVED***
+describe('ApplicationDetailComponent', () => {
   let component: ApplicationDetailComponent;
   let fixture: ComponentFixture<ApplicationDetailComponent>;
 
-  beforeEach(async(() => ***REMOVED***
-    TestBed.configureTestingModule(***REMOVED***
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
       declarations: [ ApplicationDetailComponent ]
-    ***REMOVED***)
+    })
     .compileComponents();
-  ***REMOVED***));
+  }));
 
-  beforeEach(() => ***REMOVED***
+  beforeEach(() => {
     fixture = TestBed.createComponent(ApplicationDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  ***REMOVED***);
+  });
 
-  it('should create', () => ***REMOVED***
+  it('should create', () => {
     expect(component).toBeTruthy();
-  ***REMOVED***);
-***REMOVED***);
+  });
+});

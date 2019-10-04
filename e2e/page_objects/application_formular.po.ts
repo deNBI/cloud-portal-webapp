@@ -1,7 +1,7 @@
-import ***REMOVED***browser, by, element, protractor, ProtractorExpectedConditions***REMOVED*** from 'protractor';
-import ***REMOVED***Util***REMOVED*** from '../util';
+import {browser, by, element, protractor, ProtractorExpectedConditions} from 'protractor';
+import {Util} from '../util';
 
-export class FormularPage ***REMOVED***
+export class FormularPage {
   private static SUBMIT_BTN: string = 'submit_btn';
   private static VERIFICATION_BTN: string = 'verification_btn';
   private static ACKNOWLEDGE_BTN: string = 'acknowledge_approve_btn';
@@ -9,32 +9,32 @@ export class FormularPage ***REMOVED***
   private static APPLICATION_SUBMITTED: string = 'The application was submitted';
   private static NOTIFICATION_MESSAGE: string = 'notification_message';
 
-  static async submitApplication(): Promise<any> ***REMOVED***
+  static async submitApplication(): Promise<any> {
     console.log('Submit Application');
 
     await Util.clickElementById(this.SUBMIT_BTN);
     await Util.clickElementById(this.VERIFICATION_BTN);
     await Util.clickElementById(this.ACKNOWLEDGE_BTN);
     console.log('Submitted Application');
-  ***REMOVED***
+  }
 
-  static async navigateToCloudApplication(): Promise<any> ***REMOVED***
+  static async navigateToCloudApplication(): Promise<any> {
     await Util.navigateToAngularPage('applications/newCloudApplication');
 
     return await Util.waitForPage('applications/newCloudApplication');
-  ***REMOVED***
+  }
 
-  static async navigateToSimpleVmApplication(): Promise<any> ***REMOVED***
+  static async navigateToSimpleVmApplication(): Promise<any> {
     await Util.navigateToAngularPage('applications/newSimpleVmApplication');
     await Util.waitForPage('applications/newSimpleVmApplication');
 
-  ***REMOVED***
+  }
 
-  static async isApplicationSubmitted(): Promise<any> ***REMOVED***
+  static async isApplicationSubmitted(): Promise<any> {
     return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.APPLICATION_SUBMITTED);
-  ***REMOVED***
+  }
 
-  static async fillApplicationFormular(name: string): Promise<any> ***REMOVED***
+  static async fillApplicationFormular(name: string): Promise<any> {
 
     // fill  Formular
     console.log('Fill form');
@@ -66,5 +66,5 @@ export class FormularPage ***REMOVED***
     await Util.clickElementById('platform_twitter_checkbox');
     await Util.clickElementById('project_application_pi_approved_checkbox');
     await Util.clickElementById('project_application_responsibility_checkbox');
-  ***REMOVED***
-***REMOVED***
+  }
+}

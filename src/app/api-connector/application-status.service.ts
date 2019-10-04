@@ -1,47 +1,47 @@
-import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
-import ***REMOVED***Observable***REMOVED*** from 'rxjs';
-import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {ApiSettings} from './api-settings.service'
+import {Observable} from 'rxjs';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
-import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
-import ***REMOVED***ApplicationStatus***REMOVED*** from '../applications/application_status.model';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {ApplicationStatus} from '../applications/application_status.model';
 
-const header: HttpHeaders = new HttpHeaders(***REMOVED***
+const header: HttpHeaders = new HttpHeaders({
     'X-CSRFToken': Cookie.get('csrftoken')
-***REMOVED***);
+});
 
 /**
  * Service which delivers functions for getting and setting Application status.
  */
 @Injectable()
-export class ApplicationStatusService ***REMOVED***
-    constructor(private http: HttpClient) ***REMOVED***
-    ***REMOVED***
+export class ApplicationStatusService {
+    constructor(private http: HttpClient) {
+    }
 
     /**
      * Get all application stati.
-     * @returns ***REMOVED***Observable<any>***REMOVED*** List of all application stati
+     * @returns {Observable<any>} List of all application stati
      */
-    getAllApplicationStatus(): Observable<ApplicationStatus[]> ***REMOVED***
-        return this.http.get<ApplicationStatus[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***application_status/`, ***REMOVED***
+    getAllApplicationStatus(): Observable<ApplicationStatus[]> {
+        return this.http.get<ApplicationStatus[]>(`${ApiSettings.getApiBaseURL()}application_status/`, {
             withCredentials: true
-        ***REMOVED***)
-    ***REMOVED***
+        })
+    }
 
     /**
      * Set status for an application.
-     * @param ***REMOVED***number***REMOVED*** application_id id of the application
-     * @param ***REMOVED***number***REMOVED*** status_id id of the status to set
-     * @returns ***REMOVED***Observable<any>***REMOVED*** 200 if successfull
+     * @param {number} application_id id of the application
+     * @param {number} status_id id of the status to set
+     * @returns {Observable<any>} 200 if successfull
      */
-    setApplicationStatus(application_id: number | string, status_id: number | string): Observable<any> ***REMOVED***
+    setApplicationStatus(application_id: number | string, status_id: number | string): Observable<any> {
 
         const params: HttpParams = new HttpParams().set('project_application_status', status_id.toString());
 
-        return this.http.patch(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***project_applications/$***REMOVED***application_id***REMOVED***/`, params, ***REMOVED***
+        return this.http.patch(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, params, {
             headers: header,
             withCredentials: true
-        ***REMOVED***)
-    ***REMOVED***
+        })
+    }
 
-***REMOVED***
+}

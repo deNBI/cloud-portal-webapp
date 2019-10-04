@@ -20,44 +20,44 @@
                            style="width: 100%">
                         <thead>
                         <tr>
-                            <th>***REMOVED******REMOVED***today | date:'dd-MM-yyyy'***REMOVED******REMOVED***</th>
+                            <th>{{today | date:'dd-MM-yyyy'}}</th>
 
-                            <th *ngFor="let r of voResources">***REMOVED******REMOVED***r.resource_name***REMOVED******REMOVED***</th>
+                            <th *ngFor="let r of voResources">{{r.resource_name}}</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         <tr>
                             <th>Ram [GB]</th>
-                            <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalRam***REMOVED******REMOVED***</td>
+                            <td *ngFor="let r of voResources">{{r.totalRam}}</td>
                         </tr>
                         <tr>
                             <th>Cores</th>
-                            <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalCores***REMOVED******REMOVED***</td>
+                            <td *ngFor="let r of voResources">{{r.totalCores}}</td>
 
                         </tr>
                         <tr>
                             <th>Vms</th>
-                            <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalVms***REMOVED******REMOVED***</td>
+                            <td *ngFor="let r of voResources">{{r.totalVms}}</td>
                         </tr>
                         <tr>
                             <th>Volumes</th>
-                            <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalVolumeCounter***REMOVED******REMOVED***</td>
+                            <td *ngFor="let r of voResources">{{r.totalVolumeCounter}}</td>
 
                         </tr>
                         <tr>
                             <th>Volumes Storage [GB]</th>
-                            <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalVolumeLimit***REMOVED******REMOVED***</td>
+                            <td *ngFor="let r of voResources">{{r.totalVolumeLimit}}</td>
 
                         </tr>
                         <tr>
                             <th>Object Storage [GB]</th>
-                            <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalObjectStorage***REMOVED******REMOVED***</td>
+                            <td *ngFor="let r of voResources">{{r.totalObjectStorage}}</td>
 
                         </tr>
                         <tr>
                             <th>GPU</th>
-                            <td *ngFor="let r of voResources">***REMOVED******REMOVED***r.totalGPU***REMOVED******REMOVED***</td>
+                            <td *ngFor="let r of voResources">{{r.totalGPU}}</td>
 
                         </tr>
                         </tbody>

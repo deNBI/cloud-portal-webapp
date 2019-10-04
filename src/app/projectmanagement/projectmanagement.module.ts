@@ -1,14 +1,14 @@
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
-import ***REMOVED***OverviewComponent***REMOVED*** from './overview.component';
-import ***REMOVED***ProjectManagementRoutingModule***REMOVED*** from './projectmanagement-routing.module';
-import ***REMOVED***CommonModule***REMOVED*** from '@angular/common';
-import ***REMOVED***ModalModule***REMOVED*** from 'ngx-bootstrap/modal';
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import ***REMOVED***AccordionModule***REMOVED*** from 'ngx-bootstrap';
-import ***REMOVED***ApplicationsModule***REMOVED*** from '../applications/applications.module';
+import {NgModule} from '@angular/core';
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {OverviewComponent} from './overview.component';
+import {ProjectManagementRoutingModule} from './projectmanagement-routing.module';
+import {CommonModule} from '@angular/common';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {FormsModule} from '@angular/forms';
+import {AccordionModule} from 'ngx-bootstrap';
+import {ApplicationsModule} from '../applications/applications.module';
 
-@NgModule(***REMOVED***
+@NgModule({
             imports: [
               AccordionModule.forRoot(),
               ProjectManagementRoutingModule,
@@ -22,6 +22,6 @@ import ***REMOVED***ApplicationsModule***REMOVED*** from '../applications/applic
               OverviewComponent
 
             ]
-          ***REMOVED***)
-export class ProjectManagementModule ***REMOVED***
-***REMOVED***
+          })
+export class ProjectManagementModule {
+}

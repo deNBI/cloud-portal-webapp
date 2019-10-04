@@ -1,11 +1,11 @@
-import ***REMOVED***Image***REMOVED*** from './image';
-import ***REMOVED***Flavor***REMOVED*** from './flavor';
-import ***REMOVED***Client***REMOVED*** from '../clients/client.model';
+import {Image} from './image';
+import {Flavor} from './flavor';
+import {Client} from '../clients/client.model';
 
 /**
  * Virtualmachine class.
  */
-export class VirtualMachine ***REMOVED***
+export class VirtualMachine {
   private _flavor: Flavor;
   private _image: Image;
   private _project: string;
@@ -22,123 +22,123 @@ export class VirtualMachine ***REMOVED***
   private _ssh_command: string;
   private _udp_command: string;
 
-  get udp_command(): string ***REMOVED***
+  get udp_command(): string {
     return this._udp_command;
-  ***REMOVED***
+  }
 
-  set udp_command(value: string) ***REMOVED***
+  set udp_command(value: string) {
     this._udp_command = value;
-  ***REMOVED***
+  }
 
-  get flavor(): Flavor ***REMOVED***
+  get flavor(): Flavor {
     return this._flavor;
-  ***REMOVED***
+  }
 
-  set flavor(value: Flavor) ***REMOVED***
+  set flavor(value: Flavor) {
     this._flavor = value;
-  ***REMOVED***
+  }
 
-  get image(): Image ***REMOVED***
+  get image(): Image {
     return this._image;
-  ***REMOVED***
+  }
 
-  set image(value: Image) ***REMOVED***
+  set image(value: Image) {
     this._image = value;
-  ***REMOVED***
+  }
 
-  get project(): string ***REMOVED***
+  get project(): string {
     return this._project;
-  ***REMOVED***
+  }
 
-  set project(value: string) ***REMOVED***
+  set project(value: string) {
     this._project = value;
-  ***REMOVED***
+  }
 
-  get status(): string ***REMOVED***
+  get status(): string {
     return this._status;
-  ***REMOVED***
+  }
 
-  set status(value: string) ***REMOVED***
+  set status(value: string) {
     this._status = value;
-  ***REMOVED***
+  }
 
-  get keyname(): string ***REMOVED***
+  get keyname(): string {
     return this._keyname;
-  ***REMOVED***
+  }
 
-  set keyname(value: string) ***REMOVED***
+  set keyname(value: string) {
     this._keyname = value;
-  ***REMOVED***
+  }
 
-  get name(): string ***REMOVED***
+  get name(): string {
     return this._name;
-  ***REMOVED***
+  }
 
-  set name(value: string) ***REMOVED***
+  set name(value: string) {
     this._name = value;
-  ***REMOVED***
+  }
 
-  get client(): Client ***REMOVED***
+  get client(): Client {
     return this._client;
-  ***REMOVED***
+  }
 
-  set client(value: Client) ***REMOVED***
+  set client(value: Client) {
     this._client = value;
-  ***REMOVED***
+  }
 
-  get openstackid(): string ***REMOVED***
+  get openstackid(): string {
     return this._openstackid;
-  ***REMOVED***
+  }
 
-  set openstackid(value: string) ***REMOVED***
+  set openstackid(value: string) {
     this._openstackid = value;
-  ***REMOVED***
+  }
 
-  get created_at(): string ***REMOVED***
+  get created_at(): string {
     return this._created_at;
-  ***REMOVED***
+  }
 
-  set created_at(value: string) ***REMOVED***
+  set created_at(value: string) {
     this._created_at = value;
-  ***REMOVED***
+  }
 
-  get stopped_at(): string ***REMOVED***
+  get stopped_at(): string {
     return this._stopped_at;
-  ***REMOVED***
+  }
 
-  set stopped_at(value: string) ***REMOVED***
+  set stopped_at(value: string) {
     this._stopped_at = value;
-  ***REMOVED***
+  }
 
-  get elixir_id(): string ***REMOVED***
+  get elixir_id(): string {
     return this._elixir_id;
-  ***REMOVED***
+  }
 
-  set elixir_id(value: string) ***REMOVED***
+  set elixir_id(value: string) {
     this._elixir_id = value;
-  ***REMOVED***
+  }
 
-  get username(): string ***REMOVED***
+  get username(): string {
     return this._username;
-  ***REMOVED***
+  }
 
-  set username(value: string) ***REMOVED***
+  set username(value: string) {
     this._username = value;
-  ***REMOVED***
+  }
 
-  get floating_ip(): string ***REMOVED***
+  get floating_ip(): string {
     return this._floating_ip;
-  ***REMOVED***
+  }
 
-  set floating_ip(value: string) ***REMOVED***
+  set floating_ip(value: string) {
     this._floating_ip = value;
-  ***REMOVED***
+  }
 
-  get ssh_command(): string ***REMOVED***
+  get ssh_command(): string {
     return this._ssh_command;
-  ***REMOVED***
+  }
 
-  set ssh_command(value: string) ***REMOVED***
+  set ssh_command(value: string) {
     this._ssh_command = value;
-  ***REMOVED***
-***REMOVED***
+  }
+}

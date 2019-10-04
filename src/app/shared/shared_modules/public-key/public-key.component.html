@@ -5,9 +5,9 @@
           style="word-wrap: break-word; max-width: 80px; white-space: normal">
         <button (click)="toggleKey()"
                 class="btn btn-primary">
-            ***REMOVED******REMOVED***show_key_text***REMOVED******REMOVED***
+            {{show_key_text}}
         </button>
-            <div *ngIf="key_visible" style="word-break: break-all"><br>***REMOVED******REMOVED***userinfo.PublicKey***REMOVED******REMOVED***</div></span>
+            <div *ngIf="key_visible" style="word-break: break-all"><br>{{userinfo.PublicKey}}</div></span>
 </td>
 <td>
 

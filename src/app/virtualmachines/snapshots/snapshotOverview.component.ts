@@ -1,24 +1,24 @@
-import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***ImageService***REMOVED*** from '../../api-connector/image.service';
-import ***REMOVED***SnapshotModel***REMOVED*** from './snapshot.model';
-import ***REMOVED***forkJoin, Observable***REMOVED*** from 'rxjs';
-import ***REMOVED***IResponseTemplate***REMOVED*** from '../../api-connector/response-template';
-import ***REMOVED***VolumeRequestStates***REMOVED*** from '../volumes/volume-request-states.enum';
-import ***REMOVED***FacilityService***REMOVED*** from '../../api-connector/facility.service';
+import {Component, OnInit} from '@angular/core';
+import {ImageService} from '../../api-connector/image.service';
+import {SnapshotModel} from './snapshot.model';
+import {forkJoin, Observable} from 'rxjs';
+import {IResponseTemplate} from '../../api-connector/response-template';
+import {VolumeRequestStates} from '../volumes/volume-request-states.enum';
+import {FacilityService} from '../../api-connector/facility.service';
 
-enum Snapshot_Delete_Statuses ***REMOVED***
+enum Snapshot_Delete_Statuses {
   WAITING = 0,
   SUCCESS = 1,
   ERROR = 2
-***REMOVED***
+}
 
-@Component(***REMOVED***
+@Component({
              selector: 'app-snapshot-overview',
              templateUrl: 'snapshotOverview.component.html',
              providers: [FacilityService, ImageService]
-           ***REMOVED***)
+           })
 
-export class SnapshotOverviewComponent implements OnInit ***REMOVED***
+export class SnapshotOverviewComponent implements OnInit {
 
   showFacilities: boolean = false;
 
@@ -32,7 +32,7 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
   selectedFacility: [string, number];
   /**
    * All snapshots.
-   * @type ***REMOVED***Array***REMOVED***
+   * @type {Array}
    */
   snapshots: SnapshotModel[] = [];
   /**
@@ -41,115 +41,115 @@ export class SnapshotOverviewComponent implements OnInit ***REMOVED***
   selected_snapshot: SnapshotModel;
   /**
    * All possible statuses when deleting.
-   * @type ***REMOVED***Snapshot_Delete_Statuses***REMOVED***
+   * @type {Snapshot_Delete_Statuses}
    */
   delete_statuses = Snapshot_Delete_Statuses;
   /**
    * Actual delete status.
-   * @type ***REMOVED***Snapshot_Delete_Statuses***REMOVED***
+   * @type {Snapshot_Delete_Statuses}
    */
   delete_status: number = this.delete_statuses.WAITING;
   /**
    * If site was initialized.
-   * @type ***REMOVED***boolean***REMOVED***
+   * @type {boolean}
    */
   isLoaded: boolean = false;
 
   private checkStatusTimeout: number = 5000;
 
-  constructor(private facilityService: FacilityService, private imageService: ImageService) ***REMOVED***
+  constructor(private facilityService: FacilityService, private imageService: ImageService) {
 
-  ***REMOVED***
+  }
 
   /**
    * Set selected Snapshot.
-   * @param ***REMOVED***SnapshotModel***REMOVED*** snapshot
+   * @param {SnapshotModel} snapshot
    */
-  setSelectedSnapshot(snapshot: SnapshotModel): void ***REMOVED***
+  setSelectedSnapshot(snapshot: SnapshotModel): void {
     this.selected_snapshot = snapshot;
-  ***REMOVED***
+  }
 
   /**
    * Get snapshots by user.
    */
-  getSnapshots(): void ***REMOVED***
+  getSnapshots(): void {
     this.snapshots = [];
-    this.imageService.getSnapshotsByUser().subscribe(result => ***REMOVED***
+    this.imageService.getSnapshotsByUser().subscribe(result => {
       this.snapshots = result;
       this.isLoaded = true;
       this.checkSnapShotsStatus()
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
-  checkSnapShotsStatus(): void ***REMOVED***
+  checkSnapShotsStatus(): void {
     let all_active: boolean = true;
 
     setTimeout(
-      () => ***REMOVED***
+      () => {
         const observables = [];
-        for (const snapshot of this.snapshots) ***REMOVED***
-          if (snapshot.snapshot_status !== 'active') ***REMOVED***
+        for (const snapshot of this.snapshots) {
+          if (snapshot.snapshot_status !== 'active') {
 
             observables.push(this.imageService.getSnapshot(snapshot.snapshot_openstackid));
-          ***REMOVED***
+          }
 
-        ***REMOVED***
-        forkJoin(observables).subscribe(res => ***REMOVED***
-          for (const snap of res) ***REMOVED***
+        }
+        forkJoin(observables).subscribe(res => {
+          for (const snap of res) {
             this.snapshots[res.indexOf(snap)].snapshot_status = snap['status'];
-            if (snap['status'] !== 'active') ***REMOVED***
+            if (snap['status'] !== 'active') {
               all_active = false;
-            ***REMOVED***
+            }
 
-          ***REMOVED***
-          if (all_active) ***REMOVED***
+          }
+          if (all_active) {
             return;
-          ***REMOVED*** else ***REMOVED***
+          } else {
             this.checkSnapShotsStatus();
-          ***REMOVED***
-        ***REMOVED***)
-      ***REMOVED***,
+          }
+        })
+      },
       this.checkStatusTimeout);
 
-  ***REMOVED***
+  }
 
-  getFacilitySnapshots(): void ***REMOVED***
+  getFacilitySnapshots(): void {
     this.snapshots = [];
-    this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId']).subscribe(res => ***REMOVED***
+    this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId']).subscribe(res => {
       this.snapshots = res;
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   /**
    * Delete snapshot.
-   * @param ***REMOVED***string***REMOVED*** snapshot_id
+   * @param {string} snapshot_id
    */
-  deleteSnapshot(snapshot_id: string): void ***REMOVED***
-    this.imageService.deleteSnapshot(snapshot_id).subscribe((result: IResponseTemplate) => ***REMOVED***
+  deleteSnapshot(snapshot_id: string): void {
+    this.imageService.deleteSnapshot(snapshot_id).subscribe((result: IResponseTemplate) => {
 
       this.delete_status = 0;
 
-      if (<boolean><Boolean>result.value) ***REMOVED***
+      if (<boolean><Boolean>result.value) {
         this.delete_status = 1;
-      ***REMOVED*** else if (result.value) ***REMOVED***
+      } else if (result.value) {
         this.delete_status = 3;
 
-      ***REMOVED*** else ***REMOVED***
+      } else {
         this.delete_status = 2;
-      ***REMOVED***
+      }
 
       this.getSnapshots();
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  ngOnInit(): void ***REMOVED***
+  ngOnInit(): void {
     this.getSnapshots();
-    this.facilityService.getManagerFacilities().subscribe(result => ***REMOVED***
+    this.facilityService.getManagerFacilities().subscribe(result => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
-    ***REMOVED***);
+    });
 
-  ***REMOVED***
+  }
 
-***REMOVED***
+}

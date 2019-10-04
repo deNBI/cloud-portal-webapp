@@ -3,7 +3,7 @@
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app style="width: 100%">
   <div class="row">
     <!--/.col-->
-    <h1 *ngIf="selectedFacility">Projects Overview: ***REMOVED******REMOVED***selectedFacility['Facility']***REMOVED******REMOVED***
+    <h1 *ngIf="selectedFacility">Projects Overview: {{selectedFacility['Facility']}}
 
 
     </h1>
@@ -22,7 +22,7 @@
                    (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
                    class="form-control" name="selectedFacility">
         <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
-          ***REMOVED******REMOVED***facility['Facility']***REMOVED******REMOVED***
+          {{facility['Facility']}}
         </option>
 
       </select></div>
@@ -35,44 +35,44 @@
                  style="width: 100%">
             <thead>
             <tr>
-              <th>***REMOVED******REMOVED***today | date:'dd-MM-yyyy'***REMOVED******REMOVED***</th>
+              <th>{{today | date:'dd-MM-yyyy'}}</th>
 
-              <th *ngFor="let r of resources">***REMOVED******REMOVED***r.resource_name***REMOVED******REMOVED***</th>
+              <th *ngFor="let r of resources">{{r.resource_name}}</th>
             </tr>
             </thead>
             <tbody>
 
             <tr>
               <th>Ram [GB]</th>
-              <td *ngFor="let r of resources">***REMOVED******REMOVED***r.totalRam***REMOVED******REMOVED***</td>
+              <td *ngFor="let r of resources">{{r.totalRam}}</td>
             </tr>
             <tr>
               <th>Cores</th>
-              <td *ngFor="let r of resources">***REMOVED******REMOVED***r.totalCores***REMOVED******REMOVED***</td>
+              <td *ngFor="let r of resources">{{r.totalCores}}</td>
 
             </tr>
             <tr>
               <th>Vms</th>
-              <td *ngFor="let r of resources">***REMOVED******REMOVED***r.totalVms***REMOVED******REMOVED***</td>
+              <td *ngFor="let r of resources">{{r.totalVms}}</td>
             </tr>
             <tr>
               <th>Volumes</th>
-              <td *ngFor="let r of resources">***REMOVED******REMOVED***r.totalVolumeCounter***REMOVED******REMOVED***</td>
+              <td *ngFor="let r of resources">{{r.totalVolumeCounter}}</td>
 
             </tr>
             <tr>
               <th>Volumes Storage [GB]</th>
-              <td *ngFor="let r of resources">***REMOVED******REMOVED***r.totalVolumeLimit***REMOVED******REMOVED***</td>
+              <td *ngFor="let r of resources">{{r.totalVolumeLimit}}</td>
 
             </tr>
             <tr>
               <th>Object Storage [GB]</th>
-              <td *ngFor="let r of resources">***REMOVED******REMOVED***r.totalObjectStorage***REMOVED******REMOVED***</td>
+              <td *ngFor="let r of resources">{{r.totalObjectStorage}}</td>
 
             </tr>
             <tr>
               <th>GPU</th>
-              <td *ngFor="let r of resources">***REMOVED******REMOVED***r.totalGPU***REMOVED******REMOVED***</td>
+              <td *ngFor="let r of resources">{{r.totalGPU}}</td>
 
             </tr>
             </tbody>
@@ -118,9 +118,9 @@
             <ng-container
               *ngFor="let cF of coreFactors">
               <tr>
-                <td>***REMOVED******REMOVED***cF.cores***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED***cF.factor***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED***cF.description***REMOVED******REMOVED***</td>
+                <td>{{cF.cores}}</td>
+                <td>{{cF.factor}}</td>
+                <td>{{cF.description}}</td>
 
                 <td><i (click)="deleteCoreFactor(cF.id)" style="cursor: pointer;" class="icon-minus h2"></i></td>
               </tr>
@@ -151,9 +151,9 @@
             <ng-container
               *ngFor="let rF of ramFactors">
               <tr>
-                <td>***REMOVED******REMOVED***rF.ram***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED***rF.factor***REMOVED******REMOVED***</td>
-                <td>***REMOVED******REMOVED***rF.description***REMOVED******REMOVED***</td>
+                <td>{{rF.ram}}</td>
+                <td>{{rF.factor}}</td>
+                <td>{{rF.description}}</td>
 
                 <td><i (click)="deleteRamFactor(rF.id)" style="cursor: pointer;" class="icon-minus h2"></i></td>
 

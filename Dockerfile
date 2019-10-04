@@ -4,7 +4,7 @@
 FROM node:8.11-alpine as builder
 
 ARG ANGULAR_MODE
-ENV ANGULAR_MODE=$***REMOVED***ANGULAR_MODE***REMOVED***
+ENV ANGULAR_MODE=${ANGULAR_MODE}
 
 COPY package.json  ./
 
@@ -19,7 +19,7 @@ WORKDIR /ng-app
 COPY . .
 
 ## Build the angular app in production mode and store the artifacts in dist folder
-RUN $(npm bin)/ng build --configuration=$***REMOVED***ANGULAR_MODE***REMOVED***   --prod --build-optimizer  
+RUN $(npm bin)/ng build --configuration=${ANGULAR_MODE}   --prod --build-optimizer  
 
 ### STAGE 2: Setup ###
 FROM nginx:1.13.3-alpine

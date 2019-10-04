@@ -6,7 +6,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">***REMOVED******REMOVED*** notificationModalTitle ***REMOVED******REMOVED***</h4>
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="notificationModal.hide()"
                 aria-label="Close">
@@ -14,8 +14,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-***REMOVED******REMOVED*** notificationModalType ***REMOVED******REMOVED***" role="alert">
-          ***REMOVED******REMOVED*** notificationModalMessage ***REMOVED******REMOVED***
+        <div class="alert alert-{{ notificationModalType }}" role="alert">
+          {{ notificationModalMessage }}
 
         </div>
       </div>

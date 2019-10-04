@@ -1,108 +1,108 @@
-import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***Image***REMOVED*** from '../virtualmachines/virtualmachinemodels/image';
-import ***REMOVED***SnapshotModel***REMOVED*** from '../virtualmachines/snapshots/snapshot.model';
-import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs';
-import ***REMOVED***HttpClient, HttpHeaders, HttpParams***REMOVED*** from '@angular/common/http';
-import ***REMOVED***Cookie***REMOVED*** from 'ng2-cookies/ng2-cookies';
-import ***REMOVED***IResponseTemplate***REMOVED*** from './response-template';
-import ***REMOVED***ImageTag***REMOVED*** from '../facility_manager/image-tag';
+import {Injectable} from '@angular/core';
+import {Image} from '../virtualmachines/virtualmachinemodels/image';
+import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
+import {ApiSettings} from './api-settings.service';
+import {Observable} from 'rxjs';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {IResponseTemplate} from './response-template';
+import {ImageTag} from '../facility_manager/image-tag';
 
-const header: HttpHeaders = new HttpHeaders(***REMOVED***
+const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
-                                            ***REMOVED***);
+                                            });
 
 /**
  * Service which provides image methods.
  */
 @Injectable()
-export class ImageService ***REMOVED***
-  constructor(private http: HttpClient) ***REMOVED***
-  ***REMOVED***
+export class ImageService {
+  constructor(private http: HttpClient) {
+  }
 
-  getImages(project_id: number): Observable<Image[]> ***REMOVED***
+  getImages(project_id: number): Observable<Image[]> {
     const params: HttpParams = new HttpParams().set('project_id', project_id.toString());
 
-    return this.http.get<Image[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***images/`, ***REMOVED***
+    return this.http.get<Image[]>(`${ApiSettings.getApiBaseURL()}images/`, {
       withCredentials: true,
       params: params
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  checkSnapshotNameAvailable(snapshot_name: string): Observable<IResponseTemplate> ***REMOVED***
+  checkSnapshotNameAvailable(snapshot_name: string): Observable<IResponseTemplate> {
 
-    return this.http.get<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***snapshots/names/`, ***REMOVED***
+    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
       withCredentials: true,
-      params: ***REMOVED***snapshot_name: snapshot_name***REMOVED***
+      params: {snapshot_name: snapshot_name}
 
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  getSnapshot(openstack_id: string): Observable<Image> ***REMOVED***
+  getSnapshot(openstack_id: string): Observable<Image> {
 
-    return this.http.get<Image>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***snapshots/$***REMOVED***openstack_id***REMOVED***/status/`, ***REMOVED***
+    return this.http.get<Image>(`${ApiSettings.getApiBaseURL()}snapshots/${openstack_id}/status/`, {
       withCredentials: true
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  getImageTags(): Observable<any> ***REMOVED***
-    return this.http.get(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***imageTags/`, ***REMOVED***
+  getImageTags(): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}imageTags/`, {
       withCredentials: true
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  addImageTags(imageTag: string, description: string): Observable<ImageTag> ***REMOVED***
+  addImageTags(imageTag: string, description: string): Observable<ImageTag> {
 
     const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('description', description);
 
-    return this.http.post<ImageTag>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***imageTags/`, params, ***REMOVED***
+    return this.http.post<ImageTag>(`${ApiSettings.getApiBaseURL()}imageTags/`, params, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  deleteImageTag(imageTag: string): Observable<IResponseTemplate> ***REMOVED***
+  deleteImageTag(imageTag: string): Observable<IResponseTemplate> {
 
-    return this.http.delete<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***imageTags/$***REMOVED***imageTag***REMOVED***/`, ***REMOVED***
+    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageTags/${imageTag}/`, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  createSnapshot(snaptshot_instance: string, snapshot_name: string, description: string): Observable<SnapshotModel> ***REMOVED***
+  createSnapshot(snaptshot_instance: string, snapshot_name: string, description: string): Observable<SnapshotModel> {
 
     const params: HttpParams = new HttpParams()
       .set('snapshot_name', snapshot_name)
       .set('snapshot_instance', snaptshot_instance)
       .set('description', description);
 
-    return this.http.post<SnapshotModel>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***snapshots/`, params, ***REMOVED***
+    return this.http.post<SnapshotModel>(`${ApiSettings.getApiBaseURL()}snapshots/`, params, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  deleteSnapshot(snapshot_id: string): Observable<IResponseTemplate> ***REMOVED***
-    return this.http.delete<IResponseTemplate>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***snapshots/$***REMOVED***snapshot_id***REMOVED***/`, ***REMOVED***
+  deleteSnapshot(snapshot_id: string): Observable<IResponseTemplate> {
+    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/${snapshot_id}/`, {
       withCredentials: true,
       headers: header
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-  getSnapshotsByUser(): Observable<SnapshotModel[]> ***REMOVED***
+  getSnapshotsByUser(): Observable<SnapshotModel[]> {
 
-    return this.http.get<SnapshotModel[]>(`$***REMOVED***ApiSettings.getApiBaseURL()***REMOVED***snapshots/`, ***REMOVED***
+    return this.http.get<SnapshotModel[]>(`${ApiSettings.getApiBaseURL()}snapshots/`, {
       withCredentials: true
-    ***REMOVED***)
+    })
 
-  ***REMOVED***
+  }
 
-***REMOVED***
+}
