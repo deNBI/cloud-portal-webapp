@@ -26,14 +26,9 @@ git clone -b dev https://github.com/deNBI/cloud-portal-webapp.git
 cd cloud-portal-webapp
 ~~~
 
-2. Add this line to your /etc/hosts file 
-~~~BASH
-127.0.0.1 portal-dev.denbi.de
-~~~
+2. Install nodejs virtual environment as decribed [here](https://github.com/ekalinin/nodeenv#install).
 
-3. Install nodejs virtual environment as decribed [here](https://github.com/ekalinin/nodeenv#install).
-
-4. Run the Makefile
+3. Run the Makefile
 ~~~BASH
 make
 ~~~
@@ -43,7 +38,7 @@ For more makefile targets run help.
 make help
 ~~~
 
-5. Start the angular server with make or by yourself
+4. Start the angular server with make or by yourself
 ~~~BASH
 make serve
 ~~~
@@ -53,7 +48,7 @@ or
 ng serve
 ~~~
 
-the dev server should run now on portal-dev.denbi.de:8001. 
+the dev server should run now on localhost:8001. 
 The app will automatically reload if you update any of the source files.
 
 ### Debug with Intellij

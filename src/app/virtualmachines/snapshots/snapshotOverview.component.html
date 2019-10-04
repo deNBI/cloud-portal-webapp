@@ -1,140 +1,153 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded">
+
+  <button type="button" style="margin-bottom: 5px;margin-left: 5px;" class="btn btn-secondary"
+          (click)="showFacilities =!showFacilities; getFacilitySnapshots();"
+          *ngIf="!showFacilities  && managerFacilities.length >0"> Facility Snapshots
+  </button>
+  <button type="button" style="margin-bottom: 5px;margin-left: 5px;" class="btn btn-secondary"
+          (click)="showFacilities =!showFacilities; getSnapshots();"
+          *ngIf="showFacilities"> Own Snapshots
+  </button>
+
+</div>
 
 <div *ngIf="isLoaded" class="card">
-    <div class="card-header">
-        <strong>Snapshots</strong>
-        –Overview
-    </div>
+
+  <div class="card-header">
+    <strong>Snapshots</strong>
+    –Overview
+  </div>
+  <div>
     <div>
-        <div>
-            <div class="table-responsive">
-                <table class="table table-striped ">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Project</th>
-                        <th>Actions</th>
-                        <th>Status</th>
+      <div class="table-responsive">
+        <table class="table table-striped ">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Project</th>
+            <th>Actions</th>
+            <th>Status</th>
 
-                        <!-- th>Client</th-->
+            <!-- th>Client</th-->
 
-                    </tr>
+          </tr>
 
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let snapshot of snapshots">
-                        <td>{{snapshot?.snapshot_name}}</td>
-                        <td>{{snapshot?.snapshot_project}}</td>
-                        <td>
-                            <button *ngIf="snapshot.snapshot_created"
-                                    (click)="setSelectedSnapshot(snapshot);verifyModal.show();"
+          </thead>
+          <tbody>
+          <tr *ngFor="let snapshot of snapshots">
+            <td>{{snapshot?.snapshot_name}}</td>
+            <td>{{snapshot?.snapshot_project}}</td>
+            <td>
+              <button *ngIf="snapshot.snapshot_created  || showFacilities"
+                      (click)="setSelectedSnapshot(snapshot);verifyModal.show();"
 
-                                    class="btn btn-primary">
-                                Delete Snapshot
-                            </button>
-                        </td>
-                        <td> <span *ngIf="snapshot?.snapshot_status == 'active'"
-                                   style="margin-left: 5px"
-                                   class="badge badge-success"> {{snapshot?.snapshot_status | uppercase}} </span>
-                            <span *ngIf="snapshot?.snapshot_status != 'active'"
-                                  style="margin-left: 5px"
-                                  class="badge badge-info"> {{snapshot?.snapshot_status | uppercase}} </span>
-                        </td>
+                      class="btn btn-primary">
+                Delete Snapshot
+              </button>
+            </td>
+            <td> <span *ngIf="snapshot?.snapshot_status == 'active'"
+                       style="margin-left: 5px"
+                       class="badge badge-success"> {{snapshot?.snapshot_status | uppercase}} </span>
+              <span *ngIf="snapshot?.snapshot_status != 'active'"
+                    style="margin-left: 5px"
+                    class="badge badge-info"> {{snapshot?.snapshot_status | uppercase}} </span>
+            </td>
 
-                        <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
+            <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
 
-                    </tr>
+          </tr>
 
-                    </tbody>
+          </tbody>
 
-                </table>
-            </div>
+        </table>
+      </div>
 
 
-        </div>
     </div>
+  </div>
 </div>
 <div *ngIf="snapshots.length == 0 && isLoaded"><h3 class="text-center">No snapshots available. Click
-    this <a href="https://cloud.denbi.de/wiki/portal/snapshots/">link</a> to see how to use and
-    create a snapshot.</h3></div>
+  this <a href="https://cloud.denbi.de/wiki/portal/snapshots/">link</a> to see how to use and
+  create a snapshot.</h3></div>
 
 <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" *ngIf="delete_status == delete_statuses.WAITING ">
-                    Waiting </h4>
-                <h4 class="modal-title" *ngIf="delete_status == delete_statuses.SUCCESS">
-                    Success </h4>
-                <h4 class="modal-title" *ngIf="delete_status == delete_statuses.ERROR"> Error </h4>
-                <button type="button" class="close" style="cursor:pointer"
-                        (click)="deleteModal.hide()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-info" role="alert" *ngIf="delete_status == 0">
-                    Deleting {{selected_snapshot?.snapshot_name}}... <i
-                        class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-                </div>
-                <div class="alert alert-success" role="alert" *ngIf="delete_status == 1">
-                    {{selected_snapshot?.snapshot_name}} was succesfully deleted.
-                </div>
-            </div>
-            <div class="alert alert-warning" role="alert" *ngIf="delete_status == 2">
-                When deleting {{selected_snapshot?.snapshot_name}} an error occured.
-            </div>
-            <div class="alert alert-warning" role="alert" *ngIf="delete_status == 3">
-                Could not delete <strong>{{selected_snapshot?.snapshot_name}} </strong> because the
-                Client is offline.
-                Please contact cloud@denbi.de if you got any questions.
-            </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" *ngIf="delete_status == delete_statuses.WAITING ">
+          Waiting </h4>
+        <h4 class="modal-title" *ngIf="delete_status == delete_statuses.SUCCESS">
+          Success </h4>
+        <h4 class="modal-title" *ngIf="delete_status == delete_statuses.ERROR"> Error </h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="deleteModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info" role="alert" *ngIf="delete_status == 0">
+          Deleting {{selected_snapshot?.snapshot_name}}... <i
+          class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+        </div>
+        <div class="alert alert-success" role="alert" *ngIf="delete_status == 1">
+          {{selected_snapshot?.snapshot_name}} was succesfully deleted.
+        </div>
+      </div>
+      <div class="alert alert-warning" role="alert" *ngIf="delete_status == 2">
+        When deleting {{selected_snapshot?.snapshot_name}} an error occured.
+      </div>
+      <div class="alert alert-warning" role="alert" *ngIf="delete_status == 3">
+        Could not delete <strong>{{selected_snapshot?.snapshot_name}} </strong> because the
+        Client is offline.
+        Please contact cloud@denbi.de if you got any questions.
+      </div>
 
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                        (click)="delete_status = 0;deleteModal.hide()">Close
-                </button>
-            </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+                (click)="delete_status = 0;deleteModal.hide()">Close
+        </button>
+      </div>
 
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete Snapshot</h4>
-                <button type="button" class="close" style="cursor:pointer"
-                        (click)="verifyModal.hide()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Snapshot</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="verifyModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
 
-                <div class="alert alert-warning" role="alert">
-                    Are you sure you want to delete {{selected_snapshot?.snapshot_name}}?
-                </div>
+        <div class="alert alert-warning" role="alert">
+          Are you sure you want to delete {{selected_snapshot?.snapshot_name}}?
+        </div>
 
-            </div>
-            <div class="modal-footer">
-                <button class="btn  btn-success col-md-4"
-                        (click)="deleteSnapshot(selected_snapshot.snapshot_openstackid);
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                (click)="deleteSnapshot(selected_snapshot.snapshot_openstackid);
                         ;verifyModal.hide();deleteModal.show()
                 ">
-                    Yes
-                </button>
-                <button class="btn  btn-danger col-md-4" type="reset"
-                        (click)="verifyModal.hide();">Cancel
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="verifyModal.hide();">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 

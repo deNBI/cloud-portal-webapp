@@ -1,0 +1,258 @@
+<div class="table-responsive">
+  <table class="table table-striped">
+
+
+    <tr *ngIf="application?.PIApproved">
+      <td>
+        PI Name
+      </td>
+      <td>
+        {{application?.PI}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr *ngIf="application?.PIApproved">
+      <td>
+        PI Email
+      </td>
+      <td>
+        {{application?.PIEmail}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr *ngIf="application?.PIApproved">
+      <td>
+        PI Affiliations
+      </td>
+      <td>
+        {{application?.PiAffiliations}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>User
+        Affiliations
+      </td>
+      <td>{{
+          application?.UserAffiliations}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>User Name</td>
+      <td>
+        {{application_user[application?.User]?.name}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>User Email</td>
+      <td>
+        {{application_user[application?.User]?.email}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>Research Topics</td>
+      <td><h5><span *ngFor="let term of application?.EdamTopics"
+                    style="margin-left: 5px; "
+                    class="badge badge-info">{{term}}
+ </span>
+
+      </h5></td>
+    </tr>
+    <tr>
+      <td>Description
+      </td>
+      <td>{{
+          application?.Description
+        }}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>Horizon 2020</td>
+      <td>
+        {{application?.Horizon2020}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>Elixir Project</td>
+      <td>
+        {{application?.ElixirProject}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>BMBF Project</td>
+      <td>
+        {{application?.BMBFProject}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>Dissemination allowed</td>
+      <td>
+        {{application?.Dissemination}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+
+    <tr>
+      <td>Workgroup</td>
+      <td>{{
+          application?.Workgroup
+        }}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+
+    <tr>
+      <td>Comment</td>
+      <td>{{
+          application?.Comment
+        }}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        {{application?.ApplicationExtension?.Comment}}
+      </td>
+
+    </tr>
+    <tr>
+      <td>Lifetime</td>
+      <td>{{
+          application?.Lifetime
+        }} months
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        {{
+          application?.ApplicationExtension?.Lifetime}}
+      </td>
+    </tr>
+    <tr>
+      <td><b>VMs</b>
+      </td>
+
+      <td>
+        <span>Current:</span>
+        {{application?.VMsRequested}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        Requested:
+        {{application?.ApplicationExtension?.VMsRequested}}
+      </td>
+
+    </tr>
+
+    <tr *ngFor="let item of application?.CurrentFlavors | keyvalue">
+      <td>Flavor: {{item.key}}</td>
+      <td>{{item.value.counter}}</td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED  || isModification">
+                                                            <span
+                                                              *ngIf="application?.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                                {{application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}</span>
+        <span *ngIf="!application?.ApplicationExtension?.RequestedFlavors[item.key]">
+                                                               0</span></td>
+    </tr>
+    <ng-container
+      *ngFor="let item of application?.ApplicationExtension?.RequestedFlavors| keyvalue ">
+      <tr *ngIf="!application?.CurrentFlavors[item.key]">
+        <td>Flavor: {{item.key}}</td>
+        <td>0</td>
+        <td>
+          {{application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}
+
+
+        </td>
+
+
+      </tr>
+    </ng-container>
+
+    <tr>
+      <td>Total Cores</td>
+      <td>{{
+          application?.TotalCores
+        }}
+
+
+      </td>
+
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        {{application?.ApplicationExtension?.TotalCores}}
+      </td>
+    </tr>
+
+    <tr>
+      <td>Total RAM</td>
+      <td>{{
+          application?.TotalRam}} GB
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        {{application?.ApplicationExtension?.TotalRAM}}
+      </td>
+    </tr>
+    <tr>
+      <td>Storage Limit
+      </td>
+      <td>{{
+          application?.VolumeLimit
+        }} GB
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        {{application?.ApplicationExtension?.VolumeLimit}}
+        GB
+      </td>
+    </tr>
+    <tr>
+      <td>Volume
+        Counter
+      </td>
+      <td>{{
+          application?.VolumeCounter
+        }} volumes
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        {{application?.ApplicationExtension?.VolumeCounter}} volumes
+      </td>
+    </tr>
+    <tr *ngIf="application?.OpenStackProject">
+      <td>ObjectStorage
+      </td>
+      <td>{{
+          application?.ObjectStorage
+        }} GB
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification ">
+        {{application?.ApplicationExtension?.ObjectStorage}}
+        GB
+      </td>
+    </tr>
+    <tr>
+      <td>Last status
+        changed
+      </td>
+      <td>{{
+          application?.DateStatusChanged
+        }}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+
+
+  </table>
+</div>

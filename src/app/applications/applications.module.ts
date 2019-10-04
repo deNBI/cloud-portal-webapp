@@ -20,6 +20,7 @@ import {TypeOverviewComponent} from './type-overview.component';
 import {AppSidebarModule} from '@coreui/angular';
 import {ValidationApplicationComponent} from '../validation-application/validation-application.component';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import {ApplicationDetailComponent} from './application-detail/application-detail.component';
 
 /**
  * Applications Module.
@@ -45,8 +46,10 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
               IntegerValidatorDirective,
               IntegerOrNullValidatorDirective,
               TypeOverviewComponent,
-              ValidationApplicationComponent
-            ]
+              ValidationApplicationComponent,
+              ApplicationDetailComponent
+            ],
+            exports: [ApplicationDetailComponent]
           })
 export class ApplicationsModule {
 }

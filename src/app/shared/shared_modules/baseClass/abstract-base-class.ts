@@ -6,11 +6,11 @@ enum Lifetime_States {
 
 enum Project_States {
   ACTIVE = 2,
-  SUSPENDED = 4
+  SUSPENDED = 9
 
 }
 
-enum Application_States {
+export enum Application_States {
   SUBMITTED = 1,
   APPROVED = 2,
   DECLINED = 3,
@@ -18,7 +18,8 @@ enum Application_States {
   MODIFICATION_DECLINED = 5,
   WAIT_FOR_CONFIRMATION = 6,
   CONFIRMATION_DENIED = 7,
-  TERMINATED = 8
+  TERMINATED = 8,
+  SUSPENDED = 9
 
 }
 
@@ -28,7 +29,8 @@ enum Vm_Statuses {
   DELETED = 3,
   CLIENT_OFFLINE = 4,
   'POWERING OFF' = 5,
-  RESTARTING = 6
+  RESTARTING = 6,
+  'NOT FOUND' = 7
 }
 
 export abstract class AbstractBaseClasse {

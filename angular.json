@@ -93,7 +93,7 @@
           "options": {
             "browserTarget": "cloud-webapp:build",
             "port": 8001,
-            "host": "portal-dev.denbi.de",
+            "host": "localhost",
             "ssl": false
           },
           "configurations": {
@@ -101,7 +101,8 @@
               "browserTarget": "cloud-webapp:build:production"
             },
             "stage": {
-              "browserTarget": "cloud-webapp:build:stage"
+              "browserTarget": "cloud-webapp:build:stage",
+              "host": "portal-dev.denbi.de"
             }
           }
         },

@@ -9,7 +9,7 @@ import {ApplicationsService} from '../api-connector/applications.service'
 import {Userinfo} from '../userinfo/userinfo.model';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {ClientService} from '../api-connector/client.service';
-import {Application} from '../applications/application.model';
+import {Application} from '../applications/application.model/application.model';
 import {KeyService} from '../api-connector/key.service';
 import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
@@ -59,12 +59,15 @@ export class VirtualMachineComponent implements OnInit {
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
-  logs: { [selector: string]: string | number } = {};
   informationButton: string = 'Show Details';
   informationButton2: string = 'Show Details';
   client_checked: boolean = false;
   playbook_run: number = 0;
   timeout: number = 0;
+
+  started_machine: boolean = false;
+
+  bioconda_img_path: string = `static/webapp/assets/img/bioconda_logo.svg`;
 
   /**
    * All image of a project.
@@ -299,23 +302,15 @@ export class VirtualMachineComponent implements OnInit {
       () => {
         this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => {
           if (newVm.status === this.ACTIVE) {
-            if (this.playbook_run === 1) {
-              this.virtualmachineservice.getLogs(id).subscribe(logs => {
-                this.logs = logs;
-              });
-            }
             this.resetProgressBar();
             this.newVm = newVm;
             this.loadProjectData();
 
           } else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) {
-            this.virtualmachineservice.getLogs(id).subscribe(logs => {
-              this.newVm.status = this.DELETED;
-              this.logs = logs;
-              this.resetProgressBar();
-              this.create_error = <IResponseTemplate><any>newVm;
-              this.loadProjectData();
-            });
+            this.newVm.status = this.DELETED;
+            this.resetProgressBar();
+            this.create_error = <IResponseTemplate><any>newVm;
+            this.loadProjectData();
           } else if (newVm.status) {
             if (newVm.status === this.PORT_CLOSED) {
               this.progress_bar_animated = '';
@@ -340,8 +335,8 @@ export class VirtualMachineComponent implements OnInit {
             this.check_status_loop(id)
           } else {
             this.resetProgressBar();
-            this.create_error = <IResponseTemplate><any>newVm;
             this.loadProjectData();
+            this.create_error = <IResponseTemplate><any>newVm;
           }
 
         })
@@ -361,6 +356,8 @@ export class VirtualMachineComponent implements OnInit {
     this.create_error = null;
     if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
+      this.started_machine = true;
+
       const re: RegExp = /\+/gi;
 
       const flavor_fixed: string = flavor.replace(re, '%2B');
@@ -379,6 +376,7 @@ export class VirtualMachineComponent implements OnInit {
         this.https_allowed, this.udp_allowed, this.volumeName,
         this.diskspace.toString(), this.biocondaComponent.getChosenTools(), play_information)
         .subscribe((newVm: VirtualMachine) => {
+          this.started_machine = false;
 
           if (newVm.status === 'Build') {
             this.progress_bar_status = this.BUILD_STATUS;
@@ -397,6 +395,7 @@ export class VirtualMachineComponent implements OnInit {
             this.check_status_loop(newVm.openstackid);
           } else {
             this.progress_bar_status = this.CREATING_STATUS;
+            this.loadProjectData();
             this.create_error = <IResponseTemplate><any>newVm;
           }
 
@@ -404,7 +403,6 @@ export class VirtualMachineComponent implements OnInit {
 
     } else {
       this.progress_bar_status = this.CREATING_STATUS;
-
       this.newVm = null;
 
     }
@@ -416,6 +414,7 @@ export class VirtualMachineComponent implements OnInit {
         [variable: string]: string
       }
     } = {};
+    this.timeout = 300;
     if (this.biocondaComponent.hasChosenTools()) {
       playbook_info['bioconda'] = {
         packages: this.biocondaComponent.getChosenTools()

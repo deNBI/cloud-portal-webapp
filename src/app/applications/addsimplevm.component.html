@@ -31,7 +31,7 @@
             <input name="test_name" placeholder="TestAppName" #test_name>
           </div>
 
-          <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+          <form id="application_form" #f="ngForm"
                 class="form-horizontal">
             <div class="form-group row">
               <h5 class="col-md-6 form-control-label">General Information</h5>
@@ -166,6 +166,11 @@
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
                   </div>
+                  <div *ngIf="isFirst" class="alert alert-info"> You will have default access to all flavors in the
+                    standard category.<br>
+                    However, your selection will determine how many machines, how many cores and how much RAM will be
+                    available for your project.
+                  </div>
                   <div *ngFor="let f of flavorList">
                     <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
                          class="form-group row">
@@ -230,7 +235,7 @@
               </div>
             </div>
             <div class="form-group row" [hidden]="f.controls.project_application_volume_counter?.value == 0">
-              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong> Volume Storage
                 Limit*
                 <i
                   data-balloon="Storage limit is the sum of extra storage provided by volumes."
@@ -324,15 +329,14 @@
               <h5 class="col-md-6 form-control-label">Additional Information</h5>
             </div>
             <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>EDAM ontology
-                Terms </strong></label>
-              <div class="col-md-8 ">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Research Topics </strong></label>
+              <div class="col-md-8">
                 <div class="ng-autocomplete col-md-8">
                   <ng-autocomplete #edam_ontology
                                    [data]="edam_ontology_terms"
                                    [searchKeyword]="ontology_search_keyword"
                                    (selected)='selectEvent($event)'
-                                   placeHolder="Add your EDAM ontology terms"
+                                   placeHolder="Please add your research topics"
 
                                    [itemTemplate]="itemTemplate"
                                    [notFoundTemplate]="notFoundTemplate">
@@ -744,7 +748,8 @@
           </div>
           <button id="submit_btn" (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
                   [disabled]="f.invalid || !min_vm"
-                  class="btn btn-sm btn-success"><i
+                  class="btn btn-sm btn-success"
+                  type="button"><i
             class="fa fa-dot-circle-o"></i> Submit
             Application
           </button>
@@ -783,8 +788,8 @@
                 class="btn  btn-secondary"> Close
         </button>
         <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
-           [routerLink]="['/applications']">
-          <button id="notification_btn_redirect"
+           [routerLink]="['/project-management/' + new_application_id]">
+          <button type="button"
                   (click)="notificationModal.hide();resetNotificationModal()" type="reset"
                   class="btn  btn-secondary"> Close
           </button>
@@ -820,8 +825,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="acknowledge_approve_btn" (click)="acknowledgemodal.hide(); notificationModal.show();"
-                class="btn  btn-success" type="submit" name="_save" form="application_form">
+        <button type="button" (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
+                class="btn  btn-success" name="_save" form="application_form">
           Accept
         </button>
 

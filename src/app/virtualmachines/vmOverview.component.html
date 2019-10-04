@@ -1,6 +1,4 @@
-<div *ngIf="isLoaded==false" class="loader"></div>
-
-<div *ngIf="isLoaded" class="card">
+<div class="card">
 
   <div class="card-header">
     <i class="icon-refresh icons" style="cursor: pointer;" (click)="getVms()"></i><strong>Instance</strong>
@@ -27,11 +25,19 @@
   </div>
   <div style="margin-right: 5px;margin-left: 5px;">
     <pagination
-      [totalItems]="total_pages" [itemsPerPage]="vms_content.length"
+      [totalItems]="total_pages" [itemsPerPage]="items_per_page"
       (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
       [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
     </pagination>
   </div>
+  <div *ngIf="tab=='facility'" style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
+                                                                   class="form-control " name="selectedFacility">
+    <option *ngFor="  let facility of managerFacilities"
+            [ngValue]="facility">
+      {{facility['Facility']}}
+    </option>
+
+  </select></div>
 
 
   <div class="table-responsive" style="overflow-x: visible; overflow-y: visible">
@@ -102,18 +108,22 @@
       <td><!--input style="width: 110px;" t type="text" placeholder="Filter"
                  name="filterVmStopped_at"
                  [(ngModel)]="filterVmStopped_at" (ngModelChange)="applyFilter();"--></td>
+      <tr>
+        <td style="text-align:center;position:relative;" colspan="12" *ngIf="isSearching">
+          <div class="spinner-border text-primary"></div>
+        </td>
+      </tr>
 
 
       <ng-container *ngFor="let vm of vms_content">
 
+        <tr *ngIf="!isSearching">
 
-        <tr id="id_table_row_{{vm?.name}}">
-          <td>
-            <popover-content #namePopover
-                             [title]="vm?.name"
-                             placement="right"
-                             [animation]="true"
-                             [closeOnClickOutside]="true">
+
+          <td [popover]="namePopover">
+            <popover-content #namePopover placement="right" [title]="vm?.name" [closeOnMouseOutside]="false"
+                             [closeOnClickOutside]="true"
+            >
               <table class="table-bordered">
                 <tr>
                   <td>ID</td>
@@ -122,17 +132,22 @@
               </table>
             </popover-content>
 
-            <strong [popover]="namePopover"><span style="color: #005AA9;">{{vm?.name}}</span></strong>
+            <strong style="color: #005AA9;">{{vm?.name}}            </strong>
+
+
           </td>
+
+
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
             {{vm.project}}
           </td>
-          <td>
-            <popover-content #myPopover
+          <td [popover]="flavorPopover">
+            <popover-content #flavorPopover
                              [title]="vm?.flavor?.name"
                              placement="right"
                              [animation]="true"
-                             [closeOnClickOutside]="true">
+                             [closeOnClickOutside]="false"
+                             [closeOnMouseOutside]="false">
               <div class="scroll-flavor">
 
                 <div class="col">
@@ -172,7 +187,7 @@
               </div>
             </popover-content>
 
-            <strong [popover]="myPopover"><span style="color: #005AA9;">{{vm?.flavor?.name}}</span></strong>
+            <strong style="color: #005AA9;">{{vm?.flavor?.name}}</strong>
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
                          <span *ngIf="vm.status == vm_statuses[vm_statuses.DELETED]"
@@ -209,8 +224,17 @@
           </td>
 
           <td>
+            <div *ngIf=" vm.status =='NOT FOUND'" class="alert alert-danger" role="alert"
+            >
+              Your instance was not found! Please contact cloud support at cloud@denbi.de .
+            </div>
+            <div *ngIf=" vm.status =='CLIENT OFFLINE' || vm.status ==' CLIENT OFFLINE'" class="alert alert-danger"
+                 role="alert"
+            >
+              The client associated with the instance is offline! Please contact cloud support at cloud@denbi.de .
+            </div>
             <div
-              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
+              *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !='NOT FOUND'  && vm.status !='CLIENT OFFLINE' && vm.status !=' CLIENT OFFLINE'"
               class="dropdown" dropdown>
               <button *ngIf="vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
                       style="cursor: pointer"
@@ -646,7 +670,7 @@
 
 
       <div class="modal-body">
-        <app-how-to-connect *ngIf="selectedVm" [selectedVm]="selectedVm"></app-how-to-connect>
+        <app-how-to-connect *ngIf="selectedVm" [selectedVirtualMachine]="selectedVm"></app-how-to-connect>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="infoModal.hide();">Close

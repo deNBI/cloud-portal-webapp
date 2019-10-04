@@ -11,7 +11,7 @@ import {ImageTag} from './image-tag';
            })
 export class ImageTagComponent implements OnInit {
   isLoaded: boolean = false;
-
+  alertRed: boolean = false;
   imageTags: ImageTag[];
 
   constructor(private imageService: ImageService) {
@@ -25,11 +25,16 @@ export class ImageTagComponent implements OnInit {
     })
   }
 
-  addTag(tag: string, description: string): void {
-    this.imageService.addImageTags(tag, description).subscribe((newTag: ImageTag) => {
+  addTag(tag: string, description: string, input: HTMLInputElement): void {
+    if (input.validity.valid) {
+    this.imageService.addImageTags(tag.trim(), description).subscribe((newTag: ImageTag) => {
       this.imageTags.push(newTag)
 
     })
+    this.alertRed = false;
+    } else {
+      this.alertRed = true;
+    }
   }
 
   deleteTag(tag: string): void {
