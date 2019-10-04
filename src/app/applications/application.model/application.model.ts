@@ -1,5 +1,5 @@
-import {ApplicationExtension} from './application_extension.model';
-import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
+import {ApplicationExtension} from '../application_extension.model';
+import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
 
 /**
  * Application class.
@@ -26,6 +26,7 @@ export class Application {
   private _User: string;
   private _UserEmail: string;
   private _UserAffiliations: string[];
+  private _PiAffiliations: string[];
   private _Status: number;
   private _ComputeCenter: ComputecenterComponent;
   private _OpenStackProject: boolean;
@@ -37,6 +38,7 @@ export class Application {
   private _DateApproved: string;
   private _Horizon2020: string;
   private _BMBFProject: string;
+  private _EdamTopics: string[];
 
   private _ElixirProject: string;
   private _Dissemination: boolean;
@@ -68,6 +70,21 @@ export class Application {
     };
   }
 
+  get PiAffiliations(): string[] {
+    return this._PiAffiliations;
+  }
+
+  set PiAffiliations(value: string[]) {
+    this._PiAffiliations = value;
+  }
+
+  get EdamTopics(): string[] {
+    return this._EdamTopics;
+  }
+
+  set EdamTopics(value: string[]) {
+    this._EdamTopics = value;
+  }
 
   get PIElixir(): string {
     return this._PIElixir;
@@ -343,8 +360,6 @@ export class Application {
     this._PerunId = value;
   }
 
-
-
   get BMBFProject(): string {
     return this._BMBFProject;
   }
@@ -352,7 +367,6 @@ export class Application {
   set BMBFProject(value: string) {
     this._BMBFProject = value;
   }
-
 
   get Horizon2020(): string {
     return this._Horizon2020;

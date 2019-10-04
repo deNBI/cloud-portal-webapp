@@ -31,6 +31,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   DEBOUNCE_TIME: number = 300;
 
   filter_status_list: string[] = [this.vm_statuses[this.vm_statuses.ACTIVE], this.vm_statuses[this.vm_statuses.SHUTOFF]];
+  isSearching: boolean = true;
 
   selectedVm: VirtualMachine = null;
 
@@ -41,10 +42,22 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   STORAGE_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/storage_icon.svg';
   GPU_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/gpu_icon.svg';
 
+  /**
+   * Facilitties where the user is manager ['name',id].
+   */
+  public managerFacilities: [string, number][];
+  /**
+   * Chosen facility.
+   */
+  public selectedFacility: [string, number];
+
   total_pages: number;
   /**
    * If user is vo admin.
    */
+
+  items_per_page: number = 7;
+
   is_vo_admin: boolean;
   /**
    * Vm which is used to create a snapshot.
@@ -120,6 +133,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * Apply filter to all vms.
    */
   applyFilter(): void {
+    this.isSearching = true;
     if (this.tab === 'own') {
       this.getVms()
     } else if (this.tab === 'all') {
@@ -296,7 +310,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
             }
 
             this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-            this.applyFilter();
 
           } else {
             if (vm['error']) {
@@ -378,7 +391,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                    }
 
                    this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-                   this.applyFilter();
                    this.selectedVm = updated_vm;
 
                    switch (updated_vm.status) {
@@ -402,9 +414,9 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * Load vms depending on page.
    * @param event
    */
-  pageChanged(event)
-    :
-    void {
+  pageChanged(event): void {
+    this.isSearching = true;
+
     this.currentPage = event.page;
     if (this.tab === 'own') {
       this.getVms()
@@ -432,6 +444,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       .subscribe(vms => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
+                   this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
                      this.setCollapseStatus(vm.openstackid, false);
@@ -447,16 +460,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                      }
                    }
                    this.isLoaded = true;
+                   this.isSearching = false;
 
                  }
       );
   }
 
-  getAllVmsFacilities()
-    :
-    void {
+  getAllVmsFacilities(): void {
 
     this.virtualmachineservice.getVmsFromFacilitiesOfLoggedUser(
+      this.selectedFacility['FacilityId'],
       this.currentPage,
       this.filterVmName,
       this.filterProjectName,
@@ -467,6 +480,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       .subscribe(vms => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
+                   this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
                      this.setCollapseStatus(vm.openstackid, false);
@@ -482,6 +496,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                      }
                    }
                    this.isLoaded = true;
+                   this.isSearching = false;
 
                  }
       );
@@ -509,7 +524,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       }
 
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-      this.applyFilter();
       switch (updated_vm.status) {
         case this.vm_statuses[this.vm_statuses.ACTIVE]:
           this.status_changed = 1;
@@ -541,6 +555,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       .subscribe(vms => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
+                   this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
                      this.setCollapseStatus(vm.openstackid, false);
@@ -555,6 +570,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                      }
 
                    }
+                   this.isSearching = false;
+
                  }
       );
   }
@@ -568,12 +585,14 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
   }
 
-  ngOnInit()
-    :
-    void {
+  ngOnInit(): void {
     this.getVms();
     this.checkVOstatus();
     this.get_is_facility_manager();
+    this.facilityService.getManagerFacilities().subscribe(result => {
+      this.managerFacilities = result;
+      this.selectedFacility = this.managerFacilities[0];
+    });
 
     this.filterNameChanged
       .pipe(
@@ -632,4 +651,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     })
   }
 
+  logsome(v1, v2) {
+    console.log(v1, v2);
+  }
 }

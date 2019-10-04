@@ -1,3 +1,54 @@
+##  (2019-09-23)
+
+
+#### Bug Fixes
+
+* **Popover:** now id is copyable ([51e5b032](51e5b032))
+
+
+##  (2019-09-12)
+
+
+#### Bug Fixes
+
+* **vm**  fix stop bug
+
+##  (2019-09-10)
+
+
+#### Bug Fixes
+
+* **application:**  enter does not submit form anymore ([510fa96b](510fa96b))
+* **modification:**  Amount of RAM now classified with GB ([ea851630](ea851630))
+
+
+##  (2019-09-03)
+
+
+#### Bug Fixes
+
+* **project-overview:**  Buttons for Actions now aligned, table structured with bootstrap-col ([029085ec](029085ec))
+* **instance-overview** Instances sync with openstack
+
+##  (2019-08-19)
+
+
+#### Bug Fixes
+
+* **instance_name:**  remove async name check (#649) ([904703a4](904703a4))
+
+
+#### Features
+
+* **Conda:** added also conda forge and anaconda ([04d094fe](04d094fe))
+* **Dissemination:**
+  * added first public endpoint ([a5beb0fc](a5beb0fc))
+  * also added for simple vm ([2562e619](2562e619))
+  * added diss model ([5f59f90c](5f59f90c))
+* **VirtualMachine:** added flavor and instance id popover to vm overvieew ([879b0270](879b0270))
+* **dissemination:**  combined options into one accordion splitted by headlines ([8fb3f23f](8fb3f23f))
+
+
 ##  (2019-08-08)
 
 

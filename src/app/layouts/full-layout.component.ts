@@ -6,6 +6,10 @@ import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {VoService} from '../api-connector/vo.service';
 import {IResponseTemplate} from '../api-connector/response-template';
+import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationsService} from '../api-connector/applications.service';
+import {ApplicationStatusService} from '../api-connector/application-status.service';
+import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 
 /**
  * FullLayout component.
@@ -13,9 +17,9 @@ import {IResponseTemplate} from '../api-connector/response-template';
 @Component({
              selector: 'app-dashboard',
              templateUrl: './full-layout.component.html',
-             providers: [VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings]
+             providers: [ApplicationsService, ApplicationStatusService, VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings]
            })
-export class FullLayoutComponent implements OnInit {
+export class FullLayoutComponent extends ApplicationBaseClass implements OnInit {
 
   public year: number = new Date().getFullYear();
   public disabled: boolean = false;
@@ -26,9 +30,14 @@ export class FullLayoutComponent implements OnInit {
   public login_name: string = '';
   navbar_state: string = 'closed';
   overview_state: string = 'closed';
+  project_enumeration: ProjectEnumeration[] = [];
 
-  constructor(private voService: VoService, private groupService: GroupService, private userservice: UserService,
-              private facilityservice: FacilityService) {
+  constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
+              facilityService: FacilityService, applicationsservice: ApplicationsService,
+              applicationstatusservice: ApplicationStatusService,
+  ) {
+    super(userservice, applicationstatusservice, applicationsservice, facilityService);
+
   }
 
   public get_is_vo_admin(): boolean {
@@ -46,7 +55,7 @@ export class FullLayoutComponent implements OnInit {
   }
 
   public get_is_facility_manager(): void {
-    this.facilityservice.getManagerFacilities().subscribe(result => {
+    this.facilityService.getManagerFacilities().subscribe(result => {
       if (result.length > 0) {
         this.is_facility_manager = true
       }
@@ -77,6 +86,12 @@ export class FullLayoutComponent implements OnInit {
     }
   }
 
+  getGroupsEnumeration(): void {
+    this.groupService.getGroupsEnumeration().subscribe(res => {
+      this.project_enumeration = res;
+    })
+  }
+
   checkVOstatus(): void {
     this.voService.isVo().subscribe((result: IResponseTemplate) => {
       this.is_vo_admin = <boolean><Boolean>result.value;
@@ -84,6 +99,7 @@ export class FullLayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getGroupsEnumeration();
     this.is_vm_project_member();
     this.get_is_facility_manager();
     this.getLoginName();

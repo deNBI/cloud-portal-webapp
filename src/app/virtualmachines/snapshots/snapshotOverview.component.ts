@@ -3,6 +3,8 @@ import {ImageService} from '../../api-connector/image.service';
 import {SnapshotModel} from './snapshot.model';
 import {forkJoin, Observable} from 'rxjs';
 import {IResponseTemplate} from '../../api-connector/response-template';
+import {VolumeRequestStates} from '../volumes/volume-request-states.enum';
+import {FacilityService} from '../../api-connector/facility.service';
 
 enum Snapshot_Delete_Statuses {
   WAITING = 0,
@@ -13,10 +15,21 @@ enum Snapshot_Delete_Statuses {
 @Component({
              selector: 'app-snapshot-overview',
              templateUrl: 'snapshotOverview.component.html',
-             providers: [ImageService]
+             providers: [FacilityService, ImageService]
            })
 
 export class SnapshotOverviewComponent implements OnInit {
+
+  showFacilities: boolean = false;
+
+  /**
+   * Facilitties where the user is manager ['name',id].
+   */
+  managerFacilities: [string, number][];
+  /**
+   * Chosen facility.
+   */
+  selectedFacility: [string, number];
   /**
    * All snapshots.
    * @type {Array}
@@ -44,7 +57,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
   private checkStatusTimeout: number = 5000;
 
-  constructor(private imageService: ImageService) {
+  constructor(private facilityService: FacilityService, private imageService: ImageService) {
 
   }
 
@@ -60,6 +73,7 @@ export class SnapshotOverviewComponent implements OnInit {
    * Get snapshots by user.
    */
   getSnapshots(): void {
+    this.snapshots = [];
     this.imageService.getSnapshotsByUser().subscribe(result => {
       this.snapshots = result;
       this.isLoaded = true;
@@ -99,6 +113,13 @@ export class SnapshotOverviewComponent implements OnInit {
 
   }
 
+  getFacilitySnapshots(): void {
+    this.snapshots = [];
+    this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId']).subscribe(res => {
+      this.snapshots = res;
+    })
+  }
+
   /**
    * Delete snapshot.
    * @param {string} snapshot_id
@@ -123,7 +144,11 @@ export class SnapshotOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getSnapshots()
+    this.getSnapshots();
+    this.facilityService.getManagerFacilities().subscribe(result => {
+      this.managerFacilities = result;
+      this.selectedFacility = this.managerFacilities[0];
+    });
 
   }
 

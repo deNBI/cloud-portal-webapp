@@ -32,12 +32,10 @@ import {
     SidebarToggleDirective
 } from "./shared/sidebar.directive";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ServiceWorkerModule} from '@angular/service-worker';
 import {MatSnackBarModule} from "@angular/material";
 import {Angulartics2Module} from 'angulartics2';
 import { ErrorHandler } from '@angular/core';
 import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler.service';
-import {environment} from "../environments/environment";
 import {CookieService} from 'ngx-cookie-service';
 
 /**

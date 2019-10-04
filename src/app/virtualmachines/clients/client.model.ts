@@ -2,129 +2,155 @@
  * Clientclass
  */
 export class Client {
-    private _id: string;
-    private _host: string;
-    private _status: string;
-    private _port: string;
-    private _version: string;
-    private _features: string[];
-    private _maxVolumes: number;
-    private _assignedVolumes: number;
-    private _maxVMs: number;
-    private _assignedVMs: number;
-    private _location: string;
-    private _maxVolumeLimit: number;
-    private _assignedVolumesStorage: number;
+  private _id: string;
+  private _host: string;
+  private _status: string;
+  private _port: string;
+  private _version: string;
+  private _features: string[];
+  private _maxVolumes: number;
+  private _assignedVolumes: number;
+  private _maxVMs: number;
+  private _assignedVMs: number;
+  private _location: string;
+  private _maxVolumeLimit: number;
+  private _assignedVolumesStorage: number;
+  private _newVolumes: number;
+  private _newVms: number;
+  private _newVolumeLimit: number;
 
+  constructor(host: string, port: string, location: string, id: string) {
+    this._host = host;
+    this._port = port;
+    this._location = location;
+    this._id = id;
+  }
 
-    constructor(host: string, port: string, location: string, id: string) {
-        this._host = host;
-        this._port = port;
-        this._location = location;
-        this._id = id;
-    }
+  get newVolumes(): number {
+    return this._newVolumes;
+  }
 
-    get id(): string {
-        return this._id;
-    }
+  set newVolumes(value: number) {
+    this._newVolumes = value;
+  }
 
-    set id(value: string) {
-        this._id = value;
-    }
+  get newVms(): number {
+    return this._newVms;
+  }
 
-    get host(): string {
-        return this._host;
-    }
+  set newVms(value: number) {
+    this._newVms = value;
+  }
 
-    set host(value: string) {
-        this._host = value;
-    }
+  get newVolumeLimit(): number {
+    return this._newVolumeLimit;
+  }
 
-    get status(): string {
-        return this._status;
-    }
+  set newVolumeLimit(value: number) {
+    this._newVolumeLimit = value;
+  }
 
-    set status(value: string) {
-        this._status = value;
-    }
+  get id(): string {
+    return this._id;
+  }
 
-    get port(): string {
-        return this._port;
-    }
+  set id(value: string) {
+    this._id = value;
+  }
 
-    set port(value: string) {
-        this._port = value;
-    }
+  get host(): string {
+    return this._host;
+  }
 
-    get version(): string {
-        return this._version;
-    }
+  set host(value: string) {
+    this._host = value;
+  }
 
-    set version(value: string) {
-        this._version = value;
-    }
+  get status(): string {
+    return this._status;
+  }
 
-    get features(): string[] {
-        return this._features;
-    }
+  set status(value: string) {
+    this._status = value;
+  }
 
-    set features(value: string[]) {
-        this._features = value;
-    }
+  get port(): string {
+    return this._port;
+  }
 
-    get maxVolumes(): number {
-        return this._maxVolumes;
-    }
+  set port(value: string) {
+    this._port = value;
+  }
 
-    set maxVolumes(value: number) {
-        this._maxVolumes = value;
-    }
+  get version(): string {
+    return this._version;
+  }
 
-    get assignedVolumes(): number {
-        return this._assignedVolumes;
-    }
+  set version(value: string) {
+    this._version = value;
+  }
 
-    set assignedVolumes(value: number) {
-        this._assignedVolumes = value;
-    }
+  get features(): string[] {
+    return this._features;
+  }
 
-    get maxVMs(): number {
-        return this._maxVMs;
-    }
+  set features(value: string[]) {
+    this._features = value;
+  }
 
-    set maxVMs(value: number) {
-        this._maxVMs = value;
-    }
+  get maxVolumes(): number {
+    return this._maxVolumes;
+  }
 
-    get assignedVMs(): number {
-        return this._assignedVMs;
-    }
+  set maxVolumes(value: number) {
+    this._maxVolumes = value;
+  }
 
-    set assignedVMs(value: number) {
-        this._assignedVMs = value;
-    }
+  get assignedVolumes(): number {
+    return this._assignedVolumes;
+  }
 
-    get location(): string {
-        return this._location;
-    }
+  set assignedVolumes(value: number) {
+    this._assignedVolumes = value;
+  }
 
-    set location(value: string) {
-        this._location = value;
-    }
+  get maxVMs(): number {
+    return this._maxVMs;
+  }
 
-    get maxVolumeLimit(): number {
-        return this._maxVolumeLimit;
-    }
+  set maxVMs(value: number) {
+    this._maxVMs = value;
+  }
 
-    set maxVolumeLimit(value: number) {
-        this._maxVolumeLimit = value;
-    }
+  get assignedVMs(): number {
+    return this._assignedVMs;
+  }
 
-    get assignedVolumesStorage(): number {
-        return this._assignedVolumesStorage;
-    }
+  set assignedVMs(value: number) {
+    this._assignedVMs = value;
+  }
 
-    set assignedVolumesStorage(value: number) {
-        this._assignedVolumesStorage = value;
-    }
+  get location(): string {
+    return this._location;
+  }
+
+  set location(value: string) {
+    this._location = value;
+  }
+
+  get maxVolumeLimit(): number {
+    return this._maxVolumeLimit;
+  }
+
+  set maxVolumeLimit(value: number) {
+    this._maxVolumeLimit = value;
+  }
+
+  get assignedVolumesStorage(): number {
+    return this._assignedVolumesStorage;
+  }
+
+  set assignedVolumesStorage(value: number) {
+    this._assignedVolumesStorage = value;
+  }
 }

@@ -5,6 +5,15 @@
   id="create_attach_button">Create
     & Attach Volume
   </button>
+  <button type="button" style="margin-bottom: 5px;margin-left: 5px;" class="btn btn-secondary"
+          (click)="showFacilities =!showFacilities; getFacilityVolumes();"
+          *ngIf="!showFacilities  && managerFacilities.length >0"> Facility Volumes
+  </button>
+  <button type="button" style="margin-bottom: 5px;margin-left: 5px;" class="btn btn-secondary"
+          (click)="showFacilities =!showFacilities; getVolumes();"
+          *ngIf="showFacilities"> Own Volumes
+  </button>
+
 </div>
 
 <div *ngIf="isLoaded" class="card">
@@ -13,6 +22,14 @@
     <strong>Volumes</strong>
     –Overview
   </div>
+  <div *ngIf="showFacilities" style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
+                                                                  class="form-control " name="selectedFacility">
+    <option *ngFor="  let facility of managerFacilities"
+            [ngValue]="facility">
+      {{facility['Facility']}}
+    </option>
+
+  </select></div>
   <div>
     <div>
       <div class="table-responsive" style="overflow-x: visible; overflow-y: visible">
@@ -41,7 +58,7 @@
             <td id="cell_name_id_{{volume.volume_name}}">{{volume.volume_name}}</td>
             <td>{{volume.volume_size }} GB</td>
             <td>
-              <div *ngIf="volume.volume_created_by_user" class="btn-group" dropdown>
+              <div *ngIf="volume.volume_created_by_user || showFacilities" class="btn-group" dropdown>
                 <button class="btn btn-secondary"
                         (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
                         type="button" id="delete_button">Delete Volume

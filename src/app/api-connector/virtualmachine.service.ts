@@ -121,18 +121,18 @@ export class VirtualmachineService {
     })
   }
 
-    getLogs(openstack_id: string): Observable<any> {
-      return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
-        withCredentials: true,
+  getLogs(openstack_id: string): Observable<any> {
+    return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
+      withCredentials: true,
 
-        headers: header
-      })
-    }
+      headers: header
+    })
+  }
 
-  getVmsFromFacilitiesOfLoggedUser(page: number, filter_name?: string, filter_project?: string,
+  getVmsFromFacilitiesOfLoggedUser(facility_id: string | number, page: number, filter_name?: string, filter_project?: string,
                                    filter_status?: string[],
                                    filter_elixir_id?: string,
-                                   filter_created_at?: string, filter_stopped_at?: string): Observable<VirtualMachine[]> {
+                                   filter_created_at?: string, filter_stopped_at?: string,): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString());
     if (filter_name) {
       params = params.set('filter_name', filter_name);
@@ -160,7 +160,7 @@ export class VirtualmachineService {
 
     }
 
-    return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/vms/`,
+    return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/vms/`,
                                            {
                                              withCredentials: true,
                                              params:
@@ -293,15 +293,6 @@ export class VirtualmachineService {
     const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'detach');
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
-      withCredentials: true,
-      headers: header
-    })
-  }
-
-  isInstanceNameTaken(name: string, host: string, port: string): Observable<boolean> {
-    const params: HttpParams = new HttpParams().set('name', name).set('host', host).set('port', port);
-
-    return this.http.post<boolean>(`${this.baseVmUrl}exist/`, params, {
       withCredentials: true,
       headers: header
     })

@@ -49,7 +49,7 @@
               <span *ngIf="client_avaiable && !projectDataLoaded" class="spinner-border text-info"></span>
 
 
-              <div class="col-md-6">
+              <div class="col-md-8">
 
 
                 <select required class="form-control" name="projectSelect"
@@ -76,7 +76,7 @@
                 <label class="col-md-2 form-control-label"><strong>Overview</strong></label>
 
 
-                <div class="row text-center col-md 6">
+                <div class="row text-center col-md-10">
 
                   <div class="col-sm-12 col-md">
                     <div class="text-muted">Vms</div>
@@ -89,7 +89,7 @@
                            [ngStyle]="{'width.%': selectedProjectVmsUsed/selectedProjectVmsMax *100}"
                            [ngClass]=" {'bg-success':(selectedProjectVmsUsed / selectedProjectVmsMax) < 0.5 ,
                          'bg-warning':(selectedProjectVmsUsed / selectedProjectVmsMax) > 0.5 &&   selectedProjectVmsUsed < selectedProjectVmsMax,
-                         'bg-danger': selectedProjectVmsUsed === selectedProjectVmsMax}"
+                         'bg-danger': selectedProjectVmsUsed >= selectedProjectVmsMax}"
 
                            aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
@@ -104,7 +104,7 @@
                            [ngStyle]="{'width.%': selectedProjectRamUsed/selectedProjectRamMax *100 }" aria-valuenow="0"
                            [ngClass]=" {'bg-success':(selectedProjectRamUsed / selectedProjectRamMax) < 0.5 ,
                          'bg-warning':(selectedProjectRamUsed / selectedProjectRamMax) > 0.5 &&   selectedProjectRamUsed < selectedProjectRamMax,
-                         'bg-danger': selectedProjectRamUsed === selectedProjectRamMax}"
+                         'bg-danger': selectedProjectRamUsed >= selectedProjectRamMax}"
                            aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                   </div>
@@ -117,7 +117,7 @@
                            [ngStyle]="{'width.%': selectedProjectCoresUsed/selectedProjectCoresMax *100 }"
                            [ngClass]=" {'bg-success':(selectedProjectCoresUsed / selectedProjectCoresMax) < 0.5 ,
                          'bg-warning':(selectedProjectCoresUsed / selectedProjectCoresMax) > 0.5 &&   selectedProjectCoresUsed < selectedProjectCoresMax,
-                         'bg-danger': selectedProjectCoresUsed === selectedProjectCoresMax}"
+                         'bg-danger': selectedProjectCoresUsed >= selectedProjectCoresMax}"
                            aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                   </div>
@@ -130,7 +130,7 @@
                            [ngStyle]="{'width.%': selectedProjectVolumesUsed/selectedProjectVolumesMax *100 }"
                            [ngClass]=" {'bg-success':(selectedProjectVolumesUsed / selectedProjectVolumesMax) < 0.5 ,
                          'bg-warning':(selectedProjectVolumesUsed / selectedProjectVolumesMax) > 0.5 &&   selectedProjectVolumesUsed < selectedProjectVolumesMax,
-                         'bg-danger': selectedProjectVolumesUsed === selectedProjectVolumesMax}"
+                         'bg-danger': selectedProjectVolumesUsed >= selectedProjectVolumesMax}"
                            aria-valuenow="0"
                            aria-valuenow="60"
                            aria-valuemin="0" aria-valuemax="100"></div>
@@ -145,7 +145,7 @@
                            [ngStyle]="{'width.%': selectedProjectDiskspaceUsed/selectedProjectDiskspaceMax *100 }"
                            [ngClass]=" {'bg-success':(selectedProjectDiskspaceUsed / selectedProjectDiskspaceMax) < 0.5 ,
                          'bg-warning':(selectedProjectDiskspaceUsed / selectedProjectDiskspaceMax) > 0.5 &&   selectedProjectDiskspaceUsed < selectedProjectDiskspaceMax,
-                         'bg-danger': selectedProjectDiskspaceUsed === selectedProjectDiskspaceMax}"
+                         'bg-danger': selectedProjectDiskspaceUsed >= selectedProjectDiskspaceMax}"
 
                            aria-valuemin="0" aria-valuemax="[selectedProjectDiskspaceMax]"></div>
                     </div>
@@ -159,7 +159,7 @@
                            [ngStyle]="{'width.%': selectedProjectGPUsUsed/selectedProjectGPUsMax *100 }"
                            [ngClass]=" {'bg-success':(selectedProjectGPUsUsed / selectedProjectGPUsMax) < 0.5 ,
                          'bg-warning':(selectedProjectGPUsUsed / selectedProjectGPUsMax) > 0.5 &&   selectedProjectGPUsUsed < selectedProjectGPUsMax,
-                         'bg-danger': selectedProjectGPUsUsed === selectedProjectGPUsMax}"
+                         'bg-danger': selectedProjectGPUsUsed >= selectedProjectGPUsMax}"
 
                            aria-valuemin="0" aria-valuemax="[selectedProjectGPUsMax]"></div>
                     </div>
@@ -184,9 +184,9 @@
 
 
               <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor)">
-                <div *ngIf="selectedProject" class="form-group row">
+                <div *ngIf="selectedProject" class="form-group row col-md-12">
                   <label class="col-md-2 form-control-label"><strong>Name*</strong></label>
-                  <div class="col-md-6">
+                  <div class="col-md-10">
                     <div class="input-group">
                       <input required id="id_instance_name" name="instance_name"
                              class="form-control"
@@ -195,11 +195,6 @@
                              [ngModelOptions]="{updateOn: 'blur'}"
                              [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
-                    <div class="spinner-border" *ngIf="f.controls.instance_name?.pending"></div>
-                    </div>
-                    <div *ngIf="f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)">
-                      <div class="alert alert-danger" role="alert" style="margin-top: 5px" *ngIf="f.controls.instance_name?.hasError('uniqueInstanceName')">
-                        The instance name has to be unique!</div>
                     </div>
                     <div class="alert alert-primary" role="alert" style="margin-top: 5px">Info: The instance name will
                       also
@@ -208,7 +203,7 @@
                   </div>
                 </div>
 
-                <div *ngIf="selectedProject" class="form-group row">
+                <div *ngIf="selectedProject" class="form-group row col-md-12">
                   <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
                   <div class="col-md-10">
 
@@ -224,7 +219,7 @@
                 </div>
 
 
-                <div *ngIf="selectedProject" class="form-group row">
+                <div *ngIf="selectedProject" class="form-group row col-md-12">
                   <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
                   <div class="col-md-10">
 
@@ -238,11 +233,11 @@
 
 
               </div>
-              <accordion>
-                <accordion-group #optionalGroup *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID"
-                id="optional_accordion">
+              <accordion class="col-md-12">
+                <accordion-group #optionalGroup
+                                 *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax">
                   <div accordion-heading style="width: 100%; cursor: pointer">
-                    Optional parameters
+                    <strong>Optional parameters</strong>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': optionalGroup.isOpen, 'icon-arrow-down': !optionalGroup.isOpen}"></i>
                   </div>
@@ -338,8 +333,9 @@
                 <accordion-group #autoGroup
                                  *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax">
                   <div accordion-heading style="width: 100%; cursor: pointer">
-                    <strong>Tools </strong><span
-                    class="badge badge-primary">BETA</span>
+                    <strong>Tools </strong> powered by <img src="{{bioconda_img_path}}" alt="Bioconda® "
+                                                            style="height: 12px; width: auto"><span
+                    class="badge badge-primary" style="margin-left:5px;">BETA</span>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': autoGroup.isOpen, 'icon-arrow-down': !autoGroup.isOpen}"></i>
                   </div>
@@ -413,8 +409,8 @@
     width: 8em"
 
                   type="button"
-                  id="startVMButton"
-                  [disabled]="f.invalid || !selectedFlavor || !selectedImage|| (diskspace > 0 && volumeName == '')"
+
+                  [disabled]="f.invalid || started_machine || !selectedFlavor || !selectedImage|| (diskspace > 0 && volumeName == '')"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
@@ -464,9 +460,8 @@ id="info_modal">
            *ngIf="(newVm?.status == 'BUILD' || newVm?.status == 'PORT_CLOSED' || newVm ==null) && !create_error?.error ">
         <p *ngIf="playbook_run == 0">We are setting up a machine for you. This can take up to 5 minutes.</p>
         <p *ngIf="playbook_run == 1">We are setting up a machine for you.
-          This can take some time, depending on your chosen playbooks.
-          At maximum it can take up to {{getTimeoutMinutes()}} minutes, due to the accumulation of timeouts in your
-          generated playbook.</p>
+          This can take some time, depending on your chosen tools.
+          At maximum it can take up to {{getTimeoutMinutes()}} minutes.</p>
 
         <div class="progress">
           <div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
@@ -481,10 +476,10 @@ id="info_modal">
           instance overview site</p>
       </div>
       <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE' || newVm?.status == 'DELETED'">
-        <app-how-to-connect [selectedVm]="newVm" [playbook_run]="playbook_run" [logs]="logs" id="howToConnect"></app-how-to-connect>
+        <app-how-to-connect [selectedVirtualMachine]="newVm" [playbook_run]="playbook_run"></app-how-to-connect>
       </div>
       <div class="modal-body" *ngIf="create_error?.error">
-        An Error occured.<br><br>
+        An Error occurred.<br><br>
         <pre><code>{{create_error.error}}</code></pre>
       </div>
       <div class="modal-footer">
