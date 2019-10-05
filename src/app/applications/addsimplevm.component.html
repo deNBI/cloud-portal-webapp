@@ -586,12 +586,16 @@
                   </div>
 
 
+                  <div class="alert-danger alert" *ngIf="dissemination_platform_count == 0 && project_application_report_allowed">
+                    Please select at least one Platform.
+                  </div>
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Newsletter</label>
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
-                        <input type="checkbox" class="switch-input" name="platform_newsletter"
+                        <input type="checkbox" class="switch-input" name="platform_newsletter" #newsletter
                                [(ngModel)]="application_dissemination.platform_newsletter"
+                               (change)="count_platform(newsletter.checked)"
                                name="platform_newsletter">
 
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
@@ -604,8 +608,9 @@
                     <label class="col-md-4 form-control-label">Landing Page</label>
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
-                        <input type="checkbox" class="switch-input" name="platform_landing_page"
+                        <input type="checkbox" class="switch-input" name="platform_landing_page" #landing_page
                                [(ngModel)]="application_dissemination.platform_landing_page"
+                               (change)="count_platform(landing_page.checked)"
                                name="platform_landing_page"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
@@ -618,9 +623,9 @@
                     <label class="col-md-4 form-control-label">Portal News</label>
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
-                        <input type="checkbox" class="switch-input" name="platform_portal_news"
+                        <input type="checkbox" class="switch-input" name="platform_portal_news" #portal_news
                                [(ngModel)]="application_dissemination.platform_portal_news"
-
+                               (change)="count_platform(portal_news.checked)"
                                name="platform_portal_news"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
@@ -633,8 +638,9 @@
                     <label class="col-md-4 form-control-label">Twitter</label>
                     <div class="col-md-4">
                       <label class="switch switch-label switch-outline-primary-alt">
-                        <input type="checkbox" class="switch-input" name="platform_twitter"
+                        <input type="checkbox" class="switch-input" name="platform_twitter" #twitter
                                [(ngModel)]="application_dissemination.platform_twitter"
+                               (change)="count_platform(twitter.checked)"
                                name="platform_twitter"
                         >
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
@@ -736,7 +742,7 @@
           <div *ngIf="!min_vm" class="form-group row alert alert-danger">
             Please select at least one flavor.
           </div>
-          <div *ngIf="f.invalid || !min_vm" class="form-group row alert alert-warning">
+          <div *ngIf="f.invalid || !min_vm || (dissemination_platform_count == 0 && project_application_report_allowed)" class="form-group row alert alert-warning">
             Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.
           </div>
@@ -747,7 +753,7 @@
               usage policy.</p>
           </div>
           <button (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
-                  [disabled]="f.invalid || !min_vm"
+                  [disabled]="f.invalid || !min_vm || (dissemination_platform_count == 0 && project_application_report_allowed)"
                   class="btn btn-sm btn-success"
                   type="button"><i
             class="fa fa-dot-circle-o"></i> Submit
