@@ -93,13 +93,13 @@
                   <td>
                     <select
                       [style.display]="application?.OpenStackProject && (application?.Status == application_states.SUBMITTED || application?.Status == application_states.CONFIRMATION_DENIED || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
-                      class="form-control"
+                      class="form-control" [id]="'id_compute_center_option_' + application?.Name"
                       #selectedComputeCenter>
 
                       <option value="undefined" selected> no center
                       </option>
                       <option *ngFor="let computeCenter of computeCenters"
-                              value="{{computeCenter.FacilityId}}">
+                              value="{{computeCenter.FacilityId}}" [id]="computeCenter.Name">
                         {{computeCenter.Name}}
                       </option>
                     </select>
@@ -134,7 +134,7 @@
                       </button>
                       <button
                         *ngIf="application?.Status == application_states.SUBMITTED && application?.OpenStackProject"
-                        style="margin: auto 2.5px"  [id]="application?.Shortname"
+                        style="margin: auto 2.5px" [id]="application?.Shortname"
                         (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
                         type="button"
@@ -156,11 +156,11 @@
                         & Create
                       </button>
                       <button [id]="'extension_approval_' + application.Shortname"
-                        *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED"
-                        style="margin: auto 2.5px"
-                        (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
-                        type="button"
-                        class="btn btn-success">
+                              *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED"
+                              style="margin: auto 2.5px"
+                              (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
+                              type="button"
+                              class="btn btn-success">
                         <i class="fa fa-check"></i>&nbsp;
                         Approve
                         Modification

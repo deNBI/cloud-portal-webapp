@@ -33,9 +33,9 @@ exports.config = {
    'tests/simple_vm_approval_test.ts',
    'tests/member_test.ts',
    'tests/simple_vm_modification_test.ts',
-   'tests/simple_vm_application_modification_approval.ts', */
+   'tests/simple_vm_application_modification_approval.ts',*/
     'tests/cloud_application_test.ts',
-    /*'tests/cloud_application_approval_test.ts',
+    'tests/cloud_application_approval_test.ts',/*
     'tests/cloud_application_modification_test.ts',
     'tests/cloud_modification_approval_test.ts',
 

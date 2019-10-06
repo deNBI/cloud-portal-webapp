@@ -32,4 +32,4 @@ describe('Cloud Application Test', function () {
     const isPresent: boolean = await FormularPage.isApplicationSubmitted();
     expect(isPresent).toBeTruthy();
   });
-
+});
