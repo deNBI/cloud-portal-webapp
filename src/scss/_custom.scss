@@ -72,9 +72,33 @@ main{
   cursor: pointer;
 }
 
+//colors for buttons and alerts >>>
+
 .btn-primary {
-    background-color: $deNBI_cyan;
+  background-color: $deNBI_cyan;
+  border: none;
 }
+
+.btn-secondary, .btn-info
+{
+  background-color: $deNBI_lightgrey;
+  border: none;
+  color: $deNBI_white;
+}
+
+.btn-primary:hover, .btn-secondary:hover, .btn-info:hover
+{
+  color: $deNBI_white;
+}
+
+.alert-info, .alert-primary
+{
+  background-color: #C9E7F2;
+  border-color: #00ADEF;
+  color: #336573;
+}
+
+
 
 
 #header-help {
@@ -320,4 +344,6 @@ main{
   width: calc(100vw - 90px);
   margin:auto;
 }
+
+
 
