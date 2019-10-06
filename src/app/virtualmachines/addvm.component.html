@@ -489,7 +489,7 @@
           instance overview site</p>
       </div>
       <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE' || newVm?.status == 'DELETED'">
-        <app-how-to-connect [selectedVirtualMachine]="newVm" [playbook_run]="playbook_run"></app-how-to-connect>
+        <app-how-to-connect id="how_to_connect_id" [selectedVirtualMachine]="newVm" [playbook_run]="playbook_run"></app-how-to-connect>
       </div>
       <div class="modal-body" *ngIf="create_error?.error">
         An Error occurred.<br><br>
