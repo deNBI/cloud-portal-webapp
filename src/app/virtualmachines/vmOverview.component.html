@@ -92,7 +92,7 @@
           <label>
             <input type="checkbox"
                    (change)="changeFilterStatus(vm_statuses[vm_statuses.DELETED]);applyFilter();"
-            id="checkbox_deleted"/>
+                   id="checkbox_deleted"/>
             <span style="margin-left: 5px"
                   class="badge badge-danger">{{vm_statuses[vm_statuses.DELETED]}}</span>
           </label>
@@ -109,7 +109,7 @@
                  name="filterVmStopped_at"
                  [(ngModel)]="filterVmStopped_at" (ngModelChange)="applyFilter();"--></td>
       <tr>
-        <td style="text-align:center;position:relative;" colspan="12" *ngIf="isSearching">
+        <td style="text-align:center;position:relative;" colspan="12" *ngIf="isSearching" id="search_spinner">
           <div class="spinner-border text-primary"></div>
         </td>
       </tr>
@@ -193,15 +193,15 @@
                          <span *ngIf="vm.status == vm_statuses[vm_statuses.DELETED]"
                                style="margin-left: 5px"
                                class="badge badge-danger"
-                               id="delete_badge"> {{vm.status}}</span>
+                               [id]="'delete_badge_'+ vm?.name.split('-',1)"> {{vm.status}}</span>
             <span *ngIf="vm.status == vm_statuses[vm_statuses.ACTIVE]"
                   style="margin-left: 5px"
                   class="badge badge-success"
-                  id="active_badge"> {{vm.status}}</span>
+                  [id]="'active_badge_'+ vm?.name.split('-',1)"> {{vm.status}}</span>
             <span *ngIf="vm.status == vm_statuses[vm_statuses.SHUTOFF]"
                   style="margin-left: 5px"
                   class="badge badge-warning"
-                  id="shutoff_badge"> {{vm.status}}</span>
+                  [id]="'shutoff_badge_' + vm?.name.split('-',1)"> {{vm.status}}</span>
             <span class="badge badge-info"
                   *ngIf="vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.SHUTOFF]">{{vm.status}}</span>
           </td>
@@ -241,20 +241,22 @@
                       class="btn btn-info dropdown-toggle dropdown-toggle-split btn-block"
                       type="button" aria-haspopup="true" aria-expanded="false"
                       dropdownToggle aria-controls="dropdown-split"
-              id="select_button">Select
+                      [id]="'select_button_' + vm?.name.split('-',1)">Select
               </button>
               <div class="dropdown-menu dropdown-menu-right" role="menu" *dropdownMenu>
                 <button style="cursor: pointer" role="menuitem" class="dropdown-item"
                         *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
                         (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();"
-                id="create_snapshot_button">
+                        [id]="'create_snapshot_button_' + vm?.name.split('-',1)"
+                >
 
                   Create Snapshot
                 </button>
                 <button style="cursor: pointer" role="menuitem" class="dropdown-item"
                         *ngIf="vm.status ==vm_statuses[vm_statuses.ACTIVE]"
                         (click)="selectedVm=vm;stopVm(vm);stopModal.show();"
-                        id="shutoff_button">
+                        [id]="'shutoff_button_' + vm?.name.split('-',1)
+                        ">
                   Stop
                   Vm
                 </button>
@@ -262,7 +264,8 @@
                 <button style="cursor: pointer;" class="dropdown-item"
                         *ngIf="vm.status ==vm_statuses[vm_statuses.SHUTOFF]"
                         role="menuitem" (click)="selectedVm=vm;resumeVM(vm);resumeModal.show();"
-                        id="resume_button">
+                        [id]="'resume_button_' + vm?.name.split('-',1)"
+                >
                   Restart
                   Vm
                 </button>
@@ -274,7 +277,8 @@
                 </button>
                 <button style="cursor: pointer;" *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
                         role="menuitem" class="dropdown-item" (click)="selectedVm=vm;verifyModal.show();"
-                id="delete_vm_button">
+                        [id]="'delete_vm_button_' + vm?.name.split('-',1)"
+                >
                   Delete
                   Vm
                 </button>
@@ -282,7 +286,9 @@
                         (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='HARD';rebootModal.show();"
                         *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.client.features['VM_REBOOT']"
                         role="menuitem"
-                id="hard_reboot_button">
+                        [id]="'hard_reboot_button_' + vm?.name.split('-',1)"
+
+                >
                   Hard
                   Reboot Vm
 
@@ -291,7 +297,9 @@
                     (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='SOFT';rebootModal.show();"
                     *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.SHUTOFF] && vm.client.features['VM_REBOOT']"
                     role="menuitem"
-                id="soft_reboot_button">
+                    [id]="'soft_reboot_button_' + vm?.name.split('-',1)"
+
+                >
                   Soft
                   Reboot Vm
 
@@ -331,7 +339,7 @@
                                               style="font-size:24px"></i>
         </div>
         <div class="alert alert-success" role="alert" *ngIf="status_changed == 1 || selectedVm?.status == 'SHUTOFF'"
-        id="stop_success_div">
+             id="stop_success_div">
           {{selectedVm?.name}} was successfully stopped.
         </div>
       </div>
@@ -457,7 +465,7 @@
                                               style="font-size:24px"></i>
         </div>
         <div class="alert alert-success" role="alert" *ngIf="status_changed == 1  || selectedVm?.status == 'ACTIVE'"
-        id="resume_success_div">
+             id="resume_success_div">
           {{selectedVm?.name}} was successfully started.
         </div>
       </div>
@@ -498,7 +506,7 @@
                                               style="font-size:24px"></i>
         </div>
         <div class="alert alert-success" role="alert" *ngIf="status_changed == 1"
-        id="delete_success_div">
+             id="delete_success_div">
           {{selectedVm?.name}} was succesfully deleted.
         </div>
       </div>
@@ -510,7 +518,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary"
                 (click)="selectedVm=null;status_changed=0;deleteModal.hide()"
-        id="close_delete_modal">Close
+                id="close_delete_modal">Close
         </button>
       </div>
 
@@ -542,7 +550,7 @@
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
                 (click)="deleteVm(selectedVm);verifyModal.hide();deleteModal.show()"
-        id="confirm_delete_button">
+                id="confirm_delete_button">
           Yes
         </button>
         <button class="btn  btn-danger col-md-4" type="reset"

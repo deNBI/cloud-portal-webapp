@@ -234,7 +234,7 @@
 
               </div>
               <accordion class="col-md-12">
-                <accordion-group #optionalGroup
+                <accordion-group id="optional_accordion" #optionalGroup
                                  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Optional parameters</strong>
@@ -406,7 +406,7 @@
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
-    width: 8em"
+    width: 8em" id="startVMButton"
 
                   type="button"
 

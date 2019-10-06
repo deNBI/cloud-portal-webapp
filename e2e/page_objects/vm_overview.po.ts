@@ -6,16 +6,17 @@ export class VMOverviewPage {
   private VM_OVERVIEW_URL: string = 'virtualmachines/vmOverview';
   private TABLE_ID: string = 'vm_overview_table_body';
   private ROW_PREFIX: string = 'id_table_row_';
+  private LONG_TIMEOUT: number = Util.LONG_TIMEOUT;
 
-  private ACTIVE_BADGE: string = 'active_badge';
-  private SHUTOFF_BADGE: string = 'shutoff_badge';
-  private DELETED_BADGE: string = 'delete_badge';
+  private ACTIVE_BADGE_PREFIX: string = 'active_badge_';
+  private SHUTOFF_BADGE_PREFIX: string = 'shutoff_badge_';
+  private DELETED_BADGE_PREFIX: string = 'delete_badge_';
   private CHECKBOX_DELETED: string = 'checkbox_deleted';
 
-  private SELECT_BUTTON: string = 'select_button';
-  private SHUTOFF_BUTTON: string = 'shutoff_button';
-  private RESUME_BUTTON: string = 'resume_button';
-  private DELETE_BUTTON: string = 'delete_vm_button';
+  private SELECT_BUTTON_PREFIX: string = 'select_button_';
+  private SHUTOFF_BUTTON_PREFIX: string = 'shutoff_button_';
+  private RESUME_BUTTON_PREFIX: string = 'resume_button_';
+  private DELETE_BUTTON_PREFIX: string = 'delete_vm_button_';
 
   private STOP_MODAL: string = 'stop_modal';
   private SHUTOFF_SUCCESS: string = 'stop_success_div';
@@ -31,13 +32,15 @@ export class VMOverviewPage {
   private DELETE_SUCCESS: string = 'delete_success_div';
   private CLOSE_DELETE_MODAL: string = 'close_delete_modal';
 
+  private SEARCH_SPINNER: string = 'search_spinner';
+
   private BASIC_VM_NAME_KEY: string = 'basic_vm_name';
   private VOLUME_VM_NAME_KEY: string = 'volume_vm_name';
-  private vm_names: {[key: string]: string} = {};
+  private vm_names: { [key: string]: string } = {};
   private name_counter: number = 0;
 
   async navigateToOverview(): Promise<any> {
-    console.log('Navigating to VM Overview Page')
+    Util.logMethodCall('Navigating to VM Overview Page');
     await Util.navigateToAngularPage(this.VM_OVERVIEW_URL);
     await Util.waitForPage(this.VM_OVERVIEW_URL);
 
@@ -45,15 +48,116 @@ export class VMOverviewPage {
   }
 
   async setBasicVMName(name: string): Promise<any> {
-    console.log(`Setting basic vm name as ${name}`);
+    Util.logMethodCall(`Setting basic vm name as ${name}`);
     this.vm_names[this.BASIC_VM_NAME_KEY] = name;
     this.name_counter += 1;
   }
 
   async setVolumeVMName(name: string): Promise<any> {
-    console.log(`Setting volume vm name as ${name}`);
+    Util.logMethodCall(`Setting volume vm name as ${name}`);
     this.vm_names[this.VOLUME_VM_NAME_KEY] = name;
     this.name_counter += 1;
+  }
+
+  async isVmActive(name: string): Promise<boolean> {
+    Util.logMethodCall(`Checking if ${name} is active`);
+
+    await Util.waitForPresenceOfElementById(this.TABLE_ID);
+    return await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
+  }
+
+  async isBasicVMActive(): Promise<boolean> {
+    return await this.isVmActive(this.vm_names[this.BASIC_VM_NAME_KEY]);
+  }
+
+  async areAllVMActive(): Promise<boolean> {
+    Util.logMethodCall(`Checking active for ${this.name_counter} active vm`);
+
+    for (const key in this.vm_names) {
+      const val = this.vm_names[key];
+      console.log(`Key: ${key} Value: ${val}`);
+      this.name_counter -= 1;
+      if (await !this.isVmActive(val)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  async isVMShutoff(name: string): Promise<boolean> {
+    Util.logMethodCall(`Checking if ${name} is shutoff`);
+    await Util.waitForPresenceOfElementById(this.TABLE_ID);
+
+    return await Util.waitForPresenceOfElementById(`${this.SHUTOFF_BADGE_PREFIX}${name}`);
+  }
+
+  async isBasicVMShutoff(): Promise<boolean> {
+    return await this.isVMShutoff(this.vm_names[this.BASIC_VM_NAME_KEY]);
+  }
+
+  async showDeleted(): Promise<any> {
+    console.log('Showing all deleted VM');
+    await Util.clickElementById(this.CHECKBOX_DELETED);
+  }
+
+  async isVMDeleted(name: string): Promise<boolean> {
+    Util.logMethodCall(`Checking if ${name} is deleted`);
+
+    await Util.waitForPresenceOfElementById(this.TABLE_ID);
+
+    return await Util.waitForPresenceOfElementById(`${this.DELETED_BADGE_PREFIX}${name}`);
+  }
+
+  async isBasicVMDeleted(): Promise<boolean> {
+    return await this.isVMDeleted(this.vm_names[this.BASIC_VM_NAME_KEY]);
+  }
+
+  async isVolumeVMDeleted(): Promise<boolean> {
+    return await this.isVMDeleted(this.vm_names[this.VOLUME_VM_NAME_KEY]);
+  }
+
+  async clickSelectDropdown(name: string): Promise<any> {
+    await Util.clickElementById(`${this.SELECT_BUTTON_PREFIX}${name}`);
+  }
+
+  async shutoffVM(name: string): Promise<any> {
+    Util.logMethodCall(`Shutting off ${name}`);
+
+    await this.clickSelectDropdown(name);
+    await Util.clickElementById(`${this.SHUTOFF_BUTTON_PREFIX}${name}`);
+    await Util.waitForPresenceByElement(
+      element(by.id(this.STOP_MODAL)).element(by.id(this.SHUTOFF_SUCCESS)),
+      this.LONG_TIMEOUT,
+      this.SHUTOFF_SUCCESS
+    );
+    await Util.clickElementById(this.CLOSE_STOP_MODAL);
+    browser.sleep(1000);
+
+    console.log(`Shutoff method for ${name} completed`)
+  }
+
+  async shutOffBasicVM(): Promise<any> {
+    return await this.shutoffVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
+  }
+
+  async resumeVM(name: string): Promise<any> {
+    Util.logMethodCall(`Resuming ${name}`);
+
+    await this.clickSelectDropdown(name);
+    await Util.clickElementById(`${this.RESUME_BUTTON_PREFIX}${name}`);
+    await Util.waitForPresenceByElement(
+      element(by.id(this.RESUME_MODAL)).element(by.id(this.RESUME_SUCCESS)),
+      this.LONG_TIMEOUT,
+      this.RESUME_SUCCESS
+    );
+    await Util.clickElementById(this.CLOSE_RESUME_MODAL);
+    browser.sleep(1000);
+    console.log(`Resuming method for ${name} completed`)
+  }
+
+  async resumeBasicVM(): Promise<any> {
+    return await this.resumeVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 
   async getBasicVMName(): Promise<string> {
@@ -72,152 +176,16 @@ export class VMOverviewPage {
     }
   }
 
-  async isVmActive(name: string): Promise<boolean> {
-    console.log(`Checking if ${name} is active`);
-    await Util.waitForPresenceByElement(
-      await element(by.id(this.TABLE_ID))
-      .element(by.id(`${this.ROW_PREFIX}${name}`))
-      .element(by.id(this.ACTIVE_BADGE)),
-      Util.timeout,
-      this.ACTIVE_BADGE);
-
-    return await element(by.id(this.TABLE_ID)).element(by.id(`${this.ROW_PREFIX}${name}`)).element(by.id(this.ACTIVE_BADGE)).isPresent();
-  }
-
-  async isBasicVMActive(): Promise<boolean> {
-    return await this.isVmActive(this.vm_names[this.BASIC_VM_NAME_KEY]);
-  }
-
-  async areAllVMActive(): Promise<boolean> {
-    console.log(`Checking active for ${this.name_counter} active vm`);
-    for (const key in this.vm_names) {
-      const val = this.vm_names[key];
-      console.log(`Key: ${key} Value: ${val}`);
-      this.name_counter -= 1;
-      if (await !this.isVmActive(val)) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  async isVMShutoff(name: string): Promise<boolean> {
-    console.log(`Checking if ${name} is shutoff`);
-    await Util.waitForPresenceByElement(
-      element(by.id(this.TABLE_ID))
-        .element(by.id(`${this.ROW_PREFIX}${name}`))
-        .element(by.id(this.SHUTOFF_BADGE)),
-      Util.timeout,
-      this.SHUTOFF_BADGE);
-
-    return await element(by.id(this.TABLE_ID)).element(by.id(`${this.ROW_PREFIX}${name}`)).element(by.id(this.SHUTOFF_BADGE))
-      .isPresent();
-  }
-
-  async isBasicVMShutoff(): Promise<boolean> {
-    return await this.isVMShutoff(this.vm_names[this.BASIC_VM_NAME_KEY]);
-  }
-
-  async showDeleted(): Promise<any> {
-    console.log('Showing all deleted VM');
-    await Util.clickElementById(this.CHECKBOX_DELETED);
-  }
-
-  async isVMDeleted(name: string): Promise<boolean> {
-    console.log(`Checking if ${name} is deleted`);
-    await Util.waitForPresenceByElement(
-      element(by.id(this.TABLE_ID))
-        .element(by.id(`${this.ROW_PREFIX}${name}`))
-        .element(by.id(this.DELETED_BADGE)),
-      Util.timeout,
-      this.DELETED_BADGE);
-
-    return await element(by.id(this.TABLE_ID)).element(by.id(`${this.ROW_PREFIX}${name}`)).element(by.id(this.DELETED_BADGE))
-      .isPresent();
-  }
-
-  async isBasicVMDeleted(): Promise<boolean> {
-    return await this.isVMDeleted(this.vm_names[this.BASIC_VM_NAME_KEY]);
-  }
-
-  async isVolumeVMDeleted(): Promise<boolean> {
-    return await this.isVMDeleted(this.vm_names[this.VOLUME_VM_NAME_KEY]);
-  }
-
-  async clickSelectDropdown(name: string): Promise<any> {
-    await Util.clickElementByElement(
-      element(by.id(this.TABLE_ID))
-       .element(by.id(`${this.ROW_PREFIX}${name}`))
-       .element(by.id(this.SELECT_BUTTON)),
-      Util.timeout,
-      this.SELECT_BUTTON);
-  }
-
-  async shutoffVM(name: string): Promise<any> {
-    console.log(`Shutting off ${name}`);
-    await this.clickSelectDropdown(name);
-    await Util.clickElementByElement(element(by.id(this.TABLE_ID))
-                                       .element(by.id(`${this.ROW_PREFIX}${name}`))
-                                       .element(by.id(this.SHUTOFF_BUTTON)));
-    await Util.waitForPresenceByElement(
-      element(by.id(this.STOP_MODAL)).element(by.id(this.SHUTOFF_SUCCESS)),
-      420000,
-      this.SHUTOFF_SUCCESS
-    );
-
-    await Util.waitForPresenceByElement(element(by.id(this.STOP_MODAL)).element(by.id(this.CLOSE_STOP_MODAL)),
-                                        Util.timeout,
-                                        this.CLOSE_STOP_MODAL);
-    await Util.clickElementByElement(element(by.id(this.STOP_MODAL)).element(by.id(this.CLOSE_STOP_MODAL)));
-    console.log(`Shutoff method for ${name} completed`)
-  }
-
-  async shutOffBasicVM(): Promise<any> {
-    return await this.shutoffVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
-  }
-
-  async resumeVM(name: string): Promise<any> {
-    console.log(`Resuming ${name}`);
-    await this.clickSelectDropdown(name);
-    await Util.clickElementByElement(element(by.id(this.TABLE_ID))
-                                       .element(by.id(`${this.ROW_PREFIX}${name}`))
-                                       .element(by.id(this.RESUME_BUTTON)));
-    await Util.waitForPresenceByElement(
-      element(by.id(this.RESUME_MODAL)).element(by.id(this.RESUME_SUCCESS)),
-      420000,
-      this.RESUME_SUCCESS
-    );
-    await Util.clickElementByElement(element(by.id(this.RESUME_MODAL)).element(by.id(this.CLOSE_RESUME_MODAL)));
-    console.log(`Resuming method for ${name} completed`)
-  }
-
-  async resumeBasicVM(): Promise<any> {
-    return await this.resumeVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
-  }
-
   async deleteVM(name: string): Promise<any> {
-    console.log(`Deleting ${name}`);
+    Util.logMethodCall(`Deleting ${name}`);
+
     await this.clickSelectDropdown(name);
-    await Util.clickElementByElement(
-      element(by.id(this.TABLE_ID))
-        .element(by.id(`${this.ROW_PREFIX}${name}`))
-        .element(by.id(this.DELETE_BUTTON)),
-      Util.timeout,
-      this.DELETE_BUTTON);
+    await Util.clickElementById(`${this.DELETE_BUTTON_PREFIX}${name}`);
+
     await Util.waitForPresenceOfElementById(this.VERIFY_MODAL);
-    await Util.clickElementByElement(element(by.id(this.VERIFY_MODAL)).element(by.id(this.CONFIRM_DELETE_BUTTON)),
-                                     Util.timeout,
-                                     this.CONFIRM_DELETE_BUTTON);
-    await Util.waitForPresenceByElement(
-      element(by.id(this.DELETE_MODAL)).element(by.id(this.DELETE_SUCCESS)),
-      420000,
-      this.DELETE_SUCCESS
-    );
-    await Util.clickElementByElement(element(by.id(this.DELETE_MODAL)).element(by.id(this.CLOSE_DELETE_MODAL)),
-                                     Util.timeout,
-                                     this.CLOSE_DELETE_MODAL);
-    await Util.waitForInvisibilityOfElementByElement(element(by.id(this.DELETE_MODAL)));
+    await Util.clickElementById(this.CONFIRM_DELETE_BUTTON);
+    await Util.waitForPresenceOfElementById(this.DELETE_SUCCESS, this.LONG_TIMEOUT);
+    await Util.clickElementById(this.CLOSE_DELETE_MODAL);
     console.log(`Deletion method for ${name} completed`)
   }
 
