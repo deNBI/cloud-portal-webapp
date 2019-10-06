@@ -3,9 +3,8 @@
   [asideMenuToggler]="false"
   [sidebarToggler]="false"
   [mobileAsideMenuToggler]="false"
-  [navbarBrand]="{src: 'static/webapp/assets/img/denbi_cloud_logo.svg', style: 'padding: 0.5rem 1rem',alt: 'test'}"
+  [navbarBrand]="{src: brand_logo, style: 'padding: 0.5rem 1rem',alt: 'de.NBI Cloud'}"
   [navbarBrandRouterLink]="'/'"
-
 >
 
     <ul class="nav navbar-nav ml-md-auto">
@@ -189,7 +188,7 @@
 
       </ul>
     </nav>
-    <app-sidebar-minimizer></app-sidebar-minimizer>
+    <app-sidebar-minimizer (click)="setSidebarStatus()"></app-sidebar-minimizer>
 
     <app-footer>
 
