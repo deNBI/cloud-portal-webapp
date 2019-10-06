@@ -53,6 +53,7 @@ export class VolumeOverviewPage {
     await Util.clickElementById(this.CREATE_ATTACH_BUTTON);
     await Util.waitForVisibilityOfElementById(this.CREATE_MODAL);
     await Util.clickOptionOfSelect(`${this.OPTION_PROJECT_PREFIX}${Util.SIMPLE_VM_APPLICATION_NAME}`, this.PROJECT_SELECT_ID);
+    await Util.waitForPresenceOfElementById(this.VM_SELECT_ID);
     await Util.clickOptionOfSelect(`${this.OPTION_VM_PREFIX}${vm}`, this.VM_SELECT_ID);
     await Util.sendTextToElementById(this.NAME_INPUT_ID, Util.VOLUME_NAME);
     await Util.sendTextToElementById(this.SPACE_INPUT_ID, Util.VOLUME_SPACE);
