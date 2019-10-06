@@ -234,8 +234,9 @@
 
               </div>
               <accordion class="col-md-12">
-                <accordion-group id="optional_accordion" #optionalGroup
-                                 *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax">
+
+                <accordion-group #optionalGroup d="optional_accordion"
+                                 *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length != 0">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Optional parameters</strong>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
@@ -259,11 +260,11 @@
                   <div
                     *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax">
                     <div class="form-group row" *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
-                      <label *ngIf="diskspace <= 0" class="col-md-2 form-control-label">Volume name</label>
-                      <label *ngIf="diskspace > 0 " class="col-md-2 form-control-label"><strong>Volume
+                      <label *ngIf="diskspace <= 0" class="col-md col-sm col-lg-2 col-xl-2 form-control-label">Volume name</label>
+                      <label *ngIf="diskspace > 0 " class="col-md col-sm col-lg-2 col-xl-2 form-control-label"><strong>Volume
                         name*</strong></label>
 
-                      <div class="col-md-6">
+                      <div class="col-xl-6 col-sm-12 col-md-8">
                         <input type="text" placeholder="Volume name"
                                id="volume_name"
                                [value]="volumeName"
@@ -279,26 +280,35 @@
 
                     class="form-group row">
 
-                    <label class="col-md-2 form-control-label">Storage</label>
 
-                    <div class="col-6">
-                      <div class="input-group mb-6" style="width:100%;">
-                        <input style="width: calc(100% - 160px);" min="0" step="1" [value]="diskspace"
-                               id="volume_space"
-                               (input)="diskspace = $event.target.value"
-                               type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
-                               placeholder="e.g 8">
-                        <div class="input-group-append"><span
-                          class="input-group-text"> GB
+                    <label class="col-lg-2 col-sm form-control-label">Storage</label>
+
+                    <div class="col-xl-6 col-md-8 col-sm-12">
+                      <div class="row">
+                        <div class="input-group col-lg-10 text-lg-right col-sm-12" style="width: 100%">
+                          <input min="0" step="1" [value]="diskspace"
+                                 style="height: auto"
+                                 id="volume_spacee" name="vm_volume_storage"
+                                 class="form-control"
+                                 (input)="diskspace = $event.target.value"
+                                 type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
+                                 placeholder="e.g 8" ngModel
+                                 appMinAmount="0" appMaxAmount="{{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}" appIntegerOrNull
+                                 [ngClass]="{
+                                'is-invalid': f.controls.vm_volume_storage?.invalid && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched),
+                                'is-valid': f.controls.vm_volume_storage?.valid && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched)
+                                }">
+                          <div class="input-group-append" style="height: auto"><span
+                            class="input-group-text"> GB
                                     </span></div>
+                        </div>
 
-                        <div style="width:115px; text-align:right">
+                        <div class="col-lg-2 text-lg-right col-sm-12 text-sm-left">
                           <p><strong
-                            style="position: relative;top: 8px; text-align: right;"> {{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}
+                            style="position: relative;top: 8px"> {{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}
                             GB available
                           </strong></p>
                         </div>
-
                       </div>
                     </div>
 
@@ -331,7 +341,7 @@
 
 
                 <accordion-group #autoGroup
-                                 *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax">
+                                 *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length != 0">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Tools </strong> powered by <img src="{{bioconda_img_path}}" alt="Bioconda® "
                                                             style="height: 12px; width: auto"><span
@@ -373,6 +383,7 @@
                         log into your virtual machine.<br>
                         We install Miniconda3, create a conda environment called 'denbi' and install your chosen
                         tools.<br>
+                        For you convenience we initialize the .bashrc and set an alias, so that you are able to load the environment simply by typing 'denbi'.<br>
                         When the installation is successful we delete our key and put your public key onto your virtual
                         machine.
                       </label>
