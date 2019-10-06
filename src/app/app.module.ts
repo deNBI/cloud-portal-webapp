@@ -38,6 +38,7 @@ import {Angulartics2Module} from 'angulartics2';
 import { ErrorHandler } from '@angular/core';
 import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler.service';
 import {CookieService} from 'ngx-cookie-service';
+
 import {TitleHeadbarComponent} from "./shared/title-headbar.component";
 
 /**
@@ -91,7 +92,7 @@ import {TitleHeadbarComponent} from "./shared/title-headbar.component";
       },
         ApiSettings,
         UserService,
-        CookieService,
+        CookieService
     ],
     bootstrap: [AppComponent]
 })

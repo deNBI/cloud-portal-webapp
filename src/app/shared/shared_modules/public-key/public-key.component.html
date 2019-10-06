@@ -1,5 +1,5 @@
 <th>Public Key</th>
-<td>
+<td class="col-md-8">
     <span *ngIf="userinfo.PublicKey == 'None'"> No public key is set</span>
     <span *ngIf="userinfo.PublicKey != 'None'"
           style="word-wrap: break-word; max-width: 80px; white-space: normal">
@@ -19,7 +19,7 @@
     </alert>
 
     <button class="btn btn-primary" type="button" (click)="public_key='';pubKeyModal.show()">Set pub
-        key
+        <keypyt></keypyt>
     </button>
 
 

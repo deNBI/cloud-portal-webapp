@@ -47,7 +47,7 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    * Boolean indicating whether information selection accordion is open or not.
    * @type {boolean}
    */
-  public dissemination_information_open: boolean = false;
+  public dissemination_information_open: boolean = true;
 
   /**
    * Boolean indicating whether platform selection accordion is open or not
@@ -59,6 +59,8 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    * List of all collapse booleans.
    */
   public collapseList: boolean[];
+
+  dissemination_platform_count: number = 0;
 
   ontology_search_keyword: string = 'term';
 
@@ -262,4 +264,11 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
 
   }
 
+  count_platform(checked: boolean): void {
+    if (checked) {
+      this.dissemination_platform_count++;
+    } else {
+      this.dissemination_platform_count--;
+    }
+  }
 }
