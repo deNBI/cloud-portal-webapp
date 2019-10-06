@@ -31,9 +31,9 @@
 
         </div>
 
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-hover">
+        <div class="card-body" style="overflow-x: visible; overflow-y: visible">
+          <div class="table-responsive" >
+            <table class="table table-hover table-responsive" >
               <thead>
               <tr>
                 <th></th>
@@ -47,17 +47,17 @@
               </thead>
               <tbody>
               <td></td>
-              <td><input style="width: 110px;" type="text" placeholder="Filter"
+              <td><input  type="text" placeholder="Filter"
                          name="filterProjectId"
                          [(ngModel)]="filterProjectId"
                          (ngModelChange)="applyFilter();">
               </td>
-              <td><input style="width: 110px;" type="text" placeholder="Filter"
+              <td><input  type="text" placeholder="Filter"
                          name="filterProjectName"
                          [(ngModel)]="filterProjectName"
                          (ngModelChange)="applyFilter();">
               </td>
-              <td><input style="width: 110px;" type="text" placeholder="Filter"
+              <td><input type="text" placeholder="Filter"
                          name="filterProjectLongName"
                          [(ngModel)]="filterProjectLongName"
                          (ngModelChange)="applyFilter();">
@@ -98,7 +98,7 @@
 
               </td>
               <tr *ngFor="let project of projects_filtered">
-                <td>
+                <td class="col-md-1">
                                      <span *ngIf="project.OpenStackProject"
                                            style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944"
                                            class="badge"
@@ -113,10 +113,10 @@
                                     <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
                                   </span>
                 </td>
-                <td>{{ project.Id }}</td>
-                <td>{{ project.Name }}
+                <td class="col-md-1">{{ project.Id }}</td>
+                <td class="col-md-2">{{ project.Name }}
                 </td>
-                <td width="20%"><span style="word-break: break-all">{{ project.RealName}}</span>
+                <td class="col-md-4"><span style="word-break: break-all">{{ project.RealName}}</span>
                 </td>
                 <td>  <span *ngIf="project?.Status ==  project_states.ACTIVE"
                             style="margin-left: 5px"
@@ -127,7 +127,7 @@
                   <span *ngIf="project?.LifetimeReached == lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
                         class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
-                <td>
+                <td class="col-md-2">
                   <button class="btn btn-secondary"
                           (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
                     Show Details
@@ -139,7 +139,7 @@
                 <!--td>{{project.DateEnd}}</td-->
                 <!--td>{{ project.DaysRunning }}</td>-->
                 <!--td>{{project.LifetimeDays}}</td-->
-                <td>
+                <td class="col-md-2">
                   <button type="button" class="btn btn-secondary"
                           data-toggle="modal"
                           (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "

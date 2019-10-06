@@ -1,11 +1,8 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 
-<div *ngIf="isLoaded" class="col-lg-12">
+<div *ngIf="isLoaded" class="col-lg-12 animated fadeIn">
 
-  <div><h4 *ngIf="selectedFacility">
 
-    Applications Overview:
-    {{selectedFacility['Facility']}}</h4></div>
   <div style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
                                            (ngModelChange)="onChangeSelectedFacility($event)"
                                            class="form-control " name="selectedFacility">
