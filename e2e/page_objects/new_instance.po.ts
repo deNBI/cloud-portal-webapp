@@ -17,7 +17,6 @@ export class NewInstancePage {
   private static FLAVOR_PREFIX: string = 'id_flavor_owl_';
   private static IMAGE_PREFIX: string = 'id_image_owl_';
   private static VOLUME_NAME_ID: string = 'volume_name';
-  private static VOLUME_NAME: string = 'ProtractorVolume';
   private static VOLUME_SPACE_ID: string = 'volume_space';
   private static VOLUME_SPACE: string = '1';
   private static CLOSE_INFO_MODAL: string = 'close_info_modal';
@@ -80,7 +79,7 @@ export class NewInstancePage {
 
     await Util.clickElementById(this.OPTIONAL_ACCORDION);
     console.log('Setting Volume name');
-    await Util.sendTextToElementById(this.VOLUME_NAME_ID, this.VOLUME_NAME);
+    await Util.sendTextToElementById(this.VOLUME_NAME_ID, Util.VOLUME_NAME);
     console.log('Setting Volume space');
     await Util.sendTextToElementById(this.VOLUME_SPACE_ID, this.VOLUME_SPACE);
   }
@@ -90,7 +89,8 @@ export class NewInstancePage {
   }
 
   static async getVMName(): Promise<string> {
-    await Util.waitForPresenceByElement(element(by.id(this.HOW_TO_CONNECT)).element(by.id(this.HTC_VM_NAME)));
+    await Util.waitForPresenceByElement(element(by.id(this.HOW_TO_CONNECT)).element(by.id(this.HTC_SSH_BUTTON)));
+    await Util.clickElementById(this.HTC_SSH_BUTTON);
 
     return await element(by.id(this.HOW_TO_CONNECT)).element(by.id(this.HTC_VM_NAME)).getText();
   }

@@ -17,6 +17,7 @@ export class VMOverviewPage {
   private SHUTOFF_BUTTON_PREFIX: string = 'shutoff_button_';
   private RESUME_BUTTON_PREFIX: string = 'resume_button_';
   private DELETE_BUTTON_PREFIX: string = 'delete_vm_button_';
+  private SNAPSHOT_BUTTON_PREFIX: string = 'create_snapshot_button_';
 
   private STOP_MODAL: string = 'stop_modal';
   private SHUTOFF_SUCCESS: string = 'stop_success_div';
@@ -25,6 +26,13 @@ export class VMOverviewPage {
   private RESUME_MODAL: string = 'resume_modal';
   private RESUME_SUCCESS: string = 'resume_success_div';
   private CLOSE_RESUME_MODAL: string = 'close_resume_modal';
+
+  private SNAPSHOT_NAME_MODAL: string = 'snapshot_name_modal';
+  private SNAPSHOT_NAME_INPUT: string = 'snapshot_name_input';
+  private SNAPSHOT_CREATE_BUTTON: string = 'snapshot_create_modal_button';
+  private SNAPSHOT_RESULT_MODAL: string = 'snapshot_result_modal';
+  private SNAPSHOT_DONE_DIV: string = 'snapshot_done';
+  private CLOSE_SNAPSHOT_RESULT_BUTTON: string = 'snapshot_result_modal_close';
 
   private VERIFY_MODAL: string = 'verify_modal';
   private DELETE_MODAL: string = 'delete_modal';
@@ -195,5 +203,24 @@ export class VMOverviewPage {
 
   async deleteVolumeVM(): Promise<any> {
     return await this.deleteVM(this.vm_names[this.VOLUME_VM_NAME_KEY]);
+  }
+
+  async createSnapshotOfVM(name: string): Promise<any> {
+    Util.logMethodCall(`Creating snapshot of ${name}`);
+
+    await this.clickSelectDropdown(name);
+    await Util.clickElementById(`${this.SNAPSHOT_BUTTON_PREFIX}${name}`);
+
+    await Util.waitForPresenceOfElementById(this.SNAPSHOT_NAME_MODAL);
+    await Util.sendTextToElementById(this.SNAPSHOT_NAME_INPUT, Util.BASIC_SNAPSHOT_NAME);
+    await Util.clickElementById(this.SNAPSHOT_CREATE_BUTTON);
+    await Util.waitForPresenceOfElementById(this.SNAPSHOT_RESULT_MODAL);
+    await Util.waitForPresenceOfElementById(this.SNAPSHOT_DONE_DIV);
+    await Util.clickElementById(this.CLOSE_SNAPSHOT_RESULT_BUTTON);
+    console.log(`Creating snapshot method for ${name} completed`)
+  }
+
+  async createSnapshotOfBasicVM(): Promise<any> {
+    return await this.createSnapshotOfVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 }

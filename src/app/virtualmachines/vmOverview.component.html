@@ -193,15 +193,15 @@
                          <span *ngIf="vm.status == vm_statuses[vm_statuses.DELETED]"
                                style="margin-left: 5px"
                                class="badge badge-danger"
-                               [id]="'delete_badge_'+ vm?.name.split('-',1)"> {{vm.status}}</span>
+                               [id]="'delete_badge_'+ vm?.name"> {{vm.status}}</span>
             <span *ngIf="vm.status == vm_statuses[vm_statuses.ACTIVE]"
                   style="margin-left: 5px"
                   class="badge badge-success"
-                  [id]="'active_badge_'+ vm?.name.split('-',1)"> {{vm.status}}</span>
+                  [id]="'active_badge_'+ vm?.name"> {{vm.status}}</span>
             <span *ngIf="vm.status == vm_statuses[vm_statuses.SHUTOFF]"
                   style="margin-left: 5px"
                   class="badge badge-warning"
-                  [id]="'shutoff_badge_' + vm?.name.split('-',1)"> {{vm.status}}</span>
+                  [id]="'shutoff_badge_' + vm?.name"> {{vm.status}}</span>
             <span class="badge badge-info"
                   *ngIf="vm.status != vm_statuses[vm_statuses.DELETED] && vm.status != vm_statuses[vm_statuses.ACTIVE] && vm.status != vm_statuses[vm_statuses.SHUTOFF]">{{vm.status}}</span>
           </td>
@@ -241,13 +241,13 @@
                       class="btn btn-info dropdown-toggle dropdown-toggle-split btn-block"
                       type="button" aria-haspopup="true" aria-expanded="false"
                       dropdownToggle aria-controls="dropdown-split"
-                      [id]="'select_button_' + vm?.name.split('-',1)">Select
+                      [id]="'select_button_' + vm?.name">Select
               </button>
               <div class="dropdown-menu dropdown-menu-right" role="menu" *dropdownMenu>
                 <button style="cursor: pointer" role="menuitem" class="dropdown-item"
                         *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.CLIENT_OFFLINE]"
                         (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();"
-                        [id]="'create_snapshot_button_' + vm?.name.split('-',1)"
+                        [id]="'create_snapshot_button_' + vm?.name"
                 >
 
                   Create Snapshot
@@ -255,7 +255,7 @@
                 <button style="cursor: pointer" role="menuitem" class="dropdown-item"
                         *ngIf="vm.status ==vm_statuses[vm_statuses.ACTIVE]"
                         (click)="selectedVm=vm;stopVm(vm);stopModal.show();"
-                        [id]="'shutoff_button_' + vm?.name.split('-',1)
+                        [id]="'shutoff_button_' + vm?.name
                         ">
                   Stop
                   Vm
@@ -264,7 +264,7 @@
                 <button style="cursor: pointer;" class="dropdown-item"
                         *ngIf="vm.status ==vm_statuses[vm_statuses.SHUTOFF]"
                         role="menuitem" (click)="selectedVm=vm;resumeVM(vm);resumeModal.show();"
-                        [id]="'resume_button_' + vm?.name.split('-',1)"
+                        [id]="'resume_button_' + vm?.name"
                 >
                   Restart
                   Vm
@@ -277,7 +277,7 @@
                 </button>
                 <button style="cursor: pointer;" *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED]"
                         role="menuitem" class="dropdown-item" (click)="selectedVm=vm;verifyModal.show();"
-                        [id]="'delete_vm_button_' + vm?.name.split('-',1)"
+                        [id]="'delete_vm_button_' + vm?.name"
                 >
                   Delete
                   Vm
@@ -286,7 +286,7 @@
                         (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='HARD';rebootModal.show();"
                         *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.client.features['VM_REBOOT']"
                         role="menuitem"
-                        [id]="'hard_reboot_button_' + vm?.name.split('-',1)"
+                        [id]="'hard_reboot_button_' + vm?.name"
 
                 >
                   Hard
@@ -297,7 +297,7 @@
                     (click)="status_check_error=false;reboot_done=false;selectedVm=vm;reboot_type='SOFT';rebootModal.show();"
                     *ngIf="vm.status !=vm_statuses[vm_statuses.DELETED] && vm.status !=vm_statuses[vm_statuses.SHUTOFF] && vm.client.features['VM_REBOOT']"
                     role="menuitem"
-                    [id]="'soft_reboot_button_' + vm?.name.split('-',1)"
+                    [id]="'soft_reboot_button_' + vm?.name"
 
                 >
                   Soft
@@ -564,7 +564,8 @@
 
 <div bsModal #snapshotModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
-     aria-hidden="true">
+     aria-hidden="true"
+id="snapshot_name_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -582,7 +583,7 @@
 
         <div>
           <input type="text" style="width: 100%" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
-                 (ngModelChange)="validSnapshotName($event);">
+                 (ngModelChange)="validSnapshotName($event);" id="snapshot_name_input">
 
         </div>
         <div>
@@ -602,7 +603,7 @@
 
       </div>
       <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
+        <button class="btn  btn-success col-md-4" id="snapshot_create_modal_button"
                 [disabled]="!validSnapshotNameBool"
                 (click)="createSnapshot(snapshot_vm.openstackid,snapshotName,snapshotDescription.value);snapshotModal.hide();snapshotResult.show()">
           Create Snapshot
@@ -619,7 +620,8 @@
 
 <div bsModal #snapshotResult="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
-     aria-hidden="true">
+     aria-hidden="true"
+id="snapshot_result_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -636,7 +638,7 @@
         </div>
 
 
-        <div class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' ">
+        <div class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' " id="snapshot_done">
           Successfully queued Snapshot.
           It might take some minutes till you can use it for starting a new instance.
           You can see the current status in the<a
@@ -653,7 +655,7 @@
 
       </div>
       <div class="modal-footer">
-        <button class="btn  btn-danger col-md-4" type="reset"
+        <button class="btn  btn-danger col-md-4" type="reset" id="snapshot_result_modal_close"
                 (click)="snapshotName=''; validSnapshotNameBool=false;snapshotResult.hide();">
           Close
         </button>

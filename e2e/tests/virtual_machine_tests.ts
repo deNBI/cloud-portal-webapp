@@ -3,7 +3,7 @@ import {NewInstancePage} from '../page_objects/new_instance.po';
 import {LoginPage} from '../page_objects/login.po';
 import {VolumeOverviewPage} from '../page_objects/volume_overview.po';
 import {VMOverviewPage} from '../page_objects/vm_overview.po';
-import {Util} from '../util';
+import {SnapshotOverviewPage} from '../page_objects/vm_snapshot.po';
 
 describe('Virtual Machine Tests', async function () {
 
@@ -29,7 +29,8 @@ describe('Virtual Machine Tests', async function () {
     const isPresent: boolean = await NewInstancePage.waitForConfirmation();
     expect(isPresent).toBeTruthy();
     console.log('Saving basic vm name');
-    await vmOverviewPage.setBasicVMName(Util.BASIC_VM_NAME);
+    const vm_name: string = await NewInstancePage.getVMName();
+    await vmOverviewPage.setBasicVMName(vm_name);
     await NewInstancePage.closeInfoModal();
   });
 
@@ -47,7 +48,8 @@ describe('Virtual Machine Tests', async function () {
     console.log('Waiting for confirmation');
     const isVMPresent: boolean = await NewInstancePage.waitForConfirmation();
     expect(isVMPresent).toBeTruthy();
-    await vmOverviewPage.setVolumeVMName(Util.VOLUME_VM_NAME);
+    const vm_name: string = await NewInstancePage.getVMName();
+    await vmOverviewPage.setVolumeVMName(vm_name);
     await NewInstancePage.closeInfoModal();
     console.log('Checking volume overview if volume present');
     await VolumeOverviewPage.navigateToVolumeOverview();
@@ -78,9 +80,15 @@ describe('Virtual Machine Tests', async function () {
     expect(isActive).toBeTruthy();
   });
 
-  it('should should delete the volume vm without deleting the volume', async function () {
+  it('should delete the volume vm...', async function () {
     console.log('Deleting the volume vm');
     await vmOverviewPage.deleteVolumeVM();
+    const isDeleted: boolean = await vmOverviewPage.isVolumeVMDeleted();
+    expect(isDeleted).toBeTruthy();
+  });
+
+  it('...should not have deleted the volume', async function() {
+    console.log('Checking for Volume');
     await VolumeOverviewPage.navigateToVolumeOverview();
     const isVolumePresent: boolean = await VolumeOverviewPage.isVolumePresent();
     expect(isVolumePresent).toBeTruthy();
@@ -91,6 +99,21 @@ describe('Virtual Machine Tests', async function () {
     await VolumeOverviewPage.deleteVolume();
     const deleted: boolean = await VolumeOverviewPage.isVolumeDeleted();
     expect(deleted).toBeTruthy();
+  });
+
+  it('should create a snapshot of the basic vm', async function() {
+    console.log('Creating a snapshot of the basic vm');
+    await vmOverviewPage.createSnapshotOfBasicVM();
+    await SnapshotOverviewPage.navigateToSnapshotOverview();
+    const isPresent: boolean = await SnapshotOverviewPage.isBasicSnapshotPresent();
+    expect(isPresent).toBeTruthy();
+  });
+
+  it('should delete the snapshot of the basic vm', async function() {
+    console.log('Deleting the snapshot of the basic vm');
+    await SnapshotOverviewPage.deleteBasicSnapshot();
+    const isPresent: boolean = await SnapshotOverviewPage.isBasicSnapshotPresent();
+    expect(isPresent).toBeFalsy();
   });
 
   it('should create and attach a volume to basic vm', async function () {
@@ -105,6 +128,8 @@ describe('Virtual Machine Tests', async function () {
     console.log('Deleting the volume vm');
     await vmOverviewPage.navigateToOverview();
     await vmOverviewPage.deleteBasicVM();
+    const isDeleted: boolean = await vmOverviewPage.isBasicVMDeleted();
+    expect(isDeleted).toBeTruthy();
     await VolumeOverviewPage.navigateToVolumeOverview();
     const isVolumePresent: boolean = await VolumeOverviewPage.isVolumePresent();
     const notAttached: boolean = await VolumeOverviewPage.isVolumeFree();

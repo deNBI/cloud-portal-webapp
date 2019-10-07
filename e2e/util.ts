@@ -3,8 +3,8 @@ import {browser, by, element, protractor, ProtractorExpectedConditions, until} f
 import _ = require('colors');
 
 export class Util {
-
   private static angular_url: string = browser.params.angular;
+
   private static _timeout: number = browser.params.timeout;
   private static auth = browser.params.login.auth;
   private static _SIMPLE_VM_APPLICATION_NAME: string = 'PTSimpleVM';
@@ -14,7 +14,7 @@ export class Util {
   private static _VOLUME_NAME: string = 'ProtractorVolume';
   private static _VOLUME_SPACE: string = '1';
   private static _LONG_TIMEOUT: number = 420000;
-
+  private static _BASIC_SNAPSHOT_NAME: string = 'PTSnapshot';
   // tslint:disable-next-line:no-require-imports
 
   static get SIMPLE_VM_APPLICATION_NAME(): string {
@@ -23,6 +23,10 @@ export class Util {
 
   static get LONG_TIMEOUT(): number {
     return this._LONG_TIMEOUT;
+  }
+
+  static get BASIC_SNAPSHOT_NAME(): string {
+    return this._BASIC_SNAPSHOT_NAME;
   }
 
   static get OPENSTACK_APPLICATION_NAME(): string {
