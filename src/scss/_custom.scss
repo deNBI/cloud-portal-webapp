@@ -21,6 +21,15 @@ $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
 
 
+.brand-minimized .app-header .navbar-brand
+{
+  margin-left: 0px !important;
+}
+
+.navbar-brand-minimized
+{
+  padding: 6px 6px 6px 6px !important;
+}
 
 
 .sidebar-fixed .app-header + .app-body .sidebar{

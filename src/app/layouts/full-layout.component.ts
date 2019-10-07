@@ -33,6 +33,7 @@ export class FullLayoutComponent extends ApplicationBaseClass implements OnInit 
   overview_state: string = 'closed';
   navbar_minimized : boolean = false;
   brand_logo: string = 'static/webapp/assets/img/denbi_cloud_logo.svg';
+  brand_logo_minimized: string = 'static/webapp/assets/img/minimized_logo.svg';
 
   TITLE: string = '';
 
@@ -129,18 +130,7 @@ export class FullLayoutComponent extends ApplicationBaseClass implements OnInit 
 
   setSidebarStatus(): void {
     this.navbar_minimized = !this.navbar_minimized;
-    this.toggleLogo();
   }
 
-  toggleLogo(): void {
-    console.log(this.brand_logo);
-    if (this.navbar_minimized)
-    {
-      this.brand_logo = 'static/webapp/assets/img/minimized_logo';
-    }
-    else {
-      this.brand_logo = 'static/webapp/assets/img/denbi_cloud_logo.svg';
-    }
-  }
 
 }

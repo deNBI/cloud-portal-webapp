@@ -3,7 +3,8 @@
   [asideMenuToggler]="false"
   [sidebarToggler]="false"
   [mobileAsideMenuToggler]="false"
-  [navbarBrand]="{src: brand_logo, style: 'padding: 0.5rem 1rem',alt: 'de.NBI Cloud'}"
+  [navbarBrandFull]="{src: brand_logo, style: 'padding: 0.5rem 1rem',alt: 'de.NBI Cloud'}"
+  [navbarBrandMinimized]="{src: brand_logo_minimized, style: 'padding: 0.5rem 1rem',alt: 'de.NBI Cloud'}"
   [navbarBrandRouterLink]="'/'"
 >
 
@@ -76,40 +77,16 @@
             {{application.project_name}}
           </a>
         </li>
-        <!--
-        <li class="nav-item nav-dropdown " appNavDropdown>
-            <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;"
-               appNavDropdownToggle><i
-                    class="nav-icon icon-pencil"></i> New Application</a>
-            <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                    <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
-                       [routerLink]="['/applications/newCloudApplication']">
-                        <i class="nav-icon icon-question" onmouseover="" style="cursor: pointer;"
-                           data-toggle="tooltip" data-placement="auto"
-                           title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i>
-                        Cloud Project </a></li>
-                <li class="nav-item">
-                    <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
-                       [routerLink]="['/applications/newSimpleVmApplication']"><i
-                            class="nav-icon icon-question" onmouseover="" style="cursor: pointer;"
-                            data-toggle="tooltip" data-placement="auto"
-                            title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i>
-                        Simple VM Project </a></li>
 
-            </ul>
-
-        </li>
-        -->
         <li class="nav-title">
-
           Virtual Machines
         </li>
         <li class="nav-item" *ngIf="vm_project_member ">
-          <a class="nav-link" routerLinkActive="active"
-             [routerLink]="['/virtualmachines/newVM']"><i
-
-            class="nav-icon icon-screen-desktop"></i> New Instance</a>
+          <a *ngIf="navbar_minimized" class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="New Instance"
+             [routerLink]="['/virtualmachines/newVM']">
+            <i class="nav-icon icon-screen-desktop" ></i> New Instance</a>
+          <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/newVM']">
+            <i class="nav-icon icon-screen-desktop" ></i> New Instance</a>
         </li>
         <li
           class="nav-item nav-dropdown" appNavDropdown>
