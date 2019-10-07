@@ -67,7 +67,7 @@ export class VirtualMachineComponent implements OnInit {
 
   started_machine: boolean = false;
 
-  bioconda_img_path: string = `static/webapp/assets/img/bioconda_logo.svg`;
+  conda_img_path: string = `static/webapp/assets/img/conda_logo.svg`;
 
   /**
    * All image of a project.
