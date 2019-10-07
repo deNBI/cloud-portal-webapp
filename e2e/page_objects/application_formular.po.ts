@@ -47,6 +47,7 @@ export class FormularPage {
     await Util.sendTextToElementByName('project_application_elixir_project', 'Elixir Project');
     await Util.sendTextToElementById('project_application_de.NBI default', '2');
     await Util.sendTextToElementByName('project_application_horizon2020', 'Horizon2020Project');
+    await Util.sendTextToElementById('id_project_application_volume_limit', '2');
     await Util.clickElementById('id_project_application_report_allowed');
     //await Util.clickElementById('dissemination_information_accordion');
     await Util.sendTextToElementByName('information_public_title_input', 'A Public Title');

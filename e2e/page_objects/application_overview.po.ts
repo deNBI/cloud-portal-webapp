@@ -12,6 +12,7 @@ export class ApplicationOverviewPage {
   private static CLOUD_PROJECT_CREATED: string = 'The new project was created';
   private static SIMPLE_VM_CREATED: string = 'The new project was created and assigned to de.NBI Cloud Portal - Development.';
   private static NOTIFICATION_MESSAGE: string = 'notification_message';
+  private static APPROVAL_PREFIX: string = 'approve_';
 
   static async navigateToApplicationOverview(): Promise<any> {
     console.log('Navigate to Application Overview form');
@@ -41,7 +42,7 @@ export class ApplicationOverviewPage {
 
   static async approveSimpleVm(application_name: string): Promise<any> {
     await Util.waitForPage('applications');
-    await Util.clickElementById(application_name);
+    await Util.clickElementById(this.APPROVAL_PREFIX + application_name);
     return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SIMPLE_VM_CREATED);
   }
 
