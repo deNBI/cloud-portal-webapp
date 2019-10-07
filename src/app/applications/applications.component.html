@@ -134,7 +134,7 @@
                       </button>
                       <button
                         *ngIf="application?.Status == application_states.SUBMITTED && application?.OpenStackProject"
-                        style="margin: auto 2.5px" [id]="application?.Shortname"
+                        style="margin: auto 2.5px" [id]="'approve_'+ application?.Shortname"
                         (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
                         type="button"
