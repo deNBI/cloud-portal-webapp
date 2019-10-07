@@ -93,13 +93,13 @@
                   <td>
                     <select
                       [style.display]="application?.OpenStackProject && (application?.Status == application_states.SUBMITTED || application?.Status == application_states.CONFIRMATION_DENIED || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
-                      class="form-control"
+                      class="form-control" [id]="'id_compute_center_option_' + application?.Name"
                       #selectedComputeCenter>
 
                       <option value="undefined" selected> no center
                       </option>
                       <option *ngFor="let computeCenter of computeCenters"
-                              value="{{computeCenter.FacilityId}}">
+                              value="{{computeCenter.FacilityId}}" [id]="computeCenter.Name">
                         {{computeCenter.Name}}
                       </option>
                     </select>
@@ -134,7 +134,7 @@
                       </button>
                       <button
                         *ngIf="application?.Status == application_states.SUBMITTED && application?.OpenStackProject"
-                        style="margin: auto 2.5px"
+                        style="margin: auto 2.5px" [id]="'approve_'+ application?.Shortname"
                         (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
                         type="button"
@@ -146,7 +146,7 @@
 
                       <button
                         *ngIf="application?.Status == application_states.SUBMITTED && !application?.OpenStackProject"
-                        style="margin: auto 2.5px"
+                        style="margin: auto 2.5px" [id]="'approve_' + application?.Shortname"
                         (click)="resetNotificationModal();createSimpleVmProjectGroup(application); notificationModal.show();"
 
                         type="button"
@@ -155,12 +155,12 @@
                         Approve
                         & Create
                       </button>
-                      <button
-                        *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED"
-                        style="margin: auto 2.5px"
-                        (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
-                        type="button"
-                        class="btn btn-success">
+                      <button [id]="'extension_approval_' + application.Shortname"
+                              *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED"
+                              style="margin: auto 2.5px"
+                              (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
+                              type="button"
+                              class="btn btn-success">
                         <i class="fa fa-check"></i>&nbsp;
                         Approve
                         Modification
@@ -238,7 +238,7 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-{{ notificationModalType }}"
-             role="alert">
+             role="alert" id="notification_message">
           {{ notificationModalMessage }}
         </div>
         <div *ngIf="notificationClientInfo.length > 0">
@@ -312,27 +312,27 @@
       </div>
 
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
+        <div class="alert alert-info" role="alert" *ngIf="extension_status==0" id="extension result">
           Waiting... <i class="fa fa-spinner fa-spin"
                         style="font-size:24px"></i>
         </div>
 
 
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status == 1" id="extension result">
 
           Modify request successfully submitted!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 3">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status == 3" id="extension result">
           Modify request successfully approved!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status == 4" id="extension result">
           Modify request successfully declined!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 5">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status == 5" id="extension result">
           Modify request successfully approved and forwarded to facility!
         </div>
 
-        <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
+        <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2" id="extension result">
           An error occured.
 
         </div>

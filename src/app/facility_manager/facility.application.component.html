@@ -73,7 +73,7 @@
 
                 <td>
                   <div class="btn-group">
-                    <button type="button"
+                    <button type="button" [id]="'approval_' + application?.Shortname"
                             (click)="resetNotificationModal();notificationModal.show();approveApplication(application?.Id)"
                             class="btn btn-success"
                             style="margin: auto 2.5px"><i
@@ -178,7 +178,7 @@
 
                 <td>
                   <div class="btn-group">
-                    <button type="button"
+                    <button type="button" [id]="'extension_approval_' + app?.Shortname"
                             (click)="resetNotificationModal();notificationModal.show();approveExtension(app)"
                             class="btn btn-success"
                             style="margin: auto 2.5px"><i
@@ -210,9 +210,9 @@
 
               <td colspan="12">
                 <app-application-detail [isModification]="true"
-                  [class.collapse_no_margin]="getCollapseStatus('application_review-' + app?.Id)"
-                  [class.collapse]="getCollapseStatus('application_review-' + app?.Id)"
-                  [application]="app"></app-application-detail>
+                                        [class.collapse_no_margin]="getCollapseStatus('application_review-' + app?.Id)"
+                                        [class.collapse]="getCollapseStatus('application_review-' + app?.Id)"
+                                        [application]="app"></app-application-detail>
               </td>
             </ng-container>
           </ng-container>
@@ -277,7 +277,7 @@
                 <td>{{ application?.User }}</td>
                 <td>{{ application?.Institute }}</td>
                 <td>{{
-                  getStatusById(application?.Status)
+                    getStatusById(application?.Status)
                   }}
                 </td>
                 <td>
@@ -333,7 +333,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-{{ notificationModalType }}" role="alert">
+        <div class="alert alert-{{ notificationModalType }}" role="alert" id="notification_message">
           {{ notificationModalMessage }}
         </div>
       </div>

@@ -255,11 +255,18 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
     })
   }
 
+  /**
+   * Bugfix not scrollable site after closing modal
+   */
+  removeModalOpen(): void {
+    document.body.classList.remove('modal-open');
+  }
+
   public getProjectDetails(): void {
     this.voserice.getProjectDetails(this.selectedProject.Id).subscribe(res => {
       this.selectedProjectVms = res['vms'];
       this.selectedProjectVolumes = res['volumes'];
-      this.selectedProjectSnapshots =res['snapshots'];
+      this.selectedProjectSnapshots = res['snapshots'];
     })
   }
 
