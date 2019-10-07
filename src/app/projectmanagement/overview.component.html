@@ -94,7 +94,7 @@
               [hidden]="!application_details_visible">Hide</span>
               Information
             </button>
-            <button *ngIf="project_application?.Status == application_states.SUBMITTED"
+            <button *ngIf="project_application?.Status == application_states.SUBMITTED || project_application?.Status == application_states.DECLINED"
                     (click)="deleteModal.show();"
                     type="button" style="margin-bottom:5px;"
                     class="btn btn-danger">
