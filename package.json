@@ -72,6 +72,7 @@
     "ngx-popover": "0.0.16",
     "ngx-smart-popover": "^1.1.0",
     "node-sass": "^4.11.0",
+    "protractor-stop-describe-on-failure": "^1.0.4",
     "rxjs": "6.4.0",
     "ts-helpers": "1.1.2",
     "tslint-angular": "^1.1.2",

@@ -94,7 +94,7 @@ export class Util {
 
   static async clickElementByName(name: string): Promise<void> {
     await this.waitForElementToBeClickableByName(name);
-    console.log(`Clicking element ${name}`);
+    this.logInfo(`Clicking element ${name}`);
     const elem = element(by.name(name));
 
     return await elem.click();
@@ -104,17 +104,22 @@ export class Util {
                                      timeout: number = this.timeout,
                                      id: string = 'Elementfinder'): Promise<void> {
     await this.waitForElementToBeClickableByElement(elem, timeout, id);
-    console.log(`Clicking element ${id}`);
+    this.logInfo(`Clicking element ${id}`);
 
     return await elem.click();
   }
 
-  static async clickElementById(id: string): Promise<void> {
-    await this.waitForVisibilityOfElementById(id);
-    await this.waitForElementToBeClickableById(id);
-    console.log(`Clicking element ${id}`);
-    const elem = element(by.id(id));
+  static async asyncForEach(array, callback): Promise<any>  {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  }
 
+  static async clickElementById(id: string, timeout: number = this.timeout): Promise<void> {
+    await this.waitForVisibilityOfElementById(id, timeout);
+    await this.waitForElementToBeClickableById(id, timeout);
+    this.logInfo(`Clicking element ${id}`);
+    const elem = element(by.id(id));
     return await elem.click();
   }
 

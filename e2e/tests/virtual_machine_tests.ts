@@ -80,15 +80,9 @@ describe('Virtual Machine Tests', async function () {
     expect(isActive).toBeTruthy();
   });
 
-  it('should delete the volume vm...', async function () {
+  it('should delete the volume vm without deleting the volume', async function () {
     console.log('Deleting the volume vm');
     await vmOverviewPage.deleteVolumeVM();
-    const isDeleted: boolean = await vmOverviewPage.isVolumeVMDeleted();
-    expect(isDeleted).toBeTruthy();
-  });
-
-  it('...should not have deleted the volume', async function() {
-    console.log('Checking for Volume');
     await VolumeOverviewPage.navigateToVolumeOverview();
     const isVolumePresent: boolean = await VolumeOverviewPage.isVolumePresent();
     expect(isVolumePresent).toBeTruthy();
@@ -128,8 +122,6 @@ describe('Virtual Machine Tests', async function () {
     console.log('Deleting the volume vm');
     await vmOverviewPage.navigateToOverview();
     await vmOverviewPage.deleteBasicVM();
-    const isDeleted: boolean = await vmOverviewPage.isBasicVMDeleted();
-    expect(isDeleted).toBeTruthy();
     await VolumeOverviewPage.navigateToVolumeOverview();
     const isVolumePresent: boolean = await VolumeOverviewPage.isVolumePresent();
     const notAttached: boolean = await VolumeOverviewPage.isVolumeFree();
