@@ -286,7 +286,8 @@
                                  class="form-control"
                                  (input)="diskspace = $event.target.value"
                                  type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
-                                 placeholder="e.g 8" ngModel
+                                 placeholder="e.g 8"
+                                 [ngModel]="0"
                                  appMinAmount="0" appMaxAmount="{{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}" appIntegerOrNull
                                  [ngClass]="{
                                 'is-invalid': f.controls.vm_volume_storage?.invalid && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched),
