@@ -2,6 +2,7 @@
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
 const {SpecReporter} = require('jasmine-spec-reporter');
+const DescribeFailureReporter = require('protractor-stop-describe-on-failure')
 const fs = require('fs');
 let rawdata = fs.readFileSync('e2e/environment.json');
 let credentials = JSON.parse(rawdata);
@@ -38,7 +39,8 @@ exports.config = {
     'tests/cloud_application_approval_test.ts',
     'tests/cloud_application_modification_test.ts',
     'tests/cloud_modification_approval_test.ts',
-    'tests/virtual_machine_tests.ts'
+    'tests/virtual_machine_tests.ts',
+    'tests/terminate_all_pt.ts'
   ],
   capabilities: {
     'browserName': 'chrome',
@@ -61,6 +63,7 @@ exports.config = {
   },
   onPrepare() {
     jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: true}}));
+    jasmine.getEnv().addReporter(DescribeFailureReporter(jasmine.getEnv()));
     browser.manage().window().setSize(parseInt(credentials["browser_w"]), parseInt(credentials["browser_h"]));
   }
 };
