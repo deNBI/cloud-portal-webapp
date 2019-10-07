@@ -237,7 +237,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   /**
-   * Delete Vm.
+   * Delete VM.
    * @param {string} openstack_id of instance
    */
   deleteVm(vm: VirtualMachine): void {
