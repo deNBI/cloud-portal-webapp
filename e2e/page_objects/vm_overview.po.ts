@@ -217,7 +217,7 @@ export class VMOverviewPage {
     await Util.waitForPresenceOfElementById(this.SNAPSHOT_RESULT_MODAL);
     await Util.waitForPresenceOfElementById(this.SNAPSHOT_DONE_DIV);
     await Util.clickElementById(this.CLOSE_SNAPSHOT_RESULT_BUTTON);
-    console.log(`Creating snapshot method for ${name} completed`)
+    Util.logMethodCall(`Creating snapshot method for ${name} completed`);
   }
 
   async createSnapshotOfBasicVM(): Promise<any> {

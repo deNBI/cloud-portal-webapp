@@ -97,6 +97,7 @@ describe('Virtual Machine Tests', async function () {
 
   it('should create a snapshot of the basic vm', async function() {
     console.log('Creating a snapshot of the basic vm');
+    await vmOverviewPage.navigateToOverview();
     await vmOverviewPage.createSnapshotOfBasicVM();
     await SnapshotOverviewPage.navigateToSnapshotOverview();
     const isPresent: boolean = await SnapshotOverviewPage.isBasicSnapshotPresent();
@@ -106,12 +107,13 @@ describe('Virtual Machine Tests', async function () {
   it('should delete the snapshot of the basic vm', async function() {
     console.log('Deleting the snapshot of the basic vm');
     await SnapshotOverviewPage.deleteBasicSnapshot();
-    const isPresent: boolean = await SnapshotOverviewPage.isBasicSnapshotPresent();
-    expect(isPresent).toBeFalsy();
+    const isDeleted: boolean = await SnapshotOverviewPage.isBasicSnapshotDeleted();
+    expect(isDeleted).toBeTruthy();
   });
 
   it('should create and attach a volume to basic vm', async function () {
     console.log('Creating and attaching a volume to basic vm');
+    await VolumeOverviewPage.navigateToVolumeOverview();
     await VolumeOverviewPage.createAndAttachVolumeToProjectVm(await vmOverviewPage.getBasicVMName());
     const present: boolean = await VolumeOverviewPage.isVolumePresent();
     const attached: boolean = await VolumeOverviewPage.isVolumeAttachedToVM(await vmOverviewPage.getBasicVMName());

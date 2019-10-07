@@ -20,6 +20,17 @@ export class SnapshotOverviewPage {
     return await browser.driver.sleep(10000);
   }
 
+  static async isSnapshotDeleted(name: string): Promise<boolean> {
+    Util.logMethodCall(`Checking if snapshot ${name} is absent`);
+    await Util.waitForPresenceOfElementById(this.TABLE_ID, 10000);
+
+    return await Util.waitForAbsenceOfElementById(name);
+  }
+
+  static async isBasicSnapshotDeleted(): Promise<boolean> {
+    return await this.isSnapshotDeleted(Util.BASIC_SNAPSHOT_NAME);
+  }
+
   static async isSnapshotPresent(name: string): Promise<boolean> {
     Util.logMethodCall(`Checking if snapshot ${name} is present`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID, 10000);
@@ -41,7 +52,7 @@ export class SnapshotOverviewPage {
     await Util.waitForPresenceOfElementById(this.DELETE_SUCCESS);
     await Util.clickElementById(this.CLOSE_DELETE_MODAL);
 
-    return await Util.waitForAbsenceOfElementById(this.CLOSE_DELETE_MODAL);
+    return await Util.waitForInvisibilityOfElementById(this.DELETE_MODAL);
   }
 
   static async deleteBasicSnapshot(): Promise<any> {

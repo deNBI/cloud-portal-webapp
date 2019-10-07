@@ -14,7 +14,7 @@ export class Util {
   private static _VOLUME_NAME: string = 'ProtractorVolume';
   private static _VOLUME_SPACE: string = '1';
   private static _LONG_TIMEOUT: number = 420000;
-  private static _BASIC_SNAPSHOT_NAME: string = 'PTSnapshot';
+  private static _BASIC_SNAPSHOT_NAME: string = 'PTSnap';
   // tslint:disable-next-line:no-require-imports
 
   static get SIMPLE_VM_APPLICATION_NAME(): string {

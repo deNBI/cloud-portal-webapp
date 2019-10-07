@@ -583,7 +583,7 @@ id="snapshot_name_modal">
 
         <div>
           <input type="text" style="width: 100%" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
-                 (ngModelChange)="validSnapshotName($event);" id="snapshot_name_input">
+                 (ngModelChange)="snapshotSearchTerm.next($event);" id="snapshot_name_input">
 
         </div>
         <div>
