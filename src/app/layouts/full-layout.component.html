@@ -279,9 +279,15 @@
     </nav>
     <app-sidebar-minimizer (click)="setSidebarStatus()"></app-sidebar-minimizer>
 
-    <app-footer>
+    <app-footer *ngIf="!navbar_minimized">
 
       <a href="https://denbi.de">de.NBI&nbsp;</a> &copy; {{ year }}
+
+    </app-footer>
+
+    <app-footer *ngIf="navbar_minimized">
+
+      <a href="https://denbi.de" data-toogle="tooltip" data-placement="right" [title]="'&copy; de.NBI ' + year " style="font-size: 18px !important;">&copy;</a>
 
     </app-footer>
 

@@ -56,9 +56,7 @@ export class UserInfoComponent implements OnInit {
    */
   emailChange: string;
 
-  title :string = 'User Information for ';
-
-
+  title: string = 'User Information';
 
 
   constructor(private groupService: GroupService, private userService: UserService, private keyService: KeyService) {
@@ -109,7 +107,7 @@ export class UserInfoComponent implements OnInit {
   getUserinfo(): void {
     this.userService.getUserInfo().subscribe((userinfo: any) => {
       this.userInfo = new Userinfo(userinfo);
-      this.title = 'User Information for ' + this.userInfo.FirstName + ' ' + this.userInfo.LastName;
+      this.title = this.title.concat(': ', this.userInfo.FirstName, ' ', this.userInfo.LastName ) ;
 
       forkJoin(
         this.userService.getNewsletterSubscription(),
@@ -143,7 +141,7 @@ export class UserInfoComponent implements OnInit {
     }
 
   }
-  
+
   validatePublicKey(): boolean {
 
     if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.newPublicKey)) {
